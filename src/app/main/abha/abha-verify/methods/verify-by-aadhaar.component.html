@@ -1,87 +1,65 @@
 <mat-card class="method-card-wrap">
-  <mat-card-content>
-    <div class="method-steps">
-      <div class="m-step" [class.active]="step === 1" [class.done]="step > 1">
-        <span class="step-num">{{ step > 1 ? '✓' : '1' }}</span>
-        <span class="step-label">Aadhaar</span>
-      </div>
-      <div class="step-line"></div>
-      <div class="m-step" [class.active]="step === 2">
-        <span class="step-num">2</span>
-        <span class="step-label">Verify OTP</span>
-      </div>
-    </div>
+    <mat-card-content>
+        <div class="method-steps">
+            <div class="m-step" [class.active]="step === 1" [class.done]="step > 1">
+                <span class="step-num">{{ step > 1 ? '✓' : '1' }}</span>
+                <span class="step-label">Aadhaar</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="m-step" [class.active]="step === 2">
+                <span class="step-num">2</span>
+                <span class="step-label">Verify OTP</span>
+            </div>
+        </div>
 
-    <h3 class="method-h3">Verify via Aadhaar Number</h3>
+        <h3 class="method-h3">Verify via Aadhaar Number</h3>
 
-    <form *ngIf="step === 1" [formGroup]="aadhaarForm" (ngSubmit)="sendOtp()">
-      <div class="field-block">
-        <label class="field-label">Aadhaar Number</label>
-        <mat-form-field appearance="outline" class="full-width">
-          <input
-            matInput
-            formControlName="aadhaar"
-            placeholder="12-digit Aadhaar number"
-            inputmode="numeric"
-            maxlength="12"
-            autocomplete="off"
-            (input)="onAadhaarInput($event)"
-          />
-          <mat-error *ngIf="aadhaarForm.get('aadhaar')?.errors as e">
-            <span *ngIf="e['required']">Aadhaar number is required</span>
-            <span *ngIf="e['aadhaar']">{{ e['aadhaar'] }}</span>
-          </mat-error>
-        </mat-form-field>
-        <p class="helper-text">
-          OTP will be sent to your <strong>Aadhaar-linked mobile</strong>.
-          Try <span class="mono">{{ demoAadhaar }}</span> for demo.
-        </p>
-      </div>
+        <form *ngIf="step === 1" [formGroup]="aadhaarForm" (ngSubmit)="sendOtp()">
+            <div class="field-block">
+                <label class="field-label">Aadhaar Number</label>
+                <mat-form-field appearance="outline" class="full-width">
+                    <input matInput formControlName="aadhaar" placeholder="12-digit Aadhaar number" inputmode="numeric"
+                        maxlength="12" autocomplete="off" (input)="onAadhaarInput($event)" />
+                    <mat-error *ngIf="aadhaarForm.get('aadhaar')?.errors as e">
+                        <span *ngIf="e['required']">Aadhaar number is required</span>
+                        <span *ngIf="e['aadhaar']">{{ e['aadhaar'] }}</span>
+                    </mat-error>
+                </mat-form-field>
+                <p class="helper-text">
+                    OTP will be sent to your <strong>Aadhaar-linked mobile</strong>.
+                </p>
+            </div>
 
-      <div class="actions end">
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="loading"
-          class="action-btn"
-        >
-          <ng-container *ngIf="!loading">
-            Send OTP <mat-icon iconPositionEnd>arrow_forward</mat-icon>
-          </ng-container>
-          <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-        </button>
-      </div>
-    </form>
+            <div class="actions end">
+                <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="action-btn">
+                    <ng-container *ngIf="!loading">
+                        Send OTP <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                    </ng-container>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+            </div>
+        </form>
 
-    <form *ngIf="step === 2" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
-      <div class="info-box">
-        We've sent a 6-digit OTP to your Aadhaar-linked mobile. Enter it below to continue.
-      </div>
+        <form *ngIf="step === 2" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+            <div class="info-box">
+                {{msg}}
+            </div>
 
-      <div class="field-block">
-        <label class="field-label">6-digit OTP</label>
-        <mat-form-field appearance="outline" class="full-width">
-          <input
-            matInput
-            type="password"
-            formControlName="otp"
-            placeholder="••••••"
-            inputmode="numeric"
-            maxlength="6"
-            autocomplete="one-time-code"
-            (input)="onOtpInput($event)"
-          />
-          <mat-error *ngIf="otpForm.get('otp')?.errors as e">
-            <span *ngIf="e['required']">OTP is required</span>
-            <span *ngIf="e['otp']">{{ e['otp'] }}</span>
-            <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
-          </mat-error>
-        </mat-form-field>
-        <p class="helper-text">Demo OTP: <span class="mono">{{ demoOtp }}</span></p>
-      </div>
+            <div class="field-block">
+                <label class="field-label">6-digit OTP</label>
+                <mat-form-field appearance="outline" class="full-width">
+                    <input matInput type="password" formControlName="otp" placeholder="••••••" inputmode="numeric"
+                        maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
+                    <mat-error *ngIf="otpForm.get('otp')?.errors as e">
+                        <span *ngIf="e['required']">OTP is required</span>
+                        <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+                        <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+                    </mat-error>
+                </mat-form-field>
+                <!-- <p class="helper-text">Demo OTP: <span class="mono">{{ demoOtp }}</span></p> -->
+            </div>
 
-      <div class="row-between">
+            <!-- <div class="row-between">
         <span class="resend-info">
           Resend attempts remaining: <strong>{{ resendRemaining }}/2</strong>
         </span>
@@ -94,25 +72,20 @@
         >
           <mat-icon>refresh</mat-icon> Resend OTP
         </button>
-      </div>
+      </div> -->
 
-      <div class="actions">
-        <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
-          <mat-icon>arrow_back</mat-icon> Back
-        </button>
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="loading || otpForm.invalid"
-          class="action-btn"
-        >
-          <ng-container *ngIf="!loading">
-            Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
-          </ng-container>
-          <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-        </button>
-      </div>
-    </form>
-  </mat-card-content>
+            <div class="actions">
+                <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid"
+                    class="action-btn">
+                    <ng-container *ngIf="!loading">
+                        Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                    </ng-container>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+            </div>
+        </form>
+    </mat-card-content>
 </mat-card>

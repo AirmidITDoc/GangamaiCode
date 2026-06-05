@@ -60,12 +60,12 @@
                         <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
                     </mat-error>
                 </mat-form-field>
-                <p class="helper-text">
+                <!-- <p class="helper-text">
                     Demo OTP: <span class="mono">{{ demoOtp }}</span>
-                </p>
+                </p> -->
             </div>
 
-            <div class="row-between">
+            <!-- <div class="row-between">
                 <span class="resend-info">
                     Resend attempts remaining: <strong>{{ resendRemaining }}/2</strong>
                 </span>
@@ -73,7 +73,7 @@
                     [disabled]="resendRemaining === 0 || loading">
                     <mat-icon>refresh</mat-icon> Resend OTP
                 </button>
-            </div>
+            </div> -->
 
             <div class="actions">
                 <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">

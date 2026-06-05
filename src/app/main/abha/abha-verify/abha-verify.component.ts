@@ -15,7 +15,8 @@ export class AbhaVerifyComponent {
 
     /** Profile returned by verification (set when flow completes). */
     verifiedProfile: AbhaProfile | null = null;
-
+    isAbhaCreated: boolean = false;
+    token: string = "";
     /** Banner subtitle for the verified-profile-card */
     bannerSubtitle = '';
 
@@ -27,10 +28,13 @@ export class AbhaVerifyComponent {
     backToPicker(): void {
         this.activeMethod = null;
         this.verifiedProfile = null;
+        this.isAbhaCreated=false;
+        this.token='';
     }
 
-    onVerified(profile: AbhaProfile): void {
-        this.verifiedProfile = profile;
+    onVerified(accesstoken: string): void {
+        this.isAbhaCreated = true;
+        this.token = accesstoken;
         if (this.activeMethod) {
             const meta = getMethodMeta(this.activeMethod);
             this.bannerSubtitle = `Verified using ${meta.title}.`;

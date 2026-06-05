@@ -22,7 +22,7 @@ import { AbhaValidators } from '../../abha.validators';
 })
 export class VerifyByAbhaOtpComponent implements OnInit {
     @Input() otpSystem: OtpSystem = 'abdm';
-    @Output() verified = new EventEmitter<AbhaProfile>();
+    @Output() verified = new EventEmitter<string>();
 
     step: 1 | 2 = 1;
     abhaForm!: FormGroup;
@@ -133,7 +133,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
                     if (r.txnId) {
                         if (r.authResult === 'success' && r.accounts) {
                             this.snack.open(r.message, 'OK', { duration: 1800 });
-                            // this.verified.emit(r.accounts);
+                            this.verified.emit(r.token);
                         } else {
                             this.otpForm.get('otp')?.setErrors({ invalid: r.message });
                             this.snack.open(r.message, 'OK', { duration: 3000 });
@@ -150,7 +150,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
                     if (r.txnId) {
                         if (r.authResult === 'success' && r.accounts) {
                             this.snack.open(r.message, 'OK', { duration: 1800 });
-                            // this.verified.emit(r.accounts);
+                             this.verified.emit(r.token);
                         } else {
                             this.otpForm.get('otp')?.setErrors({ invalid: r.message });
                             this.snack.open(r.message, 'OK', { duration: 3000 });

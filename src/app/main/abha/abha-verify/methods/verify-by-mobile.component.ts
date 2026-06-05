@@ -20,7 +20,7 @@ import { AbhaService } from '../../abha.service';
     styleUrls: ['./method-shared.scss', './verify-by-mobile.component.scss']
 })
 export class VerifyByMobileComponent implements OnInit {
-    @Output() verified = new EventEmitter<AbhaProfile>();
+    @Output() verified = new EventEmitter<string>();
 
     step: 1 | 2 | 3 = 1;
     mobileForm!: FormGroup;
@@ -85,7 +85,7 @@ export class VerifyByMobileComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.abhaService.requestMobileOtp({ AadhaarNumber: this.pickForm.value.ABHANumber })
+        this.abhaService.requestMobileOtp({ AadhaarNumber: this.mobileForm.value.mobile })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.txnId = r.txnId;
@@ -118,7 +118,7 @@ export class VerifyByMobileComponent implements OnInit {
                     // Single account → emit directly
                     if ((!r.accounts || r.accounts.length <= 1)) {
                         this.snack.open('Verified — single ABHA found.', 'OK', { duration: 1800 });
-                        //  this.verified.emit(r.profile);
+                        this.verified.emit(r.token);
                         return;
                     }
 
@@ -150,11 +150,11 @@ export class VerifyByMobileComponent implements OnInit {
         this.abhaService.verifyUser({ ABHANumber: this.pickForm.value.ABHANumber, txnId: this.txnId })
             .subscribe((r: VerifyUserResponse) => {
                 if (r.token) {
-                    // this.verified.emit(r.profile);
-                  //  this.snack.open(r.message, 'OK', { duration: 2500 });
+                    this.verified.emit(r.token);
+                    //this.snack.open(r.message, 'OK', { duration: 2500 });
                 }
                 else {
-                  //  this.snack.open(r.message, 'OK', { duration: 2500 });
+                    //  this.snack.open(r.message, 'OK', { duration: 2500 });
                 }
                 this.loading = false;
             });
