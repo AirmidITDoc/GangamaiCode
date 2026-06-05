@@ -605,54 +605,58 @@ export class AppointmentListComponent implements OnInit {
 
     }
     OnPaitentFinalPrint(element) {
-        setTimeout(() => {
-            const param = {
-                "searchFields": [
-                    { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" },
-                    { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
-                ],
-                "mode": "PatientBillStatement"
-            }
-            this._AppointmentlistService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Patient Statement" + " " + "Viewer"
-                        }
+        if (element.visitId) {
+            setTimeout(() => {
+                const param = {
+                    "searchFields": [
+                        { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" },
+                        { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
+                    ],
+                    "mode": "PatientBillStatement"
+                }
+                this._AppointmentlistService.getReportView(param).subscribe(res => {
+                    const matDialog = this._matDialog.open(PdfviewerComponent,
+                        {
+                            maxWidth: "85vw",
+                            height: '750px',
+                            width: '100%',
+                            data: {
+                                base64: res["base64"] as string,
+                                title: "Patient Statement" + " " + "Viewer"
+                            }
+                        });
+                    matDialog.afterClosed().subscribe(result => {
                     });
-                matDialog.afterClosed().subscribe(result => {
                 });
-            });
-        }, 100);
+            }, 100);
+        }
     }
     OnPaitentDraftPrint(element) {
-        setTimeout(() => {
-            const param = {
-                "searchFields": [
-                    { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" }
-                    // { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
-                ],
-                "mode": "OpDraftPatientStatement"
-            }
-            this._AppointmentlistService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Patient Statement" + " " + "Viewer"
-                        }
+        if (element.visitId) {
+            setTimeout(() => {
+                const param = {
+                    "searchFields": [
+                        { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" }
+                        // { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
+                    ],
+                    "mode": "OpDraftPatientStatement"
+                }
+                this._AppointmentlistService.getReportView(param).subscribe(res => {
+                    const matDialog = this._matDialog.open(PdfviewerComponent,
+                        {
+                            maxWidth: "85vw",
+                            height: '750px',
+                            width: '100%',
+                            data: {
+                                base64: res["base64"] as string,
+                                title: "Patient Statement" + " " + "Viewer"
+                            }
+                        });
+                    matDialog.afterClosed().subscribe(result => {
                     });
-                matDialog.afterClosed().subscribe(result => {
                 });
-            });
-        }, 100);
+            }, 100);
+        }
     }
     OnViewCasepaperReportPdf(element: any, withHeader: boolean) {
         debugger
@@ -668,8 +672,8 @@ export class AppointmentListComponent implements OnInit {
     }
 
     OnViewReportPdf(element) {
-        if(element.visitId)
-        this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+        if (element.visitId)
+            this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
     }
 
 
@@ -1126,7 +1130,7 @@ export class AppointmentListComponent implements OnInit {
         patientTimer.checkOut = new Date(); //Capture the check-out time
 
         const totalTime = patientTimer.elapsedTime; //it tells total time taken by patient
-debugger
+        debugger
         //Save updated timer state to localStorage
         this.saveTimersToLocalStorage();
         const data = {
@@ -1154,7 +1158,7 @@ debugger
             return false;
         }
     }
-// Vregtotalcount=0
+    // Vregtotalcount=0
     GetAppointdetail() {
         //   this.Vregtotalcount = 0;
         this.Vtotalcount = 0;

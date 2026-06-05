@@ -1364,9 +1364,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                             this._matDialog.closeAll();
                             this.savebtn = true
                             if (ThermalPrint != 1) {
+                                if(response)
                                 this.viewgetOPBillReportPdf(response)
                             } else {
                                 if (this.data?.FormName != 'Appointment-OPBill') {
+                                     if(response)
                                     this.viewgetOPBillThermalReportPdf(response)
                                 } else {
                                     this.dialogRef.close(response)

@@ -239,11 +239,18 @@ export class DischargeComponent implements OnInit {
 
         const admissionDt = new Date(this.data.admissionDate);
         const dischargeDt = new Date(this.dateTimeObj.date);
+        const tdate = new Date();
 
         console.log(admissionDt, dischargeDt)
         if (dischargeDt < admissionDt) {
 
             this.toastr.warning('Please select a Discharge Date after the Admission Date. !', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        } else if (dischargeDt > tdate) {
+
+            this.toastr.warning('If the patient is admitted today, the Discharge Date should not be after today. !', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
@@ -267,7 +274,7 @@ export class DischargeComponent implements OnInit {
                         "admission": this.DischargeInsertForm.value.admission,
                         "bed": this.DischargeInsertForm.value.bed
                     };
-                     console.log(insertData)
+                    console.log(insertData)
                     this._IpSearchListService.DichargeInsert(insertData).subscribe((response) => {
                         this.viewgetDischargeSlipPdf(response)
                         this._matDialog.closeAll();

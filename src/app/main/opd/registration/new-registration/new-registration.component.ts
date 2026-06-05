@@ -218,6 +218,7 @@ export class NewRegistrationComponent implements OnInit {
             this.personalFormGroup.removeControl('IsNRI')
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.onClear(true);
+                if(response)
                 this.OnPrint(response);
             });
         } else {

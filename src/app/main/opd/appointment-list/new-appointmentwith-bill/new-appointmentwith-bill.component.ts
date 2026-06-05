@@ -1488,7 +1488,8 @@ export class NewAppointmentwithBillComponent {
 
                             this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
                                 console.log(response)
-                                this.viewgetOPBillReportPdf(response.billNo)
+                                if (response)
+                                    this.viewgetOPBillReportPdf(response.billNo)
                                 this.closeAllOrNavigateBack();
                                 this.savebtn = true
                             });
@@ -1508,7 +1509,8 @@ export class NewAppointmentwithBillComponent {
                     console.log(this.AppointmentBillfinalform.value)
                     this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
-                        this.viewgetOPBillReportPdf(response.billNo)
+                        if (response)
+                            this.viewgetOPBillReportPdf(response.billNo)
                         this.closeAllOrNavigateBack();
                         this.savebtn = true
 
@@ -1552,7 +1554,8 @@ export class NewAppointmentwithBillComponent {
                     this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
                     console.log(this.AppointmentBillfinalform.value)
                     this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
-                        this.viewgetOPBillReportPdf(response.billNo)
+                        if (response)
+                            this.viewgetOPBillReportPdf(response.billNo)
                         this.closeAllOrNavigateBack();
                         this.savebtn = true
 
@@ -1639,7 +1642,8 @@ export class NewAppointmentwithBillComponent {
                             console.log(this.RegiAppointmentBillfinalform.value)
 
                             this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
-                                this.viewgetOPBillReportPdf(response.billNo)
+                                if (response)
+                                    this.viewgetOPBillReportPdf(response.billNo)
                                 this.closeAllOrNavigateBack();
                                 this.savebtn = true
                             });
@@ -1669,6 +1673,7 @@ export class NewAppointmentwithBillComponent {
                     //  console.log(formValue)
                     this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
+                          if (response)
                         this.viewgetOPBillReportPdf(response.billNo)
                         this.closeAllOrNavigateBack();
                         this.savebtn = true
@@ -1737,6 +1742,7 @@ export class NewAppointmentwithBillComponent {
 
                     this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
+                          if (response)
                         this.viewgetOPBillReportPdf(response.billNo)
                         this.closeAllOrNavigateBack();
                         this.savebtn = true

@@ -485,7 +485,7 @@ export class NewCasepaperComponent implements OnInit {
             daysOption3: [0],
             instructionId: [element.instructionId || 0],
             qtyPerDay: [Math.round(element.QtyPerDay ?? element.qtyPerDay ?? 0)],
-            totalQty: [ element?.totalQty || 0 //Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
+            totalQty: [element?.totalQty || 0 //Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],
             isClosed: false,
             isEnglishOrIsMarathi: [true],
@@ -669,19 +669,19 @@ export class NewCasepaperComponent implements OnInit {
                 //   this.OnViewReportWithoutHeaderPdf(this.VisitId)
                 debugger
                 const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
-
-                if (PrescriptionA5_Print != 1) {
-                    if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-                        this.OnViewReportWithHeaderPdf(this.VisitId)
-                    else
-                        this.OnViewReportWithoutHeaderPdf(this.VisitId)
-                } else {
-                    if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-                        this.OnViewReportWithHeaderA5Pdf(this.VisitId)
-                    else
-                        this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
+                if (response) {
+                    if (PrescriptionA5_Print != 1) {
+                        if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+                            this.OnViewReportWithHeaderPdf(this.VisitId)
+                        else
+                            this.OnViewReportWithoutHeaderPdf(this.VisitId)
+                    } else {
+                        if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+                            this.OnViewReportWithHeaderA5Pdf(this.VisitId)
+                        else
+                            this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
+                    }
                 }
-
 
                 this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
                 this.onClear();
@@ -2553,7 +2553,7 @@ export class NewCasepaperComponent implements OnInit {
             return false;
         }
     }
-    CompletdFlag:any=0;
+    CompletdFlag: any = 0;
     Printresultentrymulti(row: any) {
         debugger
         const pathologyDelete = [];
@@ -2588,11 +2588,11 @@ export class NewCasepaperComponent implements OnInit {
         } else {
             Swal.fire("Selcted test Not Completd for Print.....")
         }
-    } 
-        selectedItem: any = [];
-        selection = new SelectionModel<SampleList>(true, []);  
-   masterToggle() {
-        const  dsLabData :any = this.dsLab.data;  
+    }
+    selectedItem: any = [];
+    selection = new SelectionModel<SampleList>(true, []);
+    masterToggle() {
+        const dsLabData: any = this.dsLab.data;
 
         if (this.isAllSelected()) {
             this.selection.clear();
@@ -2605,22 +2605,22 @@ export class NewCasepaperComponent implements OnInit {
                 this.selection.select(row);
                 this.selectedItem.push(row);   // ✅ Add all
             });
-        } 
-     } 
-    isAllSelected() { 
-        let dsLabData :any = this.dsLab.data;   
+        }
+    }
+    isAllSelected() {
+        let dsLabData: any = this.dsLab.data;
         const numSelected = this.selection.selected.length;
         const numRows = dsLabData.length;
         return numRows > 0 && numSelected === numRows;
-    } 
+    }
     isSomeSelected() {
         const selectableRows = this.dsLab.data
         return this.selection.selected.length > 0 &&
             this.selection.selected.length < selectableRows.length;
     }
-        tableElementChecked(event, element) {
+    tableElementChecked(event, element) {
         if (event.checked) {
-            this.selection.select(element); 
+            this.selection.select(element);
             if (!this.selectedItem.includes(element)) {
                 this.selectedItem.push(element);
             }
@@ -2632,7 +2632,7 @@ export class NewCasepaperComponent implements OnInit {
                 this.selectedItem.splice(index, 1);
             }
         }
-     }
+    }
 }
 
 
@@ -3073,8 +3073,8 @@ export class labRadList {
     BillNo: any;
     patientType: any;
     PathologyTestList: any[];
-    Buttons:any;
-    
+    Buttons: any;
+
 
     constructor(labRadList) {
 

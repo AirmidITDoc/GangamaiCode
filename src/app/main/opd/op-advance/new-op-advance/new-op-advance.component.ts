@@ -269,7 +269,8 @@ export class NewOpAdvanceComponent {
                     console.log(submitData);
                     this._opAdvanceService.InsertAdvanceHeader(submitData).subscribe(response => {
                         this.grid.bindGridData();
-                        this.viewgetAdvanceReceiptReportPdf(response);
+                        if (response)
+                            this.viewgetAdvanceReceiptReportPdf(response);
                         this.onClose();
                     });
                 }

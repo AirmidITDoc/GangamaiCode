@@ -362,7 +362,8 @@ export class RefundbillComponent implements OnInit {
                     });
                     console.log("OP Refund Value --> ", this.vRefundOfBillFormGroup.value)
                     this._RefundbillService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
-                        this.viewgetOPRefundBillReportPdf(response);
+                          if (response)
+                         this.viewgetOPRefundBillReportPdf(response);
                         setTimeout(() => {
                             this.grid.bindGridData();
                             this.cleardata();
