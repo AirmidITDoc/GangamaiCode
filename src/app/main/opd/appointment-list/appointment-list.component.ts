@@ -668,6 +668,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
     OnViewReportPdf(element) {
+        if(element.visitId)
         this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
     }
 

@@ -902,7 +902,8 @@ export class NewAppointmentComponent implements OnInit {
                 this.OnBillPayment()
             } else {
                 if (!this.Is9_Digit_National_Id) {
-                    this.OnViewReportPdf(response);
+                    if (response)
+                        this.OnViewReportPdf(response);
                 }
 
                 this.onClear(true);
@@ -1017,7 +1018,8 @@ export class NewAppointmentComponent implements OnInit {
                 this.OnBillPayment()
             } else {
                 if (!this.Is9_Digit_National_Id) {
-                    this.OnViewReportPdf(response);
+                    if (response)
+                        this.OnViewReportPdf(response);
                 }
                 this.onClear(true);
                 this._matDialog.closeAll();
