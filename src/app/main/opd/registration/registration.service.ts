@@ -40,6 +40,8 @@ export class RegistrationService {
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
+            CityId: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+
         });
     }
 

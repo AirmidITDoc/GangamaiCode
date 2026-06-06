@@ -32,6 +32,7 @@ export class RegistrationComponent implements OnInit {
     regNo: any = "0"
     l_name: any = ""
     mobileno: any = "%"
+    CityId: any = "0"
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     photo: PageNames = PageNames.PATIENT_PHOTO;
@@ -73,6 +74,7 @@ export class RegistrationComponent implements OnInit {
         { heading: "EmgContactPerson Name", key: "emgContactPersonName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Emg MobileNo", key: "emgMobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Emg LandlineNo", key: "emgLandlineNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Emg Address", key: "engAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
@@ -105,8 +107,9 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
-
+            { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
+            // { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals }
+           
         ]
     }
 
@@ -178,12 +181,15 @@ export class RegistrationComponent implements OnInit {
     }
 
     onChangeFirst() {
+        debugger
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.mobileno = this.myFilterform.get('MobileNo').value || "%"
+         this.CityId = this.myFilterform.get('CityId').value || "0"
+       
         this.getfilterdata();
     }
 
@@ -199,7 +205,8 @@ export class RegistrationComponent implements OnInit {
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
+                { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains },
+                //   { fieldName: "CityId", fieldValue: String(this.CityId), opType: OperatorComparer.Equals }
             ],
             row: 300
 
@@ -239,6 +246,7 @@ export class RegistrationComponent implements OnInit {
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
             ],
+             cityId: [],
         }
     }
 

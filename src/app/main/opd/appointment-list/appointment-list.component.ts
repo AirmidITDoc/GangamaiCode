@@ -222,7 +222,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-        { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "DOA", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },

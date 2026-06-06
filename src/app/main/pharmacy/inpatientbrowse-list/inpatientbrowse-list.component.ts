@@ -486,6 +486,8 @@ export class InpatientbrowseListComponent {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+
             { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.T_Date, opType: OperatorComparer.Equals },
             { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
@@ -608,31 +610,60 @@ export class InpatientbrowseListComponent {
     /// Patient list  
     apiUrl: any = '';
     onChangeFirstPatient() {
-
-        if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
-            this.apiUrl = "Admission/AdmissionDischargeList"
-            this.status = "0"
-            this.Fr_Date = "1900-01-01"
-            this.T_Date = "1900-01-01"
-        } else {
-            this.apiUrl = "Admission/AdmissionDischargeList"
-            this.status = "1"
-            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
-            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
-
-        }
+        debugger
         this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%"
         this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%"
         this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%"
         this.reg_No_Pt = this._BrowsSalesBillService.SalesPatientForm.get('RegNo').value || "0"
         this.ipdno = this._BrowsSalesBillService.SalesPatientForm.get('IPDNo').value || "0"
-        this.getPatientlistdata();
+
+
+        if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
+            this.apiUrl = "Admission/AdmissionList"
+            this.status = "0"
+            this.Fr_Date = "1900-01-01"
+            this.T_Date = "1900-01-01"
+            this.getPatientlistdata();
+        } else {
+            this.apiUrl = "Admission/AdmissionDischargeList"
+            this.status = "1"
+            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
+            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
+            this.getPatientlistdata1();
+        }
+
     }
 
-    getPatientlistdata() {
+    // getPatientlistdata() {
 
+    //     this.gridConfig4 = {
+    //         apiUrl: this.apiUrl,
+    //         columnsList: this.PatientlistColumns,
+    //         sortField: "AdmissionId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "F_Name", fieldValue: this.first_N, opType: OperatorComparer.Equals },
+    //             { fieldName: "L_Name", fieldValue: this.Last_N, opType: OperatorComparer.Equals },
+    //             { fieldName: "Reg_No", fieldValue: this.reg_No_Pt, opType: OperatorComparer.Equals },
+    //             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+    //              { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+
+    //             { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
+    //             { fieldName: "To_Dt", fieldValue: this.T_Date, opType: OperatorComparer.Equals },
+    //             { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+    //             { fieldName: "M_Name", fieldValue: this.middle_N, opType: OperatorComparer.Contains },
+    //             { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }
+    //         ],
+    //     }
+
+    // }
+
+    getPatientlistdata() {
+        debugger
         this.gridConfig4 = {
-            apiUrl: this.apiUrl,
+            // permissionCode: permissionCodes.Sales,
+            // apiUrl: this.apiUrl,
+            apiUrl: "Admission/AdmissionList",
             columnsList: this.PatientlistColumns,
             sortField: "AdmissionId",
             sortOrder: 0,
@@ -641,6 +672,8 @@ export class InpatientbrowseListComponent {
                 { fieldName: "L_Name", fieldValue: this.Last_N, opType: OperatorComparer.Equals },
                 { fieldName: "Reg_No", fieldValue: this.reg_No_Pt, opType: OperatorComparer.Equals },
                 { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+
                 { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.T_Date, opType: OperatorComparer.Equals },
                 { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
@@ -648,7 +681,35 @@ export class InpatientbrowseListComponent {
                 { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }
             ],
         }
+        this.grid4.gridConfig = this.gridConfig4;
+        this.grid4.bindGridData();
+    }
 
+    getPatientlistdata1() {
+        debugger
+        this.gridConfig4 = {
+            // permissionCode: permissionCodes.Sales,
+            // apiUrl: this.apiUrl,
+            apiUrl: "Admission/AdmissionDischargeList",
+            columnsList: this.PatientlistColumns,
+            sortField: "AdmissionId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.first_N, opType: OperatorComparer.Equals },
+                { fieldName: "L_Name", fieldValue: this.Last_N, opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: this.reg_No_Pt, opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+
+                { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.T_Date, opType: OperatorComparer.Equals },
+                { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "M_Name", fieldValue: this.middle_N, opType: OperatorComparer.Contains },
+                { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }
+            ],
+        }
+        this.grid4.gridConfig = this.gridConfig4;
+        this.grid4.bindGridData();
     }
     getchangeDate() {
 
@@ -674,16 +735,17 @@ export class InpatientbrowseListComponent {
             this.Fr_Date = "1900-01-01"
             this.T_Date = "1900-01-01"
             this.status = '0'
-            this.apiUrl = "Admission/AdmissionDischargeListt"
+            this.apiUrl = "Admission/AdmissionList"
+            this.getPatientlistdata();
         } else {
             this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue(new Date())
             this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date())
             this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
             this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
             this.status = '1'
-            this.apiUrl = "InPatient/AdmissionDischargeList"
+            this.apiUrl = "Admission/AdmissionDischargeList"
+            this.getPatientlistdata1();
         }
-        this.getPatientlistdata();
     }
 
     getValidationMessages() {
