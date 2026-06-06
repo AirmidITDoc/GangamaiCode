@@ -32,6 +32,8 @@ import { PrePresciptionListComponent } from './pre-presciption-list/pre-prescipt
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SampleList } from 'app/main/pathology/result-entry/result-entry.component';
+import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
+import { NewInstructionMasterComponent } from 'app/main/setup/prescription/instructionmaster/new-instruction-master/new-instruction-master.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -478,31 +480,31 @@ export class NewCasepaperComponent implements OnInit {
             doseId: [Number(element.DoseId ?? element.doseId ?? 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
             days: [element.Days ?? element.days ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             instruction: [element.instruction ?? element.instructionDescription ?? ''],
-            remark: [element.remark ?? ''],
+            remark: [element.remark ?? element.Remark ?? ''],
             doseOption2: [0],
             daysOption2: [0],
             doseOption3: [0],
             daysOption3: [0],
-            instructionId: [element.instructionId || 0],
+            instructionId: [element.instructionId || element.InstructionId || 0],
             qtyPerDay: [Math.round(element.QtyPerDay ?? element.qtyPerDay ?? 0)],
-            totalQty: [element?.totalQty || 0 //Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
+            totalQty: [ element?.totalQty || element?.TotalQty || 0 //Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],
             isClosed: false,
             isEnglishOrIsMarathi: [true],
-            chiefComplaint: [element.chiefComplaint ?? ''],
+            chiefComplaint: [element.chiefComplaint ?? element.ChiefComplaint ?? ''],
             diagnosis: [element.diagnosis ?? ''],
             examination: [element.examination ?? ''],
-            height: [element.pHeight ?? ''],
-            pweight: [element.pWeight ?? ''],
-            bmi: [element.bmi ?? ''],
-            bsl: [element.bsl ?? ''],
-            spO2: [element.spO2 ?? ''],
-            temp: [element.temp ?? ''],
-            pulse: [element.pulse ?? ''],
-            bp: [element.bp ?? ''],
+            height: [element.pHeight ?? element.PHeight ?? ''],
+            pweight: [element.pWeight ?? element.PWeight ?? ''],
+            bmi: [element.bmi ?? element.BMI ?? ''],
+            bsl: [element.bsl ?? element.BSL ?? ''],
+            spO2: [element.spO2 ?? element.SPO2 ?? ''],
+            temp: [element.temp ?? element.PWeight ?? ''],
+            pulse: [element.pulse ?? element.Pulse ?? ''], 
+            bp: [element.bp ?? element.BP ?? ''],
             storeId: [this._loggedService.currentUserValue.user.storeId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             patientReferDocId: [element.patientReferDocId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            advice: [element.advice ?? ''],
+            advice: [element.advice ?? element.Remark ?? ''],
             isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             allergy: [element.allergy ?? ''],
             bloodGroup: [element.bloodGroup ?? ''],
@@ -681,7 +683,9 @@ export class NewCasepaperComponent implements OnInit {
                         else
                             this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
                     }
-                }
+                }else{
+               this.toastr.warning("Please check your network connection and try again.");
+            }
 
                 this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
                 this.onClear();
@@ -1940,39 +1944,38 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     showDoseDropdownRefresh = true;
+
     getDosemaster() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-
-        const that = this;
-        const dialogRef = this._matDialog.open(DosemasterComponent,
-            {
-                maxWidth: "85vw",
-                height: '85%',
-                width: '70%',
-            });
-        dialogRef.componentInstance.openedFromOPD = true;
-        dialogRef.afterClosed().subscribe(result => {
-            //  Force re-render of dropdown to reload internal data
+ 
+        const dialogRef = this._matDialog.open(NewDoseMasterComponent,
+                {
+                    maxWidth: "50vw",
+                    maxHeight: '50%',
+                    width: '70%',
+                });
+       // dialogRef.componentInstance.openedFromOPD = true;
+        dialogRef.afterClosed().subscribe(result => { 
             this.showDoseDropdownRefresh = false;
             setTimeout(() => {
                 this.showDoseDropdownRefresh = true;
             }, 100);
         });
-    }
+    } 
 
     getInstrMaster() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
         const that = this;
-        const dialogRef = this._matDialog.open(InstructionmasterComponent,
+        const dialogRef = this._matDialog.open(NewInstructionMasterComponent,
             {
-                maxWidth: "85vw",
-                height: '85%',
-                width: '70%',
+                maxWidth: "50vw",
+                    maxHeight: '50%',
+                    width: '70%',
             });
-        dialogRef.componentInstance.openedFromOPD = true;
+       // dialogRef.componentInstance.openedFromOPD = true;
         dialogRef.afterClosed().subscribe(result => {
             //  Force re-render of dropdown to reload internal data
             // this.showDoseDropdownRefresh = false;

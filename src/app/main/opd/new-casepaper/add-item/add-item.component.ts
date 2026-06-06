@@ -108,7 +108,10 @@ export class AddItemComponent {
             doseName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             doseDay: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             instruction: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            mAssignItemToStores: [{ assignId: 0, storeId: 0, itemId: 0 }, [Validators.required]]
+            mAssignItemToStores: [{ assignId: 0, storeId: 0, itemId: 0 }, [Validators.required]],
+            content: ['A'],
+            isValidContent: [false],
+            mAssignItemToDrugs: [] 
         });
     }
 
@@ -131,6 +134,7 @@ export class AddItemComponent {
             this.itemForm.get('itemGenericNameId').setValue(Number(this.itemForm.get("itemGenericNameId").value))
             this.itemForm.get('purchaseUomid').setValue(Number(this.itemForm.get("purchaseUomid").value))
             this.itemForm.get('itemId').setValue(this.vItemId ?? 0)
+            this.itemForm.get("mAssignItemToDrugs").setValue([])
             this.itemForm.get("mAssignItemToStores").setValue(data2)
             console.log("FormValue", this.itemForm.value)
             this._CasepaperService.insertItemMaster(this.itemForm.value).subscribe((data) => {

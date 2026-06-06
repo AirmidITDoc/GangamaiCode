@@ -3,13 +3,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PrintserviceService {
 
-    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,) { }
+    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
+        public toastr: ToastrService,
+    ) { }
 
     /**
      * Show PDF preview in dialog
@@ -32,6 +35,7 @@ export class PrintserviceService {
             }
 
             this._AppointmentlistService.getReportView(param).subscribe(res => {
+                if(res){
                 const matDialog = this._matDialog.open(PdfviewerComponent,
                     {
                         maxWidth: "85vw",
@@ -44,6 +48,11 @@ export class PrintserviceService {
                     });
                 matDialog.afterClosed().subscribe(result => {
                 });
+            }else{
+                 this.toastr.warning('Network issue try again', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+            }
             });
         }, 100);
     }
