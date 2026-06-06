@@ -69,6 +69,12 @@ export class PrescriptionTemplateComponent implements OnInit {
 
     // 2. FormArray Group for Refund Detail
     createprescription(item: any = {}): FormGroup {
+            let  totalQty=0;
+            if((item?.QtyPerDay || 0 ) == 0){
+                totalQty = 1
+            }else{
+                totalQty = (item.days * item?.qtyPerDay) || (item.Days * item?.QtyPerDay) || item.Qty || 0
+            } 
         return this._formBuilder.group({
             presId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -80,7 +86,7 @@ export class PrescriptionTemplateComponent implements OnInit {
             days: [item.days ?? item.Days ?? item.day ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             instructionId: [item.instructionId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             qtyPerDay: [item.qtyPerDay ?? item.QtyPerDay ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            totalQty: [(item.days * item.qtyPerDay) || (item.Days * item.QtyPerDay) || item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalQty: [totalQty], //(item.days * (item?.qtyPerDay || 1)) || (item.Days * (item?.QtyPerDay || 1)) || item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             instruction: [item.instruction ?? item.Instruction ?? item.Remark ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             remark: [''],
             isEnglishOrIsMarathi: true
