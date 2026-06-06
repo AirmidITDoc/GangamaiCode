@@ -1045,7 +1045,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             FinalPaidAmt: this.vPaidAmount,
             FinalBalanceAmt: this.vBalanceAmount,
         })
+        
         this.getdataMultiple();
+          this.selection.clear();
+         this.SelectedList = []; 
     }
     keyPressCharater(event) {
         const inp = String.fromCharCode(event.keyCode);
@@ -1168,6 +1171,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         }
         // Assign updated list back
         this.dssalesbillListMultiple.data = this.templist;
+         this.selection.clear();
+         this.SelectedList = []; 
     }
 
     OnSaveGlobelDisc() {
@@ -1201,6 +1206,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
                 this.vglobledisc = false;
                 this.MutliSettlemForm.get('globlediscPer').reset();
                 this.MutliSettlemForm.get('ConcessionId').reset();
+                  this.selection.clear();
+                  this.SelectedList = []; 
             })
         } else {
             const invalidFields = [];

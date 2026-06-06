@@ -1792,7 +1792,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
             this.dsItemNameList1.data = result;
             this.dsItemNameList1.data.forEach((element) => {
-                const FinalTotalQty = (element.Qty * element?.ConversionFactor || 1);
+                //const FinalTotalQty = (element.Qty + element?.FreeQty || 0) * element?.ConversionFactor || 1);
+                const qty = + element?.Qty || 0
+                const freeqty = + element?.FreeQty || 0
+                const conversionFactor = + element?.ConversionFactor || 0
+                const FinalTotalQty = (qty + freeqty) * conversionFactor;
                 const FinalpurUnitRate = (((element.TotalAmount) / (element.Qty)) * (element?.ConversionFactor || 1))
                 const FinalpurUnitrateWF = (((element.TotalAmount) / (FinalTotalQty)) * (element?.ConversionFactor || 1))
                 let FinalUnitMRP_1 = 0

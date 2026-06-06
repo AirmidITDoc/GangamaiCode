@@ -496,33 +496,100 @@ export class IPSettlementComponent implements OnInit {
     }
     selection = new SelectionModel<MultiplePayList>(true, []);
     SelectedList: any = [];
-    masterToggle() {
-        debugger
-        if (this.isSomeSelected()) {
-            this.vNetAmount = 0;
-            this.vPaidAmount = 0;
-            this.vBalanceAmount = 0;
-            this.vTDSAmount = 0;
-            this.selection.clear();
-            this.SelectedList = [];
-        } else {
-            this.isAllSelected()
-                ? this.selection.clear()
-                : this.dsMultiplepayList.data.forEach(row => this.selection.select(row));
+    // masterToggle() {
+    //     debugger
+    //     if (this.isSomeSelected()) {
+    //         this.vNetAmount = 0;
+    //         this.vPaidAmount = 0;
+    //         this.vBalanceAmount = 0;
+    //         this.vTDSAmount = 0;
+    //         this.selection.clear();
+    //         this.SelectedList = [];
 
-            this.dsMultiplepayList.data.forEach(element => {
-                console.log(element)
-                this.vNetAmount += element.billAmount
-                this.vPaidAmount += element.PaidAmount
-                this.vBalanceAmount += element.balanceAmt
-                this.vTDSAmount += element.tds ?? 0;
-                this.SelectedList.push(element)
-            })
-        }
-        this.SelectedList.push(this.selection.selected);
-        console.log(this.SelectedList)
+    //           this.dsMultiplepayList.data.forEach(element => { 
+    //         if (element.paidAmount  && element.balanceAmt == 0) {
+    //             element.paidAmount = 0;
+    //             element.balanceAmt = element.paidAmount;
+    //             element.netAmount = element.paidAmount;
+    //         }
+    //     });
+    //     } else {
+    //         this.isAllSelected()
+    //             ? this.selection.clear()
+    //             : this.dsMultiplepayList.data.forEach(row => this.selection.select(row));
+
+    //         this.dsMultiplepayList.data.forEach(element => { 
+    //                     // ✅ Your swap logic
+    //         element.paidAmount = element.balanceAmt; //here for paid i pass balAmt & viceversa in html
+    //         element.balanceAmt = 0;
+    //         element.tds = 0;
+    //         element.CompanyDisc = 0;
+
+    //         element.netAmount = this.roundAmount(element.billAmount - (element.discAmount ?? 0) - (element.CompanyDisc ?? 0));
+
+
+    //             console.log(element)
+    //             this.vNetAmount += element?.billAmount || 0
+    //             this.vPaidAmount += element?.paidAmount || 0
+    //             this.vBalanceAmount += element?.balanceAmt || 0
+    //             this.vTDSAmount += element.tds ?? 0;
+    //             this.SelectedList.push(element)
+    //         })
+
+    //     }
+    //     this.SelectedList.push(this.selection.selected);
+    //     console.log(this.SelectedList)
+    // }
+masterToggle() {
+    this.vNetAmount = 0;
+    this.vPaidAmount = 0;
+    this.vBalanceAmount = 0;
+    this.vTDSAmount = 0;
+    this.SelectedList = [];
+
+    if (this.isSomeSelected()) {
+
+        this.selection.clear();
+
+        this.dsMultiplepayList.data.forEach(element => {
+
+            // Restore values
+            element.balanceAmt = element.paidAmount || 0;
+            element.paidAmount = 0;
+            element.netAmount = 0;
+            element.tds = 0;
+            element.CompanyDisc = 0;
+        });
+
+    } else {
+
+        this.dsMultiplepayList.data.forEach(row => this.selection.select(row));
+
+        this.dsMultiplepayList.data.forEach(element => {
+
+            // Move Balance to Paid
+            element.paidAmount = element.balanceAmt || 0;
+            element.balanceAmt = 0;
+            element.tds = 0;
+            element.CompanyDisc = 0;
+
+            element.netAmount = this.roundAmount(
+                (element.billAmount || 0) -
+                (element.discAmount || 0) -
+                (element.CompanyDisc || 0)
+            );
+
+            this.vNetAmount += element.netAmount || 0;
+            this.vPaidAmount += element.paidAmount || 0;
+            this.vBalanceAmount += element.balanceAmt || 0;
+            this.vTDSAmount += element.tds || 0;
+
+            this.SelectedList.push(element);
+        });
     }
 
+    console.log(this.SelectedList);
+}
     isAllSelected() {
         const numSelected = this.selection.selected.length;
         const numRows = this.dsMultiplepayList.data.length;
@@ -537,13 +604,13 @@ export class IPSettlementComponent implements OnInit {
         if (event.checked) {
 
             if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined && element._origNetAmt === undefined) {
-                element._origPaidAmount = element.PaidAmount ?? 0;
+                element._origPaidAmount = element.paidAmount ?? 0;
                 element._origBalanceAmt = element.balanceAmt;
                 element._origNetAmt = element.netAmount ?? 0;
             }
 
             // ✅ Your swap logic
-            element.PaidAmount = element.balanceAmt; //here for paid i pass balAmt & viceversa in html
+            element.paidAmount = element.balanceAmt; //here for paid i pass balAmt & viceversa in html
             element.balanceAmt = 0;
             element.tds = 0;
             element.CompanyDisc = 0;
@@ -557,14 +624,14 @@ export class IPSettlementComponent implements OnInit {
             }
 
             this.vNetAmount = this.roundAmount(this.vNetAmount + element.billAmount);
-            this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.PaidAmount);
+            this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.paidAmount);
             this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balanceAmt);
             this.vTDSAmount = this.roundAmount(this.vTDSAmount + element.tds);
         }
         else {
 
             if (element._origPaidAmount !== undefined && element._origBalanceAmt !== undefined && element._origNetAmt !== undefined) {
-                element.PaidAmount = 0;
+                element.paidAmount = 0;
                 element.balanceAmt = element._origBalanceAmt;
                 element.netAmount = element._origNetAmt;
             }
@@ -580,7 +647,7 @@ export class IPSettlementComponent implements OnInit {
                 this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
             );
             this.vPaidAmount = this.roundAmount(
-                this.SelectedList.reduce((sum, x) => sum + x.PaidAmount, 0)
+                this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
             );
             this.vBalanceAmount = this.roundAmount(
                 this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
@@ -617,12 +684,12 @@ export class IPSettlementComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             element.tds = 0;
-            element.PaidAmount = this.roundAmount(origPaid);
+            element.paidAmount = this.roundAmount(origPaid);
             this.recalculateTotals();
             return;
         }
 
-        element.PaidAmount = this.roundAmount(origPaid - tdsValue);
+        element.paidAmount = this.roundAmount(origPaid - tdsValue);
 
         this.vNetAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + (x.netAmount || 0), 0)
@@ -633,7 +700,7 @@ export class IPSettlementComponent implements OnInit {
         );
 
         this.vPaidAmount = this.roundAmount(
-            this.SelectedList.reduce((sum, x) => sum + (x.PaidAmount || 0), 0)
+            this.SelectedList.reduce((sum, x) => sum + (x.paidAmount || 0), 0)
         );
 
         this.vBalanceAmount = this.roundAmount(
@@ -646,7 +713,7 @@ export class IPSettlementComponent implements OnInit {
         );
 
         this.vPaidAmount = this.roundAmount(
-            this.SelectedList.reduce((sum, x) => sum + (x.PaidAmount || 0), 0)
+            this.SelectedList.reduce((sum, x) => sum + (x.paidAmount || 0), 0)
         );
 
         this.vTDSAmount = this.roundAmount(
@@ -680,7 +747,7 @@ export class IPSettlementComponent implements OnInit {
             this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
         );
         this.vPaidAmount = this.roundAmount(
-            this.SelectedList.reduce((sum, x) => sum + x.PaidAmount, 0)
+            this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
         );
         this.vBalanceAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
@@ -736,7 +803,7 @@ export class IPSettlementComponent implements OnInit {
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isCancelledDate: ['1999-01-01'],
             opdipdType: [1],
-            neftpayAmount: [element.PaidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            neftpayAmount: [element.paidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
             neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             neftbankMaster: [this.BankNam, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             neftdate: [formattedDate], //['1999-01-01'], 
@@ -869,7 +936,7 @@ export class IPSettlementComponent implements OnInit {
             this.SelectedList.forEach(item => {
                 ModePaymentObj.push({
                     billNo: item?.billNo,
-                    payAmount: item?.PaidAmount,
+                    payAmount: item?.paidAmount,
                     tranNo: this.IPMultipleSettlForm.get('UPINO').value || 0,
                     bankName: this.BankNam,
                     payMode: "net banking",
@@ -965,10 +1032,19 @@ export class MultiplePayList {
     netAmount: any;
     billAmount: any;
     tds: any;
+    discAmount:any;
+      CompanyDisc:any;
+            _origPaidAmount:any; 
+                        _origNetAmt:any;
+                              _origBalanceAmt:any;
 
+ 
     constructor(MultiplePayList) {
         {
             this.billDate = MultiplePayList.billDate || 0;
+              this._origNetAmt = MultiplePayList._origNetAmt || 0;
+                 this._origBalanceAmt = MultiplePayList._origBalanceAmt || 0;
+            this._origPaidAmount = MultiplePayList._origPaidAmount || 0;
             this.pBillNo = MultiplePayList.pBillNo || '';
             this.totalAmt = MultiplePayList.totalAmt || 0;
             this.concessionAmt = MultiplePayList.concessionAmt || 0;
@@ -980,8 +1056,10 @@ export class MultiplePayList {
             this.patientName = MultiplePayList.patientName || '';
             this.regNo = MultiplePayList.regNo || 0;
             this.netAmount = MultiplePayList.netAmount || 0
+            this.discAmount = MultiplePayList.discAmount || 0
             this.tds = MultiplePayList.tds || 0
             this.billAmount = MultiplePayList.billAmount || 0
+             this.CompanyDisc = MultiplePayList.CompanyDisc || 0
         }
     }
 }

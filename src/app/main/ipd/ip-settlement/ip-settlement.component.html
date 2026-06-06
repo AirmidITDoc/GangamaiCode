@@ -271,7 +271,7 @@
                                                     Paid Amount</mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                     <mat-form-field appearance="fill">
-                                                        <input matInput [(ngModel)]="element.PaidAmount" type="text"
+                                                        <input matInput [(ngModel)]="element.paidAmount" type="text"
                                                             OnlyNumber [disabled]="!selection.isSelected(element)">
                                                     </mat-form-field>
                                                 </mat-cell>
