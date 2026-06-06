@@ -195,7 +195,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         //this is for set bydefault cash 
         debugger
         const [setCashBydefaultId, setCashBydefault] = this._ConfigService.configParams.OpBillSetCash.split(":");
-        this.SetCashbydefault = setCashBydefaultId ;
+        this.SetCashbydefault = setCashBydefaultId;
 
         this.OPFooterForm = this.CreateOPFooter();
         this.setupFormListener();
@@ -469,8 +469,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     //Footer Form
     CreateOPFooter() {
         debugger
-      //  const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay";
-        const paymentType =  this.SetCashbydefault == 1 ? "CashPay" :  this.SetCashbydefault == 2 ? "PayOption" :   "CreditPay";
+        //  const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay";
+        const paymentType = this.SetCashbydefault == 1 ? "CashPay" : this.SetCashbydefault == 2 ? "PayOption" : "CreditPay";
         return this.formBuilder.group({
             totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1364,12 +1364,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                             this._matDialog.closeAll();
                             this.savebtn = true
                             if (ThermalPrint != 1) {
-                                if(response)
-                                this.viewgetOPBillReportPdf(response)
+                                if (response)
+                                    this.viewgetOPBillReportPdf(response)
                             } else {
                                 if (this.data?.FormName != 'Appointment-OPBill') {
-                                     if(response)
-                                    this.viewgetOPBillThermalReportPdf(response)
+                                    if (response)
+                                        this.viewgetOPBillThermalReportPdf(response)
                                 } else {
                                     this.dialogRef.close(response)
                                 }
@@ -1417,13 +1417,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
-                    if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        if (this.data?.FormName != 'Appointment-OPBill') {
-                            this.viewgetOPBillThermalReportPdf(response)
+                    if (response) {
+                        if (ThermalPrint != 1) {
+                            this.viewgetOPBillReportPdf(response)
                         } else {
-                            this.dialogRef.close(response)
+                            if (this.data?.FormName != 'Appointment-OPBill') {
+                                this.viewgetOPBillThermalReportPdf(response)
+                            } else {
+                                this.dialogRef.close(response)
+                            }
                         }
                     }
                 });
@@ -1470,13 +1472,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
-                    if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        if (this.data?.FormName != 'Appointment-OPBill') {
-                            this.viewgetOPBillThermalReportPdf(response)
+                    if (response) {
+                        if (ThermalPrint != 1) {
+                            this.viewgetOPBillReportPdf(response)
                         } else {
-                            this.dialogRef.close(response)
+                            if (this.data?.FormName != 'Appointment-OPBill') {
+                                this.viewgetOPBillThermalReportPdf(response)
+                            } else {
+                                this.dialogRef.close(response)
+                            }
                         }
                     }
                 });
@@ -1490,13 +1494,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
-                    if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        if (this.data?.FormName != 'Appointment-OPBill') {
-                            this.viewgetOPBillThermalReportPdf(response)
+                    if (response) {
+                        if (ThermalPrint != 1) {
+                            this.viewgetOPBillReportPdf(response)
                         } else {
-                            this.dialogRef.close(response)
+                            if (this.data?.FormName != 'Appointment-OPBill') {
+                                this.viewgetOPBillThermalReportPdf(response)
+                            } else {
+                                this.dialogRef.close(response)
+                            }
                         }
                     }
                 });
@@ -1559,7 +1565,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     resetform() {
-        
+
         this.chargeList = [];
         this.dsChargeList.data = []
         this.patientDetail = [];
