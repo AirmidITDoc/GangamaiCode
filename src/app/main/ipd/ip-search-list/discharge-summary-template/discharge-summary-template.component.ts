@@ -217,19 +217,19 @@ export class DischargeSummaryTemplateComponent {
 
         this.doseName = obj.doseName
         this.doseId = obj.doseId
+        let days = this.MedicineItemForm.get('Day').value
 
-        if (this.DoseQtyperday == 0) {
+        if (this.DoseQtyperday == 0 && days > 0) {
             this.TotQty = 1
             this.Perdayqty = 1
-            let days = this.MedicineItemForm.get('Day').value
 
-            this.TotQty = Math.round(days * this.TotQty)
+            // this.TotQty = Math.round(days * (obj.doseQtyPerDay ?? 0))
             console.log(this.TotQty)
         }
         else {
 
             let days = this.MedicineItemForm.get('Day').value
-            let qty = this.MedicineItemForm.get('Qty').value
+            let qty = this.DoseQtyperday// this.MedicineItemForm.get('Qty').value
 
             const parts = this.doseName
                 .split('-')
@@ -253,9 +253,11 @@ export class DischargeSummaryTemplateComponent {
             console.log("Sum =", total);           // 1.5
             this.Perdayqty = Math.round(total)
             debugger
-            this.TotQty = days * (this.Perdayqty)
+
+            this.TotQty = days * (qty)
             this.TotQty = Math.round(this.TotQty)
-            this.Finalqty = this.Perdayqty
+
+            this.Finalqty = qty
             console.log(this.Perdayqty)
             console.log(this.TotQty)
         }
