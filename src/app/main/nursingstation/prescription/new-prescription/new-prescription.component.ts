@@ -563,6 +563,9 @@ debugger
         debugger
         // && this.prescriptionArray.controls.every(c => !c.invalid)
         console.log(this.myForm.value)
+       if (!this.isValidForm()) { 
+            return;
+        }
         if (!this.myForm.invalid) {
             if (this.vstoreId == 0) {
                 this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
@@ -622,7 +625,21 @@ debugger
 
 
     }
-
+ isValidForm(): boolean {
+        const invalidItem = this.dsItemList.data.find((item, index) => {
+            debugger
+            if (item.Qty <= 0) {
+                this.toastr.warning(
+                    `Row ${index + 1}:   Quantity must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            } 
+            return false;
+        }); 
+        return !invalidItem; // valid only if no invalid row
+    }
     viewgetIpprescriptionReportPdf(response) {
         // debugger
         setTimeout(() => {

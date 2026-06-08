@@ -1,6 +1,6 @@
-.sale-table{
-    height: 300px!important;
-}
+// .sale-table{
+//     height: 300px!important;
+// }
 
 app-sale-popup{
     .mat-header-row {
@@ -96,33 +96,8 @@ app-sale-popup{
 
 }
 
-::ng-deep .sale-table .mat-mdc-row:hover {
+::ng-deep .sale-table .mat-mdc-contact:hover {
   background-color: rgb(171, 171, 171);
 }
-mat-cell {
-  .compact-field {
-    margin: -8px 0;
-    
-    ::ng-deep .mat-form-field-appearance-outline {
-      .mat-form-field-wrapper {
-        padding-bottom: 0;
-      }
-      
-      .mat-form-field-flex {
-        padding: 0 8px;
-        margin-top: 0;
-      }
-      
-      .mat-form-field-outline {
-        top: 0;
-      }
-      
-      .mat-form-field-infix {
-        padding: 8px 0;
-      }
-    }
-  }
-}
-
-
-
+ 
+ 
