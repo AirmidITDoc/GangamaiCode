@@ -60,7 +60,8 @@ export class ReportService {
             PatientType:[""],
             status:[""],
             ItemCategory:[""],
-            days:[""]
+            days:[""], 
+    itemMoleculeName: [[]],
             // 
         });
     }

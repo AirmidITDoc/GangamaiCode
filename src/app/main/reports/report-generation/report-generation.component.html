@@ -470,6 +470,24 @@
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
+
+                                        <ng-container *ngIf="flagMultiGenericSelected" >
+                                            <div fxLayout="row"  fxLayoutGap="20px" fxFlex="100%">
+                                            <div style="width:265px;">
+                                                <airmid-dropdown label="Item Molecule Name" formControlName="itemMoleculeName"
+                                                    [formGroup]="_ReportService.userForm" [IsMultiPle]="true" #ddlDrug ValueField="itemId" TextField="content"
+                                                    ApiUrl="Report/get-ItemMaster" [ReqFullObj]="true">
+                                                </airmid-dropdown>
+                                            </div>
+                                            <!-- Chips -->
+                                            <mat-chip-listbox #chipList>
+                                                <mat-chip *ngFor="let item of _ReportService.userForm.value.itemMoleculeName">
+                                                    {{ item.content }}
+                                                    <mat-icon (click)="removeMolecule(item)">close</mat-icon>
+                                                </mat-chip>
+                                            </mat-chip-listbox>
+                                            </div>
+                                        </ng-container>
                                     <!-- sales dd remaining -->
                                 </div>
 

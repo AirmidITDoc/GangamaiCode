@@ -1,6 +1,6 @@
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { DatePipe } from "@angular/common";
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { Observable } from "rxjs";
 import { ReportService } from "./service/report-generation.service";
 import { ConfigService } from "app/core/services/config.service";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 
 
 interface FoodNode {
@@ -136,6 +137,7 @@ export class ReportGenerationComponent implements OnInit {
     flagSecondCompanySelected: boolean = false;
     flagDischargeTypeSelected: boolean = false;
     flagStoreSelected: boolean = false;
+    flagMultiGenericSelected: boolean = false;
     flagSupplierelected: boolean = false;
     flagPaymentSelected: boolean = false;
     flagDrugTypeSelected: boolean = false;
@@ -381,6 +383,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagItemCategorySelected = true;
         if (controllerPermission.filter(x => x == "Days")?.length > 0)
             this.flagdaysSelected = true;
+        if (controllerPermission.filter(x => x == "MultiGenericSelection")?.length > 0)
+        this.flagMultiGenericSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -662,8 +666,14 @@ export class ReportGenerationComponent implements OnInit {
         this.flagstatusSelected = false;
         this.flagItemCategorySelected = false;
         this.flagdaysSelected=false;
+        this.flagMultiGenericSelected=false;
     }
-
+    @ViewChild('ddlDrug') ddlDrug: AirmidDropDownComponent; 
+    removeMolecule(item) {
+        const removedIndex = this._ReportService.userForm.value.itemMoleculeName.findIndex(x => x.itemId == item.itemId);
+        this._ReportService.userForm.value.itemMoleculeName.splice(removedIndex, 1);
+        this.ddlDrug.SetSelection(this._ReportService.userForm.value.itemMoleculeName.map(x => x.itemId));
+    }
     Clearfilter(event) {
         console.log(event)
         if (event == 'days')
@@ -891,6 +901,18 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this._ReportService.userForm.get('days').value.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
+                if (this.flagMultiGenericSelected){
+                const selectedItems = this._ReportService.userForm.get('itemMoleculeName').value; 
+                const itemIds = Array.isArray(selectedItems)
+                ? selectedItems.map(x => x.itemId).join(',')
+                : selectedItems?.itemId?.toString() || '0';
+
+                paramFilterList.push({
+                    "fieldName": "ItemMoleculeId",
+                    "fieldValue":itemIds, // this._ReportService.userForm.get('itemMoleculeName').value.itemId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            } 
             //   
             const param = {
                 "searchFields": paramFilterList,
