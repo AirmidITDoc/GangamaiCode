@@ -117,7 +117,7 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-             { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
@@ -529,6 +529,8 @@ export class IPSearchListComponent implements OnInit {
             this.toDate = "1900-01-01"
             this.status = '0'
             this.apiUrl = "Admission/AdmissionList"
+
+            this.getfilterdata();
         } else {
             this.myFilterform.get('fromDate').setValue(new Date())
             this.myFilterform.get('enddate').setValue(new Date())
@@ -536,25 +538,30 @@ export class IPSearchListComponent implements OnInit {
             this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
             this.status = '1'
             this.apiUrl = "Admission/AdmissionDischargeList"
+            this.getfilterdataDisc();
         }
-        this.getfilterdata();
+
     }
     getchangeDate() {
-        if (this.myFilterform.get('IsDischarge').value != false) {
-            this.apiUrl = "Admission/AdmissionDischargeList"
-            // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.status = '1'
-        }
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
 
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.m_name = this.myFilterform.get('MiddleName').value + "%"
         this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
-        this.getfilterdata();
+
+        if (this.myFilterform.get('IsDischarge').value != false) {
+            this.apiUrl = "Admission/AdmissionDischargeList"
+            // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '1'
+            this.getfilterdataDisc();
+        } else {
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '0'
+            this.getfilterdata();
+        }
     }
 
 
@@ -570,7 +577,35 @@ export class IPSearchListComponent implements OnInit {
                 { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-                 { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
+                { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+
+
+    getfilterdataDisc() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "Admission/AdmissionDischargeList",
+            columnsList: this.allcolumns,
+            sortField: "AdmissionId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
 
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },

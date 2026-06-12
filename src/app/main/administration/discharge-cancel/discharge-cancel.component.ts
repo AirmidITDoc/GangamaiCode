@@ -142,10 +142,10 @@ export class DischargeCancelComponent implements OnInit {
 
             this._DischargeCancelService.DischargeForm.get('NewIpdNo').setValue(this.vIPDNo)
 
-            this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
-
+          
             debugger
 
+  this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
 
             this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(obj.admissionTime);
             this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.date, "HH:mm:ss");

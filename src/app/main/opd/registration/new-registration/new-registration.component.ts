@@ -199,7 +199,7 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaIssueDate || '1900-01-01');
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaValidityDate || '1900-01-01');
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismDateOfEntry || '1900-01-01');
-        debugger
+        
         if (
             (!this.ageYear || this.ageYear == 0) &&
             (!this.ageMonth || this.ageMonth == 0) &&
@@ -275,7 +275,7 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     onChangedate(event) {
-        // debugger
+        // 
         const selectedDate = new Date(event);
         const vday = this.personalFormGroup.get("medTourismVisaIssueDate").value
 
@@ -432,7 +432,7 @@ export class NewRegistrationComponent implements OnInit {
 
     value = new Date()
     onChangeDateofBirth(DateOfBirth: Date) {
-        // debugger
+        // 
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
@@ -471,7 +471,7 @@ export class NewRegistrationComponent implements OnInit {
     areaList: any[] = [];
 
     // getarealist(){
-    //     debugger
+    //     
     // this._registerService.getareaList1().subscribe(response => {
     //     console.log(response)
     // this.AreaList = response;
@@ -493,7 +493,7 @@ export class NewRegistrationComponent implements OnInit {
     //   }
 
     CalcDOB(mode, e) {
-        // debugger
+        // 
         const d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
