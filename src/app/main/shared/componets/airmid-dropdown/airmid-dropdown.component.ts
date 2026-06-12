@@ -234,7 +234,7 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
             this.formGroup.controls[this.formControlName].setValue($event.value[this.ValueField]);
         this.selectionChange.emit($event.value);
     }
-    SetSelection(value) {
+    SetSelection(value) { 
         console.log(value)
         if (this.IsMultiPle) {
             this.control.setValue(value);

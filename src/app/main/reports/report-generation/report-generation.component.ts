@@ -603,6 +603,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('PatientType').setValue('');
         this._ReportService.userForm.get('status').setValue('');
         this._ReportService.userForm.get('ItemCategory').setValue('');
+        this._ReportService.userForm.get('itemMoleculeName').setValue([]);
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -670,9 +671,9 @@ export class ReportGenerationComponent implements OnInit {
     }
     @ViewChild('ddlDrug') ddlDrug: AirmidDropDownComponent; 
     removeMolecule(item) {
-        const removedIndex = this._ReportService.userForm.value.itemMoleculeName.findIndex(x => x.itemId == item.itemId);
+        const removedIndex = this._ReportService.userForm.value.itemMoleculeName.findIndex(x => x.itemGenericNameId == item.itemGenericNameId);
         this._ReportService.userForm.value.itemMoleculeName.splice(removedIndex, 1);
-        this.ddlDrug.SetSelection(this._ReportService.userForm.value.itemMoleculeName.map(x => x.itemId));
+        this.ddlDrug.SetSelection(this._ReportService.userForm.value.itemMoleculeName.map(x => x.itemGenericNameId));
     }
     Clearfilter(event) {
         console.log(event)
@@ -903,13 +904,13 @@ export class ReportGenerationComponent implements OnInit {
                 });
                 if (this.flagMultiGenericSelected){
                 const selectedItems = this._ReportService.userForm.get('itemMoleculeName').value; 
-                const itemIds = Array.isArray(selectedItems)
-                ? selectedItems.map(x => x.itemId).join(',')
-                : selectedItems?.itemId?.toString() || '0';
+                const ItemGenericNameIds = Array.isArray(selectedItems)
+                ? selectedItems.map(x => x.itemGenericNameId).join(',')
+                : selectedItems?.itemGenericNameId?.toString() || '0';
 
                 paramFilterList.push({
                     "fieldName": "ItemMoleculeId",
-                    "fieldValue":itemIds, // this._ReportService.userForm.get('itemMoleculeName').value.itemId.toString() || "0",
+                    "fieldValue":ItemGenericNameIds, // this._ReportService.userForm.get('itemMoleculeName').value.itemId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             } 
