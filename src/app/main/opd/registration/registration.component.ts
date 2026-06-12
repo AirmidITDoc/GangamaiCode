@@ -65,7 +65,7 @@ export class RegistrationComponent implements OnInit {
         { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 100 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Age(Year)", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -186,8 +186,8 @@ export class RegistrationComponent implements OnInit {
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
-        this.regNo = this.myFilterform.get('RegNo').value || "0"
-        this.mobileno = this.myFilterform.get('MobileNo').value || "%"
+        this.regNo = this.myFilterform.get('RegNo').value  || "0"
+        this.mobileno = this.myFilterform.get('MobileNo').value + "%" || "%"
          this.CityId = this.myFilterform.get('CityId').value || "0"
        
         this.getfilterdata();

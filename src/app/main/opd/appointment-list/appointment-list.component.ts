@@ -45,6 +45,7 @@ import { PatientvitalInformationComponent } from './new-appointment/patientvital
 import { NewAppointmentwihBillComponent } from './new-appointmentwih-bill/new-appointmentwih-bill.component';
 import { PatientDetailsPopoverComponent } from './patient-details-popover/patient-details-popover.component';
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
+import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
@@ -104,6 +105,7 @@ export class AppointmentListComponent implements OnInit {
 
     // Notitifcation Veriable
     IsShowGrid: boolean = false;
+    IsPrevApp: boolean = false;
     id: string;
     mode: string;
     vRegNo = 0
@@ -137,6 +139,7 @@ export class AppointmentListComponent implements OnInit {
         this.menuActions.push({ icon: "print", text: "CasePaper Print" });
         this.menuActions.push({ icon: "print", text: "Patient Draft Statement Print" });
         this.menuActions.push({ icon: "print", text: "Patient Statement Print" });
+        this.menuActions.push({ icon: "print", text: "Patient Appointment Cancle" });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -598,6 +601,8 @@ export class AppointmentListComponent implements OnInit {
         }
         else if (m == "Patient Statement Print") {
             this.OnPaitentFinalPrint(element)
+        } else if (m == "Patient Appointment Cancle") {
+            this.OnAppointmentCancle(element)
         }
         else if (m == "Patient Draft Statement Print") {
             this.OnPaitentDraftPrint(element)
@@ -669,6 +674,27 @@ export class AppointmentListComponent implements OnInit {
             const reportName = withHeader ? "OPPrescriptionA5" : "OPPrescriptionwithoutHeaderA5";
             this.commonService.Onprint("VisitId", element.visitId, reportName);
         }
+    }
+
+
+
+    OnAppointmentCancle(row) {
+        const dialogRef = this._matDialog.open(PaAppoCancleComponent,
+            {
+                maxHeight: "65vh",
+                maxWidth: '90vh',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+            this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+
+            this.onChangeFirst()
+
+        });
+
     }
 
     OnViewReportPdf(element) {
@@ -946,28 +972,34 @@ export class AppointmentListComponent implements OnInit {
     }
 
     AppointmentCancle(contact) {
-        Swal.fire({
-            title: 'Do you want to Cancle Appointment',
-            // showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'OK',
+        if (!contact.isBillGenerated) {
 
-        }).then((flag) => {
+            Swal.fire({
+                title: 'Do you want to Cancle Appointment',
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'OK',
 
-            if (flag.isConfirmed) {
-                const submitData = {
-                    "visitId": contact.visitId
-                };
-                console.log(submitData);
-                this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
-                    this.toastr.success(response.message);
-                    this._matDialog.closeAll();
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            }
-        });
+            }).then((flag) => {
 
+                if (flag.isConfirmed) {
+                    const submitData = {
+                        "visitId": contact.visitId
+                    };
+                    console.log(submitData);
+                    this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
+                        this.toastr.success(response.message);
+                        this._matDialog.closeAll();
+                    }, (error) => {
+                        this.toastr.error(error.message);
+                    });
+                }
+            });
+        } else if (contact.isBillGenerated) {
+            this.toastr.warning('Sorry, this Appointment cannot be cancelled...', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+        }
     }
 
     getSelectedObj(obj) {

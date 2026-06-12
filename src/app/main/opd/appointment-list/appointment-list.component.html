@@ -200,7 +200,7 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
 
-                <button mat-icon-button matTooltip="Appoinment Update" *ngIf="IsEdit"
+                <button mat-icon-button matTooltip="Appoinment Update" *ngIf="IsEdit && !element.isCancelled"
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" (click)="onEdit(element)">
                     <mat-icon> edit</mat-icon>
                 </button>
@@ -210,7 +210,7 @@
                     <mat-icon> print</mat-icon>
                 </button>
                 <!-- *ngIf="IsOpdEmr" -->
-                <button *ngIf="element.departmentId!==6" mat-icon-button
+                <button *ngIf="element.departmentId!==6 && !element.isCancelled" mat-icon-button
                     [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady > 0  ? 'circle-icon' : ''">
@@ -218,20 +218,20 @@
                     </mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="element.departmentId==6"
+                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="element.departmentId==6 && !element.isCancelled"
                     (click)="getgastrologyCasePaper(element)" >
                     <mat-icon style="color: rgb(48, 55, 243);">
                         list_alt
                     </mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Bill" *ngIf="IsBill"
+                <button mat-icon-button matTooltip="Bill" *ngIf="!element.isCancelled"
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                     (click)="OnBillPayment(element)">
                     <mat-icon> payment</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Consultant start / Check-In" *ngIf="IsCheckIn"
+                <button mat-icon-button matTooltip="Consultant start / Check-In" *ngIf="IsCheckIn && !element.isCancelled"
                     style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
                     [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
                     <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
@@ -241,7 +241,7 @@
                     <!-- Check-In -->
                 </button>
 
-                <button mat-icon-button matTooltip="Consultant End / Check Out" *ngIf="IsCheckOut"
+                <button mat-icon-button matTooltip="Consultant End / Check Out" *ngIf="IsCheckOut && !element.isCancelled"
                     style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
                     [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
                     <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
@@ -250,13 +250,13 @@
                     <!-- Check-Out -->
                 </button>
                 <!-- Material UI Icon Button with Menu -->
-                <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions"
+                <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" *ngIf="!element.isCancelled"
                     matTooltipPosition="above" (click)="$event.stopPropagation();">
                     <mat-icon>more_vert</mat-icon>
                 </button>
 
-                <!-- Material UI Menu with Compact Design -->
-                <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+                <!-- Material UI Menu with Compact Design *ngIf="IsPrevApp"-->
+                <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false" >
 
                     <button mat-menu-item (click)="OnEditRegistration(element)" *ngIf="IsEditRegistration"
                         style="height: 32px; min-height: 32px;">
