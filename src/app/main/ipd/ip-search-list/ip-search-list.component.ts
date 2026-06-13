@@ -550,6 +550,9 @@ export class IPSearchListComponent implements OnInit {
         this.m_name = this.myFilterform.get('MiddleName').value + "%"
         this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
 
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+
         if (this.myFilterform.get('IsDischarge').value != false) {
             this.apiUrl = "Admission/AdmissionDischargeList"
             // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
@@ -557,8 +560,8 @@ export class IPSearchListComponent implements OnInit {
             this.status = '1'
             this.getfilterdataDisc();
         } else {
-            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
             this.status = '0'
             this.getfilterdata();
         }
