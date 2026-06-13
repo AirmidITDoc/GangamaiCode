@@ -51,7 +51,7 @@ export class ExpeditComponent {
             debugger
             this.oldExpdate = this.registerObj.batchExpDate;
             // this.vBatchNo= this.registerObj.batchNo
-            // this.itemname = this.registerObj.itemName;
+            this.itemname = this.registerObj.itemName;
             // this.vBatchNo= this.registerObj.batchNo
             // this.itemname = this.registerObj.itemName;
             this.Expform = this._StockAdjustment.createExpForm()

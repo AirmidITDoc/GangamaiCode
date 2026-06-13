@@ -164,7 +164,7 @@ export class CurrentStockComponent implements OnInit {
     }
 
     getfiltercurrentStock() {
-        // debugger
+        // 
         this.gridConfig = {
             apiUrl: "CurrentStock/StorewiseCurrentStockList",
             columnsList: this.allcurrentColumn,
@@ -193,7 +193,7 @@ export class CurrentStockComponent implements OnInit {
     formattedText: any;
 
     selectChangeItem(obj: any) {
-        debugger;
+        ;
         console.log(obj);
         this.gridConfig.filters[1].fieldValue = obj.formattedText
 
@@ -211,7 +211,7 @@ export class CurrentStockComponent implements OnInit {
     // Day wise current stock
 
     // onChangeDateofBirth(selectedDate: any) {
-    //     debugger
+    //     
     //     if (!selectedDate) return;
 
     //     const date = new Date(selectedDate);
@@ -273,7 +273,7 @@ export class CurrentStockComponent implements OnInit {
     }
 
     onChangedayWise() {
-        debugger
+        
         // this.onlyStart = this.formattedDate
         this.getfilterdayWise();
     }
@@ -341,14 +341,14 @@ export class CurrentStockComponent implements OnInit {
     }
 
     onChangeSales() {
-        debugger
+        
         this.salesFromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get('startSales').value, "yyyy-MM-dd")
         this.salesToDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get('endSales').value, "yyyy-MM-dd")
         this.getfilterSales();
     }
 
     getfilterSales() {
-        debugger
+        
         this.gridConfig2 = {
             apiUrl: "CurrentStock/ItemWiseSalesSummaryList",
             columnsList: this.allSalesColumn,
@@ -408,14 +408,14 @@ export class CurrentStockComponent implements OnInit {
     }
 
     onChangeItem() {
-        debugger
+        
         this.lastFromDate = this.datePipe.transform(this._CurrentStockService.IssueItem.get('laststart').value, "yyyy-MM-dd")
         this.lastToDate = this.datePipe.transform(this._CurrentStockService.IssueItem.get('lastend').value, "yyyy-MM-dd")
         this.getfilterItem();
     }
 
     getfilterItem() {
-        debugger
+        
         this.gridConfig3 = {
             apiUrl: "CurrentStock/IssueWiseItemSummaryList",
             columnsList: this.allItemColumn,

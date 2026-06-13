@@ -88,8 +88,8 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
 
         // { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-        { heading: "Accepted Date", key: "acceptedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "Accepted Date", key: "acceptedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
         { heading: "Total Qty", key: "totalQtyIssued", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -97,9 +97,9 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
         { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
         { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Recevied By", key: "receivedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Recevied By", key: "receivedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
-            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ];
@@ -125,7 +125,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
 
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
-        debugger
+        
         const IssueId = data.issueId
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/MaterialreceiveddetailList",
@@ -206,7 +206,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
     }
 
     onChangeFirst(value) {
-        debugger
+        
         let IsVerify = "0"
         if (this.IssueSearchGroup.get("IsVerify").value)
             IsVerify = "1"

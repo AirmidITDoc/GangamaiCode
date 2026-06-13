@@ -12,6 +12,7 @@ import { ExpeditComponent } from './expedit/expedit.component';
 import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component';
 import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
 import { StockAdjustmentService } from './stock-adjustment.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-stock-adjustment',
@@ -65,9 +66,12 @@ export class StockAdjustmentComponent implements OnInit {
     Batcheditable: boolean = false;
     Rateeditable: boolean = false;
     vStoreId: any = 0;
-    // Landededitable: boolean = false;
+    lastDay1: any;
+    vlastDay: string = '';
+    lastDay2: string = '';
 
-
+    Lastbatch: string = '';
+ 
     displayedColumns = [
         'batchNo',
         'batchEdit',
@@ -167,17 +171,7 @@ export class StockAdjustmentComponent implements OnInit {
 
     batchEdit: boolean = false;
 
-    // OneditDate(contact) {
-    //     debugger
-    //     console.log(contact)
-    //     this.vBatchNo = contact.batchNo
-    //     this.vExpDate = contact.batchExpDate;
-    //     this.vBatchEdit = contact.batchNo
-    //     this.vExpDateEdit = contact.batchExpDate;
-    //     this.vStockId = contact.stockId;
-    //     this.vExpDateEdit = true
-
-    // }
+   
     OneditBatch(contact) {
 
         console.log(contact)
@@ -199,141 +193,9 @@ export class StockAdjustmentComponent implements OnInit {
     pad(n: number): string {
         return n < 10 ? '0' + n : n.toString();
     }
-    lastDay1: any;
-    vlastDay: string = '';
-    lastDay2: string = '';
-
-    // CellcalculateLastDay(contact, inputDate: string) {
-    //     debugger
-
-    //     this.OneditDate(contact)
-    //     if (inputDate && inputDate.length === 6) {
-    //         const month = +inputDate.substring(0, 2);
-    //         const year = +inputDate.substring(2, 6);
-
-    //         if (month >= 1 && month <= 12) {
-    //             const lastDay1 = this.getLastDayOfMonth(month, year);
-    //             this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-    //             contact.ExpDateEdit = this.lastDay1;
-    //             this.vExpDateEdit = this.lastDay1;
-    //         } else {
-    //             this.vlastDay = 'Invalid month';
-    //         }
-    //     } else {
-    //         this.vlastDay = ' ';
-    //     }
-    //     this.vBatchNo = contact.batchNo
-    //     this.vExpDate = contact.batchExpDate;
-    //     this.vBatchEdit = contact.batchEdit;
-    //     this.vExpDateEdit = contact.expDateEdit;
-    //     this.vStockId = contact.stockId;
-
-    // }
-
-
-    // calculateLastDay(event) {
-    //     const inputDate = event.expDateEdit
-    //     this.OneditDate(event)
-    //     const numericPattern = /^[0-9]+$/;
-    //     const CurrentDate = new Date();
-    //     const Currentmonths = new Date();
-    //     const currentMonth = Currentmonths.getMonth();
-    //     console.log(currentMonth)
-    //     const currentYear = CurrentDate.getFullYear();
-    //     console.log(currentYear)
-    //     debugger
-    //     if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
-    //         const month = +inputDate.substring(0, 2);
-    //         const year = +inputDate.substring(2, 6);
-
-    //         if (year >= currentYear) {
-    //             if (month <= currentMonth && year == currentYear) {
-    //                 Swal.fire({
-    //                     icon: "warning",
-    //                     title: "This item is already expired",
-    //                     showConfirmButton: false,
-    //                     timer: 1500
-    //                 });
-    //                 this.vlastDay = '';
-    //                 this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-    //                 return
-    //             }
-    //             if (month > 12 && month <= 0) {
-    //                 this.vlastDay = '';
-    //                 this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-    //                 this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-    //                     toastClass: 'tostr-tost custom-toast-warning',
-    //                 });
-    //                 return;
-    //             }
-    //             const lastDay = this.getLastDayOfMonth(month, year);
-    //             this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-    //             const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
-    //             this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-    //             const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-    //             if (QtyElement) {
-    //                 QtyElement.focus();
-    //             }
-
-    //         } else {
-    //             Swal.fire({
-    //                 icon: "warning",
-    //                 title: "This item is already expired",
-    //                 showConfirmButton: false,
-    //                 timer: 1500
-    //             });
-    //             this.vlastDay = '';
-    //             this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-    //             return
-
-    //         }
-    //     }
-    //     //  else {  
-    //     //     this.vlastDay = '';
-    //     //     this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-    //     //     this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
-    //     //         toastClass: 'tostr-tost custom-toast-warning',
-    //     //     });
-    //     //     return;
-    //     // }
-
-    // }
-    // OnSaveBatchAdj() {
-    //     debugger
-    //     const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit == this.vlastDay);
-    //     if (!chkExpDate) {
-    //         if (this.vExpDateEdit) {
-    //             this.OnSaveBatchAdjustment()
-    //         } else {
-    //             this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
-    //                 toastClass: 'tostr-tost custom-toast-warning',
-    //             });
-    //         }
-    //     } else {
-    //         this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //     }
-    //     this.getStockList();
-    // }
-    Lastbatch: string = '';
-    // OnSaveBatch() {
-    //     const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit == this.Lastbatch);
-    //     if (this.vBatchEdit) {
-    //         this.OnSaveBatchAdjustment();
-    //     }
-    //     else {
-    //         this.toastr.warning('Please enter BatchNo', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //     }
-    //     this.getStockList();
-    // }
-
+    
     OnSaveBatchAdjustment() {
-        debugger
+        
 
         const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit == this.Lastbatch);
         if (this.vBatchEdit != 0) {
@@ -366,7 +228,7 @@ export class StockAdjustmentComponent implements OnInit {
             //     "addedBy": this.accountService.currentUserValue.userId || 0,
             //     "stkId": this.vStockId || 0
             // }
-            debugger
+            
             this.BatchForm.get('oldBatchNo').setValue(this.vBatchNo || '')
             this.BatchForm.get('newBatchNo').setValue(this.vBatchEdit || '')
             this.BatchForm.get('storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
@@ -398,9 +260,9 @@ export class StockAdjustmentComponent implements OnInit {
         console.log(contact)
         const dialogRef = this._matDialog.open(MRPAdjustmentComponent,
             {
-                maxWidth: "100%",
-                height: '50%',
-                width: '50%',
+              maxWidth: "40vw",
+                maxHeight: '50vh',
+                width: '85%',
                 data: {
                     Obj: contact,
                 }
@@ -432,9 +294,9 @@ export class StockAdjustmentComponent implements OnInit {
         console.log(contact)
         const dialogRef = this._matDialog.open(ExpeditComponent,
             {
-                maxWidth: "100%",
-                height: '50%',
-                width: '50%',
+                maxWidth: "40vw",
+                maxHeight: '50vh',
+                width: '35%',
                 data: {
                     Obj: contact,
                 }
@@ -524,11 +386,16 @@ export class StockAdjustmentComponent implements OnInit {
 
     AddQty(contact) {
         console.log(contact)
-        if (contact.AddQty > 0) {
+        
+        if (contact.AddQty > 0 && contact.AddQty < 100) {
             contact.UpdatedQty = parseFloat(contact.balanceQty) + parseFloat(contact.AddQty);
             this.AddType = 1;
         } else {
             contact.UpdatedQty = 0;
+            contact.AddQty = 0
+            Swal.fire("Enter Qty less than 100")
+            contact.Addeditable = false;
+            return;
         }
         this.vUpdatedQty = contact.UpdatedQty;
         this.vQty = contact.AddQty
@@ -540,11 +407,16 @@ export class StockAdjustmentComponent implements OnInit {
 
     DeduQty(contact) {
         console.log(contact)
-        if (contact.DeduQty > 0) {
+        
+        if (contact.DeduQty > 0 && contact.DeduQty <= contact.balanceQty) {
             contact.UpdatedQty = parseFloat(contact.balanceQty) - parseFloat(contact.DeduQty);
             this.AddType = 0;
         } else {
             contact.UpdatedQty = 0;
+            contact.DeduQty = 0
+            contact.Dedueditable = false;
+            Swal.fire("Enter Qty less than Balance Qty")
+            return;
         }
         this.vUpdatedQty = contact.UpdatedQty,
             this.vQty = contact.DeduQty
@@ -555,7 +427,7 @@ export class StockAdjustmentComponent implements OnInit {
     }
 
     onsaveStockAdj() {
-        debugger
+        
         let isCheckQty: any;
         if (isCheckQty = this.dsStockAdjList.data.some(item => item.AddQty != '')) {
             this.OnSaveStockAdjustment();
@@ -571,7 +443,7 @@ export class StockAdjustmentComponent implements OnInit {
     }
 
     OnSaveStockAdjustment() {
-        debugger
+        
         if ((!this.dsStockAdjList.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -608,25 +480,7 @@ export class StockAdjustmentComponent implements OnInit {
             }
 
         }
-        // let insertMRPStockadju = {};
-        // insertMRPStockadju['storeID'] = this.accountService.currentUserValue.user.storeId || 0;
-        // insertMRPStockadju['stkId'] = this.vStockId || 0;
-        // insertMRPStockadju['itemId'] = this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
-        // insertMRPStockadju['batchNo'] = this.vBatchNo || '';
-        // insertMRPStockadju['ad_DD_Type'] = this.AddType;
-        // insertMRPStockadju['ad_DD_Qty'] = this.vQty || 0;
-        // insertMRPStockadju['preBalQty'] = this.vBalQty || 0;
-        // insertMRPStockadju['afterBalQty'] = this.vUpdatedQty || 0;
-        // insertMRPStockadju['addedBy'] = this.accountService.currentUserValue.user.id || 0;
-        // insertMRPStockadju['stockAdgId'] = 0;
-
-        // let submitData = {
-        //   'stockAdjustment': insertMRPStockadju,
-        // }
-        // console.log(submitData);
-        // this._StockAdjustment.StockAdjSave(submitData).subscribe(response => {
-        //     this.getStockList();
-        // });
+       
     }
 
 }

@@ -32,10 +32,10 @@
 
                                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="StoreFrom"
                                         formControlName="ItemID" placeholderText="Item Name (enter 2 char)" fxFlex="60%"
-                                        ApiUrl={{ApiUrl}}
-                                        (selectionChange)="selectChangeItem($event)" TextField="formattedText"
-                                        ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
-                                        <!--  ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName=" -->
+                                        ApiUrl={{ApiUrl}} (selectionChange)="selectChangeItem($event)"
+                                        TextField="formattedText" ValueField="itemId"
+                                        (onClearSelection)="resetFormItem()"></airmid-autocomplete>
+                                    <!--  ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName=" -->
 
                                     <div class="action-button-container" style="margin-left: 20px;">
                                         <div class="button-row-group">
@@ -65,17 +65,17 @@
                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;" class="airmid-table">
 
                             <ng-container matColumnDef="batchNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     Batch No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.batchNo}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="batchEdit">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-100">
+                                <mat-cell *matCellDef="let contact" class="w-140">
                                     <ng-container *ngIf="!contact.Batcheditable; else showInput">
                                         <button mat-icon-button (click)="BatchenableEditing(contact)"
                                             matTooltip="Edit Batch">
@@ -91,31 +91,18 @@
                                             <mat-icon title="Save Record"
                                                 class="active-icon green-600 s-16">check</mat-icon>
                                         </button>
+                                        <button mat-icon-button (click)="BatchisableEditing(contact)"
+                                            matTooltip="Close">
+                                            <mat-icon class="active-icon red-600 s-16">close</mat-icon>
+                                        </button>
                                     </ng-template>
 
                                 </mat-cell>
                             </ng-container>
 
-
-                            <!-- <ng-container matColumnDef="CGSTPer">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">CGST
-                                    (%)</mat-header-cell>
-                                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.CGSTPer" [id]="'CGSTPer' + index"
-                                            [disabled]="contact.IsVerifiedUserId > 0"
-                                            (input)="getCellCalculation(contact)"
-                                            (keydown.arrowdown)="setFocus('CGSTPer' + (index + 1))"
-                                            (keydown.arrowup)="setFocus('CGSTPer' + (index - 1))" step="0.1"
-                                            type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
-                                            (keypress)="keyPressCharater($event)" />
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container> -->
-
                             <ng-container matColumnDef="batchExpDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
-                                    Exp.Date
+                                    Exp. Date
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.batchExpDate | date:'dd/MM/YYYY'}}
@@ -123,10 +110,10 @@
                             </ng-container>
 
                             <ng-container matColumnDef="expDateEdit">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="15%">
-                                    ExpDateEdit
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
+                                    DateEdit
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxFlex="15%">
+                                <mat-cell *matCellDef="let contact" class="w-80">
                                     <ng-container>
                                         <button mat-icon-button (click)="EditExpDate(contact)"
                                             matTooltip="Edit ExpDateEdit">
@@ -136,18 +123,18 @@
                             </ng-container>
 
                             <ng-container matColumnDef="landedRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    LandedRate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                    Landed Rate</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.landedRate | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="unitMRP">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="15%">
-                                    UnitMRP
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
+                                    Unit MRP
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxFlex="15%">
+                                <mat-cell *matCellDef="let contact" class="w-140">
                                     {{contact.unitMRP | number:'1.2-2' }}
                                     <ng-container>
                                         <button mat-icon-button (click)="EditMRP(contact)" matTooltip="Edit MRP">
@@ -157,36 +144,36 @@
                             </ng-container>
 
                             <ng-container matColumnDef="purUnitRateWF">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
                                     Purchase Rate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                                     {{contact.purUnitRateWF | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="balanceQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
                                     Bal Qty</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                                     {{contact.balanceQty }}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="Addition">
-                                <mat-header-cell *matHeaderCellDef style="color: white;">
+                                <mat-header-cell *matHeaderCellDef style="color: white;" class="w-140">
                                     Addition</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
+                                <mat-cell *matCellDef="let contact" class="w-140">
                                     <ng-container *ngIf="!contact.Addeditable; else showInput">
                                         <button mat-icon-button (click)="AddenableEditing(contact)">
                                             <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
                                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px"
-                                            class="w-100">
+                                            class="w-120">
 
                                             <mat-form-field appearance="fill" class="w-60">
-                                                <input matInput [(ngModel)]="contact.AddQty"
-                                                    (input)="AddQty(contact)" (keypress)="keyPressAlphanumeric($event)" />
+                                                <input matInput [(ngModel)]="contact.AddQty" (input)="AddQty(contact)"
+                                                    (keypress)="keyPressAlphanumeric($event)" />
                                             </mat-form-field>
 
                                             <button mat-icon-button (click)="onsaveStockAdj()" matTooltip="Save">
@@ -205,22 +192,22 @@
                             </ng-container>
 
                             <ng-container matColumnDef="Deduction">
-                                <mat-header-cell *matHeaderCellDef style="color: white;">
+                                <mat-header-cell *matHeaderCellDef style="color: white;" class="w-140">
                                     Deduction</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
+                                <mat-cell *matCellDef="let contact" class="w-140">
                                     <ng-container *ngIf="!contact.Dedueditable; else showInput">
                                         <button mat-icon-button (click)="deduenableEditing(contact)">
                                             <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
                                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px"
-                                            class="w-100">
+                                            class="w-120">
                                             <mat-form-field appearance="fill" class="w-60">
-                                                <input matInput [(ngModel)]="contact.DeduQty"
-                                                    (input)="DeduQty(contact)" (keypress)="keyPressAlphanumeric($event)"/>
+                                                <input matInput [(ngModel)]="contact.DeduQty" (input)="DeduQty(contact)"
+                                                    (keypress)="keyPressAlphanumeric($event)" />
                                             </mat-form-field>
 
-                                             <button mat-icon-button (click)="onsaveStockAdj()" matTooltip="Save">
+                                            <button mat-icon-button (click)="onsaveStockAdj()" matTooltip="Save">
                                                 <mat-icon class="active-icon green-600 s-16">check</mat-icon>
                                             </button>
 
@@ -234,17 +221,17 @@
                             </ng-container>
 
                             <ng-container matColumnDef="conversionFactor">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     Packing</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.conversionFactor}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="vatPercentage">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     GST %</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.vatPercentage}}%
                                     <ng-container>
                                         <button mat-icon-button (click)="EditGST(contact)" matTooltip="Edit GST">

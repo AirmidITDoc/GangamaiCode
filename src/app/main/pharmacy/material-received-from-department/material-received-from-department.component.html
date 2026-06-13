@@ -11,7 +11,22 @@
         </div>
 
     </mat-toolbar>
-
+<div class="info-badge-top pb-2 border-bottom" style="padding-left: 5px;">
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span>:Accepted</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span>: Pending </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span>:Rejected</span>
+            </div>
+        </div>
+    </div>
 
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -25,9 +40,10 @@
                         <mat-icon> print</mat-icon>
                     </button>
                     <!-- *ngIf="element.isAccepted=='0'" pendingByDepartment -->
-                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)" *ngIf="element.pendingByDepartment!='0'">
+                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)"
+                        *ngIf="element.pendingByDepartment!='0'">
                         <img width="40" height="40" src="assets/images/logos/Accept.png">
-              
+
                     </button>
                 </div>
             </ng-template>
@@ -40,13 +56,13 @@
                             class="pill green-600 s-18">circle</mat-icon>{{element.acceptedByDepartment}}
                     </button>
                 </div> -->
-                <div matTooltip="Accepted" class="pill1 green-600 s-18" >
+                <div matTooltip="Accepted" class="pill1 green-600 s-18">
                     {{element.acceptedByDepartment}}
                 </div>
             </ng-template>
 
 
-           
+
 
             <ng-template #Rstatus let-element>
                 <!-- <div fxLayout="row" fxLayoutAlign="center center">
@@ -57,7 +73,7 @@
                 </div>
             </ng-template>
 
-             <ng-template #Pstatus let-element>
+            <ng-template #Pstatus let-element>
                 <!-- <div fxLayout="row" fxLayoutAlign="center center">
                 <mat-icon matTooltip="Pending" class="pill orange-600 s-16" >circle</mat-icon>{{element.pendingByDepartment}}
                 </div> -->
@@ -82,15 +98,21 @@
                 <ng-container filters>
                     <form [formGroup]="IssueSearchGroup" fxLayout="column">
 
-                        <airmid-datepicker [formGroup]="IssueSearchGroup" [isRangePicker]="true"
+                        <!-- <airmid-datepicker [formGroup]="IssueSearchGroup" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
                             [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="onChangeFirst($event)"
                             [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker> -->
+
+                        <airmid-datepicker [formGroup]="IssueSearchGroup" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[1].fieldValue"
+                            [(toValue)]="gridConfig.filters[2].fieldValue">
                         </airmid-datepicker>
 
                         <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
                             (selectionChange)="ListView1($event)" [formGroup]="IssueSearchGroup"
-                            [mode]="autocompletestore">
+                            [mode]="autocompletestore" [(ngModel)]="gridConfig.filters[0].fieldValue">
                         </airmid-dropdown>
 
                         <!-- [(ngModel)]="Status" -->
@@ -117,20 +139,5 @@
             </airmid-table>
         </div>
     </div>
-    <div class="info-badge-top pb-2 border-bottom" style="padding-left: 5px;">
-        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                <span>:Accepted</span>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                <span>: Pending </span>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                <span>:Rejected</span>
-            </div>
-        </div>
-    </div>
+    
 </div>
