@@ -468,7 +468,7 @@ export class AppointmentListComponent implements OnInit {
     OngetRecord(element, m) {
         console.log('Third action clicked for:', element);
         if (m == "Update Consultant Doctor") {
-            if (element.mPbillNo == 0) {
+           // if (element.mPbillNo == 0) {
                 const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
                 buttonElement.blur(); // Remove focus from the button
 
@@ -485,11 +485,11 @@ export class AppointmentListComponent implements OnInit {
                         that.grid.bindGridData();
                     }
                 });
-            }
-            else {
-                this.toastr.warning("Consultation bill is generated, take a new appointment.", "warning");
-                return;
-            }
+            // }
+            // else {
+            //     this.toastr.warning("Consultation bill is generated, take a new appointment.", "warning");
+            //     return;
+            // }
 
         }
         else if (m == "Update Referred Doctor") {
