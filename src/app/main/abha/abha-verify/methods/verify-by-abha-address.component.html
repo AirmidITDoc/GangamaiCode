@@ -20,11 +20,10 @@
             <div class="field-block">
                 <label class="field-label">ABHA Number</label>
                 <mat-form-field appearance="outline" class="full-width">
-                    <input matInput formControlName="abhaNumber" placeholder="91-XXXX-XXXX-XXXX" inputmode="numeric"
-                        maxlength="17" autocomplete="off" (input)="onAbhaInput($event)" />
+                    <input matInput formControlName="abhaNumber" placeholder="XXXXX@abdm" inputmode="numeric"
+                        maxlength="100" autocomplete="off" />
                     <mat-error *ngIf="abhaForm.get('abhaNumber')?.errors as e">
                         <span *ngIf="e['required']">ABHA number is required</span>
-                        <span *ngIf="e['abhaNumber']">{{ e['abhaNumber'] }}</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -32,13 +31,13 @@
                 <label class="field-label">OTP Type</label>
                 <mat-radio-group formControlName="otpType" class="radio-list">
                     <label class="radio-card" [class.selected]="abhaForm.value.otpType === 1">
-                        <mat-radio-button value="1" color="primary"></mat-radio-button>
+                        <mat-radio-button value="3" color="primary"></mat-radio-button>
                         <div class="radio-content">
                             <div class="radio-title">Otp On Aadhar registered mobile no</div>
                         </div>
                     </label>
                     <label class="radio-card" [class.selected]="abhaForm.value.otpType === 2">
-                        <mat-radio-button value="2" color="primary"></mat-radio-button>
+                        <mat-radio-button value="4" color="primary"></mat-radio-button>
                         <div class="radio-content">
                             <div class="radio-title">Otp on ABHA registered mobile no</div>
                         </div>

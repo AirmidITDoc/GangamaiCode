@@ -41,7 +41,7 @@ export class VerifyByAbhaAddressComponent implements OnInit {
 
     ngOnInit(): void {
         this.abhaForm = this.fb.group({
-            abhaNumber: ['', [Validators.required, AbhaValidators.abhaNumber]],
+            abhaNumber: ['', [Validators.required]],
             otpType: ['', [Validators.required]]
         });
         this.otpForm = this.fb.group({
@@ -147,17 +147,12 @@ export class VerifyByAbhaAddressComponent implements OnInit {
         // else
         this.abhaService.verifyAbhaOtp({ otp: this.otpForm.value.otp, txnId: this.txnId, OtpType: this.abhaForm.value.otpType })
             .subscribe((r: AbhaOtpVerify) => {
-                if (r.txnId) {
-                    if (r.authResult === 'success' && r.accounts) {
-                        this.snack.open(r.message, 'OK', { duration: 1800 });
-                        this.verified.emit(r.token);
-                    } else {
-                        this.otpForm.get('otp')?.setErrors({ invalid: r.message });
-                        this.snack.open(r.message, 'OK', { duration: 3000 });
-                    }
-                }
-                else {
-                    this.snack.open(r.message, 'OK', { duration: 2500 });
+                if (r.authResult === 'success' && r.accounts) {
+                    this.snack.open(r.message, 'OK', { duration: 1800 });
+                    this.verified.emit(r.token);
+                } else {
+                    this.otpForm.get('otp')?.setErrors({ invalid: r.message });
+                    this.snack.open(r.message, 'OK', { duration: 3000 });
                 }
                 this.loading = false;
             });
