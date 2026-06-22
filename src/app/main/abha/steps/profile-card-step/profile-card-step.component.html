@@ -341,7 +341,8 @@
                                 <div class="field-group">
                                     <div class="field-label-row">
                                         <span class="field-label-en">Name/</span>
-                                        <span class="field-label-local">{{profile.localizedDetails.localizedLabels.name}}</span>
+                                        <span
+                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.name??profile.localizedDetails.name}}</span>
                                     </div>
                                     <div class="field-value-en">{{ profile.name }}</div>
                                     <div class="field-value-local" *ngIf="profile.localizedDetails">
@@ -352,7 +353,8 @@
                                 <div class="field-group">
                                     <div class="field-label-row">
                                         <span class="field-label-en">Abha Number/</span>
-                                        <span class="field-label-local">{{profile.localizedDetails.localizedLabels.abhaNumber}}</span>
+                                        <span
+                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.abhaNumber??profile.localizedDetails.abhaNumber}}</span>
                                     </div>
                                     <div class="field-value-en mono large">{{ profile.abhaNumber }}</div>
                                 </div>
@@ -360,7 +362,8 @@
                                 <div class="field-group">
                                     <div class="field-label-row">
                                         <span class="field-label-en">Abha Address/</span>
-                                        <span class="field-label-local">{{profile.localizedDetails.localizedLabels.abhaAddress}}</span>
+                                        <span
+                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.abhaAddress??profile.localizedDetails.abhaAddress}}</span>
                                     </div>
                                     <div class="field-value-en mono large">{{ profile.preferredAbhaAddress }}</div>
                                 </div>
@@ -369,7 +372,7 @@
                             <div class="body-right">
                                 <div class="qr-frame">
                                     <div class="qr-pattern">
-                                       <img [src]="qrUrl" alt="Image" />
+                                        <img [src]="qrUrl" alt="Image" />
                                     </div>
                                 </div>
                             </div>
@@ -380,7 +383,8 @@
                             <div class="bottom-field">
                                 <div class="field-label-row">
                                     <span class="field-label-en">Gender/</span>
-                                    <span class="field-label-local">{{profile.localizedDetails.localizedLabels.gender}}</span>
+                                    <span
+                                        class="field-label-local">{{profile.localizedDetails?.localizedLabels?.gender??profile.localizedDetails.gender}}</span>
                                 </div>
                                 <div class="bottom-value">
                                     {{ genderLabel }}
@@ -390,14 +394,16 @@
                             <div class="bottom-field">
                                 <div class="field-label-row">
                                     <span class="field-label-en">Date Of Birth/</span>
-                                    <span class="field-label-local">{{profile.localizedDetails.localizedLabels.dob}}</span>
+                                    <span
+                                        class="field-label-local">{{profile.localizedDetails?.localizedLabels?.dob??profile.localizedDetails.dob}}</span>
                                 </div>
                                 <div class="bottom-value mono">{{ formattedDob }}</div>
                             </div>
                             <div class="bottom-field">
                                 <div class="field-label-row">
                                     <span class="field-label-en">Mobile/</span>
-                                    <span class="field-label-local">{{profile.localizedDetails.localizedLabels.mobile}}</span>
+                                    <span
+                                        class="field-label-local">{{profile.localizedDetails?.localizedLabels?.mobile??profile.localizedDetails.mobile}}</span>
                                 </div>
                                 <div class="bottom-value mono">{{ profile.mobile }}</div>
                             </div>

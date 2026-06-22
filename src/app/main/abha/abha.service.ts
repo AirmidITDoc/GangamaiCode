@@ -7,8 +7,10 @@ import {
     AadhaarGenerateOtpResponse,
     AadhaarVerifyOtpRequest,
     AadhaarVerifyOtpResponse,
+    AbhaOtp,
     AbhaOtpVerify,
     AbhaProfile,
+    AbhaVerifyOtp,
     CreateAbhaResult,
     MobileOtpVerifyRequest,
     VerifyUser,
@@ -52,10 +54,7 @@ export class AbhaService {
 
     // ---------------- Verify / Login existing ABHA ----------------
 
-    requestAbhaAadharOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
-        return this.http.PostData('Abha/existing/request-abha-aadhar-otp', body);
-    }
-    requestAbhaOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
+    requestAbhaOtp(body: AbhaOtp): Observable<AadhaarGenerateOtpResponse> {
         return this.http.PostData('Abha/existing/request-abha-otp', body);
     }
     requestAadharOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
@@ -65,10 +64,7 @@ export class AbhaService {
         return this.http.PostData('Abha/existing/mobile-otp', body);
     }
 
-    verifyAbhaAadharOtp(body: MobileOtpVerifyRequest): Observable<AbhaOtpVerify> {
-        return this.http.PostData('Abha/existing/verify-abha-aadhar-otp', body);
-    }
-    verifyAbhaOtp(body: MobileOtpVerifyRequest): Observable<AbhaOtpVerify> {
+    verifyAbhaOtp(body: AbhaVerifyOtp): Observable<AbhaOtpVerify> {
         return this.http.PostData('Abha/existing/verify-abha-otp', body);
     }
     verifyAadharOtp(body: MobileOtpVerifyRequest): Observable<AbhaOtpVerify> {

@@ -28,6 +28,7 @@ import { AbhaVerifyComponent } from './abha-verify/abha-verify.component';
 import { VerifyByAbhaOtpComponent } from './abha-verify/methods/verify-by-abha-otp.component';
 import { VerifyByMobileComponent } from './abha-verify/methods/verify-by-mobile.component';
 import { VerifyByAadhaarComponent } from './abha-verify/methods/verify-by-aadhaar.component';
+import { VerifyByAbhaAddressComponent } from './abha-verify/methods/verify-by-abha-address.component';
 
 
 const appRoutes: Routes = [
@@ -44,7 +45,7 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AbhaStepperComponent, OtpInputComponent, AadhaarStepComponent, AbhaAddressStepComponent, MobileStepComponent, OtpStepComponent,
-        ProfileCardStepComponent, AbhaComponent,AbhaVerifyComponent,VerifyByAbhaOtpComponent,VerifyByMobileComponent,VerifyByAadhaarComponent
+        ProfileCardStepComponent, AbhaComponent,AbhaVerifyComponent,VerifyByAbhaOtpComponent,VerifyByAbhaAddressComponent,VerifyByMobileComponent,VerifyByAadhaarComponent
     ],
     imports: [
         RouterModule.forChild(appRoutes),

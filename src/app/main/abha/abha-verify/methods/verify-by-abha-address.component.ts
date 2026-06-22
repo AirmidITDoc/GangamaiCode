@@ -16,11 +16,11 @@ import { AbhaValidators } from '../../abha.validators';
  *   - 'aadhaar' → Aadhaar-linked mobile (UIDAI)
  */
 @Component({
-    selector: 'app-verify-by-abha-otp',
-    templateUrl: './verify-by-abha-otp.component.html',
+    selector: 'app-verify-by-abha-address',
+    templateUrl: './verify-by-abha-address.component.html',
     styleUrls: ['./method-shared.scss']
 })
-export class VerifyByAbhaOtpComponent implements OnInit {
+export class VerifyByAbhaAddressComponent implements OnInit {
     @Input() otpSystem: OtpSystem = 'abdm';
     @Output() verified = new EventEmitter<string>();
 
@@ -51,8 +51,8 @@ export class VerifyByAbhaOtpComponent implements OnInit {
 
     get title(): string {
         return this.abhaForm.value.otpType === 1
-            ? 'Verify via ABHA Number — Aadhaar OTP'
-            : 'Verify via ABHA Number — ABHA OTP';
+            ? 'Verify via ABHA Address — Aadhaar OTP'
+            : 'Verify via ABHA Address — ABHA OTP';
     }
 
     // Restrict & auto-format ABHA number input

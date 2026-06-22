@@ -18,6 +18,15 @@ export interface AbhaApiResponse<T> {
 export interface AadhaarGenerateOtpRequest {
     AadhaarNumber: string; // 12 digits — your backend should encrypt before sending to ABDM
 }
+export interface AbhaOtp {
+    AadhaarNumber: string; // 12 digits — your backend should encrypt before sending to ABDM
+    OtpType: number
+}
+export interface AbhaVerifyOtp {
+    txnId: string;
+    otp: string;
+    OtpType: number;
+}
 
 export interface VerifyUser {
     ABHANumber: string;

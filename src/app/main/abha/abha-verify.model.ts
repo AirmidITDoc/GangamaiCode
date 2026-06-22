@@ -91,7 +91,7 @@ export interface VerifyUserResponse {
 export const VERIFY_METHODS: VerifyMethodMeta[] = [
   {
     id: 'abha-number-abha-otp',
-    title: 'ABHA Number — ABHA OTP',
+    title: 'ABHA Number',
     subtitle: 'OTP on ABHA-linked mobile number',
     icon: 'sms',
     loginHint: 'abha-number',
@@ -101,7 +101,7 @@ export const VERIFY_METHODS: VerifyMethodMeta[] = [
   },
   {
     id: 'abha-number-aadhaar-otp',
-    title: 'ABHA Number — Aadhaar OTP',
+    title: 'ABHA Address',
     subtitle: 'OTP on Aadhaar-linked mobile (UIDAI)',
     icon: 'fingerprint',
     loginHint: 'abha-number',

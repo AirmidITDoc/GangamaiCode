@@ -145,3 +145,47 @@
 }
 
 ::ng-deep .method-card-wrap .mat-mdc-form-field { width: 100%; }
+.radio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.radio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: white;
+
+  &:hover {
+    border-color: #cbd5e1;
+    background: #f9fafb;
+  }
+
+  &.selected {
+    border-color: #111827;
+    background: #f3f4f6;
+  }
+
+  .radio-content {
+    flex: 1;
+
+    .radio-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .radio-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+    }
+  }
+}
