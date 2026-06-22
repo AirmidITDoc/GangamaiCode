@@ -118,6 +118,7 @@ export class ConfigSettingParams {
     IsMaterialAccept: any;
     IsOPBillProceed: any;
   IsSalesDiscUpdate: any;
+  LoginPageHeading:any;
   IsChennaiIPFinalPrint:any;
 
     /**
@@ -205,7 +206,7 @@ export class ConfigSettingParams {
         this.Is9_Digit_NationalId = ConfigSettingParams.Is9_Digit_NationalId;
         this.CurrencyValue = ConfigSettingParams.CurrencyValue;
         this.OpBillSetCash = ConfigSettingParams.OpBillSetCash;
-
+        this.LoginPageHeading = this.LoginPageHeading;
         this.OPDNo = ConfigSettingParams.OPDNo;
         this.IsOPBillPrint = ConfigSettingParams.IsOPBillPrint;
         this.PrintAfterRegistration = ConfigSettingParams.PrintAfterRegistration;

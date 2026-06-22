@@ -350,9 +350,14 @@
 
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="ReportSummary" formControlName="reportSummary"
+                            <!-- <airmid-textbox label="ReportSummary" formControlName="reportSummary"
                                 [value]="data?.reportSummary" [formGroup]="myform">
-                            </airmid-textbox>
+                            </airmid-textbox> -->
+                                <mat-form-field appearance="outline"  fxFlex>
+                                    <mat-label>ReportSummary</mat-label>
+                                    <textarea rows="3" matInput name="reportSummary" formControlName="reportSummary" placeholder="Write......" id="reportSummary"
+                                        type="text"   [value]="data?.reportSummary"></textarea>
+                                </mat-form-field>
                         </div>
                     </div>
                 </form>

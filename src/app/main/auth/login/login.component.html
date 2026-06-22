@@ -4,7 +4,7 @@
             <img src="assets/images/logos/Airmid_NewLogo.jpeg" alt="Airmid Logo">
         </div>
         <div class="welcome-content" [@animate]="{ value: '*', params: { scale: '0.2' } }">
-            <h1>Welcome to AirmidTech Innovations Pvt. Ltd</h1>
+            <h1>{{LoginPageHeading || 'Welcome to AirmidTech Innovations Pvt. Ltd'}}</h1>
             <p>We care healthcare...</p>
         </div>
         <div class="auth-illustration" [@animate]="{ value: '*', params: { scale: '0.2' } }">
@@ -81,10 +81,13 @@
 
         <div class="footerdm">
             <div class="footer-leftdm">
-                <span>All rights are reserved. Developed and powered by Airmid</span>
                 <div class="logo-sectiondm">
                     <img src="assets/images/logos/TransparentLogobottom.png" alt="Airmid Logo" />
                 </div>
+                    <hr style="border: none; height: 1px; background-color: blue; margin: 10px 0;" />
+                <span style="font-size: 16px;">{{LoginPageFooter || ''}}</span>
+                <span>All rights are reserved. Developed and powered by Airmid</span>
+                
             </div>
 
             <div class="footer-rightdm">

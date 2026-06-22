@@ -6,6 +6,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { FuseConfigService } from "@fuse/services/config.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { ConfigService } from "app/core/services/config.service";
 import { EncryptionService } from "app/core/services/encryption.service";
 import { ServerMonitoringService } from "app/core/services/servermonitoring.service";
 import { StoreUnitContextService } from "app/main/shared/services/storeunit-context.service";
@@ -23,6 +24,8 @@ export class LoginComponent implements OnInit {
     returnUrl: string;
     submitted = false;
     errorMessage: string;
+    LoginPageHeading:any;
+    LoginPageFooter:any;
     captcha: string;
     captchaToken: string;
     obj: any;
@@ -40,7 +43,8 @@ export class LoginComponent implements OnInit {
         private serverMonitoringService: ServerMonitoringService,
         private _matDialog: MatDialog,
         private encryptionService: EncryptionService,
-        private contextSvc: StoreUnitContextService
+        private contextSvc: StoreUnitContextService,
+         private _configue: ConfigService,
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -83,6 +87,24 @@ export class LoginComponent implements OnInit {
         });
         this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
         this.loadCaptcha();
+
+ debugger       
+        //this code for riomed for loginpage heading 
+const rawValue = this?._configue?.configParams?.LoginPageHeading ?? '';  
+let Heading = '';
+let id = '';  
+let PageHeading = '';
+let pageFooter = '';  
+if (rawValue.includes(':')) {
+  const parts = rawValue.split(':');   id = parts[0]?.trim() || '';   Heading = parts[1]?.trim() || '';
+}  
+if(Heading && Heading.includes('|')){
+      const parts = Heading.split('|');   PageHeading = parts[0]?.trim() || '';   pageFooter = parts[1]?.trim() || ''; 
+}
+this.LoginPageHeading  = PageHeading;    
+this.LoginPageFooter  =  pageFooter;    
+ 
+
     }
     get f() {
         return this.loginForm.controls;
