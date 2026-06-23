@@ -11,9 +11,9 @@
             </span>
         </div>
         <div class="banner-actions">
-            <button mat-stroked-button (click)="onPrint()">
+            <!-- <button mat-stroked-button (click)="onPrint()">
                 <mat-icon>print</mat-icon> Print
-            </button>
+            </button> -->
             <button mat-raised-button color="primary" (click)="onDownload()">
                 <mat-icon>download</mat-icon> Download
             </button>
@@ -298,7 +298,6 @@
 
             <div class="card-stage">
                 <div class="card-flip" [class.show-back]="cardSide === 'back'">
-
                     <!-- ============ FRONT FACE ============ -->
                     <div class="abha-card front" id="abha-card-front">
                         <!-- Blue header bar -->
@@ -365,7 +364,8 @@
                                         <span
                                             class="field-label-local">{{profile.localizedDetails?.localizedLabels?.abhaAddress??profile.localizedDetails.abhaAddress}}</span>
                                     </div>
-                                    <div class="field-value-en mono large">{{ profile.preferredAbhaAddress }}</div>
+                                    <div class="field-value-en mono large">{{ profile.preferredAbhaAddress }}
+                                    </div>
                                 </div>
                             </div>
 
@@ -449,7 +449,8 @@
                             <ul class="instr-list">
                                 <li>
                                     <span class="instr-en">
-                                        With this ABHA you have become a part of India's digital health ecosystem.
+                                        With this ABHA you have become a part of India's digital health
+                                        ecosystem.
                                     </span>
                                     <span class="instr-hi">
                                         इस आभा के साथ आप भारत के डिजिटल हेल्थ इकोसिस्टम का हिस्सा बन गए हैं।
@@ -457,26 +458,35 @@
                                 </li>
                                 <li>
                                     <span class="instr-en">
-                                        ABHA provides you a unique identification and helps in storing — safekeeping all
+                                        ABHA provides you a unique identification and helps in storing —
+                                        safekeeping
+                                        all
                                         your digital health
                                         records at one place.
                                     </span>
                                     <span class="instr-hi">
-                                        आभा आपको एक विशिष्ट पहचान प्रदान करता है और आपके सभी डिजिटल स्वास्थ्य रिकॉर्ड को
+                                        आभा आपको एक विशिष्ट पहचान प्रदान करता है और आपके सभी डिजिटल स्वास्थ्य
+                                        रिकॉर्ड को
                                         सुरक्षित एक ही
                                         स्थान पर संग्रहीत रखने में मदद करता है।
                                     </span>
                                 </li>
                                 <li>
                                     <span class="instr-en">
-                                        You can download the ABHA mobile app, Aarogya Setu or other ABDM enabled app to
+                                        You can download the ABHA mobile app, Aarogya Setu or other ABDM enabled
+                                        app
+                                        to
                                         view and share your
-                                        digital health records with ABDM registered healthcare service providers.
+                                        digital health records with ABDM registered healthcare service
+                                        providers.
                                     </span>
                                     <span class="instr-hi">
-                                        आप एबीडीएम पंजीकृत स्वास्थ्य सेवा प्रदाताओं के साथ अपने डिजिटल स्वास्थ्य रिकॉर्ड
+                                        आप एबीडीएम पंजीकृत स्वास्थ्य सेवा प्रदाताओं के साथ अपने डिजिटल स्वास्थ्य
+                                        रिकॉर्ड
                                         देखने और साझा करने
-                                        के लिए आभा मोबाइल ऐप, आरोग्य सेतु या अन्य एबीडीएम सक्षम ऐप डाउनलोड कर सकते हैं।
+                                        के लिए आभा मोबाइल ऐप, आरोग्य सेतु या अन्य एबीडीएम सक्षम ऐप डाउनलोड कर
+                                        सकते
+                                        हैं।
                                     </span>
                                 </li>
                                 <li>

@@ -775,37 +775,6 @@
   justify-content: center;
   margin-top: 24px;
 }
-
-/* ===== Print styles ===== */
-@media print {
-  .success-banner,
-  .left-pane,
-  .card-controls,
-  .reset-row {
-    display: none !important;
-  }
-
-  .two-pane {
-    grid-template-columns: 1fr;
-  }
-
-  .right-pane {
-    position: static;
-  }
-
-  .card-flip {
-    transform: none !important;
-
-    .abha-card.back {
-      display: none;
-    }
-  }
-
-  .abha-card {
-    box-shadow: none !important;
-  }
-}
-
 /* ===== Responsive ===== */
 @media (max-width: 960px) {
   .two-pane {

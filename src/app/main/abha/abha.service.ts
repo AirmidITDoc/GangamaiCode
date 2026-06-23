@@ -90,7 +90,7 @@ export class AbhaService {
 
     /** Returns a PDF blob of the ABHA card */
     downloadCard(token: string): Observable<Blob> {
-        return this.http.downloadFile('Abha/aadhaar/card', { token: token }, 1, "abha.pdf", true);
+        return this.http.downloadFile('Abha/aadhaar/card', { token: token }, 1, "abha-card.png", true);
     }
     addressSuggesions(txnid: string) {
         return this.http.GetData('Abha/address/suggestions/' + txnid);
