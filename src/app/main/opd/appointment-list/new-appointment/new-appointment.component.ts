@@ -107,6 +107,9 @@ export class NewAppointmentComponent implements OnInit {
     vmiddleNameConfig: any;
     vlastNameConfig: any;
 
+
+    DACHstatus: boolean = true
+
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
@@ -430,7 +433,22 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     OnViewReportPdf(element) {
-        this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+        Swal.fire({
+            title: 'Do you want to Print with latter head OR without latter head',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            // confirmButtonText: "Yes, Delete it!"
+
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+               this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+            } else
+                this.commonService.Onprint("VisitId", element, "AppointmentReceiptWithoutHeader");
+        });
+
     }
 
     onChangePatient(value) {
@@ -764,7 +782,7 @@ export class NewAppointmentComponent implements OnInit {
                     this.toastr.warning("Kindly select a patient from the list of registered patients.");
                     return;
                 }
-
+                debugger
 
                 const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
                 if (DateOfBirth1) {

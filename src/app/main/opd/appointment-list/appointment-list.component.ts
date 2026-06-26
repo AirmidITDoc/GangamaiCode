@@ -46,7 +46,8 @@ import { NewAppointmentwihBillComponent } from './new-appointmentwih-bill/new-ap
 import { PatientDetailsPopoverComponent } from './patient-details-popover/patient-details-popover.component';
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component';
-// import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
+import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
+
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -102,7 +103,7 @@ export class AppointmentListComponent implements OnInit {
     l_name: any = "%"
     IsMark = "2"
     CompanyId = "0"
-
+    Is9_Digit_National_Id: boolean = false;
     // Notitifcation Veriable
     IsShowGrid: boolean = false;
     IsPrevApp: boolean = false;
@@ -124,13 +125,20 @@ export class AppointmentListComponent implements OnInit {
         public _ConfigService: ConfigService,
         public toastr: ToastrService, public datePipe: DatePipe,
         private _ActRoute: Router, private route: ActivatedRoute,
-        private overlay: Overlay, public permissionService: PagePermissionService,
+        private overlay: Overlay, public permissionService: PagePermissionService, private _configue: ConfigService,
     ) { }
 
     ngOnInit(): void {
 
         this.myformSearch = this._AppointmentlistService.filterForm();
         this.searchFormGroup = this.createSearchForm();
+
+
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
+
+
         // menu Button List
         this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
         this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
@@ -468,7 +476,33 @@ export class AppointmentListComponent implements OnInit {
     OngetRecord(element, m) {
         console.log('Third action clicked for:', element);
         if (m == "Update Consultant Doctor") {
-           // if (element.mPbillNo == 0) {
+            debugger
+            if (!this.Is9_Digit_National_Id) {
+                if (element.mPbillNo == 0) {
+
+                    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                    buttonElement.blur(); // Remove focus from the button
+
+                    const that = this;
+                    const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
+                        {
+                            maxWidth: "90vw",
+                            height: "430px",
+                            width: "80%",
+                            data: element
+                        });
+                    dialogRef.afterClosed().subscribe(result => {
+                        if (result) {
+                            that.grid.bindGridData();
+                        }
+                    });
+                }
+                else {
+                    this.toastr.warning("Consultation bill is generated, take a new appointment.", "warning");
+                    return;
+                }
+            } else {
+
                 const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
                 buttonElement.blur(); // Remove focus from the button
 
@@ -485,11 +519,7 @@ export class AppointmentListComponent implements OnInit {
                         that.grid.bindGridData();
                     }
                 });
-            // }
-            // else {
-            //     this.toastr.warning("Consultation bill is generated, take a new appointment.", "warning");
-            //     return;
-            // }
+            }
 
         }
         else if (m == "Update Referred Doctor") {
@@ -1346,6 +1376,17 @@ export class AppointmentListComponent implements OnInit {
         } else {
             this._ActRoute.navigate(['/opd/appointment/new-bill']);
         }
+
+
+        // const dialogRef = this._matDialog.open(NewAppointmentwithBillComponent,
+        //     {
+        //         maxWidth: "70vw",
+        //         height: '740px',
+        //         width: '100%'
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     console.log('The dialog was closed - Insert Action', result);
+        // });
     }
 
     openPolicyInfoPopover(event: MouseEvent, patientData: any) {

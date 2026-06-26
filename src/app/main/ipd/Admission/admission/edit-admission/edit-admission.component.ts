@@ -230,7 +230,7 @@ patienttype:any
 
     OnSaveAdmission() {
         // this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
-        debugger
+        
 
         const inputDate = this.parseAdmissionTime(this.registerObj1.admissionTime);
 
@@ -273,9 +273,12 @@ patienttype:any
         this.admissionFormGroup.get('isUpdatedBy').setValue(this.accountService.currentUserValue.userId)
         this.admissionFormGroup.get('ischarity').setValue(this.admissionFormGroup.get('ischarity').value)
         this.admissionFormGroup.get('convertId').setValue(this.registerObj1.converId || 0)
-        this.admissionFormGroup.get('RefDocNameId').setValue(this.registerObj1.refDocNameId || 0)
-        this.admissionFormGroup.get('RelativeName').setValue(this.admissionFormGroup.get('RelativeName').value || 0 || '')
+        // this.admissionFormGroup.get('RefDocNameId').setValue(this.registerObj1.refDocNameId || 0)
 debugger
+        this.admissionFormGroup.get('RefDocNameId').setValue(this.admissionFormGroup.get('RefDocNameId')?.value || 0)
+
+        this.admissionFormGroup.get('RelativeName').setValue(this.admissionFormGroup.get('RelativeName').value || 0 || '')
+
         if (!this.isCompanySelected) {
             this.admissionFormGroup.get('CompanyId').setValue(0);
             this.admissionFormGroup.get('subTpaComId').setValue(0);

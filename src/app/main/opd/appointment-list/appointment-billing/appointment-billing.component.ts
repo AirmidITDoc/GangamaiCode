@@ -1269,10 +1269,18 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
         }
 
-        const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
-        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+   // const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
+        // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        // this.OpBillForm.get('billDate').setValue(formattedDate);
+        // this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
+
+debugger
+        const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+        const formattedTime = this.dateTimeObj?.time || '00:00';
         this.OpBillForm.get('billDate').setValue(formattedDate);
         this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
+
+
         this.OpBillForm.get('opdipdid')?.setValue(this.patientDetail?.visitId)
         this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
         this.OpBillForm.get('regNo')?.setValue(this.RegNo)

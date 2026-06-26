@@ -73,8 +73,11 @@ const appRoutes: Routes = [
     {
         path: "op-refund-browse",
         loadChildren: () => import("./op-refund-of-advance/op-refund-of-advance.module").then((m) => m.OpRefundOfAdvanceModule)
+    },
+    {
+        path: "appoinmentwithbill",
+        loadChildren: () => import("./appointment-list/new-appointmentwith-bill/new-appwihbill.module").then((m) => m.NewAppwihbillModule)
     }
-
 
 ];
 

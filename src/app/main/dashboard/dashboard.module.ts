@@ -49,6 +49,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CompanyPatientSummaryDashboardComponent } from './cashless-company-dashboard/company-patient-summary-dashboard/company-patient-summary-dashboard.component';
 import { TestingDailyDashBoardComponent } from './testing-daily-dash-board/testing-daily-dash-board.component';
 import { DepartmentSalesComponent } from './lab-financial-dashboard/department-sales/department-sales.component';
+import { NgChartsModule } from 'ng2-charts';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -109,7 +110,8 @@ import { DepartmentSalesComponent } from './lab-financial-dashboard/department-s
         MatToolbarModule,
         MatGridListModule,
         MatDialogModule,
-        SharedModule
+        SharedModule,
+        NgChartsModule
     ],
     providers: [
         DatePipe

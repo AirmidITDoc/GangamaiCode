@@ -503,16 +503,19 @@ export class IPSearchListComponent implements OnInit {
     onChangeFirst(event) {
         console.log(event)
         if (this.myFilterform.get('IsDischarge').value == false) {
-            this.fromDate = "1900-01-01"
-            this.toDate = "1900-01-01"
+            // this.fromDate = "1900-01-01"
+            // this.toDate = "1900-01-01"
             this.apiUrl = "Admission/AdmissionList"
             this.status = '0'
         } else {
             this.apiUrl = "Admission/AdmissionDischargeList"
-            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.status = '1'
+            // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.status = '1'
         }
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -522,21 +525,24 @@ export class IPSearchListComponent implements OnInit {
         this.getfilterdata();
     }
     onChangeDiscahrge(event) {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+
         if (this.myFilterform.get('IsDischarge').value == false) {
             this.myFilterform.get('fromDate').setValue('')
             this.myFilterform.get('enddate').setValue('')
-            this.fromDate = "1900-01-01"
-            this.toDate = "1900-01-01"
-            this.status = '0'
+            // this.fromDate = "1900-01-01"
+            // this.toDate = "1900-01-01"
+            // this.status = '0'
             this.apiUrl = "Admission/AdmissionList"
 
             this.getfilterdata();
         } else {
             this.myFilterform.get('fromDate').setValue(new Date())
             this.myFilterform.get('enddate').setValue(new Date())
-            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.status = '1'
+            // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.status = '1'
             this.apiUrl = "Admission/AdmissionDischargeList"
             this.getfilterdataDisc();
         }

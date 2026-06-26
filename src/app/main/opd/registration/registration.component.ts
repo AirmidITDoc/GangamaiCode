@@ -108,7 +108,7 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-            // { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals }
+             { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals }
            
         ]
     }
@@ -206,7 +206,7 @@ export class RegistrationComponent implements OnInit {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains },
-                //   { fieldName: "CityId", fieldValue: String(this.CityId), opType: OperatorComparer.Equals }
+                { fieldName: "CityId", fieldValue: String(this.CityId), opType: OperatorComparer.Equals }
             ],
             row: 300
 

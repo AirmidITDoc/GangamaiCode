@@ -16,8 +16,6 @@ import { ServiceGraphComponent } from './service-graph/service-graph.component';
 import { ServiceReceiptGraphComponent } from './service-receipt-graph/service-receipt-graph.component';
 import { VisitDatagraphComponent } from './visit-datagraph/visit-datagraph.component';
 
-
-
 type PatientTypeRow = {
     typeOfPatient: string;
     ip: number;
@@ -49,9 +47,6 @@ type CollectionRow = {
 })
 export class NewFinacialdashboardComponent {
 
-    //   fromDate: Date = new Date(2026, 0, 27);
-    // toDate: Date = new Date(2026, 0, 27);
-
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -76,7 +71,7 @@ export class NewFinacialdashboardComponent {
     TodayOther: any;
     opippharmacyTotalprofit: any;
     opippharmacyTotal: any;
-
+    opipcostpharmacyTotal: any;
     wardHeadCount = new MatTableDataSource<WardCount>();
     charges = new MatTableDataSource<Servicecharge>();
 
@@ -109,24 +104,19 @@ export class NewFinacialdashboardComponent {
         this.username = this._accountServices.currentUserValue.userName
             ? this._accountServices.currentUserValue.userName
             : '';
-
-
-        // Initialize all charts after view is loaded
         setTimeout(() => {
-            // this.initializeCharts();
         }, 500);
 
         this.getwardpatientList()
 
     }
 
-    wardHeadCountColumns: string[] = ['wardName', 'occupancyPct', 'patients'];
+    wardHeadCountColumns: string[] = ['wardName', 'occupancyPct', 'TotalBed', 'patients'];
     pharmacyopsalesColumns: string[] = ['Total Sales', 'Toal Cost', 'Profit'];
     chargesColumns: string[] = ['serviceName', 'ip', 'op'];
     receiptsColumns: string[] = ['serviceName', 'ip', 'op'];
     IpCollColumns: string[] = ['groupName', 'totalAmount'];
     OpCollColumns: string[] = ['groupName', 'totalAmount'];
-
 
     opVisitColumns: string[] = ['typeOfVisit', 'patients'];
 
@@ -163,19 +153,9 @@ export class NewFinacialdashboardComponent {
     ];
 
 
-    //  collection: CollectionRow[] = [
-    //   { mode: 'Cash', amount: 0 },
-    //   { mode: 'Cheque', amount: 0 },
-    //   { mode: 'Card', amount: 0 },
-    //   { mode: 'EFT', amount: 0 },
-    //   { mode: 'ECS', amount: 0 },
-    // ];
-
-
     consultantChargeColumns: string[] = ['consultantName', 'patients', 'charges', 'doctorShare'];
     DrcollectionColumns: string[] = ['consultantName', 'patients', 'charges'];
     packageColumns: string[] = ['packageName', 'patients'];
-    // packages: PackageDetailRow[] = [];
 
     onGo(): void {
         // Dummy for now; later this will call the API based on fromDate/toDate.
@@ -185,11 +165,15 @@ export class NewFinacialdashboardComponent {
     get wardTotalPatients(): number {
         return this.wardHeadCount.data.reduce((sum, r) => sum + r.occupiedBeds, 0);
     }
+    get wardTotalBeds(): number {
+        return this.wardHeadCount.data.reduce((sum, r) => sum + r.totalBeds, 0);
+    }
+
     get chargesTotalIp(): number {
-        return this.charges.data.reduce((sum, r) => sum + (r.ipCollection || 0), 0);
+        return this.charges.data.reduce((sum, r) => sum + (r.ipTotalAMT || 0), 0);
     }
     get chargesTotalOp(): number {
-        return this.charges.data.reduce((sum, r) => sum + (r.opCollection || 0), 0);
+        return this.charges.data.reduce((sum, r) => sum + (r.opTotalAMT || 0), 0);
     }
     get chargesDiscountIp(): number {
         return this.charges.data.reduce((sum, r) => sum + (r.ipDiscount || 0), 0);
@@ -231,6 +215,17 @@ export class NewFinacialdashboardComponent {
         return this.opVisits.data.reduce((sum, r) => sum + r.patientCount, 0);
     }
 
+
+    get RefOPTotalPatients(): number {
+        return this.referrals.data.reduce((sum, r) => sum + r.opRefCount, 0);
+    }
+
+    get RefIPTotalPatients(): number {
+        return this.referrals.data.reduce((sum, r) => sum + r.ipRefCount, 0);
+    }
+
+
+
     //phar
     get pharmacyoptotal(): number {
         return this.pharmacyop.data.reduce((sum, r) => sum + r.opNetAmount, 0);
@@ -249,21 +244,19 @@ export class NewFinacialdashboardComponent {
     }
 
 
+
+    get opTotalLandedAmt(): number {
+        return this.pharmacyop.data.reduce((sum, r) => sum + r.opTotalLandedAmount, 0);
+    }
+
+    get ipTotalLandedAmt(): number {
+        return this.pharmacyip.data.reduce((sum, r) => sum + r.ipTotalLandedAmount, 0);
+    }
+
     billingTotalCharges = 0
-    // get billingTotalCharges(): number {
-    //   return this.receiptSummaryTotal;
-    // }
-
-
-
     get receiptSummaryTotal(): number {
         return this.receiptSummary.reduce((sum, r) => sum + (r.amount || 0), 0);
     }
-
-    // receiptSummaryTotal=0
-    // get receiptamount(): number {
-    //   return this.receipt.data.reduce((sum, r) => sum + (r.receipt || 0), 0);
-    // }
 
 
     get modeSummaryTotal(): number {
@@ -316,6 +309,10 @@ export class NewFinacialdashboardComponent {
     Financedata: any
     BillNetAmt = 0
     ModeAmt = 0
+    IPTotalPatients = 0
+    OPTotalPatients = 0
+    receiptsCreditIp = 0
+    receiptsCreditOp = 0
     getwardpatientList() {
 
         const vadat = {
@@ -339,12 +336,12 @@ export class NewFinacialdashboardComponent {
             this.receipts.data = this.Financedata.receiptPayment;
             console.log(this.receipts.data)
 
-
             this.opVisits.data = this.Financedata.typeOfVisit;
             console.log(this.opVisits.data)
 
             this.referrals.data = this.Financedata.ipRefDoctorCount;
             console.log(this.referrals.data)
+
 
             this.Billingsummary.data = this.Financedata.billSummary;
             console.log(this.Billingsummary.data)
@@ -356,8 +353,11 @@ export class NewFinacialdashboardComponent {
                 this.patientTypes[0].op = this.Financedata.financialOPExistingPatientCount[0]['opNewPatientCount']
                 this.patientTypes[1].op = this.Financedata.financialOPExistingPatientCount[0]['opExistingPatientCount']
 
+                this.OPTotalPatients = this.patientTypes[0].op + this.patientTypes[1].op
+
                 this.patientTypes[0].ip = this.Financedata.financialIPExistingPatientCount[0]['ipNewPatientCount']
                 this.patientTypes[1].ip = this.Financedata.financialIPExistingPatientCount[0]['ipExistingPatientCount']
+                this.IPTotalPatients = this.patientTypes[0].ip + this.patientTypes[1].ip
             }
 
 
@@ -382,13 +382,12 @@ export class NewFinacialdashboardComponent {
                 this.collection[2].amount = this.Financedata.billSummary[0]['cardPay']
                 this.collection[3].amount = this.Financedata.billSummary[0]['upi']
             }
-            debugger
+
             this.ModeAmt = this.Financedata.billSummary[0]['cash'] + this.Financedata.billSummary[0]['cardPay']
             this.BillNetAmt = this.receiptSummary[0].amount + this.receiptSummary[1].amount - this.receiptSummary[2].amount - this.receiptSummary[3].amount
 
             this.consultantCharges.data = this.Financedata.doctorWisePatientCount;
             console.log(this.consultantCharges.data)
-
 
             this.pharmacyop.data = this.Financedata.pharmacySaleOP;
             this.pharmacyip.data = this.Financedata.pharmacySaleIP;
@@ -397,6 +396,7 @@ export class NewFinacialdashboardComponent {
             console.log(this.Financedata.pharmacySaleIP)
 
             this.opippharmacyTotal = (this.pharmacyiptotal + this.pharmacyoptotal).toFixed(2)
+            this.opipcostpharmacyTotal = (this.opTotalLandedAmt + this.ipTotalLandedAmt).toFixed(2)
 
 
             this.opippharmacyTotalprofit = (this.pharmacyoptotalprofit + this.pharmacyiptotalprofit).toFixed(2)
@@ -404,14 +404,22 @@ export class NewFinacialdashboardComponent {
 
             //dr
 
-            debugger
             this.drallCollection.data = this.Financedata.doctorWiseTotalBusiness;
             this.OPcollection.data = this.Financedata.groupWiseCollectionOP;
             this.IPcollection.data = this.Financedata.groupWiseCollectionIP;
 
+            debugger
+
+            // receiptsCredit
+            this.receiptsCreditIp = this.chargesNetIp - this.receiptsNetIp
+            this.receiptsCreditOp = this.chargesNetOp - this.receiptsNetOp
+
+            // finaladvance
+            this.finaladvance.data = this.Financedata.financialAdvanceBalance
 
 
-
+            // Insuranceds?
+            this.Insuranceds.data = this.Financedata.insuranceCaverageAdequacy
             this.packages.data = this.Financedata.packagePatientCount;
             console.log(this.packages.data)
 
@@ -536,8 +544,6 @@ export class NewFinacialdashboardComponent {
         });
     }
 
-
-
     ServiceReceiptTrend() {
 
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
@@ -562,15 +568,16 @@ export class WardCount {
     wardName: any;
     occupancyPercent: any;
     occupiedBeds: any;
-
+    TotalBed: any;
+    totalBeds: any;
 
     constructor(WardCount) {
         {
             this.wardName = WardCount.wardName || '';
             this.occupancyPercent = WardCount.occupancyPercent || 0;
             this.occupiedBeds = WardCount.occupiedBeds || 0;
-
-
+            this.TotalBed = WardCount.TotalBed || 0;
+            this.totalBeds = WardCount.totalBeds || 0;
         }
     }
 }
