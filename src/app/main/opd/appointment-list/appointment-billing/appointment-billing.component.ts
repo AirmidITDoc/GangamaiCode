@@ -1096,7 +1096,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Discount Limit Exceeded',
-                    text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+                    text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
                     confirmButtonColor: '#d33'
                 });
                 this.OPFooterForm.get("totalDiscountPer").setValue(this.UserDicPerLimit);
