@@ -120,7 +120,7 @@ export class ConfigSettingParams {
   IsSalesDiscUpdate: any;
   LoginPageHeading:any;
   IsChennaiIPFinalPrint:any;
-
+LoginBrowserHeading:any;
     /**
         * Constructor
         *
@@ -247,7 +247,7 @@ export class ConfigSettingParams {
         this.IsOPBillProceed = ConfigSettingParams.IsOPBillProceed;
         this.IsSalesDiscUpdate = ConfigSettingParams.IsSalesDiscUpdate;
         this.IsChennaiIPFinalPrint = ConfigSettingParams.IsChennaiIPFinalPrint;
-
+        this.LoginBrowserHeading = ConfigSettingParams.LoginBrowserHeading;
         
            }
 

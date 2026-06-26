@@ -55,8 +55,7 @@ EmailFrom:FormGroup
       this.registerObj = this.data.Obj;
       this.EmailFrom.patchValue({
        ToMailId: this.registerObj?.emailId || ''
-      })
-      this.EmailFrom=this.createPOEmailFrom()
+      }) 
       if(this.data?.emailType == 'OPBill'){
         this.vBillNo = this.registerObj?.billNo || 0
       }
@@ -151,12 +150,18 @@ EmailFrom:FormGroup
 //         this.EmailFrom.get('Body').setValue(this.data.Obj.emailBody)
 
 //       } 
+    this.EmailFrom=this.createPOEmailFrom()
     } 
   }  
   createPOEmailFrom() {
     const unitName = this.accountService.currentUserValue.user?.tLoginUnitDetails?.[0]?.unitName || '';
-    const patientName = this.registerObj?.patientName || '';
-    const regNo = this.registerObj?.regNo || '';
+const patientName =
+  (this.data?.emailType === 'PurchaseReport' || this.data?.emailType === 'GRNReceipt')
+    ? this.registerObj?.supplierName || '' : this.registerObj?.patientName || '';
+
+const regNo =  this.data?.emailType === 'PurchaseReport'
+    ? this.registerObj?.purchaseNo || '' : this.data?.emailType === 'GRNReceipt'
+      ? this.registerObj?.grnNumber || '' : this.registerObj?.regNo || '';
 
     return this._formBuilder.group({
       ToMailId: ['', [this._formvalidationService.allowEmptyStringValidator()]],

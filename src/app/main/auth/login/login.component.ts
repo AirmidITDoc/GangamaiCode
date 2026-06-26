@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { FuseConfigService } from "@fuse/services/config.service";
+import { ApiCaller } from "app/core/services/apiCaller";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { ConfigService } from "app/core/services/config.service";
 import { EncryptionService } from "app/core/services/encryption.service";
@@ -24,8 +25,8 @@ export class LoginComponent implements OnInit {
     returnUrl: string;
     submitted = false;
     errorMessage: string;
-    LoginPageHeading:any;
-    LoginPageFooter:any;
+    LoginPageHeading:any = "";
+    LoginPageFooter:any = "";
     captcha: string;
     captchaToken: string;
     obj: any;
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
         private encryptionService: EncryptionService,
         private contextSvc: StoreUnitContextService,
          private _configue: ConfigService,
+             private _httpClient1: ApiCaller,
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -87,23 +89,8 @@ export class LoginComponent implements OnInit {
         });
         this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
         this.loadCaptcha();
+        this.ConfigSettigForLoginHeading();
 
- debugger       
-        //this code for riomed for loginpage heading 
-const rawValue = this?._configue?.configParams?.LoginPageHeading ?? '';  
-let Heading = '';
-let id = '';  
-let PageHeading = '';
-let pageFooter = '';  
-if (rawValue.includes(':')) {
-  const parts = rawValue.split(':');   id = parts[0]?.trim() || '';   Heading = parts[1]?.trim() || '';
-}  
-if(Heading && Heading.includes('|')){
-      const parts = Heading.split('|');   PageHeading = parts[0]?.trim() || '';   pageFooter = parts[1]?.trim() || ''; 
-}
-this.LoginPageHeading  = PageHeading;    
-this.LoginPageFooter  =  pageFooter;    
- 
 
     }
     get f() {
@@ -194,4 +181,32 @@ this.LoginPageFooter  =  pageFooter;
         dialogRef.afterClosed().subscribe(result => {
         });
     }
+     configSettingParam1: any = [];
+        ConfigSettigForLoginHeading() {
+            const Params =
+            {
+                "searchFields": [],
+                "mode": "NewSysConfig"  //SystemConfigList
+            }
+            this._httpClient1.PostData("Common", Params).subscribe(data => {
+                this.configSettingParam1 = data; 
+                if (this.configSettingParam1.length) {
+                    //this code for riomed for loginpage heading 
+                    const rawValue = this?.configSettingParam1[0]?.LoginPageHeading ?? '';
+                    let Heading = '';
+                    let id = '';
+                    let PageHeading = '';
+                    let pageFooter = '';
+                    if (rawValue.includes(':')) {
+                        const parts = rawValue.split(':'); id = parts[0]?.trim() || ''; Heading = parts[1]?.trim() || '';
+                    }
+                    if (Heading && Heading.includes('|')) {
+                        const parts = Heading.split('|'); PageHeading = parts[0]?.trim() || ''; pageFooter = parts[1]?.trim() || '';
+                    }
+                    this.LoginPageHeading = PageHeading;
+                    this.LoginPageFooter = pageFooter;
+                    console.log('login: ', this._configue.configParams);
+                }
+            });
+        }
 }

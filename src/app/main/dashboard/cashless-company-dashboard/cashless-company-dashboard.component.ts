@@ -72,9 +72,10 @@ export class CashlessCompanyDashboardComponent implements OnInit {
     allcolumns_CompanyWise = [
         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Count", key: "patientCount", sort: true, align: "center", emptySign: 'NA' },
-        { heading: "Draft Bill", key: "draftBill", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Net Bill Amt", key: "draftBill", sort: true, align: "center", emptySign: 'NA' },
         { heading: "Pharmacy Amt", key: "pharmacyAmount", sort: true, align: "center", emptySign: 'NA' },
         { heading: "Final Amt", key: "finalAmount", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Approved Amt", key: "ApprovedAmount", sort: true, align: "center", emptySign: 'NA' },
         { heading: "Remaining Amt", key: "remainingAmount", sort: true, align: "center", emptySign: 'NA' },
           {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,

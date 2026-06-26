@@ -1287,18 +1287,18 @@ debugger
     }
     // Defined Rate Validation
    OnchekPurchaserateValidation(rate) {
-        debugger
-        const enteredRate = rate;
-        if (this.vDefRate > 0) {
-            if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
-                //Swal.fire("Please Check defined Supplier Rate for product ...!!!"); 
-              this.vRate = 0 
+        debugger 
+        const actualRate = parseFloat(this.userFormGroup.get('Rate')?.value || '0');
+        const definedRate = parseFloat(this.vDefRate || '0');
+        if (definedRate > 0) {
+            if (actualRate > definedRate) {  
+                //Swal.fire("Please Check defined Supplier Rate for product ...!!!");  
                 Swal.fire({
                     icon: 'warning',
                     title: 'Defined Rate Warning',
                     html: ` <p>  ⚠️ The entered rate
-                <strong>(${this.userFormGroup.get("Rate").value})</strong>
-                is greater than your defined rate <strong>(${this.vDefRate})</strong>. </p>
+                <strong>(${actualRate})</strong>
+                is greater than your defined rate <strong>(${definedRate})</strong>. </p>
                 <p>Please verify before saving.</p><hr> `,
                     iconColor: '#ff5722',
                     confirmButtonText: 'OK',
@@ -1307,37 +1307,30 @@ debugger
                     color: '#bf360c',
                     timer: 4000,
                     timerProgressBar: true
-                });   
-        setTimeout(() => {
-        const RateElement = document.querySelector(`[name='Rate']`) as HTMLElement;
-        if (RateElement) {
-            RateElement.focus();
-        } 
-        }, 1000);
+                }).then(() => { 
+                         this.vRate = 0;
+                         this.userFormGroup.patchValue({ Rate: 0 }); 
+                 setTimeout(() => {
+                 const rateElement = document.querySelector(`[name="Rate"]`) as HTMLInputElement; 
+                 rateElement?.focus();
+                 rateElement?.select();
+                  }, 100); 
+                 });  
+                 
+        // this.vRate = 0 
+        // this.userFormGroup.patchValue({Rate : 0 }); 
+        // setTimeout(() => {
+        // const RateElement = document.querySelector(`[name='Rate']`) as HTMLElement;
+        // if (RateElement) {
+        //     RateElement.focus();
+        // } 
+        // }, 1000);
         }else { this.calculateTotalamt(); }
-        } else if (this.vDefRate == 0) {
-            if (this.userFormGroup.get("Rate").value) {
+        } else if (definedRate == 0) {
+            if (actualRate) {
                 this.calculateTotalamt();
             }
-        } 
-
-        // Check if rate matches any of last three
-        // const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
-        // const isRateSame = lastRates.includes(enteredRate); 
-        // if (!isRateSame && (Number(enteredRate) > 0)) {
-        //   await  Swal.fire({
-        //         icon: 'warning',
-        //         title: 'Price Verification Required',
-        //         html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
-        //           <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
-        //           <hr>  `,
-        //         confirmButtonText: 'OK',
-        //         confirmButtonColor: '#f39c12',
-        //         background: '#fff',
-        //         timer: 4000,
-        //         timerProgressBar: true
-        //     });
-        // }  
+        }  
     }
     supplierRateList: any = [];
     getSupplierRate() {
@@ -1377,6 +1370,26 @@ debugger
             console.log('The dialog was closed - Insert Action', result);
         });
     }
+        // it allowed only Digit 
+        keyPressDigitsOnly(event) {
+            const inp = String.fromCharCode(event.keyCode);
+            if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+        // it allowed only Digit & decimal
+        keyPressDigitDecimalOnly(event) {
+            const inp = String.fromCharCode(event.keyCode);
+            if (/^\d*\.?\d*$/.test(inp)) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
 }
 export class LastThreeItemList {
     ItemID: any;

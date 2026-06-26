@@ -102,31 +102,31 @@
                                             [readonly]="true"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="4%" label="Packing" formControlName="ConversionFactor"
-                                            type="number" [formGroup]="userFormGroup" (keyup)="calculateTotalamt()"
-                                            [min]="1"></airmid-textbox>
+                                            type="text" [formGroup]="userFormGroup" (keyup)="calculateTotalamt()"
+                                            [min]="1"  (keypress)="keyPressDigitsOnly($event)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="Qty" formControlName="Qty"
-                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
+                                            (keypress)="keyPressDigitsOnly($event)" [formGroup]="userFormGroup"
                                             [validations]="getValidationMessages().Qty" [maxLength]="10" #qtyTextboxRef
                                             [min]="0">
                                         </airmid-textbox>
 
                                         <airmid-textbox fxFlex="4%" label="FreeQty" formControlName="FreeQty"
-                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
+                                            (keypress)="keyPressDigitsOnly($event)" [formGroup]="userFormGroup"
                                             [validations]="getValidationMessages().FreeQty" [maxLength]="10" [min]="0">
                                         </airmid-textbox>
 
 
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
-                                            [formGroup]="userFormGroup" placeholder="MRP" type="number"
-                                            [validations]="getValidationMessages().mrp"
+                                            [formGroup]="userFormGroup" placeholder="MRP" type="text"
+                                            [validations]="getValidationMessages().mrp"   (keypress)="keyPressDigitDecimalOnly($event)" 
                                             (valueChange)="calculateTotalamt()" [min]="0"></airmid-textbox>
 
 
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
                                             [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
-                                            type="number" (change)="OnchekPurchaserateValidation(userFormGroup.get('Rate')?.value)"
-                                            [validations]="getValidationMessages().rate" [min]="0"
+                                            type="text" (change)="OnchekPurchaserateValidation(userFormGroup.get('Rate')?.value)"
+                                            [validations]="getValidationMessages().rate" [min]="0"   (keypress)="keyPressDigitDecimalOnly($event)" 
                                            ></airmid-textbox>
                                            <!--  (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)" -->
 
@@ -135,7 +135,7 @@
 
 
                                         <airmid-textbox fxFlex="5%" label="Disc %" formControlName="Disc"
-                                            [formGroup]="userFormGroup" type="number"
+                                            [formGroup]="userFormGroup" type="text"
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="5%" label="DiscAmt" formControlName="DiscAmount"
@@ -212,7 +212,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-100">Qty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    <input class="compact-cell-input" [(ngModel)]="contact.Qty" type="number" OnlyNumber
+                                    <input class="compact-cell-input" [(ngModel)]="contact.Qty" type="text" OnlyNumber
                                             [id]="'Qty_' + index" (input)="getCellCalculation(contact)"
                                             [disabled]="contact.IsVerifiedUserId > 0" [min]="0" />
                                 </mat-cell>
@@ -239,7 +239,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
                                     fxShow.gt-sm>MRP</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <input class="compact-cell-input" type="number" [(ngModel)]="contact.MRP" step="0.1"
+                                    <input class="compact-cell-input" type="text" [(ngModel)]="contact.MRP" step="0.1"
                                             [id]="'MRP' + index" autocomplete="off" OnlyNumber
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('MRP' + (index + 1))"
@@ -252,7 +252,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
                                     fxShow.gt-sm>Rate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <input class="compact-cell-input" type="number" [(ngModel)]="contact.Rate" step="0.1"
+                                    <input class="compact-cell-input" type="text" [(ngModel)]="contact.Rate" step="0.1"
                                             [id]="'Rate' + index" autocomplete="off" OnlyNumber
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('Rate' + (index + 1))"
@@ -286,7 +286,7 @@
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('DiscPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('DiscPer' + (index - 1))" step="0.1"
-                                            type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
+                                            type="text" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
                                 </mat-cell>
                             </ng-container>
@@ -308,7 +308,7 @@
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('CGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('CGSTPer' + (index - 1))" step="0.1"
-                                            type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
+                                            type="text" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
                                 </mat-cell>
                             </ng-container>
@@ -332,7 +332,7 @@
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('SGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('SGSTPer' + (index - 1))" step="0.1"
-                                            type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
+                                            type="text" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
                                 </mat-cell>
                             </ng-container>
@@ -355,7 +355,7 @@
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('IGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('IGSTPer' + (index - 1))" step="0.1"
-                                            type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
+                                            type="text" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
                                 </mat-cell>
                             </ng-container>
@@ -591,20 +591,20 @@
                                                 <airmid-textbox fxFlex="10%" label="HandlingCharges"
                                                     formControlName="HandlingCharges" [min]="0"
                                                     [(ngModel)]="registerObj.handlingCharges"
-                                                    [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
+                                                    [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 
                                                 <airmid-textbox fxFlex="10%" label="Transport Charges"
                                                     formControlName="TransportCharges" [min]="0"
                                                     [(ngModel)]="registerObj.transportChanges"
-                                                    [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
+                                                    [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 
                                                 <!-- <airmid-textbox fxFlex="13%" label="Freight" formControlName="Freight"
                                                     [(ngModel)]="registerObj.freightAmount" [min]="0"
-                                                    [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
+                                                    [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 
                                                 <airmid-textbox fxFlex="13%" label="OctriAmount" [min]="0"
                                                     formControlName="OctriAmount" [(ngModel)]="registerObj.octriAmount"
-                                                    [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
+                                                    [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 
                                                 <airmid-textbox fxFlex="13%" label="Guarantee/ Worrenty"
                                                     formControlName="Worrenty" [(ngModel)]="registerObj.worrenty"

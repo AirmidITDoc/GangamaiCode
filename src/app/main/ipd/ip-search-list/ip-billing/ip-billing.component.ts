@@ -182,6 +182,7 @@ export class IPBillingComponent implements OnInit {
     BillDiscperFlag: boolean = false;
     isOpen: boolean = false; // Sidebar starts open  
     SelectedAdvancelist: any = [];
+     chkIsEditable: boolean = true;
     doctorID: any;
     vAdvanceId: any = 0;
     TotalAdvanceAmt: any = 0;
@@ -753,6 +754,12 @@ export class IPBillingComponent implements OnInit {
             this.Serviceform.get('doctorId').updateValueAndValidity();
             this.Serviceform.get('doctorId').disable();
             this.isDoctor = false;
+        }
+
+        if (obj?.isEditable == true) {
+            this.chkIsEditable = false;
+        } else {
+            this.chkIsEditable = true;
         }
         this.getpackagedetList(obj)
     }

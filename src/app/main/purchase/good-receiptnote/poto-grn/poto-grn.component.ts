@@ -254,7 +254,9 @@ export class POtoGRNComponent implements OnInit {
                     freightCharges: Number(element.freightCharges) || 0,
                     octriAmount: Number(element.octriAmount) || 0,
                     supplierName: element.supplierName?.trim() || '',
-                    PurchaseNo: element.purchaseNo || 0
+                    PurchaseNo: element.purchaseNo || 0,
+                    defRate : element?.defRate || 0
+
                 }
             );
         });

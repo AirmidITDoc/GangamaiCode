@@ -1090,7 +1090,7 @@ export class ItemNameList {
     igst: number;
     gst: number;
     finalTotalQty: number;
-
+    defRate:any;
     itemId: any;
     itemName: any;
     uomId: any;
@@ -1242,6 +1242,7 @@ export class ItemNameList {
             this.ReceiveQty = ItemNameList.ReceiveQty || 0
             this.ConversionFactor = ItemNameList.ConversionFactor || 0
             this.SrNo = ItemNameList.SrNo || 0;
+            this.defRate = ItemNameList.defRate || 0;
             this.PurchaseNo = ItemNameList.PurchaseNo || 0;
             this.HospitalMRP = ItemNameList.HospitalMRP || 0;
             this.GSTType = ItemNameList.GSTType || null;

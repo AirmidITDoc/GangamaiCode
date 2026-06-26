@@ -79,7 +79,7 @@ export class BrowsSalesBillComponent implements OnInit {
     ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
     StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 0;
     isShowDetailTable: boolean = false;
-    OpIpType: any = "0";
+    OpIpType: any = "3";
     salesNo: any = "0";
     regNo: any = "0";
     firstName: any = "%";
@@ -134,13 +134,18 @@ export class BrowsSalesBillComponent implements OnInit {
         }
 
         this.salesForm = this._BrowsSalesBillService.SearchFilter();
-        ///.getsaleslist();
-        this.onChangeFirst();
-        this.onChangeFirst_Retrun();
-
+        
+        //  this.getsaleslist();
+        //  this.getsalesreturnlist()
+       // this.onChangeFirst();
+       // this.onChangeFirst_Retrun();
+debugger
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
+
+         this.getsaleslist();
+         this.getsalesreturnlist()
     }
 
     autocompletestore: string = "Store";
@@ -538,9 +543,10 @@ export class BrowsSalesBillComponent implements OnInit {
                 { fieldName: "OP_IP_Type", fieldValue: this.OpIp_Type, opType: OperatorComparer.Equals }
             ],
         }
-        this.grid2.gridConfig = this.gridConfig2;
-        this.grid2.bindGridData();
-
+        setTimeout(() => {
+               this.grid2.gridConfig = this.gridConfig2;
+        this.grid2.bindGridData();  
+        }, 500); 
     }
 
 

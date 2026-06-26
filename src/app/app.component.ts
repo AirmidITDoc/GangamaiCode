@@ -30,6 +30,7 @@ import { SignalRService } from './core/services/signalr.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { HospitalConfigService } from './core/services/hospital-config.service';
 import { PatientSearchComponent } from './main/shared/componets/patient-search/patient-search.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app',
@@ -103,7 +104,8 @@ export class AppComponent implements OnInit, OnDestroy {
         private router: Router,
         private bandwidthService: BandwidthService,
         private signalRService: SignalRService,
-        private HospitalConfigService: HospitalConfigService
+        private HospitalConfigService: HospitalConfigService,
+          private titleService: Title,
     ) {
 
         this.bandwidthService.monitorBandwidth();
@@ -296,6 +298,11 @@ export class AppComponent implements OnInit, OnDestroy {
                     }
                 }).start();
             }
+
+        
+          const rawValue = this.configService?.configParams?.LoginBrowserHeading ?? ''; 
+          const browseHeading = rawValue?.split(':')[1]?.trim() || ''; 
+          this.titleService.setTitle(browseHeading || 'AIRMID');
         });
     }
 

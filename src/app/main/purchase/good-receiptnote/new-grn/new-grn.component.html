@@ -132,7 +132,7 @@
                       placeholder="UOM" [readonly]="true"></airmid-textbox> -->
 
                     <airmid-textbox fxFlex="4%" label="Packing" formControlName="ConversionFactor" type="text"
-                      [formGroup]="userFormGroup" (keyup)="calculateTotalamt()" [min]="1"></airmid-textbox>
+                      [formGroup]="userFormGroup" (keyup)="calculateTotalamt()" [min]="1"  (keypress)="keyPressDigitsOnly($event)"></airmid-textbox>
 
                     <!-- <airmid-textbox fxFlex="5%" label="Batch No" formControlName="BatchNo" [formGroup]="userFormGroup"
                       placeholder="BatchNo" [validations]="getValidationMessages().batchNo"></airmid-textbox> -->
@@ -154,7 +154,7 @@
 
                     <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
                       placeholder="Qty" [validations]="getValidationMessages().qty" [type]="'text'"
-                      (keypress)="keyPressCharater($event)"></airmid-textbox>
+                      (keypress)="keyPressDigitsOnly($event)"></airmid-textbox>
 
 
 
@@ -163,7 +163,7 @@
 
                     <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
                       placeholder="FreeQty" [validations]="getValidationMessages().qty" [type]="'text'"
-                      (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      (keypress)="keyPressDigitsOnly($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
                     <!-- <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
@@ -172,13 +172,14 @@
 
                     <airmid-textbox fxFlex="6%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
                       placeholder="MRP" [validations]="getValidationMessages().qty" [type]="'text'"
-                      (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      (keypress)="keyPressDigitDecimalOnly($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
                     <airmid-textbox fxFlex="7%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
                       placeholder="Rate" [min]="0" (valueChange)="calculateTotalamt()"
                       [validations]="getValidationMessages().rate"
-                      (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
+                      (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"
+                       (keypress)="keyPressDigitDecimalOnly($event)"></airmid-textbox>
 
                     <airmid-textbox fxFlex="7%" label="Total Amount" formControlName="TotalAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
@@ -188,7 +189,7 @@
 
                     <airmid-textbox fxFlex="4%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
                       placeholder="MRP" [validations]="getValidationMessages().Disc" [type]="'text'"
-                      (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      (keypress)="keyPressDigitDecimalOnly($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
                     <div *ngIf="IsDiscPer2" fxFlex="4%">
@@ -197,7 +198,7 @@
 
                       <airmid-textbox fxFlex="4%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
                         placeholder="Disc2" [validations]="getValidationMessages().Disc" [type]="'text'"
-                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                        (keypress)="keyPressDigitDecimalOnly($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                     </div>
 
@@ -228,7 +229,7 @@
                     <airmid-textbox fxFlex="6%" label="Hos.MRP" formControlName="HospitalMRP"
                       [formGroup]="userFormGroup" placeholder="HospitalMRP"
                       [validations]="getValidationMessages().HospitalMRP" [type]="'text'"
-                      (keypress)="keyPressCharater($event)"></airmid-textbox>
+                      (keypress)="keyPressDigitDecimalOnly($event)"></airmid-textbox>
 
                     <airmid-textbox fxFlex="7%" label="Net Amount" formControlName="NetAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
@@ -356,10 +357,12 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
                   <input class="compact-cell-input" [(ngModel)]="contact.MRP"
                     (ngModelChange)="getCellCalculation(contact)" type="text" OnlyNumber [id]="'MRP_' + index"
-                    autocomplete="off" [disabled]="contact.IsVerifiedUserId > 0"
+                    autocomplete="off" [disabled]="contact.IsVerifiedUserId > 0 || contact.defRate > 0"
                     (keydown.arrowdown)="setFocus('MRP_' + (index + 1))"
                     (keydown.arrowup)="setFocus('MRP_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
-                    [min]="0" />
+                    [min]="0"   [matTooltip]="contact.IsVerifiedUserId > 0
+                   ? 'Field is disabled because this item is verified.' : contact.defRate > 0 ? 'Field is disabled because a defined rate exists.' : ''
+                     "/>
                   <!-- {{contact.MRP  | number:'1.2-2' }} -->
                 </mat-cell>
               </ng-container>
@@ -368,10 +371,20 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Rate</mat-header-cell>
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
                   <input class="compact-cell-input" type="text" [(ngModel)]="contact.Rate" step="0.1"
-                    [id]="'Rate_' + index" autocomplete="off" OnlyNumber [disabled]="contact.IsVerifiedUserId > 0"
+                    [id]="'Rate_' + index" autocomplete="off" OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || contact.defRate > 0"
                     (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('Rate_' + (index + 1))"
                     (keydown.arrowup)="setFocus('Rate_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
-                    [min]="0" />
+                    [min]="0"   [matTooltip]="contact.IsVerifiedUserId > 0
+                   ? 'Field is disabled because this item is verified.' : contact.defRate > 0 ? 'Field is disabled because a defined rate exists.' : ''
+                     "/>
+                </mat-cell>
+              </ng-container>
+
+               <ng-container matColumnDef="DefRate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                  class="w-130">Define Rate</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                  {{ contact.defRate | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
 
@@ -414,7 +427,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <input class="compact-cell-input" [(ngModel)]="contact.Disc2" [id]="'DiscPer2_' + index"
                     [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)" [min]="0"
-                    [max]="100" step="0.1" type="number" OnlyNumber autocomplete="off"
+                    [max]="100" step="0.1" type="text" OnlyNumber autocomplete="off"
                     (keydown.arrowdown)="setFocus('DiscPer2_' + (index + 1))"
                     (keydown.arrowup)="setFocus('DiscPer2_' + (index - 1))"
                     (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -819,19 +832,19 @@
                           [readonly]="true"></airmid-textbox>
 
                         <airmid-textbox fxFlex="8%" label="Debit Amt" formControlName="DebitAmount"
-                          [(ngModel)]="registerObj.debitNote" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [(ngModel)]="registerObj.debitNote" [formGroup]="_GRNList.GRNFinalForm" type="text"
                           [min]="0" (keyup)="getcalculateothercharges()"></airmid-textbox>
 
                         <airmid-textbox fxFlex="8%" label="Credit Amt" formControlName="CreditAmount"
-                          [(ngModel)]="registerObj.creditNote" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [(ngModel)]="registerObj.creditNote" [formGroup]="_GRNList.GRNFinalForm" type="text"
                           [min]="0" (keyup)="getcalculateothercharges()"></airmid-textbox>
 
                         <airmid-textbox fxFlex="8%" label="Other Charges" formControlName="OtherCharge"
                           (keyup)="getcalculateothercharges()" [(ngModel)]="registerObj.otherCharge"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"></airmid-textbox>
+                          [formGroup]="_GRNList.GRNFinalForm" type="text" [min]="0"></airmid-textbox>
 
                         <airmid-textbox fxFlex="8%" label="EwayBillNo" formControlName="EwayBillNo"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"></airmid-textbox>
+                          [formGroup]="_GRNList.GRNFinalForm" type="text" [min]="0"></airmid-textbox>
 
                         <airmid-datepicker fxFlex="12%" [formGroup]="_GRNList.GRNFinalForm"
                           formControlName="EwalBillDate" [label]="'EwayBill date'"></airmid-datepicker>

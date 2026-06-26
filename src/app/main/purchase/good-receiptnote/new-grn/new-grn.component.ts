@@ -43,6 +43,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'TotalQty',
         'MRP',
         'Rate',
+        'DefRate',
         'HospitalMRP',
         'TotalAmount',
         'Disc',
@@ -725,6 +726,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 UnitMRP: Number(formValues.MRP / formValues.ConversionFactor).toFixed(2),
                 ItemId: formValues.ItemName.itemId,
                 HospitalPerUnitMRP: Number(formValues.HospitalMRP / formValues.ConversionFactor).toFixed(2),
+                defRate:0
             });
             this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
             this.updateGRNFinalForm();
@@ -1409,7 +1411,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         StkID: element.stkID,
                         grnDetID: element.grnDetID,
                         HospitalMRP: element?.hmrpStrip || 0,
-                        HospitalPerUnitMRP: element?.hmrpUnitPrice || 0
+                        HospitalPerUnitMRP: element?.hmrpUnitPrice || 0,
+                        defRate:0
                     }
                 )
             })
@@ -1856,6 +1859,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         purchaseNo: Number(element.PurchaseNo) || 0,
                         HospitalMRP: Number(HosMRP) || 0,
                         HospitalPerUnitMRP: Number(HosPerUnitRate) || 0,
+                        defRate : element?.defRate || 0
+
                     });
                 this.dsItemNameList.data = this.chargeslist
                 this.updateGRNFinalForm();
