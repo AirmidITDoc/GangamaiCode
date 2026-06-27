@@ -21,7 +21,6 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { NewPcpndtFormComponent } from 'app/main/pathology/new-pcpndt-form/new-pcpndt-form.component';
 import { RadopPcpndService } from './radop-pcpnd.service';
 import { NewPcpndComponent } from './new-pcpnd/new-pcpnd.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
