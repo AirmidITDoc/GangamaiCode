@@ -283,7 +283,7 @@
                                         <div fxFlex="8%" fxFlex.xs="8%" fxFlex.sm="8%">
                                             <airmid-textbox label="Price" formControlName="price"
                                                 [formGroup]="chargeForm" [validations]="getValidationMessages().price"
-                                                [type]="'number'" [value]="vPrice" [readonly]="chkIsEditable" [min]="0">
+                                                [type]="'text'" [value]="vPrice" [readonly]="chkIsEditable" [min]="0">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
@@ -311,21 +311,21 @@
                                             <airmid-textbox label="Discount per" formControlName="discountPer"
                                                 [formGroup]="chargeForm"
                                                 [validations]="getValidationMessages().discountPer" [min]="0"
-                                                [max]="100" [type]="'number'">
+                                                [max]="100" [type]="'text'">
                                             </airmid-textbox>
 
                                         </div>
                                         <div fxFlex="7%" fxFlex.xs="7%" fxFlex.sm="7%">
                                             <airmid-textbox label="Discount amount" [formGroup]="chargeForm"
                                                 formControlName="discountAmount"
-                                                [validations]="getValidationMessages().discountAmount" [type]="'number'"
+                                                [validations]="getValidationMessages().discountAmount" [type]="'text'"
                                                 [min]="0" [max]="chargeForm.get('totalAmount')?.value">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Net amount" formControlName="netAmount"
                                                 [formGroup]="chargeForm"
-                                                [validations]="getValidationMessages().netAmount" [type]="'number'"
+                                                [validations]="getValidationMessages().netAmount" [type]="'text'"
                                                 [readonly]="true">
                                             </airmid-textbox>
                                         </div>
@@ -420,8 +420,9 @@
                                                                     *matHeaderCellDef>Price</mat-header-cell>
                                                                 <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <!-- {{contact.Price}} -->
-                                                                    <mat-form-field floatLabel="never">
+                                                                   
+                                                                    <span *ngIf="Is9_Digit_National_Id"> {{contact.Price}}</span>
+                                                                    <mat-form-field floatLabel="never"  *ngIf="!Is9_Digit_National_Id">
                                                                         <input matInput placeholder="Price" type="text"
                                                                             [(ngModel)]="contact.Price" required
                                                                             (ngModelChange)="onPriceOrQtyChange(contact)">

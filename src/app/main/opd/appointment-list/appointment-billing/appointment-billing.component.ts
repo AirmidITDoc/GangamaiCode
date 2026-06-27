@@ -313,10 +313,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 ServiceName: contact.serviceName,
                 Price: contact.classRate || 1,
                 Qty: 1,
-                TotalAmt: contact.classRate * 1,// totalAmount,
+                TotalAmt: (contact?.classRate || 1) * 1,// totalAmount,
                 DiscPer: 0,
                 DiscAmt: 0,
-                NetAmount: contact.classRate * 1,
+                NetAmount: (contact?.classRate || 1) * 1,
                 DoctorName: '-',
                 ClassName: contact.className || '-',
                 DoctorId: 0,
@@ -1230,6 +1230,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
     }
     getSelectedTariffObj(event) {
+        this.vTariffId = event?.value ?? this.patientDetail.tariffId;
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
     }
     BillSave() {
