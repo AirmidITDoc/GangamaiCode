@@ -24,6 +24,7 @@ export class NewreportConfigComponent {
     isActive: boolean = true;
     autocompleteModedReport: string = "ReportConfig";
     autocompleteModedMenu: string = "MenuMaster";
+     autocompleteModedBodyFile: string = "ReportBodyFile";
 
     reportPageOrientation: string[] = ["Portrait", "Landscape"];
     reportPageSize: string[] = ["A4", "C5"];
@@ -116,7 +117,7 @@ export class NewreportConfigComponent {
             reportHeaderFile: ["", [Validators.required, Validators.maxLength(500),
             Validators.pattern("^[A-Za-z .,@$&]+$")]],
 
-            reportBodyFile: ["MultiTotalReportFormat.html", [Validators.required, Validators.maxLength(500)]],
+            reportBodyFile: ["", [Validators.required, Validators.maxLength(500)]],
 
             reportFolderName: ["", [Validators.required, Validators.maxLength(500)]],
 
@@ -239,7 +240,10 @@ export class NewreportConfigComponent {
         this.menuName = obj.text
         this.myform.get('menuId')?.setValue(this.menuId)
     }
-
+   ListViewBodyfile(obj: any) {
+        console.log(obj) 
+        this.myform.get('reportBodyFile').setValue(obj.text) 
+    }
     ReportColumnWidthfunction(element) {
         console.log(element)
     }

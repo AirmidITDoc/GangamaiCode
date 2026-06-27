@@ -129,17 +129,19 @@ export class InpatientbrowseListComponent {
             this.menuActions.push('Patient Ledger');
             this.menuActions.push("Patient Statement");
             this.menuActions.push("Patient Sales Summary");
-            this.menuActions.push("Patient Sales Detail");
-
-            //this is for curreny symbol
-            const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
-            this.currency = CurrencyValue
+            this.menuActions.push("Patient Sales Detail"); 
         }
 
-        this.salesForm = this._BrowsSalesBillService.SearchFilter();
-        ///.getsaleslist();
-        this.onChangeFirst();
-        this.onChangeFirst_Retrun();
+        this.salesForm = this._BrowsSalesBillService.SearchFilter(); 
+        // this.onChangeFirst();
+        // this.onChangeFirst_Retrun();
+
+        //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue
+
+         this.getsaleslist();
+         this.getsalesreturnlist()
     }
 
     autocompletestore: string = "Store";
@@ -281,6 +283,7 @@ export class InpatientbrowseListComponent {
         this.OpIpType = 1//this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
         if (this.FromDate && this.ToDate) {
             this.getSaleslistdata();
+            this.getsaleslist();
         }
     }
     getSaleslistdata() {
@@ -302,7 +305,7 @@ export class InpatientbrowseListComponent {
             ],
         }
 
-        this.getsaleslist();
+    
     }
     chargelist: any = [];
     getsaleslist() {
@@ -512,7 +515,12 @@ export class InpatientbrowseListComponent {
         this.reg_No = this._BrowsSalesBillService.formReturn.get('RegNo').value || "0"
         this.sales_No = this._BrowsSalesBillService.formReturn.get('SalesNo').value || "0"
         this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type_Return').value || "0"
+
+        if (this.From_Date && this.To_Date) {
         this.getSalesRetrunlistdata();
+        this.getsalesreturnlist()
+        }
+        
     }
     getSalesRetrunlistdata() {
 
@@ -533,7 +541,7 @@ export class InpatientbrowseListComponent {
             ],
         }
 
-        this.getsalesreturnlist()
+        
     }
 
 

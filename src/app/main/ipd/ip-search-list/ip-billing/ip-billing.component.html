@@ -585,7 +585,8 @@
                         <ng-container matColumnDef="Price">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <mat-form-field floatLabel="never" class="compact-field">
+                            <span *ngIf="Is9_Digit_National_Id">{{contact.price}}</span>
+                            <mat-form-field floatLabel="never" class="compact-field"  *ngIf="!Is9_Digit_National_Id" >
                               <input matInput [(ngModel)]="contact.price" type="text" OnlyNumber placeholder="price"
                                 (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)"
                                 [readonly]="!contact.isNewRow && !contact.isEditMode">

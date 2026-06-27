@@ -24,45 +24,45 @@
             <div>
                 <form [formGroup]="myform">
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Report Section" formControlName="reportSectionId"
                                 [formGroup]="myform" [mode]="autocompleteModedReport"
                                 (selectionChange)="ListView($event)">
                             </airmid-dropdown>
                         </div>
 
-                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportName" formControlName="reportName" [value]="data?.reportName"
                                 [formGroup]="myform" [validations]="getValidationMessages().reportName"
                                 [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Menu Name" formControlName="menuId" [formGroup]="myform"
                                 [mode]="autocompleteModedMenu" (selectionChange)="ListView1($event)">
                             </airmid-dropdown>
                         </div>
 
-                         <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                         <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportMode" formControlName="reportMode" [value]="data?.reportMode"
                                 [formGroup]="myform" [validations]="getValidationMessages().reportMode"
                                 [maxLength]="500">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportTitle" formControlName="reportTitle"
                                 [value]="data?.reportTitle" [formGroup]="myform"
                                 [validations]="getValidationMessages().reportTitle" [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportHeaderFile" formControlName="reportHeaderFile"
                                 [value]="data?.reportHeaderFile" [formGroup]="myform"
                                 [validations]="getValidationMessages().reportHeaderFile" [maxLength]="1000">
-                            </airmid-textbox>
+                            </airmid-textbox> 
                         </div>
                     </div>
                     <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
@@ -272,30 +272,34 @@
 
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex fxFlex.xs="100%" fxFlex.sm="33%">
 
-                            <mat-form-field appearance="outline" fxFlex>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>reportBodyFile</mat-label>
                                 <input matInput value="MultiTotalReportFormat.html" readonly />
-                            </mat-form-field>
+                            </mat-form-field> -->
+
+                             <airmid-dropdown label="Report Header File" formControlName="reportBodyFile" [formGroup]="myform"
+                                [mode]="autocompleteModedBodyFile" (selectionChange)="ListViewBodyfile($event)">
+                            </airmid-dropdown>
 
                         </div>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportFolderName" formControlName="reportFolderName"
                                 [value]="data?.reportFolderName" [formGroup]="myform"
                                 [validations]="getValidationMessages().reportFolderName" [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportFileName" formControlName="reportFileName"
                                 [value]="data?.reportFileName" [formGroup]="myform"
                                 [validations]="getValidationMessages().reportFileName" [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
-                          <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageOrientation</mat-label>
                                 <mat-select placeholder="reportPageOrientation" formControlName="reportPageOrientation"
@@ -306,7 +310,7 @@
                             </mat-form-field>
                         </div>
 
-                          <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageSize</mat-label>
                                 <mat-select placeholder="reportPageSize" formControlName="reportPageSize"
