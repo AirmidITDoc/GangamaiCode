@@ -1,0 +1,108 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    PCPNDT List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onPcpndtForm()">+ PCPNDT
+            </button>
+
+        </div>
+    </div>
+
+     <ng-template #patientTypetemp let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+
+                            <mat-icon *ngIf="element.opipType==1" matTooltip="IP"
+                                class="pill green-600 s-16">circle</mat-icon>
+                            <mat-icon *ngIf="element.opipType==0" matTooltip="OP"
+                                class="pill orange s-16">circle</mat-icon>
+                          
+                        </div>
+                    </ng-template>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button matTooltip="Edit PCPNDT" (click)="onSave(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Print" (click)="getPCPNDTview(element)">
+                    <mat-icon> print</mat-icon>
+                </button>
+
+            </div>
+        </ng-template>
+
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue">
+                    </airmid-datepicker>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="FirstName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>MobileNo</mat-label>
+                        <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="MobileNo" [maxLength]="10" (input)="onChangeFirst()"
+                            (keypress)="keyPressAlphanumeric($event)" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MobileNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <airmid-dropdown label="City" formControlName="CityId" [formGroup]="myFilterform"
+                        [validations]="getValidationMessages().cityId" ValueField="cityId" TextField="cityName"
+                        (selectionChange)="onChangeFirst()" ApiUrl="CityMaster/get-cities"
+                        [(ngModel)]="gridConfig.filters[7].fieldValue">
+                    </airmid-dropdown>
+
+
+                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" fxLayout="column"
+                        class="gap-1" (change)="onChangeFirst()">
+                        <mat-label><b>Patient Type:</b></mat-label>
+                        <div fxLayout="row">
+                            <mat-radio-button value='3'>All</mat-radio-button>
+                            <mat-radio-button value='1'>IP</mat-radio-button>
+                            <mat-radio-button value='0'>OP</mat-radio-button>
+                        </div>
+                    </mat-radio-group>
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+
+
+</div>

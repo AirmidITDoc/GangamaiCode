@@ -12,10 +12,17 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./radio-report-dispatch/radio-report-dispatch.module").then((m) => m.RadioReportDispatchModule),
     },
+   {
+        path: "PCPNDT",
+        loadChildren: () =>
+            import("./radio-pcpnd/radio-pcpndi.module").then((m) => m.RadioPcpndiModule),
+    }
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+   
+  ],
     imports: [
         RouterModule.forChild(appRoutes),
     ]

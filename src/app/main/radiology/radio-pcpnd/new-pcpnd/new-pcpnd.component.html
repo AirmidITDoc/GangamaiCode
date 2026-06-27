@@ -1,0 +1,640 @@
+<div class="modal-wrapper grid-container resize-form-fields padding-fix">
+
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Patients Ultrasound Clinic Details</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container detail-wrapper">
+      <div fxLayout="column" fxLayoutGap="8px">
+
+        <span style="font-size: large;font-weight: bold;text-align: center;color: rgb(1, 58, 72); ">
+          SANE GURUJI AROGYA KENDRA
+        </span>
+        <span style="font-size: medium;font-weight: bold;text-align: center;color: rgb(1, 58, 72);  ">
+          Occ. No.2 B& C Wing. Sr. No. 165A,Pt.No. 195-208 Malwadi, Hadapsar, Pune.
+        </span>
+        <div class="detail-container input-error-hidden" *ngIf="vupdate">
+          <form [formGroup]="searchFormGroup">
+
+            <mat-card>
+              <mat-card-content class="py-8">
+
+                <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" fxFlex>
+
+                  <mat-radio-group aria-label="Select an option" formControlName="opIpType"
+                    [(ngModel)]="vSelectedOption" name="paymode" (change)="onChangePatientType($event)"
+                    (blur)="onChangePatientType($event)" fxLayout="row" style="padding: 10px;">
+
+                    <mat-radio-button value="0">OPD</mat-radio-button>
+                    <mat-radio-button value="1">IPD</mat-radio-button>
+
+                  </mat-radio-group>
+
+                  <div fxFlex="30%" fxFlex.sm="100%"
+                    *ngIf="searchFormGroup.get('opIpType').value != '1' && searchFormGroup.get('opIpType').value != '2'">
+
+                    <airmid-autocomplete label="MR. No" [formGroup]="searchFormGroup" formControlName="regId"
+                      placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
+                      ApiUrl="VisitDetail/search-patient-1?Keyword=" (selectionChange)="getSelectedObjOP($event)"
+                      ValueField="regId" TextField="formattedText"></airmid-autocomplete>
+                  </div>
+
+                  <div fxFlex="30%" fxFlex.sm="100%"
+                    *ngIf="searchFormGroup.get('opIpType').value != '0' && searchFormGroup.get('opIpType').value != '2'">
+                    <airmid-autocomplete label="MR. No" [formGroup]="searchFormGroup" formControlName="regId"
+                      placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
+                      ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjRegIP($event)"
+                      TextField="formattedText" ValueField="itemId"></airmid-autocomplete>
+                  </div>
+                </div>
+
+              </mat-card-content>
+            </mat-card>
+          </form>
+        </div>
+        <div *ngIf="RegId != ''">
+          <div class="content-card">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+              <div fxFlex.gt-sm="100%" fxFlex>
+                <div fxlayout="row" style="background-color: white">
+                  <div class="patient-info-sales my-8">
+
+
+                    <app-patient-information [uhidNo]="RegNo" [patientName]="PatientName"
+                      [doctorName]="DoctorNamecheck ? DoctorName : ''" [departmentName]="departmentName"
+                      [doa]="Patientdetails?.admissionDate" [ipdNo]="Patientdetails?.ipdno || Patientdetails?.ipdno"
+                      [ageString]="(Patientdetails?.ageYear  !== null ? Patientdetails?.ageYear  + 'Y|' + Patientdetails?.ageMonth + 'M|' + Patientdetails?.ageDay + 'D | ' + Patientdetails?.genderName : '')"
+                      [refDocName]="Patientdetails?.refDocName" [wardBedName]="Patientdetails?.roomName"
+                      [patientType]="Patientdetails?.patientType" [tariffName]="Patientdetails?.tariffName"
+                      [companyName]="Patientdetails?.companyName"></app-patient-information>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+          <mat-tab label="Process Detail">
+            <div class="detail-container">
+              <mat-panel-title
+                style="font-size: large;color: rgb(229, 234, 235);font-weight: bold;background-color: #3f51b5;font-weight: bold;padding: 10px;">Section
+                A - All diagnostic procedure and tests</mat-panel-title>
+              <form [formGroup]="personalFormGroup" class="input-error-hidden">
+
+                <mat-card>
+                  <mat-card-content>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="RefDoctor Name" formControlName="refDocId" [value]="data?.refDocId"
+                          [formGroup]="personalFormGroup" [validations]="getValidationMessages().refDocId"
+                          [mode]="autocompleteModerefdoc"></airmid-dropdown>
+                      </div>
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Total No. Of Living Children" formControlName="childrenCount"
+                          [value]="data?.childrenCount" [formGroup]="personalFormGroup"
+                          (keypress)="keyPressAlphanumeric($event)" [maxLength]="2"></airmid-textbox>
+                      </div>
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Husband's/Wife's/Father's Name" formControlName="relativeName"
+                          [value]="data?.relativeName" [formGroup]="personalFormGroup"
+                          [validations]="getValidationMessages().RelativeName"></airmid-textbox>
+                      </div>
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Last menstrual period or weeks of pregnancy" formControlName="mperiod"
+                          [value]="data?.mperiod" [formGroup]="personalFormGroup" [maxLength]="12"></airmid-textbox>
+                      </div>
+
+
+
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%; height: 70px;">
+                          <mat-label>No. Of Daughters with Age of each child</mat-label>
+                          <textarea matInput formControlName="daughtersDetails" placeholder="NoOfDaughters"
+                            [value]="data?.daughtersDetails" style="height: 100%; resize: none;"></textarea>
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%; height: 70px;">
+                          <mat-label>No. Of Sons with Age of each child</mat-label>
+                          <textarea matInput formControlName="sonsDetails" placeholder="sonsDetails"
+                            [value]="data?.sonsDetails" style="height: 100%; resize: none;"></textarea>
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </form>
+
+              <mat-panel-title
+                style="font-size: large;color: rgb(229, 234, 235);font-weight: bold;background-color: #3f51b5;font-weight: bold;padding: 10px;">Section
+                B - Non-invasive diagnostic procedure and tests</mat-panel-title>
+              <form [formGroup]="personalFormGroup" class="input-error-hidden">
+
+                <mat-card>
+                  <mat-card-content>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Doctor Name " formControlName="invasiveDoctorId"
+                          [value]="data?.invasiveDoctorId" [formGroup]="personalFormGroup"
+                          [validations]="getValidationMessages().invasiveDoctorId"
+                          [mode]="autocompleteModedeptdoc"></airmid-dropdown>
+                      </div>
+
+                      <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Pre-natal diagnostic result Date</mat-label>
+                          <input matInput [matDatepicker]="pickerHealthcard" placeholder="Choose a date"
+                            formControlName="resultDate" [value]="vresultDate" />
+                          <mat-datepicker-toggle matSuffix [for]="pickerHealthcard"></mat-datepicker-toggle>
+                          <mat-datepicker #pickerHealthcard></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-checkbox aria-label="" formControlName="ultrasound" style="margin-left:40px;"
+                          [value]="data?.ultrasound">
+                          Ultrasound </mat-checkbox>
+
+
+                        <mat-checkbox aria-label="" formControlName="obs" style="margin-left:40px;" [value]="data?.obs">
+                          Observation </mat-checkbox>
+
+                        <mat-checkbox formControlName="pelvic" style="font-weight: bold;padding-right:40px ;"
+                          [value]="data?.pelvic">
+                          Pelvic
+                        </mat-checkbox>
+
+                      </div>
+
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                      <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%; height: 90px;">
+                          <mat-label>Non-invasive result</mat-label>
+                          <textarea matInput formControlName="nonInvasive" placeholder="Non-invasive result"
+                            [value]="data?.nonInvasive" style="height: 100%; resize: none;"></textarea>
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%; height: 90px;">
+                          <mat-label>Indication/s for diagnosis procedure</mat-label>
+                          <textarea matInput formControlName="indication" rows="2" [value]="data?.indication"
+                            placeholder="Indication/s for diagnosis procedure"
+                            style="width: 100%;  resize: none;"></textarea>
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%;height: 90px;">
+                          <mat-label>Pre-natal diagnostic result</mat-label>
+                          <textarea matInput formControlName="prenatal" rows="2" [value]="data?.prenatal"
+                            placeholder="Pre-natal diagnostic result" style="width: 100%; resize: none;"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </form>
+
+              <!-- // -->
+              <mat-panel-title
+                style="font-size: large;color: rgb(229, 234, 235);font-weight: bold;background-color: #3f51b5;padding: 10px;">Section
+                Section
+                C -Invasive diagnostic procedure and tests</mat-panel-title>
+              <form [formGroup]="personalFormGroup" class="input-error-hidden">
+
+                <mat-card>
+                  <mat-card-content>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
+                          [value]="data?.consultantDocId" [formGroup]="personalFormGroup"
+                          [validations]="getValidationMessages().doctorId"
+                          [mode]="autocompleteModedeptdoc"></airmid-dropdown>
+
+                      </div>
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <airmid-dropdown label="complications" formControlName="complicationsId"
+                          [value]="data?.complicationsId" [formGroup]="personalFormGroup"
+                          [validations]="getValidationMessages().complicationsId"
+                          [mode]="autocompleteModeAnyOther"></airmid-dropdown>
+
+                      </div>
+
+                      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Indication of MTP" formControlName="indicationofMtp"
+                          [value]="data?.indicationofMtp" [formGroup]="personalFormGroup"></airmid-textbox>
+
+                      </div>
+
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="10px 0px grid"
+                      style="border: 1px solid #5a5d72; border-radius: 4px; padding: 8px;">
+                      <div class="modal-footer-container">
+                        <span style="font-size: large;color: rgb(16, 16, 74);font-weight: bold;">History of
+                          genetic/medical disease in
+                          the family</span>
+                        <div class="checkbox-container">
+                          <mat-checkbox aria-label="Clinical" formControlName="clinical" [value]="data?.clinical">
+                            Clinical
+                          </mat-checkbox>
+                          <mat-checkbox aria-label=" Bio-Chemical" formControlName="bioChemical"
+                            [value]="data?.bioChemical" style="margin-left:40px;">
+                            Bio-Chemical
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label="Cytogenetic" formControlName="cytogenetic"
+                            [value]="data?.cytogenetic" style="margin-left:40px;">
+                            Cytogenetic
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label="Other (e.g. radiological / ultrasonography)"
+                            [value]="data?.otherRadiological" formControlName="otherRadiological"
+                            style="margin-left:40px;">
+                            Other (e.g. radiological / ultrasonography) </mat-checkbox>
+                        </div>
+
+                      </div>
+                    </div>
+                    <span style="font-size: large;color: rgb(16, 16, 74);font-weight: bold;">Additional
+                      tests recommended </span>
+
+                    <div fxLayout="row wrap" fxLayoutGap="10px 0px grid"
+                      style="border: 1px solid #5a5d72; border-radius: 4px; padding: 8px;">
+
+                      <div fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <div class="checkbox-container">
+                          <mat-checkbox aria-label="Chromosomal" formControlName="chromosomal"
+                            [value]="data?.chromosomal">
+                            Chromosomal Studies
+                          </mat-checkbox>
+                          <mat-checkbox aria-label="Biochemical" formControlName="bioChemical"
+                            [value]="data?.bioChemical" style="margin-left:20px;">
+                            Biochemical Studiea
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label=" Molecular Studies" formControlName="molecular"
+                            [value]="data?.molecular" style="margin-left:20px;">
+                            Molecular Studies
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label="PreImplantation genetic diagnosis" formControlName="preImplantation"
+                            [value]="data?.preImplantation" style="margin-left:20px;">
+                            PreImplantation genetic diagnosis</mat-checkbox>
+
+                        </div>
+
+                      </div>
+                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Any Other" formControlName="anyOtherIndication"
+                          [value]="data?.anyOtherIndication" [formGroup]="personalFormGroup"
+                          [validations]="getValidationMessages().doctorId"
+                          [mode]="autocompleteModeAnyOther"></airmid-dropdown>
+
+                      </div>
+                    </div>
+                    <span style="font-size: large;color: rgb(16, 16, 74);font-weight: bold;">Indications
+                      for
+                      diagnosis procedure -
+                      (A) Previous Child/children with </span>
+
+                    <div fxLayout="row wrap" fxLayoutGap="10px 0px grid"
+                      style="border: 1px solid #5a5d72; border-radius: 4px; padding: 8px;">
+                      <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <div class="checkbox-container">
+                          <mat-checkbox aria-label="Chromosomal disorder" formControlName="chromosomaldisorder"
+                            [value]="data?.chromosomaldisorder">
+                            Chromosomal disorder
+                          </mat-checkbox>
+                          <mat-checkbox aria-label="Metabolic disorder" formControlName="metabolicdisorder"
+                            [value]="data?.metabolicdisorder" style="margin-left:30px;">
+                            Metabolic disorder
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label="Congenital anomaly" formControlName="congenitalanomaly"
+                            [value]="data?.congenitalanomaly" style="margin-left:30px;">
+                            Congenital anomaly
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label="Mental Disability" formControlName="mentalDisability"
+                            [value]="data?.mentalDisability" style="margin-left:30px;">
+                            Mental Disability</mat-checkbox>
+
+                          <mat-checkbox aria-label="Haemoglobinopathy" formControlName="haemoglobinopathy"
+                            [value]="data?.haemoglobinopathy" style="margin-left:30px;">
+                            Haemoglobinopathy</mat-checkbox>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <div fxLayout="row wrap" fxLayoutGap="10px 0px grid">
+                      <div fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <div class="checkbox-container">
+
+                          <mat-checkbox aria-label="Sex Linked disorder" formControlName="sexLinkeddisorder"
+                            [value]="data?.sexLinkeddisorder">
+                            Sex Linked disorder</mat-checkbox>
+
+                          <mat-checkbox aria-label="Single gene disorder" formControlName="singlegenedisorder"
+                            [value]="data?.singlegenedisorder" style="margin-left:30px;">
+                            Single gene disorder</mat-checkbox>
+
+
+                          <mat-checkbox aria-label=" Advanced maternal age (35 Yrs)" formControlName="mage"
+                            [value]="data?.mage" style="margin-left:30px;">
+                            Advanced maternal age (35 Yrs)</mat-checkbox>
+
+                          <mat-checkbox aria-label="Mother/father/sibling has genetic disease"
+                            [value]="data?.geneticDisease" formControlName="geneticDisease" style="margin-left:30px;">
+                            Mother/father/sibling has genetic disease</mat-checkbox>
+
+
+                        </div>
+
+                      </div>
+
+                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Any Other" formControlName="anyOther1" [formGroup]="personalFormGroup"
+                          [value]="data?.anyOther1" [validations]="getValidationMessages().doctorId"
+                          [mode]="autocompleteModeAnyOther"></airmid-dropdown>
+
+                      </div>
+                    </div>
+                    <span style="font-size: large;color: rgb(16, 16, 74);font-weight: bold;">Invasive
+                      procedures carried
+                      out</span>
+
+                    <div fxLayout="row wrap" fxLayoutGap="10px 0px grid"
+                      style="border: 1px solid #5a5d72; border-radius: 4px; padding: 8px;">
+                      <div fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+
+                        <div class="checkbox-container">
+                          <mat-checkbox aria-label="Amniocentesis" formControlName="amniocentesis"
+                            [value]="data?.amniocentesis">
+                            Amniocentesis
+                          </mat-checkbox>
+                          <mat-checkbox aria-label=" Chorionic Villi aspiration"
+                            formControlName="chorionicVilliaspiration" style="margin-left:15px;"
+                            [value]="data?.chorionicVilliaspiration">
+                            Chorionic Villi aspiration
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label="Fetal Biopsy" formControlName="fetalBiopsy"
+                            [value]="data?.fetalBiopsy" style="margin-left:15px;">
+                            Fetal Biopsy
+                          </mat-checkbox>
+
+                          <mat-checkbox aria-label="Cordocentesis" formControlName="cordocentesis"
+                            [value]="data?.cordocentesis" style="margin-left:15px;">
+                            Cordocentesis</mat-checkbox>
+
+
+                        </div>
+
+                      </div>
+
+                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <airmid-dropdown label="Any Other" formControlName="anyOther2" [formGroup]="personalFormGroup"
+                          [validations]="getValidationMessages().anyOther2" [value]="data?.anyOther2"
+                          [mode]="autocompleteModeAnyOther"></airmid-dropdown>
+
+                      </div>
+                    </div>
+
+
+                    <span
+                      style="font-size: 22px;font-weight: bold;color: rgb(7, 47, 58);text-align: center;align-items: center;padding:10px">Final
+                      Result
+                      Details</span>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+
+                      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Result Conveyed to" formControlName="resultConveyedto"
+                          [value]="data?.resultConveyedto" [formGroup]="personalFormGroup"></airmid-textbox>
+
+                      </div>
+
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>Procedure Date</mat-label>
+                          <input matInput [matDatepicker]="Procedure" placeholder="Choose a date"
+                            formControlName="procedureDate" />
+                          <mat-datepicker-toggle matSuffix [for]="Procedure"></mat-datepicker-toggle>
+                          <mat-datepicker #Procedure></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>Consent Date of pregnant woman/person</mat-label>
+                          <input matInput [matDatepicker]="Consent" placeholder="Choose a date"
+                            formControlName="consentDate" />
+                          <mat-datepicker-toggle matSuffix [for]="Consent"></mat-datepicker-toggle>
+                          <mat-datepicker #Consent></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                      <mat-form-field appearance="outline" style="width: 100%; height: 70px;">
+                        <mat-label>Procedure/test Result</mat-label>
+                        <textarea matInput formControlName="testResult" placeholder="testResult"
+                          [value]="data?.testResult" style="height: 100%; resize: none;"></textarea>
+                      </mat-form-field>
+                    </div>
+
+
+                  </mat-card-content>
+                </mat-card>
+              </form>
+              <!-- // -->
+              <mat-panel-title
+                style="font-size: large;color: rgb(229, 234, 235);font-weight: bold;background-color: #3f51b5;padding: 10px;">Section
+                Section
+                D : Declaration</mat-panel-title>
+              <form [formGroup]="personalFormGroup" class="input-error-hidden">
+
+                <mat-card>
+                  <mat-card-content>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Declaration Doctor" formControlName="declarationDoctorid"
+                          [formGroup]="personalFormGroup" [value]="data?.declarationDoctorid"
+                          [validations]="getValidationMessages().doctorId"
+                          [mode]="autocompleteModedeptdoc"></airmid-dropdown>
+                      </div>
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <airmid-textbox label="ABHA Number" formControlName="abhanumber"
+                          (keypress)="keyPressAlphanumeric($event)" [maxLength]="14" [value]="data?.abhaNumber"
+                          [formGroup]="personalFormGroup"></airmid-textbox>
+
+                      </div>
+
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <airmid-textbox label="ABHA Address" formControlName="address" [value]="data?.abhaAddress"
+                          [formGroup]="personalFormGroup"></airmid-textbox>
+
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </form>
+            </div>
+          </mat-tab>
+          <mat-tab label="Indications table">
+            <div class="modal-body">
+              <div class="modal-body-container">
+                <div class="main-content h-100-p overflow-auto ml-8">
+
+                  <div class="modal-footer-container"
+                    style="background-color: azure;font-weight: bold;color: rgb(4, 63, 86);">
+                    <mat-card>
+                      <mat-card-content class="py-8" style="text-align: center;">
+                        <p style="font-size: 22px;color: rgb(16, 61, 74);font-weight: bold;">
+                          Indications
+                          for
+                          Ultrasonography</p>
+                        <p style="font-size: large;color: rgb(16, 61, 74);font-weight: bold;">
+                          Comprehensive
+                          list for Obstetric and Gynecological Ultrasound</p>
+                      </mat-card-content>
+                    </mat-card>
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+
+                      <div class="modal-card-container airmid-table-container"
+                        style="max-height: 600px; overflow-y: auto;">
+                        <mat-table #table matSort [dataSource]="DSIndicationList" class="airmid-table"
+                          style="background-color: rgb(188, 240, 241);font-size: large;font-weight: bold;"
+                          [@animateStagger]="{ value: '50' }">
+
+                          <ng-container matColumnDef="descvalue" sticky>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
+                              <span class="material-icons">cached</span>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" class="w-60">
+                              <mat-checkbox aria-label="Checked"
+                                (change)="tableElementChecked($event, contact)"></mat-checkbox>
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="descName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">Desc
+                              Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-800">{{
+                              element.Value
+                              }}</mat-cell>
+                          </ng-container>
+
+
+                          <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                          </ng-container>
+
+                          <mat-header-row class="accent"
+                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
+                            [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                          <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{ hide: DSIndicationList != null }"></mat-footer-row>
+                          <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{ hide: !(DSIndicationList != null && DSIndicationList.data.length == 0) }"></mat-footer-row>
+                        </mat-table>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <footer>
+                    <p style="font-size: large;font-weight: bold;padding: 10px;color: rgb(50, 9, 9);">✅
+                      Checkboxes are saved automatically
+                      in your browser</p>
+                  </footer>
+
+
+                </div>
+              </div>
+
+
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="modal-footer">
+    <div class="footer-navigation-container">
+
+      <div class="modal-footer-container">
+        <div class="checkbox-container">
+
+        </div>
+        <div class="modal-footer-buttons">
+
+          <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

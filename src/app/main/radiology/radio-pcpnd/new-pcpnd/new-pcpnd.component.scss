@@ -1,0 +1,13 @@
+.compact-table {
+  .mat-header-row,
+  .mat-row {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 2px 8px !important;
+    font-size: 14px !important;
+  }
+}
