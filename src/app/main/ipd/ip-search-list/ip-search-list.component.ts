@@ -525,26 +525,27 @@ export class IPSearchListComponent implements OnInit {
         this.getfilterdata();
     }
     onChangeDiscahrge(event) {
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+        debugger
+        // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+        // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
 
         if (this.myFilterform.get('IsDischarge').value == false) {
             this.myFilterform.get('fromDate').setValue('')
             this.myFilterform.get('enddate').setValue('')
-            // this.fromDate = "1900-01-01"
-            // this.toDate = "1900-01-01"
-            // this.status = '0'
+            this.fromDate = "1900-01-01"
+            this.toDate = "1900-01-01"
+            this.status = '0'
             this.apiUrl = "Admission/AdmissionList"
 
             this.getfilterdata();
         } else {
             this.myFilterform.get('fromDate').setValue(new Date())
             this.myFilterform.get('enddate').setValue(new Date())
-            // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-            // this.status = '1'
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '1'
             this.apiUrl = "Admission/AdmissionDischargeList"
-            this.getfilterdataDisc();
+            this.getfilterdataDischarge();
         }
 
     }
@@ -564,7 +565,7 @@ export class IPSearchListComponent implements OnInit {
             // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
             // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
             this.status = '1'
-            this.getfilterdataDisc();
+            this.getfilterdataDischarge();
         } else {
             // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
             // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
@@ -602,7 +603,7 @@ export class IPSearchListComponent implements OnInit {
     }
 
 
-    getfilterdataDisc() {
+    getfilterdataDischarge() {
         debugger
         this.gridConfig = {
             apiUrl: "Admission/AdmissionDischargeList",
