@@ -37,7 +37,7 @@ export class RadopPcpndService {
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             CityId: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            PatientTypeSearch: ['1'],
+            PatientTypeSearch: ['2'],
         });
     }
     public pcpndtSave(Param) {
@@ -54,4 +54,10 @@ export class RadopPcpndService {
     public getIndicationList(employee) {
         return this._httpClient.PostData("Common", employee);
     }
+
+
+  public getIndicationById(Id) {
+        return this._httpClient.GetData("Pcpndprocess/IndicationtList" + Id);
+    }
+    
 }

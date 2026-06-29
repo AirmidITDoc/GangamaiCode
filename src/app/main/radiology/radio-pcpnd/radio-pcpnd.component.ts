@@ -20,7 +20,7 @@ import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-s
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service'; 
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { RadopPcpndService } from './radop-pcpnd.service';
 import { NewPcpndComponent } from './new-pcpnd/new-pcpnd.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
@@ -38,7 +38,7 @@ export class RadioPcpndComponent {
     regNo: any = "0"
     l_name: any = "%"
 
-    opipType: any = "1";
+    opipType: any = "2";
     mobileno = "%"
     CityId = "0"
     page: PageNames = PageNames.PATIENT;
@@ -64,7 +64,7 @@ export class RadioPcpndComponent {
             heading: "Patient", key: "opipType", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.patientTypetemp, width: 100,
         },
-        { heading: "Process Date", key: "procedureDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 120 },
+        { heading: "Process Date", key: "processDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 120 },
         { heading: "UHID", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Age ", key: "age", sort: true, align: 'left', emptySign: 'NA', width: 70 },
@@ -80,9 +80,9 @@ export class RadioPcpndComponent {
         { heading: "ABHA Address", key: "abhaAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "ABHA Number", key: "abhaNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "ResultDate", key: "resultDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "TestResult", key: "testResult", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Result Conveyedto", key: "resultConveyedto", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Result Conveyedto", key: "resultConveyedto", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Declaration Doctor", key: "declarationDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "TestResult", key: "testResult", sort: true, align: 'left', emptySign: 'NA', width: 250 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
