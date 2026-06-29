@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 
+
 const appRoutes: Routes = [
     {
         path: "doctortype-master",
@@ -26,10 +27,20 @@ const appRoutes: Routes = [
             ),
     },
 
+    {
+        path: "Extdoctor-master",
+        loadChildren: () =>
+            import("./ext-new-doctor-master/ext-doctor-master.module").then(
+                (m) => m.ExtDoctorMasterModule
+            ),
+    },
+
 ];
 
 @NgModule({
     declarations: [
+
+
 
     ],
     imports: [RouterModule.forChild(appRoutes)],
