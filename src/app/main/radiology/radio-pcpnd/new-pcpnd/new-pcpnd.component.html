@@ -282,10 +282,10 @@
                             Cytogenetic
                           </mat-checkbox>
 
-                          <mat-checkbox aria-label="Other (e.g. radiological / ultrasonography)"
+                          <mat-checkbox aria-label="Other (e.g. Radiological / Ultrasonography)"
                             [value]="data?.otherRadiological" formControlName="otherRadiological"
                             style="margin-left:40px;">
-                            Other (e.g. radiological / ultrasonography) </mat-checkbox>
+                            Other (e.g. Radiological / Ultrasonography) </mat-checkbox>
                         </div>
 
                       </div>
@@ -513,14 +513,14 @@
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                         <airmid-textbox label="ABHA Number" formControlName="abhanumber"
-                          (keypress)="keyPressAlphanumeric($event)" [maxLength]="14" [value]="data?.abhaNumber"
+                          (keypress)="keyPressAlphanumeric($event)" [maxLength]="14"
                           [formGroup]="personalFormGroup"></airmid-textbox>
 
                       </div>
 
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                        <airmid-textbox label="ABHA Address" formControlName="address" [value]="data?.abhaAddress"
+                        <airmid-textbox label="ABHA Address" formControlName="address"
                           [formGroup]="personalFormGroup"></airmid-textbox>
 
                       </div>
@@ -553,8 +553,8 @@
 
                       <div class="modal-card-container airmid-table-container"
                         style="max-height: 600px; overflow-y: auto;">
-                        <mat-table #table matSort [dataSource]="DSIndicationList" class="airmid-table"
-                          style="background-color: rgb(188, 240, 241);font-size: large;font-weight: bold;"
+                        <mat-table #table matSort [dataSource]="DSIndicationList" class="airmid-table compact-table"
+                          style="background-color: rgb(188, 240, 241); font-size: large; font-weight: bold;"
                           [@animateStagger]="{ value: '50' }">
 
                           <ng-container matColumnDef="descvalue" sticky>
@@ -586,8 +586,7 @@
 
                           <mat-header-row class="accent"
                             *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
-                            [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns" class="element"></mat-row>
                           <mat-footer-row *matFooterRowDef="['loading']"
                             [ngClass]="{ hide: DSIndicationList != null }"></mat-footer-row>
                           <mat-footer-row *matFooterRowDef="['noData']"

@@ -48,7 +48,7 @@ export class RadopPcpndService {
     }
 
  public getReportView(mode) {
-         return this._httpClient.PostData("Report/ViewReport", mode);
+         return this._httpClient.PostData("Report/ViewReportFromDB", mode);
     }
 
     public getIndicationList(employee) {

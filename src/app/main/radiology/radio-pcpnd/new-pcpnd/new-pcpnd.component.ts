@@ -75,6 +75,7 @@ export class NewPcpndComponent {
 
   DSIndicationList = new MatTableDataSource<Indicationdetail>();
   DSIndicationList1 = new MatTableDataSource<Indicationdetail>();
+  IndicationList = new MatTableDataSource<Indicationdetail>();
 
   autocompleteModedeptdoc: string = "ConDoctor";
   autocompleteModerefdoc: string = "RefDoctor";
@@ -115,35 +116,42 @@ export class NewPcpndComponent {
     if ((this.data?.pcpndtProcessId ?? 0) > 0) {
       console.log(this.data)
       this.vupdate = false
+      this.data = this.data
       this.registerObj = this.data
-      this.RegId = this.data.opipid
-      this.PatientName = this.data.patientName;
-      this.OP_IP_Id = this.data.opipid;
+      this.RegId = this.registerObj.opipid
+      this.PatientName = this.registerObj.patientName;
+      this.OP_IP_Id = this.registerObj.opipid;
 
-      this.DoctorName = this.data.condDoctor;
+      this.DoctorName = this.registerObj.condDoctor;
 
 
-      this.vresultDate = new Date(this.data.resultDate);
-      this.vprocedureDate = new Date(this.data.procedureDate);
-      this.vconsentDate = new Date(this.data.consentDate);
-      this.vprocessDate = new Date(this.data.processDate);
+      this.vresultDate = new Date(this.registerObj.resultDate);
+      this.vprocedureDate = new Date(this.registerObj.procedureDate);
+      this.vconsentDate = new Date(this.registerObj.consentDate);
+      this.vprocessDate = new Date(this.registerObj.processDate);
 
-      console.log(this.data?.invasiveDoctorId)
+      console.log(this.registerObj?.invasiveDoctorId)
       debugger
-      this.personalFormGroup.get("abhanumber").setValue(parseInt(this.data?.abhaNumber))
-      this.personalFormGroup.get("address").setValue(this.data?.abhaAddress)
+      this.personalFormGroup.get("abhanumber").setValue((this.registerObj?.abhaNumber))
+
+      this.personalFormGroup.get("address").setValue(
+        this.registerObj?.abhaAddress
+          ? String(this.registerObj.abhaAddress)
+          : ''
+      );
 
 
-      this.personalFormGroup.get("resultDate").setValue(new Date("6/26/2026"))
+      this.personalFormGroup.get("resultDate").setValue(new Date(this.vresultDate))
       this.personalFormGroup.get("procedureDate").setValue(this.vprocedureDate)
       this.personalFormGroup.get("consentDate").setValue(this.vconsentDate)
       this.personalFormGroup.get("processDate").setValue(this.vprocessDate)
 
       this.vpcpndtprocessId = this.registerObj.pcpndtProcessId
+
+      // this.getIndbyIdList()
+
     }
-
   }
-
   getIndList() {
 
     const param = {
@@ -165,6 +173,55 @@ export class NewPcpndComponent {
 
 
   }
+
+  // getIndbyIdList() {
+
+  //   const param = {
+
+  //     "first": 0,
+  //     "rows": 10,
+  //     "sortField": "PcpndprocessDetId",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "PCPNDTProcessId",
+  //         "fieldValue": this.vpcpndtprocessId,
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "exportType": "JSON",
+  //     "columns": [
+  //       {
+  //         "data": "string",
+  //         "name": "string"
+  //       }
+  //     ]
+  //   }
+
+  //   console.log(param)
+  //   this._RadopPcpndService.getIndicationList(param).subscribe(res => {
+  //     console.log(res)
+  //     this.IndicationList.data = res
+
+  //     this.DSIndicationList.data.forEach(element => {
+  //       const match = this.IndicationList.data.find(
+  //         item => item.descName === element.descName
+  //       );
+
+  //       if (match) {
+  //         element.IsActive = match.IsActive;     // copy the actual value (true or false)
+  //       } else {
+  //         element.IsActive = false;
+  //       }
+  //     });
+
+  //   });
+
+
+  // }
+
+
+
   tableElementChecked(event: any, element: any) {
 
     const index = this.DSIndicationList1.data.findIndex(item => item === element);
@@ -195,7 +252,7 @@ export class NewPcpndComponent {
       "opipid": this.OP_IP_Id,
       "opiptype": this.OP_IPType,
       "refDocId": [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      "childrenCount": [0],
+      "childrenCount": ["0"],
       "relativeName": this.PatientName,
       "mperiod": [''],
 
@@ -349,219 +406,219 @@ export class NewPcpndComponent {
 
   getPCPNDTview(PCPNDTProcessId) {
     setTimeout(() => {
-
+      debugger
       const param = {
-   "searchFields": [
-    {
-        "fieldName": "PCPNDTProcessId",
-          "fieldValue": PCPNDTProcessId,
+        "searchFields": [
+          {
+            "fieldName": "PCPNDTProcessId",
+            "fieldValue": String(PCPNDTProcessId),
             "opType": "Equals"
-      },
+          },
 
         ],
-      "mode": "AdmissionCancelReport"
-    }
+        "mode": "PcndtProcessForm"
+      }
 
 
       console.log(param)
       this._RadopPcpndService.getReportView(param).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "PCPNDT Form  Viewer"
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "PCPNDT Form  Viewer"
 
-          }
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+
         });
-
-      matDialog.afterClosed().subscribe(result => {
-
       });
-    });
 
-  }, 100);
+    }, 100);
 
-}
-
-vSelectedOption: any = '1';
-onChangePatientType(event) {
-  if (event.value == '0') {
-    this.RegId = '';
-    this.OP_IPType = 0
-
-  } else if (event.value == '1') {
-    this.RegId = '';
-    this.OP_IPType = 1
   }
-}
 
-getSelectedObjOP(obj) {
-  this.Patientobj = obj
-  console.log(obj);
-  this.Patientdetails = obj;
-  this.OPDNoCheck = false;
-  this.DoctorNamecheck = false;
-  this.IPDNocheck = false;
-  this.PatientName = obj.firstName + ' ' + obj.lastName;
-  this.RegId = obj.regId;
-  this.OP_IP_Id = obj.visitId;
-  this.OPDNo = obj.opdNo;
-  this.HospitalId = obj.hospitalId;
-  this.DoctorName = obj.doctorName;
-  this.RegNo = obj?.regNo;
+  vSelectedOption: any = '1';
+  onChangePatientType(event) {
+    if (event.value == '0') {
+      this.RegId = '';
+      this.OP_IPType = 0
 
-}
+    } else if (event.value == '1') {
+      this.RegId = '';
+      this.OP_IPType = 1
+    }
+  }
 
-getSelectedObjRegIP(obj) {
-  console.log(obj);
-
-  // this.Patientobj = obj
-  let IsDischarged = 0;
-  IsDischarged = obj.isDischarged;
-  if (IsDischarged == 1) {
-    Swal.fire('Selected Patient is already discharged');
-    this.RegId = '';
-  } else {
+  getSelectedObjOP(obj) {
+    this.Patientobj = obj
+    console.log(obj);
     this.Patientdetails = obj;
-    this.DoctorNamecheck = true;
-    this.IPDNocheck = false;
     this.OPDNoCheck = false;
+    this.DoctorNamecheck = false;
+    this.IPDNocheck = false;
     this.PatientName = obj.firstName + ' ' + obj.lastName;
-    this.RegId = obj.regID;
-    this.OP_IP_Id = obj.admissionID;
-    this.IPDNo = obj.ipdNo;
+    this.RegId = obj.regId;
+    this.OP_IP_Id = obj.visitId;
+    this.OPDNo = obj.opdNo;
+    this.HospitalId = obj.hospitalId;
     this.DoctorName = obj.doctorName;
-    this.tariffName = obj.tariffName;
-    this.roomName = obj.roomName;
-    this.bedName = obj.bedName;
     this.RegNo = obj?.regNo;
-    this.departmentName = obj?.departmentName;
 
   }
-}
-getDateTime(dateTimeObj) {
-  this.dateTimeObj = dateTimeObj;
-}
-getValidationMessages() {
-  return {
-    RegId: [],
-    ClinicName: [
-      { name: "required", Message: "First Name is required" },
-      { name: "maxLength", Message: "Enter only upto 50 chars" },
-      { name: "pattern", Message: "only char allowed." }
-    ],
-    ClinicAddress: [
-      // { name: "required", Message: "Middle Name is required" },
-      // { name: "maxLength", Message: "Enter only upto 50 chars" },
-      { name: "pattern", Message: "only char allowed." }
-    ],
-    RelativeName: [
-      { name: "required", Message: "Last Name is required" },
-      // { name: "maxLength", Message: "Enter only upto 50 chars" },
-      { name: "pattern", Message: "only char allowed." }
-    ],
-    address: [
-      { name: "required", Message: "Address is required" },
 
-    ],
-    NoOfDaughters: [
-      { name: "required", Message: "Prefix Name is required" }
-    ],
-    RegistrationNo: [
-      { name: "required", Message: "RegistrationNo is required" }
-    ],
-    PatientAddress: [
-      { name: "required", Message: "PatientAddress is required" }
-    ],
-    PatientName: [
-      { name: "required", Message: "City Name is required" }
-    ],
-    PatientContactNo: [
-      { name: "required", Message: "PatientContactNo is required" }
-    ],
-    refDocId: [
-      { name: "required", Message: "refDocId is required" }
-    ],
+  getSelectedObjRegIP(obj) {
+    console.log(obj);
 
-    Sons: [
-      { name: "required", Message: "Sons is required" }
-    ],
-    mobileNo: [
-      { name: "pattern", Message: "Only numbers allowed" },
-      { name: "required", Message: "Mobile No is required" },
-      { name: "minLength", Message: "10 digit required." },
-      { name: "maxLength", Message: "More than 10 digits not allowed." }
+    // this.Patientobj = obj
+    let IsDischarged = 0;
+    IsDischarged = obj.isDischarged;
+    if (IsDischarged == 1) {
+      Swal.fire('Selected Patient is already discharged');
+      this.RegId = '';
+    } else {
+      this.Patientdetails = obj;
+      this.DoctorNamecheck = true;
+      this.IPDNocheck = false;
+      this.OPDNoCheck = false;
+      this.PatientName = obj.firstName + ' ' + obj.lastName;
+      this.RegId = obj.regID;
+      this.OP_IP_Id = obj.admissionID;
+      this.IPDNo = obj.ipdNo;
+      this.DoctorName = obj.doctorName;
+      this.tariffName = obj.tariffName;
+      this.roomName = obj.roomName;
+      this.bedName = obj.bedName;
+      this.RegNo = obj?.regNo;
+      this.departmentName = obj?.departmentName;
 
-    ],
-    phoneNo: [
-      { name: "pattern", Message: "Only numbers allowed" },
-      // { name: "required", Message: "phoneNo No is required" },
-      { name: "minLength", Message: "10 digit required." },
-      { name: "maxLength", Message: "More than 10 digits not allowed." }
-
-    ],
-
-    DoctorID: [
-      { Message: "DoctorID is required" }
-    ],
-    Noninvasive: [
-      { name: "required", Message: "Noninvasive is required" }
-    ],
-    Indication: [
-      { name: "required", Message: "Indication is required" }
-    ],
-    Prenatal: [
-      { name: "required", Message: "Prenatal is required" }
-    ],
-    ConsultantDocId: [
-      { name: "required", Message: "Doctor Name is required" }
-    ],
-    Complications: [
-      { name: "required", Message: "Ref Doctor Name is required" }
-    ],
-    Doctor2: [
-      { name: "required", Message: "Doctor2 is required" }
-    ],
-
-    cityId: [
-      { name: "required", Message: "cityId is required" }
-    ],
-    doctorId: [
-      { name: "required", Message: "doctorId is required" }
-    ],
-    anyOther2: [],
-    complicationsId: [],
-    invasiveDoctorId: [],
-    consultantDocId: [],
-  };
-}
-
-onClose() { }
-
-
-
-// keyPressAlphanumeric(event) {
-//   const inp = String.fromCharCode(event.keyCode);
-//   if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-//     return false;
-//   } else {
-//     event.preventDefault();
-//     return false;
-//   }
-// }
-
-keyPressAlphanumeric(event) {
-  const inp = String.fromCharCode(event.keyCode);
-  if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-    return true;
-  } else {
-    event.preventDefault();
-    return false;
+    }
   }
-}
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
+  getValidationMessages() {
+    return {
+      RegId: [],
+      ClinicName: [
+        { name: "required", Message: "First Name is required" },
+        { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      ClinicAddress: [
+        // { name: "required", Message: "Middle Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      RelativeName: [
+        { name: "required", Message: "Last Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      address: [
+        { name: "required", Message: "Address is required" },
+
+      ],
+      NoOfDaughters: [
+        { name: "required", Message: "Prefix Name is required" }
+      ],
+      RegistrationNo: [
+        { name: "required", Message: "RegistrationNo is required" }
+      ],
+      PatientAddress: [
+        { name: "required", Message: "PatientAddress is required" }
+      ],
+      PatientName: [
+        { name: "required", Message: "City Name is required" }
+      ],
+      PatientContactNo: [
+        { name: "required", Message: "PatientContactNo is required" }
+      ],
+      refDocId: [
+        { name: "required", Message: "refDocId is required" }
+      ],
+
+      Sons: [
+        { name: "required", Message: "Sons is required" }
+      ],
+      mobileNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Mobile No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+      phoneNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        // { name: "required", Message: "phoneNo No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+
+      DoctorID: [
+        { Message: "DoctorID is required" }
+      ],
+      Noninvasive: [
+        { name: "required", Message: "Noninvasive is required" }
+      ],
+      Indication: [
+        { name: "required", Message: "Indication is required" }
+      ],
+      Prenatal: [
+        { name: "required", Message: "Prenatal is required" }
+      ],
+      ConsultantDocId: [
+        { name: "required", Message: "Doctor Name is required" }
+      ],
+      Complications: [
+        { name: "required", Message: "Ref Doctor Name is required" }
+      ],
+      Doctor2: [
+        { name: "required", Message: "Doctor2 is required" }
+      ],
+
+      cityId: [
+        { name: "required", Message: "cityId is required" }
+      ],
+      doctorId: [
+        { name: "required", Message: "doctorId is required" }
+      ],
+      anyOther2: [],
+      complicationsId: [],
+      invasiveDoctorId: [],
+      consultantDocId: [],
+    };
+  }
+
+  onClose() { }
+
+
+
+  // keyPressAlphanumeric(event) {
+  //   const inp = String.fromCharCode(event.keyCode);
+  //   if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+  //     return false;
+  //   } else {
+  //     event.preventDefault();
+  //     return false;
+  //   }
+  // }
+
+  keyPressAlphanumeric(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
 
 

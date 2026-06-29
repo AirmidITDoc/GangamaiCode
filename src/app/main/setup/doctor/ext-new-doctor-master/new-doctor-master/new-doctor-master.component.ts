@@ -73,20 +73,20 @@ export class NewDoctorMasterComponent {
             firstName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                // Validators.pattern("^[A-Za-z/() ]*$"),
-                this._FormvalidationserviceService.noWhitespaceValidator()
+                Validators.pattern("^[A-Za-z / () ]*$"),
+                // this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             lastName: ['', [
                 // Validators.required,
                 Validators.maxLength(50),
-                // Validators.pattern("^[A-Za-z/() ]*$"),
-                this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
+                Validators.pattern("^[A-Za-z / () ]*$"),
+                // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
             ]],
             doctorName: ['', [
                 Validators.required,
-                Validators.maxLength(150),
+                Validators.maxLength(100),
                 // Validators.pattern("^[A-Za-z/() ]*$"),
-                this._FormvalidationserviceService.noWhitespaceValidator()
+                // this._FormvalidationserviceService.noWhitespaceValidator()
             ]]
         });
     }
@@ -125,7 +125,7 @@ export class NewDoctorMasterComponent {
     }
 
     changeName() {
-        this.vdoctorName = "Dr." + ' ' +  this.myForm.get("firstName").value + ' ' + this.myForm.get("lastName").value
+        this.vdoctorName = "Dr." + ' ' + this.myForm.get("firstName").value + ' ' + this.myForm.get("lastName").value
     }
 
 
