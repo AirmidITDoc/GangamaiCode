@@ -28,7 +28,7 @@ export class NewDoctorMasterComponent {
     selectedTabIndex = 0;
     myForm: FormGroup
     vextDoctorId = 0
-
+    vdoctorName: any = ''
     registerObj = new DoctorMaster({});
 
     onCloseDialog = new EventEmitter<any>();
@@ -94,9 +94,11 @@ export class NewDoctorMasterComponent {
 
     onSubmit() {
 
+
+        this.myForm.get("doctorName").setValue(this.vdoctorName)
         debugger
         if (!this.myForm.invalid) {
-              console.log(this.myForm.value)
+            console.log(this.myForm.value)
 
             this._doctorService.ExtdoctortMasterInsert(this.myForm.value).subscribe((response) => {
                 this.onClose();
@@ -121,6 +123,12 @@ export class NewDoctorMasterComponent {
         }
 
     }
+
+    changeName() {
+        this.vdoctorName = "Dr." + ' ' +  this.myForm.get("firstName").value + ' ' + this.myForm.get("lastName").value
+    }
+
+
     onClear(val: boolean) {
         this.myForm.reset();
     }
