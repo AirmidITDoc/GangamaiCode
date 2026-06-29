@@ -33,7 +33,7 @@ export class ExtDoctorMasterService {
 
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("Doctor?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("ExternalDoctor?Id=" + m_data.toString());
     }
 
     public ExtdoctortMasterInsert(Param: any) {

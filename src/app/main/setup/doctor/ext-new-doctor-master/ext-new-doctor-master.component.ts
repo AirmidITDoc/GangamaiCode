@@ -50,7 +50,7 @@ export class ExtNewDoctorMasterComponent {
         }
     ]
     onDelete(data: any) {
-        this._doctorService.deactivateTheStatus(data.doctorId).subscribe((response: any) => {
+        this._doctorService.deactivateTheStatus(data.extDoctorId).subscribe((response: any) => {
             this.toastr.success(response.message);
             this.grid.bindGridData();
         });
