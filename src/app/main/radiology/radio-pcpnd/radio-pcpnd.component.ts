@@ -221,14 +221,15 @@ export class RadioPcpndComponent {
     }
 
 
-    getPCPNDTview(PCPNDTProcessId) {
+    getPCPNDTview(element) {
+        debugger
         setTimeout(() => {
 
             const param = {
                 "searchFields": [
                     {
                         "fieldName": "PCPNDTProcessId",
-                        "fieldValue": String(PCPNDTProcessId),
+                        "fieldValue": String(element.pcpndtProcessId),
                         "opType": "Equals"
                     },
 
