@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { getMethodMeta, VERIFY_METHODS, VerifyMethod } from '../abha-verify.model';
-import { AbhaProfile } from '../abha-model';
+import { AbhaProfile, VerifyResponse } from '../abha-model';
 
 @Component({
     selector: 'app-abha-verify',
@@ -19,6 +19,7 @@ export class AbhaVerifyComponent {
     token: string = "";
     /** Banner subtitle for the verified-profile-card */
     bannerSubtitle = '';
+    isAddress: boolean = false;
 
     pickMethod(id: VerifyMethod): void {
         this.activeMethod = id;
@@ -28,13 +29,15 @@ export class AbhaVerifyComponent {
     backToPicker(): void {
         this.activeMethod = null;
         this.verifiedProfile = null;
-        this.isAbhaCreated=false;
-        this.token='';
+        this.isAbhaCreated = false;
+        this.token = '';
     }
 
-    onVerified(accesstoken: string): void {
+    onVerified(accesstoken: VerifyResponse): void {
+        debugger
         this.isAbhaCreated = true;
-        this.token = accesstoken;
+        this.token = accesstoken.accesstoken;
+        this.isAddress = accesstoken.isAddress;
         if (this.activeMethod) {
             const meta = getMethodMeta(this.activeMethod);
             this.bannerSubtitle = `Verified using ${meta.title}.`;

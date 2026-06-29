@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, GENDER_LABELS, VerifyUserResponse } from '../../abha-model';
+import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, GENDER_LABELS, VerifyResponse, VerifyUserResponse } from '../../abha-model';
 import { LinkedAccount } from '../../abha-verify.model';
 import { AbhaValidators } from '../../abha.validators';
 import { AbhaService } from '../../abha.service';
@@ -20,7 +20,7 @@ import { AbhaService } from '../../abha.service';
     styleUrls: ['./method-shared.scss', './verify-by-mobile.component.scss']
 })
 export class VerifyByMobileComponent implements OnInit {
-    @Output() verified = new EventEmitter<string>();
+    @Output() verified = new EventEmitter<VerifyResponse>();
 
     step: 1 | 2 | 3 = 1;
     mobileForm!: FormGroup;
@@ -118,7 +118,7 @@ export class VerifyByMobileComponent implements OnInit {
                     // Single account → emit directly
                     if ((!r.accounts || r.accounts.length <= 1)) {
                         this.snack.open('Verified — single ABHA found.', 'OK', { duration: 1800 });
-                        this.verified.emit(r.token);
+                        this.verified.emit({accesstoken: r.token,isAddress:false});
                         return;
                     }
 
@@ -150,7 +150,7 @@ export class VerifyByMobileComponent implements OnInit {
         this.abhaService.verifyUser({ ABHANumber: this.pickForm.value.ABHANumber, txnId: this.txnId })
             .subscribe((r: VerifyUserResponse) => {
                 if (r.token) {
-                    this.verified.emit(r.token);
+                    this.verified.emit({accesstoken: r.token,isAddress:false});
                     //this.snack.open(r.message, 'OK', { duration: 2500 });
                 }
                 else {

@@ -138,6 +138,10 @@ export interface AbhaTokens {
     refreshToken: string;
     refreshExpiresIn: number;
 }
+export interface VerifyResponse {
+    accesstoken: string;
+    isAddress: boolean;
+}
 
 export interface AbhaProfile {
     ABHANumber: string;

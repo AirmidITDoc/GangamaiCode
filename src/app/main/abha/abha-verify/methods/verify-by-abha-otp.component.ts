@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile } from '../../abha-model';
+import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, VerifyResponse } from '../../abha-model';
 import { OtpSystem } from '../../abha-verify.model';
 import { AbhaService } from '../../abha.service';
 import { AbhaValidators } from '../../abha.validators';
@@ -22,7 +22,7 @@ import { AbhaValidators } from '../../abha.validators';
 })
 export class VerifyByAbhaOtpComponent implements OnInit {
     @Input() otpSystem: OtpSystem = 'abdm';
-    @Output() verified = new EventEmitter<string>();
+    @Output() verified = new EventEmitter<VerifyResponse>();
 
     step: 1 | 2 = 1;
     abhaForm!: FormGroup;
@@ -150,7 +150,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
                 if (r.txnId) {
                     if (r.authResult === 'success' && r.accounts) {
                         this.snack.open(r.message, 'OK', { duration: 1800 });
-                        this.verified.emit(r.token);
+                        this.verified.emit({ accesstoken: r.token, isAddress: false });
                     } else {
                         this.otpForm.get('otp')?.setErrors({ invalid: r.message });
                         this.snack.open(r.message, 'OK', { duration: 3000 });
