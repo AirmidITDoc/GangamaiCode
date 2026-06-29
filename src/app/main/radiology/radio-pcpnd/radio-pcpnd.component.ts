@@ -65,7 +65,7 @@ export class RadioPcpndComponent {
             template: this.patientTypetemp, width: 100,
         },
         { heading: "Process Date", key: "processDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 120 },
-        { heading: "UHID", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "OPDIPD", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Age ", key: "age", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -221,19 +221,20 @@ export class RadioPcpndComponent {
     }
 
 
-    getPCPNDTview(PCPNDTProcessId) {
+    getPCPNDTview(element) {
+        debugger
         setTimeout(() => {
 
             const param = {
                 "searchFields": [
                     {
                         "fieldName": "PCPNDTProcessId",
-                        "fieldValue": PCPNDTProcessId,
+                        "fieldValue": String(element.pcpndtProcessId),
                         "opType": "Equals"
                     },
 
                 ],
-                "mode": "AdmissionCancelReport"
+                "mode": "PcndtProcessForm"
             }
 
 
