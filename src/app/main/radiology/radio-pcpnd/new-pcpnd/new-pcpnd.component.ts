@@ -596,7 +596,9 @@ export class NewPcpndComponent {
     };
   }
 
-  onClose() { }
+onClose() {
+    this._matDialog.closeAll()
+  }
 
 
 
