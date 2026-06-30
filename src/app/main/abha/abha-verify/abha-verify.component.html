@@ -41,7 +41,7 @@
     </div>
 
     <!-- ============== VERIFIED PROFILE ============== -->
-    <app-profile-card-step *ngIf="isAbhaCreated" [token]="token" (reset)="resetFlow()"></app-profile-card-step>
+    <app-profile-card-step *ngIf="isAbhaCreated" [isAddress]="isAddress" [token]="token" (reset)="resetFlow()"></app-profile-card-step>
     <!-- <app-verified-profile-card *ngIf="verifiedProfile" [profile]="verifiedProfile"
         bannerTitle="ABHA verified successfully" [bannerSubtitle]="bannerSubtitle" [showLockedTags]="false"
         [bannerColor]="'blue'" resetButtonLabel="Verify another ABHA"

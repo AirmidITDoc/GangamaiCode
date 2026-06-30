@@ -281,7 +281,9 @@ export class GRNReturnComponent implements OnInit {
 
             });
         this.vSupplier = "0"
-        this.grid.bindGridData();
+         setTimeout(() => {
+            this.grid.bindGridData();
+        }, 1000); 
         this.onChangeFirst();
     }
 

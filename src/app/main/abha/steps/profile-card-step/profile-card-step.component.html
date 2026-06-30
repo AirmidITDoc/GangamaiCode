@@ -6,7 +6,7 @@
         <div class="banner-text">
             <strong>ABHA created successfully</strong>
             <span>
-                Tagged with HIMS ID <span class="mono">{{ profile.himsId }}</span>.
+                Tagged with HIMS ID <span class="mono">{{ profile.abhaNumber }}</span>.
                 Name, DOB, Gender, ABHA Number and ABHA Address are non-editable in HIMS.
             </span>
         </div>
@@ -88,9 +88,9 @@
                         <div class="kv-row">
                             <span class="k">ABHA Address</span>
                             <span class="v mono">
-                                {{ profile.preferredAbhaAddress }}
+                                {{ profile?.preferredAbhaAddress??profile.address }}
                                 <button mat-icon-button class="icon-btn" matTooltip="Copy"
-                                    (click)="copyToClipboard(profile.preferredAbhaAddress)">
+                                    (click)="copyToClipboard(profile?.preferredAbhaAddress??profile.address)">
                                     <mat-icon>content_copy</mat-icon>
                                 </button>
                                 <span class="lock-tag" *ngIf="isLocked('preferredAbhaAddress')">LOCKED</span>
@@ -129,7 +129,7 @@
                         </div>
                         <div class="kv-row">
                             <span class="k">Full Name</span>
-                            <span class="v">{{ profile.name }}</span>
+                            <span class="v">{{ profile?.name??"" }}</span>
                         </div>
                         <div class="kv-row">
                             <span class="k">Date of Birth</span>
@@ -343,9 +343,9 @@
                                         <span
                                             class="field-label-local">{{profile.localizedDetails?.localizedLabels?.name??profile.localizedDetails.name}}</span>
                                     </div>
-                                    <div class="field-value-en">{{ profile.name }}</div>
+                                    <div class="field-value-en">{{ profile?.name??(profile.firstName+' '+profile.middleName+' '+profile.lastName) }}</div>
                                     <div class="field-value-local" *ngIf="profile.localizedDetails">
-                                        {{ profile.localizedDetails.name }}
+                                        {{ profile.localizedDetails?.name??"" }}
                                     </div>
                                 </div>
 

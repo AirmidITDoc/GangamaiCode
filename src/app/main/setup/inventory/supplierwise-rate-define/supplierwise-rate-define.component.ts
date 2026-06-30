@@ -35,7 +35,7 @@ export class SupplierwiseRateDefineComponent {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 { 
-                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.UnitOfMeasurement, permissionType.Edit), callback: (data: any) => {
+                    action: gridActions.edit, callback: (data: any) => {
                         this.onNewRate(data);
                     }
                 }, {

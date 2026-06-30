@@ -11,6 +11,7 @@ import { AbhaService } from '../../abha.service';
 export class ProfileCardStepComponent implements OnInit {
     @Output() reset = new EventEmitter<void>();
     @Input() token = "";
+    @Input() isAddress = false;
     profile?: AbhaProfile;
 
     // Fields that are locked (non-editable in HIMS)
@@ -26,13 +27,13 @@ export class ProfileCardStepComponent implements OnInit {
     constructor(private abhaService: AbhaService) { }
 
     ngOnInit(): void {
-        this.abhaService.getProfile(this.token).subscribe((r: AbhaProfile) => {
+        this.abhaService.getProfile(this.token, this.isAddress).subscribe((r: AbhaProfile) => {
             this.profile = r;
             this.loadQr();
         });
     }
     loadQr() {
-        this.abhaService.getQr(this.token).subscribe((byteArray: string) => {
+        this.abhaService.getQr(this.token, this.isAddress).subscribe((byteArray: string) => {
             this.qrUrl = `data:image/png;base64,${byteArray}`;
         });
     }
