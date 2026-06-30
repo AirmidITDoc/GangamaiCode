@@ -733,6 +733,11 @@ export class CancellationComponent implements OnInit {
         this.grid1.bindGridData();
     }
 
+
+     onClose() {
+        this._matDialog.closeAll();
+      
+    }
 }
 export class CancellationList {
     RegNo: any;

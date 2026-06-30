@@ -1,15 +1,19 @@
 <div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
     <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
-            </mat-icon>
+            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 MRP Adjustment
+                
+            <label style="margin-bottom: 15px;">ItemName :</label>
+            <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
             </span>
+
         </div>
         <div class="close-icon">
             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
@@ -26,55 +30,49 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <form [formGroup]="MRPAdjform">
-                            <div fxLayout="row" style="font-size: large;font-weight: bold;">
+                            <!-- <div fxLayout="row" style="font-size: large;font-weight: bold;">
                                 <label style="margin-bottom: 15px;">ItemName :</label>
                                 <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
-                            </div>
+                            </div> -->
 
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <airmid-textbox label="Old MRP" formControlName="OldMRP"
-                                    [formGroup]="MRPAdjform"
-                                    [validations]="getValidationMessages().OldMRP" [value]="vOldMRP"
-                                     [readonly]="true">
+                                <airmid-textbox label="Old MRP" formControlName="OldMRP" [formGroup]="MRPAdjform"
+                                    [validations]="getValidationMessages().OldMRP" [value]="vOldMRP" [readonly]="true">
                                 </airmid-textbox>
 
                                 <airmid-textbox label="Old LandedRate" formControlName="LandedRate"
-                                    [formGroup]="MRPAdjform"
-                                    [validations]="getValidationMessages().LandedRate" [value]="vLandedRate"
-                                     [readonly]="true">
+                                    [formGroup]="MRPAdjform" [validations]="getValidationMessages().LandedRate"
+                                    [value]="vLandedRate" [readonly]="true">
                                 </airmid-textbox>
 
                                 <airmid-textbox label="Old PurchaseRate" formControlName="PurchaseRate"
-                                    [formGroup]="MRPAdjform"
-                                    [validations]="getValidationMessages().PurchaseRate" [value]="vPurchaseRate"
-                                    [readonly]="true">
+                                    [formGroup]="MRPAdjform" [validations]="getValidationMessages().PurchaseRate"
+                                    [value]="vPurchaseRate" [readonly]="true">
                                 </airmid-textbox>
                             </div>
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <airmid-textbox label="New MRP" formControlName="NewMRP"
-                                    [formGroup]="MRPAdjform"  [value]="vNewMRP"   [type]="'number'" 
-                                    [validations]="getValidationMessages().NewMRP"  (input)="calculationAmt()">
+                                <airmid-textbox label="New MRP" formControlName="NewMRP" [formGroup]="MRPAdjform"
+                                    [value]="vNewMRP" [type]="'number'" [validations]="getValidationMessages().NewMRP"
+                                    (input)="calculationAmt()">
                                 </airmid-textbox>
-                             
+
                                 <airmid-textbox label="New LandedRate" formControlName="newLandedRate"
-                                    [formGroup]="MRPAdjform" [value]="vNewLandedRate"   [type]="'number'" 
-                                    [validations]="getValidationMessages().newLandedRate" 
-                                    
-                                     (keyup)="calculationAmt()">
+                                    [formGroup]="MRPAdjform" [value]="vNewLandedRate" [type]="'number'"
+                                    [validations]="getValidationMessages().newLandedRate" (keyup)="calculationAmt()">
                                 </airmid-textbox>
-                               
+
                                 <airmid-textbox label="New PurchaseRate" formControlName="NewPurchaseRate"
-                                    [formGroup]="MRPAdjform" [value]="vNewPurchaseRate"  (input)="calculationAmt()" 
-                                    [validations]="getValidationMessages().NewPurchaseRate"  [type]="'number'" >
+                                    [formGroup]="MRPAdjform" [value]="vNewPurchaseRate" (input)="calculationAmt()"
+                                    [validations]="getValidationMessages().NewPurchaseRate" [type]="'number'">
                                 </airmid-textbox>
                             </div>
                         </form>
                         <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
-                             <button class="btn btn-primary " (click)="onSubmit()">Save</button>
                             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                           
+                            <button class="btn btn-primary " (click)="onSubmit()">Save</button>
+
                         </div>
                     </div>
                 </div>

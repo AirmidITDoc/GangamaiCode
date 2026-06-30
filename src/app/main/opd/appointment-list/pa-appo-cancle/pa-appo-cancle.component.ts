@@ -50,7 +50,7 @@ export class PaAppoCancleComponent {
   CreateCancleeForm() {
     return this.formBuilder.group({
       VisitDate: [(new Date()).toISOString(), Validators.required],
-      Reason: ['', Validators.required]
+      Reason: ['']
     });
   }
 

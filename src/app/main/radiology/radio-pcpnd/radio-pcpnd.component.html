@@ -16,17 +16,26 @@
 
         </div>
     </div>
+    <div fxLayout="row" fxLayoutAlign="end" class="gap-8" style="margin-right: 20px;">
 
-     <ng-template #patientTypetemp let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+        <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+            <span class="orange-600-fg">OP</span>
+        </div>
+        <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+            <span class="green-600-fg">IP</span>
+        </div>
 
-                            <mat-icon *ngIf="element.opipType==1" matTooltip="IP"
-                                class="pill green-600 s-16">circle</mat-icon>
-                            <mat-icon *ngIf="element.opipType==0" matTooltip="OP"
-                                class="pill orange s-16">circle</mat-icon>
-                          
-                        </div>
-                    </ng-template>
+    </div>
+    <ng-template #patientTypetemp let-element>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+
+            <mat-icon *ngIf="element.opipType==1" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+            <mat-icon *ngIf="element.opipType==0" matTooltip="OP" class="pill orange s-16">circle</mat-icon>
+
+        </div>
+    </ng-template>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <ng-template #actionButtonTemplate let-element>

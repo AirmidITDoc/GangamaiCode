@@ -709,27 +709,49 @@ export class AppointmentListComponent implements OnInit {
 
 
     OnAppointmentCancle(row) {
-        const dialogRef = this._matDialog.open(PaAppoCancleComponent,
-            {
-                maxHeight: "65vh",
-                maxWidth: '90vh',
-                data: row
+        debugger
+        if (row.mPbillNo == 0) {
+            const dialogRef = this._matDialog.open(PaAppoCancleComponent,
+                {
+                    maxHeight: "65vh",
+                    maxWidth: '90vh',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                console.log('The dialog was closed - Insert Action', result);
+
+                this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+                this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+
+                this.onChangeFirst()
+
             });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-
-            this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-            this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-
-            this.onChangeFirst()
-
-        });
-
+        }
+        else {
+            Swal.fire("The appointment cannot be cancelled as the bill has already been generated.")
+        }
     }
 
     OnViewReportPdf(element) {
-        if (element.visitId)
-            this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            // icon: "warning",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+                debugger
+                this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+            } else
+                this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceiptWithoutHeader");
+        });
+
     }
 
 

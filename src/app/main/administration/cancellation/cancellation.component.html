@@ -44,7 +44,7 @@
                                 <span>Please Enter Bill Cancel Reason</span>  
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reason</mat-label>
-                                    <textarea rows="7" matInput name="Body" placeholder="Write here......" id="Body"
+                                    <textarea rows="5" matInput name="Body" placeholder="Write here......" id="Body"
                                         type="text" required [(ngModel)]="VReason"></textarea>
                                 </mat-form-field>
                             </div> 
@@ -54,6 +54,7 @@
         </div> 
         <div class="modal-footer">
             <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                   <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
                 <button class="btn btn-primary" (click)="OnSaveCancelBill()">Save</button> 
             </div>
         </div>
