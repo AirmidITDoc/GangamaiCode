@@ -95,11 +95,12 @@ export class PaAppoCancleComponent {
         };
         console.log(submitData);
         this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
-          this.toastr.success(response.message);
+          // this.toastr.success(response.message);
           this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
-        });
+        }
+      );
       }
     });
 
