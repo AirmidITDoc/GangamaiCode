@@ -121,9 +121,8 @@ export class NewPcpndComponent {
       this.RegId = this.registerObj.opipid
       this.PatientName = this.registerObj.patientName;
       this.OP_IP_Id = this.registerObj.opipid;
-
+      this.OP_IPType=this.registerObj.opipType
       this.DoctorName = this.registerObj.condDoctor;
-
 
       this.vresultDate = new Date(this.registerObj.resultDate);
       this.vprocedureDate = new Date(this.registerObj.procedureDate);
@@ -131,7 +130,7 @@ export class NewPcpndComponent {
       this.vprocessDate = new Date(this.registerObj.processDate);
 
       console.log(this.registerObj?.invasiveDoctorId)
-      debugger
+
       this.personalFormGroup.get("abhanumber").setValue((this.registerObj?.abhaNumber))
 
       this.personalFormGroup.get("address").setValue(
@@ -148,7 +147,28 @@ export class NewPcpndComponent {
 
       this.vpcpndtprocessId = this.registerObj.pcpndtProcessId
 
-      // this.getIndbyIdList()
+      this.getIndbyIdList()
+
+
+      debugger
+      // if (this.data?.opipType == 0) {
+      //   setTimeout(() => {
+      //     this._RadopPcpndService.getVisitById(this.data.opipid).subscribe((response) => {
+      //       this.registerObj = response;
+      //       this.Patientdetails = response;
+      //       console.log(response)
+      //     });
+      //   }, 500);
+      // } else {
+      //   this._RadopPcpndService.getAdmissionById(this.data.opipid).subscribe((response) => {
+      //     this.Patientdetails = response;
+      //     console.log(response)
+
+
+      //   });
+      // }
+
+
 
     }
   }
@@ -173,52 +193,59 @@ export class NewPcpndComponent {
 
 
   }
+  activeIndications: any[] = [];
+  getIndbyIdList() {
 
-  // getIndbyIdList() {
-
-  //   const param = {
-
-  //     "first": 0,
-  //     "rows": 10,
-  //     "sortField": "PcpndprocessDetId",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       {
-  //         "fieldName": "PCPNDTProcessId",
-  //         "fieldValue": this.vpcpndtprocessId,
-  //         "opType": "Equals"
-  //       }
-  //     ],
-  //     "exportType": "JSON",
-  //     "columns": [
-  //       {
-  //         "data": "string",
-  //         "name": "string"
-  //       }
-  //     ]
-  //   }
-
-  //   console.log(param)
-  //   this._RadopPcpndService.getIndicationList(param).subscribe(res => {
-  //     console.log(res)
-  //     this.IndicationList.data = res
-
-  //     this.DSIndicationList.data.forEach(element => {
-  //       const match = this.IndicationList.data.find(
-  //         item => item.descName === element.descName
-  //       );
-
-  //       if (match) {
-  //         element.IsActive = match.IsActive;     // copy the actual value (true or false)
-  //       } else {
-  //         element.IsActive = false;
-  //       }
-  //     });
-
-  //   });
+    const param = {
+      "first": 0,
+      "rows": 100,
+      "sortField": "PcpndprocessDetId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "PCPNDTProcessId",
+          "fieldValue": String(this.vpcpndtprocessId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+      ]
+    }
 
 
-  // }
+    console.log(param)
+    this._RadopPcpndService.getIndicationbyIdList(param).subscribe(res => {
+      console.log(res.data)
+
+      this.IndicationList.data = res.data
+
+      if (this.DSIndicationList.data) {
+
+        this.IndicationList.data.forEach((elementInd) => {
+          if (elementInd.indicationValues === true ||
+            elementInd.indicationValues === 'true' ||
+            elementInd.indicationValues === 1) {
+
+            this.activeIndications.push(elementInd);
+          }
+        });
+
+
+        this.DSIndicationList1.data.forEach((element) => {
+
+          element.IsActive = this.activeIndications.some(item =>
+            item.indicationDesc?.trim().toLowerCase() === element.Value?.trim().toLowerCase()
+          );
+        });
+
+        this.DSIndicationList.data = [...this.DSIndicationList1.data];
+      }
+
+      console.log(this.DSIndicationList.data)
+    });
+
+  }
 
 
 
@@ -227,7 +254,6 @@ export class NewPcpndComponent {
     const index = this.DSIndicationList1.data.findIndex(item => item === element);
 
     if (index !== -1) {
-      // Update using index
       this.DSIndicationList1.data[index].IsActive = true
 
     }
@@ -354,7 +380,7 @@ export class NewPcpndComponent {
       });
 
       this.personalFormGroup.get("opipid").setValue(parseInt(this.OP_IP_Id || 0))
-      this.personalFormGroup.get("opiptype").setValue(parseInt(this.OP_IPType || 0))
+      this.personalFormGroup.get("opiptype").setValue(parseInt(this.OP_IPType ))
       this.personalFormGroup.get("pcpndtprocessId").setValue(this.vpcpndtprocessId)
       this.personalFormGroup.get("abhanumber").setValue(String(this.personalFormGroup.get("abhanumber").value))
 
@@ -454,7 +480,7 @@ export class NewPcpndComponent {
       this.OP_IPType = 1
     }
   }
-
+  genderName = ""
   getSelectedObjOP(obj) {
     this.Patientobj = obj
     console.log(obj);
@@ -469,7 +495,12 @@ export class NewPcpndComponent {
     this.HospitalId = obj.hospitalId;
     this.DoctorName = obj.doctorName;
     this.RegNo = obj?.regNo;
+    this.genderName = obj?.genderName;
 
+    if (this.genderName == 'Male') {
+      Swal.fire('Select Female Patient Only.............');
+      return;
+    }
   }
 
   getSelectedObjRegIP(obj) {
@@ -496,9 +527,15 @@ export class NewPcpndComponent {
       this.bedName = obj.bedName;
       this.RegNo = obj?.regNo;
       this.departmentName = obj?.departmentName;
+      this.genderName = obj?.genderName;
+    }
 
+    if (this.genderName == 'Male') {
+      Swal.fire('Selected Female Patient Only.............');
+      return;
     }
   }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -511,13 +548,10 @@ export class NewPcpndComponent {
         { name: "pattern", Message: "only char allowed." }
       ],
       ClinicAddress: [
-        // { name: "required", Message: "Middle Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
         { name: "pattern", Message: "only char allowed." }
       ],
       RelativeName: [
         { name: "required", Message: "Last Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
         { name: "pattern", Message: "only char allowed." }
       ],
       address: [
@@ -553,14 +587,6 @@ export class NewPcpndComponent {
         { name: "maxLength", Message: "More than 10 digits not allowed." }
 
       ],
-      phoneNo: [
-        { name: "pattern", Message: "Only numbers allowed" },
-        // { name: "required", Message: "phoneNo No is required" },
-        { name: "minLength", Message: "10 digit required." },
-        { name: "maxLength", Message: "More than 10 digits not allowed." }
-
-      ],
-
       DoctorID: [
         { Message: "DoctorID is required" }
       ],
@@ -597,20 +623,11 @@ export class NewPcpndComponent {
   }
 
 onClose() {
+
     this._matDialog.closeAll()
   }
 
 
-
-  // keyPressAlphanumeric(event) {
-  //   const inp = String.fromCharCode(event.keyCode);
-  //   if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-  //     return false;
-  //   } else {
-  //     event.preventDefault();
-  //     return false;
-  //   }
-  // }
 
   keyPressAlphanumeric(event) {
     const inp = String.fromCharCode(event.keyCode);
@@ -629,11 +646,16 @@ export class Indicationdetail {
   descName: any;
   descvalue: any;
   IsActive: any;
-
+  Value: any;
+  indicationValues: any
+  indicationDesc: any
   constructor(Indicationdetail) {
     this.descName = Indicationdetail.descName || '';
     this.descvalue = Indicationdetail.descvalue || false;
     this.IsActive = Indicationdetail.IsActive || false;
+    this.Value = Indicationdetail.Value || '';
+    this.indicationDesc = Indicationdetail.indicationDesc || '';
+    this.indicationValues = Indicationdetail.indicationValues || false;
 
   }
 }

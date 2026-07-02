@@ -476,7 +476,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-            netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            netPayableAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: [paymentType],
             GovrnApprovAmt: [0],
             mpesaMobile: [''],
@@ -504,7 +504,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            netPayableAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             billDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
@@ -1408,9 +1408,11 @@ debugger
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
+                 this.OpBillForm.get('payments.payTmamount')?.setValue(0)  
                 this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
                 this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+                this.OpBillForm.get('payments.payTmtranNo')?.setValue('');
 
                 this.ModeOfPaymentsArray.clear();
                 ModePaymentObj.forEach(item => {
@@ -1456,13 +1458,13 @@ debugger
                     cashCounterId: this.searchForm.get('CashCounterID')?.value || 0,
                     transactionType: 0,
                     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
-                });
-                debugger
+                }); 
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
                 this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+                this.OpBillForm.get('payments.cashPayAmount')?.setValue(0)
                 this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.OPFooterForm.get('UpiNo')?.value || 0)
                 this.OpBillForm.get('payments.payTmdate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
@@ -1572,14 +1574,16 @@ debugger
                 return
             }
         }
+        this.resetform();
     }
     resetform() {
-
+debugger
         this.chargeList = [];
         this.dsChargeList.data = []
         this.patientDetail = [];
         this.patientDetail.tariffId = 1;
         this.patientDetail.ClassId = 1;
+        this.vOPIPId = 0 ;
         this.searchForm.get('regId').setValue('')
         this.OPFooterForm.reset({
             totalAmt: 0,
@@ -1587,6 +1591,7 @@ debugger
             concessionAmt: 0,
             netPayableAmt: 0,
             concessionReasonId: 0,
+            UpiNo:0
         });
         this.OPFooterForm.get('paymentType').setValue('CreditPay')
         this.PatientName = ''

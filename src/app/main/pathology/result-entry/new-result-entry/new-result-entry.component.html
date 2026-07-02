@@ -100,18 +100,26 @@
 
                                 <span class="h1">Patient Information</span> 
 
-                                <button mat-raised-button color="primary" (click)="onUpload()"
-                                    style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
-                                    Upload
-                                    <mat-icon class="ml-4">cloud_upload</mat-icon>
-                                </button>
+                                <div fxLayout="row" fxLayoutALignment="end" class="gap-8">
+                                    <form [formGroup]="otherForm" class="resize-form-fields" fxFlex=50%>
+                                        <airmid-textbox label="Sample No" formControlName="vSampleNo" type="text" 
+                                        [formGroup]="otherForm" (input)=ChangeSampleNo()>
+                                        </airmid-textbox>
+                                    </form>
+                                    <button mat-raised-button color="primary" (click)="onUpload()" style="background-color: aliceblue; color: brown;"
+                                        *ngIf="!verifyCheck">
+                                        Upload
+                                        <mat-icon class="ml-4">cloud_upload</mat-icon>
+                                    </button>
+                                </div>
+                               
                             </div>
 
                             <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
                                 fxLayoutAlign="space-between center">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111"
-                                        style="padding: 10px; margin-bottom: 15px;" fxLayout="row"
+                                        style="padding: 15px; margin-bottom: 20px;" fxLayout="row"
                                         fxLayoutAlign="space-between">
                                         <div fxLayout="column" fxLayoutGap="6px">
                                             <div class="patient-col">
@@ -295,8 +303,8 @@
         </div>
     </div>
     <div class="modal-footer" fxLayout="column">
-        <div class="modal-card-container">
-            <form [formGroup]="otherForm">
+        <div class="modal-card-container" >
+            <form [formGroup]="otherForm" >
                 <mat-card style="padding: 6px;">
                     <div fxLayout="column" fxLayout="row" fxLayout="4px">
 
@@ -310,7 +318,7 @@
 
                     </div>
 
-                    <div fxLayout="column" fxLayout="row" fxLayout="4px">
+                    <div fxLayout="column" fxLayout="row" fxLayout="4px" class="resize-form-fields">
 
                         <!-- <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
                             [mode]="autocompleteModeDoctor" [formGroup]="otherForm" fxFlex="40%"

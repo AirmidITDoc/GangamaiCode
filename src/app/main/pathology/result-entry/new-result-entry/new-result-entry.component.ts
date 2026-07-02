@@ -135,7 +135,7 @@ export class NewResultEntryComponent {
             this.ageM = this.data.patientdata.ageMonth.trim() || "0"
             this.ageD = this.data.patientdata.ageDay.trim() || "0"
             this.genderId = this.data.patientdata.genderId
-            this.sampleNo = this.data.sampleNo.split(" ")[0]
+            this.sampleNo = this.data.sampleNo.split(" ")[0] 
             this.suggestionNotes = this.data.patientdata.suggestionNotes
 
             this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
@@ -199,14 +199,22 @@ export class NewResultEntryComponent {
             DoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             AdmDoctorID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDoctorID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            vSampleNo : [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
 
         this.ResultForm = this.createResultInsertForm();
         this.PathResultForm = this.createPathologyResultForm();
         this.pathologyResultArray.push(this.createResultdetailForm());
+        this.otherForm.patchValue({vSampleNo:this.sampleNo});
 
     }
+    ChangeSampleNo() {
+        const newSampleNo = this.otherForm.get('vSampleNo')?.value || 0
+        if (newSampleNo > 0) {
+            this.sampleNo = newSampleNo
+        }
 
+    }
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }

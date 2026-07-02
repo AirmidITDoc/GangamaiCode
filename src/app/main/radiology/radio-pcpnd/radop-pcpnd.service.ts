@@ -54,10 +54,27 @@ export class RadopPcpndService {
     public getIndicationList(employee) {
         return this._httpClient.PostData("Common", employee);
     }
-
-
-  public getIndicationById(Id) {
+      public getIndicationById(Id) {
         return this._httpClient.GetData("Pcpndprocess/IndicationtList" + Id);
     }
+public getIndicationbyIdList(param) {
+        return this._httpClient.PostData("Pcpndprocess/IndicationtList",param);
+    }
     
+    public getRegistraionById(Id) {
+        return this._httpClient.GetData("OutPatient/" + Id);
+    }
+ public getAdmissionById(Id) {
+        return this._httpClient.GetData("Admission/" + Id);
+    }
+    
+     public getVisitById(Id) {
+        return this._httpClient.GetData("VisitDetail/" + Id);
+    }
+
+
+  public getAdmissionBy(param) {
+        return this._httpClient.GetData("Admission/search-patient?="+param);
+    }
+
 }

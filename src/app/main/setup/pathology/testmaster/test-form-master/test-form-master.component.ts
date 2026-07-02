@@ -416,7 +416,7 @@ export class TestFormMasterComponent implements OnInit {
 
     onSubmit() {
         // debugger
-        if (this.ServiceID == 0) {
+        if (this.ServiceID == 0 && !this. Subtest) {
             this.testForm.get('ServiceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])
             this.testForm.get('ServiceId')?.updateValueAndValidity();
             this.toastr.warning(`Select Service Name`, 'Warning',);
