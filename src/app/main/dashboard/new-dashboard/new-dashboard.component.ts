@@ -1122,13 +1122,14 @@ export class NewDashboardComponent implements OnInit {
         })
 
     }
-    public chargeList: drcountdata[] = [];
-
-    trendData: drcountdata[] = [];
+ 
     //  trendData1: Servicecharge[] = [];
     trendChart: any;
     drcountdata: any
     public DrcountChart: any;
+       public chargeList: drcountdata[] = [];
+
+    trendData: drcountdata[] = [];
 
     modalityData = [
         { name: '', value: 0 }

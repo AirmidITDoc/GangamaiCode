@@ -33,6 +33,7 @@ import { SharedModule } from "../../../shared/shared.module";
 import { DietplanserviceService } from "./dietplanservice.service";
 import { NewDietplanComponent } from './new-dietplan/new-dietplan.component';
 import { DietPlanComponent } from "./diet-plan.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 
 const routes: Routes = [
@@ -77,7 +78,7 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatDialogModule,
-        SharedModule
+        MatTooltipModule,
     ],
     providers: [DietplanserviceService, DatePipe]
 })

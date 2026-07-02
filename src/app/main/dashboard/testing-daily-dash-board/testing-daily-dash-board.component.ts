@@ -29,7 +29,8 @@ export class TestingDailyDashBoardComponent {
 
   UnitId: any = this._accountServices.currentUserValue.user.unitId;
   DailydashData: any;
-  // Patient Mix
+  Ipflag: any = "flase"
+  selectedTabIndex: number = 0;
 
   myFilterform = new FormGroup({});
   patientStats = {
@@ -46,7 +47,14 @@ export class TestingDailyDashBoardComponent {
     'Company'
   ]
 
-   displayedIpColumns: string[] = [
+  displayedRevenueColumns: string[] = [
+    'Revenue',
+    'Gross',
+    'Discount',
+    'NetRevenue'
+  ]
+
+  displayedIpColumns: string[] = [
     'WardName',
     'OldPatient',
     'NewPatient',
@@ -67,7 +75,7 @@ export class TestingDailyDashBoardComponent {
 
   PharDepBillColumns: string[] = [
     'DepartmentName',
-     'DeptCount',
+    'DeptCount',
     'Gross',
     'Discount',
     'Net'
@@ -77,7 +85,7 @@ export class TestingDailyDashBoardComponent {
     'Count',
   ]
 
-   pharDoctorwiseColumns: string[] = [
+  pharDoctorwiseColumns: string[] = [
     'DoctorType',
     'DoctorName',
     'Count',
@@ -89,18 +97,30 @@ export class TestingDailyDashBoardComponent {
     'NetAmt',
   ]
 
-    ItemWiseColumns: string[] = [
+  ItemWiseColumns: string[] = [
     'ItemName',
-     'Qty',
+    'Qty',
     'Price',
     'Total',
     // 'Net'
   ]
 
+
+  CollSummarylColumns: string[] = [
+    'Collecion',
+    'CASH',
+    'CARD',
+    'UPI',
+    'BANKTRANSFER',
+    'TOTAL',
+  ]
+
+  displayedpoColumns: string[] = [
+    'PurchaseDetail',
+    'Amount',
+  ]
+
   dsAppointmentDailyCountList = new MatTableDataSource<OPDCount>();
-  // OPDailyBillList = new MatTableDataSource<OPDBillDateWise>();
-  //   IPDailyBillList = new MatTableDataSource<OPDBillDateWise>();
-      // dsDailyBillList = new MatTableDataSource<OPDBillDateWise>();
   dsAdmissionDailyCountList = new MatTableDataSource<OPDCount>();
 
 
@@ -112,19 +132,26 @@ export class TestingDailyDashBoardComponent {
   dsIPDailyDepartmentCountList = new MatTableDataSource<OPDBillDateWise>();
   dsIPDailyDepBillList = new MatTableDataSource<OPDBillDateWise>();
   dsIPDailyDocBillList = new MatTableDataSource<OPDBillDateWise>();
-dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
+  dsIPDailyRefDocBillList = new MatTableDataSource<OPDBillDateWise>();
   dsPharDailyDepartmentCountList = new MatTableDataSource<OPDBillDateWise>();
   dsPharDailyDepBillList = new MatTableDataSource<OPDBillDateWise>();
   dsPharDailyDocBillList = new MatTableDataSource<OPDBillDateWise>();
   dsPharDailyRefDocBillList = new MatTableDataSource<OPDBillDateWise>();
 
 
-   dsSupplierwiseCountList = new MatTableDataSource<OPDBillDateWise>();
+  dsSupplierwiseCountList = new MatTableDataSource<OPDBillDateWise>();
   POItemwiseList = new MatTableDataSource<OPDBillDateWise>();
+
+  // Summary?
+  dsSummaryColltList = new MatTableDataSource<SummardetailWise>();
+  dsRevenusummaryList = new MatTableDataSource<SummardetailWise>();
+  dspodettailList = new MatTableDataSource<SummardetailWise>();
 
   // AgeWise
   public AgestatusPieChartOP: any
   public AgestatusPieChartIP: any
+
+  
   modalityData = [
     { name: '', value: 0 }
   ];
@@ -136,7 +163,12 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
   trendChart: any;
   drcountdata: any
   public DrcountChartOP: any;
-  public DrcountChartIP: any;
+  public CompcountChartIP: any;
+   public DrcountChartPhar: any;
+    public PurchasevalueChart: any;
+ public PurchasecountChart: any;
+ public PoGRNsummcountChart: any;
+ 
   public chargeList: drcountdata[] = [];
   trendData: drcountdata[] = [];
 
@@ -259,6 +291,354 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
       ]
     }
   ];
+
+   trendSeriesOPSumm = [
+    {
+      name: 'Reg.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Appo.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'New',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    },
+    {
+      name: 'old',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    }
+  ];
+
+  trendSeriesAdmDisc= [
+    {
+      name: 'Adm.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Disc.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    }
+  ];
+ trendSeriesPrscIp = [
+    {
+      name: 'Reg.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Appo.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'New',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    },
+    {
+      name: 'old',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    }
+  ];
+
+  trendSeriesOPRevSumm= [
+    {
+      name: 'Rev.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Disc.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'Net',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    }
+  ];
+trendSeriesIPRev= [
+    {
+      name: 'Rev.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Disc.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'Net',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    }
+  ];
+  trendSeriesPharRev= [
+    {
+      name: 'Rev.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Disc.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'Net',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    }
+  ];
+  trendSeriesGrn= [
+    {
+      name: 'Rev.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Disc.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'Net',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    }
+  ];
+
+   trendSeriesPo= [
+    {
+      name: 'Rev.',
+      series: [
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'Disc.',
+      series: [
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'Net',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
+      ]
+    }
+  ];
+
+   trendSeriesPO = [
+    {
+      name: 'OPD (PCount)',
+      series: [
+        { name: 'Mon', value: 0 },
+        { name: 'Tue', value: 0 },
+        { name: 'Wed', value: 0 },
+        { name: 'Thu', value: 0 },
+        { name: 'Fri', value: 0 },
+        { name: 'Sat', value: 0 },
+        { name: 'Sun', value: 90 }
+      ]
+    },
+    {
+      name: 'IPD (PCount)',
+      series: [
+        { name: 'Mon', value: 0 },
+        { name: 'Tue', value: 0 },
+        { name: 'Wed', value: 0 },
+        { name: 'Thu', value: 0 },
+        { name: 'Fri', value: 0 },
+        { name: 'Sat', value: 0 },
+        { name: 'Sun', value: 0 }
+      ]
+    }
+  ];
+
   financeSummary = [
     { label: 'Collection', value: 0, color: 'green', icon: 'check-circle' },
     { label: 'Discount', value: 0, color: 'rose', icon: 'hourglass' },
@@ -266,9 +646,15 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
 
     { label: 'Revenue', value: 0, color: 'rose', icon: 'hourglass' },
     { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' },
-    { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' }
+    { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' },
+
+    { label: 'Rx Sale', value: 0, color: 'rose', icon: 'hourglass' },
+    { label: 'Walking Sale', value: 0, color: 'butter', icon: 'user-plus' },
+    { label: 'PO Closed', value: 0, color: 'sky', icon: 'logout' },
+    { label: 'GRN Count', value: 0, color: 'sky', icon: 'logout' }
 
   ];
+
 
   paymentDataOP = [
     { name: 'Cash', value: 0 },
@@ -284,6 +670,20 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
     { name: 'Cheque', value: 0 }
   ];
   paymentDataPH = [
+    { name: 'Cash', value: 0 },
+    { name: 'Online', value: 0 },
+    { name: 'Card', value: 0 },
+    { name: 'Cheque', value: 0 }
+  ];
+
+   GRNpaymentData = [
+    { name: 'Cash', value: 0 },
+    { name: 'Online', value: 0 },
+    { name: 'Card', value: 0 },
+    { name: 'Cheque', value: 0 }
+  ];
+
+    paymentDataPO = [
     { name: 'Cash', value: 0 },
     { name: 'Online', value: 0 },
     { name: 'Card', value: 0 },
@@ -363,17 +763,17 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
     { label: 'PO OPEN', value: '15', icon: 'assignment', isApproval: false, iconColor: '#f46a6a' },
     { label: 'PO Return', value: '42', icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
     { label: 'PO Approval Pending', value: '15', icon: 'assignment', isApproval: false, iconColor: '#f46a6a' },
-   { label: 'Without PO GRN Counts', value: '42', icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+    { label: 'Without PO GRN Counts', value: '42', icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
     { label: 'Vendor Payment Due Counts', value: '15', icon: 'assignment', isApproval: false, iconColor: '#f46a6a' },
     { label: 'RC Counts', value: '1', icon: 'assignment', isApproval: false, iconColor: '#f46a6a' },
-   
+
     { label: 'INDENT ISSUED', value: '28', icon: 'description', isApproval: false, iconColor: '#4caeef' },
     { label: 'INDENT CLOSED', value: '22', icon: 'done_all', isApproval: false, iconColor: '#2bb179' },
     { label: 'INDENT PENDING', value: '6', icon: 'schedule', isApproval: false, iconColor: '#2bb179' },
     { label: 'GRN COUNT', value: '35', trend: '+5', icon: 'local_mall', isApproval: false, iconColor: '#9566d3' },
     { label: 'GRN APPROVAL PENDING', value: '8', icon: 'schedule', isApproval: false, iconColor: '#f46a6a' }
   ];
-  procurementCollection = { label: 'GRN VALUE', total: '12.4L', trend: '- 0', trendDiff: 'vs yesterday', trendUp: false, subtitle: '12,40,000' };
+  procurementCollection = { label: 'GRN VALUE', total: '3,42,500', cash: '1,45,000', card: '98,500', upi: '72,000', bank: '27,000', total1: '1,12,600', Gross: '1,11,000', Discount: '1,22,600', Net: '211,000', Outstanding: '23,2213' };
 
   constructor(private dashboardService: DashboardService, public _accountServices: AuthenticationService,
     private accountService: AuthenticationService, public datePipe: DatePipe, public _matDialog: MatDialog,
@@ -470,8 +870,6 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
 
       let apiData = res && res.length ? res[0] : {};
       console.log("==api data", apiData);
-      console.log(res)
-
 
       if (apiData) {
         this.financeSummary = [
@@ -481,7 +879,10 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
           { label: 'Revenue', value: apiData && apiData.Net_Revenue > 0 ? apiData?.Net_Revenue : 0, color: 'mint', icon: 'user-plus' },
           { label: 'Advances', value: apiData && apiData.AdvPay > 0 ? apiData?.AdvPay : 0, color: 'butter', icon: 'user-plus' },
           { label: 'Refunds', value: apiData && apiData.RefundAmount > 0 ? apiData?.RefundAmount : 0, color: 'rose', icon: 'logout' },
-
+          { label: 'Rx Sale', value: apiData && apiData.RefundAmount > 0 ? apiData?.RefundAmount : 0, color: 'rose', icon: 'hourglass' },
+          { label: 'Walking Sale',value: apiData && apiData.RefundAmount > 0 ? apiData?.RefundAmount : 0, color: 'butter', icon: 'user-plus' },
+          { label: 'PO Closed',value: apiData && apiData.RefundAmount > 0 ? apiData?.RefundAmount : 0, color: 'sky', icon: 'logout' },
+          { label: 'GRN Count', value: apiData && apiData.RefundAmount > 0 ? apiData?.RefundAmount : 0, color: 'sky', icon: 'logout' }
         ];
 
         this.paymentDataOP = [
@@ -513,7 +914,11 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
 
         { label: 'Revenue', value: 0, color: 'rose', icon: 'hourglass' },
         { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' },
-        { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' }
+        { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' },
+        { label: 'Rx Sale', value: 0, color: 'rose', icon: 'hourglass' },
+        { label: 'Walking Sale', value: 0, color: 'butter', icon: 'user-plus' },
+        { label: 'PO Closed', value: 0, color: 'sky', icon: 'logout' },
+        { label: 'GRN Count', value: 0, color: 'sky', icon: 'logout' }
       ];
       this.paymentDataOP = [
         { name: 'Cash', value: 0 },
@@ -535,8 +940,6 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
       ];
     });
   }
-
-
 
   alldashdata() {
 
@@ -878,11 +1281,9 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
     });
   }
 
-  Ipflag: any = "flase"
-  selectedTabIndex: number = 0;
 
   onTabChange(event: MatTabChangeEvent) {
-    debugger
+
     this.selectedTabIndex = event.index;
     if (this.selectedTabIndex == 2)
       this.Ipflag = true
@@ -910,7 +1311,7 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
       'FromDate': this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd"),
       'ToDate': this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
     }
-    debugger
+
     this.dashboardService.getOPDCoutList(vadat).subscribe(data => {
       console.log(data)
       this.dsAppointmentDailyCountList.data = data as OPDCount[];
@@ -937,7 +1338,7 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
   }
 
   getDashOPDepatmentWiseCount() {
-    debugger
+    
     const payload = {
       "searchFields": [
         {
@@ -989,10 +1390,10 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
     return this.dsAppointmentDailyCountList.data.reduce((sum, r) => sum + (r.Company || 0), 0);
   }
   //OP
- get OPDeptgross(): number {
+  get OPDeptgross(): number {
     return this.dsIPDailyDepBillList.data.reduce((sum, r) => sum + (r.GrossAmt || 0), 0);
   }
- get OPDeptcount(): number {
+  get OPDeptcount(): number {
     return this.dsIPDailyDepBillList.data.reduce((sum, r) => sum + (r.GrossAmt || 0), 0);
   }
   get OPDeptdiscount(): number {
@@ -1001,11 +1402,11 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
   get OPDeptnet(): number {
     return this.dsIPDailyDepBillList.data.reduce((sum, r) => sum + (r.NetAmt || 0), 0);
   }
-//IP
- get IPDeptgross(): number {
+  //IP
+  get IPDeptgross(): number {
     return this.dsIPDailyDepBillList.data.reduce((sum, r) => sum + (r.GrossAmt || 0), 0);
   }
- get IPDeptcount(): number {
+  get IPDeptcount(): number {
     return this.dsIPDailyDepBillList.data.reduce((sum, r) => sum + (r.GrossAmt || 0), 0);
   }
   get IPDeptdiscount(): number {
@@ -1014,11 +1415,11 @@ dsIPDailyRefDocBillList= new MatTableDataSource<OPDBillDateWise>();
   get IPDeptnet(): number {
     return this.dsIPDailyDepBillList.data.reduce((sum, r) => sum + (r.NetAmt || 0), 0);
   }
-//phar
+  //phar
   get PharDeptgross(): number {
     return this.dsPharDailyDepBillList.data.reduce((sum, r) => sum + (r.GrossAmt || 0), 0);
   }
- get PharDeptcount(): number {
+  get PharDeptcount(): number {
     return this.dsPharDailyDepBillList.data.reduce((sum, r) => sum + (r.GrossAmt || 0), 0);
   }
   get PharDeptdiscount(): number {
@@ -1119,6 +1520,39 @@ export class OPDBillDateWise {
       this.DocPatientCount = OPDBillDateWise.DocPatientCount || 0;
       this.DeptCount = OPDBillDateWise.DeptCount || 0;
 
+
+    }
+  }
+}
+
+export class SummardetailWise {
+  Collecion: any;
+  CASH: any;
+  CARD: any;
+  UPI: any;
+  BANKTRANSFER: any;
+  TOTAL: any;
+  Revenue: any;
+  Gross: any;
+  Discount: any;
+  NetRevenue: any;
+  PurchaseDetail: any;
+  Amount: any;
+
+  constructor(SummardetailWise) {
+    {
+      this.Collecion = SummardetailWise.Collecion || 0;
+      this.CASH = SummardetailWise.CASH || 0;
+      this.CARD = SummardetailWise.CARD || 0;
+      this.UPI = SummardetailWise.UPI || 0;
+      this.BANKTRANSFER = SummardetailWise.BANKTRANSFER || '';
+      this.TOTAL = SummardetailWise.TOTAL || 0;
+      this.Revenue = SummardetailWise.Revenue || '';
+      this.Gross = SummardetailWise.Gross || 0;
+      this.Discount = SummardetailWise.Discount || 0;
+      this.NetRevenue = SummardetailWise.NetRevenue || 0;
+      this.PurchaseDetail = SummardetailWise.PurchaseDetail || 0;
+      this.Amount = SummardetailWise.Amount || 0;
 
     }
   }

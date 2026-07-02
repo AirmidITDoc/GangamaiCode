@@ -641,7 +641,7 @@
         transition: transform 0.2s, box-shadow 0.2s;
         cursor: pointer;
         border-left: 5px solid transparent;
-        min-height: 70px;
+        min-height: 20px;
 
         &:hover {
             transform: translateY(-2px);

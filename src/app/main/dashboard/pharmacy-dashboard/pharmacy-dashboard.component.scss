@@ -725,6 +725,42 @@
     font-size: 11px;
     align-items: center;
   }
+
+  
+   .totals-rowcat {
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 50px 100px 100px  100px 100px 100px 100px;
+    gap: 6px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: center;
+       background-color: #c4e2f7;
+  }
+
+  .totals-label {
+    font-weight: bold;
+    font-size: 18px;
+    color: #1f2552;
+  }
+
+  .totals-num {
+    text-align: center;
+    font-weight: bold;
+    color: rgb(54, 4, 54);
+    font-size: 15px;
+  }
+
+  .totals-strong {
+    background: #e8eaf6 !important;
+    border-top: 1px solid #9fa8da;
+  }
+
+  .totals-strong .totals-label,
+  .totals-strong .totals-num {
+    font-weight: 800;
+    color: #283593;
+  }
 }
 
 // end .pharmacy-dashboard-wrapper

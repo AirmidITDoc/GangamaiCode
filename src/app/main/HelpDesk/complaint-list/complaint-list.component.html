@@ -42,10 +42,13 @@
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button mat-icon-button matTooltip="Edit Item" (click)="onEdit(element)">
+                <button mat-icon-button matTooltip="Edit Complaint" (click)="onEdit(element)">
                     <mat-icon> edit</mat-icon>
                 </button>
 
+                  <button mat-icon-button matTooltip="Print Complaint" (click)="onprint(element)">
+                    <mat-icon> print</mat-icon>
+                </button>
 
                 <button mat-icon-button matTooltip="Delete" (click)="delitem(element)">
                     <mat-icon>delete</mat-icon>
@@ -62,8 +65,7 @@
 
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
-                        (dateChange)="onChangeFirst()"
-                        [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
+                               [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
 
 
                     <mat-form-field appearance="outline">

@@ -1,3 +1,4 @@
+
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar app-new-dashboard-wrap" dynamicTableHeight>
     <!-- HEADER -->
     <div class="top-header accent">
@@ -29,39 +30,51 @@
 
         <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)" class="custom-modern-tabs">
             <mat-tab label="Summary">
-                <div class="dashboard-container gap-2" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <div class="charts-row">
+                <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
+                    <div class="charts-row" style="border-collapse: collapse;
+    border: 2px solid #053144;">
 
-                        <mat-card fxFlex="60%">
+                        <mat-card fxFlex="55%" style="background-color: rgb(245, 202, 229);">
                             <mat-card-content>
                                 <div class="payment-details-header">
-                                    <p class="section-title">Payment Summary (Selected Period)</p>
-                                </div>
-                                <div class="payment-cards" fxLayout="row wrap" fxLayoutGap="5px"
-                                    style="margin-top: 5px;">
-                                    <div fxFlex="120px" *ngFor="let f of financeSummary; let i = index">
-                                        <mat-card class="payment-card" [ngClass]="'payment-card-' + (i + 1)">
-                                            <mat-card-content>
-                                                <div class="payment-mode-name">{{ f.label }}</div>
-                                                <div class="payment-amount"><mat-icon>{{ getMatIcon(f.icon)
-                                                        }}</mat-icon> {{
-                                                    f.value }}
-                                                </div>
-                                            </mat-card-content>
-                                        </mat-card>
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="payment-details-header">
-                                    <h3 class="section-title">Current Patient Claim Status</h3>
+                                    <span class="section-title">Current Patient Status</span>
 
                                 </div>
 
                                 <div class="mini-grid">
+
+                                    <div class="mini-card theme-lavender">
+                                        <div class="mini-icon"><mat-icon>groups</mat-icon></div>
+                                        <div>
+                                            <div class="mini-label">Regisraion</div>
+                                            <div class="mini-value">{{ patientStats.total | number }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mini-card theme-lavender">
+                                        <div class="mini-icon"><mat-icon>groups</mat-icon></div>
+                                        <div>
+                                            <div class="mini-label">Appointments</div>
+                                            <div class="mini-value">{{ patientStats.total | number }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mini-card theme-lavender">
+                                        <div class="mini-icon"><mat-icon>groups</mat-icon></div>
+                                        <div>
+                                            <div class="mini-label">Admission</div>
+                                            <div class="mini-value">{{ patientStats.total | number }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mini-card theme-lavender">
+                                        <div class="mini-icon"><mat-icon>groups</mat-icon></div>
+                                        <div>
+                                            <div class="mini-label">Current Occupacy</div>
+                                            <div class="mini-value">{{ patientStats.total | number }}</div>
+                                        </div>
+                                    </div>
+
                                     <div class="mini-card theme-mint">
                                         <div class="mini-icon"><mat-icon>verified_user</mat-icon></div>
                                         <div>
@@ -89,6 +102,30 @@
                                             <div class="mini-label">Total Patients</div>
                                             <div class="mini-value">{{ patientStats.total | number }}</div>
                                         </div>
+                                    </div>
+
+
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <mat-card fxFlex="45%" style="background-color: rgb(247, 206, 232);">
+                            <mat-card-content>
+                                <div class="payment-details-header">
+                                    <span class="section-title">Payment Summary (Selected Period)</span>
+                                </div>
+                                <div class="payment-cards" fxLayout="row wrap" fxLayoutGap="5px"
+                                    style="margin-top: 5px;">
+                                    <div fxFlex="120px" *ngFor="let f of financeSummary; let i = index">
+                                        <mat-card class="payment-card" [ngClass]="'payment-card-' + (i + 1)">
+                                            <mat-card-content>
+                                                <div class="payment-mode-name">{{ f.label }}</div>
+                                                <div class="payment-amount"><mat-icon>{{ getMatIcon(f.icon)
+                                                        }}</mat-icon> {{
+                                                    f.value }}
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
                                     </div>
                                 </div>
                             </mat-card-content>
@@ -145,11 +182,439 @@
                     </div>
                 </div>
 
+                <div class="charts-row" *ngIf="selectedTabIndex === 0" style="padding-top: 5px ;">
+
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">OP Trends (Current
+                                            Week)</span>
+                                    </div>
+                                    <ngx-charts-line-chart [results]="trendSeriesOPSumm" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true" [legend]="true"
+                                        [legendPosition]="'below'" [legendTitle]="'Series Legend'"
+                                        [legendTitleColor]="'#333'" [legendFontSize]="12" [showXAxisLabel]="true"
+                                        [showYAxisLabel]="true" [xAxisLabel]="'Day'" [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="calc(25% -1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">Weekly Admission Vs Discharge Trends(Current
+                                            Week)</span>
+                                    </div>
+                                    <ngx-charts-line-chart [results]="trendSeriesAdmDisc" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">Weekly Walkin Vs Prescription Vs Ip Issue
+                                            Trends(Current
+                                            Week)</span>
+                                    </div>
+                                    <ngx-charts-line-chart [results]="trendSeriesPrscIp" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">Weekly PO Vs GRN Trend</span>
+
+                                    </div>
+                                    <div class="chart-container">
+
+                                        <canvas id="PoGRNsummcountChart"></canvas>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <div class="charts-row" *ngIf="selectedTabIndex === 0">
+
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">OP Revenue Trends (Current
+                                            Week)</span>
+                                    </div>
+                                    <ngx-charts-line-chart [results]="trendSeriesOPRevSumm" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="calc(25% -1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">IP Revenue Trends (Current
+                                            Week)</span>
+                                    </div>
+                                    <ngx-charts-line-chart [results]="trendSeriesIPRev" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">Pharmacy Revenue Trends (Current
+                                            Week)</span>
+                                    </div>
+                                    <ngx-charts-line-chart [results]="trendSeriesPharRev" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="false"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">GRN Value Vs GRN Return Value(Current
+                                            Week)</span>
+                                    </div>
+                                    <ngx-charts-line-chart [results]="trendSeriesGrn" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
+
+                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+
+                                <span class="table-title">Collection Summary</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsSummaryColltList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="Collecion">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="400">
+                                            Collecion </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="400 ellipsis">
+                                            {{contact.Collecion}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CASH">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            CASH </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.CASH}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CARD">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            CARD </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.CARD}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="UPI">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            UPI </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.UPI}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="BANKTRANSFER">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            BANK TRANSFER </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.BANKTRANSFER}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="TOTAL">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            TOTAL </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.TOTAL}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="CollSummarylColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: CollSummarylColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsSummaryColltList!=null && dsSummaryColltList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 200px; min-width: 200px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DocTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+                                <span class="table-title">Revenue Summary</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsRevenusummaryList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="Revenue">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Revenue </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.Revenue}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Gross">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Gross </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.Gross}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Discount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Discountt </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.Discount}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="NetRevenue">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Net Revenue </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.NetRevenue}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedRevenueColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedRevenueColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsRevenusummaryList!=null && dsRevenusummaryList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <!-- <div class="totals-label"
+                                            style="flex: 0 0 100px; min-width: 100px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div> -->
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ oldTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ NewTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CrossTotalPatient }}
+                                        </div>
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CompanyTotalPatient }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+
+                            <mat-card>
+                                <span class="table-title">Department Wise Registartion Count</span>
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dspodettailList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="PurchaseDetail">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="350">
+                                            PurchaseDetail </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="350 ellipsis">
+                                            {{contact.PurchaseDetail}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Amount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Amount </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.Amount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="2">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedpoColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedpoColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dspodettailList!=null && dspodettailList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 250px; min-width: 250px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DeptTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
             </mat-tab>
             <mat-tab label="OP Overview">
                 <div class="dashboard-container">
 
-                    <!-- New Dashboard Sections -->
+
                     <ng-template #sectionTemplate let-title="title" let-subtitle="subtitle" let-icon="icon"
                         let-cards="cards" let-collection="collection" let-headerColor="headerColor"
                         let-colTitle="colTitle">
@@ -385,7 +850,7 @@
                 </div>
                 <div class="charts-row" *ngIf="selectedTabIndex === 1">
 
-                    <div fxFlex="calc(21% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(21% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
 
@@ -406,7 +871,7 @@
                         </mat-card>
                     </div>
 
-                    <div fxFlex="calc(29% -3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(29% -1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card" style="padding-bottom: 30px;">
 
@@ -427,7 +892,7 @@
                     </div>
 
 
-                    <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card" style="padding-bottom: 30px;">
                             <mat-card-content>
@@ -443,7 +908,7 @@
                         </mat-card>
                     </div>
 
-                    <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card" style="padding-bottom: 30px;">
 
@@ -464,71 +929,7 @@
                 </div>
                 <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
 
-                    <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%">
-                        <div class="chart-card-container">
 
-                            <mat-card>
-                                <span class="table-title">Department Wise Registartion Count</span>
-                                <mat-table matSort class="h-200 data-table" [dataSource]="dsOPDailyDepartmentCountList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
-
-                                    <ng-container matColumnDef="DepartmentName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="350">
-                                            Department </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="350 ellipsis">
-                                            {{contact.DepartmentName}}
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="Count">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
-                                            Count </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
-                                            {{contact.DeptCount}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="2">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayeddepColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayeddepColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                    </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsOPDailyDepartmentCountList!=null && dsOPDailyDepartmentCountList.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-                                <div class="totals"
-                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
-                                    <div style="display: flex; width: 100%; min-width: 100%;">
-
-                                        <div class="totals-label"
-                                            style="flex: 0 0 250px; min-width: 250px; font-weight: bold;padding-left: 10px;">
-                                            Total
-                                        </div>
-
-                                        <div class="totals-num"
-                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
-                                            {{ DeptTotalPatient }}
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div> -->
                     <div fxFlex="30" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
@@ -801,7 +1202,7 @@
             <mat-tab label="IP Overview">
                 <div class="dashboard-container">
 
-                    <!-- New Dashboard Sections -->
+
                     <ng-template #sectionTemplate let-title="title" let-subtitle="subtitle" let-icon="icon"
                         let-cards="cards" let-collection="collection" let-headerColor="headerColor"
                         let-colTitle="colTitle">
@@ -1034,93 +1435,92 @@
                     <ng-container
                         *ngTemplateOutlet="sectionTemplate; context: {title: 'In-Patient (IP)', subtitle: 'Today\'s IP admissions, discharges & billing', icon: 'hotel', headerColor: '#176ab4', cards: ipCards, collection: ipCollection, colTitle: 'IP COLLECTION'}"></ng-container>
 
-                    <div class="charts-row" *ngIf="selectedTabIndex === 2">
 
-                        <div fxFlex="calc(21% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                </div>
+                <div class="charts-row" *ngIf="selectedTabIndex === 2">
 
-                            <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
+                    <div fxFlex="calc(21% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                <mat-card-content>
-                                    <div class="chart-container">
-                                        <div class="chart-header">
-                                            <span class="chart-title">IP Payments Overview</span>
+                        <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
 
-                                        </div>
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">IP Payments Overview</span>
 
-                                        <ngx-charts-bar-vertical [results]="paymentDataOP" [scheme]="colorScheme1"
-                                            [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
-                                            [showXAxisLabel]="true" [showYAxisLabel]="true"
-                                            [xAxisLabel]="'Payment Type'" [yAxisLabel]="'Amount Received'"
-                                            [showGridLines]="true" [roundDomains]="false">
-                                        </ngx-charts-bar-vertical>
                                     </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
 
-                        <div fxFlex="calc(29% -3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <ngx-charts-bar-vertical [results]="paymentDataOP" [scheme]="colorScheme1"
+                                        [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Payment Type'"
+                                        [yAxisLabel]="'Amount Received'" [showGridLines]="true" [roundDomains]="false">
+                                    </ngx-charts-bar-vertical>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
 
-                            <mat-card class="chart-card" style="padding-bottom: 30px;">
+                    <div fxFlex="calc(29% -1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                <mat-card-content>
-                                    <div class="chart-container">
-                                        <div class="chart-header">
-                                            <span class="chart-title">Trends of Admission(Current Week)</span>
-                                        </div>
-                                        <ngx-charts-line-chart [results]="trendSeries" [scheme]="colorScheme"
-                                            [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
-                                            [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
-                                            [yAxisLabel]="'Count'">
-                                        </ngx-charts-line-chart>
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">Trends of Admission(Current Week)</span>
                                     </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
+                                    <ngx-charts-line-chart [results]="trendSeries" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
 
 
-                        <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                            <mat-card class="chart-card" style="padding-bottom: 30px;">
-                                <mat-card-content>
-                                    <div class="chart-container">
-                                        <div class="chart-header">
-                                            <span class="chart-title">Admission Age Wise Overview</span>
-                                        </div>
-                                        <div class="chart-container">
-                                            <canvas id="AgestatusPieChartOP"></canvas>
-                                        </div>
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">Admission Age Wise Overview</span>
                                     </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
-
-                        <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
-
-                            <mat-card class="chart-card" style="padding-bottom: 30px;">
-
-                                <mat-card-content>
                                     <div class="chart-container">
-                                        <div class="chart-header">
-                                            <span class="chart-title">Company Wise Count Summary</span>
-
-                                        </div>
-                                        <div class="chart-container">
-
-                                            <canvas id="DrcountChartOP"></canvas>
-                                        </div>
+                                        <canvas id="AgestatusPieChartOP"></canvas>
                                     </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
+
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <span class="chart-title">Company Wise Count Summary</span>
+
+                                    </div>
+                                    <div class="chart-container">
+
+                                        <canvas id="DrcountChartOP"></canvas>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
                     </div>
                 </div>
-
                 <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
 
                     <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
 
-                             <mat-card>
+                            <mat-card>
 
                                 <span class="table-title">Refer Doctor Wise Count</span>
 
@@ -1129,7 +1529,7 @@
 
                                     <ng-container matColumnDef="DoctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="250">
-                                           Refer Doctor Name</mat-header-cell>
+                                            Refer Doctor Name</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="250 ellipsis">
                                             {{contact.DoctorName}}
                                         </mat-cell>
@@ -1263,7 +1663,7 @@
                                 <mat-table matSort class="h-200 data-table" [dataSource]="dsAdmissionDailyCountList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
-                                     <ng-container matColumnDef="WardName">
+                                    <ng-container matColumnDef="WardName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="200">
                                             Ward Name </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="200 ellipsis">
@@ -1292,7 +1692,7 @@
                                             {{contact.ReferPatient}}
                                         </mat-cell>
                                     </ng-container>
-                                   
+
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -1622,53 +2022,54 @@
                     </ng-template>
                     <ng-container
                         *ngTemplateOutlet="sectionTemplate; context: {title: 'Pharmacy', subtitle: 'Prescriptions, sales & inventory status', icon: 'local_pharmacy', headerColor: '#176ab4', cards: pharmacyCards, collection: pharmacyCollection, colTitle: 'PHARMACY COLLECTION'}"></ng-container>
-                    <div class="charts-row" *ngIf="selectedTabIndex === 3">
 
-                        <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                </div>
+                <div class="charts-row" *ngIf="selectedTabIndex === 3">
 
-                            <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
+                    <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                <mat-card-content>
-                                    <div class="chart-container">
-                                        <div class="chart-header">
-                                            <h3 class="chart-title">Pharmacy Payments Overview</h3>
+                        <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
 
-                                        </div>
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h3 class="chart-title">Pharmacy Payments Overview</h3>
 
-                                        <ngx-charts-bar-vertical [results]="paymentDataPH" [scheme]="colorScheme1"
-                                            [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
-                                            [showXAxisLabel]="true" [showYAxisLabel]="true"
-                                            [xAxisLabel]="'Payment Type'" [yAxisLabel]="'Amount Received'"
-                                            [showGridLines]="true" [roundDomains]="false">
-                                        </ngx-charts-bar-vertical>
                                     </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
 
-                        <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <ngx-charts-bar-vertical [results]="paymentDataPH" [scheme]="colorScheme1"
+                                        [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Payment Type'"
+                                        [yAxisLabel]="'Amount Received'" [showGridLines]="true" [roundDomains]="false">
+                                    </ngx-charts-bar-vertical>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
 
-                            <mat-card class="chart-card" style="padding-bottom: 30px;">
+                    <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                <mat-card-content>
-                                    <div class="chart-container">
-                                        <div class="chart-header">
-                                            <h3 class="chart-title">Prescription Close and Open (Current Week)</h3>
-                                        </div>
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
 
-
-                                        <ngx-charts-line-chart [results]="trendSeriesPH" [scheme]="colorScheme"
-                                            [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
-                                            [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
-                                            [yAxisLabel]="'Count'">
-                                        </ngx-charts-line-chart>
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h3 class="chart-title">Prescription Close and Open (Current Week)</h3>
                                     </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
 
 
-                        <!-- <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <ngx-charts-line-chart [results]="trendSeriesPH" [scheme]="colorScheme"
+                                        [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                        [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                        [yAxisLabel]="'Count'">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+
+                    <!-- <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                                     <mat-card class="chart-card" style="padding-bottom: 30px;">
                                         <mat-card-content>
@@ -1685,94 +2086,28 @@
                                     </mat-card>
                                 </div> -->
 
-                        <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                            <mat-card class="chart-card" style="padding-bottom: 30px;">
+                        <mat-card class="chart-card" style="padding-bottom: 30px;">
 
-                                <mat-card-content>
-                                    <div class="chart-container">
-                                        <div class="chart-header">
-                                            <h3 class="chart-title">Doctor Wise Count Summary</h3>
+                            <mat-card-content>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h3 class="chart-title">Doctor Wise Count Summary</h3>
 
-                                        </div>
-                                        <div class="chart-container">
-
-                                            <canvas id="DrcountChartPhar"></canvas>
-                                        </div>
                                     </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
-                    </div>
-                </div>
+                                    <div class="chart-container">
 
-                <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
-
-                    <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%">
-                        <div class="chart-card-container">
-
-                            <mat-card>
-                                <span class="table-title">Department Wise Sales Count</span>
-                                <mat-table matSort class="h-200 data-table" [dataSource]="dsPharDailyDepartmentCountList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
-
-                                    <ng-container matColumnDef="DepartmentName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="350">
-                                            Department </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="350 ellipsis">
-                                            {{contact.DepartmentName}}
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="Count">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
-                                            Count </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
-                                            {{contact.DeptCount}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="2">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayeddepColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayeddepColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                    </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsPharDailyDepartmentCountList!=null && dsPharDailyDepartmentCountList.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-                                <div class="totals"
-                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
-                                    <div style="display: flex; width: 100%; min-width: 100%;">
-
-                                        <div class="totals-label"
-                                            style="flex: 0 0 250px; min-width: 250px; font-weight: bold;padding-left: 10px;">
-                                            Total
-                                        </div>
-
-                                        <div class="totals-num"
-                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
-                                            {{ DeptTotalPatient }}
-                                        </div>
-
-
+                                        <canvas id="DrcountChartPhar"></canvas>
                                     </div>
                                 </div>
-                            </mat-card>
-                        </div>
-                    </div> -->
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
+
+
                     <div fxFlex="40" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
@@ -2027,7 +2362,7 @@
             <mat-tab label="Procurement Overview">
                 <div class="dashboard-container">
 
-                    <!-- New Dashboard Sections -->
+
                     <ng-template #sectionTemplate let-title="title" let-subtitle="subtitle" let-icon="icon"
                         let-cards="cards" let-collection="collection" let-headerColor="headerColor"
                         let-colTitle="colTitle">
@@ -2164,7 +2499,7 @@
 
                                         </div>
 
-                                        <ngx-charts-bar-vertical [results]="paymentDataPH" [scheme]="colorScheme1"
+                                        <ngx-charts-bar-vertical [results]="paymentDataPO" [scheme]="colorScheme1"
                                             [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
                                             [showXAxisLabel]="true" [showYAxisLabel]="true"
                                             [xAxisLabel]="'Payment Type'" [yAxisLabel]="'Amount Received'"
@@ -2186,7 +2521,7 @@
                                         </div>
 
 
-                                        <ngx-charts-line-chart [results]="trendSeriesPH" [scheme]="colorScheme"
+                                        <ngx-charts-line-chart [results]="trendSeriesPO" [scheme]="colorScheme"
                                             [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
                                             [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
                                             [yAxisLabel]="'Count'">
@@ -2226,7 +2561,7 @@
                                         </div>
                                         <div class="chart-container">
 
-                                            <canvas id="DrcountChartPhar"></canvas>
+                                            <canvas id="PurchasevalueChart"></canvas>
                                         </div>
                                     </div>
                                 </mat-card-content>
@@ -2235,9 +2570,9 @@
                     </div>
                 </div>
 
-                  <div class="charts-row" *ngIf="selectedTabIndex === 4">
+                <div class="charts-row" *ngIf="selectedTabIndex === 4">
 
-                    <div fxFlex="calc(32% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(32% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
 
@@ -2248,7 +2583,7 @@
 
                                     </div>
 
-                                    <ngx-charts-bar-vertical [results]="paymentDataOP" [scheme]="colorScheme1"
+                                    <ngx-charts-bar-vertical [results]="GRNpaymentData" [scheme]="colorScheme1"
                                         [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
                                         [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Payment Type'"
                                         [yAxisLabel]="'Amount Received'" [showGridLines]="true" [roundDomains]="false">
@@ -2258,7 +2593,7 @@
                         </mat-card>
                     </div>
 
-                    <div fxFlex="calc(32% -3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(32% -1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card" style="padding-bottom: 30px;">
 
@@ -2267,7 +2602,7 @@
                                     <div class="chart-header">
                                         <span class="chart-title">Trends of PO & GRN Count(Current Week)</span>
                                     </div>
-                                    <ngx-charts-line-chart [results]="trendSeries" [scheme]="colorScheme"
+                                    <ngx-charts-line-chart [results]="trendSeriesPo" [scheme]="colorScheme"
                                         [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
                                         [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
                                         [yAxisLabel]="'Count'">
@@ -2278,7 +2613,7 @@
                     </div>
 
 
-                    <!-- <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <!-- <div fxFlex="calc(25% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card" style="padding-bottom: 30px;">
                             <mat-card-content>
@@ -2294,7 +2629,7 @@
                         </mat-card>
                     </div> -->
 
-                    <div fxFlex="calc(32% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(32% - 1px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                         <mat-card class="chart-card" style="padding-bottom: 30px;">
 
@@ -2306,7 +2641,7 @@
                                     </div>
                                     <div class="chart-container">
 
-                                        <canvas id="DrcountChartOP"></canvas>
+                                        <canvas id="PurchasecountChart"></canvas>
                                     </div>
                                 </div>
                             </mat-card-content>
@@ -2386,7 +2721,7 @@
 
                                 <span class="table-title">Supplier Purchase Wise Count</span>
 
-                                <mat-table matSort class="h-200 data-table" [dataSource]="dsSupplierwiseCountList"
+                                <mat-table matSort class="h-300 data-table" [dataSource]="dsSupplierwiseCountList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                                     <ng-container matColumnDef="SupplierName">
@@ -2399,7 +2734,7 @@
 
                                     <ng-container matColumnDef="Date">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="100">
-                                           Date</mat-header-cell>
+                                            Date</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="100 ">
                                             {{contact.Date}}
                                         </mat-cell>
@@ -2413,7 +2748,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                       <ng-container matColumnDef="NetAmt">
+                                    <ng-container matColumnDef="NetAmt">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="100">
                                             Purchase value </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="100">
@@ -2432,8 +2767,7 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="SupplierwiseColumns; sticky: true">
+                                    <mat-header-row class="accent" *matHeaderRowDef="SupplierwiseColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: SupplierwiseColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
@@ -2537,7 +2871,7 @@
                             <mat-card>
                                 <span class="table-title">Top 10 Items Overview</span>
 
-                                <mat-table matSort class="h-200 data-table" [dataSource]="POItemwiseList"
+                                <mat-table matSort class="h-300 data-table" [dataSource]="POItemwiseList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                                     <ng-container matColumnDef="ItemName">
@@ -2564,7 +2898,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                  
+
                                     <ng-container matColumnDef="Total">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="100">
                                             Total Amt </mat-header-cell>

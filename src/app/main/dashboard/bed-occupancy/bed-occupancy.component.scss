@@ -224,7 +224,7 @@ hr {
 }
 
 .chart-header {
-  margin-bottom: 16px;
+  margin-bottom: 2px;
   text-align: center;
 
   .chart-title {
@@ -232,7 +232,7 @@ hr {
     font-weight: 600;
     letter-spacing: 0.5px;
     color: #283593;
-    margin: 8px 0;
+    margin: 4px 0;
     padding: 0;
     text-align: center;
   }
@@ -276,6 +276,7 @@ hr {
 /* First section cards */
 .overall-stats-card {
   padding: 12px;
+  color: #084955;
 }
 
 .overall-title {
@@ -413,12 +414,12 @@ hr {
 
 //new rs
 .chart-container {
-  height: 380px;
+  height: 300px;
   /* or 40vh, 450px, etc. — choose what fits your design */
-  min-height: 320px;
+  min-height: 290px;
   /* prevents collapse when data is very small */
   width: 100%;
-  padding-right: 10px;
+  padding-right: 5px;
   /* takes full card width */
 }
 
@@ -440,7 +441,7 @@ mat-card-content {
 
 .overall-donut-wrap canvas,
 #admissionsLineCanvas {
-  height: 100% !important;
+  height: 90% !important;
   width: 100% !important;
 }
 
@@ -449,7 +450,7 @@ mat-card-content {
 /* removed department card styles */
 /* Department cards */
 .dept-card {
-  padding: 12px;
+  padding: 2px;
   cursor: pointer;
   transition: all 0.3s ease;
   border: 2px solid transparent;
@@ -464,17 +465,17 @@ mat-card-content {
     background-color: #e3f2fd;
 
     .dept-name {
-      color: #1976d2;
+      color: #042c3d;
     }
 
-    .dept-percent {
-      color: #1976d2;
-    }
+    // .dept-percent {
+
+    // }
   }
 }
 
 .dept-header {
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .dept-name {
@@ -486,10 +487,7 @@ mat-card-content {
   font-size: 12px;
 }
 
-.dept-percent {
-  font-weight: 700;
-  font-size: 20px;
-}
+
 
 .dept-percent.warn {
   color: #f44336;
@@ -552,13 +550,15 @@ mat-card-content {
 
 .bed-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 5px;
+  
+   
 }
 
 .bed-card {
   border-radius: 16px;
-  padding: 1rem;
+  padding: 5px;
   transition: all 0.3s ease;
   text-align: left;
   cursor: pointer;
@@ -571,6 +571,8 @@ mat-card-content {
 
     .bed-id {
       opacity: 0.8;
+      color: #07393e;
+      font-weight: bold;
     }
   }
 
@@ -598,9 +600,9 @@ mat-card-content {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-top: 12px;
-    padding: 8px;
+    gap: 2px;
+    margin-top: 5px;
+    padding: 2px;
     background: rgba(0, 0, 0, 0.04);
     border-radius: 8px;
     font-size: 12px;
@@ -628,10 +630,10 @@ mat-card-content {
 
 .use {
   background-color: #d7fde5;
-  color: #1cb755;
+  color: #196872;
 
   .bed-icon mat-icon {
-    color: #1cb755;
+    color: #1ca0b7;
   }
 }
 
@@ -688,22 +690,22 @@ mat-card-content {
 // Department Slider Styles - Enhanced Design
 .dept-slider-container {
   position: relative;
-  width: 100%;
+  width: 99%;
   background: #ffffff;
   border: 1px solid #e9ecef;
   border-radius: 12px;
-  padding: 20px;
-  margin: 16px 0;
+  padding: 5px;
+  margin: 10px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
   .slider-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
     .slider-title {
       font-size: 20px;
       font-weight: 600;
-      color: #2c3e50;
+      color: #283593;
       margin: 0 0 6px 0;
     }
 
@@ -712,6 +714,7 @@ mat-card-content {
       color: #6c757d;
       margin: 0;
       font-weight: 400;
+      color: #271b3c;
     }
   }
 }
@@ -727,19 +730,19 @@ mat-card-content {
 .slider-wrapper {
   flex: 1;
   overflow: hidden;
-  margin: 0 16px;
+  margin: 0 5px;
   border-radius: 12px;
 }
 
 .slider-track {
   display: flex;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  gap: 16px;
-  padding: 8px 0;
+  gap: 5px;
+  padding: 2px 0;
 }
 
 .slider-item {
-  flex: 0 0 280px;
+  flex: 0 0 200px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -749,7 +752,7 @@ mat-card-content {
 
     .dept-card {
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-      border-color: #dee2e6;
+      border-color: #1a0111;
     }
   }
 
@@ -885,19 +888,20 @@ mat-card-content {
   position: relative;
 
   .dept-header {
-    padding: 16px 16px 12px;
+    padding: 5px 5px 5px;
     border-bottom: 1px solid #f1f3f4;
     background: #ffffff;
 
     .dept-name {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: bolder;
       color: #2c3e50;
       margin-bottom: 4px;
       line-height: 1.3;
       min-height: 20px;
       display: flex;
       align-items: center;
+      // width:80% !important ;
     }
 
     .dept-total {
@@ -907,9 +911,13 @@ mat-card-content {
     }
 
     .dept-percent {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1976d2;
+    font-weight: bold;
+    font-size: 22px;
+    color: #1f091a;
+    display: block;
+    width: 100%;
+   text-align: center;
+      
     }
   }
 
@@ -1003,4 +1011,7 @@ mat-card-content {
   .slider-item {
     flex: 0 0 25%;
   }
+
+  //
+  
 }

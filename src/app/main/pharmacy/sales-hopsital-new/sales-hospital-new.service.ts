@@ -193,7 +193,9 @@ export class SalesHospitalService {
           return this._httpClient1.PostData("Prescription/PrescriptionIsClosed", param);
     }
 
-
+ public getExpiryItemlist() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_ExpiryItemScrollingData", {});
+  }
     
 }
 

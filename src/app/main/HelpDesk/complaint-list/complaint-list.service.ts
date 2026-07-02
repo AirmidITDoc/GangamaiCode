@@ -42,6 +42,6 @@ export class ComplaintListService {
 
   
        public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("CanteenMatster?Id=" + m_data);
+        return this._httpClient.DeleteData("HelpdeskPatientComplaints?Id=" + m_data);
     }
 }

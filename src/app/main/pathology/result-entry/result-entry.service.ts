@@ -141,6 +141,8 @@ export class ResultEntryService {
         return this._httpClient1.PostData("Pathology/PathologyTemplateSave", employee);
     }
 
+   
+
     public getPathTempReport(PathReportId, OP_IP_Type) {
         return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type=" + OP_IP_Type);
     }
@@ -193,5 +195,14 @@ export class ResultEntryService {
     }
     public getReportHtml(Param) {
         return this._httpClient1.PostData("Report/get-report-html", Param);
+    }
+
+      public pcpndtSave(employee) {
+        return this._httpClient1.PostData("Pcpndprocess/Insert", employee);
+    }
+
+
+     public getIndicationList(employee) {
+        return this._httpClient1.PostData("Common", employee);
     }
 }

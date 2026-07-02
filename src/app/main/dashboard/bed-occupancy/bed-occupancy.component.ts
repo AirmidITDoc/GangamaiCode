@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import Chart, { Color } from 'chart.js/auto';
+import Chart, { ChartConfiguration, ChartType, Color } from 'chart.js/auto';
 import { DashboardService } from '../dashboard.service';
 import { BedDetailsDialogComponent } from './bed-details-dialog/bed-details-dialog.component';
 
@@ -16,7 +16,7 @@ import { BedDetailsDialogComponent } from './bed-details-dialog/bed-details-dial
 })
 export class BedOccupancyComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort) sort: MatSort;
-
+    public barChartType: ChartType = 'bar';
     public displayedColumns = ['RegNo', 'PatientName', 'DoctorName', 'IsAvailible', 'BedName'];
     warDataArr: WardDetails[] = [];
     warItemArr: WardItemDetails[] = [];
@@ -32,6 +32,12 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     public isBedsLoading: boolean = false; // Loading state for bed data
     public departments: any[] = []; // Department data from API
     public isDepartmentsLoading: boolean = false; // Loading state for department data
+
+    totalBed: number = 0;
+    freeBeds: number = 0;
+    occupiedBeds: number = 0;
+    occupancyPercentage: number = 0;
+
 
     // Slider properties
     public currentSlideIndex: number = 0;
@@ -67,6 +73,11 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     public smallChart3: any;
     public smallChart4: any;
     public occupancyTrendChart: any;
+
+
+    //
+
+    public BedOverallDoughnut: any;
     public distributionChart: any;
     public overallDoughnutChart: any;
     public admissionsLineLarge: any;
@@ -91,16 +102,16 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         { id: 7, status: 'Empty', patient: '', admissionDate: '', age: '', sex: '', icon: 'person_add', department: 3 },
         { id: 8, status: 'In Use', patient: 'Robert Scott', admissionDate: '01/01/2020', age: 60, sex: 'Male', icon: 'hotel', department: 3 },
     ];
+    chart: any;
     constructor(
         public _dashboardServices: DashboardService,
         public dialog: MatDialog
-    ) { }
+    ) {
+    }
 
     ngOnInit(): void {
-        // this.getWard();
-        // Load department data first, then load initial bed data
+
         this.loadDepartments();
-        // initialize charts using same helpers as Daily Dashboard
         setTimeout(() => {
             if (document.getElementById('BedMiniChart1')) {
                 this.smallChart1 = this.getLineChartData('BedMiniChart1', '#d4bbf4', '#c5aae6');
@@ -121,8 +132,11 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                 this.distributionChart = this.getDoughnutChart();
             }
             if (document.getElementById('BedOverallDoughnut')) {
-                this.overallDoughnutChart = this.getOverallDoughnutChart();
+                this.BedOverallDoughnut = this.getOverallDoughnutChart();
             }
+            //  if (document.getElementById('BedOverallDoughnut')) {
+            this.getOverallBedStatusChart();
+            // }
             if (document.getElementById('BedAdmissionsLine')) {
                 this.admissionsLineLarge = this.getLargeAdmissionsChart();
             }
@@ -206,9 +220,6 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         return 0;
     }
 
-    // reverted: department cards helper removed
-
-    // chart helpers (mirroring Daily Dashboard style)
     getLineChartData(charId: string, backgroundColor: Color, borderColor: Color) {
         return new Chart(charId, {
             type: 'line',
@@ -376,6 +387,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
 
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             const apiData = res && res.length ? res[0] : {};
+            console.log(apiData)
             this.dashBedStatistics = apiData;
             console.log("apiDataapiDataapiData", apiData)
 
@@ -388,7 +400,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         || [],
                     datasets: [
                         {
-                            backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3'],
+                            backgroundColor: ['#e7bdf0', '#c9eeef', '#e1bfe6', '#c3e6e0', '#b6baf5'],
                             data: Object.entries(apiData)
                                 .filter(([key]) => key !== 'TotalBedCount') // skip that key
                                 .map(([_, value]) => value) || []
@@ -408,20 +420,21 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         }, err => {
             return []
         })
-
-
     }
+    modalityData1 = [
+    ];
+
 
     getLargeAdmissionsChart() {
         const payload = {
             "searchFields": [],
             "mode": "DashAdmissionDateWiseCount"
         };
-        debugger
+
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             const apiData = res && res.length ? res : {};
             console.log(res)
-            debugger
+
             return new Chart('BedAdmissionsLine', {
                 type: 'line',
                 data: {
@@ -430,8 +443,8 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         {
                             label: 'Admissions',
                             data: apiData?.map(data => data?.Count) || [],
-                            backgroundColor: 'rgba(255,99,132,0.15)',
-                            borderColor: '#ff5a8a',
+                            backgroundColor: '#f3e3f7',
+                            borderColor: '#c4f6f7',
                             pointBackgroundColor: '#ff5a8a',
                             pointRadius: 3,
                             tension: 0.35,
@@ -451,8 +464,8 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         {
                             label: 'Admissions',
                             data: [],
-                            backgroundColor: 'rgba(255,99,132,0.15)',
-                            borderColor: '#ff5a8a',
+                            backgroundColor: '#f3e3f7',
+                            borderColor: '#c4f6f7',
                             pointBackgroundColor: '#ff5a8a',
                             pointRadius: 3,
                             tension: 0.35,
@@ -483,9 +496,9 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         {
                             label: 'Discharges',
                             data: apiData?.map(data => data?.Count) || [],
-                            backgroundColor: 'rgba(99,179,237,0.15)',
-                            borderColor: '#5ac8fa',
-                            pointBackgroundColor: '#5ac8fa',
+                            backgroundColor: '#c4f6f7',
+                            borderColor: '#f3e3f7',
+                            pointBackgroundColor: '#ff5a8a',
                             pointRadius: 3,
                             tension: 0.35,
                             fill: true
@@ -504,9 +517,9 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         {
                             label: 'Discharges',
                             data: [22, 20, 30, 38, 52, 40, 35, 38, 18, 24, 35, 32, 28, 85],
-                            backgroundColor: 'rgba(99,179,237,0.15)',
-                            borderColor: '#5ac8fa',
-                            pointBackgroundColor: '#5ac8fa',
+                            backgroundColor: '#c4f6f7',
+                            borderColor: '#f3e3f7',
+                            pointBackgroundColor: '#ff5a8a',
                             pointRadius: 3,
                             tension: 0.35,
                             fill: true
@@ -788,11 +801,97 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     // Added by raksha 25/11/25
     onReset() {
         this._dashboardServices.bedReset().subscribe((response) => {
-            // this.toastr.success(response.message);
+        });
+    }
+    // New Graph Bed Occupancy Status
+
+
+    public barChartOptions: ChartConfiguration['options'] = {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: false, text: '' }
+        },
+        scales: {
+            y: { beginAtZero: true, max: this.totalBed }
+        }
+    };
+
+    public barChartLabels: string[] = ['Total Beds', 'Free Beds', 'Occupied Beds'];
+
+    public barChartData: ChartConfiguration<'bar'>['data'] = {
+        labels: this.barChartLabels,
+        datasets: [
+            {
+                data: [this.totalBed, this.freeBeds, this.occupiedBeds],
+                label: 'Number of Beds',
+                backgroundColor: ['#7375f3', '#eba9f8', '#9ef1a1',],
+                borderColor: ['#bb65f5', '#beeede', '#eea6ca'],
+                borderWidth: 1
+            }
+        ]
+    };
+    updateChart() {
+        // Update data
+        this.barChartData = {
+            labels: this.barChartLabels,
+            datasets: [
+                {
+                    data: [this.totalBed, this.freeBeds, this.occupiedBeds],
+                    label: 'Number of Beds',
+                    backgroundColor: ['#7375f3', '#eba9f8', '#9ef1a1'],
+                    borderColor: ['#bb65f5', '#beeede', '#eea6ca'],
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        // Update options (VERY IMPORTANT)
+        this.barChartOptions = {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: false, text: 'Bed Occupancy Status' }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: this.totalBed || 10
+                }
+            }
+        };
+
+        // 🔥 Force chart refresh
+        setTimeout(() => {
+            this.chart?.update();
+        });
+    }
+    getOverallBedStatusChart() {
+
+        const payload = {
+            "searchFields": [],
+            "mode": "DashBedStatistics"
+        };
+
+        this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+            const apiData = res && res.length ? res[0] : {};
+            console.log(apiData)
+            if (res) {
+                debugger
+                this.totalBed = res[0].TotalBedCount
+                this.freeBeds = res[0].EmptyCount
+                this.occupiedBeds = res[0].UsedCount
+                // this.occupiedBeds = this.totalBeds - this.freeBeds;
+                this.occupancyPercentage = Math.round((this.occupiedBeds / this.totalBed) * 100);
+                this.updateChart()
+            }
         });
     }
 
+
 }
+
+
 
 export class WardDetails {
     AvailableCount: number;

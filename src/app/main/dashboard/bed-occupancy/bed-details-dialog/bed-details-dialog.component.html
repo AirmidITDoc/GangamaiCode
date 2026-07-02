@@ -5,10 +5,11 @@
         </div>
         <div class="header-info">
             <h2 class="bed-title">BED {{ data.id }}</h2>
-            <div class="status-badge" [ngClass]="getStatusClass(data.status)">
-                <mat-icon class="status-icon">{{ getStatusIcon(data.status) }}</mat-icon>
-                <span>{{ data.status }}</span>
-            </div>
+             <!-- <mat-icon class="status-icon">{{ getStatusIcon(data.status) }}</mat-icon>
+                <span>{{ data.status }}</span> -->
+
+                
+           
         </div>
     </div>
     <button mat-icon-button mat-dialog-close class="close-button">
@@ -20,9 +21,14 @@
     <div *ngIf="!isEmptyBed()" class="patient-info-card">
         <div class="card-header">
             <mat-icon>person</mat-icon>
-            <h3>Patient Information</h3>
+            <h3 style="color: rgb(53, 34, 137);text-align: center !important;">Patient Information</h3>
+            
+            <div class="status-badge" [ngClass]="getStatusClass(data.status)" >
+                <mat-icon class="status-icon">{{ getStatusIcon(data.status) }}</mat-icon>
+                <span>{{ data.status }}</span>
+            </div>
         </div>
-        
+
         <div class="info-grid">
             <div class="info-item">
                 <mat-icon class="item-icon">person</mat-icon>
@@ -70,4 +76,3 @@
         </button>
     </div>
 </mat-dialog-content>
-
