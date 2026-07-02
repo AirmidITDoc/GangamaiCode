@@ -29,7 +29,7 @@ export class NewComplaintComponent {
     vOPDNo="";
     vIPDNo="";
     vSelectedOption: any = 'OP';
- registerObj = new complaintDetail({})
+    registerObj = new complaintDetail({})
     autocompletedepartment: string = "Department";
 
     constructor(public _ComplaintListService: ComplaintListService, public datePipe: DatePipe,
@@ -72,9 +72,9 @@ Updateflag=false
     createComplaintForm(): FormGroup {
         return this._formBuilder.group({
             complaintId: [0],
-            patientName: [this.vPatientName, [Validators.required, Validators.maxLength(50)]],
-            regId: [this.RegId, [Validators.required]],
-            opdipdNo: [this.opIpId, [Validators.required]],
+            // patientName: [this.vPatientName, [Validators.required, Validators.maxLength(50)]],
+            // regId: [this.RegId, [Validators.required]],
+            // opdipdNo: [this.opIpId, [Validators.required]],
             departmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             mobileNo: [''],
             emailId: [''],
@@ -84,6 +84,10 @@ Updateflag=false
             complaintTime: [(new Date()).toISOString()],
             isDischarge: this.isDischarge
 
+
+            // patientName/PersonName
+            //opdipdNo// EmpId ?
+            // DocUpload
         });
     }
     keyPressAlphanumeric(event) {

@@ -13,6 +13,7 @@ import { ServiceMasterFormComponent } from "./service-master-form/service-master
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from "./tariff/tariff.component";
 import { ExcelImportConfig, ImportDialogResult } from "app/main/shared/model/excel-import.models";
+import { NewServicePriceComponent } from "./new-service-price/new-service-price.component";
 
 
 @Component({
@@ -79,7 +80,13 @@ export class ServiceMasterComponent implements OnInit {
                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Edit), callback: (data: any) => {
                         this.onNew(data);
                     }
-                }, {
+                },
+                 {
+                   
+                    action: gridActions.view, visible: this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onClassRate(data);
+                    }
+                },  {
                     action: gridActions.delete, callback: (data: any) => {
 
                         this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
@@ -209,6 +216,26 @@ export class ServiceMasterComponent implements OnInit {
             console.log('The dialog was closed - Action', result);
         });
     }
+
+     onClassRate(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; 
+        buttonElement.blur();
+
+        const dialogRef = this._matDialog.open(NewServicePriceComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '86%',
+                width: '60%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+            console.log('The dialog was closed - Action', result);
+        });
+    }
+
+
     onNewNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -299,6 +326,7 @@ export class ServiceMaster {
     IsDeleted: any;
     tariffId: any;
     isApplicableFor: any;
+   tariffName:any
 
     /**
      * Constructor
@@ -331,6 +359,7 @@ export class ServiceMaster {
             this.IsDeleted = ServiceMaster.IsDeleted || "";
             this.tariffId = ServiceMaster.tariffId || "";
             this.isApplicableFor = ServiceMaster.isApplicableFor || 0
+              this.tariffName = ServiceMaster.tariffName || ""
         }
     }
 }
@@ -352,6 +381,8 @@ export class Servicedetail {
     ServiceName: any;
     TariffName: any;
     SubGroupName: any;
+    tariffName:any
+
 
     constructor(Servicedetail) {
         {
@@ -371,6 +402,7 @@ export class Servicedetail {
             this.ServiceName = Servicedetail.ServiceName || "";
             this.TariffName = Servicedetail.TariffName || ""
             this.SubGroupName = Servicedetail.SubGroupName || ""
+                        this.tariffName = Servicedetail.tariffName || ""
         }
     }
 }

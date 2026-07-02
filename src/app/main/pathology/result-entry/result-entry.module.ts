@@ -1,4 +1,3 @@
-import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,7 +17,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -36,7 +35,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterModule, Routes } from '@angular/router';
 import { NotificationService } from 'app/core/notification.service';
-import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
 import { ResultEntryComponent } from './result-entry.component';
@@ -48,6 +46,17 @@ import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/ou
 import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
 import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
 import { ResultEntryService } from './result-entry.service';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { CommonModule, DatePipe } from '@angular/common';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 const routes: Routes = [
 
@@ -65,7 +74,7 @@ const routes: Routes = [
         NewResultTemplateComponent,
         OutsourceDetailsComponent,
         ReportVerifyDetailsComponent,
-        OutsourceDetailsPopoverComponent
+        OutsourceDetailsPopoverComponent,
 
     ],
     imports: [
@@ -95,25 +104,33 @@ const routes: Routes = [
         MatSelectModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        // NgxEditorModule,
         MatProgressSpinnerModule,
         MatCardModule,
         MatToolbarModule,
         MatSlideToggleModule,
         FuseSharedModule,
-        //  NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule,
-        //  DateTimePickerModule ,
         MatAutocompleteModule,
-        MatTimepickerModule
+        MatTimepickerModule,
+        MatExpansionModule,
+        MatTabsModule,
+
+
+        MatChipsModule,
+        MatSidenavModule,
+        MatGridListModule,
+        MatStepperModule,
+        MatStepperModule,
+        MatTreeModule,
+        FormsModule,
+        MatButtonToggleModule,
+        NgxJsonViewerModule,
+        MatMenuModule
+
     ],
     providers: [
         ResultEntryService,
-        // ToolbarService, 
-        // LinkService, 
-        // ImageService,
-        //  HtmlEditorService,
-        //  TableService,
+
         DatePipe,
         NotificationService,
     ]

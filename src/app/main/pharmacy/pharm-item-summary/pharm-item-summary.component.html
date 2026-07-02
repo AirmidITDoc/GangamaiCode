@@ -52,10 +52,10 @@
           <airmid-table [gridConfig]="gridConfig2" class="content">
             <ng-container filters>
               <form [formGroup]="searchFormGroup" fxLayout="column">
-
+ <!-- (keyup)="selectChangeStoreExp($event)" -->
                 <airmid-dropdown label="Store Name" formControlName="ExpStoreId" [formGroup]="searchFormGroup"
                   [validations]="getValidationMessages().ExpStoreId" fxFlex [mode]="autocompletestore"
-                  (keyup)="selectChangeStoreExp($event)">
+                 >
                 </airmid-dropdown>
 
                 <!-- <mat-form-field appearance="outline" fxFlex>

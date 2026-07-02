@@ -1,0 +1,120 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                        Service Class Rate
+                    </span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <mat-card-content class="p-4" style="font-size: large;color: rgb(7, 64, 117);font-weight: bold;">
+                                Service Name:-{{registerObj.serviceName}} || {{registerObj.tariffName}}
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+
+                        <div class="modal-card-container airmid-table-container"
+                            style="max-height: 600px; overflow-y: auto;">
+                            <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table"
+                                [@animateStagger]="{ value: '50' }">
+                                <ng-container matColumnDef="classId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                        class="w-100">Code</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">{{
+                                        element.classId
+                                        }}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="className">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">Class
+                                        Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-300">{{ element.className
+                                        }}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="classRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150"
+                                        fxShow.gt-sm>ClassRate</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
+                                        <mat-form-field appearance="fill">
+                                            <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                                                (ngModelChange)="onClassRateChange(element)"
+                                                (keypress)="keyPressCharater($event)" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="patientRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150"
+                                        fxShow.gt-sm>PatientRate</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
+                                        <mat-form-field appearance="fill">
+                                            <input matInput [(ngModel)]="element.patientRate" OnlyNumber
+                                                (ngModelChange)="element.isRateEdited = true"
+                                                (keypress)="keyPressCharater($event)" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="cpRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150"
+                                        fxShow.gt-sm>CPRate</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
+                                        <mat-form-field appearance="fill">
+                                            <input matInput [(ngModel)]="element.cprate" OnlyNumber
+                                                (ngModelChange)="element.isRateEdited = true"
+                                                (keypress)="keyPressCharater($event)" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{ hide: DSServicedetailList != null }"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{ hide: !(DSServicedetailList != null && DSServicedetailList.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

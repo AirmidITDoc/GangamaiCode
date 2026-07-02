@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { NewComplaintComponent } from "./new-complaint/new-complaint.component";
 import { ComplaintListService } from "./complaint-list.service";
 import { DatePipe } from "@angular/common";
+import { PrintserviceService } from "app/main/shared/services/printservice.service";
 
 
 
@@ -47,17 +48,17 @@ export class ComplaintListComponent {
     allColumns = [
         // { heading: "", key: "Isdeleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         // { heading: "", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "Date", key: "complaintTime", sort: true, align: 'left', emptySign: 'NA', width: 200,type:9 },
-     
-        { heading: "Person Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Date", key: "complaintTime", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
+
+        { heading: "Person Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "OPDIPD No", key: "opdipdNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "EmailId", key: "emailId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         // { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        { heading: "Complaint", key: "complaint", sort: true, align: 'left', emptySign: 'NA', width: 380 },
+        { heading: "Complaint", key: "complaint", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         // { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
 
         {
@@ -68,7 +69,7 @@ export class ComplaintListComponent {
 
 
     allFilters = [
-        { fieldName: "PatientName", fieldValue:"%", opType: OperatorComparer.StartsWith },
+        { fieldName: "PatientName", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.StartsWith },
 
         { fieldName: "From_Dt", fieldValue: this.From_Dt, opType: OperatorComparer.StartsWith },
@@ -87,7 +88,7 @@ export class ComplaintListComponent {
 
     constructor(
         public _ComplaintListService: ComplaintListService, private accountService: AuthenticationService,
-        public _matDialog: MatDialog, public datePipe: DatePipe,
+        public _matDialog: MatDialog, public datePipe: DatePipe, private commonService: PrintserviceService,
         public toastr: ToastrService, public permissionService: PagePermissionService
     ) { }
 
@@ -109,15 +110,16 @@ export class ComplaintListComponent {
     }
 
     onChangeFirst() {
+        this.From_Dt = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.To_Dt = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
 
         this.vPatientName = this.myformSearch.get('NameSearch').value + "%"
         this.Reg_No = this.myformSearch.get('RegNo').value || "0"
-      
+
         this.getfilterdata();
     }
 
     getfilterdata() {
-        debugger
         this.gridConfig = {
             apiUrl: "HelpdeskPatientComplaints/ComplaintList",
             columnsList: this.allColumns,
@@ -171,7 +173,9 @@ export class ComplaintListComponent {
 
         });
     }
-
+    onprint(element) {
+        this.commonService.Onprint("ComplaintId", element.complaintId, "OPGastrologyPrescriptionWithoutHeader");
+    }
 
     delitem(obj) {
 

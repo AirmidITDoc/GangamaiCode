@@ -246,8 +246,12 @@ export class PharmItemSummaryComponent implements OnInit {
     getExpwiseData() {
 
         debugger
-        this.fromdate = '2026-01-01',//this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'
-            this.todate = '2026-02-01'//this.searchFormGroup.get('enddate').value,'yyyy-MM-dd'
+        // this.fromdate = '2026-01-01',//this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'
+        //     this.todate = '2026-02-01'//this.searchFormGroup.get('enddate').value,'yyyy-MM-dd'
+
+        this.fromdate = this.searchFormGroup.get('startdate').value, 'yyyy-MM-dd'
+        this.todate = this.searchFormGroup.get('enddate').value, 'yyyy-MM-dd'
+
 
         debugger
         this.gridConfig2 = {
@@ -260,8 +264,8 @@ export class PharmItemSummaryComponent implements OnInit {
                 // { fieldName: "ExpYear", fieldValue: String(this.ExpYear), opType: OperatorComparer.Equals },
                 // { fieldName: "StoreId", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
 
-                { fieldName: "FromDate", fieldValue: this.fromdate, opType: OperatorComparer.StartsWith },
-                { fieldName: "ToDate", fieldValue: this.todate, opType: OperatorComparer.StartsWith },
+                { fieldName: "FromDate", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
+                { fieldName: "ToDate", fieldValue: this.todate, opType: OperatorComparer.Equals },
                 { fieldName: "StoreID", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
             ],
             row: 25

@@ -1,9 +1,11 @@
 <!-- Removed old experimental layout block -->
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar bed-occupancy-section" dynamicTableHeight>
     <!-- HEADER -->
-    <div class="top-header accent h-60" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+    <div class="top-header accent h-60" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
         <div class="top-header-info">
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box </mat-icon>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
             <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 <span>Bed Occupancy Dashboard </span>
             </div>
@@ -18,161 +20,163 @@
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content layout-body">
-        <div class="center p-12 ">
-            <div class="content-card ward-dashboard-container">
-                <!-- First section: two graphs -->
-                <div class="first-section"  fxLayout="row" fxLayoutAlign="stretch stretch" fxLayoutGap="12px grid">
-                    <div fxFlex="25%" fxFlex.sm="33%" fxFlex.xs="100%">
-                        <mat-card class="overall-stats-card full-height">
-                            <mat-card-content>
+    <div class="center" fusePerfectScrollbar>
+
+        <div class="dashboard-container">
+
+            <div fxLayout="row" fxLayoutAlign="stretch stretch" fxLayoutGap="2px grid">
+                <div fxFlex="25%" fxFlex.sm="33%" fxFlex.xs="100%">
+
+                    <!-- <mat-card class="chart-card" style="padding-bottom: 30px;">
+                        <mat-card-content>
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                        <span class="chart-title">Bed Occupacy Status</span>
+                                    </div>
+                                <div>
+                                    <canvas id="BedOverallDoughnut"></canvas>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card> -->
+                    <mat-card >
+                        <mat-card-content>
+                            <div class="chart-container">
+                                <div  style="font-size: large;color: rgb(2, 70, 101);font-weight: bold;">
+                                    <div style="text-align: center !important;">
+                                        <span >Total Beds -{{ totalBed }} |  Free Beds -{{ freeBeds }} </span>
+                                    </div>
+                                  
+                                    <div style="text-align: center !important;">
+                                       <span style="color: brown;font-size: large;">Occupacy:-{{ occupancyPercentage }}%</span>
+                                    </div>
+                                </div>
+
                                 
+                                <div >
+                                    <canvas baseChart [data]="barChartData" [options]="barChartOptions"
+                                        [type]="barChartType">
+                                    </canvas>
+                                </div>
+
+                            </div>
+
+
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div fxFlex="74%" fxFlex.sm="66%" fxFlex.xs="100%">
+                    <div fxFlex="50%" fxFlex.sm="66%" fxFlex.xs="100%">
+                        <mat-card>
+                            <mat-card-content>
                                 <div class="chart-container">
+
                                     <div class="chart-header">
-                                        <h3 class="chart-title">Bed Booking Chart</h3>
-                                        <p class="chart-title" style="color: blueviolet;">Total Beds {{dashBedStatistics?.TotalBedCount ||
-                                            0}} | Booked  {{dashBedStatistics?.UsedCount || 0}} </p>
-
-                                        <!-- 
-                                        <div class="overall-value">{{dashBedStatistics?.UsedCount || 0}}</div>
-                                        <div class="overall-label">In Use</div>
-                                        <div class="overall-total">{{dashBedStatistics?.TotalBedCount || 0}}</div>
-                                        <div class="overall-total-label">Total Beds</div> -->
-                                    </div>
-
-                                    <!-- <div class="overall-row">
-                                        <div class="overall-left">
-                                            <div class="overall-value">{{dashBedStatistics?.UsedCount || 0}}</div>
-                                            <div class="overall-label">In Use</div>
-                                        </div>
-                                        <div class="overall-right">
-                                            <div class="overall-total">{{dashBedStatistics?.TotalBedCount || 0}}</div>
-                                            <div class="overall-total-label">Total Beds</div>
-                                        </div>
-                                    </div> -->
-                                    <div style="height:200px">
-                                        <canvas id="BedOverallDoughnut" style="width:100%;"></canvas>
-                                    </div>
-                                    <div class="legend-mini">
-                                        <span class="legend-item"><span class="dot dot-red"></span> In use</span>
-                                        <span class="legend-item"><span class="dot dot-amber"></span> Empty</span>
+                                        <span class="chart-title">Patient Admission Trend</span>
 
                                     </div>
+                                    <!-- <div style="height:280px"> -->
+                                        <canvas id="BedAdmissionsLine"></canvas>
+                                    <!-- </div> -->
+
                                 </div>
                             </mat-card-content>
                         </mat-card>
                     </div>
-                    <div fxFlex="75%" fxFlex.sm="66%" fxFlex.xs="100%">
-                    
-                            <!-- <div class="first-section" fxLayout="row" fxLayoutGap="5px grid"> -->
-                                <div fxFlex="50%" fxFlex.sm="66%" fxFlex.xs="100%">
-                                      <mat-card class="overall-stats-card full-height">
-                                        <mat-card-content>
-                                            <div class="chart-container">
-                                                <div class="chart-row">
-                                                    <div class="chart-header">
-                                                        <h3 class="chart-title">New Admission</h3>
 
-                                                    </div>
-                                                    <div style="height:220px">
-                                                        <canvas id="BedAdmissionsLine"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </mat-card-content>
-                                    </mat-card>
+                    <div fxFlex="50%" fxFlex.sm="66%" fxFlex.xs="100%">
+                        <mat-card>
+                            <mat-card-content>
+                               <div class="chart-container">
+
+                                    <div class="chart-header">
+                                        <span class="chart-title">Patient Discharge Trend</span>
+
+                                    </div>
+                                    <!-- <div style="height:280px"> -->
+                                        <canvas id="BedDischargeLine"></canvas>
+                                    <!-- </div> -->
+
                                 </div>
-
-                                <div fxFlex="50%" fxFlex.sm="66%" fxFlex.xs="100%">
-                                     <mat-card class="overall-stats-card full-height">
-                                        <mat-card-content>
-                                            <div class="chart-container">
-                                                <div class="chart-row mt-12">
-                                                    <div class="chart-header">
-                                                        <h3 class="chart-title">Discharge</h3>
-
-                                                    </div>
-                                                    <div style="height:220px">
-                                                        <canvas id="BedDischargeLine"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </mat-card-content>
-                                    </mat-card>
-                                </div>
-
-                            <!-- </div> -->
+                            </mat-card-content>
+                        </mat-card>
                     </div>
+
+                    <!-- </div> -->
                 </div>
+            </div>
+
+            <div class="dept-slider-container">
+                <div class="slider-header">
+                    <span class="slider-title">Department Overview<span class="slider-subtitle"> ( Select a
+                            department
+                            to view bed details)</span></span>
+
+                </div>
+                <!-- Department loading state -->
+                <div *ngIf="isDepartmentsLoading" class="dept-loading-container">
+                    <mat-spinner diameter="40"></mat-spinner>
+                    <p>Loading departments...</p>
+                </div>
+
+                <!-- No departments state -->
+                <div *ngIf="!isDepartmentsLoading && departments.length === 0" class="no-departments-container">
+                    <mat-icon class="no-data-icon">business</mat-icon>
+                    <p>No departments available</p>
+                </div>
+
                 <!-- Department Slider -->
-                <div class="dept-slider-container mt-8">
-                    <div class="slider-header">
-                        <h3 class="slider-title">Department Overview</h3>
-                        <p class="slider-subtitle">Select a department to view bed details</p>
+                <div *ngIf="!isDepartmentsLoading && departments.length > 0" class="dept-slider">
+                    <!-- Navigation Arrow Left -->
+                    <div class="slider-nav slider-nav-left" (click)="previousSlide()"
+                        [disabled]="currentSlideIndex === 0" mat-icon-button>
+                        <mat-icon>chevron_left</mat-icon>
                     </div>
-                    <!-- Department loading state -->
-                    <div *ngIf="isDepartmentsLoading" class="dept-loading-container">
-                        <mat-spinner diameter="40"></mat-spinner>
-                        <p>Loading departments...</p>
-                    </div>
-                    
-                    <!-- No departments state -->
-                    <div *ngIf="!isDepartmentsLoading && departments.length === 0" class="no-departments-container">
-                        <mat-icon class="no-data-icon">business</mat-icon>
-                        <p>No departments available</p>
-                    </div>
-                    
-                    <!-- Department Slider -->
-                    <div *ngIf="!isDepartmentsLoading && departments.length > 0" class="dept-slider">
-                        <!-- Navigation Arrow Left -->
-                        <div class="slider-nav slider-nav-left" 
-                                (click)="previousSlide()" 
-                                [disabled]="currentSlideIndex === 0"
-                                mat-icon-button>
-                            <mat-icon>chevron_left</mat-icon>
-                    </div>
-                        
-                        <!-- Slider Container -->
-                        <div class="slider-wrapper">
-                            <div class="slider-track" 
-                                 [style.transform]="'translateX(' + (-currentSlideIndex * slideWidth) + 'px)'">
-                                <div *ngFor="let dept of departments; let i = index" 
-                                     class="slider-item"
-                                     [ngClass]="{'selected': isDepartmentSelected(i)}" 
-                                     (click)="selectDepartment(i)">
-                                    <mat-card class="dept-card">
-                                        <mat-card-content>
-                                            <div class="dept-header" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="dept-title" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
-                                                    <div>
-                                                        <div class="dept-name">{{getDeptData(i).name}}</div>
-                                                        <div class="dept-total">{{getDeptData(i).total}} Total</div>
-                                                    </div>
+
+                    <!-- Slider Container -->
+                    <div class="slider-wrapper">
+                        <div class="slider-track"
+                            [style.transform]="'translateX(' + (-currentSlideIndex * slideWidth) + 'px)'">
+                            <div *ngFor="let dept of departments; let i = index" class="slider-item"
+                                [ngClass]="{'selected': isDepartmentSelected(i)}" (click)="selectDepartment(i)">
+                                <mat-card class="dept-card">
+                                    <mat-card-content>
+                                        <div class="dept-header" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div class="dept-title" fxLayout="row" fxLayoutGap="8px"
+                                                fxLayoutAlign="start center">
+                                                <div>
+                                                    <div class="dept-name">{{getDeptData(i).name}} </div>
+                                                    <!-- <div class="dept-total">{{getDeptData(i).total}} Total</div> -->
                                                 </div>
-                                                <div class="dept-percent">{{getDeptData(i).percent}}%</div>
                                             </div>
-                                            <div class="dept-rows">
-                                                <div class="dept-row"><span class="bar bar-red"></span><span> {{getDeptData(i).inUse}} In Use</span></div>
-                                                <div class="dept-row"><span class="bar bar-amber"></span><span> {{getDeptData(i).reserved}} Reserved</span></div>
-                                                <div class="dept-row"><span class="bar bar-green"></span><span> {{getDeptData(i).empty}} Empty</span></div>
-                                            </div>
-                                        </mat-card-content>
-                                    </mat-card>
-                                </div>
+
+                                        </div>
+                                        <div style="font-weight: bold;text-align: center;color: rgb(33, 9, 28);">Total
+                                            {{getDeptData(i).total}}--(
+                                            {{getDeptData(i).percent}}%)</div>
+                                        <div class="dept-rows">
+                                            <div class="dept-row"><span class="bar bar-red"></span><span>
+                                                    {{getDeptData(i).inUse}} In Use</span></div>
+                                            <div class="dept-row"><span class="bar bar-amber"></span><span>
+                                                    {{getDeptData(i).reserved}} Reserved</span></div>
+                                            <div class="dept-row"><span class="bar bar-green"></span><span>
+                                                    {{getDeptData(i).empty}} Empty</span></div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
                             </div>
                         </div>
-                        
-                        <!-- Navigation Arrow Right -->
-                        <div class="slider-nav slider-nav-right" 
-                                (click)="nextSlide()" 
-                                [disabled]="currentSlideIndex >= maxSlideIndex"
-                                mat-icon-button>
-                            <mat-icon>chevron_right</mat-icon>
                     </div>
+
+                    <!-- Navigation Arrow Right -->
+                    <div class="slider-nav slider-nav-right" (click)="nextSlide()"
+                        [disabled]="currentSlideIndex >= maxSlideIndex" mat-icon-button>
+                        <mat-icon>chevron_right</mat-icon>
                     </div>
                 </div>
+            </div>
 
-                    <!-- <mat-form-field appearance="outline" class="room-select mt-8 mr-8">
+            <!-- <mat-form-field appearance="outline" class="room-select mt-8 mr-8">
                       <mat-label>Room</mat-label>
                       <mat-select [(value)]="selectedRoom">
                         <mat-option *ngFor="let room of rooms" [value]="room">{{ room }}</mat-option>
@@ -185,56 +189,57 @@
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker startView="multi-year" panelClass="month-picker"></mat-datepicker>
                     </mat-form-field> -->
-                  
-                  <div class="bed-grid mt-8">
-                    <!-- Loading state -->
-                    <div *ngIf="isBedsLoading" class="loading-container">
-                      <mat-spinner diameter="50"></mat-spinner>
-                      <p>Loading bed data...</p>
-                    </div>
-                    
-                    <!-- No data state -->
-                    <div *ngIf="!isBedsLoading && filteredBeds.length === 0" class="no-data-container">
-                      <mat-icon class="no-data-icon">hotel</mat-icon>
-                      <p>No beds available for this department</p>
-                    </div>
-                    
-                    <!-- Bed cards -->
-                    <mat-card *ngFor="let bed of filteredBeds" class="bed-card" (click)="openBedDetails(bed)">
-                      <div class="bed-header">
+
+            <div class="bed-grid">
+                <!-- Loading state -->
+                <div *ngIf="isBedsLoading" class="loading-container">
+                    <mat-spinner diameter="50"></mat-spinner>
+                    <p>Loading bed data...</p>
+                </div>
+
+                <!-- No data state -->
+                <div *ngIf="!isBedsLoading && filteredBeds.length === 0" class="no-data-container">
+                    <mat-icon class="no-data-icon">hotel</mat-icon>
+                    <p>No beds available for this department</p>
+                </div>
+
+                <!-- Bed cards -->
+                <mat-card *ngFor="let bed of filteredBeds" class="bed-card" (click)="openBedDetails(bed)">
+                    <div class="bed-header">
                         <div class="bed-id">BED {{ bed.id }}</div>
-                        <div class="bed-status">{{ bed.status }}</div>
-                      </div>
-                  
-                      <div class="bed-icon">
-                        <mat-icon class="bed-icon" [ngClass]="getBedStatusClass(bed.status)">{{ bed.icon }}</mat-icon>
-                      </div>
-                  
-                      <div class="bed-details" *ngIf="!isBedEmpty(bed.status)">
+                        <div class="bed-id">{{ bed.status }}</div>
+                    </div>
+
+                    <div class="bed-icon">
+                        <mat-icon class="bed-icon" [ngClass]="getBedStatusClass(bed.status)">{{ bed.icon
+                            }}</mat-icon>
+                    </div>
+
+                    <div class="bed-details" *ngIf="!isBedEmpty(bed.status)" style="font-size: medium;">
                         <p *ngIf="bed.regNo"><strong>UHID No:</strong> {{ bed.regNo }}</p>
                         <p><strong>Patient:</strong> {{ bed.patient }}</p>
                         <p><strong>Admission Date:</strong> {{ bed.admissionDate }}</p>
                         <p><strong>Age:</strong> {{ bed.age }}</p>
                         <p><strong>Sex:</strong> {{ bed.sex }}</p>
                         <p *ngIf="bed.doctorName"><strong>Doctor:</strong> {{ bed.doctorName }}</p>
-                      </div>
-                  
-                      <div class="bed-details" *ngIf="isBedEmpty(bed.status)">
+                    </div>
+
+                    <div class="bed-details" *ngIf="isBedEmpty(bed.status)">
                         <p>No patient assigned</p>
                         <p *ngIf="bed.roomName"><strong>Room:</strong> {{ bed.roomName }}</p>
-                      </div>
+                    </div>
 
-                      <div class="click-indicator">
+                    <div class="click-indicator">
                         <mat-icon>visibility</mat-icon>
                         <span>Click for details</span>
-                      </div>
-                    </mat-card>
-                  </div>
-                  
+                    </div>
+                </mat-card>
             </div>
+
         </div>
-        <!-- CENTER -->
     </div>
-    <!-- / CONTENT-->
+    <!-- CENTER -->
 </div>
+<!-- / CONTENT-->
+<!-- </div> -->
 <!-- RegNo PatientName DoctorName Bed Status  -->

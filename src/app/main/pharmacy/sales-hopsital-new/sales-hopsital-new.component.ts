@@ -72,7 +72,7 @@ export class SalesHospitalNewComponent implements OnInit {
     Focusstatus: boolean = true
     CreditReasonShow: boolean = false
     type: any;
-     NetPayBillAmt:any=0;
+    NetPayBillAmt: any = 0;
     PatientName: any;
     MobileNo: any;
     DoctorName: any;
@@ -524,7 +524,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.updateValueAndValidity();
             this.saleSelectedDatasource.data = [];
             this.Itemchargeslist = [];
-          //  this.paymethod = false;
+            //  this.paymethod = false;
             this.Draftchk = true;
             this.IPMedID = 0;
             this.DraftID = 0;
@@ -1064,7 +1064,7 @@ export class SalesHospitalNewComponent implements OnInit {
         const FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
         const FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
         const roundoffAmt = (Math.round(FinalNetAmt) - FinalNetAmt).toFixed(2);
-         this.NetPayBillAmt = Math.round(FinalNetAmt)
+        this.NetPayBillAmt = Math.round(FinalNetAmt)
         this.ItemSubform.patchValue({
             roundoffAmt: roundoffAmt,
             totalAmount: FinalTotalAmt,
@@ -1133,7 +1133,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ConShow = true;
             FinalDiscAmt = ((formValues?.totalAmount * Disc) / 100).toFixed(2);
             NetAmount = (formValues.totalAmount - parseFloat(FinalDiscAmt)).toFixed(2);
-             this.NetPayBillAmt = Math.round(NetAmount)
+            this.NetPayBillAmt = Math.round(NetAmount)
             this.ItemSubform.patchValue({
                 discAmount: FinalDiscAmt,
                 netAmount: NetAmount,
@@ -1149,7 +1149,7 @@ export class SalesHospitalNewComponent implements OnInit {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
             }
-             this.NetPayBillAmt = Math.round(formValues?.totalAmount)
+            this.NetPayBillAmt = Math.round(formValues?.totalAmount)
             this.ItemSubform.patchValue({
                 FinalDiscPer: 0,
                 discAmount: 0,
@@ -1190,7 +1190,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
             //this.ConseId.nativeElement.focus();
         }
-          this.NetPayBillAmt = Math.round(NetAmount)
+        this.NetPayBillAmt = Math.round(NetAmount)
         this.ItemSubform.patchValue({
             FinalDiscPer: Discper,
             discAmount: totDiscAmt,
@@ -1200,7 +1200,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     }
     onSave(event) {
-        
+
         const formValue = this.ItemSubform.value
         if (this.ItemSubform.get('opIpType').value == '2') {
             if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
@@ -1245,7 +1245,7 @@ export class SalesHospitalNewComponent implements OnInit {
         });
     }
     BillSave(event) {
-        
+
         const formattedTime = this.datePipe.transform(new Date(), 'HH:mm');
         const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
         const FormattedDateTime = formattedDate + ' ' + formattedTime
@@ -1531,7 +1531,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.calculateCellNetAmount(item);
     }
     getCellCalculation(item: IndentList) {
-        
+
         let qty = +item?.Qty;
         if (!qty) {
             qty = 0;
@@ -1726,7 +1726,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 return;
             }
         }
-        
+
         this.PharmaSalesDraftForm.get('salesDraft.date').setValue(formattedDate)
         this.PharmaSalesDraftForm.get('salesDraft.time').setValue(FormattedDateTime)
         this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue?.opIpType)
@@ -1790,7 +1790,7 @@ export class SalesHospitalNewComponent implements OnInit {
     draftpatientlist: any = [];
     draftextMobilenolist: any = [];
     onAddDraftList(contact) {
-        
+
         console.log(contact)
         this.saveflag = false;
         this.DraftID = contact.dsalesId;
@@ -1879,7 +1879,7 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         this._salesService.getDraftItemDetailsList(vdata).subscribe((response) => {
             this.tempDatasource.data = response.data as any;
-          
+
             // if (this.tempDatasource.data.length >= 1) {
             //     
             //     this.tempDatasource.data.forEach((element) => {
@@ -1889,7 +1889,7 @@ export class SalesHospitalNewComponent implements OnInit {
             //     });
             // }
 
-             if (this.tempDatasource.data.length >= 1) {
+            if (this.tempDatasource.data.length >= 1) {
                 setTimeout(async () => {
                     for (const element of this.tempDatasource.data) {
                         ;
@@ -1902,52 +1902,52 @@ export class SalesHospitalNewComponent implements OnInit {
             }
         });
     }
-//     onAddDraftListTosale(contact, DraftQty) {
-//         console.log(contact)
-//         this.QtyBalchk = 0;
-// 
-//         const m_data = {
-//             "first": 0,
-//             "rows": 9999,
-//             "sortField": "ItemId",
-//             "sortOrder": 0,
-//             "filters": [
-//                 { "fieldName": "ItemId", "fieldValue": String(contact.itemId), "opType": "Contains" },
-//                 { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
-//             ],
-//             "exportType": "JSON",
-//             "columns": [{ "data": "string", "name": "string" }]
-//         };
-//         this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
-//             console.log(" Temp Charges list" + response)
-//             const tempChargesList = response?.data || [];
-//             let qtyBalChk = 0;
-//             if (tempChargesList.length == 0) {
-//                 Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
-//             } else if (tempChargesList.length > 0) {
-//                 this.Itemchargeslist = [];
-//                 tempChargesList.forEach((element) => {
-//                     if (contact.itemId != element.itemId) {
-//                         qtyBalChk = 0;
-//                     }
-//                     if (qtyBalChk != 1) {
-//                         if (DraftQty <= element.balanceQty) {
-//                             qtyBalChk = 1;
-//                             this.getFinalCalculation(element, DraftQty);
-//                         } else {
-//                             Swal.fire('Balance Qty is :', element.balanceQty);
-//                             qtyBalChk = 0;
-//                             Swal.fire('Balance Qty is Less than Selected Item Qty for Item :' + element.itemId + 'Balance Qty:', element.balanceQty);
-//                         }
-//                     }
-//                 });
-//             }
-//             this.QtyBalchk = qtyBalChk
-//         });
+    //     onAddDraftListTosale(contact, DraftQty) {
+    //         console.log(contact)
+    //         this.QtyBalchk = 0;
+    // 
+    //         const m_data = {
+    //             "first": 0,
+    //             "rows": 9999,
+    //             "sortField": "ItemId",
+    //             "sortOrder": 0,
+    //             "filters": [
+    //                 { "fieldName": "ItemId", "fieldValue": String(contact.itemId), "opType": "Contains" },
+    //                 { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
+    //             ],
+    //             "exportType": "JSON",
+    //             "columns": [{ "data": "string", "name": "string" }]
+    //         };
+    //         this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+    //             console.log(" Temp Charges list" + response)
+    //             const tempChargesList = response?.data || [];
+    //             let qtyBalChk = 0;
+    //             if (tempChargesList.length == 0) {
+    //                 Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
+    //             } else if (tempChargesList.length > 0) {
+    //                 this.Itemchargeslist = [];
+    //                 tempChargesList.forEach((element) => {
+    //                     if (contact.itemId != element.itemId) {
+    //                         qtyBalChk = 0;
+    //                     }
+    //                     if (qtyBalChk != 1) {
+    //                         if (DraftQty <= element.balanceQty) {
+    //                             qtyBalChk = 1;
+    //                             this.getFinalCalculation(element, DraftQty);
+    //                         } else {
+    //                             Swal.fire('Balance Qty is :', element.balanceQty);
+    //                             qtyBalChk = 0;
+    //                             Swal.fire('Balance Qty is Less than Selected Item Qty for Item :' + element.itemId + 'Balance Qty:', element.balanceQty);
+    //                         }
+    //                     }
+    //                 });
+    //             }
+    //             this.QtyBalchk = qtyBalChk
+    //         });
 
 
-//     }
-   
+    //     }
+
     async onAddDraftListTosale(contact, DraftQty): Promise<void> {
         console.log(contact);
 
@@ -1961,12 +1961,12 @@ export class SalesHospitalNewComponent implements OnInit {
             filters: [
                 { fieldName: "ItemId", fieldValue: String(contact.itemId), opType: "Contains" },
                 { fieldName: "StoreId", fieldValue: String(this._loggedService.currentUserValue.user.storeId), opType: "Contains" },
-                
+
             ],
             exportType: "JSON",
             columns: [{ data: "string", name: "string" }]
         };
-  debugger
+        debugger
         try {
             const response: any = await firstValueFrom(
                 this._salesService.getDraftBillItemBalQty(m_data)
@@ -2048,7 +2048,7 @@ export class SalesHospitalNewComponent implements OnInit {
             if (contact?.batchExpDate) {
 
                 debugger
-                this.vExpDate=this.datePipe.transform(contact.batchExpDate,'yyyy-MM-dd')
+                this.vExpDate = this.datePipe.transform(contact.batchExpDate, 'yyyy-MM-dd')
                 // const day = +contact?.batchExpDate.substring(0, 2);
                 // const month = +contact?.batchExpDate.substring(3, 5);
                 // const year = +contact?.batchExpDate.substring(6, 10);
@@ -2124,7 +2124,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
         return true;
     }
- 
+
     NoStockItemlist: any = [];
     getItemNames(): string {
         if (!this.NoStockItemlist || this.NoStockItemlist.length === 0) {
@@ -2134,14 +2134,15 @@ export class SalesHospitalNewComponent implements OnInit {
         return unique.join(', ');
     }
 
-     async getPRESCRIPTION() {
+    async getPRESCRIPTION() {
+        debugger
         if (this.ItemSubform.get('opIpType').value != '2') {
             const dialogRef = this._matDialog.open(PrescriptionComponent, {
                 maxWidth: '100%',
                 height: '100%',
                 width: '95%',
             });
-            dialogRef.afterClosed().subscribe(async(result) => {
+            dialogRef.afterClosed().subscribe(async (result) => {
                 console.log('The dialog was closed - Insert Action', result);
                 this.Itemchargeslist = [];
                 this.DoctorNamecheck = true;
@@ -2151,7 +2152,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 this.OP_IP_Id = result[0]?.AdmissionID;
                 this.DoctorName = result[0]?.DoctorName;
                 this.ItemSubform.get('regId').setValue(result[0]?.RegId);
-                
+
                 this.saveflag = false;
                 if (result[0]?.IPMedID > 0) {
                     this.IPDNocheck = true;
@@ -2669,7 +2670,7 @@ export class SalesHospitalNewComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
         });
     }
-        viewgetsalesDraftReportPdf(element) {
+    viewgetsalesDraftReportPdf(element) {
         this.commonService.Onprint("DSalesId", element, "OpDraftPharmacyReceipt");
     }
     getDateTime(dateTimeObj) {
@@ -2857,6 +2858,14 @@ export class SalesHospitalNewComponent implements OnInit {
             }
         });
     }
+
+    ExpiryItem: any = [];
+    getScrolling() {
+        this._salesService.getExpiryItemlist().subscribe(data => {
+            this.ExpiryItem = data
+        })
+    }
+
 }
 
 export class IndentList {
@@ -2900,7 +2909,7 @@ export class IndentList {
     PatientName: any;
     SalesReturnId: any;
     DiscAmount: any;
-    NetAmount: any; 
+    NetAmount: any;
     MarginAmt: any;
     QtyPerDay: any;
     MRP: any;

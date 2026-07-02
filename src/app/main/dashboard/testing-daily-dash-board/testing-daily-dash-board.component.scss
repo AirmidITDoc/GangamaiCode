@@ -174,7 +174,7 @@
   .charts-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 5px;
+    gap: 2px;
     padding: 1px;
     width: 100%;
     margin-top: 2px;
@@ -184,6 +184,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 190px !important;
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
@@ -251,7 +252,7 @@
 
     .charts-row {
       grid-template-columns: 1fr;
-      gap: 5px;
+      gap: 2px;
       padding: 2px;
     }
 
@@ -262,8 +263,8 @@
 
   .charts-row1 {
     grid-template-columns: 1fr;
-    gap: 5px;
-    padding: 5px;
+    gap: 2px;
+    padding: 2px;
   }
 
   /* Mini cards inside Patient Mix */
@@ -292,14 +293,14 @@
   }
 
   .mini-label {
-    font-size: 12px;
+    font-size: 15px;
     opacity: .8;
-    font-weight: 600;
+    font-weight: bold;
   }
 
   .mini-value {
     font-size: 20px;
-    font-weight: 700;
+    font-weight: bold;
     line-height: 1;
   }
 
@@ -422,8 +423,8 @@
     }
 
     .charts-row {
-      gap: 5px;
-      padding: 5px;
+      gap: 2px;
+      padding: 2px;
     }
   }
 
@@ -992,6 +993,7 @@
       color: #283593;
       margin: 2px 0;
       padding: 0;
+      text-align: center;
     }
   }
 
@@ -1420,14 +1422,6 @@
         }
       }
     }
-
-
-    //
-    //  .cards-grid-new1 {
-    //     display: grid;
-    //     grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
-    //     gap: 10px;
-
     .dashboard-card1 {
       box-shadow: none !important;
       border: 1px solid #db8ff9 !important;
@@ -1438,7 +1432,7 @@
       justify-content: flex-start !important;
       gap: 4px !important;
       // height:100px !important;
-      background-color: rgb(203, 235, 250);
+      background-color: rgb(206, 190, 248);
       height: auto !important;
 
       &.collection-card {
@@ -1870,7 +1864,16 @@
     max-width: 150px;
   }
 
-
+.mat-column-Amount,
+  .mat-column-Count,
+  .mat-column-Revenue,
+  .mat-column-Gross,
+  .mat-column-NetRevenue,
+.mat-column-CASH,
+  .mat-column-CARD,
+.mat-column-UPI,
+  .mat-column-BANKTRANSFER,
+  .mat-column-TOTAL,
   .mat-column-DeptCount,
   .mat-column-Count,
   .mat-column-DocPatientCount,
@@ -1878,11 +1881,15 @@
   .mat-column-ReferPatient,
   .mat-column-Company,
   .mat-column-GrossAmt,
-  .mat-column-Gross,
-  .mat-column-Net,
+ .mat-column-Net,
   .mat-column-DiscountAmt,
-
+  .mat-column-Date,
+  .mat-column-PoNo,
   .mat-column-Discount,
+
+  .mat-column-Qty,
+  .mat-column-Price,
+  .mat-column-Total,
   .mat-column-NetAmt {
     flex: 1 1 auto;
     text-align: right;
@@ -1903,7 +1910,7 @@
     flex: 1 1 auto;
     text-align: center !important;
     justify-content: center !important;
-     z-index: 10;
+    z-index: 10;
     border-left: 2px solid #e0e0e0;
   }
 
@@ -1953,12 +1960,12 @@
       color: #245969;
       padding: 14px 28px;
       cursor: pointer;
-    //  border-bottom: none;
+      //  border-bottom: none;
       margin-right: 4px;
       font-weight: 500;
       transition: all 0.3s ease;
       border: 1px solid #362c7f;
-      
+
       border-radius: 50px;
       box-shadow: 0 6px 16px rgba(54, 44, 127, 0.15);
 

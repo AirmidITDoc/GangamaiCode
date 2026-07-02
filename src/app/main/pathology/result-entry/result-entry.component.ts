@@ -42,6 +42,7 @@ import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
     selector: 'app-result-entry',
     templateUrl: './result-entry.component.html',

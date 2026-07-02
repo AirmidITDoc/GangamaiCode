@@ -422,6 +422,8 @@ export class TestFormMasterComponent implements OnInit {
             this.toastr.warning(`Select Service Name`, 'Warning',);
             return;
         }
+
+
         this.testForm.get("ServiceId").setValue(this.ServiceID)
         this.testFormInsert.get("pathTest.serviceId")?.setValue(Number(this.testForm.get("ServiceId").value) || 0)
         if (!this.testForm.invalid && !this.testFormInsert.invalid) {
@@ -813,7 +815,7 @@ export class TestFormMasterComponent implements OnInit {
             this.testForm.get('ServiceId')?.setValue(0)
             return;
         }
-
+        debugger
         this.ServiceID = obj.serviceId;
         if (this.ServiceID == 0) {
             this.testForm.get('ServiceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])

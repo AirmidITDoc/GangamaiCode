@@ -148,84 +148,84 @@
                     </mat-card>
                 </div>
                 <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                                           <mat-card>
-                            <mat-card-content>
-                                <div class="payment-details-header">
-                                    <h3 class="section-title">Payment Summary (Selected Period)</h3>
-                                </div>
-                                <div fxLayout="column" fxLayoutGap="16px">
-                                    <!-- First Row Stats -->
-                                    <div fxLayout="row wrap" fxLayoutGap="16px">
-                                        <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
-                                            <mat-card class="stat-item-card">
-                                                <mat-card-content>
+                    <mat-card>
+                        <mat-card-content>
+                            <div class="payment-details-header">
+                                <h3 class="section-title">Payment Summary (Selected Period)</h3>
+                            </div>
+                            <div fxLayout="column" fxLayoutGap="16px">
+                                <!-- First Row Stats -->
+                                <div fxLayout="row wrap" fxLayoutGap="16px">
+                                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
+                                        <mat-card class="stat-item-card">
+                                            <mat-card-content>
 
-                                                    <div class="stat-item-inner">
-                                                        <div class="stat-icon" style="background: #e8f5e9;">
-                                                            <mat-icon style="color: #4caf50;">inventory_2</mat-icon>
-                                                        </div>
-                                                        <div class="stat-info">
-                                                            <div class="stat-value">{{inventoryValue |
-                                                                currency:'INR':'symbol':'1.0-0'}}
-                                                            </div>
-                                                            <div class="stat-label">Total Inventory Value</div>
-                                                        </div>
+                                                <div class="stat-item-inner">
+                                                    <div class="stat-icon" style="background: #e8f5e9;">
+                                                        <mat-icon style="color: #4caf50;">inventory_2</mat-icon>
                                                     </div>
-                                                </mat-card-content>
-                                            </mat-card>
-                                        </div>
-                                        <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
-                                            <mat-card class="stat-item-card">
-                                                <mat-card-content>
-                                                    <div class="stat-item-inner">
-                                                        <div class="stat-icon" style="background: #fff3e0;">
-                                                            <mat-icon style="color: #ff9800;">warning</mat-icon>
+                                                    <div class="stat-info">
+                                                        <div class="stat-value">{{inventoryValue |
+                                                            currency:'INR':'symbol':'1.0-0'}}
                                                         </div>
-                                                        <div class="stat-info">
-                                                            <div class="stat-value">{{lowStockItems}}</div>
-                                                            <div class="stat-label">Low Stock Items</div>
-                                                        </div>
+                                                        <div class="stat-label">Total Inventory Value</div>
                                                     </div>
-                                                </mat-card-content>
-                                            </mat-card>
-                                        </div>
-                                        <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
-                                            <mat-card class="stat-item-card">
-                                                <mat-card-content>
-                                                    <div class="stat-item-inner">
-                                                        <div class="stat-icon" style="background: #ffebee;">
-                                                            <mat-icon style="color: #f44336;">event_busy</mat-icon>
-                                                        </div>
-                                                        <div class="stat-info">
-                                                            <div class="stat-value">{{expiringMedicines}}</div>
-                                                            <div class="stat-label">Expiring This Month</div>
-                                                        </div>
-                                                    </div>
-                                                </mat-card-content>
-                                            </mat-card>
-                                        </div>
-                                        <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
-                                            <mat-card class="stat-item-card">
-                                                <mat-card-content>
-                                                    <div class="stat-item-inner">
-                                                        <div class="stat-icon" style="background: #e3f2fd;">
-                                                            <mat-icon style="color: #2196f3;">local_shipping</mat-icon>
-                                                        </div>
-                                                        <div class="stat-info">
-                                                            <div class="stat-value">{{totalSuppliers}}</div>
-                                                            <div class="stat-label">Active Suppliers</div>
-                                                        </div>
-                                                    </div>
-                                                </mat-card-content>
-                                            </mat-card>
-                                        </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
                                     </div>
-
-
+                                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
+                                        <mat-card class="stat-item-card">
+                                            <mat-card-content>
+                                                <div class="stat-item-inner">
+                                                    <div class="stat-icon" style="background: #fff3e0;">
+                                                        <mat-icon style="color: #ff9800;">warning</mat-icon>
+                                                    </div>
+                                                    <div class="stat-info">
+                                                        <div class="stat-value">{{lowStockItems}}</div>
+                                                        <div class="stat-label">Low Stock Items</div>
+                                                    </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
+                                        <mat-card class="stat-item-card">
+                                            <mat-card-content>
+                                                <div class="stat-item-inner">
+                                                    <div class="stat-icon" style="background: #ffebee;">
+                                                        <mat-icon style="color: #f44336;">event_busy</mat-icon>
+                                                    </div>
+                                                    <div class="stat-info">
+                                                        <div class="stat-value">{{expiringMedicines}}</div>
+                                                        <div class="stat-label">Expiring This Month</div>
+                                                    </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%">
+                                        <mat-card class="stat-item-card">
+                                            <mat-card-content>
+                                                <div class="stat-item-inner">
+                                                    <div class="stat-icon" style="background: #e3f2fd;">
+                                                        <mat-icon style="color: #2196f3;">local_shipping</mat-icon>
+                                                    </div>
+                                                    <div class="stat-info">
+                                                        <div class="stat-value">{{totalSuppliers}}</div>
+                                                        <div class="stat-label">Active Suppliers</div>
+                                                    </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
                                 </div>
-                            </mat-card-content>
-                        </mat-card>
-                   
+
+
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+
                 </div>
             </div>
         </div>
@@ -464,19 +464,19 @@
                                 </mat-footer-row>
                             </mat-table>
                         </div>
-                     
-                          <div class="totals">
-                <div class="totals-rowcat">
-                  <div class="totals-label">Total </div>
-                    <div class="totals-num">{{catTotalcount }}</div>
-                  <div class="totals-num">{{ catTotalGross }}</div>
-                  <div class="totals-num">{{ catTotalDiscount}}</div>
-                  <div class="totals-num">{{ catTotalReversal}}</div>
-                  <div class="totals-num">{{ catpaidTotal }}</div>
-                    <div class="totals-num">{{ catrefundTotal }}</div>
-                </div>
 
-              </div>
+                        <div class="totals">
+                            <div class="totals-rowcat">
+                                <div class="totals-label">Total </div>
+                                <div class="totals-num">{{catTotalcount }}</div>
+                                <div class="totals-num">{{ catTotalGross | number:'1.2-2'}}</div>
+                                <div class="totals-num">{{ catTotalDiscount | number:'1.2-2'}}</div>
+                                <div class="totals-num">{{ catTotalReversal | number:'1.2-2'}}</div>
+                                <div class="totals-num">{{ catpaidTotal | number:'1.2-2'}}</div>
+                                <div class="totals-num">{{ catrefundTotal | number:'1.2-2'}}</div>
+                            </div>
+
+                        </div>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -558,7 +558,7 @@
             </div>
             <!--  -->
         </div>
-      
+
 
         <!-- Expiry & Quick Stats Section - NOT affected by date filter -->
         <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">

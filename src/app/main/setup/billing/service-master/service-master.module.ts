@@ -39,6 +39,7 @@ import { ServiceMasterFormComponent } from "./service-master-form/service-master
 import { ServiceMasterComponent } from "./service-master.component";
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from './tariff/tariff.component';
+import { NewServicePriceComponent } from './new-service-price/new-service-price.component';
 
 const routes: Routes = [
     {
@@ -48,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, ServiceMasterFormNewComponent, TariffComponent, EditpackageComponent],
+    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, ServiceMasterFormNewComponent, TariffComponent, EditpackageComponent, NewServicePriceComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
