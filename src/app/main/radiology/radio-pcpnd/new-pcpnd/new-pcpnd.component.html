@@ -363,7 +363,7 @@
                         </div>
 
                       </div>
-                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Any Other" formControlName="anyOther1" [formGroup]="personalFormGroup"
                           [value]="data?.anyOther1" [validations]="getValidationMessages().doctorId"
                           [mode]="autocompleteModeAnyOther"></airmid-dropdown>
@@ -400,7 +400,7 @@
 
                       </div>
 
-                     
+
                     </div>
                     <span style="font-size: large;color: rgb(16, 16, 74);font-weight: bold;">Invasive
                       procedures carried
@@ -556,16 +556,16 @@
                       <div class="modal-card-container airmid-table-container"
                         style="max-height: 600px; overflow-y: auto;">
                         <mat-table #table matSort [dataSource]="DSIndicationList" class="airmid-table compact-table"
-                          style="background-color: rgb(235, 246, 246); font-size: large; font-weight: bold;"
+                          style="background-color: rgb(215, 220, 220); font-size: large; font-weight: bold;"
                           [@animateStagger]="{ value: '50' }">
-
+                        
                           <ng-container matColumnDef="descvalue" sticky>
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
                               <span class="material-icons">cached</span>
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" class="w-60">
-                              <mat-checkbox aria-label="Checked"
-                                (change)="tableElementChecked($event, contact)"></mat-checkbox>
+                            <mat-cell *matCellDef="let element" class="w-60">
+                              <mat-checkbox aria-label="Checked" [(ngModel)]="element.IsActive"
+                                (change)="tableElementChecked($event, element)"></mat-checkbox>
                             </mat-cell>
                           </ng-container>
 

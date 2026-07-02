@@ -9,7 +9,6 @@ import { gridColumnTypes } from "app/core/models/tableActions";
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
-// import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import Swal from 'sweetalert2';
@@ -71,10 +70,7 @@ export class RadioPcpndComponent {
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
-
         { heading: "Childrens", key: "childrenCount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        // { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Doctor Name", key: "condDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Refrance Doctor", key: "refrancedoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "ABHA Address", key: "abhaAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -103,7 +99,6 @@ export class RadioPcpndComponent {
     ]
 
     gridConfig: gridModel = {
-        // permissionCode: permissionCodes.RadiologyList,
         apiUrl: "Pcpndprocess/RadioPcpndtList",
         columnsList: this.allColumns,
         sortField: "PCPNDTProcessId",
