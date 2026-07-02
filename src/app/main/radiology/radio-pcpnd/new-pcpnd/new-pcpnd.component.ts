@@ -622,25 +622,12 @@ export class NewPcpndComponent {
     };
   }
 
-<<<<<<< HEAD
-  onClose() {
-=======
 onClose() {
->>>>>>> e3701e6bf2529e02cc3e01f71e90b1a5bca9d99a
+
     this._matDialog.closeAll()
   }
 
 
-
-  // keyPressAlphanumeric(event) {
-  //   const inp = String.fromCharCode(event.keyCode);
-  //   if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-  //     return false;
-  //   } else {
-  //     event.preventDefault();
-  //     return false;
-  //   }
-  // }
 
   keyPressAlphanumeric(event) {
     const inp = String.fromCharCode(event.keyCode);

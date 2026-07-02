@@ -215,7 +215,6 @@ export class RadioPcpndComponent {
             });
     }
 
-
     getPCPNDTview(element) {
         debugger
         setTimeout(() => {
