@@ -1270,12 +1270,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
         }
 
-   // const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
+        // const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
         // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         // this.OpBillForm.get('billDate').setValue(formattedDate);
         // this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
 
-debugger
+        debugger
         const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
         const formattedTime = this.dateTimeObj?.time || '00:00';
         this.OpBillForm.get('billDate').setValue(formattedDate);
@@ -1408,7 +1408,7 @@ debugger
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
-                 this.OpBillForm.get('payments.payTmamount')?.setValue(0)  
+                this.OpBillForm.get('payments.payTmamount')?.setValue(0)
                 this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
                 this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
@@ -1458,7 +1458,7 @@ debugger
                     cashCounterId: this.searchForm.get('CashCounterID')?.value || 0,
                     transactionType: 0,
                     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
-                }); 
+                });
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
@@ -1577,13 +1577,16 @@ debugger
         this.resetform();
     }
     resetform() {
-debugger
+        debugger
         this.chargeList = [];
         this.dsChargeList.data = []
         this.patientDetail = [];
         this.patientDetail.tariffId = 1;
         this.patientDetail.ClassId = 1;
-        this.vOPIPId = 0 ;
+        this.vOPIPId = 0;
+        this.DepartmentName = '';
+        this.RegNo = '';
+
         this.searchForm.get('regId').setValue('')
         this.OPFooterForm.reset({
             totalAmt: 0,
@@ -1591,7 +1594,7 @@ debugger
             concessionAmt: 0,
             netPayableAmt: 0,
             concessionReasonId: 0,
-            UpiNo:0
+            UpiNo: 0
         });
         this.OPFooterForm.get('paymentType').setValue('CreditPay')
         this.PatientName = ''

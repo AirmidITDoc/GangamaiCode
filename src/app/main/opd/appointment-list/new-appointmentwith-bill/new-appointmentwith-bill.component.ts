@@ -181,6 +181,8 @@ export class NewAppointmentwithBillComponent {
     isExpanded3 = false;
     vUPINO: any = ""
 
+    doctorName1 = ""
+
     displayedServiceColumns: string[] = [
         'ServiceName',
         'price',
@@ -524,7 +526,7 @@ export class NewAppointmentwithBillComponent {
             opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             regNo: ["0", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             patientName: [this.PatientName, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            ipdno: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            ipdno: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             ageYear: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ageMonth: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ageDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -722,7 +724,7 @@ export class NewAppointmentwithBillComponent {
     }
 
     getSelectedserviceObj(obj) {
-        debugger
+
         // console.log(obj)
         this.SrvcName1 = obj.serviceName;
         this.serviceId = obj.serviceId;
@@ -751,7 +753,7 @@ export class NewAppointmentwithBillComponent {
 
 
     onSaveEntry(row) {
-        debugger
+
         const doctorid = 0;
         const formValue = this.myForm.value
 
@@ -833,7 +835,7 @@ export class NewAppointmentwithBillComponent {
         console.log(contact);
     }
     onDiscountPerChange(row: ChargesList): void {
-        debugger
+
         if (!row) return;
 
         if (row.DiscPer == null) {
@@ -973,7 +975,7 @@ export class NewAppointmentwithBillComponent {
         const netAmount = totalAmount - discountAmount;
 
         //  === true
-        debugger
+
 
         const newRow = {
             ServiceId: row.serviceId,
@@ -1142,7 +1144,8 @@ export class NewAppointmentwithBillComponent {
         console.log(value)
 
         this.doctorId = value.value
-        this.doctorName = value.text
+        this.doctorName1 = value.text
+        console.log(this.doctorName1)
 
     }
 
@@ -1289,7 +1292,7 @@ export class NewAppointmentwithBillComponent {
                     return;
                 }
                 // this.OPFooterForm.get('concessionAmt').value > 0 &&
-                debugger
+
                 if (this.Consessionres) {
                     if (!this.OPFooterForm.get('concessionReasonId').value) {
                         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -1399,12 +1402,13 @@ export class NewAppointmentwithBillComponent {
         this.OpBillForm.get('opdIpdId')?.setValue(0)
         this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
         this.OpBillForm.get('regNo')?.setValue(this.regNo)
-        this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
+        // this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
         this.OpBillForm.get('ageYear')?.setValue(Number(this.ageYear) || 0)
         this.OpBillForm.get('ageMonth')?.setValue(Number(this.ageMonth) || 0)
         this.OpBillForm.get('ageDays')?.setValue(Number(this.ageDays) || 0)
         this.OpBillForm.get('doctorId')?.setValue(this.VisitFormGroup.get('ConsultantDocId').value || 0)
-        this.OpBillForm.get('doctorName')?.setValue(this.doctorname || '')
+        debugger
+        this.OpBillForm.get('doctorName')?.setValue(this.doctorName1 || '')
         this.OpBillForm.get('patientType')?.setValue(this.companyId ? true : false)
         this.OpBillForm.get('companyName')?.setValue(this.companyName || '')
         this.OpBillForm.get('companyAmt')?.setValue(0)
@@ -1455,7 +1459,7 @@ export class NewAppointmentwithBillComponent {
                 });
 
                 console.log("form values", this.OpBillForm.value)
-                debugger
+
                 if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
                     const PatientHeaderObj = {};
                     PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
@@ -1531,7 +1535,7 @@ export class NewAppointmentwithBillComponent {
                     });
                 } else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
 
-                    debugger
+
                     if (this.OPFooterForm.get('UPINO').value == 0) {
                         this.toastr.warning('Please select UPINO ', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
@@ -1590,7 +1594,7 @@ export class NewAppointmentwithBillComponent {
             }
             // Reg Patient
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                debugger
+
                 this.VisitFormGroup.get("patientOldNew").setValue(2)
                 this.VisitFormGroup.get('regId').setValue(this.RegId)
                 // if (this.OpBillForm.invalid) {
@@ -1659,7 +1663,7 @@ export class NewAppointmentwithBillComponent {
                     this.OpBillForm.get('payments.paymentTime')?.setValue(this.datePipe.transform(new Date(), 'HH:mm:ss'))
 
                     console.log(this.OpBillForm.value)
-                    debugger
+
                     this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
                     this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
 
@@ -1673,8 +1677,8 @@ export class NewAppointmentwithBillComponent {
                     //  console.log(formValue)
                     this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
-                          if (response)
-                        this.viewgetOPBillReportPdf(response.billNo)
+                        if (response)
+                            this.viewgetOPBillReportPdf(response.billNo)
                         this.closeAllOrNavigateBack();
                         this.savebtn = true
 
@@ -1695,7 +1699,7 @@ export class NewAppointmentwithBillComponent {
                     });
                 } else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
 
-                    debugger
+
                     if (this.OPFooterForm.get('UPINO').value == 0) {
                         this.toastr.warning('Please select UPINO ', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
@@ -1720,7 +1724,7 @@ export class NewAppointmentwithBillComponent {
                         transactionType: 0,
                         isSelfOrcompany: this.companyId ? 1 : 0,
                     });
-                    debugger
+
                     this.OpBillForm.get('balanceAmt').setValue(0)
                     this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                     this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
@@ -1742,8 +1746,8 @@ export class NewAppointmentwithBillComponent {
 
                     this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
-                          if (response)
-                        this.viewgetOPBillReportPdf(response.billNo)
+                        if (response)
+                            this.viewgetOPBillReportPdf(response.billNo)
                         this.closeAllOrNavigateBack();
                         this.savebtn = true
 
@@ -1894,7 +1898,7 @@ export class NewAppointmentwithBillComponent {
     }
 
     calculateTotalAmount(): void {
-        debugger
+
         const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
         const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
         const totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
@@ -2123,6 +2127,8 @@ export class NewAppointmentwithBillComponent {
                         this.value = response.dateofBirth
                         this.vRegNo = response.regno
                         this.RegId = response.regId
+                        this.regNo = response.regNo
+
 
                         this.stateId = this.registerObj.stateId
                         this.countryId = this.registerObj.countryId
@@ -2175,6 +2181,9 @@ export class NewAppointmentwithBillComponent {
                         console.log(response)
                         this.value = response.dateofBirth
                         this.RegId = response.regId
+                        this.regNo = response.regNo
+
+
                         this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.myForm.patchValue({
@@ -2209,7 +2218,7 @@ export class NewAppointmentwithBillComponent {
         }
 
         this.onChangeDateofBirth(this.registerObj.dateofBirth)
-        debugger
+
         // if (this.VRegId) {
         // this.showPrevBtn = true
         // this.getPrevList();
@@ -2230,15 +2239,20 @@ export class NewAppointmentwithBillComponent {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            this.PrevregisterObj = result
-            this.doctorName = result.doctorName
+            if (result) {
+                this.PrevregisterObj = result
 
-            this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
-            this.selectChangedepartment(this.PrevregisterObj)
-            this.vOPIPId = this.PrevregisterObj.visitId
-            if (this.vOPIPId)
-                this.getPrevBill()
-            console.log(this.PrevregisterObj)
+                if (result.doctorName)
+                    this.doctorName1 = result?.doctorName
+
+                this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
+                this.selectChangedepartment(this.PrevregisterObj)
+                this.vOPIPId = this.PrevregisterObj.visitId
+                if (this.vOPIPId)
+                    this.getPrevBill()
+                console.log(this.PrevregisterObj)
+            }
+
         });
     }
 
@@ -2396,7 +2410,7 @@ export class NewAppointmentwithBillComponent {
     }
 
     onChangeReg1(event) {
-        debugger
+
         if (event.value === 'registration') {
             this.myForm.reset();
             this.myForm.get('RegId').reset();
@@ -2459,7 +2473,7 @@ export class NewAppointmentwithBillComponent {
     }
 
     onChangeCompany(value) {
-        debugger
+
         this._AppointmentlistService.getCompanyById(value.value).subscribe((response) => {
             this.companyDet = response;
             console.log("Company Data:", this.companyDet)
@@ -2623,13 +2637,8 @@ export class NewAppointmentwithBillComponent {
             : v;
         this.myForm.get('aadharCardNo')?.setValue(displayValue, { emitEvent: false });
     }
-    onChangestate(e) {
-    }
 
-    chkDoctor(event) {
-        console.log(event)
-        this.doctorname = event.text
-    }
+
     onClose() {
         this.myForm.reset();
         this.closeOrNavigateBack();
@@ -2725,7 +2734,7 @@ export class NewAppointmentwithBillComponent {
         this.resetFilteredOptions();
     }
     handleInputChangeDebounced(changedField: string): void {
-        debugger
+
         // Clear any existing timer for this field
         if (this.debounceTimers[changedField]) {
             clearTimeout(this.debounceTimers[changedField]);
@@ -2763,7 +2772,7 @@ export class NewAppointmentwithBillComponent {
     }
 
     getPrevList() {
-        debugger
+
         const dialogRef = this._matDialog.open(PrevlabHistoryComponent,
             {
                 maxWidth: "80vw",
