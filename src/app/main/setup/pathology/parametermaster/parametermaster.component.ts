@@ -169,7 +169,7 @@ export class ParametermasterComponent implements OnInit {
         if (row.isNumericParameter == 1) {
             var param = {
                 "first": 0,
-                "rows": 10,
+                "rows": 100,
                 "sortField": "PathparaRangeId",
                 "sortOrder": 0,
                 "filters": [
@@ -186,7 +186,7 @@ export class ParametermasterComponent implements OnInit {
         else {
             var param = {
                 "first": 0,
-                "rows": 10,
+                "rows": 100,
                 "sortField": "ParameterId",
                 "sortOrder": 0,
                 "filters": [
