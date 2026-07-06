@@ -1585,7 +1585,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.patientDetail.ClassId = 1;
         this.vOPIPId = 0;
         this.DepartmentName = '';
-        this.RegNo = '';
+        this.RegNo = ''; 
+        this.AgeYear = '0';
+        this.Doctorname = '';
+        this.vTariffId = 0; 
+        this.patientDetail = [];
 
         this.searchForm.get('regId').setValue('')
         this.OPFooterForm.reset({

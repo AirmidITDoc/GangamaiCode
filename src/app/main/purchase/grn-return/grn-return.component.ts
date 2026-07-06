@@ -257,34 +257,44 @@ export class GRNReturnComponent implements OnInit {
     }
 
     onClear() { }
+ 
     getVerify(row) {
+        debugger
+        if (row.isVerifying) {
+            return;
+        }
+        row.isVerifying = true;
         const submitObj = {
             "grnreturnId": row.grnReturnId,
             "isVerified": 1
         }
         console.log(submitObj)
         this._GRNReturnService.getVerifyGRNReturn(submitObj).subscribe(response => {
+            row.isVerifying = false;
             if (response) {
                 this.toastr.success('Record Verified Successfully.', 'Verified !', {
                     toastClass: 'tostr-tost custom-toast-success',
                 });
+                this.vSupplier = "0"
+                setTimeout(() => {
+                    this.grid.bindGridData();
+                    row.isVerified = true; 
+                }, 1000); 
             } else {
                 this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
+                row.isVerifying = false;
             }
         },
-            success => {
-                this.toastr.success('Record Verified Successfully.', 'Verified !', {
-                    toastClass: 'tostr-tost custom-toast-success',
-                });
+            // success => {
+            //     this.toastr.success('Record Verified Successfully.', 'Verified !', {
+            //         toastClass: 'tostr-tost custom-toast-success',
+            //     });
 
-            });
-        this.vSupplier = "0"
-         setTimeout(() => {
-            this.grid.bindGridData();
-        }, 1000); 
-        this.onChangeFirst();
+            // }
+        );
+
     }
 
     getNewGRNRet(row?: any) {

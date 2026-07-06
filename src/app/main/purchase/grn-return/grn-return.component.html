@@ -63,7 +63,7 @@
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)"
-                        *ngIf="!element.isVerified && IsGRNverify">
+                        *ngIf="!element.isVerified && IsGRNverify"  [disabled]="element.isVerifying">
                         <mat-icon>verified_user</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Print" (click)="onPrint(element)">

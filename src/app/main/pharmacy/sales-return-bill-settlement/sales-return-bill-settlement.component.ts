@@ -109,7 +109,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         { heading: "Discount Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Refund Amt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Refund Amt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount,columnClass: (element) => element["refundAmt"] > 0 ? "refund-bg" : ""},
         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
@@ -1127,15 +1127,17 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     }
     templist: any = [];
     onApplyDiscount() {
+        debugger
         const formvalue = this.MutliSettlemForm.value
         if (!this.dssalesbillListMultiple.data.length) {
             this.toastr.warning('Please check table is blank', 'Warning')
             return
         }
-        this.templist = this.dssalesbillListMultiple.data;
+         this.templist = this.dssalesbillListMultiple.data; 
         const globlediscPer = formvalue?.globlediscPer || 0;
         if (globlediscPer > 0 && globlediscPer <= 100) {
-            this.templist = this.templist.map(element => {
+            this.templist = this.templist.map(element=> {
+              if(element.refundAmt != 0) return element
                 const discamt1 = 0;
                 let discountAmt = '0';
                 let netAmt = '0';
@@ -1173,6 +1175,14 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.dssalesbillListMultiple.data = this.templist;
          this.selection.clear();
          this.SelectedList = []; 
+         this.vNetAmount = 0;
+         this.vPaidAmount = 0;
+         this.vBalanceAmount = 0;
+         this.MutliSettlemForm.patchValue({
+                FinalNetAmt: this.vNetAmount,
+                FinalPaidAmt: this.vPaidAmount,
+                FinalBalanceAmt: this.vBalanceAmount,
+            })
     }
 
     OnSaveGlobelDisc() {
