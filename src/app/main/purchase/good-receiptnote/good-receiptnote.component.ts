@@ -458,11 +458,21 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     }
     onVerify(row) {
+         if (row.isVerifying) {
+            return;
+        }
+        row.isVerifying = true;
         const GRNVerifyObj = {};
         GRNVerifyObj['grnid'] = row.grnid;
         GRNVerifyObj['verifiedBy'] = this.accountService.currentUserValue.userId;
 
         this._GRNService.getVerifyGRN(GRNVerifyObj).subscribe(response => {
+            row.isVerifying = false;
+            if(response){
+                 row.isVerified = true;
+            }else{
+                 row.isVerifying = false;
+            }
         });
         // this.onChangeFirst();
         setTimeout(() => {
