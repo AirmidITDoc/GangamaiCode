@@ -132,7 +132,8 @@ export class PurchaseRequisitionVerificationComponent {
         this.FromStore = this.PurchaseReqVerifyForm.get("FromStoreId").value || this.FromStore
         this.Tostore = this.PurchaseReqVerifyForm.get("ToStoreId").value || this.Tostore
         this.getfilterdata();
-    } 
+    }
+
     getfilterdata() {
         this.gridConfig = {
             apiUrl: "PurchaseRequisition/PurchaseRequisitionHeaderList",
