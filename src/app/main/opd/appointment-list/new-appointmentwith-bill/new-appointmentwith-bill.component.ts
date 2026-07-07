@@ -62,7 +62,7 @@ export class NewAppointmentwithBillComponent {
     screenFromString = 'Common-Form';
     registerObj = new RegInsert({});
     companyDet = new RegInsert({});
-
+  currentDate = new Date();
     autocompleteModepatienttype: string = "PatientType";
     autocompleteModegender: string = "Gender";
     autocompleteModecountry: string = "Country";
@@ -303,7 +303,7 @@ export class NewAppointmentwithBillComponent {
     createRegistredFinalFormView() {
         {
             return this._formbuilder.group({
-                // appRegistrationBills: '',
+                appRegistrationBills: '',
                 visit: '',
                 appOPBillIngModels: ''
             })
@@ -325,7 +325,8 @@ export class NewAppointmentwithBillComponent {
             regRadio1: ['registration1'],
             RegId: [''],
             PhoneRegId: [''],
-            UnitId: [this.accountService.currentUserValue.user.unitId]
+            UnitId: [this.accountService.currentUserValue.user.unitId],
+            CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.OPD_Billing_CounterId],
         });
     }
     createbillSearchForm() {
@@ -1303,6 +1304,7 @@ export class NewAppointmentwithBillComponent {
                 }
 
                 this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
+                this.myForm.get('City').setValue(this.CityName)
                 this.myForm.get('stateId').setValue(this.stateId)
                 this.myForm.get('countryId').setValue(String(this.countryId))
                 if (!this.myForm.invalid)
@@ -1419,12 +1421,14 @@ export class NewAppointmentwithBillComponent {
         this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
         this.OpBillForm.get('patientName')?.setValue(this.PatientName)
+        this.OpBillForm.get('cashCounterId')?.setValue(this.searchFormGroup.get('CashCounterID')?.value)
 
         const formValue = { ...this.myForm.value };
         const controlsToRemove = ['patientName', 'IsPathRad', 'IsNRI', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt', 'paymentType'];
         controlsToRemove.forEach(key => delete formValue[key]);
         console.log(formValue)
         console.log("form values", this.OpBillForm.value)
+           this.myForm.get('RegId').setValue(this.RegId)
 
         // this.VisitFormGroup.get('ConsultantDocId').setValue(this.myForm.get('doctorId').value || 0)
         this.AppointmentBillfinalform.get("appRegistrationBills").setValue(formValue)
@@ -1594,20 +1598,20 @@ export class NewAppointmentwithBillComponent {
             }
             // Reg Patient
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-
+debugger
                 this.VisitFormGroup.get("patientOldNew").setValue(2)
-                this.VisitFormGroup.get('regId').setValue(this.RegId)
-                // if (this.OpBillForm.invalid) {
-
+                this.VisitFormGroup.get('regId').setValue(this.RegId) 
+                 // Map RegId to formValue
+                formValue.RegId = this.RegId; 
+                this.RegiAppointmentBillfinalform.get('appRegistrationBills').setValue(formValue) 
+               
                 this.ChargeddetailsArray.clear();
                 this.BillDetailsArray.clear();
 
                 this.dstable1.data.forEach(item => {
                     this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
-                    this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-
-                });
-
+                    this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));  
+                }); 
                 console.log("form values", this.OpBillForm.value)
 
                 if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
@@ -1639,10 +1643,10 @@ export class NewAppointmentwithBillComponent {
 
                             // this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
                             // console.log(this.AppointmentBillfinalform.value)
+                          
                             this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
                             this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
-
-
+ 
                             console.log(this.RegiAppointmentBillfinalform.value)
 
                             this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
@@ -2112,6 +2116,7 @@ export class NewAppointmentwithBillComponent {
     VRegId = 0
     getSelectedObj(obj) {
         // 
+        debugger
         if (this.data?.FormName == 'Registration-Page') {
             console.log(obj)
             this.PatientName = obj.patientName
@@ -2129,9 +2134,11 @@ export class NewAppointmentwithBillComponent {
                         this.RegId = response.regId
                         this.regNo = response.regNo
 
+                        this.CityName = this.registerObj?.city ?? '';
+                        this.stateId = this.registerObj?.stateId ?? 0;
+                        this.countryId = this.registerObj?.countryId ?? 0 ;
+ 
 
-                        this.stateId = this.registerObj.stateId
-                        this.countryId = this.registerObj.countryId
                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
@@ -2140,9 +2147,20 @@ export class NewAppointmentwithBillComponent {
                             middleName: this.registerObj.middleName.trim(),
                             lastName: this.registerObj.lastName.trim(),
                             mobileNo: this.registerObj.mobileNo.trim(),
-                            address: this.registerObj.address.trim(),
+                            Address: this.registerObj.address.trim(),
                             stateId: this.registerObj.stateId,
                             countryId: this.registerObj.countryId,
+                            aadharCardNo: this.registerObj.aadharCardNo ?? '',
+                            panCardNo:this.registerObj?.panCardNo ?? '',
+                            emailId:this.registerObj?.emailId ?? '',
+                            PinNo:this.registerObj?.pinNo ?? '',
+                            City:this.registerObj?.city ?? '',
+                            PhoneNo:this.registerObj?.phoneNo ?? '', 
+                            StateId: this.registerObj?.stateId ?? '',
+                            CountryId: this.registerObj?.countryId ?? '', 
+                            maritalStatusId: this.registerObj?.maritalStatusId ?? '',
+                            religionId:this.registerObj?.religionId ?? '',
+                            areaId: this.registerObj?.areaId ?? '',
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -2160,6 +2178,8 @@ export class NewAppointmentwithBillComponent {
                             medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+                            RegDate:this.registerObj?.regDate ?? this.currentDate,
+                            RegTime:this.registerObj?.regTime ?? this.currentDate 
                         });
                         console.log(this.registerObj)
                     });
@@ -2168,7 +2188,7 @@ export class NewAppointmentwithBillComponent {
             }
 
         } else {
-            this.PatientName = obj.PatientName;
+            this.PatientName = obj.patientName;
             this.RegId = obj.value;
             // this.VisitFlagDisp = true;
             if ((this.RegId ?? 0) > 0) {
@@ -2181,8 +2201,10 @@ export class NewAppointmentwithBillComponent {
                         console.log(response)
                         this.value = response.dateofBirth
                         this.RegId = response.regId
-                        this.regNo = response.regNo
-
+                        this.regNo = response.regNo 
+                        this.CityName = this.registerObj?.city ?? '';
+                        this.stateId = this.registerObj?.stateId ?? 0;
+                        this.countryId = this.registerObj?.countryId ?? 0 ;
 
                         this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
@@ -2192,6 +2214,17 @@ export class NewAppointmentwithBillComponent {
                             lastName: this.registerObj.lastName,
                             mobileNo: this.registerObj.mobileNo,
                             address: this.registerObj.address.trim(),
+                            aadharCardNo: this.registerObj.aadharCardNo ?? '',
+                            panCardNo:this.registerObj?.panCardNo ?? '',
+                            emailId:this.registerObj?.emailId ?? '',
+                            PinNo:this.registerObj?.pinNo ?? '',
+                            City:this.registerObj?.city ?? '',
+                            PhoneNo:this.registerObj?.phoneNo ?? '', 
+                            StateId: this.registerObj?.stateId ?? '',
+                            CountryId: this.registerObj?.countryId ?? '', 
+                            MaritalStatusId: this.registerObj?.maritalStatusId ?? '',
+                            ReligionId:this.registerObj?.religionId ?? '',
+                            AreaId: this.registerObj?.areaId ?? '',
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -2209,6 +2242,8 @@ export class NewAppointmentwithBillComponent {
                             medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+                            RegDate:this.registerObj?.regDate ?? this.currentDate,
+                            RegTime:this.registerObj?.regTime ?? this.currentDate 
                         });
 
                     });
@@ -2674,6 +2709,7 @@ export class NewAppointmentwithBillComponent {
     handleInputChange(changedField: string): void {
         // Get all current field values
         const firstName = this.myForm.get('firstName').value?.trim() || '';
+        const middleName = this.myForm.get('middleName').value?.trim() || '';
         const lastName = this.myForm.get('lastName').value?.trim() || '';
         const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
 
@@ -2691,27 +2727,33 @@ export class NewAppointmentwithBillComponent {
             const keyword = firstName || mobileNo;
             this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
                 this.prevResults = results || [];
-                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
             });
             return;
         }
 
         // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
         if (filledFields === 1 && changedField === 'LastName') {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
+            return;
+        }
+
+        // If only one field is filled, and it's MiddleName, just filter prevResults (do not call API)
+        if (filledFields === 1 && changedField === 'MiddleName') {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo,middleName });
             return;
         }
 
         // If more than one field is filled, filter from prevResults
         if (this.prevResults.length > 0) {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
         } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
             // Fallback: if prevResults is empty, call API with the changed field (if allowed)
             const keyword = firstName || mobileNo;// this.myForm.get(changedField).value?.trim();
             if (keyword) {
                 this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
                     this.prevResults = results || [];
-                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
                 });
             }
         } else {
@@ -2721,11 +2763,12 @@ export class NewAppointmentwithBillComponent {
     }
 
     // Helper function to filter results by all non-empty fields
-    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
-        const { firstName, lastName, mobileNo } = fields;
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string, middleName:string }) {
+        const { firstName, lastName, mobileNo, middleName} = fields;
         return results.filter(item => {
             return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
                 && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+                && (!middleName || item.patientName?.toLowerCase().includes(middleName.toLowerCase()))
                 && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
         });
     }

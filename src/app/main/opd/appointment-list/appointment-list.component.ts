@@ -239,7 +239,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 100 },

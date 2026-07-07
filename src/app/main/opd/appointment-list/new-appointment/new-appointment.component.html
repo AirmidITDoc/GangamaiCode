@@ -134,7 +134,8 @@
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Middle Name" formControlName="MiddleName"
                                   [value]="registerObj.middleName" [formGroup]="personalFormGroup"
-                                  [validations]="getValidationMessages().middleName" [maxLength]="100"></airmid-textbox>
+                                  [validations]="getValidationMessages().middleName" [maxLength]="100"
+                                  (valueChange)="handleInputChangeDebounced('MiddleName')"></airmid-textbox>
                               </div>
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

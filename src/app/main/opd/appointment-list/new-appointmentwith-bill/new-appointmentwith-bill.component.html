@@ -48,6 +48,12 @@
 
                                     <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
 
+                                          <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" 
+                                            [formGroup]="searchFormGroup" class="w-250"
+                                            [validations]="getValidationMessages().CashCounterID"
+                                            [mode]="autocompleteModeCashcounter" [disableAutoNext]="true">
+                                        </airmid-dropdown>
+
                                         <airmid-autocomplete class="w-450"
                                             label="Search Reg No / Patient Name / Mobile No"
                                             [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag"
@@ -217,7 +223,8 @@
                                                                             [value]="registerObj.middleName"
                                                                             [formGroup]="myForm"
                                                                             [validations]="getValidationMessages().middleName"
-                                                                            [maxLength]="100"></airmid-textbox>
+                                                                            [maxLength]="100"
+                                                                              (valueChange)="handleInputChangeDebounced('middleName')"></airmid-textbox>
                                                                     </div>
 
                                                                     <div fxFlex="33%">
@@ -585,7 +592,7 @@
                                     </mat-tab>
                                 </mat-tab-group>
                             </div>
-                            <div fxFlex="60">
+                            <div fxFlex="55">
                                 <div class="detail-container billing-flex-layout" *ngIf="mode !== 'edit'">
 
                                     <div class="billing-top-zone">
@@ -792,10 +799,10 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="NetAmount">
-                                                            <mat-header-cell *matHeaderCellDef class="w-100">Net
+                                                        <ng-container matColumnDef="NetAmount" stickyEnd>
+                                                            <mat-header-cell *matHeaderCellDef class="w-120">Net
                                                                 Amt</mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" class="w-100"><span
+                                                            <mat-cell *matCellDef="let contact" class="w-120"><span
                                                                     class="text-overflow">
                                                                     {{ (contact.NetAmount || 0) |
                                                                     currency:'INR':'symbol' }}
@@ -804,8 +811,8 @@
 
                                                         <ng-container matColumnDef="buttons" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef
-                                                                class="w-100">Action</mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" class="w-100">
+                                                                class="w-70">Action</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" class="w-70">
                                                                 <!-- <button mat-icon-button matTooltip="Consent"
                                                                 color="primary"><mat-icon>insert_drive_file</mat-icon></button>
                                                             <button mat-icon-button matTooltip="Info"

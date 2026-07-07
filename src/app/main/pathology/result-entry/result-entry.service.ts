@@ -58,7 +58,9 @@ export class ResultEntryService {
     public getPatientList(employee) {
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathPatientList_Ptnt_Dtls", employee)
     }
-
+    public getPathDocList() {
+        return this._httpClient1.GetData("Pathology/search-pathologistdoctor");
+    }
     public getPathologyResultList(employee) {
         return this._httpClient1.PostData("Common", employee);
     }

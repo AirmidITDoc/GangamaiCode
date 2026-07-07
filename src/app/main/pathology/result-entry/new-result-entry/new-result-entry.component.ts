@@ -74,7 +74,6 @@ export class NewResultEntryComponent {
     autocompleteModeDoctor: string = "ConDoctor";
 
     isresultdrSelected: boolean = false;
-
     vPathResultDoctorId: any = 0;
     vDoctorId: any = 0;
     vRefDoctorID: any = 0;
@@ -135,7 +134,7 @@ export class NewResultEntryComponent {
             this.ageM = this.data.patientdata.ageMonth.trim() || "0"
             this.ageD = this.data.patientdata.ageDay.trim() || "0"
             this.genderId = this.data.patientdata.genderId
-            this.sampleNo = this.data.sampleNo.split(" ")[0] 
+            this.sampleNo = this.data.sampleNo.split(" ")[0]
             this.suggestionNotes = this.data.patientdata.suggestionNotes
 
             this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
@@ -199,15 +198,40 @@ export class NewResultEntryComponent {
             DoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             AdmDoctorID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDoctorID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            vSampleNo : [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            vSampleNo: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
 
         this.ResultForm = this.createResultInsertForm();
         this.PathResultForm = this.createPathologyResultForm();
         this.pathologyResultArray.push(this.createResultdetailForm());
-        this.otherForm.patchValue({vSampleNo:this.sampleNo});
+        this.otherForm.patchValue({ vSampleNo: this.sampleNo });
+        debugger
 
+        //this code for Pathology doctor set 
+        const rawValue = this?.configService?.configParams?.IsPathDoctorId || "";
+        const [id, IsPathDoctorId] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        if (id == "1" && IsPathDoctorId) {
+            this.vPathResultDoctorId = IsPathDoctorId
+            this.getdoclist(IsPathDoctorId);
+        }
     }
+    doclist: any = [];
+    getdoclist(IsPathDoctorId) {
+        this._SampleService.getPathDocList().subscribe(res => {
+            debugger
+            this.doclist = res
+            if (this.doclist.length) {
+                const doctor = this.doclist.find(x => x.doctorId == IsPathDoctorId);
+                if (doctor) {
+                    setTimeout(() => {
+                        this.otherForm.get('PathResultDoctorId')
+                            ?.setValue(doctor.doctorId.toString());
+                    }, 300);
+                }
+            }
+        });
+    }
+
     ChangeSampleNo() {
         const newSampleNo = this.otherForm.get('vSampleNo')?.value || 0
         if (newSampleNo > 0) {
@@ -276,7 +300,7 @@ export class NewResultEntryComponent {
                 items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
         }
 
-       // data.ParaBoldFlag = '';
+        // data.ParaBoldFlag = '';
         if ((data?.ParaIsNumeric || 0) || (data?.PIsNumeric || 0)) {
 
             const a = parseFloat(data.ResultValue);
@@ -286,7 +310,7 @@ export class NewResultEntryComponent {
             if (b != null && c != null && a != null) {
                 if (a < b || a > c) {
                     data.ParaBoldFlag = 'B';
-                }else{
+                } else {
                     data.ParaBoldFlag = '';
                 }
             }
@@ -1030,7 +1054,7 @@ export class NewResultEntryComponent {
     printf: boolean = true;
 
     onSave() {
-     this.getValidatetabledata()
+        this.getValidatetabledata()
 
         if ((this.vPathResultDoctorId == 0 || this.vPathResultDoctorId == undefined)) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {

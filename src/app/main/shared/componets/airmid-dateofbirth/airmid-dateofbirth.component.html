@@ -19,7 +19,7 @@
             <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Day' && !hideButtons" [value]="ageDay" [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Day',$event)" type="number" [min]="0">
             </airmid-textbox>
             <mat-form-field appearance="outline" fxFlex="100%">
-                <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" #bday [value]="value" [disabled]="dateStyle!='Date'" (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
+                <input matInput [matDatepicker]="validFromPicker" formControlName="DateOfBirth" #bday [value]="value" [disabled]="dateStyle!='Date'" (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
                 <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
                 <mat-datepicker #validFromPicker></mat-datepicker>
             </mat-form-field>

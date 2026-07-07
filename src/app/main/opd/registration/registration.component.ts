@@ -367,6 +367,9 @@ export class RegInsert {
     adharCardNo: any;
     admissionID: any;
     tariffName: any;
+    panCardNo:any;
+    pinNo:any;
+    regTime:any;
     /**
      * Constructor
      *
@@ -382,6 +385,7 @@ export class RegInsert {
             this.regDate = RegInsert.regDate || this.currentDate;
             this.patientName = RegInsert.patientName;
             this.RegTime = RegInsert.RegTime || this.currentDate;
+            this.regTime = RegInsert.regTime || this.currentDate;
             this.prefixId = RegInsert.prefixId || 0;
             this.PrefixId = RegInsert.PrefixId || 0;
             this.PrefixID = RegInsert.PrefixID || 0;
@@ -394,6 +398,8 @@ export class RegInsert {
             this.LastName = RegInsert.LastName || '';
             this.Address = RegInsert.Address || '';
             this.RegNo = RegInsert.RegNo || '';
+            this.pinNo = RegInsert.pinNo || '';
+            this.panCardNo = RegInsert.panCardNo || '';
             this.regNo = RegInsert.regNo || '';
             this.City = RegInsert.City || '';
             this.PinNo = RegInsert.PinNo || '';
