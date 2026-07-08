@@ -81,10 +81,10 @@
 
 
                     <app-patient-information [uhidNo]="RegNo" [patientName]="PatientName"
-                      [doctorName]="DoctorNamecheck ? DoctorName : ''" [departmentName]="departmentName"
-                      [doa]="Patientdetails?.admissionDate" [ipdNo]="Patientdetails?.ipdno || Patientdetails?.ipdno"
-                      [ageString]="(Patientdetails?.ageYear  !== null ? Patientdetails?.ageYear  + 'Y|' + Patientdetails?.ageMonth + 'M|' + Patientdetails?.ageDay + 'D | ' + Patientdetails?.genderName : '')"
-                      [refDocName]="Patientdetails?.refDocName" [wardBedName]="Patientdetails?.roomName"
+                      [doctorName]="DoctorNamecheck ? DoctorName : condDoctor" [departmentName]="departmentName"
+                      [doa]="Patientdetails?.admissionDate || admissionDate" [ipdNo]="Patientdetails?.ipdno || Patientdetails?.ipdno"
+                      [ageString]="(Patientdetails?.ageYear  !== null ? Patientdetails?.ageYear  + 'Y|' + Patientdetails?.ageMonth + 'M|' + Patientdetails?.ageDay + 'D | ' + Patientdetails?.genderName : age)"
+                      [refDocName]="Patientdetails?.refDocName || refrancedoctor" [wardBedName]="Patientdetails?.roomName"
                       [patientType]="Patientdetails?.patientType" [tariffName]="Patientdetails?.tariffName"
                       [companyName]="Patientdetails?.companyName"></app-patient-information>
 

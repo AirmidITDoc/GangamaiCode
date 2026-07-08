@@ -121,6 +121,7 @@ export class ConfigSettingParams {
   LoginPageHeading:any;
   IsChennaiIPFinalPrint:any;
 LoginBrowserHeading:any;
+IsSampleCollectionRequired:any;
     /**
         * Constructor
         *
@@ -248,6 +249,9 @@ LoginBrowserHeading:any;
         this.IsSalesDiscUpdate = ConfigSettingParams.IsSalesDiscUpdate;
         this.IsChennaiIPFinalPrint = ConfigSettingParams.IsChennaiIPFinalPrint;
         this.LoginBrowserHeading = ConfigSettingParams.LoginBrowserHeading;
+this.IsSampleCollectionRequired = ConfigSettingParams.IsSampleCollectionRequired;
+
+        
         
            }
 

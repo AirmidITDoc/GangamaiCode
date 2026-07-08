@@ -101,7 +101,10 @@ export class NewPcpndComponent {
   vprocedureDate = new Date();
   vconsentDate = new Date();
   vprocessDate = new Date();
-
+  age: any
+  admissionDate: any
+refrancedoctor: any
+condDoctor: any
   ngOnInit(): void {
 
 
@@ -121,8 +124,15 @@ export class NewPcpndComponent {
       this.RegId = this.registerObj.opipid
       this.PatientName = this.registerObj.patientName;
       this.OP_IP_Id = this.registerObj.opipid;
-      this.OP_IPType=this.registerObj.opipType
+      this.OP_IPType = this.registerObj.opipType
       this.DoctorName = this.registerObj.condDoctor;
+      debugger
+
+      this.age = this.registerObj.age
+      this.refrancedoctor = this.registerObj.refrancedoctor
+       this.condDoctor = this.registerObj.condDoctor
+      this.admissionDate = this.registerObj.admissionDate
+
 
       this.vresultDate = new Date(this.registerObj.resultDate);
       this.vprocedureDate = new Date(this.registerObj.procedureDate);
@@ -380,7 +390,7 @@ export class NewPcpndComponent {
       });
 
       this.personalFormGroup.get("opipid").setValue(parseInt(this.OP_IP_Id || 0))
-      this.personalFormGroup.get("opiptype").setValue(parseInt(this.OP_IPType ))
+      this.personalFormGroup.get("opiptype").setValue(parseInt(this.OP_IPType))
       this.personalFormGroup.get("pcpndtprocessId").setValue(this.vpcpndtprocessId)
       this.personalFormGroup.get("abhanumber").setValue(String(this.personalFormGroup.get("abhanumber").value))
 
@@ -622,7 +632,7 @@ export class NewPcpndComponent {
     };
   }
 
-onClose() {
+  onClose() {
 
     this._matDialog.closeAll()
   }

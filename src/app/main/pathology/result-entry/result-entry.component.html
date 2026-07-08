@@ -9,7 +9,7 @@
                 <span>Pathology Result Entry List </span>
             </div>
 
-            
+
         </div>
 
 
@@ -63,91 +63,92 @@
 
 
                     </div>
-
+                    <!-- *ngIf="IsSamRequired" -->
+                    <span style="font-size: large;font-weight: bold;color: #031b2d;align-items: end;">{{SampleMessage}}</span>
                 </div>
                 <form [formGroup]="myformSearch" class="mat-error-fix">
                     <div fxLayout="column" style="padding-top:5px ;">
                         <div class="layout-card-container" style="height: 60px;">
 
                             <!-- <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4"> -->
-                                <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-5">
+                            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-5">
 
-                                    <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                                        [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
-                                        [formGroup]="myformSearch" [mode]="autocompleteModeunit"></airmid-dropdown>
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
+                                    (selectionChange)="ListView1($event)" [formGroup]="myformSearch"
+                                    [mode]="autocompleteModeunit"></airmid-dropdown>
 
-                                    <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
-                                            formStartControlName="start" formEndControlName="end"
-                                            [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                            [(toValue)]="gridConfig.filters[4].fieldValue">
-                                        </airmid-datepicker>
-                                    </div>
+                                <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                        formStartControlName="start" formEndControlName="end"
+                                        [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                                    </airmid-datepicker>
+                                </div>
 
-                                    <div fxFlex="6%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>UHID</mat-label>
-                                            <input matInput placeholder="Search UHID" autocomplete="off"
-                                                [formGroup]="myformSearch" formControlName="RegNoSearch"
-                                                (input)="onChangeFirst()" />
-                                            <button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="Clearfilter('RegNoSearch')">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>FirstName</mat-label>
-                                            <input matInput placeholder="Search FirstName" autocomplete="off"
-                                                [formGroup]="myformSearch" formControlName="FirstNameSearch"
-                                                (input)="onChangeFirst()" />
-                                            <button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="Clearfilter('FirstNameSearch')">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                <div fxFlex="6%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>UHID</mat-label>
+                                        <input matInput placeholder="Search UHID" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="RegNoSearch"
+                                            (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('RegNoSearch')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>FirstName</mat-label>
+                                        <input matInput placeholder="Search FirstName" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="FirstNameSearch"
+                                            (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('FirstNameSearch')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
 
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>LastName</mat-label>
-                                            <input matInput placeholder="Search LastName" autocomplete="off"
-                                                [formGroup]="myformSearch" formControlName="LastNameSearch"
-                                                (input)="onChangeFirst()" />
-                                            <button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="Clearfilter('LastNameSearch')">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlex="12%" fxLayout="row">
-                                        <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
-                                            (change)="onChangeFirst()" fxLayout="column" value="2" class="gap-4"
-                                            [(ngModel)]="gridConfig.filters[6].fieldValue">
-                                            <mat-label><b>Patient Type:</b></mat-label>
-                                            <div fxLayout="row">
-                                                <mat-radio-button value='3'>All</mat-radio-button>
-                                                <mat-radio-button value='1'>IP</mat-radio-button>
-                                                <mat-radio-button value='0'>OP</mat-radio-button>
-                                                <mat-radio-button value='4'>LAB</mat-radio-button>
-                                            </div>
-                                        </mat-radio-group>
-                                    </div>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>LastName</mat-label>
+                                        <input matInput placeholder="Search LastName" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="LastNameSearch"
+                                            (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('LastNameSearch')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="12%" fxLayout="row">
+                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
+                                        (change)="onChangeFirst()" fxLayout="column" value="2" class="gap-4"
+                                        [(ngModel)]="gridConfig.filters[6].fieldValue">
+                                        <mat-label><b>Patient Type:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='3'>All</mat-radio-button>
+                                            <mat-radio-button value='1'>IP</mat-radio-button>
+                                            <mat-radio-button value='0'>OP</mat-radio-button>
+                                            <mat-radio-button value='4'>LAB</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
 
-                                    <div fxFlex="12%" fxLayout="row">
-                                        <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
-                                            (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
-                                            [(ngModel)]="vStatusSearch">
-                                            <mat-label><b>Status:</b></mat-label>
-                                            <div fxLayout="row">
-                                                <mat-radio-button value='0'>Pending</mat-radio-button>
-                                                <mat-radio-button value='1'>Completed</mat-radio-button>
-                                            </div>
-                                        </mat-radio-group>
-                                    </div>
-                                    <!-- (click)="searchRecords($event)" -->
-                                    <!-- <div class="action-button-container">
+                                <div fxFlex="12%" fxLayout="row">
+                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                        (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
+                                        [(ngModel)]="vStatusSearch">
+                                        <mat-label><b>Status:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='0'>Pending</mat-radio-button>
+                                            <mat-radio-button value='1'>Completed</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+                                <!-- (click)="searchRecords($event)" -->
+                                <!-- <div class="action-button-container">
                                         <div class="button-row-group">
                                             <button class="btn btn-danger-outline btn-xs"
                                                 (click)="onClear()">clear</button>
@@ -162,16 +163,17 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="action-button-container" style="padding-top: 10px;">
+                                <div class="action-button-container" style="padding-top: 10px;">
                                     <div class="button-row-group">
                                         <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
-                                        <button class="btn btn-primary btn-with-icon btn-xs" (click)="searchRecords($event)">
+                                        <button class="btn btn-primary btn-with-icon btn-xs"
+                                            (click)="searchRecords($event)">
                                             <span>Search</span>
                                         </button>
 
                                     </div>
                                 </div>
-                                </div>
+                            </div>
                             <!-- </div> -->
 
                         </div>

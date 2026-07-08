@@ -204,14 +204,13 @@ export class NewResultEntryComponent {
         this.ResultForm = this.createResultInsertForm();
         this.PathResultForm = this.createPathologyResultForm();
         this.pathologyResultArray.push(this.createResultdetailForm());
-        this.otherForm.patchValue({ vSampleNo: this.sampleNo });
+        this.otherForm.patchValue({ vSampleNo: this.sampleNo || 0 });
         debugger
 
         //this code for Pathology doctor set 
         const rawValue = this?.configService?.configParams?.IsPathDoctorId || "";
         const [id, IsPathDoctorId] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         if (id == "1" && IsPathDoctorId) {
-            this.vPathResultDoctorId = IsPathDoctorId
             this.getdoclist(IsPathDoctorId);
         }
     }
@@ -223,7 +222,9 @@ export class NewResultEntryComponent {
             if (this.doclist.length) {
                 const doctor = this.doclist.find(x => x.doctorId == IsPathDoctorId);
                 if (doctor) {
+                    this.vPathResultDoctorId = doctor?.doctorId || 0
                     setTimeout(() => {
+
                         this.otherForm.get('PathResultDoctorId')
                             ?.setValue(doctor.doctorId.toString());
                     }, 300);

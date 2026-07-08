@@ -41,6 +41,7 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { ToastrService } from 'ngx-toastr';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -71,6 +72,7 @@ export class ResultEntryComponent implements OnInit {
     dataArray = {};
     sIsLoading: string = '';
     isSampleCollection: boolean = true;
+    IsSamRequired: boolean = true;
     ServiceIdList: any = [];
     PathReportID: any;
     PathTestId: any
@@ -208,15 +210,31 @@ export class ResultEntryComponent implements OnInit {
         public _WhatsAppEmailService: WhatsAppEmailService,
         private _fuseSidebarService: FuseSidebarService,
         public _whatsppService: WhatsAppEmailService,
-        private overlay: Overlay,
+        private overlay: Overlay, private _configue: ConfigService,
         public permissionService: PagePermissionService,
     ) { }
-
+    IsSampleCollectionCheckon: boolean = false;
+    SampleMessage = ''
     ngOnInit(): void {
         this.myformSearch = this._SampleService.createSearchForm()
         this.fromDate = this.myformSearch.get("start").value || "";
         this.toDate = this.myformSearch.get("end").value || "";
         this.GetResultdetail();
+
+
+        const rawValue = this?._configue?.configParams?.IsSampleCollectionRequired || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.IsSampleCollectionCheckon = id === "1";
+
+        if (this.IsSampleCollectionCheckon) {
+            this.IsSamRequired = true
+            this.SampleMessage = "Sample collection is required to generate the result."
+        }
+        else {
+            this.IsSamRequired = false
+
+            this.SampleMessage = "Result will be generated without sample collection."
+        }
     }
 
     ListView1(value) {
@@ -1219,20 +1237,20 @@ export class ResultEntryComponent implements OnInit {
     //     console.log('Selected items:', this.resultSource);
     // }
     masterToggle() {
-        // debugger
+        debugger
         const totalTests = this.dataSource1.data.length;
         const collectedTests = this.dataSource1.data.filter(
             (row: any) => row.isSampleCollection === 'True'
         );
         const notCollectedCount = totalTests - collectedTests.length;
-        if (notCollectedCount > 0) {
-            Swal.fire(
-                'Sample Pending',
-                `Still ${notCollectedCount} test(s) remaining to collect sample`,
-                'warning'
-            );
-            return;
-        }
+        // if (notCollectedCount > 0 && this.IsSampleCollectionCheckon) {
+        //     Swal.fire(
+        //         'Sample Pending',
+        //         `Still ${notCollectedCount} test(s) remaining to collect sample`,
+        //         'warning'
+        //     );
+        //     return;
+        // }
 
         if (this.isSomeSelected()) {
             this.selection.clear();
