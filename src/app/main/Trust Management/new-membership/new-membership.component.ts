@@ -78,6 +78,7 @@ export class NewMembershipComponent {
         { heading: " Body CheckupDate", key: "husbandFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
 
         { heading: "Wife Name ", key: "wifeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+         { heading: " DOB ", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
 
         { heading: "Age ", key: "wifeAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Mobile No", key: "wifeMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -99,7 +100,7 @@ export class NewMembershipComponent {
         { heading: "Mediclaim PolicyNumber", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Mediclaim Issuance", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        // { heading: "HusbandPreviousMember", key: "husbandPreviousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Membership validDate", key: "membershipvalidDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "WifePreviousMember", key: "wifePreviousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         {

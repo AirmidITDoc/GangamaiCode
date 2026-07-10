@@ -56,6 +56,7 @@ export class NewAppointmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     isCompanySelected: boolean = false;
     IsPhoneAppflag: boolean = true;
+     IsTrustAppflag: boolean = false;
     VisitTime: string;
     AgeYear: any;
     AgeMonth: any;
@@ -354,6 +355,7 @@ export class NewAppointmentComponent implements OnInit {
             regRadio: ['registration'],
             regRadio1: ['registration1'],
             RegId: [''],
+            tRegId: [''],
             PhoneRegId: [''],
             UnitId: [this.accountService.currentUserValue.user.unitId]
         });
@@ -692,6 +694,9 @@ export class NewAppointmentComponent implements OnInit {
 
     vDepId = 0;
     vDocId = 0;
+
+     getSelectedObjtrust(obj) {  }
+
     //   changed by raksha date:17/6/25
     getSelectedObjphone(obj) {
         console.log("Phone data:", obj)

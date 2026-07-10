@@ -68,6 +68,13 @@
                           ApiUrl="PhoneAppointment2/auto-complete?Keyword=%"
                           (selectionChange)="getSelectedObjphone($event)"></airmid-dropdown>
 
+
+                        <airmid-dropdown class="w-450" label="trust Appointment" formControlName="tRegId"
+                          [formGroup]="searchFormGroup" *ngIf="IsTrustAppflag"
+                          ApiUrl="PhoneAppointment2/auto-complete?Keyword=%"
+                          (selectionChange)="getSelectedObjtrust($event)"></airmid-dropdown>
+
+
                         <form [formGroup]="VisitFormGroup">
                           <div class="w-300">
                             <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="data?.unitId"
@@ -144,8 +151,8 @@
                                   [validations]="getValidationMessages().lastName" [maxLength]="100"
                                   (valueChange)="handleInputChangeDebounced('LastName')"></airmid-textbox>
                               </div>
-<!-- *ngIf="!DACHstatus" -->
-                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" >
+                              <!-- *ngIf="!DACHstatus" -->
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown label="Gender" formControlName="GenderId"
                                   [formGroup]="personalFormGroup" [value]="registerObj?.genderId"
                                   [validations]="getValidationMessages().genderId" #ddlGender [readonly]="true"

@@ -108,8 +108,8 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-             { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals }
-           
+            { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals }
+
         ]
     }
 
@@ -186,10 +186,10 @@ export class RegistrationComponent implements OnInit {
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
-        this.regNo = this.myFilterform.get('RegNo').value  || "0"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.mobileno = this.myFilterform.get('MobileNo').value + "%" || "%"
-         this.CityId = this.myFilterform.get('CityId').value || "0"
-       
+        this.CityId = this.myFilterform.get('CityId').value || "0"
+
         this.getfilterdata();
     }
 
@@ -246,7 +246,7 @@ export class RegistrationComponent implements OnInit {
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
             ],
-             cityId: [],
+            cityId: [],
         }
     }
 
@@ -367,9 +367,11 @@ export class RegInsert {
     adharCardNo: any;
     admissionID: any;
     tariffName: any;
-    panCardNo:any;
-    pinNo:any;
-    regTime:any;
+    panCardNo: any;
+    pinNo: any;
+    regTime: any;
+    husbandDob: Date;
+    wifeDob: Date;
     /**
      * Constructor
      *
@@ -481,6 +483,8 @@ export class RegInsert {
             this.address = RegInsert.address || ''
             this.admissionID = RegInsert.admissionID || ''
             this.tariffName = RegInsert.tariffName || ''
+            this.husbandDob = RegInsert.husbandDob || ''
+ this.wifeDob = RegInsert.wifeDob ||''
 
 
 

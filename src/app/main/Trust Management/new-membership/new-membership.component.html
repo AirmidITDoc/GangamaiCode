@@ -61,8 +61,8 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
-                        <mat-label>RegNo</mat-label>
-                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
+                        <mat-label>Membership No</mat-label>
+                        <input matInput placeholder="Search Membership No" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="RegNo" [maxLength]="10" (input)="onChangeFirst()"
                             (keypress)="keyPressAlphanumeric($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">

@@ -83,8 +83,8 @@
                                                             <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                 <app-airmid-dateofbirth [formGroup]="personalFormGroup"
                                                                     fxFlex="99%" dateStyle="Year"
-                                                                    formControlName="dateofBirth"
-                                                                    [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                                                    formControlName="DateOfBirth"
+                                                                    [(value)]="registerObj1.husbandDob"></app-airmid-dateofbirth>
                                                             </div>
 
                                                             <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -244,14 +244,21 @@
                                                                     formControlName="wifeLastName" [value]="wLName"
                                                                     [formGroup]="personalFormGroup"></airmid-textbox>
                                                             </div>
-                                                            <!-- [(value)]="registerObj1.dateofBirth" -->
-                                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <app-airmid-dateofbirth [formGroup]="personalFormGroup"
-                                                                    fxFlex="99%" dateStyle="Year"
-                                                                    formControlName="wifeDob"
-                                                                    [(value)]="vwifedob"></app-airmid-dateofbirth>
-                                                            </div>
+                                                            <form [formGroup]="Wifeform">
 
+                                                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="80%"
+                                                                    fxLayout="row wrap" fxLayoutGap="4px grid">
+
+                                                                    <div fxFlex="90%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                        <app-airmid-dateofbirth [formGroup]="Wifeform"
+                                                                            fxFlex="62%" dateStyle="Year"
+                                                                            formControlName="DateOfBirth"
+                                                                            [(value)]="registerObj1.wifeDob"></app-airmid-dateofbirth>
+                                                                    </div>
+                                                                </div>
+
+                                                            </form>
                                                             <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                                 <airmid-textbox label="Wife Mobile"
