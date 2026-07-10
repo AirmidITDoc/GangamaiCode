@@ -170,10 +170,10 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/abha/abha.module").then((m) => m.AbhaModule),
     },
-    // {
-    //     path: "import-excel",
-    //     loadChildren: () => import("./main/import-excel/import-excel.module").then(m => m.ImportExcelModule)
-    // },
+    {
+        path: "Trust Management",
+        loadChildren: () => import("./main/Trust Management/new-member.module").then(m => m.NewMemberModule)
+    },
     {
         path: '',
         redirectTo: 'auth/login',

@@ -1,0 +1,97 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Trust Management List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onMemberForm()">+ New Member
+            </button>
+
+        </div>
+    </div>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button matTooltip="Edit Registration" (click)="onSave(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Print" (click)="getMembershipview(element)">
+                    <mat-icon> print</mat-icon>
+                </button>
+
+            </div>
+        </ng-template>
+
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[3].fieldValue"
+                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                    </airmid-datepicker>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="FirstName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>RegNo</mat-label>
+                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="RegNo" [maxLength]="10" (input)="onChangeFirst()"
+                            (keypress)="keyPressAlphanumeric($event)" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>MobileNo</mat-label>
+                        <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="MobileNo" [maxLength]="10" (input)="onChangeFirst()"
+                            (keypress)="keyPressAlphanumeric($event)" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MobileNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <airmid-dropdown label="City" formControlName="CityId" [formGroup]="myFilterform"
+                        [validations]="getValidationMessages().cityId" ValueField="cityId" TextField="cityName"
+                        (selectionChange)="onChangeFirst()" ApiUrl="CityMaster/get-cities"
+                        [(ngModel)]="gridConfig.filters[6].fieldValue">
+                    </airmid-dropdown>
+
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+
+
+
+
+</div>
