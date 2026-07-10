@@ -221,13 +221,13 @@ export class NewResultEntryComponent {
             this.doclist = res
             if (this.doclist.length) {
                 const doctor = this.doclist.find(x => x.doctorId == IsPathDoctorId);
-                if (doctor) {
-                    this.vPathResultDoctorId = doctor?.doctorId || 0
-                    setTimeout(() => {
+                if (doctor) { 
+                    setTimeout(() => { 
+                    this.otherForm.get('PathResultDoctorId')?.setValue(doctor.doctorId.toString());
 
-                        this.otherForm.get('PathResultDoctorId')
-                            ?.setValue(doctor.doctorId.toString());
+                    this.vPathResultDoctorId = doctor?.doctorId || 0
                     }, 300);
+                
                 }
             }
         });
@@ -277,7 +277,7 @@ export class NewResultEntryComponent {
         }
     }
     onResultUp(data) {
-        debugger
+       // debugger
         //Changes done by Ambadas 07-03-2026
         const items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
