@@ -78,7 +78,7 @@ export class NewMembershipComponent {
         { heading: " Body CheckupDate", key: "husbandFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
         { heading: "Wife Name ", key: "wifeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-         { heading: " DOB ", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: " DOB ", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
 
         { heading: "Age ", key: "wifeAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Mobile No", key: "wifeMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -515,4 +515,93 @@ export class NewMembershipComponent {
         }
     }
 
+}
+
+
+
+
+export class trustRegInsert {
+    membershipId: any;
+    membershipDate: any;
+    membershipTime: any;
+    membershipNo: any;
+    hprefixId: any;
+    hgenderId: any;
+    husbandFirstName: any;
+    husbandMiddleName: any;
+    husbandLastName: any;
+    husbandDob: any;
+    DateOfBirth: any;
+    husbandAgeY: any;
+    husbandAgeM: any;
+    husbandageD: any;
+    husbandMobile: any;
+    husbandEmail: any;
+    husbandAadhaar: any;
+    husbandPan: any;
+
+    wprefixId: any;
+    wgenderId: any;
+    wifeFirstName: any;
+    wifeMiddleName: any;
+    wifeLastName: any;
+
+    wifeDob: any;
+    DateOfBirth1: any;
+
+    wifeAgeY: any;
+    wifeAgeM: any;
+    wifeAgeD: any;
+
+    wifeMobile: any;
+    wifeEmail: any;
+    wifeAadhaar: any;
+    wifePan: any;
+    cityId: any;
+    cityName: any;
+    /**
+     * Constructor
+     *
+     * @param trustRegInsert
+     */
+
+    constructor(trustRegInsert) {
+        {
+            this.membershipId = trustRegInsert.membershipId || 0;
+            this.membershipNo = trustRegInsert.membershipNo || 0;
+            this.hprefixId = trustRegInsert.hprefixId || 0;
+            this.membershipDate = trustRegInsert.membershipDate || '';
+            this.membershipTime = trustRegInsert.membershipTime || '';
+            this.husbandFirstName = trustRegInsert.husbandFirstName || '';
+            this.husbandMiddleName = trustRegInsert.husbandMiddleName || ''
+            this.husbandLastName = trustRegInsert.husbandLastName || '';
+            this.husbandDob = trustRegInsert.husbandDob || '';
+            this.DateOfBirth = trustRegInsert.DateOfBirth || '';
+            this.husbandAgeY = trustRegInsert.husbandAgeY || 0;
+            this.husbandAgeM = trustRegInsert.husbandAgeM || 0;
+            this.husbandageD = trustRegInsert.husbandageD || 0;
+            this.husbandMobile = trustRegInsert.husbandMobile || '';
+            this.husbandEmail = trustRegInsert.husbandEmail || '';
+            this.husbandPan = trustRegInsert.husbandPan || '';
+            this.wprefixId = trustRegInsert.wprefixId || 0;
+            this.wgenderId = trustRegInsert.wgenderId || 0;
+            this.wifeFirstName = trustRegInsert.wifeFirstName || '';
+            this.wifeMiddleName = trustRegInsert.wifeMiddleName || '';
+            this.wifeLastName = trustRegInsert.wifeLastName || '';
+            this.wifeDob = trustRegInsert.wifeDob || '';
+            this.DateOfBirth1 = trustRegInsert.DateOfBirth1 || '';
+            this.wifeAgeY = trustRegInsert.wifeAgeY || 0;
+            this.wifeAgeM = trustRegInsert.wifeAgeM || 0;
+            this.wifeAgeD = trustRegInsert.wifeAgeD || 0;
+
+
+            this.wifeMobile = trustRegInsert.wifeMobile || '';
+            this.wifeEmail = trustRegInsert.wifeEmail || '';
+            this.wifeAadhaar = trustRegInsert.wifeAadhaar || '0';
+            this.wifePan = trustRegInsert.wifePan || 0;
+            this.cityId = trustRegInsert.cityId || 0;
+            this.cityName = trustRegInsert.cityName || '';
+
+        }
+    }
 }

@@ -444,7 +444,7 @@ export class NewFormComponent {
       "childId": 0,
       "membershipId": 0,// this.vmembershipId,
       "prefixId": [item.PrefixId || 0],
-
+      "prefixName": [item.PrefixName || ''],
       "childName": [item.Name || ''],
       "childMobile": [item.MobileNo || ''],
       "childAddress": [item.Address || ''],
@@ -462,6 +462,7 @@ export class NewFormComponent {
       "relativeId": 0,
       "membershipId": 0,// this.vmembershipId,
       "prefixId": [item.PrefixId || 0],
+      "prefixName": [item.PrefixName || ''],
       "relationId": [item.RelationId || 0],
       "relativeName": [item.RName || ''],
       "relativeMobile": [item.RMobileNo || ''],
@@ -480,6 +481,7 @@ export class NewFormComponent {
       "emrgencyId": 0,
       "membershipId": 0,// this.vmembershipId,
       "prefixId": [item.PrefixId || 0],
+      "prefixName": [item.PrefixName || ''],
       "emrgencyName": [item.EName || ''],
       "emrgencyMobile": [item.EMobileNo || ''],
       "emrgencyAddress": [item.Address || '']
@@ -540,54 +542,54 @@ export class NewFormComponent {
 
 
   onSave() {
- // setTimeout(() => {
-      const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-      if (DateOfBirth1) {
-        const todayDate = new Date();
-        const dob = new Date(DateOfBirth1);
-        const timeDiff = Math.abs(Date.now() - dob.getTime());
-        this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-        this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-        this.ageDay = (todayDate.getDate() - dob.getDate());
+    // setTimeout(() => {
+    const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+    if (DateOfBirth1) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth1);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+      this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay = (todayDate.getDate() - dob.getDate());
 
-        if (this.ageDay < 0) {
-          (this.ageMonth)--;
-          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-          this.ageDay += previousMonth.getDate(); // Days in previous month
+      if (this.ageDay < 0) {
+        (this.ageMonth)--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.ageDay += previousMonth.getDate(); // Days in previous month
 
-        }
-
-        if (this.ageMonth < 0) {
-          this.ageYear--;
-          this.ageMonth += 12;
-        }
       }
+
+      if (this.ageMonth < 0) {
+        this.ageYear--;
+        this.ageMonth += 12;
+      }
+    }
 
     // }, 200);
 
 
     // setTimeout(() => {
-      const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
-      if (DateOfBirth2) {
-        const todayDate = new Date();
-        const dob = new Date(DateOfBirth2);
-        const timeDiff = Math.abs(Date.now() - dob.getTime());
-        this.ageYear1 = (todayDate.getFullYear() - dob.getFullYear());
-        this.ageMonth1 = (todayDate.getMonth() - dob.getMonth());
-        this.ageDay1 = (todayDate.getDate() - dob.getDate());
+    const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
+    if (DateOfBirth2) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth2);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+      this.ageYear1 = (todayDate.getFullYear() - dob.getFullYear());
+      this.ageMonth1 = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay1 = (todayDate.getDate() - dob.getDate());
 
-        if (this.ageDay1 < 0) {
-          (this.ageMonth1)--;
-          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-          this.ageDay1 += previousMonth.getDate(); // Days in previous month
+      if (this.ageDay1 < 0) {
+        (this.ageMonth1)--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.ageDay1 += previousMonth.getDate(); // Days in previous month
 
-        }
-
-        if (this.ageMonth1 < 0) {
-          this.ageYear1--;
-          this.ageMonth1 += 12;
-        }
       }
+
+      if (this.ageMonth1 < 0) {
+        this.ageYear1--;
+        this.ageMonth1 += 12;
+      }
+    }
     // }, 200);
 
 
@@ -634,7 +636,7 @@ export class NewFormComponent {
       }
       debugger
       // if (this.personalFormGroup.get('husbandDob').value == new Date()) {
-        if ( this.ageYear==0) {
+      if (this.ageYear == 0) {
         this.toastr.warning('Please enter husbandDob', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -677,7 +679,7 @@ export class NewFormComponent {
         return;
       }
 
-      if ( this.ageYear1==0) {
+      if (this.ageYear1 == 0) {
         this.toastr.warning('Please enter wifeDob', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -742,7 +744,7 @@ export class NewFormComponent {
     });
 
 
-   
+
 
     debugger
     console.log(this.personalFormGroup.get("DateOfBirth").value)
@@ -831,8 +833,11 @@ export class NewFormComponent {
 
         if (this.DSChildrenList.data.length > 0) {
           this.DSChildrenList.data.forEach((element) => {
+
+
             const newEntry = {
               Prefix: element.prefixId || 0,
+              PrefixName: element.prefixName || '',
               Name: element.childName || '',
               MobileNo: element.childMobile || '',
               Address: element.childAddress || '',
@@ -850,8 +855,10 @@ export class NewFormComponent {
 
         if (this.DSRelativeList.data.length > 0) {
           this.DSRelativeList.data.forEach((element) => {
+
             const newEntry = {
               Prefix: element.prefixId || 0,
+              PrefixName: element.prefixName || '',
               RelationId: element.relationId || 0,
 
               RName: element.relativeName || '',
@@ -874,6 +881,7 @@ export class NewFormComponent {
             console.log(element)
             const newEntry = {
               Prefix: element.prefixId || 0,
+              PrefixName: element.prefixName || '',
               EName: element.emrgencyName || '',
               EMobileNo: element.emrgencyMobile || '',
               Address: element.emrgencyAddress || '',
@@ -1226,7 +1234,7 @@ export class NewFormComponent {
 
       const newEntry = {
         PrefixId: this.Childrensform.get('CPrefixId').value || 0,
-        Prefix: this.CPrefix,//
+        PrefixName: this.CPrefix,//
         Name: this.Childrensform.get('Name').value || '',
         MobileNo: this.Childrensform.get('MobileNo').value || '',
         Address: this.Childrensform.get('Address').value || '',
@@ -1238,7 +1246,7 @@ export class NewFormComponent {
     else {
       const newEntry = {
         PrefixId: this.Childrensform.get('CPrefixId').value || 0,
-        Prefix: this.CPrefix,//
+        PrefixName: this.CPrefix,//
         Name: this.Childrensform.get('Name').value || '',
         MobileNo: this.Childrensform.get('MobileNo').value || '',
         Address: this.Childrensform.get('Address').value || '',
@@ -1285,7 +1293,7 @@ export class NewFormComponent {
 
       const newEntry1 = {
         PrefixId: this.Relativeform.get('RPrefixId').value || 0,
-        Prefix: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
+        PrefixName: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
         RName: this.Relativeform.get('RName').value || '',
         RelationId: this.Relativeform.get('Relation').value || '',
         RelationName: this.relationName,// this.Relativeform.get('Relation').value || '',
@@ -1299,7 +1307,7 @@ export class NewFormComponent {
 
       const newEntry = {
         PrefixId: this.Relativeform.get('RPrefixId').value || 0,
-        Prefix: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
+        PrefixName: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
         RName: this.Relativeform.get('RName').value || '',
         RelationId: this.Relativeform.get('Relation').value || '',
         RelationName: this.relationName,// this.Relativeform.get('Relation').value || '',
@@ -1340,7 +1348,7 @@ export class NewFormComponent {
       this.DSEmrgencyList.data.forEach((element) => {
         const newEntry2 = {
           PrefixId: this.Emrgencyform.get('EPrefixId').value || 0,
-          Prefix: this.EPrefix,// this.Emrgencyform.get('EPrefixId').value || '',
+          PrefixName: this.EPrefix,// this.Emrgencyform.get('EPrefixId').value || '',
           EName: this.Emrgencyform.get('EName').value || '',
           EMobileNo: this.Emrgencyform.get('EMobileNo').value || '',
           Address: this.Emrgencyform.get('EAddress').value || '',
@@ -1356,7 +1364,7 @@ export class NewFormComponent {
 
       const newEntry1 = {
         PrefixId: this.Emrgencyform.get('EPrefixId').value || 0,
-        Prefix: this.EPrefix,// this.Emrgencyform.get('EPrefixId').value || '',
+        PrefixName: this.EPrefix,// this.Emrgencyform.get('EPrefixId').value || '',
         EName: this.Emrgencyform.get('EName').value || '',
         EMobileNo: this.Emrgencyform.get('EMobileNo').value || '',
         Address: this.Emrgencyform.get('EAddress').value || '',
@@ -1578,7 +1586,7 @@ export class Childdetail {
   childName: any;
   childMobile: any;
   childAddress: any;
-
+  prefixName: any;
 
   constructor(Childdetail) {
     this.Name = Childdetail.Name || '';
@@ -1592,6 +1600,7 @@ export class Childdetail {
     this.childName = Childdetail.childName || '';
     this.childMobile = Childdetail.childMobile || '';
     this.childAddress = Childdetail.childAddress || '';
+    this.prefixName = Childdetail.prefixName || '';
 
 
   }
@@ -1613,7 +1622,7 @@ export class Relativedetail {
   relativeName: any;
   relativeMobile: any;
   relativeAddress: any;
-
+  prefixName: any;
 
   constructor(Relativedetail) {
     this.RName = Relativedetail.RName || '';
@@ -1630,6 +1639,7 @@ export class Relativedetail {
 
     this.relativeMobile = Relativedetail.relativeMobile || '';
     this.relativeAddress = Relativedetail.relativeAddress || '';
+    this.prefixName = Relativedetail.prefixName || '';
   }
 }
 
@@ -1639,7 +1649,7 @@ export class Emrgencdetail {
   EName: any;
   EMobileNo: any;
   EAddress: any;
-
+  prefixName: any;
   prefixId: any;
   emrgencyName: any;
   emrgencyAddress: any;
@@ -1653,7 +1663,7 @@ export class Emrgencdetail {
     this.emrgencyName = Emrgencdetail.emrgencyName || '';
     this.emrgencyAddress = Emrgencdetail.emrgencyAddress || '';
     this.emrgencyMobile = Emrgencdetail.emrgencyMobile || '';
-
+    this.prefixName = Emrgencdetail.prefixName || '';
   }
 }
 
