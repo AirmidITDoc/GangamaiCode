@@ -1205,6 +1205,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             concessionReasonId: formvalue?.ConcessionId
         }));
 
+        this.applydiscgloblearray.clear();
         if (this.globleDiscFrom.valid) {
             this.applydiscgloblearray.clear();
             this.dssalesbillListMultiple.data.forEach(element => {

@@ -1035,7 +1035,7 @@
                         [mode]="autocompleteModeCashcounter"></airmid-dropdown>
                     </div>
 
-                    <div fxFlex="10%">
+                    <div fxFlex="10%" *ngIf="Is9_Digit_National_Id">
                       <airmid-textbox label="Shah Approval Amt" formControlName="GovrnApprovAmt"
                         [formGroup]="IpbillFooterform" [type]="'text'" [min]="0"
                         (keypress)="keyPressCharater($event)"></airmid-textbox>
