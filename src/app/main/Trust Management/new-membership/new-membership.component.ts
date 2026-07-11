@@ -68,7 +68,7 @@ export class NewMembershipComponent {
 
 
         { heading: "Aadhaar ", key: "husbandAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "PAN", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PAN No", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Education ", key: "husbandEducation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Occupation", key: "hOcccupation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
@@ -92,7 +92,7 @@ export class NewMembershipComponent {
         { heading: "Body CheckupDate", key: "wifeFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
         { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "Monthly IncomeRange", key: "hIncome", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Monthly IncomeRange", key: "hIncome", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Family Doctor", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Family Doctor No", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
