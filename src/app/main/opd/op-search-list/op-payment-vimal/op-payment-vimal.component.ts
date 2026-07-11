@@ -443,7 +443,7 @@ export class OpPaymentVimalComponent implements OnInit {
         }
 
 if (this.Payments.data.length === 0) {
-    this.toastr.warning('Please add payment details.');
+    this.toastr.warning('Payment amount is required. Please enter an amount to proceed.');
     return;
 } 
 const hasZeroAmount = this.Payments.data.some(x => Number(x.Amount) <= 0); 
@@ -821,6 +821,9 @@ if (hasZeroAmount) {
     SetAdvanceRow() {
         const adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
         const tmp = this.Payments.data.find(x => x.Id == -1);
+        if (adv <= 0) {
+        return;
+        }
         if (tmp) {
             tmp.Amount = adv;
             tmp.AdvUsedAmt = adv;
