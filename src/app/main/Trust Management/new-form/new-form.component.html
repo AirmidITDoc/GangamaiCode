@@ -721,7 +721,7 @@
                                 <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                     <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                        <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <mat-checkbox formControlName="feeReceived"
                                                 style="font-weight: bold;padding-left: 20px;"
                                                 [value]="data?.feereceived">
@@ -729,14 +729,14 @@
                                             </mat-checkbox>
 
                                         </div>
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Membership No" formControlName="membershipNo"
                                                 [value]="data?.membershipNo"
                                                 [formGroup]="personalFormGroup"></airmid-textbox>
 
                                         </div>
 
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Fee Amount" formControlName="feeAmount"
                                                 [formGroup]="personalFormGroup"
                                                 (keypress)="keyPressAlphanumeric($event)" [value]="data?.feeAmount"
@@ -746,7 +746,7 @@
                                         </div>
 
 
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Receipt Date</mat-label>
                                                 <input matInput [matDatepicker]="receiptdate" placeholder="receiptdate"
@@ -758,6 +758,16 @@
                                         </div>
 
 
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Membership valid Date</mat-label>
+                                                <input matInput [matDatepicker]="membershipvalidDate" placeholder="membershipvalidDate"
+                                                    formControlName="membershipvalidDate" [value]="todayPlus5Years" />
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="membershipvalidDate"></mat-datepicker-toggle>
+                                                <mat-datepicker #membershipvalidDate></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
 
                                     </div>
 
