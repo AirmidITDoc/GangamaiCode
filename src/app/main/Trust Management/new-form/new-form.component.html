@@ -574,12 +574,12 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Husband Recent Full Body Check-up Date</mat-label>
-                                                <input matInput [matDatepicker]="husbandfullbodycheckupDate"
+                                                <input matInput [matDatepicker]="husbandFullBodyCheckupDate"
                                                     placeholder="Husband fullbody checkupDate" formControlName="wifedob"
-                                                    [value]="vhusbandfullbodycheckupDate" />
+                                                    [value]="vhusbandFullBodyCheckupDate" />
                                                 <mat-datepicker-toggle matSuffix
-                                                    [for]="husbandfullbodycheckupDate"></mat-datepicker-toggle>
-                                                <mat-datepicker #husbandfullbodycheckupDate></mat-datepicker>
+                                                    [for]="husbandFullBodyCheckupDate"></mat-datepicker-toggle>
+                                                <mat-datepicker #husbandFullBodyCheckupDate></mat-datepicker>
                                             </mat-form-field>
                                         </div>
 
@@ -669,21 +669,23 @@
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Husband Recent Full Body Check-up Date</mat-label>
-                                                <input matInput [matDatepicker]="husbandfullbodycheckupDate"
-                                                    placeholder="Husband fullbody checkupDate" formControlName="wifedob"
-                                                    [value]="vhusbandfullbodycheckupDate" />
+                                                <input matInput [matDatepicker]="husbandFullBodyCheckupDate"
+                                                    placeholder="Husband fullbody checkupDate" formControlName="husbandFullBodyCheckupDate"
+                                                    [value]="vhusbandFullBodyCheckupDate" />
                                                 <mat-datepicker-toggle matSuffix
-                                                    [for]="husbandfullbodycheckupDate"></mat-datepicker-toggle>
-                                                <mat-datepicker #husbandfullbodycheckupDate></mat-datepicker>
+                                                    [for]="husbandFullBodyCheckupDate"></mat-datepicker-toggle>
+                                                <mat-datepicker #husbandFullBodyCheckupDate></mat-datepicker>
                                             </mat-form-field>
+
+
                                         </div>
                                         <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Wife Recent Full Body Check-up Date</mat-label>
                                                 <input matInput [matDatepicker]="wifefullbodycheckup"
-                                                    placeholder="wife fullbody checkupDate"
+                                                    placeholder="wife fullbody checkupDate" [value]="vwifeFullBodyCheckupDate"
                                                     formControlName="wifeFullBodyCheckupDate"
-                                                    [value]="vwifefullbodycheckup" />
+                                                    />
                                                 <mat-datepicker-toggle matSuffix
                                                     [for]="wifefullbodycheckup"></mat-datepicker-toggle>
                                                 <mat-datepicker #wifefullbodycheckup></mat-datepicker>

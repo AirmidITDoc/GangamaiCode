@@ -150,11 +150,12 @@ export class NewFormComponent {
   vresultDate = new Date();
   vreceiptdate = new Date();
   vmediclaimenddate = new Date();
-  vhusbandfullbodycheckupDate = new Date();
+  vhusbandFullBodyCheckupDate = new Date();
   vmediclaimstartdate = new Date();
-  vwifefullbodycheckup = new Date();
+  vwifeFullBodyCheckupDate = new Date();
   vwifedob = new Date();
   vhusbanddob = new Date();
+
 
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
@@ -232,14 +233,20 @@ export class NewFormComponent {
 
       }
 
+      // this.vmediclaimenddate = this.data.mediclaimenddate
+      this.vmediclaimenddate = this.data.mediclaimenddate
+      this.vhusbandFullBodyCheckupDate = this.data.husbandFullBodyCheckupDate
+      this.vmediclaimstartdate = this.data.mediclaimstartdate
+      this.vwifeFullBodyCheckupDate = this.data.wifeFullBodyCheckupDate
+
+
       this.personalFormGroup.get("wifeparentsnativeplace").setValue(this.data.wifeParentsNativePlace)
       this.personalFormGroup.get("mediclaimpolicynumber").setValue(this.data.mediclaimPolicyNumber)
       this.personalFormGroup.get("mediclaimcompany").setValue(this.data.mediclaimCompany)
       this.personalFormGroup.get("wifemedications").setValue(this.data.wifeMedications)
       this.personalFormGroup.get("husbandmedications").setValue(this.data.husbandMedications)
       this.personalFormGroup.get("wifeparentaldetails").setValue(this.data.wifeParentalDetails)
-
-
+     
     }
   }
 
@@ -351,7 +358,7 @@ export class NewFormComponent {
       "wifeparentsnativeplace": [''],
       "husbandmedications": [''],
       "wifemedications": [''],
-      "husbandfullbodycheckupDate": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "husbandFullBodyCheckupDate": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "wifeFullBodyCheckupDate": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
 
       "ayushmanEnrolled": [false],
@@ -634,7 +641,7 @@ export class NewFormComponent {
 
         return;
       }
-      debugger
+      
       // if (this.personalFormGroup.get('husbandDob').value == new Date()) {
       if (this.ageYear == 0) {
         this.toastr.warning('Please enter husbandDob', 'Warning !', {
@@ -746,7 +753,7 @@ export class NewFormComponent {
 
 
 
-    debugger
+    
     console.log(this.personalFormGroup.get("DateOfBirth").value)
     console.log(this.Wifeform.get("DateOfBirth").value)
 
@@ -770,8 +777,8 @@ export class NewFormComponent {
 
     this.personalFormGroup.get("membershipDate").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || this.data.membershipDate || '1900-01-01')
     this.personalFormGroup.get("membershipTime").setValue(this.datePipe.transform(this.dateTimeObj.date) || this.data.membershipDate || '1900-01-01')
-
-    this.personalFormGroup.get("husbandfullbodycheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandfullbodycheckupDate").value, "yyyy-MM-dd") || this.data.husbandfullbodycheckupDate || '1900-01-01')
+debugger
+    this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.data.husbandFullBodyCheckupDate || '1900-01-01')
     this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.data.wifeFullBodyCheckupDate || '1900-01-01')
     this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.data.mediclaimStartDate || '1900-01-01')
     this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.data.wifeFullBodyCheckupDate || '1900-01-01')
@@ -1501,7 +1508,7 @@ export class NewFormComponent {
         this.ageMonth += 12;
       }
 
-      debugger
+      
       this.value = DateOfBirth;
       this.dateofBirth = DateOfBirth;
       this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
@@ -1518,7 +1525,7 @@ export class NewFormComponent {
   }
 
   onChangeDateofBirth1(DateOfBirth: Date) {
-    debugger
+    
     if (DateOfBirth > this.minDate) {
       this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
@@ -1545,7 +1552,7 @@ export class NewFormComponent {
         this.ageYear1--;
         this.ageMonth1 += 12;
       }
-      debugger
+      
 
       this.value1 = DateOfBirth;
       this.personalFormGroup.get('wifeDob').setValue(DateOfBirth);
