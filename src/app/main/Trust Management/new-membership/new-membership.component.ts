@@ -100,7 +100,7 @@ export class NewMembershipComponent {
         { heading: "Mediclaim PolicyNumber", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Mediclaim Issuance", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        { heading: "Membership validDate", key: "membershipvalidDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Membership validDate", key: "membershipvalidDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "WifePreviousMember", key: "wifePreviousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         {
