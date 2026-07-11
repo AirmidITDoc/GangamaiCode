@@ -627,7 +627,7 @@ export class NewAppointmentwithBillComponent {
             qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            concessionPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             doctorId: [item?.DoctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1416,7 +1416,7 @@ export class NewAppointmentwithBillComponent {
         this.OpBillForm.get('companyAmt')?.setValue(0)
         this.OpBillForm.get('patientAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
         this.OpBillForm.get('totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value)
-        this.OpBillForm.get('concessionAmt')?.setValue(0)
+        this.OpBillForm.get('concessionAmt')?.setValue(this.OPFooterForm.get('discountAmt')?.value || 0)
         this.OpBillForm.get('netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
         this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
