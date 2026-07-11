@@ -244,21 +244,19 @@
                                                                     formControlName="wifeLastName" [value]="wLName"
                                                                     [formGroup]="personalFormGroup"></airmid-textbox>
                                                             </div>
-                                                            <form [formGroup]="Wifeform">
+                                                         
+                                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="80%"
-                                                                    fxLayout="row wrap" fxLayoutGap="4px grid">
-
-                                                                    <div fxFlex="90%" fxFlex.xs="100%" fxFlex.sm="33%">
-
+                                                                    <form [formGroup]="Wifeform">
                                                                         <app-airmid-dateofbirth [formGroup]="Wifeform"
-                                                                            fxFlex="62%" dateStyle="Year"
+                                                                            fxFlex="98%" dateStyle="Year"
                                                                             formControlName="DateOfBirth"
                                                                             [(value)]="registerObj1.wifeDob"></app-airmid-dateofbirth>
-                                                                    </div>
-                                                                </div>
+                                                                    </form>
+                                                               
+                                                            </div>
 
-                                                            </form>
+                                                       
                                                             <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                                 <airmid-textbox label="Wife Mobile"
