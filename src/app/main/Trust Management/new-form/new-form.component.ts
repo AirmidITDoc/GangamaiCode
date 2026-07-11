@@ -540,6 +540,56 @@ export class NewFormComponent {
 
 
   onSave() {
+ // setTimeout(() => {
+      const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+      if (DateOfBirth1) {
+        const todayDate = new Date();
+        const dob = new Date(DateOfBirth1);
+        const timeDiff = Math.abs(Date.now() - dob.getTime());
+        this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+        this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+        this.ageDay = (todayDate.getDate() - dob.getDate());
+
+        if (this.ageDay < 0) {
+          (this.ageMonth)--;
+          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+          this.ageDay += previousMonth.getDate(); // Days in previous month
+
+        }
+
+        if (this.ageMonth < 0) {
+          this.ageYear--;
+          this.ageMonth += 12;
+        }
+      }
+
+    // }, 200);
+
+
+    // setTimeout(() => {
+      const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
+      if (DateOfBirth2) {
+        const todayDate = new Date();
+        const dob = new Date(DateOfBirth2);
+        const timeDiff = Math.abs(Date.now() - dob.getTime());
+        this.ageYear1 = (todayDate.getFullYear() - dob.getFullYear());
+        this.ageMonth1 = (todayDate.getMonth() - dob.getMonth());
+        this.ageDay1 = (todayDate.getDate() - dob.getDate());
+
+        if (this.ageDay1 < 0) {
+          (this.ageMonth1)--;
+          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+          this.ageDay1 += previousMonth.getDate(); // Days in previous month
+
+        }
+
+        if (this.ageMonth1 < 0) {
+          this.ageYear1--;
+          this.ageMonth1 += 12;
+        }
+      }
+    // }, 200);
+
 
     if (this.personalFormGroup.get("husbandFirstName").value == '' && this.personalFormGroup.get("wifeFirstName").value == '') {
       this.toastr.warning('Please Enter Patient Details', 'Warning !', {
@@ -583,7 +633,8 @@ export class NewFormComponent {
         return;
       }
       debugger
-      if (this.personalFormGroup.get('husbandDob').value == new Date()) {
+      // if (this.personalFormGroup.get('husbandDob').value == new Date()) {
+        if ( this.ageYear==0) {
         this.toastr.warning('Please enter husbandDob', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -626,7 +677,7 @@ export class NewFormComponent {
         return;
       }
 
-      if (this.personalFormGroup.get('wifeDob').value == '1900-01-01') {
+      if ( this.ageYear1==0) {
         this.toastr.warning('Please enter wifeDob', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -691,57 +742,7 @@ export class NewFormComponent {
     });
 
 
-    // setTimeout(() => {
-      const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-      if (DateOfBirth1) {
-        const todayDate = new Date();
-        const dob = new Date(DateOfBirth1);
-        const timeDiff = Math.abs(Date.now() - dob.getTime());
-        this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-        this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-        this.ageDay = (todayDate.getDate() - dob.getDate());
-
-        if (this.ageDay < 0) {
-          (this.ageMonth)--;
-          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-          this.ageDay += previousMonth.getDate(); // Days in previous month
-
-        }
-
-        if (this.ageMonth < 0) {
-          this.ageYear--;
-          this.ageMonth += 12;
-        }
-      }
-
-    // }, 200);
-
-
-    // setTimeout(() => {
-      const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
-      if (DateOfBirth2) {
-        const todayDate = new Date();
-        const dob = new Date(DateOfBirth2);
-        const timeDiff = Math.abs(Date.now() - dob.getTime());
-        this.ageYear1 = (todayDate.getFullYear() - dob.getFullYear());
-        this.ageMonth1 = (todayDate.getMonth() - dob.getMonth());
-        this.ageDay1 = (todayDate.getDate() - dob.getDate());
-
-        if (this.ageDay1 < 0) {
-          (this.ageMonth1)--;
-          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-          this.ageDay1 += previousMonth.getDate(); // Days in previous month
-
-        }
-
-        if (this.ageMonth1 < 0) {
-          this.ageYear1--;
-          this.ageMonth1 += 12;
-        }
-      }
-    // }, 200);
-
-
+   
 
     debugger
     console.log(this.personalFormGroup.get("DateOfBirth").value)
