@@ -441,6 +441,17 @@ export class OpPaymentVimalComponent implements OnInit {
                 return
             }
         }
+
+if (this.Payments.data.length === 0) {
+    this.toastr.warning('Please add payment details.');
+    return;
+} 
+const hasZeroAmount = this.Payments.data.some(x => Number(x.Amount) <= 0); 
+if (hasZeroAmount) {
+    this.toastr.warning('Payment amount should be greater than 0.');
+    return;
+}
+        
         if (this.data.FromName == "IP-SETTLEMENT") {
             this.Paymentobj['paymentId'] = 0;
             this.Paymentobj['billNo'] = this.advanceData.BillNo || 0;
@@ -658,6 +669,7 @@ export class OpPaymentVimalComponent implements OnInit {
         console.log(IsSubmit);
         this.dialogRef.close(IsSubmit);
         this.advanceData = null
+        
     }
 
     onClose1() {
@@ -703,11 +715,15 @@ export class OpPaymentVimalComponent implements OnInit {
                     this.dataSource.data = response.data;
                    // this.IsAdv = true
                     this.IsAdv = this.dataSource.data && this.dataSource.data.length > 0;
+                    if(this.IsAdv){
                     this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0;
                     this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
                     this.GetBalanceAmt();
+                    }else{
+                         this.AdvanceId = 0
+                    }
                 });
             } else if(this.data.FromName == "IP-IntrimBIll"){
                  this.IsAdv = false;
@@ -716,11 +732,15 @@ export class OpPaymentVimalComponent implements OnInit {
                     this.dataSource.data = response.data;
                     //this.IsAdv = true 
                     this.IsAdv = this.dataSource.data && this.dataSource.data.length > 0;
+                    if(this.IsAdv){
                     this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
                     this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
                     this.GetBalanceAmt(); 
+                    }else{
+                         this.AdvanceId = 0
+                    }
                 }); 
             }
         }, 500);
@@ -741,21 +761,27 @@ export class OpPaymentVimalComponent implements OnInit {
                 if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
                     this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
                         this.dataSource.data = response.data;
+                        if(this.dataSource.data.length > 0){
                         this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0;
                         this.calculateBalance();
                         this.SetAdvanceRow();
                         this.setPaidAmount();
                         this.GetBalanceAmt();
+                        }else{
+                         this.AdvanceId = 0
+                    }
                     });
                 } else {
                     this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
                         console.log(response)
                         this.dataSource.data = response.data;
+                          if(this.dataSource.data.length > 0){
                         this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
                         this.calculateBalance();
                         this.SetAdvanceRow();
                         this.setPaidAmount();
                         this.GetBalanceAmt();
+                          }else{  this.AdvanceId = 0  }
                     });
                 }
             }, 500);
