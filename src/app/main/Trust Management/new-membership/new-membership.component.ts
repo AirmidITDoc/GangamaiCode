@@ -97,7 +97,7 @@ export class NewMembershipComponent {
         { heading: "Family Doctor No", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         { heading: "Mediclaim Company", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Mediclaim PolicyNumber", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Mediclaim PolicyNo", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Mediclaim Issuance", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         // { heading: "Membership validDate", key: "membershipvalidDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
