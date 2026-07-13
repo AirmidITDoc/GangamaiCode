@@ -227,13 +227,13 @@ export class ResultEntryComponent implements OnInit {
         this.IsSampleCollectionCheckon = id === "1";
 
         if (this.IsSampleCollectionCheckon) {
-            this.IsSamRequired = true
-            this.SampleMessage = "Sample collection is required to generate the result."
+            this.IsSamRequired = false
+            this.SampleMessage = "Result will be generated without sample collection."
         }
         else {
-            this.IsSamRequired = false
+            this.IsSamRequired = true
+            this.SampleMessage = "Sample collection is required to generate the result."
 
-            this.SampleMessage = "Result will be generated without sample collection."
         }
     }
 
