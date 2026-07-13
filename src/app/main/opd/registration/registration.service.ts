@@ -163,6 +163,13 @@ export class RegistrationService {
 
     }
 
+     createAbhaorm() {
+        return this._formBuilder.group({
+            abhaAddress: [''],
+            abhaNumber: ['']
+        });
+    }
+
     // new Api
     initializeFormGroup() { }
 

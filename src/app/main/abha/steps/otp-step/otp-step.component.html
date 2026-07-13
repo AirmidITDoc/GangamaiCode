@@ -6,6 +6,12 @@
             <div class="info-box">
                 {{maskedAadhaarMobile}}
             </div>
+
+            <p style="font-size: 14px;font-weight: 600;">
+                Aadhaar Number:
+                XXXXXXXX{{ aadhaarNumber | slice:-4 }}
+            </p>
+
             <!-- Mobile -->
             <div class="field-block">
                 <label class="field-label">Mobile No:</label>
@@ -19,7 +25,7 @@
             </div>
             <div class="field-block">
                 <label class="field-label">6-digit OTP</label>
-                <mat-form-field appearance="outline" class="full-width">
+                <!-- <mat-form-field appearance="outline" class="full-width">
                     <input matInput type="password" formControlName="aadhaarOtp" placeholder="••••••"
                         inputmode="numeric" maxlength="6" (input)="onOtpInput($event)" autocomplete="one-time-code" />
                     <mat-error *ngIf="form.get('aadhaarOtp')?.errors as e">
@@ -27,7 +33,56 @@
                         <span *ngIf="e['otp']">{{ e['otp'] }}</span>
                         <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
                     </mat-error>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <div class="otp-wrapper">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="aadhaarOtp"
+                            placeholder="••••••" inputmode="numeric" maxlength="6" (input)="onOtpInput($event)"
+                            autocomplete="one-time-code" />
+
+                        <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
+                            [attr.aria-label]="'Toggle OTP visibility'">
+                            <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+
+                        <mat-error *ngIf="form.get('aadhaarOtp')?.errors as e">
+                            <span *ngIf="e['required']">OTP is required</span>
+                            <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+                            <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="otp-info">
+
+                        <!-- Timer -->
+                        <span class="timer" *ngIf="!canResend">
+                            {{ countdown }}
+                        </span>
+
+                        <!-- warning -->
+                        <div class="warning-text" *ngIf="!canResend && timeLeft > 0 && timeLeft <= 10">
+                            OTP will expire in {{ timeLeft }} seconds.
+                        </div>
+
+                        <!-- Resend -->
+                        <button mat-button color="primary" type="button" *ngIf="canResend && resendAttempts < 2"
+                            (click)="resendOtp()">
+                            Resend OTP
+                            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                        </button>
+
+                        <small *ngIf="resendAttempts < 2">
+                            Attempts left: {{2 - resendAttempts}}
+                        </small>
+
+                        <small class="text-danger" *ngIf="resendAttempts >=2">
+                            No more resend attempts.
+                        </small>
+
+                    </div>
+
+                </div>
                 <!-- <p class="helper-text">
                     Demo OTP: <span class="mono">{{ demoOtp }}</span>
                 </p> -->
@@ -49,8 +104,8 @@
                     <mat-icon>arrow_back</mat-icon>
                     Back
                 </button>
-                <button type="submit" mat-raised-button color="primary" [disabled]="loading || form.invalid"
-                    class="action-btn">
+                <button type="submit" mat-raised-button color="primary"
+                    [disabled]="loading || form.invalid || otpExpired" class="action-btn">
                     <ng-container *ngIf="!loading">
                         Verify
                         <mat-icon iconPositionEnd>arrow_forward</mat-icon>

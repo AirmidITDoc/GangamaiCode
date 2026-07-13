@@ -1,7 +1,8 @@
 /* ===== Step container ===== */
 .profile-step {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 1200px;
+  // max-width: 1200px;
+  // margin: 0 auto;
 }
 
 /* ===== Success banner ===== */
@@ -824,4 +825,31 @@
 
     .k { font-size: 11px; }
   }
+}
+
+.main-div{  
+  width: 1900px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 64px;
+  // border: 2px solid palevioletred;
+}
+
+.right-div{
+  width: 700px; 
+  // max-height: 730px;
+  // height: 730px; 
+  border: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-btn{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 4px;
 }

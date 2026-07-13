@@ -26,15 +26,8 @@
       <div class="field-block">
         <label class="field-label">Mobile Number</label>
         <mat-form-field appearance="outline" class="full-width">
-          <input
-            matInput
-            formControlName="mobile"
-            placeholder="10-digit mobile number"
-            inputmode="numeric"
-            maxlength="10"
-            autocomplete="tel"
-            (input)="onMobileInput($event)"
-          />
+          <input matInput formControlName="mobile" placeholder="10-digit mobile number" inputmode="numeric"
+            maxlength="10" autocomplete="tel" (input)="onMobileInput($event)" />
           <mat-error *ngIf="mobileForm.get('mobile')?.errors as e">
             <span *ngIf="e['required']">Mobile number is required</span>
             <span *ngIf="e['mobile']">{{ e['mobile'] }}</span>
@@ -47,13 +40,7 @@
       </div>
 
       <div class="actions end">
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="loading"
-          class="action-btn"
-        >
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="action-btn">
           <ng-container *ngIf="!loading">
             Send OTP <mat-icon iconPositionEnd>arrow_forward</mat-icon>
           </ng-container>
@@ -71,6 +58,21 @@
       <div class="field-block">
         <label class="field-label">6-digit OTP</label>
         <mat-form-field appearance="outline" class="full-width">
+          <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="otp" placeholder="••••••"
+            inputmode="numeric" maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
+
+          <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
+            [attr.aria-label]="'Toggle OTP visibility'">
+            <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+
+          <mat-error *ngIf="otpForm.get('otp')?.errors as e">
+            <span *ngIf="e['required']">OTP is required</span>
+            <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+            <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+          </mat-error>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" class="full-width">
           <input
             matInput
             type="password"
@@ -86,7 +88,7 @@
             <span *ngIf="e['otp']">{{ e['otp'] }}</span>
             <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
           </mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
         <!-- <p class="helper-text">Demo OTP: <span class="mono">{{ demoOtp }}</span></p> -->
       </div>
 
@@ -109,13 +111,8 @@
         <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
           <mat-icon>arrow_back</mat-icon> Back
         </button>
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="loading || otpForm.invalid"
-          class="action-btn"
-        >
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid"
+          class="action-btn">
           <ng-container *ngIf="!loading">
             Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
           </ng-container>
@@ -132,14 +129,9 @@
       </div>
 
       <div class="account-list">
-        <button
-          *ngFor="let acc of accounts"
-          type="button"
-          class="account-card"
-          [class.selected]="pickForm.value.ABHANumber === acc.ABHANumber"
-          [disabled]="acc.status !== 'ACTIVE'"
-          (click)="pickAccount(acc.ABHANumber)"
-        >
+        <button *ngFor="let acc of accounts" type="button" class="account-card"
+          [class.selected]="pickForm.value.ABHANumber === acc.ABHANumber" [disabled]="acc.status !== 'ACTIVE'"
+          (click)="pickAccount(acc.ABHANumber)">
           <div class="acc-avatar">
             <mat-icon>person</mat-icon>
           </div>
@@ -171,13 +163,8 @@
         <button type="button" mat-stroked-button (click)="goBackToStep2()" class="back-btn">
           <mat-icon>arrow_back</mat-icon> Back
         </button>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="verifyUser()"
-          [disabled]="loading || pickForm.invalid"
-          class="action-btn"
-        >
+        <button mat-raised-button color="primary" (click)="verifyUser()" [disabled]="loading || pickForm.invalid"
+          class="action-btn">
           <ng-container *ngIf="!loading">
             Continue <mat-icon iconPositionEnd>arrow_forward</mat-icon>
           </ng-container>

@@ -189,3 +189,41 @@
     }
   }
 }
+
+/////////////////timer////////////////
+.otp-wrapper{
+    display:flex;
+    flex-direction: column;
+}
+
+.otp-field{
+    flex:1;
+}
+
+.otp-info{
+    min-width:110px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:56px;
+    gap: 4px;
+    margin-top: -10px;
+}
+
+.timer{
+    color:#f57c00;
+    font-weight:600;
+    font-size:15px;
+}
+
+.attempt-msg{
+    color:red;
+    font-size:13px;
+}
+
+.warning-text {
+    color: #f57c00;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+}

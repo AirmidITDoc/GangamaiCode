@@ -23,7 +23,9 @@
         <!-- Step 2: OTP -->
         <mat-step [stepControl]="otpForm" label="OTP">
             <app-otp-step [form]="otpForm" [maskedAadhaarMobile]="maskedAadhaarMobile" [txnId]="txnId"
-                (verified)="onOtpVerified($event)" (back)="stepper.previous()"></app-otp-step>
+                (verified)="onOtpVerified($event)" (back)="stepper.previous()"
+                [aadhaarNumber]="aadhaarNumber"
+                (sessionExpired)="onSessionExpired()"></app-otp-step>
         </mat-step>
 
         <!-- Step 3: Mobile -->

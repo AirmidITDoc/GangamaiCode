@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AbhaService } from '../../abha.service';
-import { AadhaarVerifyOtpResponse } from '../../abha-model';
+import { AadhaarGenerateOtpResponse, AadhaarVerifyOtpResponse } from '../../abha-model';
 
 @Component({
     selector: 'app-otp-step',
@@ -17,15 +17,85 @@ export class OtpStepComponent implements OnInit {
     @Input() txnId = "";
 
     loading = false;
+    hideOtp = true;
     resendAttemptsRemaining = 2;
     maskedMobile = '******3210';
     demoOtp: string;
+
+    countdown = '01:00';
+    timeLeft = 60;
+    timer: any;
+    canResend = false;
+    resendAttempts = 0;
+    otpExpired = false;
+    @Output() sessionExpired = new EventEmitter<void>();
+    @Input() aadhaarNumber!: string;
 
     constructor(private abhaService: AbhaService, private snack: MatSnackBar) {
         //this.demoOtp = this.abhaService.DEMO_OTP;
     }
 
-    ngOnInit(): void { }
+    ngOnChanges(changes: SimpleChanges) {
+        console.log('txnId changed:', changes['txnId']?.currentValue);
+
+        if (changes['txnId']?.currentValue) {
+            this.startTimer();
+        }
+
+        console.log("Aadhar number:",this.aadhaarNumber);
+    }
+
+    ngOnInit(): void {
+        // this.startTimer();
+    }
+
+    startTimer() {
+
+        clearInterval(this.timer);
+
+        this.canResend = false;
+        this.timeLeft = 60;
+
+        this.updateCounter();
+
+        this.timer = setInterval(() => {
+
+            if (this.timeLeft > 0) {
+
+                this.timeLeft--;
+                this.updateCounter();
+
+            } else {
+
+                clearInterval(this.timer);
+
+                if (this.resendAttempts >= 2) {
+
+                    this.sessionExpired.emit();
+
+                } else {
+
+                    this.canResend = true;
+                }
+                // if (this.resendAttempts < 2) {
+                //     this.canResend = true;
+                // }
+
+            }
+
+        }, 1000);
+    }
+
+    updateCounter() {
+
+        const min = Math.floor(this.timeLeft / 60);
+
+        const sec = this.timeLeft % 60;
+
+        this.countdown =
+            `${min}:${sec < 10 ? '0' + sec : sec}`;
+
+    }
 
     onOtpInput(event: Event): void {
         const input = event.target as HTMLInputElement;
@@ -82,6 +152,42 @@ export class OtpStepComponent implements OnInit {
         this.snack.open(`OTP resent. ${this.resendAttemptsRemaining} attempt(s) remaining.`, 'OK', {
             duration: 2500
         });
+    }
+
+    // added by raksha on 8/7/26
+    resendOtp(): void {
+
+        if (this.resendAttempts >= 2) {
+            return;
+        }
+
+        // this.resendAttempts++;
+
+        this.form.get('aadhaarOtp')?.reset();
+
+        this.onSendOtp();
+    }
+    onSendOtp(): void {
+        // debugger
+        // if (this.form.get('mobile')?.invalid) {
+        //     this.form.get('mobile')?.markAsTouched();
+        //     return;
+        // }
+        this.loading = true;
+        this.abhaService.aadhaarGenerateOtp({ AadhaarNumber: this.aadhaarNumber })
+            .subscribe((r: AadhaarGenerateOtpResponse) => {
+                if (r.txnId) {
+                    this.txnId = r.txnId;
+                    // this.step = 2;
+                    this.resendAttempts++;
+                    this.snack.open(r.message, 'OK', { duration: 2500 });
+                    this.startTimer();
+                }
+                else {
+                    this.snack.open(r.message, 'OK', { duration: 2500 });
+                }
+                this.loading = false;
+            });
     }
 
     onBack(): void {

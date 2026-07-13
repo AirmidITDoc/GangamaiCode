@@ -20,7 +20,8 @@ import { RegistrationService } from '../registration.service';
     styleUrls: ['./new-registration.component.scss'],
     // directives: [appCharmaxLength],
     encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations
+    animations: fuseAnimations,
+    providers: [DatePipe]
 })
 export class NewRegistrationComponent implements OnInit {
     personalFormGroup: FormGroup;
@@ -51,6 +52,8 @@ export class NewRegistrationComponent implements OnInit {
     vFirstNameConfig: any;
     vmiddleNameConfig: any;
     vlastNameConfig: any;
+    isProfileData = false;
+    abhaForm: FormGroup;
 
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -95,6 +98,8 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.markAllAsTouched();
         this.minDate = new Date();
 
+        this.abhaForm = this._registerService.createAbhaorm();
+
         if ((this.data?.regId ?? 0) > 0) {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
@@ -105,6 +110,61 @@ export class NewRegistrationComponent implements OnInit {
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                     this.value = this.registerObj.dateofBirth
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)
+                });
+            }, 500);
+        }
+
+        // this data will be common every time when reg form will open from abha
+        if (this.data?.profile) {
+            this.isProfileData = true;
+            console.log('Profile data from ABHA', this.data.profile)
+
+            this.personalFormGroup.patchValue({
+                FirstName: this.data.profile.firstName,
+                MiddleName: this.data.profile.middleName,
+                LastName: this.data.profile.lastName,
+                MobileNo: this.data.profile.mobile,
+                Address: this.data.profile.address
+            });
+
+            this.abhaForm.patchValue({
+                abhaAddress: this.data.profile.preferredAbhaAddress,
+                abhaNumber: this.data.profile.abhaNumber
+            });
+
+            debugger
+
+            const now = new Date();
+
+            const dobString =
+                `${this.data.profile.yearOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.dayOfBirth}` +
+                `T${String(now.getHours()).padStart(2, '0')}:` +
+                `${String(now.getMinutes()).padStart(2, '0')}:` +
+                `${String(now.getSeconds()).padStart(2, '0')}.` +
+                `${String(now.getMilliseconds()).padStart(3, '0')}`;
+
+            this.registerObj.dateofBirth=new Date(dobString)
+            console.log(dobString)
+            console.log("this.registerObj.dateofBirth:",this.registerObj.dateofBirth)
+
+            // const dob = new Date(
+            //     `${this.data.profile.yearOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.dayOfBirth}T00:00:00.000`
+            // );
+            // this.registerObj.dateofBirth = dob;
+            // this.personalFormGroup.get('DateOfBirth')?.setValue(dob);
+            // console.log("this.registerObj.dateofBirth:",this.personalFormGroup.get('DateOfBirth').value)
+            this.onChangeDateofBirth(this.registerObj.dateofBirth);
+        }
+
+        // this data will be used only to featch patientid
+        if (this.data?.patient) {
+            console.log('Patient data from ABHA', this.data?.patient)
+            setTimeout(() => {
+                this._registerService.getRegistraionById(this.data?.patient?.regId).subscribe((response) => {
+                    // this.registerObj = response;
+                    console.log("Reg Data:", response)
+                    this.regNo = response.regNo
+                    this.personalFormGroup.get("RegId").setValue(response.regId)
                 });
             }, 500);
         }
@@ -199,7 +259,7 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaIssueDate || '1900-01-01');
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaValidityDate || '1900-01-01');
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismDateOfEntry || '1900-01-01');
-        
+
         if (
             (!this.ageYear || this.ageYear == 0) &&
             (!this.ageMonth || this.ageMonth == 0) &&
@@ -218,8 +278,8 @@ export class NewRegistrationComponent implements OnInit {
             this.personalFormGroup.removeControl('IsNRI')
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.onClear(true);
-                if(response)
-                this.OnPrint(response);
+                if (response)
+                    this.OnPrint(response);
             });
         } else {
             const invalidFields = [];
@@ -432,7 +492,7 @@ export class NewRegistrationComponent implements OnInit {
 
     value = new Date()
     onChangeDateofBirth(DateOfBirth: Date) {
-        // 
+        debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',

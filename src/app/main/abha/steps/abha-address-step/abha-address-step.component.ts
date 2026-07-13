@@ -116,14 +116,30 @@ export class AbhaAddressStepComponent implements OnInit {
         return false;
     }
 
+    // onCustomInput(event: Event): void {
+    //     const input = event.target as HTMLInputElement;
+    //     // Allow only alphanumeric, dot, underscore
+    //     const cleaned = input.value.replace(/[^a-zA-Z0-9._]/g, '').slice(0, 18);
+    //     if (input.value !== cleaned) {
+    //         input.value = cleaned;
+    //         this.form.get('customAbhaAddress')?.setValue(cleaned);
+    //     }
+    // }
+
+    // added by raksha on 07/07/26
+    isCustomPatternValid = false;
     onCustomInput(event: Event): void {
         const input = event.target as HTMLInputElement;
+
         // Allow only alphanumeric, dot, underscore
         const cleaned = input.value.replace(/[^a-zA-Z0-9._]/g, '').slice(0, 18);
+
         if (input.value !== cleaned) {
             input.value = cleaned;
             this.form.get('customAbhaAddress')?.setValue(cleaned);
         }
+
+        this.isCustomPatternValid = /^(?=.{8,18}$)(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9]+[._][A-Za-z0-9]+$/.test(cleaned);
     }
 
     get canCreate(): boolean {
@@ -131,7 +147,8 @@ export class AbhaAddressStepComponent implements OnInit {
         if (!opt) return false;
         if (opt === 'existing' || opt === 'default') return true;
         if (opt === 'custom') {
-            return (this.form.get('customAbhaAddress')?.valid === true);
+            // return (this.form.get('customAbhaAddress')?.valid === true);
+            return (this.form.get('customAbhaAddress')?.valid === true) && this.isCustomPatternValid; //added by raksha
         }
         if (opt === 'suggestion') {
             return !!this.form.value.selectedSuggestion;

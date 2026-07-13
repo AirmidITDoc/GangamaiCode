@@ -1,33 +1,35 @@
 <form [formGroup]="form" (ngSubmit)="onSendOtp()" class="aadhaar-form">
     <h2 class="step-title">Verify Aadhaar</h2>
 
-    <!-- Aadhaar Number -->
-    <div class="field-block">
-        <label class="field-label">Aadhaar Number</label>
-        <mat-form-field appearance="outline" class="full-width">
-            <input matInput formControlName="aadhaarNumber" placeholder="12-digit Aadhaar number" inputmode="numeric"
-                maxlength="12" (input)="onAadhaarInput($event)" autocomplete="off" />
-            <mat-error *ngIf="form.get('aadhaarNumber')?.errors as e">
-                <span *ngIf="e['required']">Aadhaar number is required</span>
-                <span *ngIf="e['aadhaar']">{{ e['aadhaar'] }}</span>
-            </mat-error>
-        </mat-form-field>
-        <p class="helper-text">
-            Try <span class="mono">{{ demoAadhaar }}</span> to simulate an existing ABHA user.
-        </p>
-    </div>
+    <div class="one-row">
+        <!-- Aadhaar Number -->
+        <div class="field-block" style="flex:1;">
+            <label class="field-label">Aadhaar Number</label>
+            <mat-form-field appearance="outline" class="full-width" style="width:100%;">
+                <input matInput formControlName="aadhaarNumber" placeholder="12-digit Aadhaar number"
+                    inputmode="numeric" maxlength="12" (input)="onAadhaarInput($event)" autocomplete="off" />
+                <mat-error *ngIf="form.get('aadhaarNumber')?.errors as e">
+                    <span *ngIf="e['required']">Aadhaar number is required</span>
+                    <span *ngIf="e['aadhaar']">{{ e['aadhaar'] }}</span>
+                </mat-error>
+            </mat-form-field>
+            <p class="helper-text">
+                Try <span class="mono">{{ demoAadhaar }}</span> to simulate an existing ABHA user.
+            </p>
+        </div>
 
-    <!-- Beneficiary Name -->
-    <div class="field-block">
-        <label class="field-label">Beneficiary Name (as on Aadhaar)</label>
-        <mat-form-field appearance="outline" class="full-width">
-            <input matInput formControlName="beneficiaryName" placeholder="Full name as printed on Aadhaar"
-                autocomplete="off" />
-            <mat-error *ngIf="form.get('beneficiaryName')?.errors as e">
-                <span *ngIf="e['required']">Beneficiary name is required</span>
-                <span *ngIf="e['name']">{{ e['name'] }}</span>
-            </mat-error>
-        </mat-form-field>
+        <!-- Beneficiary Name -->
+        <div class="field-block" style="flex:1;">
+            <label class="field-label">Beneficiary Name (as on Aadhaar)</label>
+            <mat-form-field appearance="outline" class="full-width" style="width:100%;">
+                <input matInput formControlName="beneficiaryName" placeholder="Full name as printed on Aadhaar"
+                    autocomplete="off" />
+                <mat-error *ngIf="form.get('beneficiaryName')?.errors as e">
+                    <span *ngIf="e['required']">Beneficiary name is required</span>
+                    <span *ngIf="e['name']">{{ e['name'] }}</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
     </div>
 
     <!-- Patient Consent -->
@@ -35,25 +37,47 @@
         <label class="field-label">Patient Consent</label>
         <div class="consent-box">
             <div class="consent-list">
-                <div *ngFor="let item of consentItems; let i = index" class="consent-item" (click)="toggleConsent(i)">
-                    <mat-checkbox [checked]="consentsArray.at(i).value"
-                        (change)="toggleConsent(i); $event.source.checked = consentsArray.at(i).value"
-                        (click)="$event.stopPropagation()" color="primary"></mat-checkbox>
-                    <span class="consent-text">{{ getConsentText(i) }}</span>
+
+                <div *ngFor="let item of consentItems; let i = index">
+
+                    <!-- Parent Consent -->
+                    <div class="consent-item" (click)="toggleConsent(i)">
+                        <mat-checkbox [checked]="consentsArray.at(i).value"
+                            (change)="toggleConsent(i); $event.source.checked = consentsArray.at(i).value"
+                            (click)="$event.stopPropagation()" color="primary">
+                        </mat-checkbox>
+
+                        <span class="consent-text" [innerHTML]="item.text"></span>
+                    </div>
+
+                    <!-- Child Consents -->
+                    <div class="child-consents" *ngIf="item.children?.length">
+                        <div *ngFor="let child of item.children; let j = index" class="consent-item child-item">
+                            <mat-checkbox [checked]="child.checked" (change)="child.checked = $event.checked"
+                                color="primary">
+                            </mat-checkbox>
+
+                            <span class="consent-text" [innerHTML]="getConsentText(child)"></span>
+                        </div>
+                    </div>
+
                 </div>
+
+
             </div>
         </div>
-        <p class="consent-counter" [class.complete]="acceptedCount === consentItems.length">
-            {{ acceptedCount }}/{{ consentItems.length }} accepted
+        <p class="consent-counter" [class.complete]="acceptedCount === totalConsentCount">
+            {{ acceptedCount }}/{{ totalConsentCount }} accepted
         </p>
-        <p class="error-text" *ngIf="consentsArray.touched && consentsArray.errors?.['consentsIncomplete']">
+        <p class="error-text" *ngIf="acceptedCount !== totalConsentCount">
             All consent statements must be accepted to proceed.
         </p>
     </div>
 
     <!-- Send OTP button -->
     <div class="actions">
-        <button type="submit" mat-raised-button color="primary" [disabled]="loading" class="action-btn">
+        <button type="submit" mat-raised-button color="primary" [disabled]="loading || !allConsentsAccepted"
+            class="action-btn">
             <ng-container *ngIf="!loading">
                 Send OTP
                 <mat-icon iconPositionEnd>arrow_forward</mat-icon>

@@ -42,7 +42,7 @@ export class AppointmentlistService {
             fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             IsMark: ['2'],
-            CompanyId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            CompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     createSearchForm(): FormGroup {
@@ -391,6 +391,11 @@ export class AppointmentlistService {
         debugger
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
+
+    public getGenderId(param) {
+        return this._httpClient1.PostData("Gender/List",param);
+    }
+
     public converOPtoIP(param) {
         return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
     }

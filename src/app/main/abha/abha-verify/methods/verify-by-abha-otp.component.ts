@@ -29,6 +29,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     otpForm!: FormGroup;
 
     loading = false;
+    hideOtp = true;
     resendRemaining = 2;
     txnId = '';
     channelLabel = '';
@@ -52,7 +53,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     get title(): string {
         return this.abhaForm.value.otpType === 1
             ? 'Verify via ABHA Number — Aadhaar OTP'
-            : 'Verify via ABHA Number — ABHA OTP';
+            : 'Verify via ABHA Number';
     }
 
     // Restrict & auto-format ABHA number input

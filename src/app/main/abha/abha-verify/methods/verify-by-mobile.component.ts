@@ -28,6 +28,7 @@ export class VerifyByMobileComponent implements OnInit {
     pickForm!: FormGroup;
 
     loading = false;
+    hideOtp = true;
     resendRemaining = 2;
     txnId = '';
 

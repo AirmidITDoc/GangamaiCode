@@ -29,6 +29,7 @@ export class VerifyByAbhaAddressComponent implements OnInit {
     otpForm!: FormGroup;
 
     loading = false;
+    hideOtp = true;
     resendRemaining = 2;
     txnId = '';
     channelLabel = '';
@@ -52,7 +53,7 @@ export class VerifyByAbhaAddressComponent implements OnInit {
     get title(): string {
         return this.abhaForm.value.otpType === 1
             ? 'Verify via ABHA Address — Aadhaar OTP'
-            : 'Verify via ABHA Address — ABHA OTP';
+            : 'Verify via ABHA Address';
     }
 
     // Restrict & auto-format ABHA number input
