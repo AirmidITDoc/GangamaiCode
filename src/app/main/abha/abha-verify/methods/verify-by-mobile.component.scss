@@ -46,7 +46,9 @@
     justify-content: center;
     flex-shrink: 0;
 
-    mat-icon { color: #6b7280; }
+    mat-icon {
+      color: #6b7280;
+    }
   }
 
   .acc-body {
@@ -120,9 +122,67 @@
       border-radius: 50%;
       display: inline-block;
     }
-    &[data-status="ACTIVE"]      { background: #dcfce7; color: #166534; .dot { background: #16a34a; } }
+
+    &[data-status="ACTIVE"] {
+      background: #dcfce7;
+      color: #166534;
+
+      .dot {
+        background: #16a34a;
+      }
+    }
+
     &[data-status="INACTIVE"],
-    &[data-status="DEACTIVATED"] { background: #fee2e2; color: #991b1b; .dot { background: #dc2626; } }
-    &[data-status="SUSPENDED"]   { background: #fef3c7; color: #92400e; .dot { background: #f59e0b; } }
+    &[data-status="DEACTIVATED"] {
+      background: #fee2e2;
+      color: #991b1b;
+
+      .dot {
+        background: #dc2626;
+      }
+    }
+
+    &[data-status="SUSPENDED"] {
+      background: #fef3c7;
+      color: #92400e;
+
+      .dot {
+        background: #f59e0b;
+      }
+    }
   }
+}
+
+// Abha list in cards 
+.abha-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.abha-card {
+  width: 300px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+mat-card-title {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+mat-card-content p {
+  margin: 8px 0;
+}
+
+.abha-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+}
+
+.abha-card.selected {
+  border: 2px solid #3f51b5;
 }

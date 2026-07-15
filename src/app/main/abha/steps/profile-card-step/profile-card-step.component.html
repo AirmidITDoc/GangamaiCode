@@ -285,7 +285,7 @@
 
             <!-- ============== RIGHT: OFFICIAL ABHA CARD ============== -->
             <div class="right-pane">
-                <div class="card-controls">
+                <!-- <div class="card-controls">
                     <div class="side-switch">
                         <button type="button" class="side-btn" [class.active]="cardSide === 'front'"
                             (click)="setCardSide('front')">Front</button>
@@ -295,10 +295,10 @@
                     <button mat-icon-button matTooltip="Flip card" (click)="flipCard()">
                         <mat-icon>flip</mat-icon>
                     </button>
-                </div>
+                </div> -->
 
                 <div class="card-stage">
-                    <div class="card-flip" [class.show-back]="cardSide === 'back'">
+                    <!-- <div class="card-flip"> -->
                         <!-- ============ FRONT FACE ============ -->
                         <div class="abha-card front" id="abha-card-front">
                             <!-- Blue header bar -->
@@ -508,7 +508,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>

@@ -73,11 +73,11 @@
                         </button>
 
                         <small *ngIf="resendAttempts < 2">
-                            Attempts left: {{2 - resendAttempts}}
+                            Attempts left: {{2 - resendAttempts}}/2
                         </small>
 
                         <small class="text-danger" *ngIf="resendAttempts >=2">
-                            No more resend attempts.
+                            Attempts left: 0/2 (No more resend attempts)
                         </small>
 
                     </div>

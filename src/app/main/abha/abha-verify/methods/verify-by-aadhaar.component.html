@@ -101,11 +101,11 @@
                         </button>
 
                         <small *ngIf="resendAttempts < 2">
-                            Attempts left: {{2 - resendAttempts}}
+                            Attempts left: {{2 - resendAttempts}}/2
                         </small>
 
                         <small class="text-danger" *ngIf="resendAttempts >=2">
-                            No more resend attempts.
+                            Attempts left: 0/2 (No more resend attempts)
                         </small>
 
                     </div>
@@ -143,7 +143,7 @@
                 <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
                     <mat-icon>arrow_back</mat-icon> Back
                 </button>
-                <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid"
+                <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid || otpExpired"
                     class="action-btn">
                     <ng-container *ngIf="!loading">
                         Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
