@@ -47,6 +47,7 @@ import { PatientDetailsPopoverComponent } from './patient-details-popover/patien
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component';
 import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
+import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 
 // const moment = _rollupMoment || _moment;
 
@@ -244,6 +245,7 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'doctorname')!.template = this.doctorNameWithPopoverTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'abhaTranId')!.template = this.abhaIcon;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -256,8 +258,10 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
     @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
     @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
+    @ViewChild('abhaIcon') abhaIcon!: TemplateRef<any>;
 
     allcolumns = [
+        { heading: "-", key: "abhaTranId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -408,6 +412,24 @@ export class AppointmentListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
             this.GetAppointdetail()
+        });
+    }
+
+    OnabhaLink(row) {
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
+        const dialogRef = this._matDialog.open(AbhaLinkComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95%',
+                width: '40%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.grid.bindGridData();
+            }
         });
     }
 

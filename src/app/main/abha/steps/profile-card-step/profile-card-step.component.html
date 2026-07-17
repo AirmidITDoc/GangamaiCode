@@ -299,215 +299,215 @@
 
                 <div class="card-stage">
                     <!-- <div class="card-flip"> -->
-                        <!-- ============ FRONT FACE ============ -->
-                        <div class="abha-card front" id="abha-card-front">
-                            <!-- Blue header bar -->
-                            <div class="card-header">
-                                <div class="emblem-block">
-                                    <div class="emblem-mark">
-                                        <div class="emblem-circle"></div>
-                                        <div class="emblem-motto">सत्यमेव जयते</div>
-                                    </div>
-                                    <div class="nha-text">
-                                        <div class="nha-line-1">national</div>
-                                        <div class="nha-line-2">health</div>
-                                        <div class="nha-line-3">authority</div>
-                                    </div>
+                    <!-- ============ FRONT FACE ============ -->
+                    <div class="abha-card front" id="abha-card-front">
+                        <!-- Blue header bar -->
+                        <div class="card-header">
+                            <div class="emblem-block">
+                                <div class="emblem-mark">
+                                    <div class="emblem-circle"></div>
+                                    <div class="emblem-motto">सत्यमेव जयते</div>
                                 </div>
-                                <div class="header-title">
-                                    <div class="title-en">Ayushman Bharat Health Account (ABHA)</div>
-                                    <div class="title-hi">आयुष्मान भारत स्वास्थ्य खाता (आभा)</div>
-                                </div>
-                                <div class="abdm-logo">
-                                    <div class="abdm-circle">
-                                        <mat-icon>local_florist</mat-icon>
-                                    </div>
-                                    <div class="abdm-text">Ayushman Bharat<br />Digital Mission</div>
+                                <div class="nha-text">
+                                    <div class="nha-line-1">national</div>
+                                    <div class="nha-line-2">health</div>
+                                    <div class="nha-line-3">authority</div>
                                 </div>
                             </div>
-
-                            <!-- White body -->
-                            <div class="card-body">
-                                <div class="body-left">
-                                    <div class="photo-frame">
-                                        <img *ngIf="profilePhotoSrc" [src]="profilePhotoSrc" alt="Photo" />
-                                        <div *ngIf="!profilePhotoSrc" class="photo-fallback">
-                                            <mat-icon>person</mat-icon>
-                                        </div>
-                                    </div>
+                            <div class="header-title">
+                                <div class="title-en">Ayushman Bharat Health Account (ABHA)</div>
+                                <div class="title-hi">आयुष्मान भारत स्वास्थ्य खाता (आभा)</div>
+                            </div>
+                            <div class="abdm-logo">
+                                <div class="abdm-circle">
+                                    <mat-icon>local_florist</mat-icon>
                                 </div>
+                                <div class="abdm-text">Ayushman Bharat<br />Digital Mission</div>
+                            </div>
+                        </div>
 
-                                <div class="body-middle">
-                                    <div class="field-group">
-                                        <div class="field-label-row">
-                                            <span class="field-label-en">Name/</span>
-                                            <span
-                                                class="field-label-local">{{profile.localizedDetails?.localizedLabels?.name??profile.localizedDetails.name}}</span>
-                                        </div>
-                                        <div class="field-value-en">{{ profile?.name??(profile.firstName+'
-                                            '+profile.middleName+' '+profile.lastName) }}</div>
-                                        <div class="field-value-local" *ngIf="profile.localizedDetails">
-                                            {{ profile.localizedDetails?.name??"" }}
-                                        </div>
-                                    </div>
-
-                                    <div class="field-group">
-                                        <div class="field-label-row">
-                                            <span class="field-label-en">Abha Number/</span>
-                                            <span
-                                                class="field-label-local">{{profile.localizedDetails?.localizedLabels?.abhaNumber??profile.localizedDetails.abhaNumber}}</span>
-                                        </div>
-                                        <div class="field-value-en mono large">{{ profile.abhaNumber }}</div>
-                                    </div>
-
-                                    <div class="field-group">
-                                        <div class="field-label-row">
-                                            <span class="field-label-en">Abha Address/</span>
-                                            <span
-                                                class="field-label-local">{{profile.localizedDetails?.localizedLabels?.abhaAddress??profile.localizedDetails.abhaAddress}}</span>
-                                        </div>
-                                        <div class="field-value-en mono large">{{ profile.preferredAbhaAddress }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="body-right">
-                                    <div class="qr-frame">
-                                        <div class="qr-pattern">
-                                            <img [src]="qrUrl" alt="Image" />
-                                        </div>
+                        <!-- White body -->
+                        <div class="card-body">
+                            <div class="body-left">
+                                <div class="photo-frame">
+                                    <img *ngIf="profilePhotoSrc" [src]="profilePhotoSrc" alt="Photo" />
+                                    <div *ngIf="!profilePhotoSrc" class="photo-fallback">
+                                        <mat-icon>person</mat-icon>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Bottom strip -->
-                            <div class="card-bottom">
-                                <div class="bottom-field">
+                            <div class="body-middle">
+                                <div class="field-group">
                                     <div class="field-label-row">
-                                        <span class="field-label-en">Gender/</span>
+                                        <span class="field-label-en">Name/</span>
                                         <span
-                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.gender??profile.localizedDetails.gender}}</span>
+                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.name??profile.localizedDetails.name}}</span>
                                     </div>
-                                    <div class="bottom-value">
-                                        {{ genderLabel }}
-                                        <span *ngIf="localizedGender">/ {{ localizedGender }}</span>
+                                    <div class="field-value-en">{{ profile?.name??(profile.firstName+'
+                                        '+profile.middleName+' '+profile.lastName) }}</div>
+                                    <div class="field-value-local" *ngIf="profile.localizedDetails">
+                                        {{ profile.localizedDetails?.name??"" }}
                                     </div>
                                 </div>
-                                <div class="bottom-field">
+
+                                <div class="field-group">
                                     <div class="field-label-row">
-                                        <span class="field-label-en">Date Of Birth/</span>
+                                        <span class="field-label-en">Abha Number/</span>
                                         <span
-                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.dob??profile.localizedDetails.dob}}</span>
+                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.abhaNumber??profile.localizedDetails.abhaNumber}}</span>
                                     </div>
-                                    <div class="bottom-value mono">{{ formattedDob }}</div>
+                                    <div class="field-value-en mono large">{{ profile.abhaNumber }}</div>
                                 </div>
-                                <div class="bottom-field">
+
+                                <div class="field-group">
                                     <div class="field-label-row">
-                                        <span class="field-label-en">Mobile/</span>
+                                        <span class="field-label-en">Abha Address/</span>
                                         <span
-                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.mobile??profile.localizedDetails.mobile}}</span>
+                                            class="field-label-local">{{profile.localizedDetails?.localizedLabels?.abhaAddress??profile.localizedDetails.abhaAddress}}</span>
                                     </div>
-                                    <div class="bottom-value mono">{{ profile.mobile }}</div>
+                                    <div class="field-value-en mono large">{{ profile.preferredAbhaAddress }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="body-right">
+                                <div class="qr-frame">
+                                    <div class="qr-pattern">
+                                        <img [src]="qrUrl" alt="Image" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- ============ BACK FACE ============ -->
-                        <div class="abha-card back" id="abha-card-back">
-                            <!-- Blue header bar -->
-                            <div class="card-header">
-                                <div class="emblem-block">
-                                    <div class="emblem-mark">
-                                        <div class="emblem-circle"></div>
-                                        <div class="emblem-motto">सत्यमेव जयते</div>
-                                    </div>
-                                    <div class="nha-text">
-                                        <div class="nha-line-1">national</div>
-                                        <div class="nha-line-2">health</div>
-                                        <div class="nha-line-3">authority</div>
-                                    </div>
+                        <!-- Bottom strip -->
+                        <div class="card-bottom">
+                            <div class="bottom-field">
+                                <div class="field-label-row">
+                                    <span class="field-label-en">Gender/</span>
+                                    <span
+                                        class="field-label-local">{{profile.localizedDetails?.localizedLabels?.gender??profile.localizedDetails.gender}}</span>
                                 </div>
-                                <div class="header-title">
-                                    <div class="title-en">Ayushman Bharat Health Account (ABHA)</div>
-                                    <div class="title-hi">आयुष्मान भारत स्वास्थ्य खाता (आभा)</div>
-                                </div>
-                                <div class="abdm-logo">
-                                    <div class="abdm-circle">
-                                        <mat-icon>local_florist</mat-icon>
-                                    </div>
-                                    <div class="abdm-text">Ayushman Bharat<br />Digital Mission</div>
+                                <div class="bottom-value">
+                                    {{ genderLabel }}
+                                    <span *ngIf="localizedGender">/ {{ localizedGender }}</span>
                                 </div>
                             </div>
-
-                            <!-- Instructions -->
-                            <div class="card-back-body">
-                                <div class="back-top-row">
-                                    <div class="instr-heading">Instructions</div>
-                                    <div class="toll-free">
-                                        Toll-Free Number: <strong>1800 114 477</strong>
-                                    </div>
+                            <div class="bottom-field">
+                                <div class="field-label-row">
+                                    <span class="field-label-en">Date Of Birth/</span>
+                                    <span
+                                        class="field-label-local">{{profile.localizedDetails?.localizedLabels?.dob??profile.localizedDetails.dob}}</span>
                                 </div>
-
-                                <ul class="instr-list">
-                                    <li>
-                                        <span class="instr-en">
-                                            With this ABHA you have become a part of India's digital health
-                                            ecosystem.
-                                        </span>
-                                        <span class="instr-hi">
-                                            इस आभा के साथ आप भारत के डिजिटल हेल्थ इकोसिस्टम का हिस्सा बन गए हैं।
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="instr-en">
-                                            ABHA provides you a unique identification and helps in storing —
-                                            safekeeping
-                                            all
-                                            your digital health
-                                            records at one place.
-                                        </span>
-                                        <span class="instr-hi">
-                                            आभा आपको एक विशिष्ट पहचान प्रदान करता है और आपके सभी डिजिटल स्वास्थ्य
-                                            रिकॉर्ड को
-                                            सुरक्षित एक ही
-                                            स्थान पर संग्रहीत रखने में मदद करता है।
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="instr-en">
-                                            You can download the ABHA mobile app, Aarogya Setu or other ABDM enabled
-                                            app
-                                            to
-                                            view and share your
-                                            digital health records with ABDM registered healthcare service
-                                            providers.
-                                        </span>
-                                        <span class="instr-hi">
-                                            आप एबीडीएम पंजीकृत स्वास्थ्य सेवा प्रदाताओं के साथ अपने डिजिटल स्वास्थ्य
-                                            रिकॉर्ड
-                                            देखने और साझा करने
-                                            के लिए आभा मोबाइल ऐप, आरोग्य सेतु या अन्य एबीडीएम सक्षम ऐप डाउनलोड कर
-                                            सकते
-                                            हैं।
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="instr-en">
-                                            If this card is lost kindly download it from
-                                            <a href="https://www.abha.abdm.gov.in" target="_blank"
-                                                rel="noopener">www.abha.abdm.gov.in</a>,
-                                            it is digitally acceptable.
-                                        </span>
-                                        <span class="instr-hi">
-                                            यदि यह कार्ड खो जाता है तो कृपया इसे
-                                            <a href="https://www.abha.abdm.gov.in" target="_blank"
-                                                rel="noopener">www.abha.abdm.gov.in</a>
-                                            से डाउनलोड करें, यह डिजिटल रूप से स्वीकार्य है।
-                                        </span>
-                                    </li>
-                                </ul>
+                                <div class="bottom-value mono">{{ formattedDob }}</div>
+                            </div>
+                            <div class="bottom-field">
+                                <div class="field-label-row">
+                                    <span class="field-label-en">Mobile/</span>
+                                    <span
+                                        class="field-label-local">{{profile.localizedDetails?.localizedLabels?.mobile??profile.localizedDetails.mobile}}</span>
+                                </div>
+                                <div class="bottom-value mono">{{ profile.mobile }}</div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- ============ BACK FACE ============ -->
+                    <div class="abha-card back" id="abha-card-back">
+                        <!-- Blue header bar -->
+                        <div class="card-header">
+                            <div class="emblem-block">
+                                <div class="emblem-mark">
+                                    <div class="emblem-circle"></div>
+                                    <div class="emblem-motto">सत्यमेव जयते</div>
+                                </div>
+                                <div class="nha-text">
+                                    <div class="nha-line-1">national</div>
+                                    <div class="nha-line-2">health</div>
+                                    <div class="nha-line-3">authority</div>
+                                </div>
+                            </div>
+                            <div class="header-title">
+                                <div class="title-en">Ayushman Bharat Health Account (ABHA)</div>
+                                <div class="title-hi">आयुष्मान भारत स्वास्थ्य खाता (आभा)</div>
+                            </div>
+                            <div class="abdm-logo">
+                                <div class="abdm-circle">
+                                    <mat-icon>local_florist</mat-icon>
+                                </div>
+                                <div class="abdm-text">Ayushman Bharat<br />Digital Mission</div>
+                            </div>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="card-back-body">
+                            <div class="back-top-row">
+                                <div class="instr-heading">Instructions</div>
+                                <div class="toll-free">
+                                    Toll-Free Number: <strong>1800 114 477</strong>
+                                </div>
+                            </div>
+
+                            <ul class="instr-list">
+                                <li>
+                                    <span class="instr-en">
+                                        With this ABHA you have become a part of India's digital health
+                                        ecosystem.
+                                    </span>
+                                    <span class="instr-hi">
+                                        इस आभा के साथ आप भारत के डिजिटल हेल्थ इकोसिस्टम का हिस्सा बन गए हैं।
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="instr-en">
+                                        ABHA provides you a unique identification and helps in storing —
+                                        safekeeping
+                                        all
+                                        your digital health
+                                        records at one place.
+                                    </span>
+                                    <span class="instr-hi">
+                                        आभा आपको एक विशिष्ट पहचान प्रदान करता है और आपके सभी डिजिटल स्वास्थ्य
+                                        रिकॉर्ड को
+                                        सुरक्षित एक ही
+                                        स्थान पर संग्रहीत रखने में मदद करता है।
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="instr-en">
+                                        You can download the ABHA mobile app, Aarogya Setu or other ABDM enabled
+                                        app
+                                        to
+                                        view and share your
+                                        digital health records with ABDM registered healthcare service
+                                        providers.
+                                    </span>
+                                    <span class="instr-hi">
+                                        आप एबीडीएम पंजीकृत स्वास्थ्य सेवा प्रदाताओं के साथ अपने डिजिटल स्वास्थ्य
+                                        रिकॉर्ड
+                                        देखने और साझा करने
+                                        के लिए आभा मोबाइल ऐप, आरोग्य सेतु या अन्य एबीडीएम सक्षम ऐप डाउनलोड कर
+                                        सकते
+                                        हैं।
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="instr-en">
+                                        If this card is lost kindly download it from
+                                        <a href="https://www.abha.abdm.gov.in" target="_blank"
+                                            rel="noopener">www.abha.abdm.gov.in</a>,
+                                        it is digitally acceptable.
+                                    </span>
+                                    <span class="instr-hi">
+                                        यदि यह कार्ड खो जाता है तो कृपया इसे
+                                        <a href="https://www.abha.abdm.gov.in" target="_blank"
+                                            rel="noopener">www.abha.abdm.gov.in</a>
+                                        से डाउनलोड करें, यह डिजिटल रूप से स्वीकार्य है।
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <!-- </div> -->
                 </div>
             </div>
@@ -521,7 +521,7 @@
     </div>
 
 
-    <div class="right-div resize-form-fields">
+    <div class="right-div">
         <!-- <form [formGroup]="searchFormGroup" class="w-400">
             <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
                 formControlName="RegId" placeholderText="Search UHID / Patient Name / Mobile No" fxFlex
@@ -529,140 +529,149 @@
                 ValueField="regId"></airmid-autocomplete>
         </form> -->
 
+        <div class="airmid-table-container overflow-hidden">
+            <mat-table class="airmid-table" [dataSource]="filteredOptions">
+
+                <ng-container matColumnDef="regNo">
+                    <mat-header-cell *matHeaderCellDef class="w-100">Reg No</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="w-100"><span>{{ element.regNo
+                            }}</span></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="patientName">
+                    <mat-header-cell *matHeaderCellDef class="w-200">Patient Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="w-200" [matTooltip]="element.patientName"><span>{{
+                            element.patientName
+                            }}</span></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Gender">
+                    <mat-header-cell *matHeaderCellDef class="w-100">Gender</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="w-100"><span>{{ element.gender
+                            }}</span></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="mobileNo">
+                    <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo
+                            }}</span></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="DOB">
+                    <mat-header-cell *matHeaderCellDef class="w-120">DOB</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="w-120"><span>
+                            {{ element.dateofBirth | date:'dd-MM-yyyy' }}
+                        </span></mat-cell>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="w-80">
+                        <button mat-icon-button matTooltip="Link ABHA" (click)="onSelectPatient(element)">
+                            <mat-icon>link</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container> -->
+
+                <ng-container matColumnDef="NoData">
+                    <mat-footer-cell *matFooterCellDef>
+                        <span>No Data Found</span>
+                    </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onSelectPatient(row)"
+                 [class.selected-row]="selectedRow === row"></mat-row>
+                <mat-footer-row *matFooterRowDef="['NoData']"
+                    [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+            </mat-table>
+        </div>
+
         <form [formGroup]="personalFormGroup" class="mat-form-field-100">
 
-            <!-- <mat-drawer-container class="main-container h-100-p">
-                <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden"> -->
-            <!-- <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="4px grid">
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%" style="margin-top: 5px;">
-                            <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="personalFormGroup"
-                                [mode]="autocompleteModegender"></airmid-dropdown>
+            <mat-card class="detail-card" *ngIf="showCard" style="margin-top: 15px;">
+                <mat-card-content>
+                    <h3 class="section-title">
+                        <mat-icon>person_outline</mat-icon> Personal Information
+                    </h3>
+                    <div class="kv-list">
+                        <div class="kv-row">
+                            <span class="k">ABHA Number</span>
+                            <span class="v">{{ abhaNumber || '—' }}</span>
                         </div>
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <airmid-textbox label="First Name" formControlName="FirstName"
-                                [formGroup]="personalFormGroup" [maxLength]="100"
-                                (valueChange)="handleInputChangeDebounced('FirstName')"></airmid-textbox>
+                        <div class="kv-row">
+                            <span class="k">ABHA Address</span>
+                            <span class="v">{{ abhaAddress || '—' }}</span>
                         </div>
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <airmid-textbox label="Middle Name" formControlName="MiddleName"
-                                [formGroup]="personalFormGroup" [maxLength]="100"></airmid-textbox>
+                        <div class="kv-row">
+                            <span class="k">First Name</span>
+                            <span class="v">{{ registerObj.firstName || '—' }}</span>
                         </div>
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <airmid-textbox label="Last Name" formControlName="LastName" [formGroup]="personalFormGroup"
-                                [maxLength]="100"
-                                (valueChange)="handleInputChangeDebounced('LastName')"></airmid-textbox>
+                        <div class="kv-row">
+                            <span class="k">Middle Name</span>
+                            <span class="v">{{ registerObj.middleName || '—' }}</span>
                         </div>
-
-                        <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <app-airmid-dateofbirth-v2 [formGroup]="personalFormGroup" dateStyle="Year"
-                                [(value)]="registerObj.dateofBirth"
-                                formControlName="DateOfBirth"></app-airmid-dateofbirth-v2>
+                        <div class="kv-row">
+                            <span class="k">Last Name</span>
+                            <span class="v">{{ registerObj.lastName || '—' }}</span>
                         </div>
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%" style="margin-top: 15px;">
-                            <airmid-textbox label="Address" formControlName="Address" [maxLength]="200"
-                                [formGroup]="personalFormGroup"></airmid-textbox>
+                        <div class="kv-row">
+                            <span class="k">Full Name</span>
+                            <span class="v">{{ fullname ?? "" }}</span>
                         </div>
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <airmid-textbox label="National ID" formControlName="aadharCardNo"
-                                [formGroup]="personalFormGroup"></airmid-textbox>
+                        <div class="kv-row">
+                            <span class="k">Date of Birth</span>
+                            <span class="v">
+                                {{ dob | date:'dd-MM-yyyy'}}
+                            </span>
                         </div>
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <airmid-textbox label="ABHA Number" formControlName="abhaNumber"
-                                [formGroup]="personalFormGroup" [readonly]="true"></airmid-textbox>
+                        <div class="kv-row">
+                            <span class="k">Day / Month / Year</span>
+                            <span class="v mono">
+                                {{ dobSeparate.day }} / {{ dobSeparate.month }} / {{ dobSeparate.year }}
+                            </span>
                         </div>
-
-                        <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
-                            <airmid-textbox label="ABHA Aadress" formControlName="abhaAddress"
-                                [formGroup]="personalFormGroup" [readonly]="true"></airmid-textbox>
+                        <div class="kv-row">
+                            <span class="k">Gender</span>
+                            <span class="v">
+                                {{ genderN }}
+                            </span>
                         </div>
-                    </div> -->
-            <!-- <div class="form-btn">
+                        <div class="kv-row">
+                            <span class="k">Mobile</span>
+                            <span class="v mono">{{ registerObj.mobileNo }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Address</span>
+                            <span class="v mono">{{ registerObj.address }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">City</span>
+                            <span class="v mono">{{ cityN }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">State</span>
+                            <span class="v mono">{{ stateN }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-btn" style="margin-top: 20px;">
                         <div>
-                            <button mat-stroked-button>Link Abha </button>
+                            <button mat-stroked-button (click)="OnEditRegistration()">Link Abha </button>
                         </div>
-                        <div>
-                            <button mat-stroked-button>New Registration</button>
-                        </div>
-                    </div> -->
-            <!-- </mat-drawer-content>
-                <mat-drawer #serviceDrawer mode="side" [opened]="filteredOptions.length > 0" position="end"
-                    class="service-drawer" style="min-width: 500px;"> -->
-            <mat-card class="sidebar h-100-p">
-                <div class="airmid-table-container overflow-hidden">
-                    <mat-table class="airmid-table" [dataSource]="filteredOptions">
-
-                        <ng-container matColumnDef="regNo">
-                            <mat-header-cell *matHeaderCellDef class="w-100">Reg No</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="w-100"><span>{{ element.regNo
-                                    }}</span></mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="patientName">
-                            <mat-header-cell *matHeaderCellDef class="w-200">Patient Name</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="w-200"
-                                [matTooltip]="element.patientName"><span>{{ element.patientName
-                                    }}</span></mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Gender">
-                            <mat-header-cell *matHeaderCellDef class="w-100">Gender</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="w-100"><span>{{ element.gender
-                                    }}</span></mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="mobileNo">
-                            <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo
-                                    }}</span></mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="DOB">
-                            <mat-header-cell *matHeaderCellDef class="w-120">DOB</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="w-120"><span>
-                                     {{ element.dateofBirth | date:'dd-MM-yyyy' }}
-                                </span></mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="action">
-                            <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="w-80">
-                                <button mat-icon-button matTooltip="Link ABHA" (click)="onSelectPatient(element)">
-                                    <mat-icon>link</mat-icon>
-                                </button>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="NoData">
-                            <mat-footer-cell *matFooterCellDef>
-                                <span>No Data Found</span>
-                            </mat-footer-cell>
-                        </ng-container>
-
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                        <!-- (click)="onSelectPatient(row)" -->
-                        <mat-footer-row *matFooterRowDef="['NoData']"
-                            [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
-                    </mat-table>
-                </div>
+                        <!-- <div>
+                            <button mat-stroked-button (click)="onNewregistration()">New Registration</button>
+                        </div> -->
+                    </div>
+                </mat-card-content>
             </mat-card>
-            <!-- </mat-drawer>
-            </mat-drawer-container> -->
-            <div class="form-btn" style="margin-top: 20px;">
-                <!-- <div>
-                    <button mat-stroked-button>Link Abha </button>
-                </div> -->
+
+            <div class="form-btn" style="margin-top: 20px;" *ngIf="filteredOptions?.length > 0">
                 <div>
                     <button mat-stroked-button (click)="onNewregistration()">New Registration</button>
                 </div>
             </div>
+
         </form>
     </div>
 </div>

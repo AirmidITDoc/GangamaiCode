@@ -24,6 +24,7 @@ import { SalesHospitalService } from './sales-hospital-new.service';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
 import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { NewDoctorMasterComponent } from 'app/main/setup/doctor/ext-new-doctor-master/new-doctor-master/new-doctor-master.component';
 
 @Component({
     selector: 'app-sales-hospital',
@@ -141,6 +142,7 @@ export class SalesHospitalNewComponent implements OnInit {
     HospitalId: any = 0;
     wardId: any = 0;
     bedId: any = 0;
+    doctorID:any=0;
     // Pharmacy Options
     Patientdetails: any;
     vPharExtOpt: any;
@@ -286,6 +288,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 roundOff: [0],
                 extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 tSalesDetails: this.formBuilder.array([]),
             }),
             //sales payment
@@ -553,6 +556,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.wardId = obj.wardId;
             this.bedId = obj.bedId;
             this.RegNo = obj?.regNo;
+            this.doctorID =obj?.docNameID || 0
         }
         this.getBillSummary(obj?.admissionID);
         this.ItemFormreset();
@@ -573,6 +577,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.OPDNo = obj.opdNo;
         this.HospitalId = obj.hospitalId;
         this.DoctorName = obj.doctorName;
+        this.doctorID =obj?.consultantDocId || 0
         this.RegNo = obj?.regNo;
         this.ItemFormreset();
         this.saleSelectedDatasource.data = [];
@@ -1284,10 +1289,12 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('salesDraft.dsalesId').setValue(this.DraftID || 0)
         this.PharmaSalesForm.get('sales.externalPatientName').setValue(this.PatientName || '')
         this.PharmaSalesForm.get('sales.doctorName').setValue(this.DoctorName || '')
+        this.PharmaSalesForm.get('sales.doctorId').setValue(this.doctorID  || 0)
 
         if (formValue.opIpType == 2) {
             this.PharmaSalesForm.get('sales.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
-            this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
+            this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName?.doctorName ?? formValue?.doctorName) || '')
+            this.PharmaSalesForm.get('sales.doctorId').setValue((formValue?.doctorName?.extDoctorId ?? formValue?.doctorName?.doctorId) || 0)
             this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress || '')
             this.PharmaSalesForm.get('sales.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
             this.PharmaSalesForm.get('sales.regId').clearValidators();
@@ -2865,7 +2872,16 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ExpiryItem = data
         })
     }
-
+    InsertExternalDoc() {
+        const dialogRef = this._matDialog.open(NewDoctorMasterComponent,
+            {
+                maxWidth: "100%",
+                height: '40%',
+                width: '40%' 
+            });
+        dialogRef.afterClosed().subscribe(result => { 
+        });
+    }
 }
 
 export class IndentList {

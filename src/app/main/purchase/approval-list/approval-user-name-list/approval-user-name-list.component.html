@@ -1,0 +1,99 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                        style="color: white;">account_box
+                    </mat-icon>
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                        style="color: white;">
+                        Send For Approval
+                    </span>
+                </div>
+                <div class="modal-header-right" fxLayout="row" fxLayoutGap="10px">
+                      <div class="comman-date-container">
+                      <!-- <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+                    <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>          
+ 
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <form [formGroup]="UserForm">
+                            <mat-card fxLayout="column" fxLayoutGap="6px">
+                                <airmid-dropdown label="Approval For" formControlName="AccessId"
+                                    (selectionChange)="selectChangeAccess($event)" [formGroup]="UserForm"
+                                    [mode]="autocompleteLoginAccess" (keyup)="selectChangeAccess($event)">
+                                </airmid-dropdown> 
+                            </mat-card>
+                        </form>
+                    </div>
+                    <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                        <div class="airmid-table-container">
+                            <mat-table matSort [dataSource]="dsUserlist" [@animateStagger]="{ value: '50' }" class="airmid-table"
+                                style="overflow: auto;">
+                     
+                                <ng-container matColumnDef="userName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">
+                                        Approval Assigned To
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                        {{contact.userName}}
+                                    </mat-cell>
+                                </ng-container>
+                    
+                    
+                                <ng-container matColumnDef="accessValueName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        Approval For
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm matTooltip="{{contact.accessValueName}}">
+                                        {{contact.accessValueName}}
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="button">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                    
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <button class="btn btn-primary" (click)="OnSendApproval(contact)" matTooltip="Send For Approval"
+                                        style="padding: 3px;">
+                                            Send For Approval
+                                        </button>
+                                    </mat-cell>
+                                </ng-container> 
+                    
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns;sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let row;columns: displayedColumns" class="element"
+                                    [@animate]="{value: '*',params: { y: '100%' }}"></mat-row>
+                            </mat-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"> 
+              <div class="footer-navigation-container">
+              <form [formGroup]="UserForm" fxLayout="column">
+                                <airmid-textbox fxFlex label="Remark" formControlName="Remark" [formGroup]="UserForm"
+                                 placeholder="Enter remark here..."  fxFlex ></airmid-textbox>
+                              </form> 
+       
+            <!-- <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                <button class="btn btn-primary" (click)="OnSendApproval()">Send For Approval</button>
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            </div> -->
+            </div>
+        </div>
+    </div>
+</div>

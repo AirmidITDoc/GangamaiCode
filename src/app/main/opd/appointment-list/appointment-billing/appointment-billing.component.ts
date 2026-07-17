@@ -686,6 +686,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isOtherService: false,
             createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }

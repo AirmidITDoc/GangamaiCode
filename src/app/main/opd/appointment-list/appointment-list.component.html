@@ -175,6 +175,15 @@
             </div>
         </ng-template>
 
+         <ng-template #abhaIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
+                <button mat-icon-button matTooltip="ABHA Linking" (click)="OnabhaLink(element)"
+                    *ngIf="element.abhaTranId > 0">
+                    <img width="60" height="60" src="assets/images/logos/abha.jpeg">
+                </button>
+            </div>
+        </ng-template>
+
         <ng-template #actionsTemplate2 let-element>
             <div>
                 <mat-icon *ngIf="element.phoneAppId !== 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">

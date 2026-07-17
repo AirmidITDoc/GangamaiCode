@@ -161,16 +161,26 @@ export class RegistrationService {
             emailId: ['', [Validators.email]],
 
             membershipId: 0,
+            tPatientAbhaInformations: this._formBuilder.array([]),
             // isMember: false,
             // abhTranId: 0
         });
 
     }
 
-    createAbhaorm() {
+    createAbhaform() {
         return this._formBuilder.group({
+            abhaTranId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            abhaNumber: [''],
+            abhaFullName: [''],
             abhaAddress: [''],
-            abhaNumber: ['']
+            gender: [''],
+            yearOfBirth: [''],
+            verified: [0],
+            isActive: [0],
+            verifiedDateTime: [new Date()],
+            createdBy: this.accountService.currentUserValue.userId
         });
     }
 
@@ -205,6 +215,9 @@ export class RegistrationService {
     }
     public getstateId(Id) {
         return this._httpClient1.GetData("StateMaster/" + Id);
+    }
+    public getAbhaById(Id) {
+        return this._httpClient1.GetData("PatientAbhaInformation/" + Id);
     }
 
     //  public getareaList1() {
