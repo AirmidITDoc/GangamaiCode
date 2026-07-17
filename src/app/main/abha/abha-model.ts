@@ -80,6 +80,8 @@ export interface Account {
     preferredAbhaAddress: string
     name: string
     status: string
+    gender:string
+    yearOfBirth:string
 }
 
 

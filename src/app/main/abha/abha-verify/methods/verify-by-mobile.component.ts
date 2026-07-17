@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, GENDER_LABELS, VerifyResponse, VerifyUserResponse } from '../../abha-model';
+import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, Account, GENDER_LABELS, VerifyResponse, VerifyUserResponse } from '../../abha-model';
 import { LinkedAccount } from '../../abha-verify.model';
 import { AbhaValidators } from '../../abha.validators';
 import { AbhaService } from '../../abha.service';
@@ -31,8 +31,7 @@ export class VerifyByMobileComponent implements OnInit {
     hideOtp = true;
     resendRemaining = 2;
     txnId = '';
-
-    accounts: LinkedAccount[] = [];
+    accounts: Account[] = [];
 
     demoMobileSingle: string;
     demoMobileMulti: string;
@@ -119,12 +118,12 @@ export class VerifyByMobileComponent implements OnInit {
                     // Single account → emit directly
                     if ((!r.accounts || r.accounts.length <= 1)) {
                         this.snack.open('Verified — single ABHA found.', 'OK', { duration: 1800 });
-                        this.verified.emit({accesstoken: r.token,isAddress:false});
+                        this.verified.emit({ accesstoken: r.token, isAddress: false });
                         return;
                     }
 
                     // Multiple accounts → go to picker
-                    // this.accounts = r.accounts || [];
+                    this.accounts = r.accounts || [];
                     this.step = 3;
                     this.snack.open(r.message, 'OK', { duration: 3000 });
                 }
@@ -151,7 +150,7 @@ export class VerifyByMobileComponent implements OnInit {
         this.abhaService.verifyUser({ ABHANumber: this.pickForm.value.ABHANumber, txnId: this.txnId })
             .subscribe((r: VerifyUserResponse) => {
                 if (r.token) {
-                    this.verified.emit({accesstoken: r.token,isAddress:false});
+                    this.verified.emit({ accesstoken: r.token, isAddress: false });
                     //this.snack.open(r.message, 'OK', { duration: 2500 });
                 }
                 else {
