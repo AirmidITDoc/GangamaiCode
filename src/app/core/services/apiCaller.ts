@@ -34,7 +34,7 @@ export class ApiCaller {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
                     }
-                    return of(null); // Avoid returning anything invalid
+                    return null; // Avoid returning anything invalid
                 }
             }));
     }
@@ -119,7 +119,7 @@ export class ApiCaller {
                 this.toastr.error(data.message, 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
-                return of(null); // Avoid returning anything invalid
+                return null; // Avoid returning anything invalid
             }
         })));
     }
