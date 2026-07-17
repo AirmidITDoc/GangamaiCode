@@ -465,7 +465,8 @@ export class NewAppointmentwithBillComponent {
             Comments: '',
             emailId: ['', [Validators.email]],
             PhoneNo: '',
-            IsPathRad: 0
+            IsPathRad: 0,
+            membershipId:0
         })
     }
 

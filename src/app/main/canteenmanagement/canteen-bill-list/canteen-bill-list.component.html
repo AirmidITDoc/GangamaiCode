@@ -56,16 +56,15 @@
 
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button (click)="onSave(element)" matTooltip="Bill Edit">
+                    <!-- <button mat-icon-button (click)="onSave(element)" matTooltip="Bill Edit">
                         <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
 
                     <button mat-icon-button (click)="viewgetReportPdf(element)" matTooltip="Bill Print">
                         <mat-icon title="Bill Print">print</mat-icon>
                     </button>
-
-                    <button mat-icon-button (click)="Billcancle(element)" matTooltip="Bill Cancel"
-                        *ngIf="element.isCancelled==false">
+<!-- *ngIf="element.isCancelled==false" -->
+                    <button mat-icon-button (click)="Billcancle(element)" matTooltip="Bill Cancel">
                         <mat-icon title="Cancel Bill">cancel</mat-icon>
                     </button>
                 </div>

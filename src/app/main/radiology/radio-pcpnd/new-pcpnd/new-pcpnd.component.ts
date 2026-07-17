@@ -67,6 +67,9 @@ export class NewPcpndComponent {
   Patientobj: any;
   vpcpndtprocessId = 0
 
+  vpatientaddress = ''
+  vpatientMobileNo = ''
+
   displayedColumns: string[] = [
     'descvalue',
     'descName',
@@ -103,8 +106,8 @@ export class NewPcpndComponent {
   vprocessDate = new Date();
   age: any
   admissionDate: any
-refrancedoctor: any
-condDoctor: any
+  refrancedoctor: any
+  condDoctor: any
   ngOnInit(): void {
 
 
@@ -130,7 +133,7 @@ condDoctor: any
 
       this.age = this.registerObj.age
       this.refrancedoctor = this.registerObj.refrancedoctor
-       this.condDoctor = this.registerObj.condDoctor
+      this.condDoctor = this.registerObj.condDoctor
       this.admissionDate = this.registerObj.admissionDate
 
 
@@ -287,7 +290,7 @@ condDoctor: any
       "processDate": [(new Date()).toISOString()],
       "opipid": this.OP_IP_Id,
       "opiptype": this.OP_IPType,
-      "refDocId": [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      "refDocId": [0,  [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       "childrenCount": ["0"],
       "relativeName": this.PatientName,
       "mperiod": [''],
@@ -331,12 +334,12 @@ condDoctor: any
       "cordocentesis": false,
       "anyOther2": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-      "resultConveyedto": ['', Validators.required],
-      "testResult": ['', Validators.required],
+      "resultConveyedto": [''],
+      "testResult": [''],
       "procedureDate": [(new Date()).toISOString()],//this.datePipe.transform(this.personalFormGroup.get("procedureDate").value, "yyyy-MM-dd"),
 
       "consentDate": [(new Date()).toISOString()],//this.datePipe.transform(this.personalFormGroup.get("consentDate").value, "yyyy-MM-dd"),
-      "declarationDoctorid": [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      "declarationDoctorid": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
       "abhanumber": ['', [
         // Validators.required,
@@ -346,6 +349,13 @@ condDoctor: any
       ]],
 
       "address": [''],
+
+      "patientaddress": ['', Validators.required],
+      "patientMobileNo": ['', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
 
       tPcpndprocessDetails: this.formBuilder.array([]),
 
@@ -368,7 +378,10 @@ condDoctor: any
   get IndicationsArray(): FormArray {
     return this.personalFormGroup.get('tPcpndprocessDetails') as FormArray;
   }
-
+  vDoctorId = 0
+  selectChangeDoctor(row) {
+    this.vDoctorId = row.doctorId
+  }
 
   onSave() {
 
@@ -506,7 +519,8 @@ condDoctor: any
     this.DoctorName = obj.doctorName;
     this.RegNo = obj?.regNo;
     this.genderName = obj?.genderName;
-
+    this.vpatientaddress = obj?.address;
+    this.vpatientMobileNo = obj?.mobileNo.trim()
     if (this.genderName == 'Male') {
       Swal.fire('Select Female Patient Only.............');
       return;
@@ -538,6 +552,8 @@ condDoctor: any
       this.RegNo = obj?.regNo;
       this.departmentName = obj?.departmentName;
       this.genderName = obj?.genderName;
+      this.vpatientaddress = obj?.address;
+      this.vpatientMobileNo = obj?.mobileNo.trim()
     }
 
     if (this.genderName == 'Male') {
@@ -629,6 +645,10 @@ condDoctor: any
       complicationsId: [],
       invasiveDoctorId: [],
       consultantDocId: [],
+      patientMobileNo: [
+        { name: "required", Message: "patientMobileNo is required" }
+      ],
+      patientaddress: [{ name: "required", Message: "patientaddress is required" }]
     };
   }
 

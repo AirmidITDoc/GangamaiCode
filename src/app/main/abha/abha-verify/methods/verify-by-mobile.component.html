@@ -10,19 +10,24 @@
       <div class="step-line"></div>
       <div class="m-step" [class.active]="step === 2" [class.done]="step > 2">
         <span class="step-num">{{ step > 2 ? '✓' : '2' }}</span>
+        <span class="step-label">ABHA List</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="m-step" [class.active]="step === 3" [class.done]="step > 3">
+        <span class="step-num">{{ step > 3 ? '✓' : '3' }}</span>
         <span class="step-label">Verify OTP</span>
       </div>
       <div class="step-line"></div>
-      <div class="m-step" [class.active]="step === 3">
-        <span class="step-num">3</span>
-        <span class="step-label">Pick ABHA</span>
+      <div class="m-step" [class.active]="step === 4">
+        <span class="step-num">4</span>
+        <span class="step-label">ABHA Card</span>
       </div>
     </div>
 
     <h3 class="method-h3">Verify via Mobile Number</h3>
 
     <!-- ====== STEP 1: Mobile ====== -->
-    <form *ngIf="step === 1" [formGroup]="mobileForm" (ngSubmit)="sendOtp()">
+    <form *ngIf="step === 1" [formGroup]="mobileForm" (ngSubmit)="findABHA()"> <!--(ngSubmit)="sendOtp()"-->
       <div class="field-block">
         <label class="field-label">Mobile Number</label>
         <mat-form-field appearance="outline" class="full-width">
@@ -42,36 +47,104 @@
       <div class="actions end">
         <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="action-btn">
           <ng-container *ngIf="!loading">
-            Send OTP <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+            Search <mat-icon iconPositionEnd>arrow_forward</mat-icon>
           </ng-container>
           <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
         </button>
       </div>
     </form>
 
+    <!-- ====== STEP 2: ABHA List ====== -->
+    <form *ngIf="step === 2" [formGroup]="mobileForm">
+      <div class="field-block">
+        <p class="mobile-mask" *ngIf="mobileNo">
+          <strong>Mobile No:</strong>
+          XXXXXX{{ mobileNo | slice:-4 }}
+        </p>
+
+        <label class="field-label">ABHA Cards</label>
+        <div class="abha-card-container">
+          <mat-card class="abha-card" *ngFor="let card of abhaCards" (click)="sendOtp(card)"
+            matTooltip="Click to send OTP">
+
+            <mat-card-header>
+              <mat-card-title>ABHA {{ card.index }}</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+              <p><strong>ABHA Number:</strong> {{ card.ABHANumber }}</p>
+              <p><strong>Name:</strong> {{ card.name }}</p>
+              <p><strong>Gender:</strong> {{ card.gender }}</p>
+              <p>
+                <strong>KYC Verified:</strong>
+                <span [style.color]="card.kycVerified === 'true' ? 'green' : 'red'">
+                  {{ card.kycVerified === 'true' ? 'Yes' : 'No' }}
+                </span>
+              </p>
+            </mat-card-content>
+
+          </mat-card>
+        </div>
+      </div>
+    </form>
+
     <!-- ====== STEP 2: OTP ====== -->
-    <form *ngIf="step === 2" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+    <form *ngIf="step === 3" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
       <div class="info-box">
-        We've sent a 6-digit OTP to <strong>{{ mobileForm.value.mobile }}</strong>. Enter it below to continue.
+        We've sent a 6-digit OTP to <strong> XXXXXX{{ mobileForm.value.mobile | slice:-4 }}</strong>. Enter it below to
+        continue.
       </div>
 
       <div class="field-block">
         <label class="field-label">6-digit OTP</label>
-        <mat-form-field appearance="outline" class="full-width">
-          <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="otp" placeholder="••••••"
-            inputmode="numeric" maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
+        <div class="otp-wrapper">
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="otp" placeholder="••••••"
+              inputmode="numeric" maxlength="6" (input)="onOtpInput($event)" autocomplete="one-time-code" />
 
-          <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
-            [attr.aria-label]="'Toggle OTP visibility'">
-            <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
+            <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
+              [attr.aria-label]="'Toggle OTP visibility'">
+              <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
 
-          <mat-error *ngIf="otpForm.get('otp')?.errors as e">
-            <span *ngIf="e['required']">OTP is required</span>
-            <span *ngIf="e['otp']">{{ e['otp'] }}</span>
-            <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
-          </mat-error>
-        </mat-form-field>
+            <mat-error *ngIf=" this.otpForm.get('otp')?.errors as e">
+              <span *ngIf="e['required']">OTP is required</span>
+              <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+              <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+            </mat-error>
+          </mat-form-field>
+
+          <div class="otp-info">
+
+            <!-- Timer -->
+            <span class="timer" *ngIf="!canResend">
+              {{ countdown }}
+            </span>
+
+            <!-- warning -->
+            <div class="warning-text" *ngIf="!canResend && timeLeft > 0 && timeLeft <= 10">
+              OTP will expire in {{ timeLeft }} seconds.
+            </div>
+
+            <!-- Resend -->
+            <button mat-button color="primary" type="button" *ngIf="canResend && resendAttempts < 2"
+              (click)="resendOtp()">
+              Resend OTP
+              <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            </button>
+
+            <small *ngIf="resendAttempts < 2">
+              Attempts left: {{2 - resendAttempts}}/2
+            </small>
+
+            <small class="text-danger" *ngIf="resendAttempts >=2">
+              Attempts left: 0/2 (No more resend attempts)
+            </small>
+
+          </div>
+
+        </div>
+
         <!-- <mat-form-field appearance="outline" class="full-width">
           <input
             matInput
@@ -111,7 +184,7 @@
         <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
           <mat-icon>arrow_back</mat-icon> Back
         </button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid"
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid || otpExpired"
           class="action-btn">
           <ng-container *ngIf="!loading">
             Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
@@ -122,7 +195,7 @@
     </form>
 
     <!-- ====== STEP 3: Pick ABHA ====== -->
-    <div *ngIf="step === 3">
+    <div *ngIf="step === 4">
       <div class="info-box">
         <strong>{{ accounts.length }} ABHA accounts</strong> are linked with this mobile number.
         Select the one you'd like to verify.

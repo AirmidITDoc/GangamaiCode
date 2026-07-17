@@ -45,7 +45,12 @@
                     </button>
 
                     <button mat-icon-button matTooltip="Edit Purchase order" (click)="OnEdit(element)"
-                        *ngIf="!element.isVerified">
+                        *ngIf="!element.isVerified && !IsApprovalReqID ">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                     <button mat-icon-button matTooltip="Edit Purchase order app" (click)="OnEdit(element)"
+                        *ngIf="!element.isProceedToApproval && IsApprovalReqID ">
                         <mat-icon>edit</mat-icon>
                     </button>
 
@@ -53,13 +58,28 @@
                         <mat-icon>signal_cellular_no_sim</mat-icon>
                     </button>
 
-                    <button *ngIf="!element.isVerified && IsPoverify" mat-icon-button (click)="onVerify(element)">
+                    <button *ngIf="!element.isVerified && IsPoverify && !IsApprovalReqID" mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" matTooltip="verify Menu"
                             title="verify Menu">verified_user</mat-icon>
+                    </button> 
+
+                    <span [matTooltip]="element.isProceedToApproval ? 'Already sent for approval. Please wait until it is approved.'
+                            : 'Click to submit for approval.'" matTooltipPosition="above"> 
+                        <button *ngIf="!element.isApproved && IsApprovalReqID" mat-icon-button (click)="getApproval(element)"
+                            [disabled]="element.isProceedToApproval"> 
+                            <img width="22" height="22" src="assets/images/logos/approve.png"
+                             [class.disabled-img]="element.isProceedToApproval">
+                        </button> 
+                    </span>
+
+                      <button *ngIf="element.isApproved && IsApprovalReqID" mat-icon-button matTooltip="This purchase order has already been approved."
+                        matTooltipPosition="above"> 
+                          <img width="22" height="22" src="assets/images/logos/approved.png">
                     </button>
+ 
                     <!--&& element.isProceedToApproval != 0-->
 
-                    <button *ngIf="element.isVerified" mat-icon-button>
+                    <button *ngIf="element.isVerified && !isApproved" mat-icon-button>
                         <mat-icon class="disabled-icon" matTooltip="verified" style="color: green;"
                             title="verified">check_circle</mat-icon>
                     </button>

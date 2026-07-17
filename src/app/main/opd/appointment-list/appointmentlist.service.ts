@@ -304,7 +304,9 @@ export class AppointmentlistService {
         return this._httpClient1.GetData("PhoneAppointment2/" + Id);
     }
 
-
+    public getAbhaById(Id) {
+        return this._httpClient1.GetData("PatientAbhaInformation/" + Id);
+    }
 
     public doctordepartmentData(Id) {
         return this._httpClient1.GetData("OutPatient/" + Id);
@@ -393,7 +395,7 @@ export class AppointmentlistService {
     }
 
     public getGenderId(param) {
-        return this._httpClient1.PostData("Gender/List",param);
+        return this._httpClient1.PostData("Gender/List", param);
     }
 
     public converOPtoIP(param) {
@@ -437,5 +439,16 @@ export class AppointmentlistService {
         // return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
         return this._httpClient1.PostData("Common", Param)
     }
+    public getMemeberbyIdList(param) {
 
+        return this._httpClient1.GetData("TrustMemershipReg/" + param)
+    }
+
+    public getCityId(Id) {
+        return this._httpClient1.GetData("CityMaster/" + Id);
+    }
+
+    public getGenderbyId(Id) {
+        return this._httpClient1.GetData("Gender/" + Id);
+    }
 }

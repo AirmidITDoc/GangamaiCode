@@ -154,10 +154,14 @@ export class AdmissionService {
             medTourismDateOfEntry: [''], //"2025-10-25",
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
-
+            membershipId: 0,
             // extra field
             IsNRI: [false],
-            emailId: ['', [Validators.email]]
+            emailId: ['', [Validators.email]],
+
+            // membershipId: 0,
+            isMember: false,
+            abhTranId: 0
         });
     }
     // this.accountService.currentUserValue.user.unitId
@@ -359,21 +363,25 @@ export class AdmissionService {
     }
 
     public getReportView(mode) {
-         return this._httpClient1.PostData("Report/ViewReport", mode);
+        return this._httpClient1.PostData("Report/ViewReport", mode);
     }
 
     public getCompanyById(Id) {
         return this._httpClient1.GetData("CompanyMaster/" + Id);
     }
 
-     public AdmissionCancel(data) {
+    public AdmissionCancel(data) {
         return this._httpClient1.PostData("Admission/Cancel", data)
     }
 
-    
+
     public getAdmissionDetailList(param) {
 
         return this._httpClient1.PostData("Common", param)
+    }
+    public getMemeberbyIdList(param) {
+
+        return this._httpClient1.GetData("TrustMemershipReg/" + param)
     }
 }
 

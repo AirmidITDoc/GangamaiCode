@@ -23,6 +23,7 @@ import { AppointmentBillingComponent } from '../appointment-billing/appointment-
 import { AppointmentlistService } from '../appointmentlist.service';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
+import { trustRegInsert } from 'app/main/Trust Management/new-membership/new-membership.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -46,6 +47,7 @@ export class NewAppointmentComponent implements OnInit {
     currentDate = new Date();
     minDate = new Date();
     registerObj = new RegInsert({});
+    registerObjtrust = new trustRegInsert({});
     companyDet = new RegInsert({});
     isRegSearchDisabled: boolean = false;
     Regdisplay: boolean = false;
@@ -56,7 +58,7 @@ export class NewAppointmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     isCompanySelected: boolean = false;
     IsPhoneAppflag: boolean = true;
-     IsTrustAppflag: boolean = false;
+    IsTrustAppflag: boolean = true;
     VisitTime: string;
     AgeYear: any;
     AgeMonth: any;
@@ -107,7 +109,9 @@ export class NewAppointmentComponent implements OnInit {
     vFirstNameConfig: any;
     vmiddleNameConfig: any;
     vlastNameConfig: any;
-
+    vDepId = 0;
+    vDocId = 0;
+    MembershipId = 0
 
     DACHstatus: boolean = true
 
@@ -192,7 +196,7 @@ export class NewAppointmentComponent implements OnInit {
         //    const [DefaultDepartment, DepartmentId] = this._configue.configParams.OPDDefaultDepartment.split(":");
         //       const [DefaultDoctor, DoctorId] = this._configue.configParams.OPDDefaultDoctor.split(":");
 
-        debugger
+
         const rawValue1 = this?._configue?.configParams?.IsOPBillProceed || "";
 
         const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
@@ -300,7 +304,7 @@ export class NewAppointmentComponent implements OnInit {
     // }
 
     setNationalIdValidation() {
-        debugger
+
         const control = this.personalFormGroup.get('aadharCardNo');
 
         if (!control) return;
@@ -455,10 +459,10 @@ export class NewAppointmentComponent implements OnInit {
 
 
     OnViewReportPdf(element) {
-        debugger
-       this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+
+        this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
     }
-  
+
 
 
     onChangePatient(value) {
@@ -563,17 +567,17 @@ export class NewAppointmentComponent implements OnInit {
                             MiddleName: this.registerObj.middleName.trim(),
                             LastName: this.registerObj.lastName.trim(),
                             MobileNo: this.registerObj.mobileNo.trim(),
-                            Address: this.registerObj.address.trim(), 
+                            Address: this.registerObj.address.trim(),
                             aadharCardNo: this.registerObj.aadharCardNo ?? '',
-                            panCardNo:this.registerObj?.panCardNo ?? '',
-                            emailId:this.registerObj?.emailId ?? '',
-                            PinNo:this.registerObj?.pinNo ?? '',
-                            City:this.registerObj?.city ?? '',
+                            panCardNo: this.registerObj?.panCardNo ?? '',
+                            emailId: this.registerObj?.emailId ?? '',
+                            PinNo: this.registerObj?.pinNo ?? '',
+                            City: this.registerObj?.city ?? '',
                             StateId: this.registerObj?.stateId ?? '',
                             CountryId: this.registerObj?.countryId ?? '',
-                            PhoneNo:this.registerObj?.phoneNo ?? '',
+                            PhoneNo: this.registerObj?.phoneNo ?? '',
                             MaritalStatusId: this.registerObj?.maritalStatusId ?? '',
-                            ReligionId:this.registerObj?.religionId ?? '',
+                            ReligionId: this.registerObj?.religionId ?? '',
                             AreaId: this.registerObj?.areaId ?? '',
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
@@ -592,14 +596,14 @@ export class NewAppointmentComponent implements OnInit {
                             medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
-                            RegDate:this.registerObj?.regDate ?? this.currentDate,
-                            RegTime:this.registerObj?.regTime ?? this.currentDate 
+                            RegDate: this.registerObj?.regDate ?? this.currentDate,
+                            RegTime: this.registerObj?.regTime ?? this.currentDate
                         });
                         console.log(this.registerObj)
                     });
-                        this.CityName = this.registerObj?.city ?? '';
-                        this.stateId  = this.registerObj?.stateId ?? 0;
-                        this.counryId = this.registerObj?.countryId ?? 0; 
+                    this.CityName = this.registerObj?.city ?? '';
+                    this.stateId = this.registerObj?.stateId ?? 0;
+                    this.counryId = this.registerObj?.countryId ?? 0;
 
                 }, 100);
             }
@@ -625,17 +629,17 @@ export class NewAppointmentComponent implements OnInit {
                             MiddleName: this.registerObj.middleName.trim(),
                             LastName: this.registerObj.lastName.trim(),
                             MobileNo: this.registerObj.mobileNo.trim(),
-                            Address: this.registerObj.address.trim(),  
+                            Address: this.registerObj.address.trim(),
                             aadharCardNo: this.registerObj.aadharCardNo ?? '',
-                            panCardNo:this.registerObj?.panCardNo ?? '',
-                            emailId:this.registerObj?.emailId ?? '',
-                            PinNo:this.registerObj?.pinNo ?? '',
-                            City:this.registerObj?.city ?? '',
+                            panCardNo: this.registerObj?.panCardNo ?? '',
+                            emailId: this.registerObj?.emailId ?? '',
+                            PinNo: this.registerObj?.pinNo ?? '',
+                            City: this.registerObj?.city ?? '',
                             StateId: this.registerObj?.stateId ?? '',
                             CountryId: this.registerObj?.countryId ?? '',
-                            PhoneNo:this.registerObj?.phoneNo ?? '',
+                            PhoneNo: this.registerObj?.phoneNo ?? '',
                             MaritalStatusId: this.registerObj?.maritalStatusId ?? '',
-                            ReligionId:this.registerObj?.religionId ?? '',
+                            ReligionId: this.registerObj?.religionId ?? '',
                             AreaId: this.registerObj?.areaId ?? '',
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
@@ -654,12 +658,12 @@ export class NewAppointmentComponent implements OnInit {
                             medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
-                            RegDate:this.registerObj?.regDate ?? this.currentDate,
-                            RegTime:this.registerObj?.regTime ?? this.currentDate 
-                        }); 
+                            RegDate: this.registerObj?.regDate ?? this.currentDate,
+                            RegTime: this.registerObj?.regTime ?? this.currentDate
+                        });
                         this.CityName = this.registerObj?.city ?? '';
-                        this.stateId  = this.registerObj?.stateId ?? 0;
-                        this.counryId = this.registerObj?.countryId ?? 0; 
+                        this.stateId = this.registerObj?.stateId ?? 0;
+                        this.counryId = this.registerObj?.countryId ?? 0;
                     });
 
                 }, 100);
@@ -692,10 +696,93 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
 
-    vDepId = 0;
-    vDocId = 0;
 
-     getSelectedObjtrust(obj) {  }
+    getSelectedObjtrust(obj) {
+        debugger
+        console.log(obj)
+        // if (this.data?.FormName == 'Registration-Page') {
+        this.PatientName = obj.firstName + ' ' + obj.lastName;
+
+
+        this.MembershipId = obj.membershipId;
+        // this.VisitFlagDisp = true;
+
+        this._AppointmentlistService.getMemeberbyIdList(obj.membershipId).subscribe(response => {
+            console.log(response)
+
+            if (response) {
+
+                this.registerObjtrust = response;
+                this.value = response.dateofBirth
+                this.vRegNo = response.regno
+
+                console.log(new Date(this.registerObjtrust.husbandDob))
+                this.onChangeDateofBirth(new Date(this.registerObjtrust.husbandDob))
+
+                // this.setNationalIdValidation();
+                this.personalFormGroup.patchValue({
+                    prefixId: this.registerObjtrust.hprefixId,
+                    FirstName: this.registerObjtrust.husbandFirstName.trim(),
+                    MiddleName: this.registerObjtrust.husbandMiddleName.trim(),
+                    LastName: this.registerObjtrust.husbandLastName.trim(),
+                    MobileNo: this.registerObjtrust.husbandMobile.trim(),
+                    Address: this.registerObjtrust.residenceAddress.trim(),
+                    aadharCardNo: this.registerObjtrust.husbandAadhaar ?? '',
+                    panCardNo: this.registerObjtrust?.husbandPan ?? '',
+                    emailId: this.registerObjtrust?.husbandEmail ?? '',
+                    PinNo: '',
+                    City: this.registerObjtrust?.cityId ?? '',
+                    StateId: 0,
+                    CountryId: 0,
+                    PhoneNo: '',
+                    MaritalStatusId: 0,
+                    ReligionId: 0,
+                    AreaId: 0,
+                    DateOfBirth: this.registerObjtrust.husbandDob,
+                    emgContactPersonName: '',
+                    emgRelationshipId: 0,
+                    emgMobileNo: '',
+                    emgLandlineNo: '',
+                    engAddress: '',
+                    emgAadharCardNo: '',
+                    emgDrivingLicenceNo: '',
+                    medTourismPassportNo: '',
+                    medTourismVisaIssueDate: '',
+                    medTourismVisaValidityDate: '',
+                    medTourismNationalityId: '',
+                    medTourismCitizenship: 0,
+                    medTourismPortOfEntry: '',
+                    medTourismDateOfEntry: '',
+                    medTourismResidentialAddress: '',
+                    medTourismOfficeWorkAddress: '',
+                    RegDate: this.currentDate,
+                    RegTime: this.currentDate
+                });
+
+                this.personalFormGroup.get("PrefixId").setValue(this.registerObjtrust.hprefixId)
+                this.personalFormGroup.get("GenderId").setValue(this.registerObjtrust.hgenderId)
+
+                this.personalFormGroup.get("CityId").setValue(this.registerObjtrust.cityId)
+
+                this.CityName = this.registerObjtrust?.cityName ?? '';
+
+                debugger
+                this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
+                this.registerObj.dateofBirth=this.registerObjtrust.husbandDob
+
+            }
+        });
+
+
+
+        // }, 100);
+        // }
+
+        // }
+
+
+        // this.onChangeDateofBirth(this.registerObj.dateofBirth)
+    }
 
     //   changed by raksha date:17/6/25
     getSelectedObjphone(obj) {
@@ -825,7 +912,7 @@ export class NewAppointmentComponent implements OnInit {
                     this.toastr.warning("Kindly select a patient from the list of registered patients.");
                     return;
                 }
-                debugger
+
 
                 const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
                 if (DateOfBirth1) {
@@ -865,10 +952,10 @@ export class NewAppointmentComponent implements OnInit {
                 this.VisitFormGroup.get('visitDate').setValue(formattedDate);
                 this.VisitFormGroup.get('visitTime').setValue(formattedDate + ' ' + formattedTime);
 
-
-                // const formValues = this.personalFormGroup.getRawValue() as RegInsert;
-
-                //     console.log(formValues)
+                // if(this.MembershipId > 0)
+                //     this.personalFormGroup.get('isMember').setValue(true)
+                
+                this.personalFormGroup.get('membershipId').setValue(this.MembershipId)
                 this.personalFormGroup.get('City').setValue(this.CityName)
                 this.personalFormGroup.get('Age').setValue(String(this.ageYear))
                 this.personalFormGroup.get('StateId').setValue(this.stateId)
@@ -923,7 +1010,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     OnsaveNewRegister() {
-        debugger
+
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         this.VisitFormGroup.get("patientOldNew").setValue(this.Patientnewold)
@@ -957,7 +1044,7 @@ export class NewAppointmentComponent implements OnInit {
 
         console.log(submitData);
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
-            debugger
+
             this.VisitId = response
             if (this.IsOPBillProceed) {
                 this.OnBillPayment()
@@ -980,7 +1067,7 @@ export class NewAppointmentComponent implements OnInit {
     OnBillPayment() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        debugger
+
         // this.patientDetail.doctorId = this.VisitFormGroup.get('ConsultantDocId').value
         this.patientDetail.doctorname = this.doctorName
         this.patientDetail.patientName = this.personalFormGroup.get('FirstName').value + " " + this.personalFormGroup.get('LastName').value
@@ -1037,18 +1124,18 @@ export class NewAppointmentComponent implements OnInit {
         this.rawDate3 = event.value || '1900-01-01';
     }
 
-    onSaveRegistered() {  
+    onSaveRegistered() {
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
         this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
         this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
         this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
-        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value)) 
+        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
         this.personalFormGroup.get("MaritalStatusId").setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
         this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
         this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
-        this.personalFormGroup.get("regId")?.setValue(this.registerObj.regId)  
-        this.VisitFormGroup.get("patientOldNew").setValue(2) 
+        this.personalFormGroup.get("regId")?.setValue(this.registerObj.regId)
+        this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);
@@ -1056,13 +1143,13 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
-       
+
         this.VisitFormGroup.removeControl('SubCompanyId');
         [
             //'AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen', 
             'IsNRI'].forEach(control => {
-            this.personalFormGroup.removeControl(control)
-        })
+                this.personalFormGroup.removeControl(control)
+            })
 
         this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value, "yyyy-MM-dd") || '1900-01-01');
         this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
@@ -1434,11 +1521,14 @@ export class NewAppointmentComponent implements OnInit {
             medTourismDateOfEntry: [''],// [(new Date()).toISOString()],
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
-
+            // membershipId: 0,
             // extra field
             IsNRI: [false],
-            emailId: ['', [Validators.email]]
+            emailId: ['', [Validators.email]],
 
+            membershipId: [this.MembershipId],
+            // isMember:[false],
+            // abhTranId: 0    
         });
     }
 
@@ -1473,32 +1563,32 @@ export class NewAppointmentComponent implements OnInit {
             const keyword = firstName || mobileNo;
             this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
                 this.prevResults = results || [];
-                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo,middleName });
+                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
             });
             return;
         }
 
         // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
         if (filledFields === 1 && changedField === 'LastName') {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo,middleName });
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
             return;
         }
-                // If only one field is filled, and it's MiddleName, just filter prevResults (do not call API)
+        // If only one field is filled, and it's MiddleName, just filter prevResults (do not call API)
         if (filledFields === 1 && changedField === 'MiddleName') {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo,middleName });
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
             return;
         }
 
         // If more than one field is filled, filter from prevResults
         if (this.prevResults.length > 0) {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo,middleName});
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
         } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
             // Fallback: if prevResults is empty, call API with the changed field (if allowed)
             const keyword = this.personalFormGroup.get(changedField).value?.trim();
             if (keyword) {
                 this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
                     this.prevResults = results || [];
-                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo,middleName });
+                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
                 });
             }
         } else {
@@ -1508,8 +1598,8 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     // Helper function to filter results by all non-empty fields
-    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string ,middleName: string}) {
-        const { firstName, lastName, mobileNo ,middleName} = fields;
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string, middleName: string }) {
+        const { firstName, lastName, mobileNo, middleName } = fields;
         return results.filter(item => {
             return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
                 && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
@@ -1545,6 +1635,7 @@ export class NewAppointmentComponent implements OnInit {
             });
             return;
         }
+        debugger
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
@@ -1568,6 +1659,10 @@ export class NewAppointmentComponent implements OnInit {
 
             this.value = DateOfBirth;
             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+
+            console.log(DateOfBirth)
+            console.log(this.ageYear)
+            console.log(this.ageDay)
             if (this.ageYear > 110)
                 this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
                     toastClass: 'tostr-tost custom-toast-success',

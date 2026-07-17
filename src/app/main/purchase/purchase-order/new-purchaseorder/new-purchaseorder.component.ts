@@ -157,7 +157,7 @@ export class NewPurchaseorderComponent {
     registerObj = new ItemNameList({});
     SupplierObj = new SupplierMaster({});
     ItemObj: IndentList;
-
+    FromName:any= '';
     isItemIdSelected: boolean = false;
     state = false;
     isLoading = true;
@@ -243,6 +243,7 @@ export class NewPurchaseorderComponent {
         this.PurchaseInsertform = this.getPurchaseInsertForm();
         if (this.data) {
             this.registerObj = this.data.Obj
+            this.FromName = this.data?.FromName || '';
             this.PurchaseID = this.data.Obj.purchaseID
             this.vSupplierId = this.data.Obj.supplierID
             this.vstoreId = this.data.Obj.storeId
@@ -359,7 +360,8 @@ export class NewPurchaseorderComponent {
             purchaseDate: new Date(),
             purchaseTime: new Date(),
             isPurchaseRequisitionId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isProceedToApproval:[false],
+            isProceedToApproval:[this.data?.FromName === 'PurchaseApproved'],
+            isApproved:[this.data?.FromName === 'PurchaseApproved'],
             storeId: this.vstoreId || 0,
             supplierId: this.vSupplierId || 0,
             totalAmount: this.FinalTotalAmt || 0,
@@ -427,7 +429,7 @@ export class NewPurchaseorderComponent {
     // Purchase Save Details Form
     createPurchasedetailForm(item: any = {}): FormGroup {
         return this._formBuilder.group({
-            purchaseId: [item.PurchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            purchaseId: [this.registerObj?.purchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             uomid: [item.UOMID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -450,7 +452,8 @@ export class NewPurchaseorderComponent {
             totalQty: [item.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             defRate: [item.DefRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             vendDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
+            vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            isApproved:[this.data?.FromName === 'PurchaseApproved'],
         });
     }
     get purchasedetailArray(): FormArray {
@@ -520,6 +523,7 @@ export class NewPurchaseorderComponent {
                     MRP: formValues.MRP || 0,
                     DefRate: formValues.DefRate || 0,
                     Specification: formValues.Specification || '',
+                    isApproved:false
                 });
                 console.log(newItem)
                 this.lastsupplierflag = false;
@@ -1281,6 +1285,7 @@ debugger
                 element.UOM = element.unitofMeasurementName
                 element.UOMID = element.uomid
                 element.TotalQty = element.totalQty
+                element.isApproved - element.isApproved
             });
         });
         console.log(this.dsItemNameList)

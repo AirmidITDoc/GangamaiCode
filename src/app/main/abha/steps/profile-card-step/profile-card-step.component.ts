@@ -38,14 +38,17 @@ export class ProfileCardStepComponent implements OnInit {
     ageMonth = 0
     ageDay = 0
     value = new Date()
+    day: any;
+    month: any;
+    year: any;
 
     displayedColumns = [
         'regNo',
         'patientName',
         'Gender',
         'mobileNo',
-        'DOB',
-        'action'
+        'DOB'
+        // 'action'
     ];
 
     // Fields that are locked (non-editable in HIMS)
@@ -58,6 +61,20 @@ export class ProfileCardStepComponent implements OnInit {
     qrUrl: string = '';
     @ViewChild('serviceDrawer') serviceDrawer!: MatDrawer;
     genderList: any[] = [];
+    fullname = ""
+    genderN = ""
+    cityN = ""
+    stateN = ""
+    dob: any;
+    showCard = false;
+    dobSeparate = {
+        day: '',
+        month: '',
+        year: 0
+    };
+    selectedRow: any;
+    abhaAddress: any;
+    abhaNumber: any;
 
     constructor(private abhaService: AbhaService, private formBuilder: FormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService,
@@ -77,6 +94,7 @@ export class ProfileCardStepComponent implements OnInit {
         //     this.personalFormGroup.get('abhaNumber').setValue(this.profile.abhaNumber)
         //     this.personalFormGroup.get('abhaAddress').setValue(this.profile.preferredAbhaAddress)
         // });
+
         this.abhaService.getProfile(this.token, this.isAddress).subscribe((r: AbhaProfile) => {
             this.profile = r;
             this.loadQr();
@@ -124,34 +142,7 @@ export class ProfileCardStepComponent implements OnInit {
                     });
 
             });
-            // const keyword = this.profile.firstName || this.profile.mobile;
 
-            // this._AppointmentlistService
-            //     .getSuggestions("OutPatient/auto-complete?Keyword=", keyword)
-            //     .subscribe(results => {
-
-            //         this.prevResults = results || [];
-
-            //         this.filteredOptions = this.prevResults.filter(item => {
-
-            //             const patientName = (item.patientName || '').trim().toUpperCase();
-
-            //             const firstName = (this.profile.firstName || '').trim().toUpperCase();
-            //             const middleName = (this.profile.middleName || '').trim().toUpperCase();
-            //             const lastName = (this.profile.lastName || '').trim().toUpperCase();
-            //             const mobile = String(this.profile.mobile || '').trim();
-
-            //             const firstMatch = firstName && patientName.includes(firstName);
-            //             const middleMatch = middleName && patientName.includes(middleName);
-            //             const lastMatch = lastName && patientName.includes(lastName);
-            //             const mobileMatch = mobile && String(item.mobileNo).trim() === mobile;
-
-            //             // Return if ANY field matches
-            //             return firstMatch || middleMatch || lastMatch || mobileMatch;
-            //         });
-
-            //         console.log('Filtered:', this.filteredOptions);
-            //     });
         });
     }
 
@@ -309,8 +300,48 @@ export class ProfileCardStepComponent implements OnInit {
 
     getSelectedObj(obj) {
         if ((obj.regId ?? 0) > 0) {
-            console.log("Selected Patient:", obj)
-            this.OnEditRegistration(obj, this.profile);
+            if (!obj || !obj.regId) {
+                this.showCard = false;
+                // this.registerObj = null;
+                return;
+            }
+
+            console.log("Selected Patient:", obj);
+            this.showCard = true
+            this.fullname = obj.patientName
+
+            this._AppointmentlistService.getAbhaById(obj.abhaTranId).subscribe((response) => {
+                this.abhaNumber=response.abhaNumber
+                this.abhaAddress=response.abhaAddress
+            });
+
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log("Registration Data:", this.registerObj)
+                    this.dob = this.registerObj.dateofBirth
+                    const dob = new Date(this.registerObj.dateofBirth);
+
+                    this.dobSeparate = {
+                        day: String(dob.getDate()).padStart(2, '0'),
+                        month: String(dob.getMonth() + 1).padStart(2, '0'),
+                        year: dob.getFullYear()
+                    };
+
+                    this._AppointmentlistService.getGenderbyId(this.registerObj.genderId).subscribe((response) => {
+                        this.genderN = response.genderName;
+                    });
+
+                    this._AppointmentlistService.getCityId(this.registerObj.cityId).subscribe((response) => {
+                        this.cityN = response.cityName;
+                    });
+
+                    this._AppointmentlistService.getstateId(this.registerObj.stateId).subscribe((response) => {
+                        this.stateN = response.stateName;
+                    });
+
+                });
+            }, 100);
         }
     }
 
@@ -331,7 +362,7 @@ export class ProfileCardStepComponent implements OnInit {
         });
     }
 
-    OnEditRegistration(row: any, profile: any) {
+    OnEditRegistration() {
         const dialogRef = this._matDialog.open(
             NewRegistrationComponent,
             {
@@ -339,8 +370,8 @@ export class ProfileCardStepComponent implements OnInit {
                 maxHeight: '95%',
                 width: '94%',
                 data: {
-                    patient: row,
-                    profile: profile
+                    patient: this.registerObj,
+                    profile: this.profile
                 }
             }
         );
@@ -390,105 +421,9 @@ export class ProfileCardStepComponent implements OnInit {
         this.ddlGender.SetSelection(e.sexId);
     }
 
-    // filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string, middleName: string }) {
-    //     const { firstName, lastName, mobileNo, middleName } = fields;
-    //     return results.filter(item => {
-    //         return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
-    //             && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
-    //             && (!middleName || item.patientName?.toLowerCase().includes(middleName.toLowerCase()))
-    //             && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
-    //     });
-    // }
-
-    // ChangeToUpperCase(changedField: string) {
-    //     const control = this.personalFormGroup.get(changedField);
-    //     if (control && control.value) {
-    //         control.setValue(control.value.toUpperCase(), { emitEvent: false });
-    //     }
-    // }
-
-    // handleInputChange(changedField: string): void {
-    //     // Get all current field values
-    //     // debugger
-
-    //     // change in upper case letter
-    //     const control = this.personalFormGroup.get(changedField);
-    //     if (control && control.value) {
-    //         control.setValue(control.value.toUpperCase(), { emitEvent: false });
-    //     }
-
-    //     const firstName = this.personalFormGroup.get('FirstName').value?.trim() || '';
-    //     const middleName = this.personalFormGroup.get('MiddleName').value?.trim() || '';
-    //     const lastName = this.personalFormGroup.get('LastName').value?.trim() || '';
-    //     const mobileNo = this.personalFormGroup.get('MobileNo').value?.trim() || '';
-
-    //     if (mobileNo && mobileNo.length !== 10) {
-    //         this.filteredOptions = [];
-    //         return;
-    //     }
-
-    //     // If all fields are empty, clear everything
-    //     if (!firstName && !lastName && !mobileNo) {
-    //         this.resetFilteredOptions();
-    //         return;
-    //     }
-
-    //     // Count how many fields are filled
-    //     const filledFields = [firstName, mobileNo].filter(Boolean).length;
-
-    //     // If only one field is filled, and it's FirstName or MobileNo, call API
-    //     if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
-    //         const keyword = firstName || mobileNo;
-    //         this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
-    //             this.prevResults = results || [];
-    //             this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
-    //         });
-    //         return;
-    //     }
-
-    //     // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
-    //     if (filledFields === 1 && changedField === 'LastName') {
-    //         this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
-    //         return;
-    //     }
-    //     // If only one field is filled, and it's MiddleName, just filter prevResults (do not call API)
-    //     if (filledFields === 1 && changedField === 'MiddleName') {
-    //         this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
-    //         return;
-    //     }
-
-    //     // If more than one field is filled, filter from prevResults
-    //     if (this.prevResults.length > 0) {
-    //         this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
-    //     } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
-    //         // Fallback: if prevResults is empty, call API with the changed field (if allowed)
-    //         const keyword = this.personalFormGroup.get(changedField).value?.trim();
-    //         if (keyword) {
-    //             this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
-    //                 this.prevResults = results || [];
-    //                 this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
-    //             });
-    //         }
-    //     } else {
-    //         // If changedField is LastName and prevResults is empty, do nothing
-    //         this.filteredOptions = [];
-    //     }
-    // }
-
-    // handleInputChangeDebounced(changedField: string): void {
-    //     // Clear any existing timer for this field
-    //     if (this.debounceTimers[changedField]) {
-    //         clearTimeout(this.debounceTimers[changedField]);
-    //     }
-    //     // Set a new timer
-    //     this.debounceTimers[changedField] = setTimeout(() => {
-    //         this.handleInputChange(changedField);
-    //     }, 300); // 300ms debounce
-    // }
-
     onSelectPatient(row: any) {
         this.getSelectedObj(row);
-        // this.resetFilteredOptions();
+        this.selectedRow = row;
     }
     resetFilteredOptions() {
         this.filteredOptions = [];

@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel, RegInsert } from '../admission.component';
 import { AdmissionService } from '../admission.service';
+import { trustRegInsert } from 'app/main/Trust Management/new-membership/new-membership.component';
 
 @Component({
     selector: 'app-new-admission',
@@ -67,6 +68,9 @@ export class NewAdmissionComponent implements OnInit {
     public now: Date = new Date();
     // isLoading: string = '';
     screenFromString = 'admission-form';
+    registerObjtrust = new trustRegInsert({});
+    MembershipId = 0
+    IsTrustAppflag: boolean = true;
 
     @Input() panelWidth: string | number;
     @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
@@ -170,6 +174,7 @@ export class NewAdmissionComponent implements OnInit {
     createSearchForm() {
         return this.formBuilder.group({
             regRadio: ['registration'],
+            tRegId: [''],
             RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
             HospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
@@ -372,6 +377,93 @@ export class NewAdmissionComponent implements OnInit {
     //   }
 
     // }
+
+
+    getSelectedObjtrust(obj) {
+
+        console.log(obj)
+        // if (this.data?.FormName == 'Registration-Page') {
+        // this.PatientName = obj.firstName + ' ' + obj.lastName;
+
+
+        this.MembershipId = obj.membershipId;
+        // this.VisitFlagDisp = true;
+debugger
+        this._AdmissionService.getMemeberbyIdList(obj.membershipId).subscribe(response => {
+            console.log(response)
+
+            if (response) {
+
+                this.registerObjtrust = response;
+                this.value = response.dateofBirth
+                this.vRegNo = response.regno
+                debugger
+                this.onChangeDateofBirth(this.registerObjtrust.husbandDob)
+                console.log(response)
+                // this.setNationalIdValidation();
+                this.personalFormGroup.patchValue({
+                    prefixId: this.registerObjtrust.hprefixId,
+                    FirstName: this.registerObjtrust.husbandFirstName.trim(),
+                    MiddleName: this.registerObjtrust.husbandMiddleName.trim(),
+                    LastName: this.registerObjtrust.husbandLastName.trim(),
+                    MobileNo: this.registerObjtrust.husbandMobile.trim(),
+                    Address: this.registerObjtrust.residenceAddress.trim(),
+                    aadharCardNo: this.registerObjtrust.husbandAadhaar ?? '',
+                    panCardNo: this.registerObjtrust?.husbandPan ?? '',
+                    emailId: this.registerObjtrust?.husbandEmail ?? '',
+                    PinNo: '',
+                    City: this.registerObjtrust?.cityId ?? '',
+                    StateId: 0,
+                    CountryId: 0,
+                    PhoneNo: '',
+                    MaritalStatusId: 0,
+                    ReligionId: 0,
+                    AreaId: 0,
+                    DateOfBirth: this.registerObjtrust.husbandDob,
+                    emgContactPersonName: '',
+                    emgRelationshipId: 0,
+                    emgMobileNo: '',
+                    emgLandlineNo: '',
+                    engAddress: '',
+                    emgAadharCardNo: '',
+                    emgDrivingLicenceNo: '',
+                    medTourismPassportNo: '',
+                    medTourismVisaIssueDate: '',
+                    medTourismVisaValidityDate: '',
+                    medTourismNationalityId: '',
+                    medTourismCitizenship: 0,
+                    medTourismPortOfEntry: '',
+                    medTourismDateOfEntry: '',
+                    medTourismResidentialAddress: '',
+                    medTourismOfficeWorkAddress: '',
+                    RegDate: this.currentDate,
+                    RegTime: this.currentDate
+                });
+
+                this.personalFormGroup.get("PrefixId").setValue(this.registerObjtrust.hprefixId)
+                this.personalFormGroup.get("GenderId").setValue(this.registerObjtrust.hgenderId)
+
+                this.personalFormGroup.get("CityId").setValue(this.registerObjtrust.cityId)
+
+                this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
+
+                this.CityName = this.registerObjtrust?.cityName ?? '';
+               this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
+                this.registerObj.dateofBirth=this.registerObjtrust.husbandDob
+
+            }
+        });
+
+
+
+        // }, 100);
+        // }
+
+        // }
+
+
+        // this.onChangeDateofBirth(this.registerObj.dateofBirth)
+    }
 
     chkHealthcard(e) { }
     Patientnewold: any = 1;
@@ -600,20 +692,20 @@ export class NewAdmissionComponent implements OnInit {
                 //         }
                 //     })
                 // } else {
-                    Swal.fire({
-                        title: 'Do you want to Save the Admission ',
-                        text: "You won't be able to revert this!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, Save!"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.OnSaveAdmission();
-                        }
-                    })
-                }
+                Swal.fire({
+                    title: 'Do you want to Save the Admission ',
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, Save!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.OnSaveAdmission();
+                    }
+                })
+            }
             // }
             else {
                 const invalidFields = [];
@@ -745,6 +837,9 @@ export class NewAdmissionComponent implements OnInit {
             this.admissionFormGroup.get('convertId').setValue(this.VvisitId)
             this.admissionFormGroup.get('AdmissionType').setValue(1)
         }
+
+        this.personalFormGroup.get('membershipId').setValue(this.MembershipId)
+
         this.personalFormGroup.get('Age').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
@@ -1169,6 +1264,7 @@ export class NewAdmissionComponent implements OnInit {
     minDate = new Date();
     value = new Date()
     onChangeDateofBirth(DateOfBirth: Date) {
+        debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',

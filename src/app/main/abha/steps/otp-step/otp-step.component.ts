@@ -54,6 +54,7 @@ export class OtpStepComponent implements OnInit {
         clearInterval(this.timer);
 
         this.canResend = false;
+        this.otpExpired = false;
         this.timeLeft = 60;
 
         this.updateCounter();
@@ -68,6 +69,7 @@ export class OtpStepComponent implements OnInit {
             } else {
 
                 clearInterval(this.timer);
+                this.otpExpired = true;
 
                 if (this.resendAttempts >= 2) {
 
@@ -144,6 +146,8 @@ export class OtpStepComponent implements OnInit {
     }
 
     onResend(): void {
+        
+        this.otpExpired = false;
         if (this.resendAttemptsRemaining <= 0) {
             this.snack.open('No resend attempts remaining.', 'OK', { duration: 2500 });
             return;

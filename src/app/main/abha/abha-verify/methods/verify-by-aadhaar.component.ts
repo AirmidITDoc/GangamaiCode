@@ -187,6 +187,7 @@ export class VerifyByAadhaarComponent implements OnInit {
     resendOtp(): void {
         // if (this.resendRemaining <= 0) return;
         // this.resendRemaining--;
+        this.otpExpired = false;
         if (this.resendAttempts >= 2) {
             return;
         }
@@ -206,6 +207,7 @@ export class VerifyByAadhaarComponent implements OnInit {
         clearInterval(this.timer);
 
         this.canResend = false;
+        this.otpExpired = false;
         this.timeLeft = 60;
 
         this.updateCounter();
@@ -220,6 +222,7 @@ export class VerifyByAadhaarComponent implements OnInit {
             } else {
 
                 clearInterval(this.timer);
+                this.otpExpired = true;
 
                 if (this.resendAttempts >= 2) {
 

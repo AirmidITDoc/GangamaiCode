@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { RegistrationService } from './registration.service';
+import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 
 @Component({
     selector: 'app-registration',
@@ -38,6 +39,7 @@ export class RegistrationComponent implements OnInit {
     photo: PageNames = PageNames.PATIENT_PHOTO;
     signature: PageNames = PageNames.PATIENT_SIGNATURE;
 
+
     constructor(
         public _RegistrationService: RegistrationService, public permissionService: PagePermissionService,
         public _matDialog: MatDialog,
@@ -55,12 +57,14 @@ export class RegistrationComponent implements OnInit {
         this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
     ngAfterViewInit() {
-        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'abhaTranId')!.template = this.abhaIcon;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('abhaIcon') abhaIcon!: TemplateRef<any>;
 
     allcolumns = [
+        { heading: "-", key: "abhaTranId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
         { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 100 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -144,6 +148,25 @@ export class RegistrationComponent implements OnInit {
     OnPrint(Param) {
         this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
     }
+
+    OnabhaLink(row){
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur(); 
+        const dialogRef = this._matDialog.open(AbhaLinkComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95%',
+                width: '40%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.grid.bindGridData();
+            }
+        });
+    }
+
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -161,7 +184,6 @@ export class RegistrationComponent implements OnInit {
             }
         });
     }
-
 
     OnEditRegistration(row) {
         this._RegistrationService.populateForm(row);
@@ -484,7 +506,7 @@ export class RegInsert {
             this.admissionID = RegInsert.admissionID || ''
             this.tariffName = RegInsert.tariffName || ''
             this.husbandDob = RegInsert.husbandDob || ''
- this.wifeDob = RegInsert.wifeDob ||''
+            this.wifeDob = RegInsert.wifeDob || ''
 
 
 

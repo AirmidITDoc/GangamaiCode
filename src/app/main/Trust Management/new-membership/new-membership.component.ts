@@ -143,7 +143,7 @@ export class NewMembershipComponent {
     }
 
     onChangeFirst() {
-        debugger
+
         this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
@@ -155,7 +155,7 @@ export class NewMembershipComponent {
     }
 
     getfilterdata() {
-        debugger
+
         this.gridConfig = {
             apiUrl: "TrustMemershipReg/TrustMembershipRegList",
             columnsList: this.allColumns,
@@ -196,7 +196,7 @@ export class NewMembershipComponent {
 
 
     getMembershipview(element) {
-        debugger
+
         setTimeout(() => {
 
             const param = {
@@ -246,32 +246,6 @@ export class NewMembershipComponent {
         this.myFilterform.get('PatientTypeSearch').setValue("3");
     }
 
-    getWhatsappshareForm(el) {
-        console.log(el);
-        this._whatsppService.OnWhatsAppMsgSent({
-            mobileNo: el.mobileNo,
-            patientName: el.patientName,
-            billNo: el.billNo,
-            smsType: "OPBill",
-            patientId: el.regNo
-        })
-    }
-
-    // Onemail(contact) {
-    //     const dialogRef = this._matDialog.open(EmailSendComponent,
-    //         {
-    //             maxWidth: "100%",
-    //             height: '75%',
-    //             width: '55%',
-    //             data: {
-    //                 Obj: contact,
-    //                 emailType: 'OP-Bill'
-    //             }
-    //         });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         this.grid.bindGridData();
-    //     });
-    // }
 
 
     keyPressAlphanumeric(event) {
@@ -294,87 +268,19 @@ export class NewMembershipComponent {
     private patientCloseTimeout: any = null;
     private doctorCloseTimeout: any = null;
 
-    openEmailDetailsPopover(event: MouseEvent, patientData: any) {
-        event.stopPropagation();
-
-        // Clear any existing timeout
-        if (this.hoverTimeout) {
-            clearTimeout(this.hoverTimeout);
-        }
-
-        // Add small delay to prevent flickering
-        this.hoverTimeout = setTimeout(() => {
-            // Close any existing patient popover
-            if (this.EmailOverlayRef) {
-                this.EmailOverlayRef.dispose();
-                this.EmailOverlayRef = null;
-            }
-
-            const positionStrategy = this.overlay.position()
-                .flexibleConnectedTo(event.target as HTMLElement)
-                .withPositions([
-                    {
-                        originX: 'start',
-                        originY: 'bottom',
-                        overlayX: 'start',
-                        overlayY: 'top',
-                    },
-                    {
-                        originX: 'start',
-                        originY: 'top',
-                        overlayX: 'start',
-                        overlayY: 'bottom',
-                    },
-                    {
-                        originX: 'end',
-                        originY: 'center',
-                        overlayX: 'start',
-                        overlayY: 'center',
-                    },
-                    {
-                        originX: 'start',
-                        originY: 'center',
-                        overlayX: 'end',
-                        overlayY: 'center',
-                    }
-                ]);
-
-            this.EmailOverlayRef = this.overlay.create({
-                positionStrategy,
-                scrollStrategy: this.overlay.scrollStrategies.close(),
-                hasBackdrop: false,
-            });
-
-            const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
-            const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
-            componentRef.instance.patientData = patientData;
-
-            // Handle mouse events on the overlay element
-            const overlayElement = this.EmailOverlayRef.overlayElement;
-            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
-            overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover());
-        }, 300); // 300ms delay before showing popover
+    getWhatsappshareForm(el) {
+        console.log(el);
+        debugger
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.husbandMobile,
+            patientName: el.patientName,
+            billNo: el.membershipNo,
+            smsType: 'Appointment',
+            patientId: el.membershipId
+        })
     }
-    closeEmailDetailsPopover() {
-        // Clear timeout if popover hasn't opened yet
-        if (this.hoverTimeout) {
-            clearTimeout(this.hoverTimeout);
-            this.hoverTimeout = null;
-        }
 
-        // Clear any existing close timeout
-        if (this.patientCloseTimeout) {
-            clearTimeout(this.patientCloseTimeout);
-        }
 
-        // Add delay before closing to allow moving mouse to popover
-        this.patientCloseTimeout = setTimeout(() => {
-            if (this.EmailOverlayRef) {
-                this.EmailOverlayRef.dispose();
-                this.EmailOverlayRef = null;
-            }
-        }, 200);
-    }
     openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
         event.stopPropagation();
 
@@ -428,7 +334,13 @@ export class NewMembershipComponent {
 
             const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
             const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+
+            debugger
             console.log(patientData)
+            patientData.billNo = patientData.membershipNo
+            patientData.mobileNo = patientData.husbandMobile
+            patientData.regNo = patientData.membershipNo
+
             componentRef.instance.patientData = patientData;
 
             // Handle mouse events on the overlay element
@@ -559,6 +471,8 @@ export class trustRegInsert {
     wifePan: any;
     cityId: any;
     cityName: any;
+    residenceAddress
+        : any
     /**
      * Constructor
      *
@@ -601,7 +515,9 @@ export class trustRegInsert {
             this.wifePan = trustRegInsert.wifePan || 0;
             this.cityId = trustRegInsert.cityId || 0;
             this.cityName = trustRegInsert.cityName || '';
-
+            this.residenceAddress
+                = trustRegInsert.residenceAddress
+                || '';
         }
     }
 }

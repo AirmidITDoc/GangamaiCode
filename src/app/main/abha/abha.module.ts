@@ -35,6 +35,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { AbhaLinkComponent } from './Abha linking/abha-link.component';
 
 const appRoutes: Routes = [
     // { path: 'create-aadhaar', component: CreateAadhaarComponent, title: 'Create ABHA via Aadhaar' },
@@ -50,7 +51,7 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AbhaStepperComponent, OtpInputComponent, AadhaarStepComponent, AbhaAddressStepComponent, MobileStepComponent, OtpStepComponent,
-        ProfileCardStepComponent, AbhaComponent, AbhaVerifyComponent, VerifyByAbhaOtpComponent, VerifyByAbhaAddressComponent, VerifyByMobileComponent, VerifyByAadhaarComponent
+        ProfileCardStepComponent, AbhaComponent, AbhaVerifyComponent, VerifyByAbhaOtpComponent, VerifyByAbhaAddressComponent, VerifyByMobileComponent, VerifyByAadhaarComponent, AbhaLinkComponent
     ],
     imports: [
         RouterModule.forChild(appRoutes),

@@ -6,9 +6,16 @@
                 <span class="step-num">{{ step > 1 ? '✓' : '1' }}</span>
                 <span class="step-label">ABHA Address</span>
             </div>
+
             <div class="step-line"></div>
-            <div class="m-step" [class.active]="step === 2">
-                <span class="step-num">2</span>
+            <div class="m-step" [class.active]="step === 2" [class.done]="step > 2">
+                <span class="step-num">{{ step > 2 ? '✓' : '2' }}</span>
+                <span class="step-label">Auth Type</span>
+            </div>
+
+            <div class="step-line"></div>
+            <div class="m-step" [class.active]="step === 3">
+                <span class="step-num">3</span>
                 <span class="step-label">Verify OTP</span>
             </div>
         </div>
@@ -16,33 +23,40 @@
         <h3 class="method-h3">{{ title }}</h3>
 
         <!-- ====== STEP 1 ====== -->
-        <form *ngIf="step === 1" [formGroup]="abhaForm" (ngSubmit)="sendOtp()">
+        <form *ngIf="step === 1" [formGroup]="abhaForm" (ngSubmit)="findAbhaAddress()">
             <div class="field-block">
                 <label class="field-label">ABHA Address</label>
                 <mat-form-field appearance="outline" class="full-width">
-                    <input matInput formControlName="abhaNumber" placeholder="XXXXX@abdm" inputmode="numeric"
-                        maxlength="100" autocomplete="off" />
+                    <input matInput formControlName="abhaNumber" inputmode="numeric" maxlength="100"
+                        autocomplete="off" />
                     <mat-error *ngIf="abhaForm.get('abhaNumber')?.errors as e">
                         <span *ngIf="e['required']">ABHA address is required</span>
                     </mat-error>
                 </mat-form-field>
             </div>
+
+            <div class="actions end">
+                <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="action-btn">
+                    <ng-container *ngIf="!loading">
+                        Search <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                    </ng-container>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+            </div>
+        </form>
+
+        <!-- ====== STEP 2 ====== -->
+        <form *ngIf="step === 2" [formGroup]="abhaForm" (ngSubmit)="sendOtp()">
             <div class="field-block">
                 <label class="field-label">OTP Type</label>
                 <mat-radio-group formControlName="otpType" class="radio-list">
-                    <label class="radio-card" [class.selected]="abhaForm.value.otpType === 1">
-                        <mat-radio-button value="3" color="primary"></mat-radio-button>
-                        <div class="radio-content">
-                            <div class="radio-title">OTP On Aadhaar registered mobile no</div>
-                        </div>
-                    </label>
-                    <label class="radio-card" [class.selected]="abhaForm.value.otpType === 2">
-                        <mat-radio-button value="4" color="primary"></mat-radio-button>
-                        <div class="radio-content">
-                            <div class="radio-title">OTP on ABHA linked mobile no</div>
-                        </div>
-                    </label>
+
+                    <mat-radio-button *ngFor="let method of authMethods" [value]="method" class="radio-box">
+                        {{ method.replace('_', ' ') }}
+                    </mat-radio-button>
+
                 </mat-radio-group>
+                
                 <mat-error *ngIf="abhaForm.get('otpType')?.errors as e">
                     <span *ngIf="e['required']">OTP type required.</span>
                 </mat-error>
@@ -57,8 +71,8 @@
             </div>
         </form>
 
-        <!-- ====== STEP 2 ====== -->
-        <form *ngIf="step === 2" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+        <!-- ====== STEP 3 ====== -->
+        <form *ngIf="step === 3" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
             <div class="info-box">
                 We've sent a 6-digit OTP on the <strong>{{ channelLabel }}</strong>.<br>
                 {{msg}} <br>
@@ -67,21 +81,56 @@
 
             <div class="field-block">
                 <label class="field-label">6-digit OTP</label>
-                <mat-form-field appearance="outline" class="full-width">
-                    <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="otp" placeholder="••••••"
-                        inputmode="numeric" maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
 
-                    <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
-                        [attr.aria-label]="'Toggle OTP visibility'">
-                        <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
-                    </button>
+                <div class="otp-wrapper">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="otp"
+                            placeholder="••••••" inputmode="numeric" maxlength="6" (input)="onOtpInput($event)"
+                            autocomplete="one-time-code" />
 
-                    <mat-error *ngIf="otpForm.get('otp')?.errors as e">
-                        <span *ngIf="e['required']">OTP is required</span>
-                        <span *ngIf="e['otp']">{{ e['otp'] }}</span>
-                        <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
-                    </mat-error>
-                </mat-form-field>
+                        <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
+                            [attr.aria-label]="'Toggle OTP visibility'">
+                            <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+
+                        <mat-error *ngIf=" this.otpForm.get('otp')?.errors as e">
+                            <span *ngIf="e['required']">OTP is required</span>
+                            <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+                            <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="otp-info">
+
+                        <!-- Timer -->
+                        <span class="timer" *ngIf="!canResend">
+                            {{ countdown }}
+                        </span>
+
+                        <!-- warning -->
+                        <div class="warning-text" *ngIf="!canResend && timeLeft > 0 && timeLeft <= 10">
+                            OTP will expire in {{ timeLeft }} seconds.
+                        </div>
+
+                        <!-- Resend -->
+                        <button mat-button color="primary" type="button" *ngIf="canResend && resendAttempts < 2"
+                            (click)="resendOtp()">
+                            Resend OTP
+                            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                        </button>
+
+                        <small *ngIf="resendAttempts < 2">
+                            Attempts left: {{2 - resendAttempts}}/2
+                        </small>
+
+                        <small class="text-danger" *ngIf="resendAttempts >=2">
+                            Attempts left: 0/2 (No more resend attempts)
+                        </small>
+
+                    </div>
+
+                </div>
+
                 <!-- <mat-form-field appearance="outline" class="full-width">
                     <input matInput type="password" formControlName="otp" placeholder="••••••" inputmode="numeric"
                         maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
@@ -110,8 +159,8 @@
                 <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
                     <mat-icon>arrow_back</mat-icon> Back
                 </button>
-                <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid"
-                    class="action-btn">
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="loading || otpForm.invalid || otpExpired" class="action-btn">
                     <ng-container *ngIf="!loading">
                         Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
                     </ng-container>

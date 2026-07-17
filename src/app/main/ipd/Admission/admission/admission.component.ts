@@ -36,6 +36,7 @@ import { MLCInformationComponent } from './mlcinformation/mlcinformation.compone
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
+import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 
 @Component({
     selector: 'app-admission',
@@ -150,6 +151,7 @@ export class AdmissionComponent implements OnInit {
     @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
     @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
     @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>;
+    @ViewChild('abhaIcon') abhaIcon!: TemplateRef<any>;
 
     ngAfterViewInit() {
         // Assign the template to the column dynamically
@@ -161,9 +163,11 @@ export class AdmissionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isReimbursement')!.template = this.actionisReimbursement;
+        this.gridConfig.columnsList.find(col => col.key === 'abhaTranId')!.template = this.abhaIcon;
     }
 
     allcolumns = [
+        { heading: "-", key: "abhaTranId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "admissionType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "isReimbursement", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -268,6 +272,23 @@ export class AdmissionComponent implements OnInit {
 
     }
 
+    OnabhaLink(row) {
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
+        const dialogRef = this._matDialog.open(AbhaLinkComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95%',
+                width: '40%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.grid.bindGridData();
+            }
+        });
+    }
 
     onEdit(row) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -932,7 +953,7 @@ export class AdmissionComponent implements OnInit {
                 "fieldValue": String(this.DoctorId),
                 "opType": "Equals"
             },
-            
+
             {
                 "fieldName": "WardId",
                 "fieldValue": String(this.WardId),

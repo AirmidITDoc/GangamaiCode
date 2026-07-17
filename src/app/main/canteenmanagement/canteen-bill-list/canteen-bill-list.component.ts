@@ -129,7 +129,7 @@ export class CanteenBillListComponent {
   }
 
   GetDetails1(data: any): void {
-    debugger
+    
     console.log("detailList:", data)
     let BillNo = data.billNo;
 
@@ -164,7 +164,7 @@ export class CanteenBillListComponent {
   }
 
   onChangeBill() {
-    debugger
+    
     this.fromDate = this.datePipe.transform(this.myFilterbillform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
     this.CustName = this.myFilterbillform.get('CustomerName').value + "%"
@@ -173,7 +173,7 @@ export class CanteenBillListComponent {
   }
 
   getfilterdata() {
-    debugger
+    
     this.fromDate = this.datePipe.transform(this.myFilterbillform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
     this.CustName = this.myFilterbillform.get('CustomerName').value + "%"
@@ -209,25 +209,25 @@ export class CanteenBillListComponent {
 
 
   onSave(row: any = null) {
-    // const that = this;
-    // const dialogRef = this._matDialog.open(CanteenSalesComponent,
-    //     {
-    //         maxWidth: "97vw",
-    //         height: '98%',
-    //         width: '96%',
-    //         data: row
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     that.grid.bindGridData();
-    //     this.isShowDetailTable = false;
+    const that = this;
+    const dialogRef = this._matDialog.open(CanteenSalesComponent,
+        {
+            maxWidth: "97vw",
+            height: '98%',
+            width: '96%',
+            data: row
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        that.grid.bindGridData();
+        this.isShowDetailTable = false;
 
-    // });
+    });
   }
 
  openPaymentpopup(contact) {}
 
-  Billcancle(data) {
-    debugger
+  Billcancle(element) {
+    console.log(element)
     Swal.fire({
       title: 'Do you want to cancel the Bill?',
       text: "You won't be able to revert this!",
@@ -238,10 +238,10 @@ export class CanteenBillListComponent {
       confirmButtonText: "Yes, Cancel it!"
     }).then((flag) => {
       if (flag.isConfirmed) {
-        var data = {
-          "BillNo": data.billNo
+        var data1 = {
+          "BillNo": element.billNo
         }
-        this._CanteenmanagementService.BillCancle(data).subscribe((response: any) => {
+        this._CanteenmanagementService.BillCancle(data1).subscribe((response: any) => {
           this.grid.bindGridData();
         });
       }
@@ -250,7 +250,7 @@ export class CanteenBillListComponent {
 
  
    viewgetReportPdf(element) {
-     debugger
+     
      const param = {
        "searchFields": [
          {

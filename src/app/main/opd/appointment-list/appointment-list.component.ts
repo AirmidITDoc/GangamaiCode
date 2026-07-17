@@ -16,7 +16,7 @@ import { CompanyInformationComponent } from 'app/main/ipd/company-information/co
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
@@ -47,6 +47,7 @@ import { PatientDetailsPopoverComponent } from './patient-details-popover/patien
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component';
 import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
+import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 
 // const moment = _rollupMoment || _moment;
 
@@ -59,15 +60,27 @@ import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-
 
 })
 export class AppointmentListComponent implements OnInit {
-    IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-    IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-    IsOpdEmr: boolean = true;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
-    IsBill: boolean = true;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
-    IsEditRegistration: boolean = true;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
-    IsGastrology: boolean = true;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
-    IsCheckIn: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
-    IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
+    // IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    // IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    // IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    // IsOpdEmr: boolean = true;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
+    // IsBill: boolean = true;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
+    // IsEditRegistration: boolean = true;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
+    // IsGastrology: boolean = true;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
+    // IsCheckIn: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
+    // IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
+
+
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    IsOpdEmr: boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
+    IsBill: boolean = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
+    IsEditRegistration: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
+    IsGastrology: boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
+    IsCheckIn: boolean = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
+    IsCheckOut: boolean = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
+
 
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -126,7 +139,21 @@ export class AppointmentListComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe,
         private _ActRoute: Router, private route: ActivatedRoute,
         private overlay: Overlay, public permissionService: PagePermissionService, private _configue: ConfigService,
-    ) { }
+    ) {
+        debugger
+        // this.IsAdd = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+        // this.IsEdit = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+        // this.IsDelete = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+        // this.IsOpdEmr = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
+        // this.IsBill = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
+        // this.IsEditRegistration = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
+        // this.IsGastrology = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
+        // this.IsCheckIn = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
+        // this.IsCheckOut = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
+
+
+
+    }
 
     ngOnInit(): void {
 
@@ -138,10 +165,14 @@ export class AppointmentListComponent implements OnInit {
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
 
-
+        debugger
         // menu Button List
-        this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
-        this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
+        if (this.IsAdd)
+            this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
+
+        if (this.IsEdit)
+            this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
+
         this.menuActions.push({ icon: "language", text: "Request For IP" });
         this.menuActions.push({ icon: "language", text: "Update Followup Date" });
         this.menuActions.push({ icon: "print", text: "CasePaper Print" });
@@ -214,6 +245,7 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'doctorname')!.template = this.doctorNameWithPopoverTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'abhaTranId')!.template = this.abhaIcon;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -226,8 +258,10 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
     @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
     @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
+    @ViewChild('abhaIcon') abhaIcon!: TemplateRef<any>;
 
     allcolumns = [
+        { heading: "-", key: "abhaTranId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -378,6 +412,24 @@ export class AppointmentListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
             this.GetAppointdetail()
+        });
+    }
+
+    OnabhaLink(row) {
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
+        const dialogRef = this._matDialog.open(AbhaLinkComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95%',
+                width: '40%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.grid.bindGridData();
+            }
         });
     }
 

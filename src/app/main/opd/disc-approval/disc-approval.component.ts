@@ -53,12 +53,14 @@ export class DiscApprovalComponent {
 
 
     allOBillfilters = [
-        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals }
+            
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+                { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals }
 
     ];
     allOPbillcolumns = [
@@ -173,7 +175,8 @@ export class DiscApprovalComponent {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-            { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals }
+            { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
+            { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;

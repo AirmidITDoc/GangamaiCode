@@ -27,6 +27,7 @@ export class WhatsAppEmailService {
   }
  
   OnWhatsAppMsgSent(params: { mobileNo: any; patientName: string; billNo: any; smsType: string, patientId:any }){
+    debugger
     setTimeout(() => {
       const param = {
         "mobileNumber": params?.mobileNo,

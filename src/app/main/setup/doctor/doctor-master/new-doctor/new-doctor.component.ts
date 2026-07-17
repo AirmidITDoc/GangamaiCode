@@ -518,7 +518,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                     // Validators.required,
                     //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
-                    Validators.maxLength(10),
+                    Validators.maxLength(100),
                     // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
@@ -529,7 +529,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                     // Validators.required,
                     //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
-                    Validators.maxLength(10),
+                    Validators.maxLength(100),
                     // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
@@ -951,12 +951,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             RegNo: [
                 { name: "required", Message: "RegNo is required" },
                 { name: "minLength", Message: "10 digit required." },
-                { name: "maxLength", Message: "More than 15 digits not allowed." }
+                { name: "maxLength", Message: "More than 50 digits not allowed." }
             ],
             mahRegNo: [
                 { name: "required", Message: "mahRegNo is required" },
                 { name: "minLength", Message: "10 digit required." },
-                { name: "maxLength", Message: "More than 15 digits not allowed." }
+                { name: "maxLength", Message: "More than 100 digits not allowed." }
             ],
             RefDocHospitalName: [
                 { name: "required", Message: "RefDoc Hospital Name is required" }
