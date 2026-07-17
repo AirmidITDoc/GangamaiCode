@@ -432,5 +432,8 @@ export class AppointmentlistService {
         // return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
         return this._httpClient1.PostData("Common", Param)
     }
-
+public getMemeberbyIdList(param) {
+    
+       return this._httpClient1.GetData("TrustMemershipReg/" + param)
+    }
 }

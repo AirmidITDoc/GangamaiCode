@@ -16,7 +16,7 @@ import { CompanyInformationComponent } from 'app/main/ipd/company-information/co
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
@@ -59,15 +59,27 @@ import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-
 
 })
 export class AppointmentListComponent implements OnInit {
-    IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-    IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-    IsOpdEmr: boolean = true;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
-    IsBill: boolean = true;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
-    IsEditRegistration: boolean = true;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
-    IsGastrology: boolean = true;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
-    IsCheckIn: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
-    IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
+    // IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    // IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    // IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    // IsOpdEmr: boolean = true;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
+    // IsBill: boolean = true;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
+    // IsEditRegistration: boolean = true;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
+    // IsGastrology: boolean = true;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
+    // IsCheckIn: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
+    // IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
+
+
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    IsOpdEmr: boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
+    IsBill: boolean = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
+    IsEditRegistration: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
+    IsGastrology: boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
+    IsCheckIn: boolean = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
+    IsCheckOut: boolean = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
+
 
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -126,7 +138,21 @@ export class AppointmentListComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe,
         private _ActRoute: Router, private route: ActivatedRoute,
         private overlay: Overlay, public permissionService: PagePermissionService, private _configue: ConfigService,
-    ) { }
+    ) {
+        debugger
+        // this.IsAdd = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+        // this.IsEdit = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+        // this.IsDelete = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+        // this.IsOpdEmr = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
+        // this.IsBill = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
+        // this.IsEditRegistration = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
+        // this.IsGastrology = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
+        // this.IsCheckIn = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
+        // this.IsCheckOut = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
+
+
+
+    }
 
     ngOnInit(): void {
 
@@ -138,10 +164,14 @@ export class AppointmentListComponent implements OnInit {
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
 
-
+        debugger
         // menu Button List
-        this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
-        this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
+        if (this.IsAdd)
+            this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
+
+        if (this.IsEdit)
+            this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
+
         this.menuActions.push({ icon: "language", text: "Request For IP" });
         this.menuActions.push({ icon: "language", text: "Update Followup Date" });
         this.menuActions.push({ icon: "print", text: "CasePaper Print" });

@@ -51,7 +51,7 @@
                       <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
                         <!-- <div class="form-right-container input-error-hidden" *ngIf="Regflag" style="border: 1px solid red;"> -->
 
-                        <airmid-autocomplete class="w-450" label="Search Reg No / Patient Name / Mobile No"
+                        <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
                           [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag"
                           placeholderText="Search Reg No / Patient Name / Mobile No"
                           ApiUrl="OutPatient/auto-complete?Keyword="
@@ -63,20 +63,20 @@
                           ApiUrl="PhoneAppointment2/auto-complete?Keyword="
                           (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete> -->
 
-                        <airmid-dropdown class="w-450" label="Phone Appointment" formControlName="PhoneRegId"
+                        <airmid-dropdown class="w-250" label="Phone Appointment" formControlName="PhoneRegId"
                           [formGroup]="searchFormGroup" *ngIf="IsPhoneAppflag"
                           ApiUrl="PhoneAppointment2/auto-complete?Keyword=%"
                           (selectionChange)="getSelectedObjphone($event)"></airmid-dropdown>
 
-
-                        <airmid-dropdown class="w-450" label="trust Appointment" formControlName="tRegId"
-                          [formGroup]="searchFormGroup" *ngIf="IsTrustAppflag"
-                          ApiUrl="PhoneAppointment2/auto-complete?Keyword=%"
-                          (selectionChange)="getSelectedObjtrust($event)"></airmid-dropdown>
+                        <airmid-autocomplete class="w-250" label="Search Membership No / Patient Name "
+                          [formGroup]="searchFormGroup" formControlName="tRegId" *ngIf="IsTrustAppflag"
+                          placeholderText="Search Reg No / Patient Name / Mobile No"
+                          ApiUrl="TrustMemershipReg/auto-complete?Keyword="
+                          (selectionChange)="getSelectedObjtrust($event)"></airmid-autocomplete>
 
 
                         <form [formGroup]="VisitFormGroup">
-                          <div class="w-300">
+                          <div class="w-250">
                             <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="data?.unitId"
                               [validations]="getValidationMessages().UnitId" [formGroup]="VisitFormGroup"
                               [mode]="autocompleteModeunit"></airmid-dropdown>
