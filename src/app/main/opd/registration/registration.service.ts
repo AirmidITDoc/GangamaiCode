@@ -158,12 +158,16 @@ export class RegistrationService {
 
             // extra field
             IsNRI: [false],
-            emailId: ['', [Validators.email]]
+            emailId: ['', [Validators.email]],
+
+            membershipId: 0,
+            // isMember: false,
+            // abhTranId: 0
         });
 
     }
 
-     createAbhaorm() {
+    createAbhaorm() {
         return this._formBuilder.group({
             abhaAddress: [''],
             abhaNumber: ['']

@@ -1521,14 +1521,14 @@ export class NewAppointmentComponent implements OnInit {
             medTourismDateOfEntry: [''],// [(new Date()).toISOString()],
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
-            membershipId: 0,
+            // membershipId: 0,
             // extra field
             IsNRI: [false],
             emailId: ['', [Validators.email]],
 
             membershipId: [this.MembershipId],
-            isMember:[false],
-            abhTranId: 0    
+            // isMember:[false],
+            // abhTranId: 0    
         });
     }
 
