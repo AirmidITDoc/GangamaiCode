@@ -223,7 +223,7 @@
                                                     <airmid-textbox label="RegNo" formControlName="RegNo"
                                                         [value]="registerObj.regNo" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().RegNo"
-                                                        [maxLength]="10"></airmid-textbox>
+                                                        [maxLength]="100"></airmid-textbox>
                                                     <!-- </div> -->
 
                                                     <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
@@ -242,7 +242,7 @@
                                                     <airmid-textbox label="MahRegNo" formControlName="MahRegNo"
                                                         [value]="registerObj.mahRegNo" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().mahRegNo"
-                                                        [maxLength]="10"></airmid-textbox>
+                                                        [maxLength]="100"></airmid-textbox>
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>MahReg date</mat-label>
                                                         <input name="MahRegDate" matInput [matDatepicker]="picker2"

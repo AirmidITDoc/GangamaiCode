@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Trust Management List
+                   Registered Membership List
                 </span>
             </div>
         </div>
@@ -27,7 +27,14 @@
                 <button mat-icon-button matTooltip="Print" (click)="getMembershipview(element)">
                     <mat-icon> print</mat-icon>
                 </button>
-
+                 <button mat-icon-button
+                                [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                matTooltipPosition="right" (click)="getWhatsappshareForm(element)"
+                                (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                (mouseleave)="closeWhatsappDetailsPopover()"
+                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                            </button>
             </div>
         </ng-template>
 

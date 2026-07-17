@@ -12,8 +12,13 @@ export class PagePermissionService {
         return JSON.parse(permissionString);
     }
     getPermission(pageCode: permissionCodes, permission: permissionType): boolean {
+
+        
         if ((pageCode ?? "") != "") {
             const page = this.getList().find(x => x.PageCode == pageCode) as any[];
+
+            // console.log(permissionType.Edit)
+
             if (permission == permissionType.Add)
                 return page["IsAdd"] ?? false;
             else if (permission == permissionType.Edit)

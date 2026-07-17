@@ -95,7 +95,6 @@ export class AdmissionCardviewComponent {
 
         { heading: "-", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
 
-
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
@@ -118,6 +117,8 @@ export class AdmissionCardviewComponent {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+
     { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -226,6 +227,8 @@ export class AdmissionCardviewComponent {
                 { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+                { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+
                 { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.Equals },
                 { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },

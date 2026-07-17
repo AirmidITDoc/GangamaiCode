@@ -77,6 +77,10 @@ export class CanteenmanagementService {
     public getItemTable1List(Param) {
         return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
     }
+  public getItemTable1ListData(Param) {
+        return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
+    }
+    
 
     public canteenrequestSave(employee) {
         return this._httpClient.PostData("CanteenRequest/Insert", employee);

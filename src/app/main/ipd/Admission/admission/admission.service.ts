@@ -158,10 +158,9 @@ export class AdmissionService {
             // extra field
             IsNRI: [false],
             emailId: ['', [Validators.email]],
-
-            membershipId: 0,
-            isMember: false,
-            abhTranId: 0
+           
+            // isMember: false,
+            // abhTranId: 0
         });
     }
     // this.accountService.currentUserValue.user.unitId
