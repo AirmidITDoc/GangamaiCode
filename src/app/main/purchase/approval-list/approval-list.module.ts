@@ -34,7 +34,8 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';  
-import { ApprovalListComponent } from './approval-list.component'; 
+import { ApprovalListComponent } from './approval-list.component';
+import { ApprovalUserNameListComponent } from './approval-user-name-list/approval-user-name-list.component'; 
 
 const routes: Routes = [
     {
@@ -45,7 +46,8 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        ApprovalListComponent 
+        ApprovalListComponent,
+        ApprovalUserNameListComponent 
     ],
     imports: [
         CommonModule,

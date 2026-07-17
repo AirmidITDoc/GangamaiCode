@@ -22,6 +22,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { PurchaseRequisitionComponent } from './purchase-requisition/purchase-requisition.component';
 import { ConfigService } from 'app/core/services/config.service';
+import { ApprovalUserNameListComponent } from '../approval-list/approval-user-name-list/approval-user-name-list.component';
 
 
 @Component({
@@ -35,7 +36,7 @@ import { ConfigService } from 'app/core/services/config.service';
 export class PurchaseOrderComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PurchaseOrder, permissionType.Add);
 
-
+    IsApprovalReqID : boolean = false;
     mysearchform: FormGroup;
     autocompletestore: string = "Store";
     autocompleteSupplier: string = "SupplierMaster"
@@ -146,7 +147,11 @@ export class PurchaseOrderComponent implements OnInit {
     constructor(public _PurchaseOrderService: PurchaseOrderService, public _matDialog: MatDialog,
         public toastr: ToastrService, private commonService: PrintserviceService, private accountService: AuthenticationService,
         public datePipe: DatePipe, public _whatsppService: WhatsAppEmailService, public permissionService: PagePermissionService,
-        private overlay: Overlay, public _ConfigService: ConfigService,) { }
+        private overlay: Overlay, public _ConfigService: ConfigService,) 
+        { 
+        const [IsApprovalRequiredID, IsApprovalRequiredVal] = this._ConfigService.configParams.IsApprovalRequired.split(":");
+        this.IsApprovalReqID = IsApprovalRequiredID === "1";
+        }
 
     ngOnInit(): void {
         debugger
@@ -154,9 +159,13 @@ export class PurchaseOrderComponent implements OnInit {
         console.log(this.accountService.currentUserValue.user)
         // this.IsPoverify = 1//this.accountService.currentUserValue.user.isPoverify
         const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsPOVerify');
-        this.IsPoverify = access?.AccessValue;
-    }
+        this.IsPoverify = access?.AccessValue; 
+ 
+        if(this.IsPoverify && this.IsApprovalReqID){ 
+        this.getfilterdata(); 
+        } 
 
+    } 
 
     selectChangeStore(value) {
         if (value.value !== 0)
@@ -201,9 +210,12 @@ export class PurchaseOrderComponent implements OnInit {
                 { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals }
             ],
             row: 25
-        }
-        this.grid.gridConfig = this.gridConfig;
+        } 
+        setTimeout(() => {
+                 this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
+        }, 500);
+  
     }
     viewgetPurchaseorderReportPdf(element) {
         this.commonService.Onprint("PurchaseID", element.purchaseID, "Purchaseorder");
@@ -243,6 +255,22 @@ export class PurchaseOrderComponent implements OnInit {
         this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
             this.grid.bindGridData()
         });
+    }
+    getApproval(contact){
+       const dialogRef = this._matDialog.open(ApprovalUserNameListComponent,
+                {
+                    maxWidth: "100%",
+                    height: '70%',
+                    width: '44%',
+                    data: {
+                        Obj: contact,
+                        FormName: "PURCHASE ORDER"
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                console.log('The dialog was closed - Insert Action', result);
+                this.grid.bindGridData();
+            });
     }
     //Add New Purchase
     AddPurchase(row: any = null) {
@@ -632,7 +660,7 @@ export class ItemNameList {
     octriAmount: any;
     worrenty: any;
     remarks: any;
-
+    isApproved:any;
     netAmount: any
     docAmt: any
     hospitalAmt: any
@@ -741,6 +769,7 @@ export class ItemNameList {
             this.SupplierId = ItemNameList.SupplierId || 0;
              this.PRId = ItemNameList.PRId || 0;
             this.unitofMeasurementName = ItemNameList.unitofMeasurementName || "";
+            this.isApproved = ItemNameList.isApproved || false;
         }
     }
 }

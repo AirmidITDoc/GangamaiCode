@@ -125,7 +125,7 @@ export class NewDoctorMasterComponent {
     }
 
     changeName() {
-        this.vdoctorName = "Dr." + ' ' + this.myForm.get("firstName").value + ' ' + this.myForm.get("lastName").value
+        this.vdoctorName = "Dr." + '' + this.myForm.get("firstName")?.value + ' ' + (this.myForm.get("lastName")?.value || '');
     }
 
 

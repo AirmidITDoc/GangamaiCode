@@ -176,7 +176,7 @@
  
 
 <div class="modal-page page-layout inner-scroll">
-  <div class="modal-wrapper grid-container"> 
+  <div class="modal-wrapper grid-container  resize-form-fields padding-fix"> 
     <div class="modal-header accent">
       <div class="modal-header-content">
         <div class="modal-header-title">
@@ -260,11 +260,16 @@
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
 
-                            <airmid-autocomplete label="Doctor Name"
+                            <!-- <airmid-autocomplete label="Doctor Name"
                                 [formGroup]="ItemSubform" formControlName="doctorName"  
                                 placeholderText="First Name / Last Name" fxFlex   TextField="doctorName" 
                                 ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword=" 
-                                (selectionChange)="getSelectedObjExtDocName($event)" ></airmid-autocomplete> 
+                                (selectionChange)="getSelectedObjExtDocName($event)" ></airmid-autocomplete>  -->
+                                <airmid-autocomplete label="Doctor Name" [formGroup]="ItemSubform"
+                                formControlName="doctorName" placeholderText="First Name / Last Name" fxFlex
+                                TextField="doctorName" ApiUrl="Sales/NewMExternalDoctor-auto-complete?Keyword=Dr."
+                                (selectionChange)="getSelectedObjExtDocName($event)"></airmid-autocomplete>
+                                <mat-icon class="accent" (click)="InsertExternalDoc()">add</mat-icon>
                             </div> 
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2' ">

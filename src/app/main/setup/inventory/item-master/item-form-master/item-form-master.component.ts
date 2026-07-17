@@ -85,6 +85,7 @@ export class ItemFormMasterComponent implements OnInit {
             this.vSGST = this.data.sgst
             this.vIGST = this.data.igst
             this.VisValidContent = this.data.isValidContent
+            this.drugName = this.data?.drugTypeName || '';
 
             if (this.data.igst == 0)
                 this.itemForm.get('cgst').setValue(this.data.taxPer)
@@ -271,6 +272,7 @@ export class ItemFormMasterComponent implements OnInit {
 
             if (this.ItemId != 0) {
                 formData.itemID = this.ItemId;
+                formData.drugTypeName = this.drugName;
                 console.log(formData)
                 this._itemService.updateItemMaster(formData).subscribe((data) => {
                     this.onClear(true);

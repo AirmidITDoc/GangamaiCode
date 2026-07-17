@@ -510,7 +510,7 @@ export class IPBillingComponent implements OnInit {
             totaldiscPer: [0, [Validators.min(0), Validators.max(100)]],
             totalconcessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             ConcessionId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-            FinalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            FinalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
             Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             Admincheck: [''],
@@ -591,7 +591,7 @@ export class IPBillingComponent implements OnInit {
                 patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                netPayableAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
@@ -1096,9 +1096,9 @@ export class IPBillingComponent implements OnInit {
     ExclusionAmt: any = 0;
     InclusionAmt: any = 0;
     getNetAmtSum() {
-        this.FinalNetAmt = this.chargeslist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-        this.TotalShowAmt = this.chargeslist.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
-        this.DiscShowAmt = this.chargeslist.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
+        this.FinalNetAmt = this.chargeslist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0).toFixed(2);
+        this.TotalShowAmt = this.chargeslist.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0).toFixed(2);
+        this.DiscShowAmt = this.chargeslist.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0).toFixed(2);
 
         this.IpbillFooterform.patchValue({
             FinalAmount: this.FinalNetAmt,
@@ -1158,16 +1158,16 @@ export class IPBillingComponent implements OnInit {
             })
         } else {
             const perControl = this.IpbillFooterform.get("AdminPer");
-            const adminPer = perControl.value;
-            const totalAmount = this.TotalShowAmt;
-            const adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
-            const finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2));
+            const adminPer = Number(perControl.value) || 0;
+            const totalAmount = Number(this.TotalShowAmt) || 0; 
+            const adminAmt = Number((totalAmount * adminPer / 100).toFixed(2));
+            const finalTotalAmt = Number((totalAmount + adminAmt).toFixed(2));
 
             if (!perControl.valid || perControl.value == 0) {
                 if (discPer > 0) {
                     this.ConcessionShow = true
-                    finalDiscAmt = parseFloat((totalAmount * discPer / 100).toFixed(2));
-                    finalNetAmt = parseFloat((totalAmount - finalDiscAmt).toFixed(2));
+                    finalDiscAmt = Number((totalAmount * discPer / 100).toFixed(2));
+                    finalNetAmt = Number((totalAmount - finalDiscAmt).toFixed(2));
                 } else {
                     finalDiscAmt = this.DiscShowAmt
                     finalNetAmt = this.FinalNetAmt
@@ -1184,12 +1184,12 @@ export class IPBillingComponent implements OnInit {
             if (this.DiscShowAmt > 0) {
                 this.ConcessionShow = true
                 finalDiscAmt = this.DiscShowAmt
-                finalNetAmt = parseFloat((finalTotalAmt - this.DiscShowAmt).toFixed(2));
+                finalNetAmt = Number((finalTotalAmt - this.DiscShowAmt).toFixed(2));
             } else {
                 if (discPer > 0) {
                     this.ConcessionShow = true
-                    finalDiscAmt = parseFloat((finalTotalAmt * discPer / 100).toFixed(2));
-                    finalNetAmt = parseFloat((finalTotalAmt - finalDiscAmt).toFixed(2));
+                    finalDiscAmt = Number((finalTotalAmt * discPer / 100).toFixed(2));
+                    finalNetAmt = Number((finalTotalAmt - finalDiscAmt).toFixed(2));
                 } else {
                     finalNetAmt = finalTotalAmt
                 }

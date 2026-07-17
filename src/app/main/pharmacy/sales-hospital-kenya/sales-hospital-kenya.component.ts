@@ -25,6 +25,7 @@ import { SubstitutesComponent } from '../sales-hopsital-new/substitutes/substitu
 import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from '../sales-hopsital-new/types';
 import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
 import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.component';
+import { NewDoctorMasterComponent } from 'app/main/setup/doctor/ext-new-doctor-master/new-doctor-master/new-doctor-master.component';
 
 @Component({
     selector: 'app-sales-bill-kenya',
@@ -79,6 +80,7 @@ export class SalesHospitalKenyaComponent {
     OPDNo: any;
     RegNo: any;
     IPDNo: any;
+    doctorID:any=0;
     Itemchargeslist: any = [];
     Tempchargeslist: any = [];
     StoreName: any;
@@ -298,6 +300,7 @@ export class SalesHospitalKenyaComponent {
                 extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 roundOff: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                doctorId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
                 tSalesDetails: this.formBuilder.array([]),
             }),
             //sales payment
@@ -563,6 +566,7 @@ export class SalesHospitalKenyaComponent {
             this.wardId = obj.wardId;
             this.bedId = obj.bedId;
             this.RegNo = obj?.regNo;
+            this.doctorID =obj?.docNameID || 0
             this.PatientTypeId = obj?.patientTypeID
             if ((obj?.companyName || '') != '') {
                 this.ItemSubform.get('CashPay').setValue('Credit');
@@ -588,6 +592,7 @@ export class SalesHospitalKenyaComponent {
         this.OPDNo = obj.opdNo;
         this.HospitalId = obj.hospitalId;
         this.DoctorName = obj.doctorName;
+        this.doctorID =obj?.consultantDocId || 0
         this.RegNo = obj?.regNo;
         this.PatientTypeId = obj?.patientTypeId
         this.ItemFormreset();
@@ -1314,10 +1319,12 @@ export class SalesHospitalKenyaComponent {
         this.PharmaSalesForm.get('salesDraft.dsalesId').setValue(this.DraftID || 0)
         this.PharmaSalesForm.get('sales.externalPatientName').setValue(this.PatientName || '')
         this.PharmaSalesForm.get('sales.doctorName').setValue(this.DoctorName || '')
+        this.PharmaSalesForm.get('sales.doctorId').setValue(this.doctorID  || 0)
 
         if (formValue.opIpType == 2) {
             this.PharmaSalesForm.get('sales.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
             this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
+            this.PharmaSalesForm.get('sales.doctorId').setValue((formValue?.doctorName?.extDoctorId ?? formValue?.doctorName?.doctorId) || 0)
             this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress || '')
             this.PharmaSalesForm.get('sales.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
             this.PharmaSalesForm.get('sales.regId').clearValidators();
@@ -2846,6 +2853,16 @@ getItemNames(): string {
             }
         });
     }
+        InsertExternalDoc() {
+            const dialogRef = this._matDialog.open(NewDoctorMasterComponent,
+                {
+                    maxWidth: "100%",
+                    height: '40%',
+                    width: '40%' 
+                });
+            dialogRef.afterClosed().subscribe(result => { 
+            });
+        }
 }
 
 export class IndentList {
