@@ -154,7 +154,7 @@ export class AdmissionService {
             medTourismDateOfEntry: [''], //"2025-10-25",
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
-
+            membershipId: 0,
             // extra field
             IsNRI: [false],
             emailId: ['', [Validators.email]],

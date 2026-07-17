@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, GENDER_LABELS, VerifyResponse, VerifyUserResponse } from '../../abha-model';
@@ -22,13 +22,15 @@ import { AbhaService } from '../../abha.service';
 export class VerifyByMobileComponent implements OnInit {
     @Output() verified = new EventEmitter<VerifyResponse>();
 
-    step: 1 | 2 | 3 = 1;
+    step: 1 | 2 | 3 | 4 = 1;
     mobileForm!: FormGroup;
     otpForm!: FormGroup;
     pickForm!: FormGroup;
 
     loading = false;
+    hideOtp = true;
     resendRemaining = 2;
+    findtxnId = '';
     txnId = '';
 
     accounts: LinkedAccount[] = [];
@@ -38,6 +40,15 @@ export class VerifyByMobileComponent implements OnInit {
     demoOtp: string;
     genderLabels = GENDER_LABELS;
 
+    countdown = '01:00';
+    timeLeft = 60;
+    timer: any;
+    canResend = false;
+    resendAttempts = 0;
+    otpExpired = false;
+    @Output() sessionExpired = new EventEmitter<void>();
+    mobileNo:any;
+
     constructor(
         private fb: FormBuilder,
         private abhaService: AbhaService,
@@ -46,6 +57,15 @@ export class VerifyByMobileComponent implements OnInit {
         // this.demoMobileSingle = svc.DEMO_MOBILE_SINGLE;
         // this.demoMobileMulti = svc.DEMO_MOBILE_MULTI;
         // this.demoOtp = svc.DEMO_OTP;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        console.log('txnId changed:', changes['txnId']?.currentValue);
+
+        if (changes['txnId']?.currentValue) {
+            this.startTimer();
+        }
+        
     }
 
     ngOnInit(): void {
@@ -78,19 +98,51 @@ export class VerifyByMobileComponent implements OnInit {
         }
     }
 
-    // ============== Step 1: Send OTP ==============
-    sendOtp(): void {
+    // ============== Step 1: Find List ==============
+    abhaCards: any[] = [];
+    findABHA(): void {
         if (this.mobileForm.invalid) {
             this.mobileForm.markAllAsTouched();
             return;
         }
+        this.mobileNo=this.mobileForm.value.mobile
         this.loading = true;
-        this.abhaService.requestMobileOtp({ AadhaarNumber: this.mobileForm.value.mobile })
+        this.abhaService.findAbha({ mobile: this.mobileForm.value.mobile })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
+                console.log("Search DATA:", r)
+                if (Array.isArray(r)) {
+                    // Success response
+                    if (r.length > 0 && r[0].txnId) {
+                        this.findtxnId = r[0].txnId;
+                        this.abhaCards = r[0].ABHA;
+                        this.step = 2;
+                    } else {
+                        this.snack.open('Transaction ID not found.', 'OK', { duration: 2500 });
+                    }
+                } else {
+                    // Error response
+                    this.snack.open(r.message, 'OK', { duration: 2500 });
+                }
+                this.loading = false;
+            });
+    }
+
+    // ============== Step 2: Send OTP ==============
+    selectedAbha: any;
+    sendOtp(data?: any): void {
+        // save the selected card for resend otp use
+        if (data) {
+            this.selectedAbha = data;
+        }
+        this.loading = true;
+        this.abhaService.requestOTPfindAbha({ txnId: this.findtxnId, aadhaarNumber: String(this.selectedAbha.index), otpType: 1 })
+            .subscribe((r: AadhaarGenerateOtpResponse) => {
+                console.log("send Otp reponse:", r)
                 if (r.txnId) {
                     this.txnId = r.txnId;
-                    this.step = 2;
+                    this.step = 3;
                     this.snack.open(r.message, 'OK', { duration: 2500 });
+                    this.startTimer();
                 }
                 else {
                     this.snack.open(r.message, 'OK', { duration: 2500 });
@@ -99,7 +151,28 @@ export class VerifyByMobileComponent implements OnInit {
             });
     }
 
-    // ============== Step 2: Verify OTP ==============
+    // sendOtp(): void {
+    //     if (this.mobileForm.invalid) {
+    //         this.mobileForm.markAllAsTouched();
+    //         return;
+    //     }
+    //     this.loading = true;
+    //     this.abhaService.requestMobileOtp({ AadhaarNumber: this.mobileForm.value.mobile })
+    //         .subscribe((r: AadhaarGenerateOtpResponse) => {
+    //             if (r.txnId) {
+    //                 this.txnId = r.txnId;
+    //                 this.step = 3;
+    //                 this.snack.open(r.message, 'OK', { duration: 2500 });
+    //                 this.startTimer();
+    //             }
+    //             else {
+    //                 this.snack.open(r.message, 'OK', { duration: 2500 });
+    //             }
+    //             this.loading = false;
+    //         });
+    // }
+
+    // ============== Step 3: Verify OTP ==============
     verifyOtp(): void {
         if (this.otpForm.invalid) {
             this.otpForm.markAllAsTouched();
@@ -118,7 +191,7 @@ export class VerifyByMobileComponent implements OnInit {
                     // Single account → emit directly
                     if ((!r.accounts || r.accounts.length <= 1)) {
                         this.snack.open('Verified — single ABHA found.', 'OK', { duration: 1800 });
-                        this.verified.emit({accesstoken: r.token,isAddress:false});
+                        this.verified.emit({ accesstoken: r.token, isAddress: false });
                         return;
                     }
 
@@ -134,7 +207,7 @@ export class VerifyByMobileComponent implements OnInit {
             });
     }
 
-    // ============== Step 3: Verify User (picked account) ==============
+    // ============== Step 4: Verify User (picked account) ==============
     pickAccount(abhaNumber: string): void {
         this.pickForm.patchValue({ ABHANumber: abhaNumber });
     }
@@ -150,7 +223,7 @@ export class VerifyByMobileComponent implements OnInit {
         this.abhaService.verifyUser({ ABHANumber: this.pickForm.value.ABHANumber, txnId: this.txnId })
             .subscribe((r: VerifyUserResponse) => {
                 if (r.token) {
-                    this.verified.emit({accesstoken: r.token,isAddress:false});
+                    this.verified.emit({ accesstoken: r.token, isAddress: false });
                     //this.snack.open(r.message, 'OK', { duration: 2500 });
                 }
                 else {
@@ -160,9 +233,20 @@ export class VerifyByMobileComponent implements OnInit {
             });
     }
 
+    // resendOtp(): void {
+    //     if (this.resendRemaining <= 0) return;
+    //     this.resendRemaining--;
+    //     this.sendOtp();
+    // }
+
     resendOtp(): void {
-        if (this.resendRemaining <= 0) return;
-        this.resendRemaining--;
+        this.otpExpired = false;
+        if (this.resendAttempts >= 2) {
+            return;
+        }
+        this.resendAttempts++;
+
+        this.otpForm.get('otp')?.reset();
         this.sendOtp();
     }
 
@@ -179,5 +263,51 @@ export class VerifyByMobileComponent implements OnInit {
     /** UI helper — get a friendly label for gender */
     genderLabel(g: string): string {
         return this.genderLabels[g] || g;
+    }
+
+    startTimer() {
+
+        clearInterval(this.timer);
+
+        this.canResend = false;
+        this.otpExpired = false;
+        this.timeLeft = 60;
+
+        this.updateCounter();
+
+        this.timer = setInterval(() => {
+
+            if (this.timeLeft > 0) {
+
+                this.timeLeft--;
+                this.updateCounter();
+
+            } else {
+
+                clearInterval(this.timer);
+                this.otpExpired = true;
+
+                if (this.resendAttempts >= 2) {
+
+                    this.sessionExpired.emit();
+
+                } else {
+
+                    this.canResend = true;
+                }
+            }
+
+        }, 1000);
+    }
+
+    updateCounter() {
+
+        const min = Math.floor(this.timeLeft / 60);
+
+        const sec = this.timeLeft % 60;
+
+        this.countdown =
+            `${min}:${sec < 10 ? '0' + sec : sec}`;
+
     }
 }

@@ -29,6 +29,7 @@ export class AbhaStepperComponent implements OnInit {
     token = "";
     existingAddress = "";
     txnId = '';
+    aadhaarNumber = '';
     constructor(
         private fb: FormBuilder,
         private abhaService: AbhaService,
@@ -71,6 +72,8 @@ export class AbhaStepperComponent implements OnInit {
 
     /** Called by Aadhaar step when OTP sent — advance stepper. */
     onAadhaarOtpSent(r: AadhaarGenerateOtpResponse): void {
+        this.aadhaarNumber = this.aadhaarForm.get('aadhaarNumber')?.value; //to show aadharnum in otp step
+
         this.txnId = r.txnId;
         this.maskedAadhaarMobile = r.message || '';
         this.snack.open('OTP sent to Aadhaar-linked mobile', 'OK', { duration: 2500 });
@@ -90,7 +93,7 @@ export class AbhaStepperComponent implements OnInit {
         // if (r.isNew) {
         //   this.isNewAddressDisabled = false;
         this.existingAddress = r.abhaProfile.phrAddress[0] ?? "";
-        this.token=r.tokens.token;
+        this.token = r.tokens.token;
         this.stepper.next();
         // }
         // else {
@@ -142,5 +145,26 @@ export class AbhaStepperComponent implements OnInit {
         this.mobileForm.reset();
         this.addressForm.reset();
         this.stepper.reset();
+    }
+
+    consentItems = CONSENT_ITEMS;
+    onSessionExpired(): void {
+
+        this.snack.open('OTP session expired. Please generate a new OTP.', 'OK', {
+            duration: 3000
+        });
+
+        this.txnId = '';
+
+        this.aadhaarForm.reset();
+        this.otpForm.reset();
+
+        this.consentItems.forEach(item => {
+            item.children?.forEach(child => {
+                child.checked = false;
+            });
+        });
+
+        // this.stepper.reset();   // Goes back to Step 1
     }
 }

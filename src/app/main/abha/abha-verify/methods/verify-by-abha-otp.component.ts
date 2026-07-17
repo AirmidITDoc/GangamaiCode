@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, VerifyResponse } from '../../abha-model';
@@ -29,14 +29,33 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     otpForm!: FormGroup;
 
     loading = false;
+    hideOtp = true;
     resendRemaining = 2;
     txnId = '';
     channelLabel = '';
     msg: string;
 
+    countdown = '01:00';
+    timeLeft = 60;
+    timer: any;
+    canResend = false;
+    resendAttempts = 0;
+    otpExpired = false;
+    @Output() sessionExpired = new EventEmitter<void>();
+
     constructor(private fb: FormBuilder, private abhaService: AbhaService, private snack: MatSnackBar) {
         // this.demoAbha = '91-3315-3072-4730';
         // this.demoOtp = svc.DEMO_OTP;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        console.log('txnId changed:', changes['txnId']?.currentValue);
+
+        if (changes['txnId']?.currentValue) {
+            this.startTimer();
+        }
+
+        console.log("Aadhar number:", this.abhaForm.value.abhaNumber);
     }
 
     ngOnInit(): void {
@@ -52,7 +71,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     get title(): string {
         return this.abhaForm.value.otpType === 1
             ? 'Verify via ABHA Number — Aadhaar OTP'
-            : 'Verify via ABHA Number — ABHA OTP';
+            : 'Verify via ABHA Number';
     }
 
     // Restrict & auto-format ABHA number input
@@ -98,6 +117,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
                     this.txnId = r.txnId;
                     this.step = 2;
                     this.snack.open(r.message, 'OK', { duration: 2500 });
+                    this.startTimer();
                 }
                 else {
                     this.snack.open(r.message, 'OK', { duration: 2500 });
@@ -163,17 +183,80 @@ export class VerifyByAbhaOtpComponent implements OnInit {
             });
     }
 
-    resendOtp(): void {
-        if (this.resendRemaining <= 0) return;
-        this.resendRemaining--;
+    // resendOtp(): void {
+    //     if (this.resendRemaining <= 0) return;
+    //     this.resendRemaining--;
+    //     this.sendOtp();
+    //     this.snack.open(`OTP resent. ${this.resendRemaining} attempt(s) remaining.`, 'OK', {
+    //         duration: 2000
+    //     });
+    // }
+
+     resendOtp(): void {
+        // if (this.resendRemaining <= 0) return;
+        // this.resendRemaining--;
+        this.otpExpired = false;
+        if (this.resendAttempts >= 2) {
+            return;
+        }
+        this.resendAttempts++; 
+
+        this.otpForm.get('otp')?.reset();
         this.sendOtp();
-        this.snack.open(`OTP resent. ${this.resendRemaining} attempt(s) remaining.`, 'OK', {
-            duration: 2000
-        });
     }
 
     goBackToStep1(): void {
         this.step = 1;
         this.otpForm.reset();
+    }
+
+    startTimer() {
+
+        clearInterval(this.timer);
+
+        this.canResend = false;
+        this.otpExpired = false;
+        this.timeLeft = 60;
+
+        this.updateCounter();
+
+        this.timer = setInterval(() => {
+
+            if (this.timeLeft > 0) {
+
+                this.timeLeft--;
+                this.updateCounter();
+
+            } else {
+
+                clearInterval(this.timer);
+                this.otpExpired = true;
+
+                if (this.resendAttempts >= 2) {
+
+                    this.sessionExpired.emit();
+
+                } else {
+
+                    this.canResend = true;
+                }
+                // if (this.resendAttempts < 2) {
+                //     this.canResend = true;
+                // }
+
+            }
+
+        }, 1000);
+    }
+
+    updateCounter() {
+
+        const min = Math.floor(this.timeLeft / 60);
+
+        const sec = this.timeLeft % 60;
+
+        this.countdown =
+            `${min}:${sec < 10 ? '0' + sec : sec}`;
+
     }
 }

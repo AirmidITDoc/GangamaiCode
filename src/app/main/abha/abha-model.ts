@@ -15,6 +15,16 @@ export interface AbhaApiResponse<T> {
 
 // ---------- Create ABHA via Aadhaar ----------
 
+export interface FindABHA {
+    mobile: string;
+}
+
+export interface ReqOtpFindABHA {
+    txnId: string,
+    aadhaarNumber: string,
+    otpType: any
+}
+
 export interface AadhaarGenerateOtpRequest {
     AadhaarNumber: string; // 12 digits — your backend should encrypt before sending to ABDM
 }
@@ -43,6 +53,8 @@ export interface VerifyUserResponse {
 export interface AadhaarGenerateOtpResponse {
     txnId: string;
     message?: string; // masked last 4
+    healthIdNumber?:any;
+    authMethods?: string[];
 }
 
 export interface AadhaarVerifyOtpRequest {
@@ -144,6 +156,7 @@ export interface VerifyResponse {
 }
 
 export interface AbhaProfile {
+    abhaNumber: string;
     ABHANumber: string;
     preferredAbhaAddress: string;
     mobile: string;
@@ -203,14 +216,47 @@ export interface AbhaData {
     profile?: AbhaProfile;
 }
 
-export const CONSENT_ITEMS: string[] = [
-    'I am voluntarily sharing my Aadhaar number and demographic information for the sole purpose of creating an ABHA.',
-    'I authorize NHA to use my Aadhaar number for issuing an ABHA, and authenticate my identity through Aadhaar Authentication system.',
-    'I authorize the sharing of my demographic information with the Health Information Exchange Consent Manager.',
-    'I want my ABHA to be linked with the Consent Manager.',
-    'I understand that my ABHA can be used and shared for purposes as may be notified by ABDM from time to time.',
-    'I consent to the collection, storage and use of my personal data by Dr. Anita Sharma.',
-    'I, (beneficiary name), have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.'
+// export const CONSENT_ITEMS: string[] = [
+//     // changed by raksha on 07/07/26
+//     'I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India("<strong>UIDAI</strong>"), and my demographic information for the purpose of creating an Ayushman Bharat Health Account number ("<strong>ABHA number</strong>") and Ayushman Bharat Health Account address ("<strong>ABHA Address</strong>"). I authorize NHA to use my Aadhaar number / Virtual ID for performing Aadhaar based authentication with UIDAIas per the provisionsof th Aadhaar (Targeted Delivery of Financial and other Subsidies, Benefits and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of "Yes" with NHA upon successful authentication.',
+//     'I intend to create Ayushman Bharat Health Account Number ("<strong>ABHA number</strong>") and Ayushman Bharat Health Account address ("<strong>ABHA Address</strong>") using document other than Aadhaar.(Click here to proceed further).',
+//     'I consent to usage of my ABHA address and ABHA number for linking of my legacy(part) health records and those which will be generated during this encounter.',
+//     'I authorize the sharing of my health records with healthcare provider(s) for the purpose of providing healthcare services to me during this encounter.',
+//     'I consent to the anonymization and subsequent use of my health records for public health purposes.',
+//     'I, (name of healthcare worker- depending on the username used for logging in into the system), confirmed that I have duly informed and explained the beneficiary of the contents of consent for aforementioned purposes.',
+//     'I, (beneficiary name), have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.'
+// ];
+
+export interface ConsentItem {
+    text: string;
+    checked?: boolean;
+    children?: ConsentItem[];
+}
+
+export const CONSENT_ITEMS: ConsentItem[] = [
+    {
+        text: 'I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India("<strong>UIDAI</strong>"), and my demographic information for the purpose of creating an Ayushman Bharat Health Account number ("<strong>ABHA number</strong>") and Ayushman Bharat Health Account address ("<strong>ABHA Address</strong>"). I authorize NHA to use my Aadhaar number / Virtual ID for performing Aadhaar based authentication with UIDAIas per the provisionsof th Aadhaar (Targeted Delivery of Financial and other Subsidies, Benefits and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of "Yes" with NHA upon successful authentication.'
+    },
+    {
+        text: 'I intend to create Ayushman Bharat Health Account Number ("<strong>ABHA number</strong>") and Ayushman Bharat Health Account address ("<strong>ABHA Address</strong>") using document other than Aadhaar.(Click here to proceed further).'
+    },
+    {
+        text: 'I consent to usage of my ABHA address and ABHA number for linking of my legacy(part) health records and those which will be generated during this encounter.'
+    },
+    {
+        text: 'I authorize the sharing of my health records with healthcare provider(s) for the purpose of providing healthcare services to me during this encounter.'
+    },
+    {
+        text: 'I consent to the anonymization and subsequent use of my health records for public health purposes.',
+        children: [
+            {
+                text: 'I, (name of healthcare worker- depending on the username used for logging in into the system), confirmed that I have duly informed and explained the beneficiary of the contents of consent for aforementioned purposes.'
+            },
+            {
+                text: 'I, (beneficiary name), have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.'
+            }
+        ]
+    }
 ];
 
 export interface LocalizedDetails {

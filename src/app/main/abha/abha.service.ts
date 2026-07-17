@@ -12,7 +12,9 @@ import {
     AbhaProfile,
     AbhaVerifyOtp,
     CreateAbhaResult,
+    FindABHA,
     MobileOtpVerifyRequest,
+    ReqOtpFindABHA,
     VerifyUser,
     VerifyUserResponse
 } from './abha-model';
@@ -60,8 +62,20 @@ export class AbhaService {
     requestAadharOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
         return this.http.PostData('Abha/existing/request-aadhar-otp', body);
     }
-    requestMobileOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
+    requestMobileOtp(body: ReqOtpFindABHA): Observable<AadhaarGenerateOtpResponse> {
         return this.http.PostData('Abha/existing/mobile-otp', body);
+    }
+
+    findAbha(body: FindABHA): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('Abha/address/findAbha', body);
+    }
+
+    requestOTPfindAbha(body: ReqOtpFindABHA): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('Abha/address/request-abhafind-otp', body);
+    }
+
+    findAbhaAddress(body: FindABHA): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('Abha/address/AbhaAddressSearch', body);
     }
 
     verifyAbhaOtp(body: AbhaVerifyOtp): Observable<AbhaOtpVerify> {
@@ -84,7 +98,7 @@ export class AbhaService {
     }
 
     /** Returns base64 PNG of the QR code */
-    getQr(token: string,isAddress: boolean): Observable<string> {
+    getQr(token: string, isAddress: boolean): Observable<string> {
         return this.http.PostData('Abha/aadhaar/qr', { token: token, isAddress: isAddress });
     }
 
