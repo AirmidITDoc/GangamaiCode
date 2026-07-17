@@ -1,0 +1,67 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">ABHA Linking</span>
+            </div>
+            <div class="modal-header-right">
+
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="abhaForm">
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="ABHA Address" formControlName="abhaAddress" [readonly]="isProfileData"
+                            [formGroup]="abhaForm"></airmid-textbox>
+                    </div>
+
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="ABHA Number" formControlName="abhaNumber" [readonly]="isProfileData"
+                            [formGroup]="abhaForm"></airmid-textbox>
+                    </div>
+
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Full Name" formControlName="abhaFullName" [readonly]="isProfileData"
+                            [formGroup]="abhaForm"></airmid-textbox>
+                    </div>
+
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Gender" formControlName="gender" [readonly]="isProfileData"
+                            [formGroup]="abhaForm"></airmid-textbox>
+                    </div>
+
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <airmid-textbox label="DateOfBirth" formControlName="yearOfBirth" [readonly]="isProfileData"
+                            [formGroup]="abhaForm"></airmid-textbox> -->
+                        <app-airmid-dateofbirth [formGroup]="abhaForm" dateStyle="Year" formControlName="yearOfBirth"
+                            [(value)]="dateofBirth"></app-airmid-dateofbirth>
+                    </div>
+                </div>
+
+                <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="center"> -->
+
+                <div style="display:flex; justify-content:flex-end; width:100%;">
+                    <button class="btn btn-primary" color="accent" (click)="onSubmit()">
+                        <span>Generate Token</span>
+                    </button>
+                </div>
+
+                <!-- </div> -->
+            </form>
+        </div>
+    </div>
+</div>

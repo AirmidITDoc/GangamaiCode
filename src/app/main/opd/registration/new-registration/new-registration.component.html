@@ -420,11 +420,9 @@
                 </div>
                 <form [formGroup]="abhaForm" class="mat-form-field-100">
                     <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                        <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="HIP Code" formControlName="hipCode"
-                            [formGroup]="abhaForm"></airmid-textbox>
-                        </div> -->
 
+                        <input type="hidden" formControlName="abhaTranId">
+                        <input type="hidden" formControlName="regId" [(ngModel)]="registerObj.regId">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ABHA Address" formControlName="abhaAddress"
                                 [readonly]="isProfileData" [formGroup]="abhaForm"></airmid-textbox>
@@ -435,21 +433,19 @@
                                 [formGroup]="abhaForm"></airmid-textbox>
                         </div>
 
-                        <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="Full Name" formControlName="fullName"
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="Full Name" formControlName="abhaFullName" [readonly]="isProfileData"
                             [formGroup]="abhaForm"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="Token #" formControlName="token"
+                          <airmid-textbox label="Gender" formControlName="gender" [readonly]="isProfileData"
                             [formGroup]="abhaForm"></airmid-textbox>
-                        </div> -->
+                        </div>
 
-                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                            <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
-                                <mat-radio-button value="F_M_L">F_M_L Name</mat-radio-button>
-                                <mat-radio-button value="L_M_F">L_M_F Name</mat-radio-button>
-                            </mat-radio-group>
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="DateOfBirth" formControlName="yearOfBirth" [readonly]="isProfileData"
+                            [formGroup]="abhaForm"></airmid-textbox>
                         </div>
 
                     </div>

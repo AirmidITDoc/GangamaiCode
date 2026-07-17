@@ -140,6 +140,15 @@
         </div>
     </ng-template>
 
+    <ng-template #abhaIcon let-element>
+        <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
+            <button mat-icon-button matTooltip="ABHA Linking" (click)="OnabhaLink(element)"
+                *ngIf="element.abhaTranId > 0">
+                <img width="60" height="60" src="assets/images/logos/abha.jpeg">
+            </button>
+        </div>
+    </ng-template>
+
     <ng-template #patientNameWithBadgeTemplate let-element>
         <!-- Patient Name with Token Badge -->
         <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"

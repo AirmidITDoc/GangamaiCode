@@ -938,3 +938,10 @@
   justify-content: end;
   gap: 4px;
 }
+.selected-row {
+  background-color: #e3f2fd !important; /* Light blue */
+}
+
+.selected-row:hover {
+  background-color: #bbdefb !important;
+}

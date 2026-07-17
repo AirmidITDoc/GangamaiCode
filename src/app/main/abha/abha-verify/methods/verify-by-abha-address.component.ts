@@ -24,7 +24,7 @@ export class VerifyByAbhaAddressComponent implements OnInit {
     @Input() otpSystem: OtpSystem = 'abdm';
     @Output() verified = new EventEmitter<VerifyResponse>();
 
-    step: 1 | 2 = 1;
+    step: 1 | 2 | 3 = 1;
     abhaForm!: FormGroup;
     otpForm!: FormGroup;
 
@@ -101,21 +101,45 @@ export class VerifyByAbhaAddressComponent implements OnInit {
         }
     }
 
-    // ============== Send OTP ==============
-    sendOtp(): void {
-        if (this.abhaForm.invalid) {
-            this.abhaForm.markAllAsTouched();
+    // ============== Step 1: Find ABHA Address ==============
+
+    authMethods: string[] = [];
+    searchData: any = {};
+    findAbhaAddress(): void {
+        if (this.abhaForm.get('abhaNumber')?.invalid) {
+            this.abhaForm.get('abhaNumber')?.markAsTouched();
             return;
         }
         this.loading = true;
-        const raw = AbhaValidators.normalizeAbhaNumber(this.abhaForm.value.abhaNumber);
+        this.abhaService.findAbhaAddress({ mobile: this.abhaForm.value.abhaNumber })
+            .subscribe((r: AadhaarGenerateOtpResponse) => {
+                console.log("Search DATA:", r)
+                this.searchData = r
+                if (r.healthIdNumber) {
+                    this.authMethods = r.authMethods || [];
+                    this.step = 2;
+                    this.snack.open('', 'OK', { duration: 2500 });
+                } else {
+                    this.snack.open(r.message || 'Auth Type not found.', 'OK', { duration: 2500 });
+                }
+                this.loading = false;
+            });
+    }
+
+    // ============== Send OTP ==============
+    sendOtp(): void {
+        if (this.abhaForm.get('otpType')?.invalid) {
+            this.abhaForm.get('otpType')?.markAsTouched();
+            return;
+        }
+        this.loading = true;
         // if (this.otpSystem === 'aadhaar')
-        this.abhaService.requestAbhaOtp({ AadhaarNumber: this.abhaForm.value.abhaNumber, OtpType: this.abhaForm.value.otpType })
+        this.abhaService.requestAbhaOtp({ AadhaarNumber: this.searchData.abhaAddress, OtpType: 1 })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.channelLabel = this.abhaForm.value.otpType === 1 ? 'Aadhaar-linked mobile' : 'ABHA-linked mobile';
                     this.txnId = r.txnId;
-                    this.step = 2;
+                    this.step = 3;
                     this.snack.open(r.message, 'OK', { duration: 2500 });
                     this.startTimer();
                 }

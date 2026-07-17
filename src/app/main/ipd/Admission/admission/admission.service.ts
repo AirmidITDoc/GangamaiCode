@@ -159,7 +159,7 @@ export class AdmissionService {
             IsNRI: [false],
             emailId: ['', [Validators.email]],
 
-            membershipId: 0,
+            // membershipId: 0,
             isMember: false,
             abhTranId: 0
         });

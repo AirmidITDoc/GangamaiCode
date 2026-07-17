@@ -17,6 +17,15 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #abhaIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
+                <button mat-icon-button matTooltip="ABHA Linking" (click)="OnabhaLink(element)"
+                    *ngIf="element.abhaTranId > 0">
+                    <img width="60" height="60" src="assets/images/logos/abha.jpeg">
+                </button>
+            </div>
+        </ng-template>
+
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -111,8 +120,9 @@
 
                     <airmid-dropdown label="City" formControlName="CityId" [formGroup]="myFilterform"
                         [validations]="getValidationMessages().cityId" ValueField="cityId" TextField="cityName"
-                        (selectionChange)="onChangeFirst()" ApiUrl="CityMaster/get-cities"  [(ngModel)]="gridConfig.filters[6].fieldValue">
-                    </airmid-dropdown> 
+                        (selectionChange)="onChangeFirst()" ApiUrl="CityMaster/get-cities"
+                        [(ngModel)]="gridConfig.filters[6].fieldValue">
+                    </airmid-dropdown>
 
                 </form>
             </ng-container>
