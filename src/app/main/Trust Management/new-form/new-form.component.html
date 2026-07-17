@@ -1,14 +1,14 @@
-<div class="modal-wrapper grid-container resize-form-fields padding-fix">
-
+<div class="modal-wrapper grid-container labpatientMain resize-form-fields">
+    <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">NEW MEMBERSHIP REGISTRATION FORM</span>
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">New Membership Form</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
                     <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
                     <div class="close-icon">
@@ -22,230 +22,350 @@
         </div>
     </div>
 
-
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container detail-wrapper">
-            <div fxLayout="column" fxLayoutGap="2px">
+    <div class="modal-body">
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-2 h-100-p">
 
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-                    <mat-tab label="Personal Detail">
-                        <div class="detail-container">
-                            <div fxLayout="column" class="gap-5">
+                    <mat-tab label="Member Personal Detail">
+                        <div fxLayout="column" class="gap-8 h-100-p" fxFlex=99%>
 
-                                <span
-                                    style="font-size: x-large;font-weight: bold;color: rgb(7, 47, 58);text-align: center;align-items: center;padding:10px">
-                                    Members Details</span>
-                                <div fxLayout="row wrap" fxLayoutGap="8px grid">
+                            <div class="detail-container">
+                                <div fxLayout="column" class="gap-5">
 
-
-                                    <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="20%">
-                                        <mat-card>
-                                            <mat-card-content class="py-2">
-                                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                    <!-- <span
+                                        style="font-size: x-large;font-weight: bold;color: rgb(7, 47, 58);text-align: center;align-items: center;padding:10px">
+                                        Members Details</span> -->
+                                    <div fxLayout="row wrap" fxLayoutGap="8px grid">
 
 
-                                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-                                                        <div fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%"
-                                                            fxLayout="row wrap" fxLayoutGap="4px grid">
-
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-dropdown label="Prefix"
-                                                                    formControlName="hprefixId"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [value]="registerObj?.hprefixId"
-                                                                    [validations]="getValidationMessages().hprefixId"
-                                                                    ValueField="prefixId" TextField="prefixName"
-                                                                    ApiUrl="Prefix/get-prefixs"></airmid-dropdown>
-
-                                                            </div>
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Husband FName"
-                                                                    (keypress)="allowOnlyAlphabets($event)"
-                                                                    formControlName="husbandFirstName"
-                                                                    [value]="data?.husbandfname" (keyup)="HFNameAdd()"
-                                                                    [formGroup]="personalFormGroup"></airmid-textbox>
-                                                            </div>
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Middle Name"
-                                                                    (keypress)="allowOnlyAlphabets($event)"
-                                                                    formControlName="husbandMiddleName"
-                                                                    [value]="data?.husbandmname"
-                                                                    [formGroup]="personalFormGroup"></airmid-textbox>
-                                                            </div>
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Last Name"
-                                                                    (keypress)="allowOnlyAlphabets($event)"
-                                                                    formControlName="husbandLastName"
-                                                                    [value]="data?.husbandlname" (keyup)="HLNameAdd()"
-                                                                    [formGroup]="personalFormGroup"></airmid-textbox>
-                                                            </div>
-                                                            <!-- [(value)]="registerObj1.husbandDob" -->
-                                                            <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <app-airmid-dateofbirth [formGroup]="personalFormGroup"
-                                                                    fxFlex="99%" dateStyle="Year"
-                                                                    formControlName="DateOfBirth"
-                                                                    [(value)]="registerObj1.husbandDob"></app-airmid-dateofbirth>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                                <airmid-textbox label="Husband Mobile"
-                                                                    formControlName="husbandMobile"
-                                                                    [value]="data?.husbandmobile"
-                                                                    (keypress)="keyPressAlphanumeric($event)"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().husbandmobile"
-                                                                    [maxLength]="10"></airmid-textbox>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Husband Email"
-                                                                    formControlName="husbandEmail"
-                                                                    [value]="data?.husbandemail"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().husbandemail"></airmid-textbox>
-                                                            </div>
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="20%">
+                                            <mat-card>
+                                                <mat-card-content class="py-2">
+                                                    <form [formGroup]="personalFormGroup" class="input-error-hidden">
 
 
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Husband Aadhaar"
-                                                                    formControlName="husbandAadhaar"
-                                                                    (keypress)="keyPressAlphanumeric($event)"
-                                                                    [value]="data?.husbandAadhaar"
-                                                                    [formGroup]="personalFormGroup" [maxLength]="12"
-                                                                    [validations]="getValidationMessages().husbandaadhaar"></airmid-textbox>
-                                                            </div>
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Husband Pan"
-                                                                    formControlName="husbandPan"
-                                                                    [value]="data?.husbandpan"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().husbandpan"></airmid-textbox>
-                                                            </div>
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                                            <div fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%"
+                                                                fxLayout="row wrap" fxLayoutGap="4px grid">
 
-                                                                <airmid-dropdown label="Husband Occupation"
-                                                                    formControlName="husbandOccupationId"
-                                                                    [value]="data?.husbandOccupationId"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().husbandoccupation"
-                                                                    [mode]="autocompleteModeOccupation">
-                                                                </airmid-dropdown>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-dropdown label="Prefix"
+                                                                        formControlName="hprefixId"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [value]="registerObj?.hprefixId"      (selectionChange)="onChangePrefix($event)"
+                                                                        [validations]="getValidationMessages().hprefixId"
+                                                                        ValueField="prefixId" TextField="prefixName"
+                                                                        ApiUrl="Prefix/get-prefixs"></airmid-dropdown>
 
-                                                            </div>
-
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Husband Education"
-                                                                    formControlName="husbandEducation"
-                                                                    [value]="data?.husbandeducation"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().husbandeducation"></airmid-textbox>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Husband B.Group</mat-label>
-                                                                    <mat-select placeholder="BloodGroup" id="bloodField"
-                                                                        formControlName="husbandBloodGroupId"
-                                                                        name="BloodGroup">
-                                                                        <mat-option *ngFor="let i of BloodGroupNames"
-                                                                            [value]="i">
-                                                                            {{i}}</mat-option>
-                                                                    </mat-select>
-                                                                </mat-form-field>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Native place"
-                                                                    formControlName="nativePlace"
-                                                                    [value]="data?.nativePlace"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().nativeplace"></airmid-textbox>
-                                                            </div>
-
-
-                                                            <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Husband Hobbies"
-                                                                    formControlName="husbandHobbies"
-                                                                    [value]="data?.husbandhobbies"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().husbandhobbies"></airmid-textbox>
-                                                            </div>
-
-
-                                                        </div>
-                                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="80%"
-                                                            fxLayout="row wrap" fxLayoutGap="4px grid">
-
-                                                            <div class="photo-capture p-16 border border-radius-4 gap-12"
-                                                                fxLayout="column">
-                                                                <div class="photp-capture-image">
-                                                                    <img class="h-100-p w-80-p border-radius-4"
-                                                                        [src]="imagePreview ? imagePreview:'/assets/images/default.jpg'" />
                                                                 </div>
-                                                                <div class="photo-capture-button ">
-                                                                    <label
-                                                                        class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
-                                                                        (click)="openCamera('camera','photo')">
-                                                                        <span class="btn-icon">
-                                                                            <mat-icon>camera_enhance</mat-icon>
-                                                                        </span>
-                                                                        <span>Capture image</span>
-                                                                    </label>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Husband FName"
+                                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                                        formControlName="husbandFirstName"
+                                                                        [value]="data?.husbandfname"
+                                                                        (keyup)="HFNameAdd()"
+                                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Middle Name"
+                                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                                        formControlName="husbandMiddleName"
+                                                                        [value]="data?.husbandmname"
+                                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Last Name"
+                                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                                        formControlName="husbandLastName"
+                                                                        [value]="data?.husbandlname"
+                                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-dropdown label="Gender"
+                                                                        formControlName="hgenderId"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [value]="registerObj?.hgenderId"
+                                                                        [validations]="getValidationMessages().hgenderId"
+                                                                        #ddlGender [readonly]="true"
+                                                                                 [mode]="autocompleteModegender">
+                                                                    </airmid-dropdown>
+                                                                </div>
+                                                                
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <airmid-textbox label="Mobile No"
+                                                                        formControlName="husbandMobile"
+                                                                        [value]="data?.husbandmobile"
+                                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().husbandmobile"
+                                                                        [maxLength]="10"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label=" Email"
+                                                                        formControlName="husbandEmail"
+                                                                        [value]="data?.husbandemail"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().husbandemail"></airmid-textbox>
+                                                                </div>
+
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Aadhaar"
+                                                                        formControlName="husbandAadhaar"
+                                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                                        [value]="data?.husbandAadhaar"
+                                                                        [formGroup]="personalFormGroup" [maxLength]="12"
+                                                                        [validations]="getValidationMessages().husbandaadhaar"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label=" Pan No"
+                                                                        formControlName="husbandPan"
+                                                                        [value]="data?.husbandpan"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().husbandpan"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <airmid-dropdown label="Occupation"
+                                                                        formControlName="husbandOccupationId"
+                                                                        [value]="data?.husbandOccupationId"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().husbandoccupation"
+                                                                        [mode]="autocompleteModeOccupation">
+                                                                    </airmid-dropdown>
+
+                                                                </div>
+
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label=" Education"
+                                                                        formControlName="husbandEducation"
+                                                                        [value]="data?.husbandeducation"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().husbandeducation"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <mat-form-field appearance="outline" fxFlex>
+                                                                        <mat-label>BloodGroup</mat-label>
+                                                                        <mat-select placeholder="BloodGroup"
+                                                                            id="bloodField"
+                                                                            formControlName="husbandBloodGroupId"
+                                                                            name="BloodGroup">
+                                                                            <mat-option
+                                                                                *ngFor="let i of BloodGroupNames"
+                                                                                [value]="i">
+                                                                                {{i}}</mat-option>
+                                                                        </mat-select>
+                                                                    </mat-form-field>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Native place"
+                                                                        formControlName="nativePlace"
+                                                                        [value]="data?.nativePlace"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().nativeplace"></airmid-textbox>
+                                                                </div>
+
+
+                                                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Husband Hobbies"
+                                                                        formControlName="husbandHobbies"
+                                                                        [value]="data?.husbandhobbies"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().husbandhobbies"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <app-airmid-dateofbirth
+                                                                        [formGroup]="personalFormGroup" fxFlex="99%"
+                                                                        dateStyle="Year" formControlName="DateOfBirth"
+                                                                        [(value)]="registerObj1.husbandDob"></app-airmid-dateofbirth>
                                                                 </div>
                                                             </div>
+
+                                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
+                                                                <div class="photo-capture  border border-radius-4 gap-4"
+                                                                    fxLayout="column" style="padding: 4px;">
+                                                                    <div class="photp-capture-image"
+                                                                        style="padding: 4px;" fxLayoutAlign="center">
+                                                                        <img class="h-100-p w-90-p border-radius-4"
+                                                                            [src]="imagePreview ? imagePreview:'/assets/images/default.jpg'" />
+                                                                    </div>
+                                                                    <div class="photo-capture-button ">
+                                                                        <label
+                                                                            class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
+                                                                            (click)="openCamera('camera','photo')">
+                                                                            <span class="btn-icon">
+                                                                                <mat-icon>camera_enhance</mat-icon>
+                                                                            </span>
+                                                                            <span>Capture image</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </form>
-                                            </mat-card-content>
-                                        </mat-card>
-                                    </div>
+                                                    </form>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
 
-                                    <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="20%">
-                                        <mat-card>
-                                            <mat-card-content class="py-2">
-                                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="20%">
+                                            <mat-card>
+                                                <mat-card-content class="py-2">
+                                                    <form [formGroup]="personalFormGroup" class="input-error-hidden">
 
 
-                                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-                                                        <div fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%"
-                                                            fxLayout="row wrap" fxLayoutGap="4px grid">
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-dropdown label="Prefix"
-                                                                    formControlName="wprefixId"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [value]="registerObj?.wprefixId"
-                                                                    [validations]="getValidationMessages().wprefixId"
-                                                                    ValueField="prefixId" TextField="prefixName"
-                                                                    ApiUrl="Prefix/get-prefixs"></airmid-dropdown>
+                                                        <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                                            <div fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%"
+                                                                fxLayout="row wrap" fxLayoutGap="4px grid">
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-dropdown label="Prefix"
+                                                                        formControlName="wprefixId"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [value]="registerObj?.wprefixId"
+                                                                        (selectionChange)="onChangePrefix1($event)"
+                                                                        [validations]="getValidationMessages().wprefixId"
+                                                                        ValueField="prefixId" TextField="prefixName"
+                                                                        ApiUrl="Prefix/get-prefixs"></airmid-dropdown>
 
-                                                            </div>
+                                                                </div>
 
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Wife Name"
-                                                                    (keypress)="allowOnlyAlphabets($event)"
-                                                                    formControlName="wifeFirstName"
-                                                                    [value]="data?.wifename"
-                                                                    [formGroup]="personalFormGroup"></airmid-textbox>
-                                                            </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Wife Name"
+                                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                                        formControlName="wifeFirstName"
+                                                                        (keyup)="WNameAdd()" [value]="data?.wifename"
+                                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                                </div>
 
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Middle Name"
-                                                                    (keypress)="allowOnlyAlphabets($event)"
-                                                                    formControlName="wifeMiddleName" [value]="wMName"
-                                                                    [formGroup]="personalFormGroup"></airmid-textbox>
-                                                            </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Middle Name"
+                                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                                        formControlName="wifeMiddleName"
+                                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                                </div>
 
-                                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Last Name"
-                                                                    (keypress)="allowOnlyAlphabets($event)"
-                                                                    formControlName="wifeLastName" [value]="wLName"
-                                                                    [formGroup]="personalFormGroup"></airmid-textbox>
-                                                            </div>
-                                                         
-                                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Last Name"
+                                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                                        formControlName="wifeLastName"
+                                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-dropdown label="Gender"
+                                                                        formControlName="wgenderId"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [value]="registerObj?.wgenderId"
+                                                                        [validations]="getValidationMessages().wgenderId"
+                                                                        #ddlGender1 [readonly]="true"
+                                                                        [mode]="autocompleteModegender">
+                                                                    </airmid-dropdown>
+                                                                </div>
+
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <airmid-textbox label="Mobile No"
+                                                                        formControlName="wifeMobile"
+                                                                        [value]="data?.wifemobile"
+                                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifemobile"
+                                                                        [maxLength]="10"></airmid-textbox>
+
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Email"
+                                                                        formControlName="wifeEmail"
+                                                                        [value]="data?.wifeemail"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifeemail"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Aadhaar"
+                                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                                        formControlName="wifeAadhaar"
+                                                                        [value]="data?.wifeaadhaar"
+                                                                        [formGroup]="personalFormGroup" [maxLength]="12"
+                                                                        [validations]="getValidationMessages().wifeaadhaar"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Pan No"
+                                                                        formControlName="wifePan"
+                                                                        [value]="data?.wifepan"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifepan"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <airmid-dropdown label="Occupation"
+                                                                        formControlName="wifeOccupationId"
+                                                                        [value]="data?.wifeoccupation"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifeoccupation"
+                                                                        [mode]="autocompleteModeOccupation">
+                                                                    </airmid-dropdown>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label=" Education"
+                                                                        formControlName="wifeEducation"
+                                                                        [value]="data?.wifeeducation"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifeeducation"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <mat-form-field appearance="outline" fxFlex>
+                                                                        <mat-label> BloodGroup</mat-label>
+                                                                        <mat-select placeholder="BloodGroup"
+                                                                            id="bloodField"
+                                                                            formControlName="wifeBloodGroupId"
+                                                                            name="BloodGroup">
+                                                                            <mat-option
+                                                                                *ngFor="let i of BloodGroupNames"
+                                                                                [value]="i">
+                                                                                {{i}}</mat-option>
+                                                                        </mat-select>
+                                                                    </mat-form-field>
+                                                                </div>
+
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Wife Hobbies"
+                                                                        formControlName="wifehobbies"
+                                                                        [value]="data?.wifehobbies"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifehobbies"></airmid-textbox>
+                                                                </div>
+
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="parents Native place"
+                                                                        formControlName="wifeparentsnativeplace"
+                                                                        [value]="data?.wifeParentsNativePlace"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifeparentsnativeplace"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <airmid-textbox label="Wife parental details"
+                                                                        formControlName="wifeparentaldetails"
+                                                                        [value]="data?.wifeparentaldetails"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().wifeparentaldetails"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                                     <form [formGroup]="Wifeform">
                                                                         <app-airmid-dateofbirth [formGroup]="Wifeform"
@@ -253,538 +373,387 @@
                                                                             formControlName="DateOfBirth"
                                                                             [(value)]="registerObj1.wifeDob"></app-airmid-dateofbirth>
                                                                     </form>
-                                                               
-                                                            </div>
 
-                                                       
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                                <airmid-textbox label="Wife Mobile"
-                                                                    formControlName="wifeMobile"
-                                                                    [value]="data?.wifemobile"
-                                                                    (keypress)="keyPressAlphanumeric($event)"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifemobile"
-                                                                    [maxLength]="10"></airmid-textbox>
-
-                                                            </div>
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Wife Email"
-                                                                    formControlName="wifeEmail"
-                                                                    [value]="data?.wifeemail"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifeemail"></airmid-textbox>
-                                                            </div>
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Wife Aadhaar"
-                                                                    (keypress)="keyPressAlphanumeric($event)"
-                                                                    formControlName="wifeAadhaar"
-                                                                    [value]="data?.wifeaadhaar"
-                                                                    [formGroup]="personalFormGroup" [maxLength]="12"
-                                                                    [validations]="getValidationMessages().wifeaadhaar"></airmid-textbox>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Wife Pan"
-                                                                    formControlName="wifePan" [value]="data?.wifepan"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifepan"></airmid-textbox>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                                <airmid-dropdown label="Wife Occupation"
-                                                                    formControlName="wifeOccupationId"
-                                                                    [value]="data?.wifeoccupation"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifeoccupation"
-                                                                    [mode]="autocompleteModeOccupation">
-                                                                </airmid-dropdown>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Wife Education"
-                                                                    formControlName="wifeEducation"
-                                                                    [value]="data?.wifeeducation"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifeeducation"></airmid-textbox>
-                                                            </div>
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Wife B.Group</mat-label>
-                                                                    <mat-select placeholder="BloodGroup" id="bloodField"
-                                                                        formControlName="wifeBloodGroupId"
-                                                                        name="BloodGroup">
-                                                                        <mat-option *ngFor="let i of BloodGroupNames"
-                                                                            [value]="i">
-                                                                            {{i}}</mat-option>
-                                                                    </mat-select>
-                                                                </mat-form-field>
-                                                            </div>
-
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Wife Hobbies"
-                                                                    formControlName="wifehobbies"
-                                                                    [value]="data?.wifehobbies"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifehobbies"></airmid-textbox>
-                                                            </div>
-
-
-                                                            <div fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="parents Native place"
-                                                                    formControlName="wifeparentsnativeplace"
-                                                                    [value]="data?.wifeParentsNativePlace"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifeparentsnativeplace"></airmid-textbox>
-                                                            </div>
-
-                                                            <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                <airmid-textbox label="Wife parental details"
-                                                                    formControlName="wifeparentaldetails"
-                                                                    [value]="data?.wifeparentaldetails"
-                                                                    [formGroup]="personalFormGroup"
-                                                                    [validations]="getValidationMessages().wifeparentaldetails"></airmid-textbox>
-                                                            </div>
-
-                                                        </div>
-                                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="80%"
-                                                            fxLayout="row wrap" fxLayoutGap="4px grid">
-                                                            <div class="photo-capture p-16 border border-radius-4 gap-12"
-                                                                fxLayout="column">
-                                                                <div class="photp-capture-image">
-                                                                    <img class="h-100-p w-80-p border-radius-4"
-                                                                        [src]="imagePreview1 ? imagePreview1:'/assets/images/default.jpg'" />
                                                                 </div>
-                                                                <div class="photo-capture-button ">
-                                                                    <label
-                                                                        class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
-                                                                        (click)="openCamera1('camera','photo')">
-                                                                        <span class="btn-icon">
-                                                                            <mat-icon>camera_enhance</mat-icon>
-                                                                        </span>
-                                                                        <span>Capture image</span>
-                                                                    </label>
+
+                                                            </div>
+                                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
+                                                                <div class="photo-capture  border border-radius-4 gap-4"
+                                                                    fxLayout="column" style="padding: 4px;">
+                                                                    <div class="photp-capture-image"
+                                                                        style="padding: 4px;" fxLayoutAlign="center">
+                                                                        <img class="h-100-p w-90-p border-radius-4"
+                                                                            [src]="imagePreview1 ? imagePreview1:'/assets/images/default.jpg'" />
+                                                                    </div>
+                                                                    <div class="photo-capture-button ">
+                                                                        <label
+                                                                            class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
+                                                                            (click)="openCamera1('camera','photo')">
+                                                                            <span class="btn-icon">
+                                                                                <mat-icon>camera_enhance</mat-icon>
+                                                                            </span>
+                                                                            <span>Capture image</span>
+                                                                        </label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </form>
-                                            </mat-card-content>
-                                        </mat-card>
+                                                    </form>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+
                                     </div>
-
                                 </div>
                             </div>
+
+                            <div fxFlex="95%" fxFlex.xs="100%" fxFlex.sm="80%">
+                                <mat-card>
+
+                                    <mat-card-content>
+
+                                        <span
+                                            style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
+                                            Residence Details</span>
+
+                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox aria-label="" formControlName="residencetype"
+                                                        style="margin-left:20px;" [value]="data?.residencetype">
+                                                        Residence Type Own / Rented </mat-checkbox>
+
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="City" formControlName="cityId"
+                                                        [formGroup]="personalFormGroup" [value]="data?.cityId"
+                                                        [validations]="getValidationMessages().cityId"
+                                                        ValueField="cityId" TextField="cityName"
+                                                        ApiUrl="CityMaster/get-cities"
+                                                        (selectionChange)="onChangecity($event)" required>
+                                                    </airmid-dropdown>
+                                                </div>
+
+
+                                                <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Residence Address"
+                                                        formControlName="residenceAddress"
+                                                        [value]="data?.residenceAddress" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().residenceaddress"></airmid-textbox>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+                                        <span
+                                            style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
+                                            Family Doctor Details</span>
+                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Family Doctor Name"
+                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                        formControlName="familyDoctorName"
+                                                        [value]="data?.familydoctorname" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().familydoctorname"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Family Doctor contact"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        formControlName="familyDoctorContact"
+                                                        [value]="data?.familydoctorcontact"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().familydoctorcontact"
+                                                        [maxLength]="10"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
+                                                        style="margin-left:20px;" [value]="data?.ayushmanmaleenrolled">
+                                                        Ayushman Enrolled </mat-checkbox>
+                                                </div>
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <mat-checkbox aria-label="Male / Female"
+                                                        formControlName="maleFemaleEnrolled" style="margin-left:20px;"
+                                                        [value]="data?.maleFemaleEnrolled">
+                                                        Male / Female Enrolled </mat-checkbox>
+                                                </div>
+
+                                                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Ayushman Spouse details"
+                                                        formControlName="ayushmanSpouseDetails"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </form>
+
+                                        <span
+                                            style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
+                                            Mediclaim Insurance Details</span>
+                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox aria-label="" formControlName="hasmediclaim"
+                                                        style="margin-left:20px;" [value]="data?.hasmediclaim"
+                                                        (change)="hasmediclaimAdd()">
+                                                        Has Mediclaim</mat-checkbox>
+                                                </div>
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Mediclaim policy number"
+                                                        formControlName="mediclaimpolicynumber"
+                                                        [value]="data?.mediclaimPolicyNumber"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Mediclaim Issuance"
+                                                        formControlName="mediclaimIssuanceAmt"
+                                                        [value]="data?.mediclaimIssuanceAmt" maxlength="20"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Company Name"
+                                                        formControlName="mediclaimcompany"
+                                                        [value]="data?.mediclaimCompany" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().mediclaimcompany"
+                                                        [mode]="autocompleteModeCompany">
+                                                    </airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Mediclaim startdate</mat-label>
+                                                        <input matInput [matDatepicker]="mediclaimstartdate"
+                                                            placeholder="mediclaimstartdate"
+                                                            formControlName="mediclaimStartDate"
+                                                            [value]="vmediclaimstartdate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="mediclaimstartdate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #mediclaimstartdate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Mediclaim Enddate</mat-label>
+                                                        <input matInput [matDatepicker]="mediclaimenddate"
+                                                            placeholder="mediclaimenddate"
+                                                            formControlName="mediclaimEndDate"
+                                                            [value]="vmediclaimenddate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="mediclaimenddate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #mediclaimenddate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
+
+                                            <span
+                                                style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
+                                                Health Information</span>
+
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+
+                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <mat-form-field appearance="outline"
+                                                        style="width: 100%; height: 70px;">
+                                                        <mat-label>Male / Husband Current Medications /
+                                                            Treatment</mat-label>
+                                                        <textarea matInput formControlName="husbandmedications"
+                                                            placeholder="husband medications"
+                                                            [value]="data?.husbandMedications"
+                                                            style="height: 100%; resize: none;"></textarea>
+                                                    </mat-form-field>
+                                                </div>
+
+
+                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <mat-form-field appearance="outline"
+                                                        style="width: 100%; height: 70px;">
+                                                        <mat-label>Female / Wife Current Medications /
+                                                            Treatment</mat-label>
+                                                        <textarea matInput formControlName="wifemedications"
+                                                            placeholder="wife medications"
+                                                            [value]="data?.wifeMedications"
+                                                            style="height: 100%; resize: none;"></textarea>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+                                        <span
+                                            style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
+                                            Previous Membership Details</span>
+
+                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox
+                                                        label="Man/Husband Shree Thana Sangh Member Id Number"
+                                                        formControlName="husbandPreviousMemberId"
+                                                        [value]="data?.husbandPreviousMemberId "
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox
+                                                        label="Female/Wife Shree Thana Sangh Member Id Number:"
+                                                        formControlName="wifePreviousMemberId"
+                                                        [value]="data?.wifePreviousMemberId"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Income Details"
+                                                        formControlName="monthlyIncomeRange"
+                                                        [value]="data?.monthlyincomerange ?? 0"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().monthlyincomerange"
+                                                        [mode]="autocompleteTrustIncomerange">
+                                                    </airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Husband Recent Full Body Check-up
+                                                            Date</mat-label>
+                                                        <input matInput [matDatepicker]="husbandFullBodyCheckupDate"
+                                                            placeholder="Husband fullbody checkupDate"
+                                                            formControlName="husbandFullBodyCheckupDate"
+                                                            [value]="vhusbandFullBodyCheckupDate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="husbandFullBodyCheckupDate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #husbandFullBodyCheckupDate></mat-datepicker>
+                                                    </mat-form-field>
+
+
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Wife Recent Full Body Check-up Date</mat-label>
+                                                        <input matInput [matDatepicker]="wifefullbodycheckup"
+                                                            placeholder="wife fullbody checkupDate"
+                                                            [value]="vwifeFullBodyCheckupDate"
+                                                            formControlName="wifeFullBodyCheckupDate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="wifefullbodycheckup"></mat-datepicker-toggle>
+                                                        <mat-datepicker #wifefullbodycheckup></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+
+                                        <span
+                                            style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
+                                            For Office Use Information Details</span>
+
+                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox formControlName="feeReceived"
+                                                        style="font-weight: bold;padding-left: 20px;"
+                                                        [value]="data?.feereceived">
+                                                        Amount Received
+                                                    </mat-checkbox>
+
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Membership No" formControlName="membershipNo"
+                                                        [value]="data?.membershipNo"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Fee Amount" formControlName="feeAmount"
+                                                        [formGroup]="personalFormGroup"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        [value]="data?.feeAmount"
+                                                        [validations]="getValidationMessages().feeamount"
+                                                        [maxLength]="5"></airmid-textbox>
+
+                                                </div>
+
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Receipt Date</mat-label>
+                                                        <input matInput [matDatepicker]="receiptdate"
+                                                            placeholder="receiptdate" formControlName="receiptDate"
+                                                            [value]="vreceiptdate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="receiptdate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #receiptdate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Membership valid Date</mat-label>
+                                                        <input matInput [matDatepicker]="membershipvalidDate"
+                                                            placeholder="membershipvalidDate"
+                                                            formControlName="membershipvalidDate"
+                                                            [value]="todayPlus5Years" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="membershipvalidDate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #membershipvalidDate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
                         </div>
-
-                        <mat-card>
-                            <mat-card-content class="py-2">
-
-                                <span
-                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                    Residence Details</span>
-
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-checkbox aria-label="" formControlName="residencetype"
-                                                style="margin-left:20px;" [value]="data?.residencetype">
-                                                Residence Type Own / Rented </mat-checkbox>
-
-                                        </div>
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="City" formControlName="cityId"
-                                                [formGroup]="personalFormGroup" [value]="data?.cityId"
-                                                [validations]="getValidationMessages().cityId" ValueField="cityId"
-                                                TextField="cityName" ApiUrl="CityMaster/get-cities"
-                                                (selectionChange)="onChangecity($event)" required>
-                                            </airmid-dropdown>
-                                        </div>
-
-
-                                        <div fxFlex="58%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Residence Address" formControlName="residenceAddress"
-                                                [value]="data?.residenceAddress" [formGroup]="personalFormGroup"
-                                                [validations]="getValidationMessages().residenceaddress"></airmid-textbox>
-                                        </div>
-
-                                    </div>
-
-                                </form>
-
-                                <span
-                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                    Family Doctor Details</span>
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <airmid-textbox label="Family Doctor Name"
-                                                (keypress)="allowOnlyAlphabets($event)"
-                                                formControlName="familyDoctorName" [value]="data?.familydoctorname"
-                                                [formGroup]="personalFormGroup"
-                                                [validations]="getValidationMessages().familydoctorname"></airmid-textbox>
-
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <airmid-textbox label="Family Doctor contact"
-                                                (keypress)="keyPressAlphanumeric($event)"
-                                                formControlName="familyDoctorContact"
-                                                [value]="data?.familydoctorcontact" [formGroup]="personalFormGroup"
-                                                [validations]="getValidationMessages().familydoctorcontact"
-                                                [maxLength]="10"></airmid-textbox>
-
-                                        </div>
-
-                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
-                                                style="margin-left:20px;" [value]="data?.ayushmanmaleenrolled">
-                                                Ayushman Enrolled </mat-checkbox>
-                                        </div>
-
-                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <mat-checkbox aria-label="Male / Female"
-                                                formControlName="maleFemaleEnrolled" style="margin-left:20px;"
-                                                [value]="data?.maleFemaleEnrolled">
-                                                Male / Female Enrolled </mat-checkbox>
-                                        </div>
-
-                                        <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <airmid-textbox label="Ayushman Spouse details"
-                                                formControlName="ayushmanSpouseDetails"
-                                                [formGroup]="personalFormGroup"></airmid-textbox>
-
-                                        </div>
-
-
-                                    </div>
-
-                                </form>
-
-                                <span
-                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                    Mediclaim Insurance Details</span>
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-checkbox aria-label="" formControlName="hasmediclaim"
-                                                style="margin-left:20px;" [value]="data?.hasmediclaim">
-                                                Has Mediclaim</mat-checkbox>
-                                        </div>
-
-                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <airmid-textbox label="Mediclaim policy number"
-                                                formControlName="mediclaimpolicynumber"
-                                                [value]="data?.mediclaimPolicyNumber"
-                                                [formGroup]="personalFormGroup"></airmid-textbox>
-
-                                        </div>
-
-
-                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <airmid-textbox label="Mediclaim Issuance"
-                                                formControlName="mediclaimIssuanceAmt"
-                                                [value]="data?.mediclaimIssuanceAmt" maxlength="20"
-                                                [formGroup]="personalFormGroup"></airmid-textbox>
-
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Company Name" formControlName="mediclaimcompany"
-                                                [value]="data?.mediclaimCompany" [formGroup]="personalFormGroup"
-                                                [validations]="getValidationMessages().mediclaimcompany"
-                                                [mode]="autocompleteModeCompany">
-                                            </airmid-dropdown>
-                                        </div>
-                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Mediclaim startdate</mat-label>
-                                                <input matInput [matDatepicker]="mediclaimstartdate"
-                                                    placeholder="mediclaimstartdate"
-                                                    formControlName="mediclaimStartDate"
-                                                    [value]="vmediclaimstartdate" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="mediclaimstartdate"></mat-datepicker-toggle>
-                                                <mat-datepicker #mediclaimstartdate></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Mediclaim Enddate</mat-label>
-                                                <input matInput [matDatepicker]="mediclaimenddate"
-                                                    placeholder="mediclaimenddate" formControlName="mediclaimEndDate"
-                                                    [value]="vmediclaimenddate" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="mediclaimenddate"></mat-datepicker-toggle>
-                                                <mat-datepicker #mediclaimenddate></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                    </div>
-
-                                </form>
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-
-                                    <span
-                                        style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                        Health Information</span>
-
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <mat-form-field appearance="outline" style="width: 100%; height: 70px;">
-                                                <mat-label>Male / Husband Current Medications / Treatment</mat-label>
-                                                <textarea matInput formControlName="husbandmedications"
-                                                    placeholder="husband medications" [value]="data?.husbandMedications"
-                                                    style="height: 100%; resize: none;"></textarea>
-                                            </mat-form-field>
-                                        </div>
-
-
-                                        <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <mat-form-field appearance="outline" style="width: 100%; height: 70px;">
-                                                <mat-label>Female / Wife Current Medications / Treatment</mat-label>
-                                                <textarea matInput formControlName="wifemedications"
-                                                    placeholder="wife medications" [value]="data?.wifeMedications"
-                                                    style="height: 100%; resize: none;"></textarea>
-                                            </mat-form-field>
-                                        </div>
-
-                                    </div>
-                                    <!-- <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Husband Recent Full Body Check-up Date</mat-label>
-                                                <input matInput [matDatepicker]="husbandFullBodyCheckupDate"
-                                                    placeholder="Husband fullbody checkupDate" formControlName="wifedob"
-                                                    [value]="vhusbandFullBodyCheckupDate" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="husbandFullBodyCheckupDate"></mat-datepicker-toggle>
-                                                <mat-datepicker #husbandFullBodyCheckupDate></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Wife Recent Full Body Check-up Date</mat-label>
-                                                <input matInput [matDatepicker]="wifefullbodycheckup"
-                                                    placeholder="wife fullbody checkupDate"
-                                                    formControlName="wifeFullBodyCheckupDate"
-                                                    [value]="vwifefullbodycheckup" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="wifefullbodycheckup"></mat-datepicker-toggle>
-                                                <mat-datepicker #wifefullbodycheckup></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                    </div> -->
-
-                                </form>
-                                <!-- <span
-                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                    Ayushman Bharat Details</span>
-
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
-                                                style="margin-left:20px;" [value]="data?.ayushmanmaleenrolled">
-                                                Ayushman Enrolled </mat-checkbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <mat-checkbox aria-label="Male / Female"
-                                                formControlName="maleFemaleEnrolled" style="margin-left:20px;"
-                                                [value]="data?.maleFemaleEnrolled">
-                                                Ayushman Male / Female Enrolled </mat-checkbox>
-                                        </div>
-
-                                        <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <airmid-textbox label="Ayushman Spouse details"
-                                                formControlName="ayushmanSpouseDetails"
-                                                [formGroup]="personalFormGroup"></airmid-textbox>
-
-                                        </div>
-
-
-                                    </div>
-
-                                </form> -->
-
-
-
-                                <span
-                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                    Previous Membership Details</span>
-
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Man/Husband Shree Thana Sangh Member Id Number"
-                                                formControlName="husbandPreviousMemberId"
-                                                [value]="data?.husbandPreviousMemberId "
-                                                [formGroup]="personalFormGroup"></airmid-textbox>
-
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Female/Wife Shree Thana Sangh Member Id Number:"
-                                                formControlName="wifePreviousMemberId"
-                                                [value]="data?.wifePreviousMemberId"
-                                                [formGroup]="personalFormGroup"></airmid-textbox>
-
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Income Details" formControlName="monthlyIncomeRange"
-                                                [value]="data?.monthlyincomerange ?? 0" [formGroup]="personalFormGroup"
-                                                [validations]="getValidationMessages().monthlyincomerange"
-                                                [mode]="autocompleteTrustIncomerange">
-                                            </airmid-dropdown>
-                                        </div>
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Husband Recent Full Body Check-up Date</mat-label>
-                                                <input matInput [matDatepicker]="husbandFullBodyCheckupDate"
-                                                    placeholder="Husband fullbody checkupDate" formControlName="husbandFullBodyCheckupDate"
-                                                    [value]="vhusbandFullBodyCheckupDate" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="husbandFullBodyCheckupDate"></mat-datepicker-toggle>
-                                                <mat-datepicker #husbandFullBodyCheckupDate></mat-datepicker>
-                                            </mat-form-field>
-
-
-                                        </div>
-                                        <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Wife Recent Full Body Check-up Date</mat-label>
-                                                <input matInput [matDatepicker]="wifefullbodycheckup"
-                                                    placeholder="wife fullbody checkupDate" [value]="vwifeFullBodyCheckupDate"
-                                                    formControlName="wifeFullBodyCheckupDate"
-                                                    />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="wifefullbodycheckup"></mat-datepicker-toggle>
-                                                <mat-datepicker #wifefullbodycheckup></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                    </div>
-
-                                </form>
-
-                                <!-- <span
-                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                    Income Informationr Details</span>
-
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Income Details" formControlName="monthlyIncomeRange"
-                                                [value]="registerObj?.monthlyincomerange ?? 0"
-                                                [formGroup]="personalFormGroup"
-                                                [validations]="getValidationMessages().monthlyincomerange"
-                                                [mode]="autocompleteTrustIncomerange">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                    </div>
-
-                                </form> -->
-
-                                <span
-                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                    For Office Use Information Details</span>
-
-                                <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-checkbox formControlName="feeReceived"
-                                                style="font-weight: bold;padding-left: 20px;"
-                                                [value]="data?.feereceived">
-                                                Amount Received
-                                            </mat-checkbox>
-
-                                        </div>
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Membership No" formControlName="membershipNo"
-                                                [value]="data?.membershipNo"
-                                                [formGroup]="personalFormGroup"></airmid-textbox>
-
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Fee Amount" formControlName="feeAmount"
-                                                [formGroup]="personalFormGroup"
-                                                (keypress)="keyPressAlphanumeric($event)" [value]="data?.feeAmount"
-                                                [validations]="getValidationMessages().feeamount"
-                                                [maxLength]="5"></airmid-textbox>
-
-                                        </div>
-
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Receipt Date</mat-label>
-                                                <input matInput [matDatepicker]="receiptdate" placeholder="receiptdate"
-                                                    formControlName="receiptDate" [value]="vreceiptdate" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="receiptdate"></mat-datepicker-toggle>
-                                                <mat-datepicker #receiptdate></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Membership valid Date</mat-label>
-                                                <input matInput [matDatepicker]="membershipvalidDate" placeholder="membershipvalidDate"
-                                                    formControlName="membershipvalidDate" [value]="todayPlus5Years" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="membershipvalidDate"></mat-datepicker-toggle>
-                                                <mat-datepicker #membershipvalidDate></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                    </div>
-
-                                </form>
-
-                            </mat-card-content>
-                        </mat-card>
-
                     </mat-tab>
+
 
                     <mat-tab label="Other Details">
                         <div class="form-container h-100-p" fxLayout="column">
                             <div class="modal-card-container">
 
-                                                       <span
+                                <span
                                     style="font-size: large;text-align: center;font-weight: bold;padding: 10px;">Childrens
                                     Information Details</span>
 
@@ -837,10 +806,9 @@
                                         </form>
                                     </div>
                                 </div>
-                                <!-- </mat-card-content>
-                                </mat-card> -->
+                            
                                 <div
-                                    style="height: 160px; max-height: 160px; overflow-y: auto; border: 1px solid #ddd;">
+                                    style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table matSort [dataSource]="DSChildrenList"
                                         [@animateStagger]="{ value: '50' }">
 
@@ -900,9 +868,7 @@
                                     </mat-table>
                                 </div>
 
-                                <!-- <mat-card>
-                                    <mat-card-content> -->
-
+                          
                                 <span
                                     style="font-size: large;text-align: center;font-weight: bold;padding: 10px;">Relative
                                     Information
@@ -962,11 +928,9 @@
                                         </form>
                                     </div>
                                 </div>
-                                <!-- </mat-card-content>
-                                </mat-card> -->
-
+                             
                                 <div
-                                    style="height: 160px; max-height: 160px; overflow-y: auto; border: 1px solid #ddd;">
+                                    style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table class="airmid-table" matSort [dataSource]="DSRelativeList"
                                         [@animateStagger]="{ value: '50' }">
 
@@ -1033,9 +997,7 @@
                                             [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                                     </mat-table>
                                 </div>
-                                <!-- E? -->
-                                <!-- <mat-card>
-                                    <mat-card-content> -->
+                            
 
                                 <span
                                     style="font-size: large;text-align: center;font-weight: bold;padding: 10px;">Emegency
@@ -1091,10 +1053,9 @@
                                         </form>
                                     </div>
                                 </div>
-                                <!-- </mat-card-content>
-                                </mat-card> -->
+                               
                                 <div
-                                    style="height: 160px; max-height: 160px; overflow-y: auto; border: 1px solid #ddd;">
+                                    style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table class="airmid-table" matSort [dataSource]="DSEmrgencyList"
                                         [@animateStagger]="{ value: '50' }">
 
@@ -1165,20 +1126,12 @@
 
 
     <div class="modal-footer">
-        <div class="footer-navigation-container">
+        <div class="modal-footer-buttons">
 
-            <div class="modal-footer-container">
-                <div class="checkbox-container">
-
-                </div>
-                <div class="modal-footer-buttons">
-
-                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
-                </div>
-            </div>
-
+            <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
         </div>
     </div>
 
 </div>
+<!-- </div> -->

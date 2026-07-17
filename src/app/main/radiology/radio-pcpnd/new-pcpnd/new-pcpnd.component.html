@@ -82,10 +82,12 @@
 
                     <app-patient-information [uhidNo]="RegNo" [patientName]="PatientName"
                       [doctorName]="DoctorNamecheck ? DoctorName : condDoctor" [departmentName]="departmentName"
-                      [doa]="Patientdetails?.admissionDate || admissionDate" [ipdNo]="Patientdetails?.ipdno || Patientdetails?.ipdno"
+                      [doa]="Patientdetails?.admissionDate || admissionDate"
+                      [ipdNo]="Patientdetails?.ipdno || Patientdetails?.ipdno"
                       [ageString]="(Patientdetails?.ageYear  !== null ? Patientdetails?.ageYear  + 'Y|' + Patientdetails?.ageMonth + 'M|' + Patientdetails?.ageDay + 'D | ' + Patientdetails?.genderName : age)"
-                      [refDocName]="Patientdetails?.refDocName || refrancedoctor" [wardBedName]="Patientdetails?.roomName"
-                      [patientType]="Patientdetails?.patientType" [tariffName]="Patientdetails?.tariffName"
+                      [refDocName]="Patientdetails?.refDocName || refrancedoctor"
+                      [wardBedName]="Patientdetails?.roomName" [patientType]="Patientdetails?.patientType"
+                      [tariffName]="Patientdetails?.tariffName"
                       [companyName]="Patientdetails?.companyName"></app-patient-information>
 
 
@@ -97,8 +99,24 @@
         </div>
 
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+
           <mat-tab label="Process Detail">
             <div class="detail-container">
+              <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                  <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox label="patientaddress" formControlName="patientaddress" [value]="vpatientaddress"
+                      [formGroup]="personalFormGroup"></airmid-textbox>
+                  </div>
+                  <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox label="Patient Mobile" formControlName="patientMobileNo" [value]="vpatientMobileNo"
+                      (keypress)="keyPressAlphanumeric($event)" [formGroup]="personalFormGroup"
+                      [validations]="getValidationMessages().patientMobileNo" [maxLength]="10"></airmid-textbox>
+                  </div>
+                </div>
+              </form>
               <mat-panel-title
                 style="font-size: large;color: rgb(229, 234, 235);font-weight: bold;background-color: #3f51b5;font-weight: bold;padding: 10px;">Section
                 A - All diagnostic procedure and tests</mat-panel-title>
@@ -109,10 +127,15 @@
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="RefDoctor Name" formControlName="refDocId" [value]="data?.refDocId"
+                        <!-- <airmid-dropdown label="RefDoctor Name" formControlName="refDocId" [value]="data?.refDocId"
                           [formGroup]="personalFormGroup" [validations]="getValidationMessages().refDocId"
-                          [mode]="autocompleteModerefdoc"></airmid-dropdown>
-                      </div>
+                          [mode]="autocompleteModerefdoc"></airmid-dropdown> -->
+                       <airmid-dropdown label="RefDoctor Name" formControlName="refDocId"
+                            [formGroup]="personalFormGroup" (selectionChange)="selectChangeDoctor($event)" 
+                            ValueField="doctorId" TextField="doctorName"
+                            ApiUrl="Pcpndprocess/search-RadiologistDoctor"></airmid-dropdown> 
+                      
+                        </div>
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Total No. Of Living Children" formControlName="childrenCount"
                           [value]="data?.childrenCount" [formGroup]="personalFormGroup"
@@ -556,7 +579,7 @@
                         <mat-table #table matSort [dataSource]="DSIndicationList" class="airmid-table compact-table"
                           style="background-color: rgb(215, 220, 220); font-size: large; font-weight: bold;"
                           [@animateStagger]="{ value: '50' }">
-                        
+
                           <ng-container matColumnDef="descvalue" sticky>
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
                               <span class="material-icons">cached</span>

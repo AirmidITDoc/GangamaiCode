@@ -23,6 +23,7 @@ import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { set } from 'lodash';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
   selector: 'app-new-form',
@@ -115,9 +116,8 @@ export class NewFormComponent {
 
   today = new Date();
   todayPlus5Years = new Date();
-
-  // Add 5 years
-
+  @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
+  @ViewChild('ddlGender1') ddlGender1: AirmidDropDownComponent;
 
   displayedColumns: string[] = [
     'Prefix',
@@ -159,7 +159,7 @@ export class NewFormComponent {
 
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
-
+  autocompleteModegender: string = "Gender";
   autocompleteModedeptdoc: string = "ConDoctor";
   autocompleteModerefdoc: string = "RefDoctor";
   autocompleteModerelationship: string = "Relationship";
@@ -233,7 +233,7 @@ export class NewFormComponent {
 
       }
 
-      // this.vmediclaimenddate = this.data.mediclaimenddate
+   
       this.vmediclaimenddate = this.data.mediclaimenddate
       this.vhusbandFullBodyCheckupDate = this.data.husbandFullBodyCheckupDate
       this.vmediclaimstartdate = this.data.mediclaimstartdate
@@ -246,7 +246,7 @@ export class NewFormComponent {
       this.personalFormGroup.get("wifemedications").setValue(this.data.wifeMedications)
       this.personalFormGroup.get("husbandmedications").setValue(this.data.husbandMedications)
       this.personalFormGroup.get("wifeparentaldetails").setValue(this.data.wifeParentalDetails)
-     
+
     }
   }
 
@@ -256,10 +256,9 @@ export class NewFormComponent {
       "membershipId": this.vmembershipId,
       "membershipDate": [(new Date()).toISOString()],
       "membershipTime": [(new Date()).toISOString()],
-      "membershipNo": [''],
-
+      "membershipNo": ["1"],
       "hprefixId": 0,
-      "hgenderId": 1,
+      "hgenderId": 0,
       "husbandFirstName": ['', [
         Validators.maxLength(50),
         Validators.pattern("^[A-Za-z / () ]*$")
@@ -278,12 +277,9 @@ export class NewFormComponent {
 
       "husbandDob": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-
       "husbandAgeY": [0],
       "husbandAgeM": [0],
       "husbandageD": [0],
-
-
       "husbandMobile": ['', [
         Validators.minLength(10),
         Validators.maxLength(10),
@@ -301,9 +297,8 @@ export class NewFormComponent {
       "husbandEducation": [''],// ['', [Validators.required]],
       "husbandHobbies": [''],
       "hPhoto": [''],
-
       "wprefixId": 0,
-      "wgenderId": 2,
+      "wgenderId": 0,
       "wifeFirstName": ['', [
         Validators.maxLength(50),
         Validators.pattern("^[A-Za-z / () ]*$")
@@ -503,53 +498,130 @@ export class NewFormComponent {
     this.CityName = e.cityName
 
   }
-  HusbanddataValidation() {
+  // HusbanddataValidation() {
 
 
-    if (this.personalFormGroup.get('husbandMobile').value == 0 || this.personalFormGroup.get('husbandMobile').value == '') {
-      this.toastr.warning('Please select valid husbandMobile ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
+  //   if (this.personalFormGroup.get('husbandMobile').value == 0 || this.personalFormGroup.get('husbandMobile').value == '') {
+  //     this.toastr.warning('Please select valid husbandMobile ', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
 
-      return;
-    }
+  //   }
 
-    if (this.personalFormGroup.get('husbandAadhaar').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
-      this.toastr.warning('Please select valid HusbandAadhaar ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
+  //   if (this.personalFormGroup.get('husbandAadhaar').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
+  //     this.toastr.warning('Please select valid HusbandAadhaar ', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
 
-      return;
-    }
+  //   }
 
-    if (this.personalFormGroup.get('husbandOccupationId').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
-      this.toastr.warning('Please select valid HusbandOccupation ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
+  //   if (this.personalFormGroup.get('husbandOccupationId').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
+  //     this.toastr.warning('Please select valid HusbandOccupation ', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
 
-      return;
-    }
 
-    if (this.personalFormGroup.get('nativePlace').value == '') {
-      this.toastr.warning('Please enter Native Place', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
+  //   }
 
-      return;
-    }
+  //   if (this.personalFormGroup.get('nativePlace').value == '') {
+  //     this.toastr.warning('Please enter Native Place', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
 
-    if (this.personalFormGroup.get('husbandDob').value == '1900-01-01' || this.vhusbanddob == new Date()) {
-      this.toastr.warning('Please enter husbandDob', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
 
-      return;
-    }
-  }
+  //   }
+
+  //   if (this.personalFormGroup.get('husbandDob').value == '1900-01-01' || this.vhusbanddob == new Date()) {
+  //     this.toastr.warning('Please enter husbandDob', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //   }
+  // }
 
 
   onSave() {
-    // setTimeout(() => {
+
+    if (this.personalFormGroup.get("husbandFirstName").value == '' && this.personalFormGroup.get("wifeFirstName").value == '') {
+      this.toastr.warning('Please Enter Patient Details', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    // if (this.personalFormGroup.get("husbandFirstName").value !== '') {
+    //   if (this.personalFormGroup.get('husbandMobile').value == 0 || this.personalFormGroup.get('husbandMobile').value == '') {
+    //     this.toastr.warning('Please select valid husbandMobile ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('husbandAadhaar').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
+    //     this.toastr.warning('Please select valid HusbandAadhaar ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('husbandOccupationId').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
+    //     this.toastr.warning('Please select valid HusbandOccupation ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   } else if (this.personalFormGroup.get('nativePlace').value == '') {
+    //     this.toastr.warning('Please enter Native Place', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   } else if (this.personalFormGroup.get('husbandDob').value == '1900-01-01' || this.vhusbanddob == new Date()) {
+    //     this.toastr.warning('Please enter husbandDob', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
+    // }
+
+    // if (this.personalFormGroup.get("wifeFirstName").value !== '') {
+    //   if (this.personalFormGroup.get('wprefixId').value == 0 || this.personalFormGroup.get('wprefixId').value == '') {
+    //     this.toastr.warning('Please select valid wprefixId ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('wifeMobile').value == 0 || this.personalFormGroup.get('wifeMobile').value == '') {
+    //     this.toastr.warning('Please select valid wife Mobile ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('wifeAadhaar').value == 0 || this.personalFormGroup.get('wifeAadhaar').value == '') {
+    //     this.toastr.warning('Please select valid wife Aadhaar ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   } else if (this.personalFormGroup.get('wifeOccupationId').value == 0 || this.personalFormGroup.get('wifeOccupationId').value == '') {
+    //     this.toastr.warning('Please select valid wife Occupation', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   } else if (this.personalFormGroup.get('wifeparentsnativeplace').value == '') {
+    //     this.toastr.warning('Please enter Native Place', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   } else if (this.Wifeform.get('DateOfBirth').value == '1900-01-01' || this.vhusbanddob == new Date()) {
+    //     this.toastr.warning('Please enter Wife DateOfBirth', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
+    // }
+
+
+    if (this.personalFormGroup.get("hasmediclaim").value) {
+      if (this.personalFormGroup.get('mediclaimpolicynumber').value == 0 || this.personalFormGroup.get('mediclaimpolicynumber').value == '') {
+        this.toastr.warning('Please select valid mediclaim policynumber ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else if (this.personalFormGroup.get('mediclaimIssuanceAmt').value == 0 || this.personalFormGroup.get('mediclaimIssuanceAmt').value == '') {
+        this.toastr.warning('Please select valid  mediclaim IssuanceAmt ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else if (this.personalFormGroup.get('mediclaimcompany').value == 0 || this.personalFormGroup.get('mediclaimcompany').value == '') {
+        this.toastr.warning('Please select valid mediclaim company', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        }); return;
+      }
+    }
+
     const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
     if (DateOfBirth1) {
       const todayDate = new Date();
@@ -571,11 +643,6 @@ export class NewFormComponent {
         this.ageMonth += 12;
       }
     }
-
-    // }, 200);
-
-
-    // setTimeout(() => {
     const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
     if (DateOfBirth2) {
       const todayDate = new Date();
@@ -597,139 +664,13 @@ export class NewFormComponent {
         this.ageMonth1 += 12;
       }
     }
-    // }, 200);
 
-
-    if (this.personalFormGroup.get("husbandFirstName").value == '' && this.personalFormGroup.get("wifeFirstName").value == '') {
-      this.toastr.warning('Please Enter Patient Details', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-
-
-      return;
-    }
-    if (this.personalFormGroup.get("husbandFirstName").value !== '') {
-
-      if (this.personalFormGroup.get('husbandMobile').value == 0 || this.personalFormGroup.get('husbandMobile').value == '') {
-        this.toastr.warning('Please select valid husbandMobile ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('husbandAadhaar').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
-        this.toastr.warning('Please select valid HusbandAadhaar ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('husbandOccupationId').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
-        this.toastr.warning('Please select valid HusbandOccupation ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('nativePlace').value == '') {
-        this.toastr.warning('Please enter Native Place', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-      
-      // if (this.personalFormGroup.get('husbandDob').value == new Date()) {
-      if (this.ageYear == 0) {
-        this.toastr.warning('Please enter husbandDob', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-    }
-    if (this.personalFormGroup.get("wifeFirstName").value !== '') {
-      // this.WifedataValidation()
-
-      if (this.personalFormGroup.get('wifeMobile').value == 0 || this.personalFormGroup.get('wifeMobile').value == '') {
-        this.toastr.warning('Please Enter valid Wife Mobile No', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('wifeAadhaar').value == 0 || this.personalFormGroup.get('wifeAadhaar').value == '') {
-        this.toastr.warning('Please Enter valid Wife Aadhaar ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('wifeOccupationId').value == 0 || this.personalFormGroup.get('wifeOccupationId').value == '') {
-        this.toastr.warning('Please select valid Wife Occupation ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('wifeparentsnativeplace').value == '') {
-        this.toastr.warning('Please Enter Native Place', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.ageYear1 == 0) {
-        this.toastr.warning('Please enter wifeDob', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-    }
-    if (this.personalFormGroup.get("hasmediclaim").value !== false) {
-      // this.hasmediclaimdataValidation()
-
-      if (this.personalFormGroup.get('mediclaimpolicynumber').value == 0 || this.personalFormGroup.get('mediclaimpolicynumber').value == '') {
-        this.toastr.warning('Please Enter valid mediclaim Policynumber', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('mediclaimIssuanceAmt').value == 0 || this.personalFormGroup.get('mediclaimIssuanceAmt').value == '') {
-        this.toastr.warning('Please Enter valid mediclaim IssuanceAmt ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-
-      if (this.personalFormGroup.get('mediclaimcompany').value == 0 || this.personalFormGroup.get('mediclaimcompany').value == '') {
-        this.toastr.warning('Please select valid mediclaim company ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-
-        return;
-      }
-    }
 
     if (this.personalFormGroup.get("ayushmanEnrolled").value !== false) {
       if (this.personalFormGroup.get('ayushmanSpouseDetails').value == 0 || this.personalFormGroup.get('ayushmanSpouseDetails').value == '') {
         this.toastr.warning('Please Enter valid ayushman SpouseDetails', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-
-
         return;
       }
     }
@@ -751,9 +692,6 @@ export class NewFormComponent {
     });
 
 
-
-
-    
     console.log(this.personalFormGroup.get("DateOfBirth").value)
     console.log(this.Wifeform.get("DateOfBirth").value)
 
@@ -777,7 +715,7 @@ export class NewFormComponent {
 
     this.personalFormGroup.get("membershipDate").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || this.data.membershipDate || '1900-01-01')
     this.personalFormGroup.get("membershipTime").setValue(this.datePipe.transform(this.dateTimeObj.date) || this.data.membershipDate || '1900-01-01')
-debugger
+
     this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.data.husbandFullBodyCheckupDate || '1900-01-01')
     this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.data.wifeFullBodyCheckupDate || '1900-01-01')
     this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.data.mediclaimStartDate || '1900-01-01')
@@ -786,36 +724,36 @@ debugger
     this.personalFormGroup.get("receiptDate").setValue(this.datePipe.transform(this.personalFormGroup.get("receiptDate").value, "yyyy-MM-dd"))
 
 
-    if (this.SaveStatus != true) {
-      if (!this.personalFormGroup.invalid) {
+    // if (this.SaveStatus != true) {
+    if (!this.personalFormGroup.invalid) {
 
-        console.log(this.personalFormGroup.value)
+      console.log(this.personalFormGroup.value)
 
-        this._NewMemberService.MembershipSave(this.personalFormGroup.value).subscribe(response => {
-          console.log(response)
-          this.getMembershipview(response)
-          this._matDialog.closeAll();
+      this._NewMemberService.MembershipSave(this.personalFormGroup.value).subscribe(response => {
+        console.log(response)
+        this.getMembershipview(response)
+        this._matDialog.closeAll();
 
-        });
-      } else {
-        const invalidFields = [];
+      });
+    } else {
+      const invalidFields = [];
 
-        if (this.personalFormGroup.invalid) {
-          for (const controlName in this.personalFormGroup.controls) {
-            if (this.personalFormGroup.controls[controlName].invalid) {
-              invalidFields.push(`Membership Save Form: ${controlName}`);
-            }
+      if (this.personalFormGroup.invalid) {
+        for (const controlName in this.personalFormGroup.controls) {
+          if (this.personalFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Membership Save Form: ${controlName}`);
           }
         }
+      }
 
-        if (invalidFields.length > 0) {
-          invalidFields.forEach(field => {
-            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-            );
-          });
-        }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
       }
     }
+    // }
 
   }
 
@@ -1153,7 +1091,8 @@ debugger
       EprefixId: [],
       hprefixId: [],
       wprefixId: [],
-
+      wgenderId: [],
+      hgenderId: [],
     };
   }
 
@@ -1182,9 +1121,7 @@ debugger
           this.imagePreview = result.url;
         }
         else {
-          // this.imgArr.push(result.name);
-          // this.images.push(result);
-          // this.imgDataSource.data = this.images;
+
         }
       }
     });
@@ -1208,16 +1145,13 @@ debugger
           this.imagePreview1 = result.url;
         }
         else {
-          // this.imgArr.push(result.name);
-          // this.images.push(result);
-          // this.imgDataSource.data = this.images;
+
         }
       }
     });
   }
 
 
-  //
 
   list1: any[] = [];
   onAdd() {
@@ -1458,13 +1392,70 @@ debugger
   wMName = ''
   wLName = ''
   HFNameAdd() {
-    this.wMName = this.personalFormGroup.get('husbandFirstName').value
+    // this.wMName = this.personalFormGroup.get('husbandFirstName').value
+    if (this.personalFormGroup.get("husbandFirstName").value !== '') {
+
+
+      // this.personalFormGroup.get('hprefixId').reset();
+      this.personalFormGroup.get('hprefixId').setValidators([Validators.required]);
+      this.personalFormGroup.get('hprefixId').enable();
+      // this.personalFormGroup.get('husbandMobile').reset();
+      this.personalFormGroup.get('husbandMobile').setValidators([Validators.required]);
+      this.personalFormGroup.get('husbandMobile').enable();
+
+      // this.personalFormGroup.get('husbandAadhaar').reset();
+      this.personalFormGroup.get('husbandAadhaar').setValidators([Validators.required]);
+      this.personalFormGroup.get('husbandAadhaar').enable();
+      // this.personalFormGroup.get('husbandOccupationId').reset();
+      this.personalFormGroup.get('husbandOccupationId').setValidators([Validators.required]);
+      this.personalFormGroup.get('husbandOccupationId').enable();
+      // this.personalFormGroup.get('nativePlace').reset();
+      this.personalFormGroup.get('nativePlace').setValidators([Validators.required]);
+      this.personalFormGroup.get('nativePlace').enable();
+      // this.personalFormGroup.get('DateOfBirth').reset();
+      this.personalFormGroup.get('DateOfBirth').setValidators([Validators.required]);
+      this.personalFormGroup.get('DateOfBirth').enable();
+
+    }
   }
 
-  HLNameAdd() {
-    this.wLName = this.personalFormGroup.get('husbandLastName').value
+  WNameAdd() {
+
+    if (this.personalFormGroup.get("wifeFirstName").value !== '') {
+
+      this.personalFormGroup.get('wprefixId').setValidators([Validators.required]);
+      this.personalFormGroup.get('wprefixId').enable();
+      this.personalFormGroup.get('wifeMobile').setValidators([Validators.required]);
+      this.personalFormGroup.get('wifeMobile').enable();
+      this.personalFormGroup.get('wifeAadhaar').setValidators([Validators.required]);
+      this.personalFormGroup.get('wifeAadhaar').enable();
+      this.personalFormGroup.get('wifeOccupationId').setValidators([Validators.required]);
+      this.personalFormGroup.get('wifeOccupationId').enable();
+      this.personalFormGroup.get('wifeparentsnativeplace').setValidators([Validators.required]);
+      this.personalFormGroup.get('wifeparentsnativeplace').enable();
+      this.Wifeform.get('DateOfBirth').setValidators([Validators.required]);
+      this.personalFormGroup.get('DateOfBirth').enable();
+    }
   }
 
+  hasmediclaimAdd() {
+
+    if (this.personalFormGroup.get("hasmediclaim").value) {
+
+
+      this.personalFormGroup.get('mediclaimpolicynumber').reset();
+      this.personalFormGroup.get('mediclaimpolicynumber').setValidators([Validators.required]);
+      this.personalFormGroup.get('mediclaimpolicynumber').enable();
+
+      this.personalFormGroup.get('mediclaimIssuanceAmt').reset();
+      this.personalFormGroup.get('mediclaimIssuanceAmt').setValidators([Validators.required]);
+      this.personalFormGroup.get('mediclaimIssuanceAmt').enable();
+
+      this.personalFormGroup.get('mediclaimcompany').reset();
+      this.personalFormGroup.get('mediclaimcompany').setValidators([Validators.required]);
+      this.personalFormGroup.get('mediclaimcompany').enable();
+    }
+  }
 
   onChangeCPrefix(e) {
     this.CPrefix = e.prefixName
@@ -1476,6 +1467,14 @@ debugger
   }
   onChangeEPrefix(e) {
     this.EPrefix = e.prefixName
+  }
+
+  onChangePrefix(e) {
+    this.ddlGender.SetSelection(e.sexId);
+  }
+
+  onChangePrefix1(e) {
+    this.ddlGender1.SetSelection(e.sexId);
   }
 
   onChangeDateofBirth(DateOfBirth: Date) {
@@ -1500,7 +1499,7 @@ debugger
         this.ageMonth--;
         const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
         this.ageDay += previousMonth.getDate(); // Days in previous month
-        // this.ageDay =this.ageDay +1;
+        
       }
 
       if (this.ageMonth < 0) {
@@ -1508,7 +1507,7 @@ debugger
         this.ageMonth += 12;
       }
 
-      
+
       this.value = DateOfBirth;
       this.dateofBirth = DateOfBirth;
       this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
@@ -1525,7 +1524,7 @@ debugger
   }
 
   onChangeDateofBirth1(DateOfBirth: Date) {
-    
+
     if (DateOfBirth > this.minDate) {
       this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
@@ -1545,14 +1544,14 @@ debugger
         this.ageMonth1--;
         const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
         this.ageDay1 += previousMonth.getDate(); // Days in previous month
-        // this.ageDay =this.ageDay +1;
+       
       }
 
       if (this.ageMonth1 < 0) {
         this.ageYear1--;
         this.ageMonth1 += 12;
       }
-      
+
 
       this.value1 = DateOfBirth;
       this.personalFormGroup.get('wifeDob').setValue(DateOfBirth);
