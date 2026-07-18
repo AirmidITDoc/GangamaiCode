@@ -532,6 +532,15 @@
         <div class="airmid-table-container overflow-hidden">
             <mat-table class="airmid-table" [dataSource]="filteredOptions">
 
+                <ng-container matColumnDef="abhaLinked">
+                    <mat-header-cell *matHeaderCellDef class="w-100">-</mat-header-cell>
+
+                    <mat-cell *matCellDef="let element" class="w-100" matTooltip="ABHA Linked">
+                        <img *ngIf="element.abhaTranId > 0" src="assets/images/logos/abha.jpeg" width="30" height="30"
+                            alt="ABHA Linked">
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="regNo">
                     <mat-header-cell *matHeaderCellDef class="w-100">Reg No</mat-header-cell>
                     <mat-cell *matCellDef="let element" class="w-100"><span>{{ element.regNo
@@ -563,27 +572,17 @@
                             {{ element.dateofBirth | date:'dd-MM-yyyy' }}
                         </span></mat-cell>
                 </ng-container>
-
-                <!-- <ng-container matColumnDef="action">
-                    <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
-                    <mat-cell *matCellDef="let element" class="w-80">
-                        <button mat-icon-button matTooltip="Link ABHA" (click)="onSelectPatient(element)">
-                            <mat-icon>link</mat-icon>
-                        </button>
-                    </mat-cell>
-                </ng-container> -->
-
+<!-- 
                 <ng-container matColumnDef="NoData">
                     <mat-footer-cell *matFooterCellDef>
                         <span>No Data Found</span>
                     </mat-footer-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onSelectPatient(row)"
-                 [class.selected-row]="selectedRow === row"></mat-row>
-                <mat-footer-row *matFooterRowDef="['NoData']"
-                    [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+                    [class.selected-row]="selectedRow === row"></mat-row>
+                <mat-footer-row ></mat-footer-row><!--*matFooterRowDef="['NoData']"-->
             </mat-table>
         </div>
 
@@ -656,17 +655,32 @@
                     </div>
 
                     <div class="form-btn" style="margin-top: 20px;">
-                        <div>
-                            <button mat-stroked-button (click)="OnEditRegistration()">Link Abha </button>
+
+                        <!-- Link + New Registration -->
+                        <div *ngIf="showLinkAbha">
+                            <button mat-stroked-button (click)="OnEditRegistration()">
+                                Link ABHA
+                            </button>
                         </div>
+
                         <!-- <div>
-                            <button mat-stroked-button (click)="onNewregistration()">New Registration</button>
+                            <button mat-stroked-button (click)="onNewregistration()">
+                                New Registration
+                            </button>
                         </div> -->
+
+                        <!-- Update ABHA -->
+                        <div *ngIf="showUpdateAbha">
+                            <button mat-raised-button color="primary" (click)="OnEditRegistration()">
+                                Update ABHA
+                            </button>
+                        </div>
+
                     </div>
                 </mat-card-content>
             </mat-card>
 
-            <div class="form-btn" style="margin-top: 20px;" *ngIf="filteredOptions?.length > 0">
+            <div class="form-btn" style="margin-top: 20px;" *ngIf="showLinkAbha">
                 <div>
                     <button mat-stroked-button (click)="onNewregistration()">New Registration</button>
                 </div>

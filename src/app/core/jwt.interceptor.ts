@@ -33,7 +33,6 @@ export class JwtInterceptor implements HttpInterceptor {
                 request = request.clone({
                     setHeaders: {
                         Authorization: `Bearer ${currentUser.token}`,
-                        "Access-Control-Allow-Origin": "*",
                         'X-Store-Id': ctx?.storeId?.toString() ?? "",
                         'X-Unit-Id': ctx?.unitId?.toString() ?? ""
                     },
@@ -42,7 +41,6 @@ export class JwtInterceptor implements HttpInterceptor {
                 request = request.clone({
                     setHeaders: {
                         Authorization: `Bearer ${currentUser.token}`,
-                        "Access-Control-Allow-Origin": "*",
                         "Content-Type": "application/json; charset=utf-8",
                         'X-Store-Id': ctx?.storeId?.toString() ?? "",
                         'X-Unit-Id': ctx?.unitId?.toString() ?? ""
@@ -52,7 +50,6 @@ export class JwtInterceptor implements HttpInterceptor {
         this._ls.show();
         return next.handle(request).pipe(
             catchError((err: HttpErrorResponse) => { // Type the error as HttpErrorResponse
-                this._ls.hide();
                 if (err.status == 401) {
                     if (err.url.endsWith('/login/get-menus')) {
                         return EMPTY;
@@ -100,12 +97,6 @@ export class JwtInterceptor implements HttpInterceptor {
                     });
                 }
                 return throwError(() => err); // Return an Observable using throwError
-            }),
-            map((event: HttpEvent<any>) => {
-                if (event instanceof HttpResponse) {
-                    this._ls.hide();
-                }
-                return event;
             }),
             finalize(() => { // Use finalize for cleanup, even after errors
                 this._ls.hide();

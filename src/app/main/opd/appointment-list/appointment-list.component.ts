@@ -80,6 +80,7 @@ export class AppointmentListComponent implements OnInit {
     IsGastrology: boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
     IsCheckIn: boolean = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
     IsCheckOut: boolean = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
+    IsReqForIp: boolean = this.permissionService.getPermission(permissionCodes.ReqForIP, permissionType.Edit);
 
 
 
@@ -87,7 +88,7 @@ export class AppointmentListComponent implements OnInit {
     myformSearch: FormGroup;
     searchFormGroup: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    menuActions: Array<{ icon: string, text: string }> = [];
+    menuActions: Array<{ icon: string, text: string,permission:boolean }> = [];
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -168,17 +169,17 @@ export class AppointmentListComponent implements OnInit {
         debugger
         // menu Button List
         if (this.IsAdd)
-            this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
+            this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor",permission:true });
 
         if (this.IsEdit)
-            this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
+            this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor",permission:true });
 
-        this.menuActions.push({ icon: "language", text: "Request For IP" });
-        this.menuActions.push({ icon: "language", text: "Update Followup Date" });
-        this.menuActions.push({ icon: "print", text: "CasePaper Print" });
-        this.menuActions.push({ icon: "print", text: "Patient Draft Statement Print" });
-        this.menuActions.push({ icon: "print", text: "Patient Statement Print" });
-        this.menuActions.push({ icon: "print", text: "Patient Appointment Cancle" });
+        this.menuActions.push({ icon: "language", text: "Request For IP" ,permission:this.IsReqForIp});
+        this.menuActions.push({ icon: "language", text: "Update Followup Date",permission:true });
+        this.menuActions.push({ icon: "print", text: "CasePaper Print",permission:true });
+        this.menuActions.push({ icon: "print", text: "Patient Draft Statement Print",permission:true });
+        this.menuActions.push({ icon: "print", text: "Patient Statement Print",permission:true });
+        this.menuActions.push({ icon: "print", text: "Patient Appointment Cancle",permission:true });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {

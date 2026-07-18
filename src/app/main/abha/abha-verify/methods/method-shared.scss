@@ -2,6 +2,7 @@
 
 .method-card-wrap {
   max-width: 900px;
+  width: 500px;
   margin: 0 auto;
   padding: 8px;
   border: 1px solid #e5e7eb;
@@ -236,4 +237,34 @@
     padding: 12px 16px;
     box-sizing: border-box;
     background: #fff;
+}
+
+////////// success css /////////
+.success-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.success-popup {
+    width: 340px;
+    background: #fff;
+    border: 3px solid #4aa3ff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+
+.success-popup h2,
+.success-popup h3 {
+    margin: 10px 0;
+}
+
+.success-popup img {
+    margin: 15px 0;
 }

@@ -554,9 +554,17 @@ export class NewIssueTodeptComponent {
             return;
         }
 
+        if (!this.NewIssueGroup.get('BatchNO')?.value) {
+            this.toastr.warning('Please select BatchNO', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+
         this.ItemSamelist = this.dsNewIssueItemList.data.filter(item => item.ItemId === this.NewIssueGroup.get('ItemName').value.itemId)
         if (this.ItemSamelist) {
-            if (this.ItemSamelist.some(item => item.BatchNo === this.batchresult.batchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
+            if (this.ItemSamelist.some(item => item.BatchNo === this.NewIssueGroup.get('BatchNO')?.value) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
                 this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
@@ -618,9 +626,9 @@ export class NewIssueTodeptComponent {
 
         const dialogRef = this._matDialog.open(SalePopupComponent,
             {
-                maxWidth: "800px",
-                minWidth: '800px',
-                width: '800px',
+                maxWidth: "1200px",
+                minWidth: '1000px',
+                width: '1000px',
                 height: '380px',
                 disableClose: true,
                 data: {
@@ -633,7 +641,7 @@ export class NewIssueTodeptComponent {
             console.log(result);
             if (result.selectedData) {
                 result = result.selectedData
-                this.batchresult = result.selectedData
+                // this.batchresult = result.selectedData
                 this.vBatchNo = result.batchNo || '';
                 this.vBatchExpDate = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
                 this.vMRP = result.landedRate;
@@ -975,7 +983,7 @@ export class NewIssueTodeptComponent {
             });
             return;
         }
-debugger
+        debugger
         if (!this.IssueFinalForm.invalid) {
             if (this.vIndentId > 0) {
                 if (this.IsIndentAgainstMaterialAccept)

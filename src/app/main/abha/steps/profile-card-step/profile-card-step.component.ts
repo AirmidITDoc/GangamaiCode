@@ -43,6 +43,7 @@ export class ProfileCardStepComponent implements OnInit {
     year: any;
 
     displayedColumns = [
+        'abhaLinked',
         'regNo',
         'patientName',
         'Gender',
@@ -75,6 +76,8 @@ export class ProfileCardStepComponent implements OnInit {
     selectedRow: any;
     abhaAddress: any;
     abhaNumber: any;
+    showLinkAbha = false;
+    showUpdateAbha = false;
 
     constructor(private abhaService: AbhaService, private formBuilder: FormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService,
@@ -99,49 +102,86 @@ export class ProfileCardStepComponent implements OnInit {
             this.profile = r;
             this.loadQr();
 
-            // this.fetchGenderlist();
+            this.loadPatientTable();
+        });
+    }
 
-            this.fetchGenderlist(() => {
+    loadPatientTable() {
+        this.fetchGenderlist(() => {
 
-                const keyword = this.profile.firstName || this.profile.mobile;
+            const keyword = this.profile.firstName || this.profile.mobile;
 
-                this._AppointmentlistService
-                    .getSuggestions("OutPatient/auto-complete?Keyword=", keyword)
-                    .subscribe(results => {
+            this._AppointmentlistService
+                .getSuggestions("OutPatient/auto-complete?Keyword=", keyword)
+                .subscribe(results => {
 
-                        this.prevResults = (results || []).map(item => {
+                    this.prevResults = (results || []).map(item => {
 
-                            const gender = this.genderList.find(
-                                g => g.genderId === item.genderId   // <-- use your actual property names
-                            );
+                        const gender = this.genderList.find(
+                            g => g.genderId === item.genderId   // <-- use your actual property names
+                        );
 
-                            return {
-                                ...item,
-                                gender: gender ? gender.genderName : ''
-                            };
-                        });
-
-                        this.filteredOptions = this.prevResults.filter(item => {
-
-                            const patientName = (item.patientName || '').trim().toUpperCase();
-
-                            const firstName = (this.profile.firstName || '').trim().toUpperCase();
-                            const middleName = (this.profile.middleName || '').trim().toUpperCase();
-                            const lastName = (this.profile.lastName || '').trim().toUpperCase();
-                            const mobile = String(this.profile.mobile || '').trim();
-
-                            return (
-                                (firstName && patientName.includes(firstName)) ||
-                                (middleName && patientName.includes(middleName)) ||
-                                (lastName && patientName.includes(lastName)) ||
-                                (mobile && String(item.mobileNo).trim() === mobile)
-                            );
-                        });
-
-                        console.log(this.filteredOptions);
+                        return {
+                            ...item,
+                            gender: gender ? gender.genderName : ''
+                        };
                     });
 
-            });
+                    // this.filteredOptions = this.prevResults.filter(item => {
+
+                    //     const patientName = (item.patientName || '').trim().toUpperCase();
+
+                    //     const firstName = (this.profile.firstName || '').trim().toUpperCase();
+                    //     const middleName = (this.profile.middleName || '').trim().toUpperCase();
+                    //     const lastName = (this.profile.lastName || '').trim().toUpperCase();
+                    //     const mobile = String(this.profile.mobile || '').trim();
+
+                    //     return (
+                    //         (firstName && patientName.includes(firstName)) ||
+                    //         (middleName && patientName.includes(middleName)) ||
+                    //         (lastName && patientName.includes(lastName)) ||
+                    //         (mobile && String(item.mobileNo).trim() === mobile)
+                    //     );
+                    // });
+                    // const abhaRow = this.filteredOptions.find(x => x.abhaTranId > 0);
+
+                    // if (abhaRow) {
+                    //     this.selectedRow = abhaRow;
+                    //     this.onSelectPatient(abhaRow);
+                    // }
+
+                    // First filter by your existing conditions
+                    const matchedRecords = this.prevResults.filter(item => {
+
+                        const patientName = (item.patientName || '').trim().toUpperCase();
+
+                        const firstName = (this.profile.firstName || '').trim().toUpperCase();
+                        const middleName = (this.profile.middleName || '').trim().toUpperCase();
+                        const lastName = (this.profile.lastName || '').trim().toUpperCase();
+                        const mobile = String(this.profile.mobile || '').trim();
+
+                        return (
+                            (firstName && patientName.includes(firstName)) ||
+                            (middleName && patientName.includes(middleName)) ||
+                            (lastName && patientName.includes(lastName)) ||
+                            (mobile && String(item.mobileNo).trim() === mobile)
+                        );
+                    });
+
+                    // Check whether any record has ABHA linked
+                    const abhaRecords = matchedRecords.filter(x => x.abhaTranId > 0);
+
+                    // If ABHA records exist, show only them; otherwise show all matched records
+                    this.filteredOptions = abhaRecords.length > 0 ? abhaRecords : matchedRecords;
+
+                    const abhaRow = this.filteredOptions.find(x => x.abhaTranId > 0);
+
+                    if (abhaRow) {
+                        this.selectedRow = abhaRow;
+                        this.onSelectPatient(abhaRow);
+                    }
+                    console.log(this.filteredOptions);
+                });
 
         });
     }
@@ -302,17 +342,28 @@ export class ProfileCardStepComponent implements OnInit {
         if ((obj.regId ?? 0) > 0) {
             if (!obj || !obj.regId) {
                 this.showCard = false;
-                // this.registerObj = null;
                 return;
             }
 
             console.log("Selected Patient:", obj);
             this.showCard = true
+            this.showUpdateAbha = false;
+            this.showLinkAbha = true;
             this.fullname = obj.patientName
 
             this._AppointmentlistService.getAbhaById(obj.abhaTranId).subscribe((response) => {
-                this.abhaNumber=response.abhaNumber
-                this.abhaAddress=response.abhaAddress
+                this.abhaNumber = response.abhaNumber
+                this.abhaAddress = response.abhaAddress
+
+                if (this.profile.abhaNumber === this.abhaNumber) {
+                    // Same ABHA -> Show Update button only
+                    this.showUpdateAbha = true;
+                    this.showLinkAbha = false;
+                } else {
+                    // Different ABHA -> Show Link ABHA
+                    this.showUpdateAbha = false;
+                    this.showLinkAbha = true;
+                }
             });
 
             setTimeout(() => {
@@ -359,6 +410,7 @@ export class ProfileCardStepComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
+            this.loadPatientTable();
         });
     }
 
@@ -376,6 +428,7 @@ export class ProfileCardStepComponent implements OnInit {
             }
         );
         dialogRef.afterClosed().subscribe((result) => {
+            this.loadPatientTable();
         });
     }
 

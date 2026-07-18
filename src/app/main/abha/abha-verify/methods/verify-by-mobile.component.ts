@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, GENDER_LABELS, VerifyResponse, VerifyUserResponse } from '../../abha-model';
+import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, Account, GENDER_LABELS, VerifyResponse, VerifyUserResponse } from '../../abha-model';
 import { LinkedAccount } from '../../abha-verify.model';
 import { AbhaValidators } from '../../abha.validators';
 import { AbhaService } from '../../abha.service';
@@ -32,8 +32,7 @@ export class VerifyByMobileComponent implements OnInit {
     resendRemaining = 2;
     findtxnId = '';
     txnId = '';
-
-    accounts: LinkedAccount[] = [];
+    accounts: Account[] = [];
 
     demoMobileSingle: string;
     demoMobileMulti: string;
@@ -47,7 +46,9 @@ export class VerifyByMobileComponent implements OnInit {
     resendAttempts = 0;
     otpExpired = false;
     @Output() sessionExpired = new EventEmitter<void>();
-    mobileNo:any;
+    mobileNo: any;
+    showSuccessPopup = false;
+    accessToken = '';
 
     constructor(
         private fb: FormBuilder,
@@ -65,7 +66,7 @@ export class VerifyByMobileComponent implements OnInit {
         if (changes['txnId']?.currentValue) {
             this.startTimer();
         }
-        
+
     }
 
     ngOnInit(): void {
@@ -105,7 +106,7 @@ export class VerifyByMobileComponent implements OnInit {
             this.mobileForm.markAllAsTouched();
             return;
         }
-        this.mobileNo=this.mobileForm.value.mobile
+        this.mobileNo = this.mobileForm.value.mobile
         this.loading = true;
         this.abhaService.findAbha({ mobile: this.mobileForm.value.mobile })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
@@ -191,12 +192,14 @@ export class VerifyByMobileComponent implements OnInit {
                     // Single account → emit directly
                     if ((!r.accounts || r.accounts.length <= 1)) {
                         this.snack.open('Verified — single ABHA found.', 'OK', { duration: 1800 });
-                        this.verified.emit({ accesstoken: r.token, isAddress: false });
+                        this.accessToken = r.token;
+                        this.showSuccessPopup = true;
+                        // this.verified.emit({ accesstoken: r.token, isAddress: false });
                         return;
                     }
 
                     // Multiple accounts → go to picker
-                    // this.accounts = r.accounts || [];
+                    this.accounts = r.accounts || [];
                     this.step = 3;
                     this.snack.open(r.message, 'OK', { duration: 3000 });
                 }
@@ -205,6 +208,11 @@ export class VerifyByMobileComponent implements OnInit {
                 }
                 this.loading = false;
             });
+    }
+
+    closeSuccessPopup() {
+        this.showSuccessPopup = false;
+        this.verified.emit({ accesstoken: this.accessToken, isAddress: false });
     }
 
     // ============== Step 4: Verify User (picked account) ==============

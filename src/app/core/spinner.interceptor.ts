@@ -1,7 +1,7 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, finalize, map } from 'rxjs/operators';
 import { SpinnerService } from './services/spinner.service';
 
 @Injectable()
@@ -10,17 +10,11 @@ export class SpinnerInterceptor implements HttpInterceptor {
     constructor(private _loading: SpinnerService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        this._loading.setLoading(true, request.url);
-        return next.handle(request)
-            .pipe(catchError((err) => {
-                this._loading.setLoading(false, request.url);
-                return err;
-            }))
-            .pipe(map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
-                if (evt instanceof HttpResponse) {
-                    this._loading.setLoading(false, request.url);
-                }
-                return evt;
-            }));
+        this._loading.setLoading(true);
+        return next.handle(request).pipe(
+            finalize(() => {
+                this._loading.setLoading(false);
+            })
+        );
     }
 }

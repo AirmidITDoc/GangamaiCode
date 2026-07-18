@@ -219,7 +219,7 @@ export class BrowseOpAdvanceComponent {
 
     OnAdvanceViewReportPdf(element) {
         console.log(element)
-        // this.commonService.Onprint("AdvanceDetailID", element.advanceDetailID, "IpAdvanceReceipt");
+        this.commonService.Onprint("AdvanceDetailID", element.advanceDetailID, "IpAdvanceReceipt");
     }
 
 
