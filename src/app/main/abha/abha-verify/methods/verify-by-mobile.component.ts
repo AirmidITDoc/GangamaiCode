@@ -46,7 +46,9 @@ export class VerifyByMobileComponent implements OnInit {
     resendAttempts = 0;
     otpExpired = false;
     @Output() sessionExpired = new EventEmitter<void>();
-    mobileNo:any;
+    mobileNo: any;
+    showSuccessPopup = false;
+    accessToken = '';
 
     constructor(
         private fb: FormBuilder,
@@ -64,7 +66,7 @@ export class VerifyByMobileComponent implements OnInit {
         if (changes['txnId']?.currentValue) {
             this.startTimer();
         }
-        
+
     }
 
     ngOnInit(): void {
@@ -104,7 +106,7 @@ export class VerifyByMobileComponent implements OnInit {
             this.mobileForm.markAllAsTouched();
             return;
         }
-        this.mobileNo=this.mobileForm.value.mobile
+        this.mobileNo = this.mobileForm.value.mobile
         this.loading = true;
         this.abhaService.findAbha({ mobile: this.mobileForm.value.mobile })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
@@ -190,7 +192,9 @@ export class VerifyByMobileComponent implements OnInit {
                     // Single account → emit directly
                     if ((!r.accounts || r.accounts.length <= 1)) {
                         this.snack.open('Verified — single ABHA found.', 'OK', { duration: 1800 });
-                        this.verified.emit({ accesstoken: r.token, isAddress: false });
+                        this.accessToken = r.token;
+                        this.showSuccessPopup = true;
+                        // this.verified.emit({ accesstoken: r.token, isAddress: false });
                         return;
                     }
 
@@ -204,6 +208,11 @@ export class VerifyByMobileComponent implements OnInit {
                 }
                 this.loading = false;
             });
+    }
+
+    closeSuccessPopup() {
+        this.showSuccessPopup = false;
+        this.verified.emit({ accesstoken: this.accessToken, isAddress: false });
     }
 
     // ============== Step 4: Verify User (picked account) ==============

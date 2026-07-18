@@ -30,6 +30,8 @@ export class OtpStepComponent implements OnInit {
     otpExpired = false;
     @Output() sessionExpired = new EventEmitter<void>();
     @Input() aadhaarNumber!: string;
+    showSuccessPopup = false;
+    accessToken: any;
 
     constructor(private abhaService: AbhaService, private snack: MatSnackBar) {
         //this.demoOtp = this.abhaService.DEMO_OTP;
@@ -42,7 +44,7 @@ export class OtpStepComponent implements OnInit {
             this.startTimer();
         }
 
-        console.log("Aadhar number:",this.aadhaarNumber);
+        console.log("Aadhar number:", this.aadhaarNumber);
     }
 
     ngOnInit(): void {
@@ -119,7 +121,10 @@ export class OtpStepComponent implements OnInit {
             if (r.txnId) {
                 this.txnId = r.txnId;
                 this.snack.open(r.message, 'OK', { duration: 2000 });
-                this.verified.emit(r);
+                // this.verified.emit(r);
+                this.accessToken = r;
+                this.showSuccessPopup = true;
+
                 // if (r.newMobileOtpRequired) {
                 //     this.mobileNeedsOtp = true;
                 //     this.snack.open('OTP sent to new mobile number', 'OK', { duration: 2500 });
@@ -145,8 +150,16 @@ export class OtpStepComponent implements OnInit {
         // });
     }
 
+    closeSuccessPopup() {
+        this.showSuccessPopup = false;
+
+        if (this.accessToken) {
+            this.verified.emit(this.accessToken);
+        }
+    }
+
     onResend(): void {
-        
+
         this.otpExpired = false;
         if (this.resendAttemptsRemaining <= 0) {
             this.snack.open('No resend attempts remaining.', 'OK', { duration: 2500 });
@@ -178,7 +191,7 @@ export class OtpStepComponent implements OnInit {
         //     return;
         // }
         this.loading = true;
-        this.abhaService.aadhaarGenerateOtp({ AadhaarNumber: this.aadhaarNumber })
+        this.abhaService.aadhaarGenerateOtp({ aadhaarNumber: this.aadhaarNumber })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.txnId = r.txnId;

@@ -68,21 +68,6 @@
 
             <div class="field-block">
                 <label class="field-label">6-digit OTP</label>
-                <!-- <mat-form-field appearance="outline" class="full-width">
-                    <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="otp" placeholder="••••••"
-                        inputmode="numeric" maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
-
-                    <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
-                        [attr.aria-label]="'Toggle OTP visibility'">
-                        <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
-                    </button>
-
-                    <mat-error *ngIf="otpForm.get('otp')?.errors as e">
-                        <span *ngIf="e['required']">OTP is required</span>
-                        <span *ngIf="e['otp']">{{ e['otp'] }}</span>
-                        <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
-                    </mat-error>
-                </mat-form-field> -->
 
                 <div class="otp-wrapper">
                     <mat-form-field appearance="outline" class="full-width">
@@ -172,3 +157,20 @@
         </form>
     </mat-card-content>
 </mat-card>
+
+<div class="success-overlay" *ngIf="showSuccessPopup">
+    <div class="success-popup">
+        <h2>Congratulations</h2>
+        <p>Welcome to ABHA Page</p>
+
+        <img src="assets/images/logos/success.png" width="100" height="100" alt="Success">
+
+        <h3>Thank You</h3>
+
+        <p>Your OTP verification has been completed successfully!</p>
+
+        <button mat-raised-button color="primary" (click)="closeSuccessPopup()">
+            OK
+        </button>
+    </div>
+</div>

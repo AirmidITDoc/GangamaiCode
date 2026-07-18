@@ -35,6 +35,8 @@ export class VerifyByAadhaarComponent implements OnInit {
     resendAttempts = 0;
     otpExpired = false;
     @Output() sessionExpired = new EventEmitter<void>();
+    showSuccessPopup = false;
+    accessToken = '';
 
     constructor(
         private fb: FormBuilder,
@@ -143,7 +145,7 @@ export class VerifyByAadhaarComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.abhaService.requestAadharOtp({ AadhaarNumber: this.aadhaarForm.value.aadhaar })
+        this.abhaService.requestAadharOtp({ aadhaarNumber: this.aadhaarForm.value.aadhaar })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.txnId = r.txnId;
@@ -171,7 +173,9 @@ export class VerifyByAadhaarComponent implements OnInit {
                 if (r.txnId) {
                     if (r.authResult === 'success' && r.accounts) {
                         this.snack.open(r.message, 'OK', { duration: 1800 });
-                        this.verified.emit({ accesstoken: r.token, isAddress: false });
+                        this.accessToken = r.token;
+                        // this.verified.emit({ accesstoken: r.token, isAddress: false });
+                        this.showSuccessPopup = true;
                     } else {
                         this.otpForm.get('otp')?.setErrors({ invalid: r.message });
                         this.snack.open(r.message, 'OK', { duration: 3000 });
@@ -184,6 +188,11 @@ export class VerifyByAadhaarComponent implements OnInit {
             });
     }
 
+    closeSuccessPopup() {
+        this.showSuccessPopup = false;
+        this.verified.emit({ accesstoken: this.accessToken, isAddress: false });
+    }
+
     resendOtp(): void {
         // if (this.resendRemaining <= 0) return;
         // this.resendRemaining--;
@@ -191,7 +200,7 @@ export class VerifyByAadhaarComponent implements OnInit {
         if (this.resendAttempts >= 2) {
             return;
         }
-        this.resendAttempts++; 
+        this.resendAttempts++;
 
         this.aadhaarForm.get('otp')?.reset();
         this.sendOtp();

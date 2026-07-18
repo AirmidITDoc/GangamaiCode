@@ -26,7 +26,8 @@ export interface ReqOtpFindABHA {
 }
 
 export interface AadhaarGenerateOtpRequest {
-    AadhaarNumber: string; // 12 digits — your backend should encrypt before sending to ABDM
+    aadhaarNumber: string; // 12 digits — your backend should encrypt before sending to ABDM
+    // otpType: number;
 }
 export interface AbhaOtp {
     AadhaarNumber: string; // 12 digits — your backend should encrypt before sending to ABDM
