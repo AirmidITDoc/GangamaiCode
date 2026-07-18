@@ -200,6 +200,8 @@ export class IPBillingComponent implements OnInit {
     autocompleteModeConcession: string = "Concession";
     autocompleteModeClass: string = "Class";
     classId = 0
+    vUserID:any=0;
+    UserWsieCashcounterId:boolean = false;
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
 
@@ -229,7 +231,8 @@ export class IPBillingComponent implements OnInit {
         private formBuilder: UntypedFormBuilder) {
     }
     currency: any = ''
-    ngOnInit(): void {
+    ngOnInit(): void { 
+        this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.createserviceForm();
         this.createBillForm();
         this.Serviceform.markAllAsTouched();
@@ -315,6 +318,8 @@ export class IPBillingComponent implements OnInit {
 
 
         this.getAccessDetail();
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());

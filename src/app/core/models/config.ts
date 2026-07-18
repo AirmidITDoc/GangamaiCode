@@ -123,6 +123,7 @@ export class ConfigSettingParams {
 LoginBrowserHeading:any;
 IsSampleCollectionRequired:any;
 IsApprovalRequired:any;
+IsUserwiseCashCounterflow:any;
     /**
         * Constructor
         *
@@ -252,7 +253,7 @@ IsApprovalRequired:any;
         this.LoginBrowserHeading = ConfigSettingParams.LoginBrowserHeading;
         this.IsSampleCollectionRequired = ConfigSettingParams.IsSampleCollectionRequired;
         this.IsApprovalRequired = ConfigSettingParams.IsApprovalRequired;
-        
+          this.IsUserwiseCashCounterflow = ConfigSettingParams.IsUserwiseCashCounterflow;
         
            }
 

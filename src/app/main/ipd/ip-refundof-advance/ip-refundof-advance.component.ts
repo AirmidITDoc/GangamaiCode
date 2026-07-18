@@ -44,10 +44,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
     AdvanceId: any;
     UsedAmount: number = 0;
     chargeList: any = [];
-    currency: any = '';
+    currency: any = ''; 
+    UserWsieCashcounterId:boolean = false;
+    vUserID:any=0;
     autocompleteModeCashcounter: string = "CashCounter";
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    
 
     dsrefundlist = new MatTableDataSource<IPRefundofAdvance>();
 
@@ -68,7 +71,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
         public _ConfigService: ConfigService
     ) { }
 
-    ngOnInit(): void {
+    ngOnInit(): void { 
+        debugger
+    this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.RefundOfAdvanceFormGroup = this.createRefAdvForm();
         this.RefundOfAdvanceFormGroup.markAllAsTouched();
         if (this.data) {
@@ -79,8 +84,12 @@ export class IPRefundofAdvanceComponent implements OnInit {
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
+
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
     }
     createRefAdvForm() {
+        debugger
         return this.formBuilder.group({
             CashCounterID: [this.hospitalConfigservice.HospitalconfigParams?.IPD_Refund_of_Advance_Receipt_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
             refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,

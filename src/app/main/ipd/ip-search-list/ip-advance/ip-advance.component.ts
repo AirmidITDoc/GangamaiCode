@@ -33,6 +33,8 @@ export class IPAdvanceComponent implements OnInit {
     vAdvanceId: any = 0;
     vMobileNo: any;
     registerObj: any;
+    UserWsieCashcounterId:boolean = false;
+    vUserID:any=0;
     //Advance Amt summary
     TotalAdvanceAmt: any = 0;
     TotalAdvUsedAmt: any = 0;
@@ -98,6 +100,7 @@ export class IPAdvanceComponent implements OnInit {
 
     ngOnInit(): void {
 
+        this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.createAdvform();
         this.AdvFormGroup.markAllAsTouched();
         if (this.data) {
@@ -141,6 +144,9 @@ export class IPAdvanceComponent implements OnInit {
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._configService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
+
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._configService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
     }
     createAdvform() {
         this.AdvFormGroup = this.formBuilder.group({

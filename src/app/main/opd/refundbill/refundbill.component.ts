@@ -64,6 +64,8 @@ export class RefundbillComponent implements OnInit {
     searchFormGroup: FormGroup;
     RefundOfBillFormFooter: FormGroup
     vRefundOfBillFormGroup: FormGroup
+    vUserID:any=0;
+    UserWsieCashcounterId:boolean = false;
     dateTimeObj: any;
     currency: any = '';
     currentDate = new Date();
@@ -90,6 +92,8 @@ export class RefundbillComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+            debugger
+        this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.searchFormGroup = this.createSearchForm();
 
         this.vRefundOfBillFormGroup = this.vRefundBillFormInsert();
@@ -102,13 +106,19 @@ export class RefundbillComponent implements OnInit {
         this.refundDetailsArray.push(this.createRefundDetail());
         this.addChargesArray.push(this.createAddCharge());
 
-        this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
-        this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
-        this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
-
-        //this is for curreny symbol
+                //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
+
+
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+        this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
+        this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date) || '1900-01-01')
+        this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
+
+
     }
 
     createSearchForm() {

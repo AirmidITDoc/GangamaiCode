@@ -239,10 +239,15 @@
                                         ValueField="regId"
                                         (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-                                    <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex
-                                        [formGroup]="searchForm" [validations]="getValidationMessages().CashCounterID"
+                                    <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="Cash Counter Name" formControlName="CashCounterID" fxFlex
+                                        [formGroup]="searchForm" [validations]="getValidationMessages().CashCounterID" fxFlex
                                         [mode]="autocompleteModeCashcounter"  [disableAutoNext]="true">
-                                    </airmid-dropdown>
+                                    </airmid-dropdown> 
+
+                                    <airmid-dropdown  *ngIf="UserWsieCashcounterId" fxFlex  label="Select Cash Counter" formControlName="CashCounterID"
+                                       [formGroup]="searchForm"    TextField="cashCounterName" ValueField="cashCounterId"
+                                    [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"
+                                      ></airmid-dropdown>
 
                                     <airmid-dropdown label="Tariff Name" formControlName="TariffId"
                                         [formGroup]="searchForm" [validations]="getValidationMessages().tariffId"

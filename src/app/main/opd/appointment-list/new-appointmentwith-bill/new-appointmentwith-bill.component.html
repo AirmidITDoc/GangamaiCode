@@ -48,11 +48,18 @@
 
                                     <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
 
-                                          <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" 
+                                          <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="CashCounterID" formControlName="CashCounterID" 
                                             [formGroup]="searchFormGroup" class="w-250"
                                             [validations]="getValidationMessages().CashCounterID"
                                             [mode]="autocompleteModeCashcounter" [disableAutoNext]="true">
                                         </airmid-dropdown>
+ 
+
+                                    <airmid-dropdown  *ngIf="UserWsieCashcounterId" class="w-250"  label="Select Cash Counter" formControlName="CashCounterID"
+                                       [formGroup]="searchFormGroup"    TextField="cashCounterName" ValueField="cashCounterId"
+                                    [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"
+                                      ></airmid-dropdown>
+
 
                                         <airmid-autocomplete class="w-450"
                                             label="Search Reg No / Patient Name / Mobile No"

@@ -44,10 +44,17 @@
                                 TextField="formattedText"></airmid-autocomplete>  -->
 
 
-                                <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex="30%"
+                                   <airmid-dropdown  *ngIf="!UserWsieCashcounterId" label="CashCounterID" formControlName="CashCounterID" fxFlex="30%"
                                         [formGroup]="searchFormGroup" [validations]="getValidationMessages().CashCounterID"
                                         [mode]="autocompleteModeCashcounter"  >
                                     </airmid-dropdown>
+
+
+
+                                     <airmid-dropdown  *ngIf="UserWsieCashcounterId"  fxFlex="30%"  label="Select Cash Counter" formControlName="CashCounterID"
+                                       [formGroup]="searchFormGroup"    TextField="cashCounterName" ValueField="cashCounterId"
+                                    [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_REFUND_BILL'"
+                                      ></airmid-dropdown>
 
                   </div>
                 </div>

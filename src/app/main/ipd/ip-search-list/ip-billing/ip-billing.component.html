@@ -1030,9 +1030,13 @@
                     </div>
 
                     <div fxFlex="15%">
-                      <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID"
+                      <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="Select Cash Counter " formControlName="CashCounterID"
                         [formGroup]="IpbillFooterform" [validations]="getValidationMessages().cashCounterId"
                         [mode]="autocompleteModeCashcounter"></airmid-dropdown>
+
+                        <airmid-dropdown *ngIf="UserWsieCashcounterId" label="Select Cash Counter" formControlName="CashCounterID"
+                          [formGroup]="IpbillFooterform" TextField="cashCounterName" ValueField="cashCounterId"
+                          [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IPD_BILL'"></airmid-dropdown>
                     </div>
 
                     <div fxFlex="10%" *ngIf="Is9_Digit_National_Id">

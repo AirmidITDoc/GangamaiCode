@@ -273,10 +273,14 @@
                         </airmid-textbox>
                     </div>
     
-                    <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
+                    <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
                         [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().cashCounterId"
                         [mode]="autocompleteModeCashcounter">
                     </airmid-dropdown>
+
+                    <airmid-dropdown *ngIf="UserWsieCashcounterId" class="w-300" label="Select Cash Counter" formControlName="CashCounterID"
+                        [formGroup]="RefundOfAdvanceFormGroup" TextField="cashCounterName" ValueField="cashCounterId"
+                        [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IP_REFUND_ADV_BILL'"></airmid-dropdown>
     
                     <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Reason Of Refund Of Advacne" formControlName="remark"

@@ -63,7 +63,7 @@
                             title="verify Menu">verified_user</mat-icon>
                     </button> 
 
-                    <span [matTooltip]="element.isProceedToApproval ? 'Already sent for approval. Please wait until it is approved.'
+                    <span  class="tooltip-wrapper" [matTooltip]="element.isProceedToApproval ? 'Already sent for approval. Please wait until it is approved.'
                             : 'Click to submit for approval.'" matTooltipPosition="above"> 
                         <button *ngIf="!element.isApproved && IsApprovalReqID" mat-icon-button (click)="getApproval(element)"
                             [disabled]="element.isProceedToApproval"> 
