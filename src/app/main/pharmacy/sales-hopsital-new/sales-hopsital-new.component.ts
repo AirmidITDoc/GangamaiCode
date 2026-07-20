@@ -212,6 +212,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.vCondition = true;
         }
         this.getAccessDetail();
+        this.getScrolling();
     }
     ngOnDestroy() {
         this.ItemFormreset();
@@ -2869,6 +2870,7 @@ export class SalesHospitalNewComponent implements OnInit {
     ExpiryItem: any = [];
     getScrolling() {
         this._salesService.getExpiryItemlist().subscribe(data => {
+            console.log("Expiry Data:",data)
             this.ExpiryItem = data
         })
     }

@@ -87,7 +87,7 @@ export class ReviewcompanyBillComponent {
     public subscription: Array<Subscription> = [];
 
     public displayedChargeColumns: string[] =
-        ['Status', 'ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'userName','DoctorName',
+        ['Status', 'ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'userName', 'DoctorName',
             //  'ClassName', 'ChargesAddedName',  
             'Exclucion', 'Approved',
             'buttons'
@@ -986,25 +986,57 @@ export class ReviewcompanyBillComponent {
             contact.EditDoctor = false
         }
     }
-    validateGovtAmount() {
+    validateGovtAmount(type: 'govt' | 'company') {
         debugger
-        const govtAmt = Number(this.CompanyForm.get('govtApprovedAmt')?.value || 0);
-        const CompanyAmt = Number(this.CompanyForm.get('companyApprovedAmt')?.value || 0);
+  const govtControl = this.CompanyForm.get('govtApprovedAmt');
+  const companyControl = this.CompanyForm.get('companyApprovedAmt'); 
+  const govtAmt = Number(govtControl?.value) || 0;
+  const companyAmt = Number(companyControl?.value) || 0;
+  const finalAmt = Number(this.FinalBillBalAmt) || 0; 
+  // Negative values not allowed
+  if (govtAmt < 0) {
+    this.toastr.warning('Government Amount cannot be negative');
+    govtControl?.setValue(0);
+    return;
+  }
 
-        if (govtAmt) {
-            if (govtAmt > this.FinalBillBalAmt) {
-                this.toastr.warning('Approval Amt cannot be greater than Balance amount');
-                // Optional: reset value
-                this.CompanyForm.get('govtApprovedAmt')?.setValue(this.FinalBillBalAmt);
-            }
-        }
-        if (CompanyAmt) {
-            if (CompanyAmt > this.FinalBillBalAmt) {
-                this.toastr.warning('Approval Amt cannot be greater than Balance amount');
-                // Optional: reset value
-                this.CompanyForm.get('companyApprovedAmt')?.setValue(this.FinalBillBalAmt);
-            }
-        }
+  if (companyAmt < 0) {
+    this.toastr.warning('Company Amount cannot be negative');
+    companyControl?.setValue(0);
+    return;
+  }
+
+  // Individual validation
+  if (govtAmt > finalAmt) {
+    this.toastr.warning(`Government Amount cannot exceed than Balance Amount ${finalAmt}`);
+    govtControl?.setValue(finalAmt);
+    return;
+  }
+
+  if (companyAmt > finalAmt) {
+    this.toastr.warning(`Company Amount cannot exceed than Balance Amount ${finalAmt}`);
+    companyControl?.setValue(finalAmt);
+    return;
+  }
+
+  // Combined validation
+  const total = govtAmt + companyAmt;
+
+  if (total > finalAmt) {
+
+    const allowed = finalAmt - (type === 'govt' ? companyAmt : govtAmt);
+
+    this.toastr.warning(
+      `Total of Government + Company Amount cannot exceed than Balance Amount ${finalAmt}`
+    );
+
+    if (type === 'govt') {
+      govtControl?.setValue(allowed > 0 ? allowed : 0);
+    } else {
+      companyControl?.setValue(allowed > 0 ? allowed : 0);
+    } 
+    return; 
+}
     }
     // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
