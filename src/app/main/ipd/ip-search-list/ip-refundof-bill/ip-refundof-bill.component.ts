@@ -79,6 +79,8 @@ export class IPRefundofBillComponent implements OnInit {
     registerObj: any
     Chargelist: any = [];
     currency: any = '';
+    UserWsieCashcounterId:boolean = false;
+    vUserID:any=0;
     autocompleteModeCashCounter: string = "CashCounter";
 
     dataSource2 = new MatTableDataSource<InsertRefundDetail>();
@@ -103,6 +105,8 @@ export class IPRefundofBillComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+
+          this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.RefundOfBillFormFooter = this.refundFormFooter();
         this.RefundOfBillFormFooter.markAllAsTouched();
 
@@ -121,6 +125,10 @@ export class IPRefundofBillComponent implements OnInit {
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
+
+
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
     }
 
     createSearchForm() {

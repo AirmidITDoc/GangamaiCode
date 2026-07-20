@@ -292,8 +292,14 @@
                     </div>
 
                     <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="RefundOfBillFormFooter" [mode]="autocompleteModeCashCounter"  >
+                        <airmid-dropdown  *ngIf="!UserWsieCashcounterId"  label="Cash Counter" formControlName="CashCounterID" 
+                        [formGroup]="RefundOfBillFormFooter" [mode]="autocompleteModeCashCounter"  >
                         </airmid-dropdown>
+
+                         <airmid-dropdown  *ngIf="UserWsieCashcounterId" fxFlex  label="Select Cash Counter" formControlName="CashCounterID"
+                                       [formGroup]="RefundOfBillFormFooter"    TextField="cashCounterName" ValueField="cashCounterId"
+                                    [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IP_REFUND_BILL'"
+                                      ></airmid-dropdown>
                     </div>
                 </div>
             </form> 

@@ -194,7 +194,8 @@ export class SalesHospitalService {
     }
 
  public getExpiryItemlist() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_ExpiryItemScrollingData", {});
+ //   return this._httpClient.post("Generic/GetByProc?procName=m_ExpiryItemScrollingData", {});
+       return this._httpClient1.GetData("Sales/ExpiryItemScrollingData?Keyword=1");
   }
     
 }

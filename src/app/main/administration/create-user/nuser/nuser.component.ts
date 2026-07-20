@@ -46,6 +46,7 @@ export class NUserComponent implements OnInit {
     visCurrentStk: any = false;
     vaddChargeIsDelete: any = false;
     unitname = 0;
+    CashCounterName = 0;
     rolename = 0;
     storename = 0;
     webrolename = 0;
@@ -57,6 +58,7 @@ export class NUserComponent implements OnInit {
     autocompleteModeStoreName: string = "Store";
     autocompleteModeWebRoleName: string = "WebRole";
     autocompleteModedoctor: string = "ConDoctor";
+    autocompleteModeCashcounter: string = "CashCounter";
 
     displayedColumn: string[] = [
         'Header',
@@ -134,6 +136,7 @@ export class NUserComponent implements OnInit {
             this.getAccessDetail(this.data)
             this.getUnitDetail(this.data)
             this.getStoreDetail(this.data)
+            this.getCashcounterDetail(this.data)
 
         } else {
             this.getList()
@@ -207,6 +210,7 @@ export class NUserComponent implements OnInit {
 
     RtrvUnitList: any = [];
     RtrvStoreList: any = [];
+     RtrvCashCounterList: any = [];
     getUnitDetail(row) {
         // debugger
         const SelectQuery = {
@@ -300,7 +304,51 @@ export class NUserComponent implements OnInit {
 
         }, 1000);
     }
+getCashcounterDetail(row) {
+        const SelectQuery = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "LoginCashCounterDetId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "LoginId",
+                    "fieldValue": String(row.userId), //"30091",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        setTimeout(() => {
+            this._CreateUserService.getCashCounterDetailList(SelectQuery).subscribe(response => {
+                const rowData = response?.data || [];
 
+                console.log(rowData)
+                this.RtrvCashCounterList = rowData.map(item => ({
+                    value: String(item.cashCounterId),
+                    text: item.cashCounterName
+                }))
+
+
+                console.log("Cashcounter data:", this.RtrvCashCounterList)
+                const assignedCashcounter = this.RtrvCashCounterList.filter(Item => {
+                    const originalItem = rowData.find(r => r.cashCounterId == Item.value);
+                    return true;
+                });
+                //  this.ddlStore.SetSelection(assignedCashcounter);
+
+                this.myuserApprovalform1.patchValue({
+                    multipleCashCounterId: assignedCashcounter
+                });
+            });
+
+            // setTimeout(() => {
+            //   this.myuserApprovalform1.get('multipleStoreId')?.setValue(this.RtrvCashCounterList);
+            // }, 0);
+
+        }, 1000);
+    }
     createuserApprovalForm(): FormGroup {
         return this._formBuilder.group({
             userId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -366,7 +414,7 @@ export class NUserComponent implements OnInit {
             tLoginAccessDetails: this._formBuilder.array([]),
             tLoginUnitDetails: this._formBuilder.array([]),
             tLoginStoreDetails: this._formBuilder.array([]),
-
+            tLoginCashCounterDetails: this._formBuilder.array([]),
             // extra fields
             // multipleUnitId: [[], [Validators.required]],
             // multipleStoreId: [[], [Validators.required]],
@@ -380,7 +428,8 @@ export class NUserComponent implements OnInit {
     CreateMultidataform(): FormGroup {
         return this._formBuilder.group({
             multipleUnitId: [[], [Validators.required]],
-            multipleStoreId: [[], [Validators.required]]
+            multipleStoreId: [[], [Validators.required]],
+            multipleCashCounterId: [[]] 
         });
     }
 
@@ -409,6 +458,13 @@ export class NUserComponent implements OnInit {
             storeId: [Number(item.value)],
         });
     }
+    createLoginCashCounterDetails(item: any = {}): FormGroup {
+        return this._formBuilder.group({
+            loginCashCounterDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [Number(item.value)],
+        });
+    }
 
     get LoginAccessDetailsArray(): FormArray {
         return this.myuserApprovalform.get('tLoginAccessDetails') as FormArray;
@@ -421,7 +477,14 @@ export class NUserComponent implements OnInit {
     get LoginStoreDetailsArray(): FormArray {
         return this.myuserApprovalform.get('tLoginStoreDetails') as FormArray;
     }
-
+    get LoginCashCounterDetailsArray(): FormArray {
+     return this.myuserApprovalform.get('tLoginCashCounterDetails') as FormArray;
+    }
+   removeCashcounter(item) {
+        const removedIndex = this.myuserApprovalform1.value.multipleCashCounterId.findIndex(x => x.value == item.value);
+        this.myuserApprovalform1.value.multipleCashCounterId.splice(removedIndex, 1);
+        this.ddlUnit.SetSelection(this.myuserApprovalform1.value.multipleCashCounterId.map(x => x.value));
+    }
     removeUnit(item) {
         const removedIndex = this.myuserApprovalform1.value.multipleUnitId.findIndex(x => x.value == item.value);
         this.myuserApprovalform1.value.multipleUnitId.splice(removedIndex, 1);
@@ -551,6 +614,12 @@ export class NUserComponent implements OnInit {
                     this.LoginStoreDetailsArray.push(this.createLoginStoreDetails(item))
                 })
             }
+            this.LoginCashCounterDetailsArray.clear();
+            if (this.myuserApprovalform1.get('multipleCashCounterId').value) {
+                this.myuserApprovalform1.get('multipleCashCounterId').value.forEach((item) => {
+                    this.LoginCashCounterDetailsArray.push(this.createLoginCashCounterDetails(item))
+                })
+            }
             this.myuserApprovalform1.removeControl('isEmployee')
             this.myuserApprovalform.removeControl('employeId')
             this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
@@ -612,7 +681,11 @@ export class NUserComponent implements OnInit {
         this.unitname = obj.value
         console.log("set:", this.myuserApprovalform1.get('multipleUnitId').value)
     }
-
+    selectChangeCashCounterName(obj: any) {
+        console.log(obj)
+        this.CashCounterName = obj.value
+        console.log("set:", this.myuserApprovalform1.get('multipleCashCounterId').value)
+    }
     selectChangeRoleName(obj: any) {
         this.rolename = obj.value
     }
@@ -676,6 +749,7 @@ export class NUserComponent implements OnInit {
     getValidationMessages() {
         return {
             unitId: [],
+            CashCounterId: [],
             mobileNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
                 { name: "required", Message: "Mobile No is required" },

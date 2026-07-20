@@ -29,6 +29,7 @@ export class OTNoteComponent {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     FirstName: any = ""
     regNo: any = "0"
+      opipType: any = "2"
     LastName: any = ""
     votbookingId: any = ""
     registerobj: any;
@@ -75,6 +76,7 @@ export class OTNoteComponent {
         { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
 
     ]
     gridConfig: gridModel = {
@@ -178,6 +180,7 @@ export class OTNoteComponent {
                 { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.Contains },
                 { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.Contains },
                 { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
 
             ],
             row: 25

@@ -1,6 +1,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from "@angular/core";
 import {
+    ControlValueAccessor,
     FormControl,
     FormGroup,
     NgControl
@@ -8,12 +9,12 @@ import {
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 @Component({
-  selector: 'app-airmid-slider',
-  templateUrl: './airmid-slider.component.html',
-  styleUrls: ['./airmid-slider.component.scss']
+    selector: 'app-airmid-slider',
+    templateUrl: './airmid-slider.component.html',
+    styleUrls: ['./airmid-slider.component.scss']
 })
-export class AirmidSliderComponent implements
- OnInit,
+export class AirmidSliderComponent implements ControlValueAccessor,
+    OnInit,
     OnDestroy {
     static nextId: number = 0;
 
@@ -26,16 +27,16 @@ export class AirmidSliderComponent implements
     control = new FormControl();
     stateChanges: Subject<void> = new Subject();
     @Input() formGroup: FormGroup;
-    @Input() formControlName:string;
+    @Input() formControlName: string;
     @Input() maxLength: number = 50;
     @Input() validations: [] = [];
     @Input() label: string = "";
-    @Input() type:string="text";
-    @Input() keyup:Event;
+    @Input() type: string = "text";
+    @Input() keyup: Event;
     @Input() ValueField: string = "value";
-    
-    @Input() width:number=100;
-  empty: any;
+
+    @Input() width: number = 100;
+    empty: any;
     @Input()
     get disabled(): boolean {
         return this._disabled;
@@ -45,16 +46,11 @@ export class AirmidSliderComponent implements
         this.stateChanges.next();
     }
     @Input()
-   
+    set value(val: boolean) {
+        this.writeValue(val);
+    }
 
-    @Input()
-    get value(): string {
-        return this.control.value;
-    }
-    set value(value: string) {
-        this.control.setValue(value);
-        this.stateChanges.next();
-    }
+
 
     @HostBinding('attr.aria-describedby')
     describedBy: string = '';
@@ -73,16 +69,15 @@ export class AirmidSliderComponent implements
         this._focused = value;
         this.stateChanges.next();
     }
-  
+
 
     constructor(@Optional() @Self() public ngControl: NgControl | null) {
         if (ngControl) {
-         this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;
         }
     }
 
-  
+
 
     ngOnDestroy(): void {
         this.destroy.next();
@@ -120,11 +115,13 @@ export class AirmidSliderComponent implements
         // }
     }
 
-    writeValue(value: string | null): void {
-        this.control.setValue(value);
+    writeValue(value: boolean): void {
+        this.control.setValue(value, {
+            emitEvent: false
+        });
     }
 
-        ngOnInit() {
-    
+    ngOnInit() {
+
     }
 }

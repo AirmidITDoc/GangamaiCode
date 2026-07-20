@@ -337,7 +337,7 @@
                     </button>
 
                     <ng-container *ngFor="let m of menuActions">
-                        <button mat-menu-item (click)="OngetRecord(element, m.text)"
+                        <button mat-menu-item (click)="OngetRecord(element, m.text)" *ngIf="m.permission"
                             [disabled]="shouldDisableMenuItem(m.text, element)" style="height: 32px; min-height: 32px;">
                             <mat-icon
                                 style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">{{m.icon}}</mat-icon>

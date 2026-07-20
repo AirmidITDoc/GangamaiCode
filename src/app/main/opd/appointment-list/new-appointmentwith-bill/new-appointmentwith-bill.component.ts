@@ -160,7 +160,7 @@ export class NewAppointmentwithBillComponent {
     vTariffId: any = 1;
     vClassId: any = 1;
     vRegId: any;
-
+vUserID:any=0;
     // Bill
     value = new Date()
     ApiURL: any = '';
@@ -180,7 +180,7 @@ export class NewAppointmentwithBillComponent {
     isExpanded1 = false; // Defaults to closed
     isExpanded3 = false;
     vUPINO: any = ""
-
+    UserWsieCashcounterId:boolean =false;
     doctorName1 = ""
 
     displayedServiceColumns: string[] = [
@@ -227,6 +227,7 @@ export class NewAppointmentwithBillComponent {
     }
 
     ngOnInit(): void {
+        this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.createBillForm()
         this.AppointmentBillfinalform = this.createFinalFormView()
         this.RegiAppointmentBillfinalform = this.createRegistredFinalFormView()
@@ -262,6 +263,10 @@ export class NewAppointmentwithBillComponent {
                 }
             });
         }
+
+
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
     }
 
     // Load data by ID when opened as standalone page

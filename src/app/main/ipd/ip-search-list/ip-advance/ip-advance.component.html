@@ -219,8 +219,16 @@
                     </div>
 
                     <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter" [validations]="getValidationMessages().CashCounterID">
+                        <airmid-dropdown *ngIf="!UserWsieCashcounterId"  label="Cash Counter" 
+                        formControlName="CashCounterID" [formGroup]="AdvFormGroup" 
+                        [mode]="autocompleteModeCashCounter" [validations]="getValidationMessages().CashCounterID">
                         </airmid-dropdown>
+
+
+                         <airmid-dropdown  *ngIf="UserWsieCashcounterId"   label="Select Cash Counter" formControlName="CashCounterID"
+                                       [formGroup]="AdvFormGroup"    TextField="cashCounterName" ValueField="cashCounterId"
+                                    [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IPD_ADVANCE'"
+                                      ></airmid-dropdown>
                     </div>
 
                 </div>

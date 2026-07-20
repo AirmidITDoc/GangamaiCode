@@ -92,6 +92,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     currency: any = '';
     SetCashbydefault: any = 0
+    CashCounterType:any = 'OP_BILL';
+    vUserID:any=0;
+    UserWsieCashcounterId:boolean =false;
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
@@ -122,6 +125,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.isModal = !!this.dialogRef;
         this.searchForm = this.createSearchForm();
         this.chargeForm = this.createChargeForm();
@@ -192,10 +196,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.Is9_Digit_National_Id = id === "1";
 
 
-        //this is for set bydefault cash 
-        debugger
+        //this is for set bydefault cash  
         const [setCashBydefaultId, setCashBydefault] = this._ConfigService.configParams.OpBillSetCash.split(":");
         this.SetCashbydefault = setCashBydefaultId;
+
+
+        //this is for set bydefault cash 
+        debugger
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
 
         this.OPFooterForm = this.CreateOPFooter();
         this.setupFormListener();

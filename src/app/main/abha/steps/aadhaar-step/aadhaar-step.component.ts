@@ -181,7 +181,7 @@ export class AadhaarStepComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.abhaService.aadhaarGenerateOtp({ AadhaarNumber: this.form.value.aadhaarNumber })
+        this.abhaService.aadhaarGenerateOtp({ aadhaarNumber: this.form.value.aadhaarNumber })
             .subscribe((r) => {
                 if (r.txnId) {
                     this.otpSent.emit(r);

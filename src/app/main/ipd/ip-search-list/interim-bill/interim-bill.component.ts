@@ -43,6 +43,8 @@ export class InterimBillComponent implements OnInit {
     countdown: number = 180; // 3 minutes
     countdownColorClass = 'green';
     vUPINO: any;
+    UserWsieCashcounterId:boolean = false;
+    vUserID:any=0;
     FinalNetAmt: any = 0;
     selectedAdvanceObj: any;
     ConShow: boolean = false;
@@ -81,7 +83,8 @@ export class InterimBillComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any) { }
             SetCashbydefault: any = 0
 
-    ngOnInit(): void {
+    ngOnInit(): void { 
+        this.vUserID = this.accountService.currentUserValue?.userId || 0;
         this.dataSource.data = [];
         this.InterimFooterForm = this.CreateFooterForm();
         this.IPInterimBillForm = this.createInterimbillForm();
@@ -105,6 +108,9 @@ export class InterimBillComponent implements OnInit {
         this.SetCashbydefault = setCashBydefaultId ;
           const paymentType =  +this.SetCashbydefault === 2 ? "PayOption"  :   "cashpay";
           this.InterimFooterForm.patchValue({paymode:paymentType})
+
+        const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
+        this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
       
     }
     CreateFooterForm(): FormGroup {

@@ -70,7 +70,9 @@ export class CreateUserService {
     public getStoreDetailList(param) {
         return this._httpClient.PostData("LoginManager/LoginStoreUserWiseList", param)
     }
-
+   public getCashCounterDetailList(param) {
+        return this._httpClient.PostData("LoginManager/LoginCashCounterUserWiseList", param)
+    }
     public getpasswwordupdate(data) {
         return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + data, {})
     }

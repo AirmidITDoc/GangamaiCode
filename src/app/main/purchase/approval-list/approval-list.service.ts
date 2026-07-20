@@ -40,4 +40,7 @@ export class ApprovalListService {
   public getVerifyPurchaseOrdert(Param) {
     return this.httpClient.PostData("Purchase/Verify", Param)
   }
+  public getApprovalStatus(ID,Param) {
+    return this.httpClient.PutData("Approval/" + ID, Param) 
+  }
 }

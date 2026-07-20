@@ -2,3 +2,14 @@
   opacity: 0.4;
   filter: grayscale(100%);
 }
+.tooltip-wrapper {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.tooltip-wrapper button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

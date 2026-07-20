@@ -42,6 +42,8 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     resendAttempts = 0;
     otpExpired = false;
     @Output() sessionExpired = new EventEmitter<void>();
+    showSuccessPopup = false;
+    accessToken = '';
 
     constructor(private fb: FormBuilder, private abhaService: AbhaService, private snack: MatSnackBar) {
         // this.demoAbha = '91-3315-3072-4730';
@@ -141,6 +143,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     }
 
     // ============== Verify OTP ==============
+    
     verifyOtp(): void {
         if (this.otpForm.invalid) {
             this.otpForm.markAllAsTouched();
@@ -170,7 +173,9 @@ export class VerifyByAbhaOtpComponent implements OnInit {
                 if (r.txnId) {
                     if (r.authResult === 'success' && r.accounts) {
                         this.snack.open(r.message, 'OK', { duration: 1800 });
-                        this.verified.emit({ accesstoken: r.token, isAddress: false });
+                        this.accessToken = r.token;
+                        // this.verified.emit({ accesstoken: r.token, isAddress: false });
+                        this.showSuccessPopup = true;
                     } else {
                         this.otpForm.get('otp')?.setErrors({ invalid: r.message });
                         this.snack.open(r.message, 'OK', { duration: 3000 });
@@ -183,6 +188,10 @@ export class VerifyByAbhaOtpComponent implements OnInit {
             });
     }
 
+    closeSuccessPopup() {
+        this.showSuccessPopup = false;
+        this.verified.emit({ accesstoken: this.accessToken, isAddress: false });
+    }
     // resendOtp(): void {
     //     if (this.resendRemaining <= 0) return;
     //     this.resendRemaining--;
@@ -192,14 +201,14 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     //     });
     // }
 
-     resendOtp(): void {
+    resendOtp(): void {
         // if (this.resendRemaining <= 0) return;
         // this.resendRemaining--;
         this.otpExpired = false;
         if (this.resendAttempts >= 2) {
             return;
         }
-        this.resendAttempts++; 
+        this.resendAttempts++;
 
         this.otpForm.get('otp')?.reset();
         this.sendOtp();

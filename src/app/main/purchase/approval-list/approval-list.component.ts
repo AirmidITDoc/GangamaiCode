@@ -138,9 +138,8 @@ export class ApprovalListComponent implements OnInit {
         this.commonService.Onprint("GRNReturnId", row.grnReturnId, "GRNReturnReport");
     }
     
-    OnEdit(contact) {
-        console.log(contact)
-
+    OnEdit(contact,Obj) {
+        console.log(contact) 
         const dialogRef = this._matDialog.open(NewPurchaseorderComponent,
             {
                 maxWidth: "100%",
@@ -148,8 +147,7 @@ export class ApprovalListComponent implements OnInit {
                 width: '95%',
                 data: {
                     Obj: contact,
-                    FromName: 'PurchaseApproved',
-
+                    FromName: 'PurchaseApproved'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -157,7 +155,7 @@ export class ApprovalListComponent implements OnInit {
             this.grid.bindGridData();
             debugger
             if(result != true){
-                this.onVerify(contact);
+                this.onVerify(contact,Obj);
             }
      
         }); 
@@ -178,20 +176,34 @@ export class ApprovalListComponent implements OnInit {
             console.log(data);
             this.CommanList = res.data[0] 
             if((this.CommanList?.purchaseID || 0) > 0){
-                this.OnEdit(this.CommanList); 
+                this.OnEdit(this.CommanList,contact); 
             }
         });
-    }
+       }
 
-        onVerify(row) {
-            debugger
+        onVerify(row,Obj) { 
         const submitData = {
             "purchaseId": row?.purchaseID,
             "isVerifiedId": 1
         };
         this._ApprovalListService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
+            this.onApproval(Obj);
+            this.grid.bindGridData() 
+        });
+    }
+     onApproval(row) {
+         debugger
+        const formattedTime = this.datePipe.transform(new Date(), 'hh:mm a');
+        const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+        const FormattedDateTime = formattedDate + ' ' + formattedTime
+        if(!row?.approvalId){ return}
+        const submitData = {
+            "approvalId": row?.approvalId || 0,
+            "approvalStatus": 1,
+            "approvedDateTime": FormattedDateTime
+        };
+        this._ApprovalListService.getApprovalStatus((row?.approvalId || 0),submitData).subscribe(response => {
             this.grid.bindGridData()
         });
     }
-}
-
+} 

@@ -113,3 +113,33 @@
     font-weight: 600;
     margin-top: 4px;
 }
+
+////////// success css /////////
+.success-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.success-popup {
+    width: 340px;
+    background: #fff;
+    border: 3px solid #4aa3ff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+
+.success-popup h2,
+.success-popup h3 {
+    margin: 10px 0;
+}
+
+.success-popup img {
+    margin: 15px 0;
+}

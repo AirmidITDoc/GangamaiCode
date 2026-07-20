@@ -112,6 +112,7 @@ export enum permissionCodes {
     GastrologyCasePaper='GastrologyCasePaper',
     CheckIn='CheckIn',
     CheckOut='CheckOut',
+    ReqForIP='requestforip',
 
     // IPD?
     Admission = 'Admission',
