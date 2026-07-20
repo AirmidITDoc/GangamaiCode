@@ -129,7 +129,7 @@ export class NewPcpndComponent {
       this.OP_IP_Id = this.registerObj.opipid;
       this.OP_IPType = this.registerObj.opipType
       this.DoctorName = this.registerObj.condDoctor;
-      debugger
+
 
       this.age = this.registerObj.age
       this.refrancedoctor = this.registerObj.refrancedoctor
@@ -141,8 +141,12 @@ export class NewPcpndComponent {
       this.vprocedureDate = new Date(this.registerObj.procedureDate);
       this.vconsentDate = new Date(this.registerObj.consentDate);
       this.vprocessDate = new Date(this.registerObj.processDate);
+      debugger
+      this.vpatientaddress = this.registerObj?.patientAddress;
+      this.vpatientMobileNo = this.registerObj?.patientMobileNo.trim()
 
       console.log(this.registerObj?.invasiveDoctorId)
+      this.personalFormGroup.get("patientaddress").setValue((this.vpatientaddress))
 
       this.personalFormGroup.get("abhanumber").setValue((this.registerObj?.abhaNumber))
 
@@ -290,7 +294,7 @@ export class NewPcpndComponent {
       "processDate": [(new Date()).toISOString()],
       "opipid": this.OP_IP_Id,
       "opiptype": this.OP_IPType,
-      "refDocId": [0,  [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      "refDocId": [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       "childrenCount": ["0"],
       "relativeName": this.PatientName,
       "mperiod": [''],

@@ -508,7 +508,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                     // Validators.required,
                     // Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
-                    Validators.maxLength(10),
+                    Validators.maxLength(100),
                     // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
