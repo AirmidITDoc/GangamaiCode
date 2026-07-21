@@ -141,7 +141,7 @@ export class NewPcpndComponent {
       this.vprocedureDate = new Date(this.registerObj.procedureDate);
       this.vconsentDate = new Date(this.registerObj.consentDate);
       this.vprocessDate = new Date(this.registerObj.processDate);
-      debugger
+      
       this.vpatientaddress = this.registerObj?.patientAddress;
       this.vpatientMobileNo = this.registerObj?.patientMobileNo.trim()
 

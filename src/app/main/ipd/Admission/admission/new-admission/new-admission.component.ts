@@ -388,7 +388,7 @@ export class NewAdmissionComponent implements OnInit {
 
         this.MembershipId = obj.membershipId;
         // this.VisitFlagDisp = true;
-debugger
+        debugger
         this._AdmissionService.getMemeberbyIdList(obj.membershipId).subscribe(response => {
             console.log(response)
 
@@ -448,8 +448,8 @@ debugger
                 this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
 
                 this.CityName = this.registerObjtrust?.cityName ?? '';
-               this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
-                this.registerObj.dateofBirth=this.registerObjtrust.husbandDob
+                this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
+                this.registerObj.dateofBirth = this.registerObjtrust.husbandDob
 
             }
         });
@@ -837,6 +837,8 @@ debugger
             this.admissionFormGroup.get('convertId').setValue(this.VvisitId)
             this.admissionFormGroup.get('AdmissionType').setValue(1)
         }
+        if (this.MembershipId > 0)
+            this.personalFormGroup.get('isMember').setValue(true)
 
         this.personalFormGroup.get('membershipId').setValue(this.MembershipId)
 

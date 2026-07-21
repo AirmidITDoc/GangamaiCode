@@ -162,8 +162,8 @@ export class RegistrationService {
 
             membershipId: 0,
             tPatientAbhaInformations: this._formBuilder.array([]),
-            // isMember: false,
-            // abhTranId: 0
+            isMember: false,
+            abhaTranId: 0
         });
 
     }

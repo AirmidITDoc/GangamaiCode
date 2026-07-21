@@ -768,7 +768,7 @@ export class NewAppointmentComponent implements OnInit {
 
                 debugger
                 this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
-                this.registerObj.dateofBirth=this.registerObjtrust.husbandDob
+                this.registerObj.dateofBirth = this.registerObjtrust.husbandDob
 
             }
         });
@@ -952,9 +952,9 @@ export class NewAppointmentComponent implements OnInit {
                 this.VisitFormGroup.get('visitDate').setValue(formattedDate);
                 this.VisitFormGroup.get('visitTime').setValue(formattedDate + ' ' + formattedTime);
 
-                // if(this.MembershipId > 0)
-                //     this.personalFormGroup.get('isMember').setValue(true)
-                
+                if (this.MembershipId > 0)
+                    this.personalFormGroup.get('isMember').setValue(true)
+
                 this.personalFormGroup.get('membershipId').setValue(this.MembershipId)
                 this.personalFormGroup.get('City').setValue(this.CityName)
                 this.personalFormGroup.get('Age').setValue(String(this.ageYear))
@@ -1527,8 +1527,8 @@ export class NewAppointmentComponent implements OnInit {
             emailId: ['', [Validators.email]],
 
             membershipId: [this.MembershipId],
-            // isMember:[false],
-            // abhTranId: 0    
+            isMember: false,
+            abhaTranId: 0
         });
     }
 

@@ -60,26 +60,26 @@ import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.componen
 
 })
 export class AppointmentListComponent implements OnInit {
-    // IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    // IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-    // IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-    // IsOpdEmr: boolean = true;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
-    // IsBill: boolean = true;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
-    // IsEditRegistration: boolean = true;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
-    // IsGastrology: boolean = true;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
-    // IsCheckIn: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
-    // IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
+    IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    IsOpdEmr: boolean = true;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
+    IsBill: boolean = true;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
+    IsEditRegistration: boolean = true;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
+    IsGastrology: boolean = true;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
+    IsCheckIn: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
+    IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
 
 
-    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-    IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-    IsOpdEmr: boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
-    IsBill: boolean = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
-    IsEditRegistration: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
-    IsGastrology: boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
-    IsCheckIn: boolean = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
-    IsCheckOut: boolean = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
+    // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    // IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    // IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    // IsOpdEmr: boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
+    // IsBill: boolean = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
+    // IsEditRegistration: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
+    // IsGastrology: boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
+    // IsCheckIn: boolean = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
+    // IsCheckOut: boolean = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
     IsReqForIp: boolean = this.permissionService.getPermission(permissionCodes.ReqForIP, permissionType.Edit);
 
 
@@ -168,10 +168,10 @@ export class AppointmentListComponent implements OnInit {
 
         debugger
         // menu Button List
-        if (this.IsAdd)
+        // if (this.IsAdd)
             this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor",permission:true });
 
-        if (this.IsEdit)
+        // if (this.IsEdit)
             this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor",permission:true });
 
         this.menuActions.push({ icon: "language", text: "Request For IP" ,permission:this.IsReqForIp});
