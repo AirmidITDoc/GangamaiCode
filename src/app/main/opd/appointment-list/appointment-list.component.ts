@@ -80,7 +80,7 @@ export class AppointmentListComponent implements OnInit {
     // IsGastrology: boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
     // IsCheckIn: boolean = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
     // IsCheckOut: boolean = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
-    IsReqForIp: boolean = this.permissionService.getPermission(permissionCodes.ReqForIP, permissionType.Edit);
+    IsReqForIp: boolean = true//this.permissionService.getPermission(permissionCodes.ReqForIP, permissionType.Edit);
 
 
 
