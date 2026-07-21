@@ -13,6 +13,8 @@ import {
     AbhaVerifyOtp,
     CreateAbhaResult,
     FindABHA,
+    generateToken,
+    LinkTokenRequest,
     MobileOtpVerifyRequest,
     ReqOtpFindABHA,
     VerifyUser,
@@ -111,5 +113,14 @@ export class AbhaService {
     }
     createAbha(data) {
         return this.http.PostData('Abha/address/create', data);
+    }
+
+    /**Generate token */
+    GenerateToken(body: generateToken): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('m2/hip-linking/token/generate', body);
+    }
+
+    LinkToken(body: LinkTokenRequest): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('m2/hip-linking/link/carecontext', body);
     }
 }

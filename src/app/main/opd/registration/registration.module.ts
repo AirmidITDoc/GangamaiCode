@@ -35,6 +35,8 @@ import { NewRegistrationComponent } from './new-registration/new-registration.co
 import { RegistrationComponent } from './registration.component';
 import { RegistrationService } from './registration.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const routes: Routes = [
     {
@@ -82,7 +84,9 @@ const routes: Routes = [
         MatButtonToggleModule,
         MatDialogModule,
         MatTabsModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatDividerModule,
+        MatSidenavModule,
     ],
     providers: [RegistrationService,
         DatePipe

@@ -54,7 +54,7 @@ export interface VerifyUserResponse {
 export interface AadhaarGenerateOtpResponse {
     txnId: string;
     message?: string; // masked last 4
-    healthIdNumber?:any;
+    healthIdNumber?: any;
     authMethods?: string[];
 }
 
@@ -93,8 +93,8 @@ export interface Account {
     preferredAbhaAddress: string
     name: string
     status: string
-    gender:string
-    yearOfBirth:string
+    gender: string
+    yearOfBirth: string
 }
 
 
@@ -124,6 +124,38 @@ export interface MobileEnrolRequest {
     pinCode?: string;
     stateCode?: string;
     districtCode?: string;
+}
+
+export interface generateToken {
+    abhaNumber: number,
+    abhaAddress: string,
+    name: string,
+    gender: string,
+    yearOfBirth: number,
+    hipId: string,
+    xCmId: string
+}
+
+export interface LinkTokenRequest {
+    abhaNumber: string;
+    abhaAddress: string;
+    patient: Patient[];
+    hipId: string;
+    linkToken: string;
+    xCmId: string;
+}
+
+export interface Patient {
+    referenceNumber: string;
+    display: string;
+    careContexts: CareContext[];
+    hiType: string;
+    count: number;
+}
+
+export interface CareContext {
+    referenceNumber: string;
+    display: string;
 }
 
 // ---------- Verify / Login existing ABHA ----------

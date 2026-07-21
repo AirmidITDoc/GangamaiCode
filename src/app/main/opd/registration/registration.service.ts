@@ -6,6 +6,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -219,7 +220,10 @@ export class RegistrationService {
     public getAbhaById(Id) {
         return this._httpClient1.GetData("PatientAbhaInformation/" + Id);
     }
+    public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
 
+        return this._httpClient1.GetData(apiUrl + inputValue);
+    }
     //  public getareaList1() {
     //     return this._httpClient1.GetData("VisitDetail/GetAreaList");
     // }

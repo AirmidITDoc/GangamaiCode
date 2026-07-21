@@ -54,6 +54,10 @@ export class NewRegistrationComponent implements OnInit {
     vlastNameConfig: any;
     isProfileData = false;
     abhaForm: FormGroup;
+    dateofBirth: any;
+    prevResults: any[] = [];
+    filteredOptions1: any[] = [];
+    debounceTimers: { [key: string]: any } = {};
 
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -155,20 +159,26 @@ export class NewRegistrationComponent implements OnInit {
 
             const now = new Date();
 
+            // const dobString =
+            //     `${this.data.profile.yearOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.dayOfBirth}` +
+            //     `T${String(now.getHours()).padStart(2, '0')}:` +
+            //     `${String(now.getMinutes()).padStart(2, '0')}:` +
+            //     `${String(now.getSeconds()).padStart(2, '0')}.` +
+            //     `${String(now.getMilliseconds()).padStart(3, '0')}`;
             const dobString =
-                `${this.data.profile.yearOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.dayOfBirth}` +
+                `${this.data.profile.yearOfBirth}-${String(this.data.profile.monthOfBirth).padStart(2, '0')}-${String(this.data.profile.dayOfBirth).padStart(2, '0')}` +
                 `T${String(now.getHours()).padStart(2, '0')}:` +
                 `${String(now.getMinutes()).padStart(2, '0')}:` +
-                `${String(now.getSeconds()).padStart(2, '0')}.` +
-                `${String(now.getMilliseconds()).padStart(3, '0')}`;
+                `${String(now.getSeconds()).padStart(2, '0')}`;
 
-            debugger
+            // this.dateofBirth = dobString
+            // debugger
             this.registerObj.dateofBirth = new Date(dobString)
-            console.log(dobString)
-            console.log("this.registerObj.dateofBirth:", this.registerObj.dateofBirth)
+            // console.log(dobString)
+            // console.log("this.registerObj.dateofBirth:", this.registerObj.dateofBirth)
 
-            this.onChangeDateofBirth(dobString);
-            // this.onChangeDateofBirth(this.registerObj.dateofBirth);
+            // this.onChangeDateofBirth(this.dateofBirth);
+            this.onChangeDateofBirth(this.registerObj.dateofBirth);
         }
 
         // this data will be used only to featch patientid
@@ -668,6 +678,166 @@ export class NewRegistrationComponent implements OnInit {
             ? 'xxxxxxxx' + v.slice(-4)
             : v;
         this.personalFormGroup.get('emgAadharCardNo')?.setValue(displayValue, { emitEvent: false });
+    }
+
+    handleInputChange(changedField: string): void {
+        // Get all current field values
+        const firstName = this.personalFormGroup.get('FirstName').value?.trim() || '';
+        const middleName = this.personalFormGroup.get('MiddleName').value?.trim() || '';
+        const lastName = this.personalFormGroup.get('LastName').value?.trim() || '';
+        const mobileNo = this.personalFormGroup.get('MobileNo').value?.trim() || '';
+
+        // If all fields are empty, clear everything
+        if (!firstName && !lastName && !mobileNo && !middleName) {
+            this.resetFilteredOptions();
+            return;
+        }
+
+        // Count how many fields are filled
+        const filledFields = [firstName, mobileNo].filter(Boolean).length;
+
+        // If only one field is filled, and it's FirstName or MobileNo, call API
+        if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
+            const keyword = firstName || mobileNo;
+            this._registerService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                this.prevResults = results || [];
+                this.filteredOptions1 = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
+            });
+            return;
+        }
+
+        // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
+        if (filledFields === 1 && changedField === 'LastName') {
+            this.filteredOptions1 = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
+            return;
+        }
+        // If only one field is filled, and it's MiddleName, just filter prevResults (do not call API)
+        if (filledFields === 1 && changedField === 'MiddleName') {
+            this.filteredOptions1 = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
+            return;
+        }
+
+        // If more than one field is filled, filter from prevResults
+        if (this.prevResults.length > 0) {
+            this.filteredOptions1 = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
+        } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
+            // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+            const keyword = this.personalFormGroup.get(changedField).value?.trim();
+            if (keyword) {
+                this._registerService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                    this.prevResults = results || [];
+                    this.filteredOptions1 = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
+                });
+            }
+        } else {
+            // If changedField is LastName and prevResults is empty, do nothing
+            this.filteredOptions1 = [];
+        }
+    }
+
+    // Helper function to filter results by all non-empty fields
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string, middleName: string }) {
+        const { firstName, lastName, mobileNo, middleName } = fields;
+        return results.filter(item => {
+            return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
+                && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+                && (!middleName || item.patientName?.toLowerCase().includes(middleName.toLowerCase()))
+                && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+        });
+    }
+    onSelectPatient(row: any) {
+        this.getSelectedObj(row);
+        this.resetFilteredOptions();
+    }
+    handleInputChangeDebounced(changedField: string): void {
+        // Clear any existing timer for this field
+        if (this.debounceTimers[changedField]) {
+            clearTimeout(this.debounceTimers[changedField]);
+        }
+        // Set a new timer
+        this.debounceTimers[changedField] = setTimeout(() => {
+            this.handleInputChange(changedField);
+        }, 300); // 300ms debounce
+    }
+    resetFilteredOptions() {
+        this.filteredOptions1 = [];
+        this.prevResults = [];
+    }
+
+    getSelectedObj(obj) {
+
+        // this.PatientName = obj.firstName + ' ' + obj.lastName;
+        // this.RegId = obj.regId;
+        // if ((this.RegId ?? 0) > 0) {
+        //     console.log(obj)
+        //     setTimeout(() => {
+        //         this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+        //             this.registerObj = response;
+        //             this.value = response.dateofBirth
+        //             this.vRegNo = response.regno
+        //             this.onChangeDateofBirth(response.dateofBirth)
+        //             console.log(response)
+        //             this.getLastDepartmetnNameList(this.registerObj)
+        //             this.setNationalIdValidation();
+        //             this.personalFormGroup.patchValue({
+        //                 FirstName: this.registerObj.firstName.trim(),
+        //                 MiddleName: this.registerObj.middleName.trim(),
+        //                 LastName: this.registerObj.lastName.trim(),
+        //                 MobileNo: this.registerObj.mobileNo.trim(),
+        //                 Address: this.registerObj.address.trim(),
+        //                 aadharCardNo: this.registerObj.aadharCardNo ?? '',
+        //                 panCardNo: this.registerObj?.panCardNo ?? '',
+        //                 emailId: this.registerObj?.emailId ?? '',
+        //                 PinNo: this.registerObj?.pinNo ?? '',
+        //                 City: this.registerObj?.city ?? '',
+        //                 StateId: this.registerObj?.stateId ?? '',
+        //                 CountryId: this.registerObj?.countryId ?? '',
+        //                 PhoneNo: this.registerObj?.phoneNo ?? '',
+        //                 MaritalStatusId: this.registerObj?.maritalStatusId ?? '',
+        //                 ReligionId: this.registerObj?.religionId ?? '',
+        //                 AreaId: this.registerObj?.areaId ?? '',
+        //                 // DateOfBirth:this.registerObj.dateofBirth,
+        //                 emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+        //                 emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+        //                 emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+        //                 emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+        //                 engAddress: this.registerObj?.engAddress ?? '',
+        //                 emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+        //                 emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+        //                 medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+        //                 medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? '',
+        //                 medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+        //                 medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+        //                 medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
+        //                 medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+        //                 medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+        //                 medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+        //                 medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+        //                 RegDate: this.registerObj?.regDate ?? this.currentDate,
+        //                 RegTime: this.registerObj?.regTime ?? this.currentDate
+        //             });
+        //             console.log(this.registerObj)
+        //         });
+        //         this.CityName = this.registerObj?.city ?? '';
+        //         this.stateId = this.registerObj?.stateId ?? 0;
+        //         this.counryId = this.registerObj?.countryId ?? 0;
+
+        //     }, 100);
+        // }
+
+        if ((obj?.regId ?? 0) > 0) {
+            setTimeout(() => {
+                this._registerService.getRegistraionById(obj?.regId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log(this.registerObj)
+                    this.isEditMode = true;
+                    this.regNo = this.registerObj.regNo
+                    this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+                    this.value = this.registerObj.dateofBirth
+                    this.onChangeDateofBirth(this.registerObj.dateofBirth)
+                });
+            }, 500);
+        }
     }
 
 }

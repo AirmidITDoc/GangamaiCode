@@ -45,14 +45,10 @@
                     </div>
 
                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <!-- <airmid-textbox label="DateOfBirth" formControlName="yearOfBirth" [readonly]="isProfileData"
-                            [formGroup]="abhaForm"></airmid-textbox> -->
                         <app-airmid-dateofbirth [formGroup]="abhaForm" dateStyle="Year" formControlName="yearOfBirth"
                             [(value)]="dateofBirth"></app-airmid-dateofbirth>
                     </div>
                 </div>
-
-                <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="center"> -->
 
                 <div style="display:flex; justify-content:flex-end; width:100%;">
                     <button class="btn btn-primary" color="accent" (click)="onSubmit()">
@@ -60,8 +56,16 @@
                     </button>
                 </div>
 
-                <!-- </div> -->
+                <p>Call Back message</p>
+
             </form>
+
+            <div style="display:flex; justify-content:flex-end; width:100%;">
+                <button class="btn btn-primary" color="accent" (click)="onLink()">
+                    <span>Link</span>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
