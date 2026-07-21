@@ -62,7 +62,7 @@ export class NewAppointmentwithBillComponent {
     screenFromString = 'Common-Form';
     registerObj = new RegInsert({});
     companyDet = new RegInsert({});
-  currentDate = new Date();
+    currentDate = new Date();
     autocompleteModepatienttype: string = "PatientType";
     autocompleteModegender: string = "Gender";
     autocompleteModecountry: string = "Country";
@@ -160,7 +160,7 @@ export class NewAppointmentwithBillComponent {
     vTariffId: any = 1;
     vClassId: any = 1;
     vRegId: any;
-vUserID:any=0;
+    vUserID: any = 0;
     // Bill
     value = new Date()
     ApiURL: any = '';
@@ -180,7 +180,7 @@ vUserID:any=0;
     isExpanded1 = false; // Defaults to closed
     isExpanded3 = false;
     vUPINO: any = ""
-    UserWsieCashcounterId:boolean =false;
+    UserWsieCashcounterId: boolean = false;
     doctorName1 = ""
 
     displayedServiceColumns: string[] = [
@@ -471,7 +471,10 @@ vUserID:any=0;
             emailId: ['', [Validators.email]],
             PhoneNo: '',
             IsPathRad: 0,
-            membershipId:0
+            membershipId: 0,
+            isMember: false,
+            abhaTranId: 0,
+
         })
     }
 
@@ -1434,7 +1437,7 @@ vUserID:any=0;
         controlsToRemove.forEach(key => delete formValue[key]);
         console.log(formValue)
         console.log("form values", this.OpBillForm.value)
-           this.myForm.get('RegId').setValue(this.RegId)
+        this.myForm.get('RegId').setValue(this.RegId)
 
         // this.VisitFormGroup.get('ConsultantDocId').setValue(this.myForm.get('doctorId').value || 0)
         this.AppointmentBillfinalform.get("appRegistrationBills").setValue(formValue)
@@ -1604,20 +1607,20 @@ vUserID:any=0;
             }
             // Reg Patient
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-debugger
+                debugger
                 this.VisitFormGroup.get("patientOldNew").setValue(2)
-                this.VisitFormGroup.get('regId').setValue(this.RegId) 
-                 // Map RegId to formValue
-                formValue.RegId = this.RegId; 
-                this.RegiAppointmentBillfinalform.get('appRegistrationBills').setValue(formValue) 
-               
+                this.VisitFormGroup.get('regId').setValue(this.RegId)
+                // Map RegId to formValue
+                formValue.RegId = this.RegId;
+                this.RegiAppointmentBillfinalform.get('appRegistrationBills').setValue(formValue)
+
                 this.ChargeddetailsArray.clear();
                 this.BillDetailsArray.clear();
 
                 this.dstable1.data.forEach(item => {
                     this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
-                    this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));  
-                }); 
+                    this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+                });
                 console.log("form values", this.OpBillForm.value)
 
                 if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
@@ -1649,10 +1652,10 @@ debugger
 
                             // this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
                             // console.log(this.AppointmentBillfinalform.value)
-                          
+
                             this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
                             this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
- 
+
                             console.log(this.RegiAppointmentBillfinalform.value)
 
                             this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
@@ -2142,8 +2145,8 @@ debugger
 
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
-                        this.countryId = this.registerObj?.countryId ?? 0 ;
- 
+                        this.countryId = this.registerObj?.countryId ?? 0;
+
 
                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
@@ -2157,15 +2160,15 @@ debugger
                             stateId: this.registerObj.stateId,
                             countryId: this.registerObj.countryId,
                             aadharCardNo: this.registerObj.aadharCardNo ?? '',
-                            panCardNo:this.registerObj?.panCardNo ?? '',
-                            emailId:this.registerObj?.emailId ?? '',
-                            PinNo:this.registerObj?.pinNo ?? '',
-                            City:this.registerObj?.city ?? '',
-                            PhoneNo:this.registerObj?.phoneNo ?? '', 
+                            panCardNo: this.registerObj?.panCardNo ?? '',
+                            emailId: this.registerObj?.emailId ?? '',
+                            PinNo: this.registerObj?.pinNo ?? '',
+                            City: this.registerObj?.city ?? '',
+                            PhoneNo: this.registerObj?.phoneNo ?? '',
                             StateId: this.registerObj?.stateId ?? '',
-                            CountryId: this.registerObj?.countryId ?? '', 
+                            CountryId: this.registerObj?.countryId ?? '',
                             maritalStatusId: this.registerObj?.maritalStatusId ?? '',
-                            religionId:this.registerObj?.religionId ?? '',
+                            religionId: this.registerObj?.religionId ?? '',
                             areaId: this.registerObj?.areaId ?? '',
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
@@ -2184,8 +2187,8 @@ debugger
                             medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
-                            RegDate:this.registerObj?.regDate ?? this.currentDate,
-                            RegTime:this.registerObj?.regTime ?? this.currentDate 
+                            RegDate: this.registerObj?.regDate ?? this.currentDate,
+                            RegTime: this.registerObj?.regTime ?? this.currentDate
                         });
                         console.log(this.registerObj)
                     });
@@ -2207,10 +2210,10 @@ debugger
                         console.log(response)
                         this.value = response.dateofBirth
                         this.RegId = response.regId
-                        this.regNo = response.regNo 
+                        this.regNo = response.regNo
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
-                        this.countryId = this.registerObj?.countryId ?? 0 ;
+                        this.countryId = this.registerObj?.countryId ?? 0;
 
                         this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
@@ -2221,15 +2224,15 @@ debugger
                             mobileNo: this.registerObj.mobileNo,
                             address: this.registerObj.address.trim(),
                             aadharCardNo: this.registerObj.aadharCardNo ?? '',
-                            panCardNo:this.registerObj?.panCardNo ?? '',
-                            emailId:this.registerObj?.emailId ?? '',
-                            PinNo:this.registerObj?.pinNo ?? '',
-                            City:this.registerObj?.city ?? '',
-                            PhoneNo:this.registerObj?.phoneNo ?? '', 
+                            panCardNo: this.registerObj?.panCardNo ?? '',
+                            emailId: this.registerObj?.emailId ?? '',
+                            PinNo: this.registerObj?.pinNo ?? '',
+                            City: this.registerObj?.city ?? '',
+                            PhoneNo: this.registerObj?.phoneNo ?? '',
                             StateId: this.registerObj?.stateId ?? '',
-                            CountryId: this.registerObj?.countryId ?? '', 
+                            CountryId: this.registerObj?.countryId ?? '',
                             MaritalStatusId: this.registerObj?.maritalStatusId ?? '',
-                            ReligionId:this.registerObj?.religionId ?? '',
+                            ReligionId: this.registerObj?.religionId ?? '',
                             AreaId: this.registerObj?.areaId ?? '',
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
@@ -2248,8 +2251,8 @@ debugger
                             medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
-                            RegDate:this.registerObj?.regDate ?? this.currentDate,
-                            RegTime:this.registerObj?.regTime ?? this.currentDate 
+                            RegDate: this.registerObj?.regDate ?? this.currentDate,
+                            RegTime: this.registerObj?.regTime ?? this.currentDate
                         });
 
                     });
@@ -2746,7 +2749,7 @@ debugger
 
         // If only one field is filled, and it's MiddleName, just filter prevResults (do not call API)
         if (filledFields === 1 && changedField === 'MiddleName') {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo,middleName });
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo, middleName });
             return;
         }
 
@@ -2769,8 +2772,8 @@ debugger
     }
 
     // Helper function to filter results by all non-empty fields
-    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string, middleName:string }) {
-        const { firstName, lastName, mobileNo, middleName} = fields;
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string, middleName: string }) {
+        const { firstName, lastName, mobileNo, middleName } = fields;
         return results.filter(item => {
             return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
                 && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
