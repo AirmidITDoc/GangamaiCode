@@ -31,6 +31,8 @@ export class ServiceMasterFormNewComponent implements OnInit {
     autocompleteModetariff: string = "Tariff";
     tariffId = "0";
 
+    displayedColumns: string[] = [];
+
     getClassValue(item: any, classId: number): number {
         return item.columnValues.find(x => x.classId === classId)?.classValue ?? 0;
     }
@@ -57,30 +59,92 @@ export class ServiceMasterFormNewComponent implements OnInit {
     }
     showTable = false;
     applyFilters() {
+
         const selectedTariffId = this.myformSearch.get('searchTariffName')?.value;
 
         if (selectedTariffId > 0) {
-            this._serviceMasterService.getServicesNew(selectedTariffId).subscribe((response) => {
+
+            this._serviceMasterService.getServicesNew(selectedTariffId).subscribe((response: any) => {
+
                 this.ServiceList = response.data;
                 this.ColumnList = response.columns;
 
-                const serviceFilter = this.myformSearch.get('searchServiceName')?.value?.toLowerCase() || '';
+                // Create dynamic columns
+                this.displayedColumns = [
+                    'serviceName',
+                    ...this.ColumnList.map((x: any) => x.classId.toString())
+                ];
 
-                this.filteredList = this.ServiceList.filter(item =>
-                    item.serviceName?.toLowerCase().includes(serviceFilter)
-                );
+                // Prepare data for table
+                this.filteredList = this.ServiceList.map((service: any) => {
+
+                    const values: any = {};
+
+                    service.columnValues.forEach((item: any) => {
+                        values[item.classId] = item.classValue;
+                    });
+
+                    return {
+                        ...service,
+                        values
+                    };
+
+                });
+
                 this.showTable = true;
+
             });
+
         } else {
+
             this.showTable = false;
-            console.log('aasasas:', this.myformSearch.get('searchTariffName')?.value)
+            this.filteredList = [];
+            this.ColumnList = [];
+            this.displayedColumns = [];
+
         }
-        console.log('aasasas:', this.myformSearch.get('searchTariffName')?.value)
+
+    }
+    // applyFilters() {
+    //     const selectedTariffId = this.myformSearch.get('searchTariffName')?.value;
+
+    //     if (selectedTariffId > 0) {
+    //         this._serviceMasterService.getServicesNew(selectedTariffId).subscribe((response) => {
+    //             this.ServiceList = response.data;
+    //             this.ColumnList = response.columns;
+
+    //             const serviceFilter = this.myformSearch.get('searchServiceName')?.value?.toLowerCase() || '';
+
+    //             this.filteredList = this.ServiceList.filter(item =>
+    //                 item.serviceName?.toLowerCase().includes(serviceFilter)
+    //             );
+    //             this.showTable = true;
+    //         });
+    //     } else {
+    //         this.showTable = false;
+    //         console.log('aasasas:', this.myformSearch.get('searchTariffName')?.value)
+    //     }
+    //     console.log('aasasas:', this.myformSearch.get('searchTariffName')?.value)
+    // }
+
+    updateAmount(row: any, classId: number): void {
+
+        const index = row.columnValues.findIndex((x: any) => x.classId === classId);
+
+        if (index > -1) {
+            row.columnValues[index].classValue = row.values[classId];
+        } else {
+            row.columnValues.push({
+                classId: classId,
+                classValue: row.values[classId]
+            });
+        }
     }
 
     onSubmit() {
         const data = { TariffId: this.myformSearch.get('searchTariffName')?.value, Data: this.ServiceList, Columns: [] };
         // const data = { TariffId: 1, Data: this.ServiceList, Columns: [] };
+        
         this._serviceMasterService.saveServicesNew(data).subscribe(() => {
 
         });

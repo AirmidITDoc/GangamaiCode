@@ -76,3 +76,36 @@
 .material-table-row:last-child td {
     border-bottom: none;
 }
+
+.search-section {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    padding: 10px 0;
+}
+
+.table-container {
+    max-height: 900px;
+    overflow-y: auto;
+}
+
+.tariff-table .mat-mdc-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #3949AB;
+}
+
+.amount-input {
+    width: 70px;
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.amount-input:focus {
+    outline: none;
+    border-color: #3f51b5;
+}

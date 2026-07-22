@@ -159,26 +159,18 @@ export class NewRegistrationComponent implements OnInit {
 
             const now = new Date();
 
-            // const dobString =
-            //     `${this.data.profile.yearOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.dayOfBirth}` +
-            //     `T${String(now.getHours()).padStart(2, '0')}:` +
-            //     `${String(now.getMinutes()).padStart(2, '0')}:` +
-            //     `${String(now.getSeconds()).padStart(2, '0')}.` +
-            //     `${String(now.getMilliseconds()).padStart(3, '0')}`;
             const dobString =
                 `${this.data.profile.yearOfBirth}-${String(this.data.profile.monthOfBirth).padStart(2, '0')}-${String(this.data.profile.dayOfBirth).padStart(2, '0')}` +
                 `T${String(now.getHours()).padStart(2, '0')}:` +
                 `${String(now.getMinutes()).padStart(2, '0')}:` +
                 `${String(now.getSeconds()).padStart(2, '0')}`;
 
-            // this.dateofBirth = dobString
-            // debugger
-            this.registerObj.dateofBirth = new Date(dobString)
-            // console.log(dobString)
-            // console.log("this.registerObj.dateofBirth:", this.registerObj.dateofBirth)
-
-            // this.onChangeDateofBirth(this.dateofBirth);
-            this.onChangeDateofBirth(this.registerObj.dateofBirth);
+            if (dobString) {
+                setTimeout(() => {
+                    this.registerObj.dateofBirth = new Date(dobString)
+                    this.onChangeDateofBirth(this.registerObj.dateofBirth);
+                }, 1000);
+            }
         }
 
         // this data will be used only to featch patientid
@@ -765,65 +757,6 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     getSelectedObj(obj) {
-
-        // this.PatientName = obj.firstName + ' ' + obj.lastName;
-        // this.RegId = obj.regId;
-        // if ((this.RegId ?? 0) > 0) {
-        //     console.log(obj)
-        //     setTimeout(() => {
-        //         this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
-        //             this.registerObj = response;
-        //             this.value = response.dateofBirth
-        //             this.vRegNo = response.regno
-        //             this.onChangeDateofBirth(response.dateofBirth)
-        //             console.log(response)
-        //             this.getLastDepartmetnNameList(this.registerObj)
-        //             this.setNationalIdValidation();
-        //             this.personalFormGroup.patchValue({
-        //                 FirstName: this.registerObj.firstName.trim(),
-        //                 MiddleName: this.registerObj.middleName.trim(),
-        //                 LastName: this.registerObj.lastName.trim(),
-        //                 MobileNo: this.registerObj.mobileNo.trim(),
-        //                 Address: this.registerObj.address.trim(),
-        //                 aadharCardNo: this.registerObj.aadharCardNo ?? '',
-        //                 panCardNo: this.registerObj?.panCardNo ?? '',
-        //                 emailId: this.registerObj?.emailId ?? '',
-        //                 PinNo: this.registerObj?.pinNo ?? '',
-        //                 City: this.registerObj?.city ?? '',
-        //                 StateId: this.registerObj?.stateId ?? '',
-        //                 CountryId: this.registerObj?.countryId ?? '',
-        //                 PhoneNo: this.registerObj?.phoneNo ?? '',
-        //                 MaritalStatusId: this.registerObj?.maritalStatusId ?? '',
-        //                 ReligionId: this.registerObj?.religionId ?? '',
-        //                 AreaId: this.registerObj?.areaId ?? '',
-        //                 // DateOfBirth:this.registerObj.dateofBirth,
-        //                 emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
-        //                 emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
-        //                 emgMobileNo: this.registerObj?.emgMobileNo ?? '',
-        //                 emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
-        //                 engAddress: this.registerObj?.engAddress ?? '',
-        //                 emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
-        //                 emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
-        //                 medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-        //                 medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? '',
-        //                 medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
-        //                 medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-        //                 medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
-        //                 medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-        //                 medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
-        //                 medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
-        //                 medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
-        //                 RegDate: this.registerObj?.regDate ?? this.currentDate,
-        //                 RegTime: this.registerObj?.regTime ?? this.currentDate
-        //             });
-        //             console.log(this.registerObj)
-        //         });
-        //         this.CityName = this.registerObj?.city ?? '';
-        //         this.stateId = this.registerObj?.stateId ?? 0;
-        //         this.counryId = this.registerObj?.countryId ?? 0;
-
-        //     }, 100);
-        // }
 
         if ((obj?.regId ?? 0) > 0) {
             setTimeout(() => {

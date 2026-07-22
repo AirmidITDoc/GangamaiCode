@@ -92,46 +92,45 @@
                         </mat-card>
                     </div> -->
 
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; flex-direction: column;">
 
-                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8">
-                            
-                                <form [formGroup]="myformSearch" fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
-                                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Service Name</mat-label>
-                                            <input matInput placeholder="Search Service Name" autocomplete="off"
-                                                [formGroup]="myformSearch" formControlName="searchServiceName" />
-                                            <button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="myformSearch.get('searchServiceName')?.setValue('')">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
+                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8 search-section">
+
+                            <form [formGroup]="myformSearch" fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+                                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Service Name</mat-label>
+                                        <input matInput placeholder="Search Service Name" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="searchServiceName" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="myformSearch.get('searchServiceName')?.setValue('')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-dropdown label="Tariff Name" formControlName="searchTariffName"
+                                        [formGroup]="myformSearch" [mode]="autocompleteModetariff">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div class="action-button-container">
+                                    <div class="button-row-group">
+                                        <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
+                                        <button class="btn btn-primary btn-with-icon btn-xs" (click)="applyFilters()">
+                                            <span>Search</span>
+                                            <span class="btn-icon">
+                                                <mat-icon>search</mat-icon>
+                                            </span>
+                                        </button>
+
                                     </div>
-
-                                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                         <airmid-dropdown label="Tariff Name" formControlName="searchTariffName"
-                                            [formGroup]="myformSearch" [mode]="autocompleteModetariff">
-                                        </airmid-dropdown>
-                                    </div>
-
-                                    <div class="action-button-container">
-                                        <div class="button-row-group">
-                                            <button class="btn btn-danger-outline btn-xs"
-                                                (click)="onClear()">clear</button>
-                                            <button class="btn btn-primary btn-with-icon btn-xs" (click)="applyFilters()">
-                                                <span>Search</span>
-                                                <span class="btn-icon">
-                                                    <mat-icon>search</mat-icon>
-                                                </span>
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
+                            </form>
                         </div>
 
-                        <div  *ngIf="showTable" class="modal-card-container airmid-table-container" style="overflow-y: auto;">
+                        <!-- <div  *ngIf="showTable" class="modal-card-container airmid-table-container" style="overflow-y: auto;">
 
                             <div class="material-table-container">
                                 <table class="material-table">
@@ -154,15 +153,60 @@
                                                         [ngModel]="getClassValue(item,data.classId)"
                                                         (ngModelChange)="setClassValue(item,data.classId, $event)">
                                                 </mat-form-field>
-                                                <!-- <airmid-textbox [label]="data.className" formControlName="registrationNo"
-                                                [formGroup]="myform" [maxLength]="50"
-                                                [value]="getClassValue(item, data.classId)">
-                                            </airmid-textbox> -->
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                        </div> -->
+                        <div *ngIf="showTable" class="table-container">
+
+                            <table mat-table [dataSource]="filteredList" class="tariff-table">
+
+                                <!-- Service Name Column -->
+                                <ng-container matColumnDef="serviceName">
+
+                                    <th mat-header-cell *matHeaderCellDef
+                                        style="background-color:#3949AB; color:white;">
+                                        Service Name
+                                    </th>
+
+                                    <td mat-cell *matCellDef="let row">
+                                        {{ row.serviceName }}
+                                    </td>
+
+                                </ng-container>
+
+                                <!-- Dynamic Columns -->
+                                <ng-container *ngFor="let column of ColumnList"
+                                    [matColumnDef]="column.classId.toString()">
+
+                                    <th mat-header-cell *matHeaderCellDef style="background-color:#3949AB; color:white;">
+                                        {{ column.className }}
+                                    </th>
+
+                                    <!-- <td mat-cell *matCellDef="let row">
+                                        {{ row.values[column.classId] || '-' }}
+                                    </td> -->
+                                    <td mat-cell *matCellDef="let row">
+
+                                        <input type="number" class="amount-input"
+                                            [(ngModel)]="row.values[column.classId]"
+                                            (change)="updateAmount(row, column.classId)" placeholder="0">
+                                        <!-- <mat-form-field appearance="outline" class="amount-field">
+                                            <input matInput type="number" [(ngModel)]="row.values[column.classId]"
+                                                placeholder="0">
+                                        </mat-form-field> -->
+                                    </td>
+
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                            </table>
+
                         </div>
                     </div>
 
