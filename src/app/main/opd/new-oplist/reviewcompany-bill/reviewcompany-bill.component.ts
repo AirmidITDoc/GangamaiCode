@@ -986,58 +986,73 @@ export class ReviewcompanyBillComponent {
             contact.EditDoctor = false
         }
     }
-    validateGovtAmount(type: 'govt' | 'company') {
-        debugger
+validateGovtAmount(type: 'govt' | 'company') {
+debugger
   const govtControl = this.CompanyForm.get('govtApprovedAmt');
-  const companyControl = this.CompanyForm.get('companyApprovedAmt'); 
-  const govtAmt = Number(govtControl?.value) || 0;
-  const companyAmt = Number(companyControl?.value) || 0;
-  const finalAmt = Number(this.FinalBillBalAmt) || 0; 
-  // Negative values not allowed
+  const companyControl = this.CompanyForm.get('companyApprovedAmt');
+
+  let govtAmt = Number(govtControl?.value) || 0;
+  let companyAmt = Number(companyControl?.value) || 0;
+  const finalAmt = Number(this.FinalBillBalAmt) || 0;
+
+  // Negative validation
   if (govtAmt < 0) {
-    this.toastr.warning('Government Amount cannot be negative');
-    govtControl?.setValue(0);
+    govtControl?.setValue(0, { emitEvent: false });
+    this.toastr.warning('Government Amount cannot be negative.');
     return;
   }
 
   if (companyAmt < 0) {
-    this.toastr.warning('Company Amount cannot be negative');
-    companyControl?.setValue(0);
+    companyControl?.setValue(0, { emitEvent: false });
+    this.toastr.warning('Company Amount cannot be negative.');
     return;
   }
 
-  // Individual validation
-  if (govtAmt > finalAmt) {
-    this.toastr.warning(`Government Amount cannot exceed than Balance Amount ${finalAmt}`);
-    govtControl?.setValue(finalAmt);
-    return;
-  }
+  if (type === 'govt') {
 
-  if (companyAmt > finalAmt) {
-    this.toastr.warning(`Company Amount cannot exceed than Balance Amount ${finalAmt}`);
-    companyControl?.setValue(finalAmt);
-    return;
-  }
-
-  // Combined validation
-  const total = govtAmt + companyAmt;
-
-  if (total > finalAmt) {
-
-    const allowed = finalAmt - (type === 'govt' ? companyAmt : govtAmt);
-
-    this.toastr.warning(
-      `Total of Government + Company Amount cannot exceed than Balance Amount ${finalAmt}`
-    );
-
-    if (type === 'govt') {
-      govtControl?.setValue(allowed > 0 ? allowed : 0);
-    } else {
-      companyControl?.setValue(allowed > 0 ? allowed : 0);
-    } 
-    return; 
-}
+    // जर Company ने full amount घेतला असेल
+    if (companyAmt === finalAmt && govtAmt > 0) {
+      govtControl?.setValue(0, { emitEvent: false });
+      this.toastr.warning(
+        'Company Amount is already equal to Balance Amount. Reduce Company Amount first.'
+      );
+      return;
     }
+
+    const allowedGovt = finalAmt - companyAmt;
+
+    if (govtAmt > allowedGovt) {
+      govtControl?.setValue(Math.max(allowedGovt, 0), { emitEvent: false });
+      this.toastr.warning(
+        `Government Amount cannot exceed ${Math.max(allowedGovt, 0)}.`
+      );
+      return;
+    }
+
+  } else {
+
+    // जर Govt ने full amount घेतला असेल
+    if (govtAmt === finalAmt && companyAmt > 0) {
+      companyControl?.setValue(0, { emitEvent: false });
+      this.toastr.warning(
+        'Government Amount is already equal to Balance Amount. Reduce Government Amount first.'
+      );
+      return;
+    }
+
+    const allowedCompany = finalAmt - govtAmt;
+
+    if (companyAmt > allowedCompany) {
+      companyControl?.setValue(Math.max(allowedCompany, 0), { emitEvent: false });
+      this.toastr.warning(
+        `Company Amount cannot exceed ${Math.max(allowedCompany, 0)}.`
+      );
+      return;
+    }
+
+  }
+
+}
     // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
         var inp = String.fromCharCode(event.keyCode);
