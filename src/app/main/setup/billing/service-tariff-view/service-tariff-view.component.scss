@@ -81,12 +81,12 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: #fff;
+    // background: #fff;
     padding: 10px 0;
 }
 
 .table-container {
-    // max-height: 600px;
+    // max-height: 500px;
     max-height: calc(100vh - 250px);
     overflow-y: auto;
 }

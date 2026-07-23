@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
 
-
 const appRoutes: Routes = [
     {
         path: "cash-counter-master",
@@ -44,6 +43,13 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./service-master/service-master.module").then(
                 (m) => m.ServiceMasterModule
+            ),
+    },
+    {
+        path: "servicetariff-view-master",
+        loadChildren: () =>
+            import("./service-tariff-view/service-tariff-view.module").then(
+                (m) => m.ServiceTariffViewModule
             ),
     },
     {
@@ -91,9 +97,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [
-
-    ],
+    declarations: [],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class BillingModule { }
