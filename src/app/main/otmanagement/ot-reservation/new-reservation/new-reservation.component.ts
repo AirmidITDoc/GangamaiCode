@@ -460,10 +460,15 @@ export class NewReservationComponent implements OnInit {
                 };
 
                 const from = new Date(element.surgeryFromTime);
-                const end = parseBackendDate(element.surgeryEndTime);
+                const end = element.surgeryEndTime ? new Date(element.surgeryEndTime) : null;
+                // const end = parseBackendDate(element.surgeryEndTime);
 
                 const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-                const surgeryEndTime = end ? end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+                // const surgeryEndTime = end ? end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+                const surgeryEndTime = end && !isNaN(end.getTime()) ? end.toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : '';
 
                 this.Chargelist.push(
                     {
@@ -1051,12 +1056,22 @@ export class NewReservationComponent implements OnInit {
             this.FetchList = records.data as OtReserInsert[];
             this.FetchList.forEach(element => {
 
-                const fromISO = this.convertToISOFormat(element.surgeryFromTime);
-                const endISO = this.convertToISOFormat(element.surgeryEndTime);
-                const from = new Date(fromISO);
-                const end = new Date(endISO);
-                const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-                const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                // const fromISO = this.convertToISOFormat(element.surgeryFromTime);
+                // const endISO = this.convertToISOFormat(element.surgeryEndTime);
+                // const from = new Date(fromISO);
+                // const end = new Date(endISO);
+                const from = element.surgeryFromTime ? new Date(element.surgeryFromTime) : null;
+                const end = element.surgeryEndTime ? new Date(element.surgeryEndTime) : null;
+                // const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                const surgeryFromTime = from && !isNaN(from.getTime()) ? from.toLocaleTimeString('en-GB', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) : '';
+                // const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                const surgeryEndTime = end && !isNaN(end.getTime()) ? end.toLocaleTimeString('en-GB', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) : '';
 
                 this.Chargelist.push(
                     {

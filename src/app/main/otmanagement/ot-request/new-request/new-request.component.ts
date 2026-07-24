@@ -466,10 +466,15 @@ export class NewRequestComponent implements OnInit {
                 };
 
                 const from = new Date(element.surgeryFromTime);
-                const end = parseBackendDate(element.surgeryEndTime);
+                const end = element.surgeryEndTime ? new Date(element.surgeryEndTime) : null;
+                // const end = parseBackendDate(element.surgeryEndTime);
 
                 const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-                const surgeryEndTime = end ? end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+                // const surgeryEndTime = end ? end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+                const surgeryEndTime = end && !isNaN(end.getTime()) ? end.toLocaleTimeString('en-GB', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) : '';
 
                 this.Chargelist.push(
                     {
