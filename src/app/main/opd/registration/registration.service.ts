@@ -42,7 +42,7 @@ export class RegistrationService {
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             CityId: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-
+            AreaId: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         });
     }
 

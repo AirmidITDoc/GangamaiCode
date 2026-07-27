@@ -124,6 +124,10 @@
                         [(ngModel)]="gridConfig.filters[6].fieldValue">
                     </airmid-dropdown>
 
+                    <airmid-dropdown label="Area" formControlName="AreaId" [formGroup]="myFilterform"
+                        [validations]="getValidationMessages().areaId" [mode]="autocompleteModearea" [(ngModel)]="gridConfig.filters[7].fieldValue">
+                    </airmid-dropdown>
+
                 </form>
             </ng-container>
         </airmid-table>

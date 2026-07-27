@@ -34,11 +34,12 @@ export class RegistrationComponent implements OnInit {
     l_name: any = ""
     mobileno: any = "%"
     CityId: any = "0"
+    AreaId: any = "0"
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     photo: PageNames = PageNames.PATIENT_PHOTO;
     signature: PageNames = PageNames.PATIENT_SIGNATURE;
-
+autocompleteModearea: string = "Area";
 
     constructor(
         public _RegistrationService: RegistrationService, public permissionService: PagePermissionService,
@@ -70,6 +71,7 @@ export class RegistrationComponent implements OnInit {
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        //  { heading: "Age", key: "displayAge", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -112,8 +114,8 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals }
-
+            { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals },
+             { fieldName: "AreaId", fieldValue: String(this.AreaId), opType: OperatorComparer.Equals }
         ]
     }
 
@@ -211,6 +213,7 @@ export class RegistrationComponent implements OnInit {
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.mobileno = this.myFilterform.get('MobileNo').value + "%" || "%"
         this.CityId = this.myFilterform.get('CityId').value || "0"
+ this.AreaId = this.myFilterform.get('AreaId').value || "0"
 
         this.getfilterdata();
     }
@@ -228,9 +231,10 @@ export class RegistrationComponent implements OnInit {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains },
-                { fieldName: "CityId", fieldValue: String(this.CityId), opType: OperatorComparer.Equals }
+                { fieldName: "CityId", fieldValue: String(this.CityId), opType: OperatorComparer.Equals },
+                { fieldName: "AreaId", fieldValue: String(this.AreaId), opType: OperatorComparer.Equals }
             ],
-            row: 300
+            row: 500
 
         }
         this.grid.gridConfig = this.gridConfig;
@@ -269,6 +273,7 @@ export class RegistrationComponent implements OnInit {
 
             ],
             cityId: [],
+            areaId:[]
         }
     }
 
