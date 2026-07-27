@@ -13,8 +13,7 @@ import Swal from 'sweetalert2';
 import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
-import { HttpClient } from '@microsoft/signalr';
-import { PincodeSearchService } from 'app/main/shared/services/pincode-search.service';
+// import { PincodeSearchService } from 'app/main/shared/services/pincode-search.service';
 
 @Component({
     selector: 'app-new-registration',
@@ -81,12 +80,12 @@ export class NewRegistrationComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
-        public datePipe: DatePipe, private http: HttpClient,
+        public datePipe: DatePipe,
         private _formBuilder: UntypedFormBuilder,
         private commonService: PrintserviceService,
         private readonly changeDetectorRef: ChangeDetectorRef,
-        public _configue: ConfigService, 
-        // public _PincodeSearchService: PincodeSearchService
+        public _configue: ConfigService,
+        // private _PincodeSearchService: PincodeSearchService
     ) { }
 
     ngAfterViewChecked(): void {
@@ -212,12 +211,12 @@ export class NewRegistrationComponent implements OnInit {
         this.vlastNameConfig = lastnameid
 
         this.setNameValidations();
-        debugger
 
+        
         // this._PincodeSearchService.getCityFromPincode('413007').subscribe(result => {
         //     console.log(result);
         // })
-        // this._PincodeSearchService.getCity('413007').subscribe(result1 => {
+        // this._PincodeSearchService.getCity('413005').subscribe(result1 => {
         //     console.log(result1);
 
 
@@ -785,6 +784,5 @@ export class NewRegistrationComponent implements OnInit {
             }, 500);
         }
     }
-    //
 
 }
