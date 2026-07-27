@@ -85,7 +85,8 @@ export class NewRegistrationComponent implements OnInit {
         private _formBuilder: UntypedFormBuilder,
         private commonService: PrintserviceService,
         private readonly changeDetectorRef: ChangeDetectorRef,
-        public _configue: ConfigService, public _PincodeSearchService: PincodeSearchService
+        public _configue: ConfigService, 
+        // public _PincodeSearchService: PincodeSearchService
     ) { }
 
     ngAfterViewChecked(): void {
@@ -213,14 +214,14 @@ export class NewRegistrationComponent implements OnInit {
         this.setNameValidations();
         debugger
 
-        this._PincodeSearchService.getCityFromPincode('413007').subscribe(result => {
-            console.log(result);
-        })
-        this._PincodeSearchService.getCity('413007').subscribe(result1 => {
-            console.log(result1);
+        // this._PincodeSearchService.getCityFromPincode('413007').subscribe(result => {
+        //     console.log(result);
+        // })
+        // this._PincodeSearchService.getCity('413007').subscribe(result1 => {
+        //     console.log(result1);
 
 
-        })
+        // })
     }
 
     get getAbhaInfo(): FormArray {
