@@ -40,6 +40,9 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { IssueTrackerComponent } from './issue-tracker.component';
 import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const routes: Routes = [
     {
@@ -97,7 +100,10 @@ const routes: Routes = [
         MatSelectModule,
         MatChipsModule,
         // NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule
+        MatTooltipModule,
+        DragDropModule,
+        MatButtonToggleModule,
+        MatSidenavModule,
     ],
     providers: [
         DatePipe,

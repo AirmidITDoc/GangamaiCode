@@ -40,16 +40,22 @@ export class OTRequestComponent implements OnInit {
     @ViewChild('clearanceMedicalCode') clearanceMedicalCode!: TemplateRef<any>;
     @ViewChild('clearanceFinancialCode') clearanceFinancialCode!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('ReserCompleted') ReserCompleted!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.ColorCode;
         this.gridConfig.columnsList.find(col => col.key === 'clearanceMedical')!.template = this.clearanceMedicalCode;
         this.gridConfig.columnsList.find(col => col.key === 'clearanceFinancial')!.template = this.clearanceFinancialCode;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'otReservationId')!.template = this.ReserCompleted;
     }
 
     allcolumns = [
         { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        {
+            heading: "-", key: "otReservationId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
+            template: this.ReserCompleted
+        },
         { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "OTReq-Date&Time", key: "otRequestDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },

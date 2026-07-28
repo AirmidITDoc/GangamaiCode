@@ -77,6 +77,7 @@
                         <airmid-dropdown class="w-400" label="Get OT-Request" formControlName="otrequestId"
                             [formGroup]="reservationForm" (selectionChange)="onChangeOtRequest($event)"
                             ValueField="otRequestId" TextField="patientName"
+                            [disableAutoNext]="true"
                             ApiUrl="OTReservation/search-patient-OTRequest?Keyword=%"></airmid-dropdown>
                     </div>
                 </div>

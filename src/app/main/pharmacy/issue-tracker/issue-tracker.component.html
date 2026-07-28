@@ -1,4 +1,81 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Issue Tracker
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onNewForm()">New Issue Tracker
+            </button>
+
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <!-- <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)" 
+                [disabled]="element.isCancelled || element.otReservationId > 0">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)" 
+                [disabled]="element.isCancelled || element.otReservationId > 0 ">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </div>
+        </ng-template> -->
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end"></airmid-datepicker>
+
+                    <airmid-dropdown label="Customer Name" formControlName="customerName" [formGroup]="myFilterform">
+                    </airmid-dropdown>
+
+                    <airmid-dropdown label="Issue Raised" formControlName="issueRaised" [formGroup]="myFilterform">
+                    </airmid-dropdown>
+
+                    <airmid-dropdown label="Issue Status" formControlName="issueStatus" [formGroup]="myFilterform">
+                    </airmid-dropdown>
+
+                    <airmid-dropdown label="Issue Assigned" formControlName="issueAssigned" [formGroup]="myFilterform">
+                    </airmid-dropdown>
+
+                    <!-- <div> -->
+                    <app-airmid-slider label="IsCodeRelease" formControlName="isCodeRelease"
+                        [formGroup]="myFilterform"></app-airmid-slider>
+
+                    <app-airmid-slider label="Review Status" formControlName="isReviewStatus"
+                        [formGroup]="myFilterform"></app-airmid-slider>
+                    <!-- </div> -->
+
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
 
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -85,15 +162,6 @@
                                  <mat-table #table class="table1" matSort [dataSource]="dsIssueTracker"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <!-- <ng-container matColumnDef="IssueTrackerId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Issue Id
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueTrackerId}}
-                                        </mat-cell>
-                                    </ng-container> -->
-
                                     <ng-container matColumnDef="IssueRaisedDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             IssueRaised Date</mat-header-cell>
@@ -137,14 +205,6 @@
                                            
                                         </mat-cell>
                                     </ng-container>
-
-                                    <!-- <ng-container matColumnDef="ImageName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Image Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ImageName}}
-                                        </mat-cell>
-                                    </ng-container> -->
 
                                     <ng-container matColumnDef="IssueStatus">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -227,4 +287,4 @@
     </div>
 </div>
 
- 
+  -->

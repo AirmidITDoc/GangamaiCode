@@ -1,18 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-// import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component'; 
-// import { PharmacyClearenceService } from './pharmacy-clearence.service';
-import { CustomerBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/customer-bill-raise.component';
-import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
-import { CustomerInformationComponent } from 'app/main/Customer/customer-information/customer-information.component';
-import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
 import { IssueTrackerService } from './issue-tracker.service';
+import { FormGroup } from '@angular/forms';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
 
 @Component({
     selector: 'app-issue-tracker',
@@ -22,182 +17,72 @@ import { IssueTrackerService } from './issue-tracker.service';
     animations: fuseAnimations,
 })
 export class IssueTrackerComponent implements OnInit {
-    displayedColumns = [
-        // 'IssueTrackerId',
-        'IssueRaisedDate',
-        'IssueRaisedTime',
-        'IssueSummary',
-        'IssueDescription',
-        'UploadImagePath',
-        // 'ImageName',
-        'IssueStatus',
-        'IssueAssigned',
-        'AddedBy',
-        'AddedDatetime',
-        'Action'
-    ];
-
-    sIsLoading: string = '';
-    isLoading = true;
-    Store1List: any = [];
-    screenFromString = 'admission-form';
-    ConstanyTypeList: any = [];
-    ConstanyAssignedList: any = [];
-
-    dsIssueTracker = new MatTableDataSource<IssueTrackerList>();
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    myFilterform: FormGroup
+    FromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    ToDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     constructor(
         public _IssueTracker: IssueTrackerService,
         public _matDialog: MatDialog,
-        private _fuseSidebarService: FuseSidebarService,
         public datePipe: DatePipe,
+        private _loggedService: AuthenticationService,
     ) { }
 
+    allcolumns = [
+        { heading: "Raised Date", key: "otRequestDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Issue No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Customer Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Issue Name", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Issue Description", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Raised ByName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Assigned ByName", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Status Name", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Resolved Date", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "DevComment", key: "devComment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Comment", key: "comment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ReleaseStatus", key: "releaseStatus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "AddedByDate", key: "addedbydate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ModifiedBy", key: "ModifiedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ModifiedDate", key: "ModifiedDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        {
+            heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template
+            // ,
+            // template: this.actionButtonTemplate
+        }
+    ];
+
+    allFilters = [
+        { fieldName: "From_Dt", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "To_Dt", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+    ]
+
+    gridConfig: gridModel = {
+        apiUrl: "",
+        columnsList: this.allcolumns,
+        sortField: "",
+        sortOrder: 0,
+        filters: this.allFilters
+    }
+
     ngOnInit(): void {
-        this.getIssuTrackerList();
-        this.getIssueStatusList();
-        this.getIssueAssignedList();
+        this.myFilterform = this._IssueTracker.createSearchForm();
     }
 
-
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
-
-
-    dateTimeObj: any;
-    getDateTime(dateTimeObj) {
-        // console.log('dateTimeObj==', dateTimeObj);
-        this.dateTimeObj = dateTimeObj;
-    }
-
-    getIssuTrackerList() {
-        // let vstatus=this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%';
-        // let vassigned=this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%';
-        // console.log(vassigned)
-        // console.log(vstatus)
-        const vdata = {
-            'IssueStatus': this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%',
-            'IssueAssigned': this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%'
-        }
-        console.log(vdata)
-        this.sIsLoading = 'loading-data';
-        this._IssueTracker.getIssuTrackerList(vdata).subscribe(data => {
-            this.dsIssueTracker.data = data as IssueTrackerList[];
-            console.log(this.dsIssueTracker.data)
-            this.dsIssueTracker.sort = this.sort;
-            this.dsIssueTracker.paginator = this.paginator;
-            this.sIsLoading = '';
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-    }
-    getIssueStatusList() {
-        const vdata = {
-            'ConstanyType': 'ISSUE_STATUS',
-        }
-        this._IssueTracker.getConstantsList(vdata).subscribe(data => {
-            this.ConstanyTypeList = data
-            console.log(this.ConstanyTypeList)
-        });
-    }
-    getIssueAssignedList() {
-        const vdata = {
-            'ConstanyType': 'ISSUE_ASSIGNED',
-        }
-        this._IssueTracker.getConstantsList(vdata).subscribe(data => {
-            this.ConstanyAssignedList = data
-            console.log(this.ConstanyAssignedList)
-        });
-    }
-
-
-
-
-    OpenPopUp() {
-        // const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
-        //   {
-        //     maxWidth: "75vw",
-        //     height: '72%',
-        //     width: '100%',
-
-        //   });
-        // dialogRef.afterClosed().subscribe(result => {
-        //   console.log('The dialog was closed - Insert Action', result);
-        //   this.getIssuTrackerList();
-        // });
-    }
-    CustomerList() {
-        const dialogRef = this._matDialog.open(CustomerInformationComponent,
+    onNewForm(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+        const that = this;
+        const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
             {
-                maxWidth: "85vw",
-                height: '85%',
-                width: '100%',
-
+                maxWidth: "90vw",
+                // height: '90%',
+                maxHeight: '95%',
+                width: '90%',
             });
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-            //this.getIssuTrackerList();
         });
     }
-    NewCustomer() {
-        const dialogRef = this._matDialog.open(NewCustomerComponent,
-            {
-                maxWidth: "85vw",
-                height: '60%',
-                width: '100%',
-
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-        });
-    }
-    NewCustomerBill() {
-        const dialogRef = this._matDialog.open(NewBillRaiseComponent,
-            {
-                maxWidth: "85vw",
-                height: '60%',
-                width: '100%',
-
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-        });
-    }
-    CustomerbillList() {
-        const dialogRef = this._matDialog.open(CustomerBillRaiseComponent,
-            {
-                maxWidth: "85vw",
-                height: '85%',
-                width: '100%',
-
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-            //this.getIssuTrackerList();
-        });
-    }
-    onEdit(contact) {
-        // const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
-        //   {
-        //     maxWidth: "75vw",
-        //     height: '72%',
-        //     width: '100%',
-        //     data: {
-        //       Obj: contact,
-
-        //     }
-        //   });
-        // dialogRef.afterClosed().subscribe(result => {
-        //   console.log('The dialog was closed - Insert Action', result);
-        //   this.getIssuTrackerList();
-        // });
-    }
-
 
 }
 

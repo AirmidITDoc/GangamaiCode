@@ -1,4 +1,119 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+<div class="dialog-content-wrapper modal-wrapper grid-container resize-form-fields">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Issue Tracker</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div class="modal-body-container">
+            <form [formGroup]="issueTrackerForm" fxLayout="column">
+                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="8px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Customer Name" formControlName="customerName"
+                            [formGroup]="issueTrackerForm">
+                        </airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Issue Name" formControlName="issueName" [formGroup]="issueTrackerForm">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="8px grid">
+
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Issue Description" formControlName="issueDescription"
+                            [formGroup]="issueTrackerForm">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="8px grid">
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Issue Raised" formControlName="issueRaised"
+                            [formGroup]="issueTrackerForm">
+                        </airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Issue Status" formControlName="issueStatus"
+                            [formGroup]="issueTrackerForm">
+                        </airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Issue Assigned" formControlName="issueAssigned"
+                            [formGroup]="issueTrackerForm">
+                        </airmid-dropdown>
+                    </div>
+
+                </div>
+
+                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="8px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Developer Comment" formControlName="developerComment"
+                            [formGroup]="issueTrackerForm">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Tester Comment" formControlName="testerComment"
+                            [formGroup]="issueTrackerForm">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="8px grid">
+                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <app-airmid-slider label="IsCodeRelease" formControlName="isCodeRelease"
+                        [formGroup]="issueTrackerForm"></app-airmid-slider>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <app-airmid-slider label="Review Status" formControlName="isReviewStatus"
+                        [formGroup]="issueTrackerForm"></app-airmid-slider>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-footer" style="margin-top: 10px;">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+                <button class="btn btn-primary" color="accent" (click)="onSubmit()">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
     style="background-color:whitesmoke;">
 
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
@@ -92,24 +207,9 @@
                                             </mat-select>
                                         </mat-form-field>&nbsp;&nbsp;
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Issue Assigned</mat-label>
-                                            <input name="IssueAssigned" formControlName="IssueAssigned" matInput
-                                                [(ngModel)]="registerObj.IssueAssigned"
-                                                (keydown)="onEnterIssueAssigned($event)" required>
-
-                                        </mat-form-field> -->
                                     </div>
 
                                     <div fxlayout="row">
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                            <mat-label>Image Name</mat-label>
-                                            <input name="ImageName" formControlName="ImageName" matInput
-                                                [(ngModel)]="registerObj.ImageName"
-                                                (keydown)="onEnterImageName($event)">
-
-                                        </mat-form-field>&nbsp;&nbsp; -->
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Document Path</mat-label>
@@ -118,14 +218,6 @@
                                                 (keydown)="onEnterImagePath($event)">
 
                                         </mat-form-field>&nbsp;&nbsp;
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Image Upload</mat-label>
-                                       
-                                    </mat-form-field> -->
-                                        <!-- <div appearance="outline" style="margin-top: 15px;">
-                                    <input type="file" (change)="handleImageUpload($event)" >
-                                   </div> -->
-
 
                                         <div class="img-container">
                                             <input formControlName="imageFile" type="file" #attachments accept="image/*"
@@ -164,4 +256,4 @@
         </div>
     </div>
  
-</div>
+</div> -->

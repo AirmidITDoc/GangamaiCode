@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: 'root'
@@ -10,12 +12,11 @@ export class IssueTrackerService {
     MyFrom: FormGroup;
 
     constructor(
-        public _httpClient: HttpClient,
-        private _formBuilder: UntypedFormBuilder
-    ) {
-        this.userFormGroup = this.CreateNewIssueFrom();
-        this.MyFrom = this.createmyFrom();
-    }
+        private _httpClient1: ApiCaller,
+        private _httpClient: HttpClient,
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
+    ) { }
 
     CreateNewIssueFrom() {
         return this._formBuilder.group({
@@ -33,13 +34,19 @@ export class IssueTrackerService {
         });
     }
 
-    createmyFrom() {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            IssueStatus: '',
-            IssueAssigned: '',
-
+            start: [(new Date()).toISOString()],
+            end: [(new Date()).toISOString()],
+            customerName: [0],
+            issueRaised: [0],
+            issueStatus: [0],
+            issueAssigned: [0],
+            isCodeRelease: [false],
+            isReviewStatus: [false],
         });
     }
+
     public getIssuTrackerList(Params) {
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation", Params);
     }

@@ -351,6 +351,7 @@ export class NewReservationComponent implements OnInit {
 
     /////////////////////////////// ot request detail part /////////////////////////////
     onChangeOtRequest(obj: any) {
+       
         if (obj.otReservationId > 0) {
             const name = obj.patientName?.split('|')[0]?.trim();
             Swal.fire({
@@ -363,10 +364,23 @@ export class NewReservationComponent implements OnInit {
             return;
         }
 
+        if (obj.isCancelled > 0) {
+            const name = obj.patientName?.split('|')[0]?.trim();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cancelled',
+                text: `${name} OT request is already cancelled.`,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
         this.resetOtRequestData();
 
         this.registerObj1 = obj
         this.vPatientName = this.registerObj1.patientName;
+         this.opIpType = obj.opipType == '1' ? true : false;
         console.log("search data:", this.registerObj1);
 
         if (obj.otRequestId) {
@@ -1064,14 +1078,14 @@ export class NewReservationComponent implements OnInit {
                 const end = element.surgeryEndTime ? new Date(element.surgeryEndTime) : null;
                 // const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
                 const surgeryFromTime = from && !isNaN(from.getTime()) ? from.toLocaleTimeString('en-GB', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }) : '';
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : '';
                 // const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
                 const surgeryEndTime = end && !isNaN(end.getTime()) ? end.toLocaleTimeString('en-GB', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }) : '';
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : '';
 
                 this.Chargelist.push(
                     {

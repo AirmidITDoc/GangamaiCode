@@ -33,6 +33,17 @@
                 </div>
             </div>
         </div>
+        <ng-template #ReserCompleted let-element>
+            <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                <span [ngClass]="{
+                        'status-completed':element.otReservationId > 0 ,
+                        'status-pending': element.otReservationId === 0
+                        }"
+                        [matTooltip]="element.otReservationId > 0 ? 'OT Reservation Completed' : 'OT Reservation Pending'">
+                    {{ element.otReservationId ? 'Reserved' : 'Pending' }}
+                </span>
+            </div>
+        </ng-template>
         <ng-template #ColorCode let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <mat-icon *ngIf="element.opiptype=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
@@ -42,13 +53,15 @@
         </ng-template>
         <ng-template #clearanceMedicalCode let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.clearanceMedical==true" color="primary" matTooltip="Medical Clearance">local_hospital</mat-icon>
+                <mat-icon *ngIf="element.clearanceMedical==true" color="primary"
+                    matTooltip="Medical Clearance">local_hospital</mat-icon>
             </div>
         </ng-template>
 
         <ng-template #clearanceFinancialCode let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.clearanceFinancial==true" color="accent" matTooltip="Financial Clearance">account_balance</mat-icon>
+                <mat-icon *ngIf="element.clearanceFinancial==true" color="accent"
+                    matTooltip="Financial Clearance">account_balance</mat-icon>
             </div>
         </ng-template>
 
@@ -64,10 +77,13 @@
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)" *ngIf="!element.isCancelled">
+                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)" 
+                [disabled]="element.isCancelled || element.otReservationId > 0">
+                <!-- [disabled]="element.isCancelled || (element.otReservationId > 0 && element.otReservationCancel != '1')" -->
                     <mat-icon>edit</mat-icon>
-                </button>                
-                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)" *ngIf="!element.isCancelled">
+                </button>
+                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)" 
+                [disabled]="element.isCancelled || element.otReservationId > 0 ">
                     <mat-icon>cancel</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">

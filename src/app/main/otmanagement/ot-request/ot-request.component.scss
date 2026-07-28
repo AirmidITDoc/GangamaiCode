@@ -290,3 +290,21 @@ app-ot-request{
 
 
 }
+
+.status-completed {
+    padding: 2px 12px;
+    border-radius: 12px;
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.status-pending {
+    padding: 2px 12px;
+    border-radius: 12px;
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 500;
+    font-size: 12px;
+}

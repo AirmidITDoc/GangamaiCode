@@ -785,13 +785,21 @@ export class NewOtPreoperationComponent {
             this.FetchList = records.data as OtReserInsert[];
             this.FetchList.forEach(element => {
 
-                // const from = new Date(element.surgeryFromTime);
-                // const end = new Date(element.surgeryEndTime);
-                const from = this.parseDate(element.surgeryFromTime);
-                const end = this.parseDate(element.surgeryEndTime);
+                const from = element.surgeryFromTime ? new Date(element.surgeryFromTime) : null;
+                const end = element.surgeryEndTime ? new Date(element.surgeryEndTime) : null;
+                const surgeryFromTime = from && !isNaN(from.getTime()) ? from.toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : '';
+                const surgeryEndTime = end && !isNaN(end.getTime()) ? end.toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : '';
+                // const from = this.parseDate(element.surgeryFromTime);
+                // const end = this.parseDate(element.surgeryEndTime);
 
-                const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-                const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                // const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                // const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 
                 this.Chargelist.push(
                     {

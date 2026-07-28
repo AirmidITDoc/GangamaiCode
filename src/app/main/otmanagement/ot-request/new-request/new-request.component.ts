@@ -334,6 +334,7 @@ export class NewRequestComponent implements OnInit {
             this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
             this.vIPDNo = obj.ipdNo
             this.opIpId = obj.admissionID;
+            this.opIpType=1
             //   this.vTariffName = obj.tariffName
             // this.vCompanyName = obj.companyName
             //   this.vWardName = obj.roomName
@@ -351,6 +352,7 @@ export class NewRequestComponent implements OnInit {
             const extractedName = nameField.split('|')[0].trim();
             this.vPatientName = extractedName;
             this.opIpId = obj.visitId;
+            this.opIpType=0
         }
     }
 
