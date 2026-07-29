@@ -29,7 +29,7 @@ export class ReportService {
             EndDate: [new Date().toISOString()],
             UserId: [""],
             DoctorId: [""],
-            RefDoctorId:[""],
+            RefDoctorId: [""],
             ServiceId: [""],
             DepartmentId: [""],
             CashCounterId: [""],
@@ -46,22 +46,23 @@ export class ReportService {
             PaymentId: [""],
             DrugTypeId: [""],
             ItemId: [""],
-            CreditId:[""],
-            paymentId:[""],
+            CreditId: [""],
+            paymentId: [""],
             OPIPType: ["2"],
-            type:["0"],
-            expCategoryId:[""],
-            expHeadId:[""],
-            HospitalId:[""],
-            ExecutiveId:[""],
-            LoginUserId:[""],
-            LabPatientId:[""],
-            RegNo:[""],
-            PatientType:[""],
-            status:[""],
-            ItemCategory:[""],
-            days:[""], 
-    itemMoleculeName: [[]],
+            type: ["0"],
+            expCategoryId: [""],
+            expHeadId: [""],
+            HospitalId: [""],
+            ExecutiveId: [""],
+            LoginUserId: [""],
+            LabPatientId: [""],
+            RegNo: [""],
+            PatientType: [""],
+            status: [""],
+            ItemCategory: [""],
+            days: [""],
+            itemMoleculeName: [[]],
+            PatientStatus: [""]
             // 
         });
     }
@@ -77,11 +78,11 @@ export class ReportService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/NewViewReport", Param);
     }
-    
+
     public getHtmlToPdf() {
         return this._httpClient1.PostData("Report/new-vimal-html-pdf", {});
     }
     public getExcelReport(Param) {
-        return this._httpClient1.downloadFile("Report/NewExportExcelReport", Param,1,"Report.xlsx");
+        return this._httpClient1.downloadFile("Report/NewExportExcelReport", Param, 1, "Report.xlsx");
     }
 }

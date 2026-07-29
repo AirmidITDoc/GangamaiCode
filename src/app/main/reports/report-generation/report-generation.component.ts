@@ -71,7 +71,7 @@ export class ReportGenerationComponent implements OnInit {
     FromStoreId: any;
     ToStoreId: any;
     HospitalId: any;
-    ExecutiveId: any=0;
+    ExecutiveId: any = 0;
     LoginUserId: any;
     LabPatientId: any;
     RegNo: any;
@@ -97,6 +97,7 @@ export class ReportGenerationComponent implements OnInit {
     reportDetail: any;
     sIsLoading = '';
     ItemCategory: any;
+    PatientStatus: any;
     selectedNode: ExampleFlatNode | null = null;
 
     isSuperAdmin: any;
@@ -157,6 +158,7 @@ export class ReportGenerationComponent implements OnInit {
     flagstatusSelected: boolean = false;
     flagItemCategorySelected: boolean = false;
     flagdaysSelected: boolean = false;
+    flagPatientStatus: boolean = false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -242,12 +244,16 @@ export class ReportGenerationComponent implements OnInit {
             this.CompanyId = (val == 0) ? 0 : val
         });
 
-         this._ReportService.userForm.get('SecCompanyId')?.valueChanges.subscribe(val => {
+        this._ReportService.userForm.get('SecCompanyId')?.valueChanges.subscribe(val => {
             this.SecCompanyId = (val == 0) ? 0 : val
         });
 
         this._ReportService.userForm.get('ItemCategory')?.valueChanges.subscribe(val => {
             this.ItemCategory = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('PatientStatus')?.valueChanges.subscribe(val => {
+            this.PatientStatus = (val == 0) ? 0 : val
         });
 
     }
@@ -326,7 +332,7 @@ export class ReportGenerationComponent implements OnInit {
             this.flagDischargeTypeSelected = true;
         if (controllerPermission.filter(x => x == "Company")?.length > 0)
             this.flagCompanySelected = true;
-       if (controllerPermission.filter(x => x == "SecondCompany")?.length > 0)
+        if (controllerPermission.filter(x => x == "SecondCompany")?.length > 0)
             this.flagSecondCompanySelected = true;
 
         if (controllerPermission.filter(x => x == "Store")?.length > 0)
@@ -384,7 +390,9 @@ export class ReportGenerationComponent implements OnInit {
         if (controllerPermission.filter(x => x == "Days")?.length > 0)
             this.flagdaysSelected = true;
         if (controllerPermission.filter(x => x == "MultiGenericSelection")?.length > 0)
-        this.flagMultiGenericSelected = true;
+            this.flagMultiGenericSelected = true;
+        if (controllerPermission.filter(x => x == "PatientStatus")?.length > 0)
+            this.flagPatientStatus = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -583,7 +591,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get("WardId").setValue('');
         this._ReportService.userForm.get("dischargeTypeId").setValue('');
         this._ReportService.userForm.get('CompanyId').setValue('');
-          this._ReportService.userForm.get('SecCompanyId').setValue('');
+        this._ReportService.userForm.get('SecCompanyId').setValue('');
         this._ReportService.userForm.get('StoreId').setValue('');
         this._ReportService.userForm.get('FromStoreId').setValue('');
         this._ReportService.userForm.get('ToStoreId').setValue('');
@@ -603,6 +611,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('PatientType').setValue('');
         this._ReportService.userForm.get('status').setValue('');
         this._ReportService.userForm.get('ItemCategory').setValue('');
+        this._ReportService.userForm.get('PatientStatus').setValue('');
         this._ReportService.userForm.get('itemMoleculeName').setValue([]);
         this.UserId = 0;
         this.DoctorId = 0;
@@ -633,6 +642,7 @@ export class ReportGenerationComponent implements OnInit {
         this.status = 0;
         this.RegNo = 0;
         this.ItemCategory = 0;
+        this.PatientStatus = 0;
         this.flagDoctorSelected = false;
         this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
@@ -644,7 +654,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagWardSelected = false;
         this.flagDischargeTypeSelected = false;
         this.flagCompanySelected = false;
-          this.flagSecondCompanySelected = false;
+        this.flagSecondCompanySelected = false;
         this.flagStoreSelected = false;
         this.flagFromStoreSelected = false;
         this.flagToStoreSelected = false;
@@ -666,10 +676,11 @@ export class ReportGenerationComponent implements OnInit {
         this.flagPatientTypeSelected = false;
         this.flagstatusSelected = false;
         this.flagItemCategorySelected = false;
-        this.flagdaysSelected=false;
-        this.flagMultiGenericSelected=false;
+        this.flagPatientStatus = false;
+        this.flagdaysSelected = false;
+        this.flagMultiGenericSelected = false;
     }
-    @ViewChild('ddlDrug') ddlDrug: AirmidDropDownComponent; 
+    @ViewChild('ddlDrug') ddlDrug: AirmidDropDownComponent;
     removeMolecule(item) {
         const removedIndex = this._ReportService.userForm.value.itemMoleculeName.findIndex(x => x.itemGenericNameId == item.itemGenericNameId);
         this._ReportService.userForm.value.itemMoleculeName.splice(removedIndex, 1);
@@ -763,7 +774,7 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.CompanyId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
-                 if (this.flagSecondCompanySelected)
+            if (this.flagSecondCompanySelected)
                 paramFilterList.push({
                     "fieldName": "SecondCompanyId",
                     "fieldValue": this.SecCompanyId.toString() || "0",
@@ -895,25 +906,31 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.ItemCategory.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
-                
+            if (this.flagPatientStatus)
+                paramFilterList.push({
+                    "fieldName": "PatientStatus",
+                    "fieldValue": this.PatientStatus.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+
             if (this.flagdaysSelected)
                 paramFilterList.push({
                     "fieldName": "Days",
                     "fieldValue": this._ReportService.userForm.get('days').value.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
-                if (this.flagMultiGenericSelected){
-                const selectedItems = this._ReportService.userForm.get('itemMoleculeName').value; 
+            if (this.flagMultiGenericSelected) {
+                const selectedItems = this._ReportService.userForm.get('itemMoleculeName').value;
                 const ItemGenericNameIds = Array.isArray(selectedItems)
-                ? selectedItems.map(x => x.itemGenericNameId).join(',')
-                : selectedItems?.itemGenericNameId?.toString() || '0';
+                    ? selectedItems.map(x => x.itemGenericNameId).join(',')
+                    : selectedItems?.itemGenericNameId?.toString() || '0';
 
                 paramFilterList.push({
                     "fieldName": "ItemMoleculeId",
-                    "fieldValue":ItemGenericNameIds, // this._ReportService.userForm.get('itemMoleculeName').value.itemId.toString() || "0",
+                    "fieldValue": ItemGenericNameIds, // this._ReportService.userForm.get('itemMoleculeName').value.itemId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
-            } 
+            }
             //   
             const param = {
                 "searchFields": paramFilterList,
