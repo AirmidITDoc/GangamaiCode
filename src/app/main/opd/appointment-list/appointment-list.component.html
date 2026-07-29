@@ -18,6 +18,7 @@
             </button>-->
             <button mat-raised-button routerLink="/abha">Create ABHA
             </button>
+
         </div>
 
 
@@ -71,6 +72,16 @@
                     <div class="card-label">Waiting</div>
                     <div class="card-value">{{VWaitingCount}}</div>
                     <mat-icon class="card-icon">groups</mat-icon>
+                </div>
+                <!-- Followup -->
+                <div class="dashboard-card emr-ready">
+                    <div class="card-label">Todays Follw Up</div>
+                    <div class="card-value">{{VFollowupTodayCount}}</div>
+                    <!-- <mat-icon class="card-icon">groups</mat-icon> -->
+                    <!-- <button mat-icon-button (click)="openPatientDetailsPopover1($event)" style="padding: 0px;"> -->
+                    <mat-icon (click)="openPatientDetailsPopover1($event)"
+                        class="card-icon">notifications_none</mat-icon>
+                    <!-- </button> -->
                 </div>
             </div>
 
@@ -175,7 +186,7 @@
             </div>
         </ng-template>
 
-         <ng-template #abhaIcon let-element>
+        <ng-template #abhaIcon let-element>
             <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
                 <button mat-icon-button matTooltip="ABHA Linking" (click)="OnabhaLink(element)"
                     *ngIf="element.abhaTranId > 0">
@@ -227,12 +238,20 @@
                     </mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="!element.isCancelled"
+                <!-- <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="!element.isCancelled"
                     (click)="getgastrologyCasePaper(element)" >
                     <mat-icon style="color: rgb(48, 55, 243);">
                         list_alt
                     </mat-icon>
+                </button> -->
+
+                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="!element.isCancelled && IsGastrologyEMR"
+                    (click)="getgastrologyCasePaper(element)">
+                    <mat-icon style="color: rgb(48, 55, 243);">
+                        list_alt
+                    </mat-icon>
                 </button>
+
 
                 <button mat-icon-button matTooltip="Bill" *ngIf="!element.isCancelled"
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
@@ -240,8 +259,9 @@
                     <mat-icon> payment</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Consultant start / Check-In" *ngIf="IsCheckIn && !element.isCancelled"
-                    style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
+                <button mat-icon-button matTooltip="Consultant start / Check-In"
+                    *ngIf="IsCheckIn && !element.isCancelled" style="padding: 0 8px; min-width: unset;"
+                    (click)="onCheckIn(element.visitId)"
                     [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
                     <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                         [style.color]="timers[element.visitId]?.isCheckedIn ? '#4caf50' : '#666'">check_circle</mat-icon>
@@ -250,8 +270,9 @@
                     <!-- Check-In -->
                 </button>
 
-                <button mat-icon-button matTooltip="Consultant End / Check Out" *ngIf="IsCheckOut && !element.isCancelled"
-                    style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
+                <button mat-icon-button matTooltip="Consultant End / Check Out"
+                    *ngIf="IsCheckOut && !element.isCancelled" style="padding: 0 8px; min-width: unset;"
+                    (click)="onCheckOut(element.visitId)"
                     [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
                     <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                         [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
@@ -259,16 +280,16 @@
                     <!-- Check-Out -->
                 </button>
                 <!-- Material UI Icon Button with Menu -->
-                <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" *ngIf="!element.isCancelled"
-                    matTooltipPosition="above" (click)="$event.stopPropagation();">
+                <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions"
+                    *ngIf="!element.isCancelled" matTooltipPosition="above" (click)="$event.stopPropagation();">
                     <mat-icon>more_vert</mat-icon>
                 </button>
 
                 <!-- Material UI Menu with Compact Design *ngIf="IsPrevApp"-->
-                <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false" >
+                <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
 
-                    <button mat-menu-item (click)="OnEditRegistration(element)" *ngIf="IsEditRegistration"
-                        style="height: 32px; min-height: 32px;">
+                    <button mat-menu-item (click)="OnEditRegistration(element)" style="height: 32px; min-height: 32px;"
+                        *ngIf="IsEditRegistration1">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">edit</mat-icon>
                         <span style="font-size: 13px;">Edit Registration</span>
                     </button>
@@ -305,13 +326,14 @@
                         <span style="font-size: 13px;">Check-Out</span>
                     </button> -->
 
-                    <button mat-menu-item (click)="OnNewCrossConsultation(element)"
+                    <button mat-menu-item (click)="OnNewCrossConsultation(element)" *ngIf="IsCrossConsultation"
                         style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">sync</mat-icon>
                         <span style="font-size: 13px;">Cross Consultation</span>
                     </button>
 
-                    <button mat-menu-item (click)="OnVitalInfo(element)" style="height: 32px; min-height: 32px;">
+                    <button mat-menu-item (click)="OnVitalInfo(element)" style="height: 32px; min-height: 32px;"
+                        *ngIf="IsVitalInformation">
                         <mat-icon
                             style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">favorite_border</mat-icon>
                         <span style="font-size: 13px;">Vital Information</span>
@@ -426,7 +448,7 @@
 
                 </form>
 
-                 <!-- <button mat-raised-button class="btn btn-primary w-100-p" (click)="getCancelledAppoinment()"
+                <!-- <button mat-raised-button class="btn btn-primary w-100-p" (click)="getCancelledAppoinment()"
                                 matTooltip="search">
                                 Cancelled Appoinment List
                             </button> -->

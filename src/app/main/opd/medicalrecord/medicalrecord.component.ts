@@ -71,14 +71,15 @@ export class MedicalrecordComponent implements OnInit {
     l_name: any = "%"
     CompanyId = "0"
     page: PageNames = PageNames.PATIENT;
-
+ IsGastrologyEMR: boolean = false;
+ 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
         private formBuilder: FormBuilder,
         public _ConfigService: ConfigService, public permissionService: PagePermissionService,
         public toastr: ToastrService, public datePipe: DatePipe,
-        private overlay: Overlay,
+        private overlay: Overlay, private _configue: ConfigService,
     ) { }
 
     ngOnInit(): void {
@@ -90,6 +91,13 @@ export class MedicalrecordComponent implements OnInit {
         this.menuActions.push("Medical Record");
         this.Appointdetail(this.gridConfig)
         this.GetAppointdetail()
+
+
+          const rawValue1 = this?._configue?.configParams?.IsGastrologyEMR || "";
+        const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
+        this.IsGastrologyEMR = id1 === "1";
+
+
     }
 
     ngAfterViewInit() {

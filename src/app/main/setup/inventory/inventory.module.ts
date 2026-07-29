@@ -108,7 +108,14 @@ const appRoutes: Routes = [
         path: "supplierwise-rate-define",
         loadChildren: () =>
             import("./supplierwise-rate-define/supplierwise-rate-define.module").then((m) => m.SupplierwiseRateDefineModule),
+    },
+    {
+        path: "item-hsncode-master",
+        loadChildren: () =>
+            import("./hsncode-maser/hsncode.module").then((m) => m.HsncodeModule),
     }
+
+    
  
 ];
 

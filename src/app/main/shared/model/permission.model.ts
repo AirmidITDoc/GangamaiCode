@@ -169,5 +169,17 @@ export enum permissionCodes {
     //    Employee master
     EmployeeMaster = 'EmployeeMaster',
     EmployeeDepartment = 'EmployeeDepartment',
-    EmployeeDesignation = 'EmployeeDesignation'
+    EmployeeDesignation = 'EmployeeDesignation',
+
+    //Appoinment list
+
+
+    requestforip = 'requestforip',
+    UpdateConsultantDoctor = 'UpdateConsultantDoctor',
+    UpdateReferredDoctor = 'UpdateReferredDoctor',
+    UpdateFollowupDate = 'UpdateFollowupDate',
+    PatientAppointmentCancle = 'PatientAppointmentCancle',
+    CrossConsultation='CrossConsultation',
+    VitalInformation='VitalInformation',
+    EditRegistration='EditRegistration'
 }

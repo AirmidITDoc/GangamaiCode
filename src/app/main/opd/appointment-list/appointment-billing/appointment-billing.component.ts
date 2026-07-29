@@ -92,9 +92,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     currency: any = '';
     SetCashbydefault: any = 0
-    CashCounterType:any = 'OP_BILL';
-    vUserID:any=0;
-    UserWsieCashcounterId:boolean =false;
+    CashCounterType: any = 'OP_BILL';
+    vUserID: any = 0;
+    UserWsieCashcounterId: boolean = false;
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
@@ -1598,7 +1598,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.RegNo = '';
         this.AgeYear = '0';
         this.Doctorname = '';
-        this.vTariffId = 0; 
+        this.vTariffId = 0;
         this.patientDetail = [];
 
         this.searchForm.get('regId').setValue('')

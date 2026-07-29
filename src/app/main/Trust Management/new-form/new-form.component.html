@@ -53,7 +53,8 @@
                                                                     <airmid-dropdown label="Prefix"
                                                                         formControlName="hprefixId"
                                                                         [formGroup]="personalFormGroup"
-                                                                        [value]="registerObj?.hprefixId"      (selectionChange)="onChangePrefix($event)"
+                                                                        [value]="registerObj?.hprefixId"
+                                                                        (selectionChange)="onChangePrefix($event)"
                                                                         [validations]="getValidationMessages().hprefixId"
                                                                         ValueField="prefixId" TextField="prefixName"
                                                                         ApiUrl="Prefix/get-prefixs"></airmid-dropdown>
@@ -88,10 +89,10 @@
                                                                         [value]="registerObj?.hgenderId"
                                                                         [validations]="getValidationMessages().hgenderId"
                                                                         #ddlGender [readonly]="true"
-                                                                                 [mode]="autocompleteModegender">
+                                                                        [mode]="autocompleteModegender">
                                                                     </airmid-dropdown>
                                                                 </div>
-                                                                
+
 
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
@@ -174,12 +175,25 @@
                                                                 </div>
 
 
-                                                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Husband Hobbies"
                                                                         formControlName="husbandHobbies"
                                                                         [value]="data?.husbandhobbies"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandhobbies"></airmid-textbox>
+                                                                </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <mat-form-field appearance="outline" fxFlex>
+                                                                        <mat-label>Wife Death Date</mat-label>
+                                                                        <input matInput [matDatepicker]="WdeathDate"
+                                                                            placeholder="WdeathDate"
+                                                                            formControlName="wdeathDate"
+                                                                            [value]="vwdeathDate" />
+                                                                        <mat-datepicker-toggle matSuffix
+                                                                            [for]="WdeathDate"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #WdeathDate></mat-datepicker>
+                                                                    </mat-form-field>
                                                                 </div>
 
                                                                 <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -358,12 +372,24 @@
                                                                         [validations]="getValidationMessages().wifeparentsnativeplace"></airmid-textbox>
                                                                 </div>
 
-                                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Wife parental details"
                                                                         formControlName="wifeparentaldetails"
                                                                         [value]="data?.wifeparentaldetails"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifeparentaldetails"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                    <mat-form-field appearance="outline" fxFlex>
+                                                                        <mat-label>Husband Death Date</mat-label>
+                                                                        <input matInput [matDatepicker]="hdeathDate"
+                                                                            placeholder="hdeathDate"
+                                                                            formControlName="hdeathDate"
+                                                                            [value]="vhdeathDate" />
+                                                                        <mat-datepicker-toggle matSuffix
+                                                                            [for]="hdeathDate"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #hdeathDate></mat-datepicker>
+                                                                    </mat-form-field>
                                                                 </div>
                                                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 
@@ -453,7 +479,7 @@
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-textbox label="Family Doctor Name"
                                                         (keypress)="allowOnlyAlphabets($event)"
@@ -463,7 +489,7 @@
 
                                                 </div>
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-textbox label="Family Doctor contact"
                                                         (keypress)="keyPressAlphanumeric($event)"
@@ -475,7 +501,7 @@
 
                                                 </div>
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
                                                         style="margin-left:20px;" [value]="data?.ayushmanmaleenrolled">
                                                         Ayushman Enrolled </mat-checkbox>
@@ -489,7 +515,22 @@
                                                         Male / Female Enrolled </mat-checkbox>
                                                 </div>
 
-                                                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Husband Ayushman Id"
+                                                        formControlName="haayushmanId"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Wife Ayushman Id"
+                                                        formControlName="waayushmanId"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-textbox label="Ayushman Spouse details"
                                                         formControlName="ayushmanSpouseDetails"
@@ -806,7 +847,7 @@
                                         </form>
                                     </div>
                                 </div>
-                            
+
                                 <div
                                     style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table matSort [dataSource]="DSChildrenList"
@@ -868,7 +909,7 @@
                                     </mat-table>
                                 </div>
 
-                          
+
                                 <span
                                     style="font-size: large;text-align: center;font-weight: bold;padding: 10px;">Relative
                                     Information
@@ -928,7 +969,7 @@
                                         </form>
                                     </div>
                                 </div>
-                             
+
                                 <div
                                     style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table class="airmid-table" matSort [dataSource]="DSRelativeList"
@@ -997,7 +1038,7 @@
                                             [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                                     </mat-table>
                                 </div>
-                            
+
 
                                 <span
                                     style="font-size: large;text-align: center;font-weight: bold;padding: 10px;">Emegency
@@ -1053,7 +1094,7 @@
                                         </form>
                                     </div>
                                 </div>
-                               
+
                                 <div
                                     style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table class="airmid-table" matSort [dataSource]="DSEmrgencyList"

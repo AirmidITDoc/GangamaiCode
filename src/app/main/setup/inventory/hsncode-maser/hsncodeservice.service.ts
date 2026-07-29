@@ -4,10 +4,10 @@ import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class HsncodeserviceService {
-  myform: FormGroup;
+    myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
@@ -29,9 +29,16 @@ export class HsncodeserviceService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            itemTypeId: ["",
+            gstRate: ["",
                 [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
+            unitOfMeasureId: ['',
+                [ this._FormvalidationserviceService.onlyNumberValidator()]
+            ],
+            gstId: ['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitOfMeasure:[''],
+            effectiveFrom: [(new Date()).toISOString()],
+            effectiveTo: [(new Date()).toISOString()],
             isActive: [true, [Validators.required]]
         });
     }
@@ -48,12 +55,12 @@ export class HsncodeserviceService {
     }
 
     public HsnccodeMasterSave(Param: any) {
-        if (Param.itemCategoryId) {
-            return this._httpClient.PutData("ItemCategoryMaster/" + Param.itemCategoryId, Param);
-        } else return this._httpClient.PostData("ItemCategoryMaster", Param);
+        if (Param.hsncodeId) {
+            return this._httpClient.PutData("HSNCodeMaster/" + Param.hsncodeId, Param);
+        } else return this._httpClient.PostData("HSNCodeMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("ItemCategoryMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("HSNCodeMaster?Id=" + m_data.toString());
     }
 }

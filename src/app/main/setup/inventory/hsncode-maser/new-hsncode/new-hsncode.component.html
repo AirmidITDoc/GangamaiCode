@@ -14,44 +14,74 @@
             </div>
         </div>
     </div>
-  
+
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="HsnccodeForm">
                 <input type="hidden" name="hsncodeId" formControlName="hsncodeId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="Item HSNCODE" 
-                            formControlName="hsncodeName" 
-                            [value]="data?.hsncodeName"
-                            [formGroup]="HsnccodeForm"
-                            [validations]="getValidationMessages().hsncodeName"
+                        <airmid-textbox label="Item HSNCODE" formControlName="hsncodeName" [value]="data?.hsncodeName"
+                            [formGroup]="HsnccodeForm" [validations]="getValidationMessages().hsncodeName"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
-                   
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Select GSTType" formControlName="gstId" [formGroup]="HsnccodeForm"
+                            [validations]="getValidationMessages().GSTType" [mode]="autocompleteModeGSTTypesValues"
+                            (selectionChange)="onGSTTypeChange($event)">
+                        </airmid-dropdown>
+                    </div>
+                    <!-- [value]="data?.purchaseUomid" -->
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Unit Of Measurement ID" formControlName="unitOfMeasureId"
+                            [formGroup]="HsnccodeForm" (selectionChange)="onunitChange($event)"
+                            [validations]="getValidationMessages().unitofmeasure" [mode]="autocompleteModePurchaseUOM">
+                        </airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Effective startdate</mat-label>
+                            <input matInput [matDatepicker]="effectivefrom" placeholder="effectivefrom"
+                                formControlName="effectiveFrom" [value]="veffectivefrom" />
+                            <mat-datepicker-toggle matSuffix [for]="effectivefrom"></mat-datepicker-toggle>
+                            <mat-datepicker #effectivefrom></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Effective Enddate</mat-label>
+                            <input matInput [matDatepicker]="effectiveto" placeholder="effectiveto"
+                                formControlName="effectiveTo" [value]="veffectiveto" />
+                            <mat-datepicker-toggle matSuffix [for]="effectiveto"></mat-datepicker-toggle>
+                            <mat-datepicker #effectiveto></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
+
                     <div>
-                     
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="HsnccodeForm" [(ngModel)]="isActive" ></app-airmid-slider>
+
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                            [formGroup]="HsnccodeForm" [(ngModel)]="isActive"></app-airmid-slider>
                     </div>
-         
+
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" >
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>
-         
+
                 </div>
 
             </form>
         </div>
-   
+
     </div>
 </div>

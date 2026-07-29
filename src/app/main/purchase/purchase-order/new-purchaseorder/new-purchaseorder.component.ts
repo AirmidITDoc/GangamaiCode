@@ -157,7 +157,7 @@ export class NewPurchaseorderComponent {
     registerObj = new ItemNameList({});
     SupplierObj = new SupplierMaster({});
     ItemObj: IndentList;
-    FromName:any= '';
+    FromName: any = '';
     isItemIdSelected: boolean = false;
     state = false;
     isLoading = true;
@@ -359,9 +359,9 @@ export class NewPurchaseorderComponent {
             purchaseNo: this.PurchaseNo,
             purchaseDate: new Date(),
             purchaseTime: new Date(),
-            isPurchaseRequisitionId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isProceedToApproval:[this.data?.FromName === 'PurchaseApproved'],
-            isApproved:[this.data?.FromName === 'PurchaseApproved'],
+            isPurchaseRequisitionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isProceedToApproval: [this.data?.FromName === 'PurchaseApproved'],
+            isApproved: [this.data?.FromName === 'PurchaseApproved'],
             storeId: this.vstoreId || 0,
             supplierId: this.vSupplierId || 0,
             totalAmount: this.FinalTotalAmt || 0,
@@ -453,7 +453,7 @@ export class NewPurchaseorderComponent {
             defRate: [item.DefRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             vendDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            isApproved:[this.data?.FromName === 'PurchaseApproved'],
+            isApproved: [this.data?.FromName === 'PurchaseApproved'],
         });
     }
     get purchasedetailArray(): FormArray {
@@ -523,11 +523,11 @@ export class NewPurchaseorderComponent {
                     MRP: formValues.MRP || 0,
                     DefRate: formValues.DefRate || 0,
                     Specification: formValues.Specification || '',
-                    isApproved:false
+                    isApproved: false
                 });
                 console.log(newItem)
                 this.lastsupplierflag = false;
-                 this.isExpanded = false;
+                this.isExpanded = false;
                 this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
                 this.updatePurchaseFinalForm();
             }
@@ -590,7 +590,7 @@ export class NewPurchaseorderComponent {
 
 
     OnSave() {
-debugger
+        debugger
         let Pdate;
         let pTime;
         if (this.PurchaseID != 0) {
@@ -609,7 +609,7 @@ debugger
 
         const fomrValues = this.userFormGroup.value
         const FooterfomrValues = this.FinalPurchaseform.value
-debugger
+        debugger
         if (!this.FinalPurchaseform.invalid) {
 
             this.PurchaseInsertform.get("storeId").setValue(this.vstoreId)
@@ -802,7 +802,7 @@ debugger
         debugger
         console.log(item)
         this.lastsupplierflag = true
-         this.isExpanded = true;
+        this.isExpanded = true;
         this.ItemID = item.itemId
         this.UmoId = item.umoId
         this.Umoname = item.umoName
@@ -813,7 +813,7 @@ debugger
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             Qty: '',// item.balanceQty,
             HSNcode: item.hsNcode || '0'
-        }); 
+        });
 
         if (((item?.cgstPer ?? 0) || 0) > 0) {
             this.userFormGroup.patchValue({
@@ -826,7 +826,7 @@ debugger
             this.userFormGroup.get('IGSTPer').reset();
             this.userFormGroup.get('IGSTPer').clearValidators();
             this.userFormGroup.get('IGSTPer').updateValueAndValidity();
-            this.userFormGroup.get('IGSTPer').disable(); 
+            this.userFormGroup.get('IGSTPer').disable();
         } else {
             this.userFormGroup.patchValue({
                 CGSTPer: 0,
@@ -838,14 +838,14 @@ debugger
             this.userFormGroup.get('CGSTPer').reset();
             this.userFormGroup.get('CGSTPer').clearValidators();
             this.userFormGroup.get('CGSTPer').updateValueAndValidity();
-            this.userFormGroup.get('CGSTPer').disable(); 
-        }  
+            this.userFormGroup.get('CGSTPer').disable();
+        }
         this.getLastThreeItemInfo();
         this.getSupplierRate();
         const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
         if (QtyElement) {
             QtyElement.focus();
-        } 
+        }
         setTimeout(() => {
             const nativeElement = this.qtyTextboxRef?.nativeElement;
             if (nativeElement) {
@@ -1011,7 +1011,7 @@ debugger
 
     //new 
 
-    selectChangeStore(obj: any) { 
+    selectChangeStore(obj: any) {
         console.log("Store:", obj);
         this.vstoreId = obj.value || 0
         this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
@@ -1055,10 +1055,10 @@ debugger
     @ViewChild('addbutton') addbutton!: ElementRef<HTMLButtonElement>;
     @HostListener('document:keydown.enter', ['$event'])
     handleEnterKey(event: KeyboardEvent) {
-        const activeElement = document.activeElement as HTMLElement; 
- debugger
+        const activeElement = document.activeElement as HTMLElement;
+        debugger
         // Only act if focus is inside the CGST dropdown
-      if (activeElement && activeElement.closest('airmid-dropdown')) {
+        if (activeElement && activeElement.closest('airmid-dropdown')) {
             const cgstValue = this.userFormGroup.get('CGSTPer')?.value;
             const igstValue = this.userFormGroup.get('IGSTPer')?.value;
 
@@ -1083,7 +1083,7 @@ debugger
             this.userFormGroup.get('IGSTPer').reset();
             this.userFormGroup.get('IGSTPer').clearValidators();
             this.userFormGroup.get('IGSTPer').updateValueAndValidity();
-            this.userFormGroup.get('IGSTPer').disable(); 
+            this.userFormGroup.get('IGSTPer').disable();
         } else {
             this.userFormGroup.get('CGSTPer').reset(0);
             this.userFormGroup.get('SGSTPer').reset(0);
@@ -1091,7 +1091,7 @@ debugger
             this.userFormGroup.get('IGSTPer').reset();
         }
         this.calculateTotalamt();
-    } 
+    }
 
     getchangeIgstper(rate: any): void {
 
@@ -1112,7 +1112,7 @@ debugger
             this.userFormGroup.get('CGSTPer').enable();
         }
         this.calculateTotalamt();
-    } 
+    }
     resetForm() {
         this.userFormGroup.reset();
         this.dsItemNameList.data = [];
@@ -1161,7 +1161,7 @@ debugger
             DefRate: 0
         });
         this.lastsupplierflag = false;
-         this.isExpanded = false;
+        this.isExpanded = false;
         this.userFormGroup.markAsUntouched();
     }
     selectChangeSupplier(supplier: any): void {
@@ -1218,8 +1218,8 @@ debugger
         });
     }
     // Check Invice is already exist or not 
-   chkpreviouserates(rate) {
-    debugger
+    chkpreviouserates(rate) {
+        debugger
         const enteredRate = rate;
         const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
 
@@ -1239,7 +1239,7 @@ debugger
                 timer: 4000,
                 timerProgressBar: true
             });
-        } 
+        }
     }
     // Retreving Item Details Edit Time
     getOldPurchaseOrder(Id) {
@@ -1291,12 +1291,12 @@ debugger
         console.log(this.dsItemNameList)
     }
     // Defined Rate Validation
-   OnchekPurchaserateValidation(rate) {
-        debugger 
+    OnchekPurchaserateValidation(rate) {
+        debugger
         const actualRate = parseFloat(this.userFormGroup.get('Rate')?.value || '0');
         const definedRate = parseFloat(this.vDefRate || '0');
         if (definedRate > 0) {
-            if (actualRate > definedRate) {  
+            if (actualRate > definedRate) {
                 //Swal.fire("Please Check defined Supplier Rate for product ...!!!");  
                 Swal.fire({
                     icon: 'warning',
@@ -1312,30 +1312,30 @@ debugger
                     color: '#bf360c',
                     timer: 4000,
                     timerProgressBar: true
-                }).then(() => { 
-                         this.vRate = 0;
-                         this.userFormGroup.patchValue({ Rate: 0 }); 
-                 setTimeout(() => {
-                 const rateElement = document.querySelector(`[name="Rate"]`) as HTMLInputElement; 
-                 rateElement?.focus();
-                 rateElement?.select();
-                  }, 100); 
-                 });  
-                 
-        // this.vRate = 0 
-        // this.userFormGroup.patchValue({Rate : 0 }); 
-        // setTimeout(() => {
-        // const RateElement = document.querySelector(`[name='Rate']`) as HTMLElement;
-        // if (RateElement) {
-        //     RateElement.focus();
-        // } 
-        // }, 1000);
-        }else { this.calculateTotalamt(); }
+                }).then(() => {
+                    this.vRate = 0;
+                    this.userFormGroup.patchValue({ Rate: 0 });
+                    setTimeout(() => {
+                        const rateElement = document.querySelector(`[name="Rate"]`) as HTMLInputElement;
+                        rateElement?.focus();
+                        rateElement?.select();
+                    }, 100);
+                });
+
+                // this.vRate = 0 
+                // this.userFormGroup.patchValue({Rate : 0 }); 
+                // setTimeout(() => {
+                // const RateElement = document.querySelector(`[name='Rate']`) as HTMLElement;
+                // if (RateElement) {
+                //     RateElement.focus();
+                // } 
+                // }, 1000);
+            } else { this.calculateTotalamt(); }
         } else if (definedRate == 0) {
             if (actualRate) {
                 this.calculateTotalamt();
             }
-        }  
+        }
     }
     supplierRateList: any = [];
     getSupplierRate() {
@@ -1375,26 +1375,51 @@ debugger
             console.log('The dialog was closed - Insert Action', result);
         });
     }
-        // it allowed only Digit 
-        keyPressDigitsOnly(event) {
-            const inp = String.fromCharCode(event.keyCode);
-            if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
+    // it allowed only Digit 
+    keyPressDigitsOnly(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
         }
-        // it allowed only Digit & decimal
-        keyPressDigitDecimalOnly(event) {
-            const inp = String.fromCharCode(event.keyCode);
-            if (/^\d*\.?\d*$/.test(inp)) {
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
+    }
+    // it allowed only Digit & decimal
+    keyPressDigitDecimalOnly(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
         }
+    }
+    vhsncodeId = 0
+    HsncodeName = ''
+    gstrate = ''
+    UnitOfMeasureId = 0
+    GstId = 0
+
+    unitomeasure = ''
+    effectivefrom = ''
+    effectiveto = ''
+
+    selectChangeHsn(row) {
+        console.log(row)
+        this.vhsncodeId = row.hsncodeId
+        this.HsncodeName = row.hsncodeName
+        this.gstrate = row.gstRate
+        this.UnitOfMeasureId = row.unitOfMeasureId
+        this.GstId = row.gstId
+
+        this.unitomeasure = row.unitomeasure
+        this.effectivefrom = row.effectiveFrom
+        this.effectiveto = row.effectiveTo
+        debugger
+        // this.userFormGroup.get('CGSTPer').setValue(this.GstId)
+
+    }
 }
 export class LastThreeItemList {
     ItemID: any;

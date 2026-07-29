@@ -124,6 +124,8 @@ LoginBrowserHeading:any;
 IsSampleCollectionRequired:any;
 IsApprovalRequired:any;
 IsUserwiseCashCounterflow:any;
+IsGastrologyEMR:any
+IsCasepaperBillPrint:any
     /**
         * Constructor
         *
@@ -254,7 +256,11 @@ IsUserwiseCashCounterflow:any;
         this.IsSampleCollectionRequired = ConfigSettingParams.IsSampleCollectionRequired;
         this.IsApprovalRequired = ConfigSettingParams.IsApprovalRequired;
           this.IsUserwiseCashCounterflow = ConfigSettingParams.IsUserwiseCashCounterflow;
+         this.IsGastrologyEMR = ConfigSettingParams.IsGastrologyEMR;
+         this.IsCasepaperBillPrint = ConfigSettingParams.IsCasepaperBillPrint;
         
+
+          
            }
 
 }
@@ -367,6 +373,7 @@ export class ConfigSettingUserAccessParams {
     AccessValue: any;
     AccessInputValue: any;
     AccessValueName: any;
+    EdiConsultDoctor:any
     /**
         * Constructor
         *
@@ -380,6 +387,7 @@ export class ConfigSettingUserAccessParams {
         this.AccessValue = ConfigSettingUserAccessParams.AccessValue;
         this.AccessInputValue = ConfigSettingUserAccessParams.AccessInputValue;
         this.AccessValueName = ConfigSettingUserAccessParams.AccessValueName
+        this.EdiConsultDoctor = ConfigSettingUserAccessParams.EdiConsultDoctor
     }
 
 }

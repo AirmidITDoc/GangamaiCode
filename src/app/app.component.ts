@@ -31,6 +31,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { HospitalConfigService } from './core/services/hospital-config.service';
 import { PatientSearchComponent } from './main/shared/componets/patient-search/patient-search.component';
 import { Title } from '@angular/platform-browser';
+import { FollowupListComponent } from './main/opd/appointment-list/followup-list/followup-list.component';
 
 @Component({
     selector: 'app',
@@ -105,7 +106,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private bandwidthService: BandwidthService,
         private signalRService: SignalRService,
         private HospitalConfigService: HospitalConfigService,
-          private titleService: Title,
+        private titleService: Title,
     ) {
 
         this.bandwidthService.monitorBandwidth();
@@ -299,10 +300,10 @@ export class AppComponent implements OnInit, OnDestroy {
                 }).start();
             }
 
-        
-          const rawValue = this.configService?.configParams?.LoginBrowserHeading ?? ''; 
-          const browseHeading = rawValue?.split(':')[1]?.trim() || ''; 
-          this.titleService.setTitle(browseHeading || 'AIRMID');
+
+            const rawValue = this.configService?.configParams?.LoginBrowserHeading ?? '';
+            const browseHeading = rawValue?.split(':')[1]?.trim() || '';
+            this.titleService.setTitle(browseHeading || 'AIRMID');
         });
     }
 
@@ -345,12 +346,33 @@ export class AppComponent implements OnInit, OnDestroy {
             event.preventDefault();
             this.onpatientsearch();
         }
+
+        if (event.keyCode === 121) {
+            event.preventDefault();
+            this.onfollowuppatientsearch();
+        }
     }
+
+
     onpatientsearch() {
         const dialogRef = this.dialogRef.open(PatientSearchComponent,
             {
                 width: "45%",
                 height: "65%",
+                panelClass: 'responsive-dialog'
+            });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
+
+
+    onfollowuppatientsearch() {
+        const dialogRef = this.dialogRef.open(FollowupListComponent,
+            {
+                maxWidth: "80vw",
+                // width: "85%",
+                height: "80%",
                 panelClass: 'responsive-dialog'
             });
         dialogRef.afterClosed().subscribe((result) => {

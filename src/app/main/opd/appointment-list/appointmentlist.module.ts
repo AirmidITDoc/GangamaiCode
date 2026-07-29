@@ -61,6 +61,7 @@ import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-po
 import { PreviousDeptListComponent } from './update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
 import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component';
+import { FollowupListComponent } from './followup-list/followup-list.component';
 
 
 const routes: Routes = [
@@ -98,6 +99,7 @@ const routes: Routes = [
         EditAppointmentComponent,
         NewAppointmentwihBillComponent,
         PaAppoCancleComponent,
+        FollowupListComponent,
 
     ],
     imports: [

@@ -13,6 +13,14 @@
         </div>
     </mat-toolbar>
 
+
+      <div style="padding: 16px 24px; display: flex; justify-content: flex-end; background: #f5f5f5;">
+                    <button mat-raised-button color="primary" (click)="onSubmit()"
+                        style="padding: 8px 32px; font-size: 14px;">
+                        Save Configuration
+                    </button>
+                </div>
+
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
         <mat-tab label="System Configuration List">
@@ -162,12 +170,12 @@
                     </div>
                 </div>
 
-                <div style="padding: 16px 24px; display: flex; justify-content: flex-end; background: #f5f5f5;">
+                <!-- <div style="padding: 16px 24px; display: flex; justify-content: flex-end; background: #f5f5f5;">
                     <button mat-raised-button color="primary" (click)="onSubmit()"
                         style="padding: 8px 32px; font-size: 14px;">
                         Save Configuration
                     </button>
-                </div>
+                </div> -->
             </div>
 
         </mat-tab>

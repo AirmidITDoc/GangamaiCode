@@ -239,20 +239,21 @@
                                         ValueField="regId"
                                         (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-                                    <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="Cash Counter Name" formControlName="CashCounterID" fxFlex
-                                        [formGroup]="searchForm" [validations]="getValidationMessages().CashCounterID" fxFlex
-                                        [mode]="autocompleteModeCashcounter"  [disableAutoNext]="true">
-                                    </airmid-dropdown> 
+                                    <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="Cash Counter Name"
+                                        formControlName="CashCounterID" fxFlex [formGroup]="searchForm"
+                                        [validations]="getValidationMessages().CashCounterID" fxFlex
+                                        [mode]="autocompleteModeCashcounter" [disableAutoNext]="true">
+                                    </airmid-dropdown>
 
-                                    <airmid-dropdown  *ngIf="UserWsieCashcounterId" fxFlex  label="Select Cash Counter" formControlName="CashCounterID"
-                                       [formGroup]="searchForm"    TextField="cashCounterName" ValueField="cashCounterId"
-                                    [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"
-                                      ></airmid-dropdown>
+                                    <airmid-dropdown *ngIf="UserWsieCashcounterId" fxFlex label="Select Cash Counter"
+                                        formControlName="CashCounterID" [formGroup]="searchForm"
+                                        TextField="cashCounterName" ValueField="cashCounterId"
+                                        [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"></airmid-dropdown>
 
                                     <airmid-dropdown label="Tariff Name" formControlName="TariffId"
                                         [formGroup]="searchForm" [validations]="getValidationMessages().tariffId"
                                         [mode]="autocompleteModetariff" (selectionChange)="getSelectedTariffObj($event)"
-                                        fxFlex  [disableAutoNext]="true">
+                                        fxFlex [disableAutoNext]="true">
                                     </airmid-dropdown>
                                 </div>
                             </form>
@@ -334,18 +335,18 @@
                                                 [readonly]="true">
                                             </airmid-textbox>
                                         </div>
-                                        <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
-                                            <div class="mt-2">
-                                                <button type="button" (click)="onAddCharges()"
-                                                    class="btn btn-primary btn-with-icon py-8"
-                                                    [disabled]="!chargeForm.valid"
-                                                    [matTooltip]="!chargeForm.valid?'Enter all data to enable this button!!':''"
-                                                    [matTooltipPosition]="'above'" fxFlex>
-                                                    <span class="btn-icon">
-                                                        <mat-icon> add </mat-icon>
-                                                    </span>
-                                                </button>
-                                            </div>
+                                        <div fxFlex="2%" fxFlex.xs="2%" fxFlex.sm="2%">
+                                            <!-- <div class="mt-2"> -->
+                                            <button type="button" (click)="onAddCharges()"
+                                                class="btn btn-primary btn-with-icon py-1"
+                                                [disabled]="!chargeForm.valid"
+                                                [matTooltip]="!chargeForm.valid?'Enter all data to enable this button!!':''"
+                                                [matTooltipPosition]="'above'" fxFlex>
+                                                <span class="btn-icon">
+                                                    <mat-icon> add </mat-icon>
+                                                </span>
+                                            </button>
+                                            <!-- </div> -->
                                         </div>
 
                                         <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%" style="margin-left: 30px;"
@@ -425,9 +426,11 @@
                                                                     *matHeaderCellDef>Price</mat-header-cell>
                                                                 <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
                                                                 <mat-cell *matCellDef="let contact">
-                                                                   
-                                                                    <span *ngIf="Is9_Digit_National_Id"> {{contact.Price}}</span>
-                                                                    <mat-form-field floatLabel="never"  *ngIf="!Is9_Digit_National_Id">
+
+                                                                    <span *ngIf="Is9_Digit_National_Id">
+                                                                        {{contact.Price}}</span>
+                                                                    <mat-form-field floatLabel="never"
+                                                                        *ngIf="!Is9_Digit_National_Id">
                                                                         <input matInput placeholder="Price" type="text"
                                                                             [(ngModel)]="contact.Price" required
                                                                             (ngModelChange)="onPriceOrQtyChange(contact)">
@@ -895,7 +898,7 @@
                                                 [readonly]="true">
                                             </airmid-textbox>
                                         </div>
-                                        <div fxFlex="10%"  *ngIf="Is9_Digit_National_Id">
+                                        <div fxFlex="10%" *ngIf="Is9_Digit_National_Id">
                                             <airmid-textbox label="Government Approval Amt"
                                                 formControlName="GovrnApprovAmt" [formGroup]="OPFooterForm"
                                                 [type]="'text'" [min]="0"

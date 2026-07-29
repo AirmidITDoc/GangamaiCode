@@ -73,7 +73,8 @@ export class NewAreaComponent implements OnInit {
             ],
             cityId: [
                 { name: "required", Message: "City Name is required" },
-            ]
+            ],
+            Pincode:[]
         };
     }
 

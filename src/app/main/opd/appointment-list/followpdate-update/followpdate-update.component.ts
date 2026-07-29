@@ -30,15 +30,12 @@ export class FollowpdateUpdateComponent {
         this.prevfolloeupdate = this.data.followupDate
         this.opdipdno = this.data.visitId
 
-
-
-
-
     }
 
     OnSave() {
         debugger
         const submitData = {
+            "visitId":this.opdipdno,
             "fromDate": this.datePipe.transform(this._AppointmentlistService.FollowupFormGroup.get("followupdate").value, "yyyy-MM-dd") || "1900/01/01",
 
         }
