@@ -131,7 +131,7 @@
                     </div>
                     <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
                         <mat-card style="padding: 5px;">
-                            <form [formGroup]="_AppointmentlistService.FollowupFormGroup">
+                            <form [formGroup]="FollowupFormGroup">
                                  <div fxLayout="row" fxLayoutGap="6px"> 
                                       <span style="font-weight: bold;color: rgb(3, 64, 99);padding: 20px;font-size: large;">Current Follow up date :-{{prevfolloeupdate}}</span>
                                  </div>
@@ -140,7 +140,7 @@
                                     <mat-form-field appearance="outline" fxFlex="40%">
                                         <mat-label>Follow Up Date</mat-label>
                                         <input matInput [matDatepicker]="picker" placeholder="Follow Up date"
-                                            formControlName="followupdate">
+                                            formControlName="followupdate"  [value]="data?.followupDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>

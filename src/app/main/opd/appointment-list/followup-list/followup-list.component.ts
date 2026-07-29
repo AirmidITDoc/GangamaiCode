@@ -58,21 +58,21 @@ export class FollowupListComponent {
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
 
-  displayedColumns: string[] = [
-    'batchNo',
-    'batchExpDate',
-    'balanceQty',
-    'unitMRP',
-    'purchaseRate',
-    'converFacto',
-    'landedRate',
-    'ExpDays',
-    'prodLocation',
-    'itemGenericName',
-    // 'ItemCode',
-  ];
+  // displayedColumns: string[] = [
+  //   'batchNo',
+  //   'batchExpDate',
+  //   'balanceQty',
+  //   'unitMRP',
+  //   'purchaseRate',
+  //   'converFacto',
+  //   'landedRate',
+  //   'ExpDays',
+  //   'prodLocation',
+  //   'itemGenericName',
+  //   // 'ItemCode',
+  // ];
   isLoadingStr: string = '';
-  dataSource = new MatTableDataSource<VisitMaster1>();
+  // dataSource = new MatTableDataSource<VisitMaster1>();
 
 
   constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
@@ -92,19 +92,19 @@ export class FollowupListComponent {
 
   ];
 
-  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  // @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
 
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  // @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
+    { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 6 },
 
-    { heading: "UHID", key: "regID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID", key: "regID", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     // { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -112,10 +112,10 @@ export class FollowupListComponent {
     // { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
     // { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    {
-      heading: "Action", key: "action", align: "center", width: 80, sticky: false, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
-    }
+    // {
+    //   heading: "Action", key: "action", align: "center", width: 80, sticky: false, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate  // Assign ng-template to the column
+    // }
   ]
   gridConfig: gridModel = {
     // permissionCode: permissionCodes.Appointment,
@@ -127,49 +127,49 @@ export class FollowupListComponent {
   }
 
   ngOnInit(): void {
-    this.getFollowupData();
+    // this.getFollowupData();
     this.myformSearch = this._AppointmentlistService.filterForm();
     // this.searchFormGroup = this.createSearchForm();
   }
 
 
-  getFollowupData() {
-    this.isLoadingStr = 'loading';
-    const filters: any[] = [];
-    filters.push(
+  // getFollowupData() {
+  //   this.isLoadingStr = 'loading';
+  //   const filters: any[] = [];
+  //   filters.push(
 
-      {
-        "fieldName": "From_Dt",
-        "fieldValue": String(this.fromDate),
-        "opType": "Equals"
-      },
-      {
-        "fieldName": "To_Dt",
-        "fieldValue": this.toDate,
-        "opType": "Equals"
-      },
-      {
-        "fieldName": "RegId",
-        "fieldValue": this.regNo,
-        "opType": "Equals"
-      }
-    );
+  //     {
+  //       "fieldName": "From_Dt",
+  //       "fieldValue": String(this.fromDate),
+  //       "opType": "Equals"
+  //     },
+  //     {
+  //       "fieldName": "To_Dt",
+  //       "fieldValue": this.toDate,
+  //       "opType": "Equals"
+  //     },
+  //     {
+  //       "fieldName": "RegId",
+  //       "fieldValue": this.regNo,
+  //       "opType": "Equals"
+  //     }
+  //   );
 
-    const data = {
-      "first": 0,
-      "rows": 999999,
-      "sortField": "AdmissionId",
-      "sortOrder": 0,
-      "filters": filters,
-      "exportType": "JSON",
-      "columns": []
-    };
+  //   const data = {
+  //     "first": 0,
+  //     "rows": 999999,
+  //     "sortField": "AdmissionId",
+  //     "sortOrder": 0,
+  //     "filters": filters,
+  //     "exportType": "JSON",
+  //     "columns": []
+  //   };
 
-    this._AppointmentlistService.getFollowupList(data).subscribe((res: any) => {
-      console.log(res);
-       this.dataSource.data = res.data;
-    });
-  }
+  //   this._AppointmentlistService.getFollowupList(data).subscribe((res: any) => {
+  //     console.log(res);
+  //      this.dataSource.data = res.data;
+  //   });
+  // }
 
 
 

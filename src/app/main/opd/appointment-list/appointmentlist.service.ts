@@ -423,7 +423,7 @@ export class AppointmentlistService {
     }
     ///
     public UpdateFollowupdate(param) {
-        return this._httpClient1.PostData("VisitDetail/FollowupDateUpdate", param);
+        return this._httpClient1.PutData("VisitDetail/FollowupDateUpdate/"+param.visitId, param);
     }
     public InsertRegistrationBilling(Param: any) {
 

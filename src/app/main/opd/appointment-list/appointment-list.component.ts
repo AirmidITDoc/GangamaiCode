@@ -648,9 +648,9 @@ export class AppointmentListComponent implements OnInit {
                 if (flag.isConfirmed) {
                     const dialogRef = this._matDialog.open(FollowpdateUpdateComponent,
                         {
-                            maxWidth: "85vw",
-                            maxHeight: '65%',
-                            width: '85%',
+                            maxWidth: "65vw",
+                            maxHeight: '45%',
+                            width: '65%',
                             data: element
                         });
                     dialogRef.afterClosed().subscribe(result => {
@@ -1794,83 +1794,14 @@ export class AppointmentListComponent implements OnInit {
             clearTimeout(this.doctorCloseTimeout);
         }
     }
-
-    //
-    openPatientDetailsPopover11(event: MouseEvent) {
-        event.stopPropagation();
-
-        // Clear any existing timeout
-        if (this.hoverTimeout) {
-            clearTimeout(this.hoverTimeout);
-        }
-
-        // Add small delay to prevent flickering
-        this.hoverTimeout = setTimeout(() => {
-            // Close any existing patient popover
-            if (this.patientOverlayRef) {
-                this.patientOverlayRef.dispose();
-                this.patientOverlayRef = null;
-            }
-
-            const positionStrategy = this.overlay.position()
-                .flexibleConnectedTo(event.target as HTMLElement)
-                .withPositions([
-                    {
-                        originX: 'start',
-                        originY: 'bottom',
-                        overlayX: 'start',
-                        overlayY: 'top',
-                    },
-                    {
-                        originX: 'start',
-                        originY: 'top',
-                        overlayX: 'start',
-                        overlayY: 'bottom',
-                    },
-                    {
-                        originX: 'end',
-                        originY: 'center',
-                        overlayX: 'start',
-                        overlayY: 'center',
-                    },
-                    {
-                        originX: 'start',
-                        originY: 'center',
-                        overlayX: 'end',
-                        overlayY: 'center',
-                    }
-                ]);
-
-            this.patientOverlayRef = this.overlay.create({
-                positionStrategy,
-                scrollStrategy: this.overlay.scrollStrategies.close(),
-                hasBackdrop: false,
-            });
-
-            const portal = new ComponentPortal(FollowupListComponent);
-            const componentRef: ComponentRef<FollowupListComponent> = this.patientOverlayRef.attach(portal);
-            // componentRef.instance.patientData = patientData;
-
-            // Handle mouse events on the overlay element
-            const overlayElement = this.patientOverlayRef.overlayElement;
-            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen1());
-            // overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover1());
-
-            const closeButton = document.getElementById('close-patient-btn');
-
-            closeButton.addEventListener('click', () => {
-                this.closePatientDetailsPopover1();
-            });
-        }, 300);
-    }
-
+ 
 
     openPatientDetailsPopover1(event: MouseEvent) {
         const dialogRef = this.dialogRef.open(FollowupListComponent,
             {
                 maxWidth: "80vw",
                 // width: "85%",
-                height: "80%",
+                height: "90%",
                 // maxHeight: "65%",
                 panelClass: 'responsive-dialog'
             });
@@ -1880,35 +1811,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
 
-    closePatientDetailsPopover1() {
-        // Clear timeout if popover hasn't opened yet
-        if (this.hoverTimeout) {
-            clearTimeout(this.hoverTimeout);
-            this.hoverTimeout = null;
-        }
-
-        // Clear any existing close timeout
-        if (this.patientCloseTimeout) {
-            clearTimeout(this.patientCloseTimeout);
-        }
-
-        // Add delay before closing to allow moving mouse to popover
-        this.patientCloseTimeout = setTimeout(() => {
-            if (this.patientOverlayRef) {
-                this.patientOverlayRef.dispose();
-                this.patientOverlayRef = null;
-            }
-        }, 200);
-    }
-
-    keepPatientPopoverOpen1() {
-        // Clear close timeout when hovering over popover
-        if (this.patientCloseTimeout) {
-            clearTimeout(this.patientCloseTimeout);
-            this.patientCloseTimeout = null;
-        }
-    }
-
+    
 }
 
 
