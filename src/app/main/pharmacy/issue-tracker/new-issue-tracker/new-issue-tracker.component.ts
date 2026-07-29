@@ -44,6 +44,7 @@ export class NewIssueTrackerComponent implements OnInit {
             customerName: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             issueName: ['', Validators.required],
             issueDescription: ['', Validators.required],
+            issueType:[0],
             issueRaised: [0],
             issueStatus: [0],
             issueAssigned: [0],
