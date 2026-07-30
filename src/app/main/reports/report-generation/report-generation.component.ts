@@ -1,6 +1,6 @@
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { DatePipe } from "@angular/common";
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
@@ -162,7 +162,6 @@ export class ReportGenerationComponent implements OnInit {
 
     // by default set value who
     flagStoreRequired: boolean = false;
-
     constructor(
         public _ReportService: ReportService,
         public _matDialog: MatDialog,
@@ -187,7 +186,6 @@ export class ReportGenerationComponent implements OnInit {
             }
         });
     }
-
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     ngOnInit(): void {
         console.log("IIIIDDDD:", this.vstoreId)
@@ -690,6 +688,11 @@ export class ReportGenerationComponent implements OnInit {
         console.log(event)
         if (event == 'days')
             this._ReportService.userForm.get('days').setValue("0")
+    }
+    mode: string='';
+    filters: [];
+    SampleReport() {
+        this.mode = "GetList";
     }
 
     CallReportData(type) {

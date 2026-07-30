@@ -206,7 +206,7 @@
                                         </div>
                                     </ng-container>
 
-                                      <ng-container *ngIf="flagSecondCompanySelected">
+                                    <ng-container *ngIf="flagSecondCompanySelected">
                                         <div style="max-width: 265px;">
                                             <!-- <airmid-autocomplete label="Company Name"
                                                 [formGroup]="_ReportService.userForm" formControlName="CompanyId"
@@ -469,7 +469,8 @@
                                         </div>
                                     </ng-container>
 
-                                    <mat-form-field appearance="outline" *ngIf="flagdaysSelected" style="max-width: 265px;">
+                                    <mat-form-field appearance="outline" *ngIf="flagdaysSelected"
+                                        style="max-width: 265px;">
                                         <mat-label>Days</mat-label>
                                         <input matInput placeholder="Days" autocomplete="off"
                                             [formGroup]="_ReportService.userForm" formControlName="days" />
@@ -479,23 +480,26 @@
                                         </button>
                                     </mat-form-field>
 
-                                        <ng-container *ngIf="flagMultiGenericSelected">
-                                            <div fxLayout="row" fxLayoutGap="20px" fxFlex="100%">
-                                                <div style="width:465px;">
-                                                    <airmid-dropdown label="Item Molecule Name" formControlName="itemMoleculeName"
-                                                        [formGroup]="_ReportService.userForm" [IsMultiPle]="true" #ddlDrug ValueField="itemGenericNameId"
-                                                        TextField="itemGenericName" ApiUrl="Report/get-MItemGenericNameMaster" [ReqFullObj]="true">
-                                                    </airmid-dropdown>
-                                                </div>
-                                                <!-- Chips -->
-                                                <mat-chip-listbox #chipList>
-                                                    <mat-chip *ngFor="let item of _ReportService.userForm.value.itemMoleculeName">
-                                                        {{ item.itemGenericName }}
-                                                        <mat-icon (click)="removeMolecule(item)">close</mat-icon>
-                                                    </mat-chip>
-                                                </mat-chip-listbox>
+                                    <ng-container *ngIf="flagMultiGenericSelected">
+                                        <div fxLayout="row" fxLayoutGap="20px" fxFlex="100%">
+                                            <div style="width:465px;">
+                                                <airmid-dropdown label="Item Molecule Name"
+                                                    formControlName="itemMoleculeName"
+                                                    [formGroup]="_ReportService.userForm" [IsMultiPle]="true" #ddlDrug
+                                                    ValueField="itemGenericNameId" TextField="itemGenericName"
+                                                    ApiUrl="Report/get-MItemGenericNameMaster" [ReqFullObj]="true">
+                                                </airmid-dropdown>
                                             </div>
-                                        </ng-container>
+                                            <!-- Chips -->
+                                            <mat-chip-listbox #chipList>
+                                                <mat-chip
+                                                    *ngFor="let item of _ReportService.userForm.value.itemMoleculeName">
+                                                    {{ item.itemGenericName }}
+                                                    <mat-icon (click)="removeMolecule(item)">close</mat-icon>
+                                                </mat-chip>
+                                            </mat-chip-listbox>
+                                        </div>
+                                    </ng-container>
                                     <!-- sales dd remaining -->
                                 </div>
 
@@ -534,13 +538,16 @@
                                         <mat-icon>insert_drive_file</mat-icon>
                                         <span>Export Excel</span>
                                     </button>
+
+                                    <button mat-fab extended color="primary" (click)="SampleReport()">
+                                        <mat-icon>insert_drive_file</mat-icon>
+                                        <span>Sample Report by Vimal</span>
+                                    </button>
                                 </div>
-
-
-
+                                <airmid-common-table [mode]="mode" [filters]="filters" *ngIf="mode!=''"></airmid-common-table>
                             </form>
-                        </mat-card-content>
 
+                        </mat-card-content>
                         <mat-card-footer>
                             <div fxLayout="row" fxLayoutAlign="start Left" class="footer-section">
                                 <span class="text-sm text-gray-600" style="font-size: 18px;">
