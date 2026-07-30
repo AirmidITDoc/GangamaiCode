@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -180,6 +180,7 @@ export class NewCasepaperComponent implements OnInit {
 
     dsItemList = new MatTableDataSource<MedicineItemList>();
     dsCopyItemList = new MatTableDataSource<MedicineItemList>();
+    public dsResultViewList = new MatTableDataSource<MedicineItemList>();
 
     autocompleteModeItem: string = "Item"; //ItemType
     autocompleteModeItemGeneric: string = "ItemGeneric";
@@ -2635,6 +2636,74 @@ export class NewCasepaperComponent implements OnInit {
                 this.selectedItem.splice(index, 1);
             }
         }
+    }
+        public displayedResultViewColumns =
+        ['sequence', 'TestName', 'ParameterName', 'ResultValue','Flag','NormalRange'];
+        @ViewChild('ResultViewTab') ResultViewTab!: TemplateRef<any>;
+
+    getLabResultview(row: any): void { 
+        this._matDialog.open(this.ResultViewTab, {
+            width: '60%',
+            height: '70%',
+        })
+        var param = {
+            "searchFields": [
+                {
+                    "fieldName": "PathReportId",
+                    "fieldValue": String(row.pathReportID), //"150598",  
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "PathologyResultEntryOPCompleted"
+        }
+//         {
+//     "TestId": 2,
+//     "TestName": "CBC",
+//     "PrintTestName": "COMPLETE BLOOD COUNT",
+//     "SubTestId": 0,
+//     "SubTestName": "CBC",
+//     "SubTestNamePrint": "COMPLETE BLOOD COUNT",
+//     "ParameterName": "HCT",
+//     "ParameterShortName": "HCT",
+//     "ParameterId": 19,
+//     "PrintParameterName": "HCT",
+//     "ResultValue": " 2323",
+//     "NormalRange": "33 - 50 %",
+//     "PrintOrder": 1,
+//     "PIsNumeric": 1,
+//     "PathReportId": 571684,
+//     "CategoryId": 20029,
+//     "CategoryName": "HEMATOLOGY",
+//     "PatientName": "Miss Raksha Rajesh Netalkar",
+//     "VisitDate": "2026-07-28T00:00:00",
+//     "VisitTime": "2026-07-28T11:48:41",
+//     "OPDNo": "OP/07/2026/140",
+//     "ConsultantDocName": "DEMO demo",
+//     "AgeYear": "25        ",
+//     "RegNo": "3242",
+//     "CompanyName": "",
+//     "PathResultDrName": "Kavita j",
+//     "PathResultDr1": 70403,
+//     "SuggestionNote": "askjal adsjlkjasd dsaaskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa",
+//     "FootNote": "",
+//     "MachineName": "",
+//     "TechniqueName": "",
+//     "UnitId": 5,
+//     "MinValue": 33,
+//     "MaxValue": 50,
+//     "PathReportdetid": 255768,
+//     "Formula": "",
+//     "ParaBoldFlag": "B",
+//     "OPD_IPD_ID": 535955,
+//     "OPD_IPD_Type": 0
+// }
+        this._CasepaperService.getLabResultView(param).subscribe((response) => {
+            debugger
+            if (response) {
+                this.dsResultViewList.data = response;
+                console.log(this.dsResultViewList.data)
+            }
+        });
     }
 }
 

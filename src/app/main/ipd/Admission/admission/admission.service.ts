@@ -213,7 +213,7 @@ export class AdmissionService {
             IsOpToIpconv: false,
             RefDoctorDept: "",
             AdmissionType: 0,
-
+            parentOpipid:[0],
             // unitId:1,
             IsMLC: [false],
             // OPIPChange: [false],

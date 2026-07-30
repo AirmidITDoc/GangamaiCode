@@ -164,4 +164,7 @@ export class CasepaperService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
+        public getLabResultView(Param) {
+        return this._httpClient1.PostData("Common", Param)
+    }
 }

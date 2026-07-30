@@ -470,6 +470,7 @@ export class SalesHospitalKenyaComponent {
                 bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                doctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]]
             }),
             //Sales draft details
             salesDraftDet: this.formBuilder.array([]),
@@ -1775,12 +1776,14 @@ export class SalesHospitalKenyaComponent {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
             this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
             this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue?.extAddress || '')
+            this.PharmaSalesDraftForm.get('salesDraft.doctorId').setValue((formValue?.doctorName?.extDoctorId ?? formValue?.doctorName?.doctorId) || 0) 
             this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
             this.PharmaSalesDraftForm.get('salesDraft.opIpId').clearValidators();
             this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
         } else {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
             this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.DoctorName || '')
+             this.PharmaSalesDraftForm.get('salesDraft.doctorId').setValue(this.doctorID || 0) 
         }
         this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {
@@ -1840,17 +1843,21 @@ export class SalesHospitalKenyaComponent {
             this.draftpatientlist.push(
                 {
                     text: contact?.patientName,
+                    value:contact?.extMobileNo,
                     extMobileNo: contact?.extMobileNo,
                     doctorName: contact?.admDoctorName,
-                    patientName: contact?.patientName
+                    patientName: contact?.patientName,
+                    doctorId: contact?.doctorId || 0 
                 }
             )
             this.draftextMobilenolist.push(
                 {
                     text: contact?.extMobileNo,
+                    value:contact?.extMobileNo,
                     extMobileNo: contact?.extMobileNo,
                     doctorName: contact?.admDoctorName,
-                    patientName: contact?.patientName
+                    patientName: contact?.patientName,
+                    doctorId: contact?.doctorId || 0 
                 }
             )
             this.vSelectedOption = '2';
@@ -1861,6 +1868,7 @@ export class SalesHospitalKenyaComponent {
             this.ItemSubform.get('externalPatientName').setValidators([Validators.required]);
             this.ItemSubform.get('externalPatientName').enable();
             this.ItemSubform.get('extAddress').setValue(contact?.extAddress);
+            this.vextAddress = contact?.extAddress || '';
             this.ItemSubform.get('extMobileNo').setValue(this.draftextMobilenolist[0]);
             this.ItemSubform.get('externalPatientName').setValue(this.draftpatientlist[0]);
             this.ItemSubform.get('doctorName').setValue(this.draftpatientlist[0]);
@@ -1878,6 +1886,7 @@ export class SalesHospitalKenyaComponent {
             this.IPDNocheck = false;
             this.OPDNo = contact.oP_IP_No;
             this.DoctorName = contact.admDoctorName;
+             this.doctorID = contact?.doctorId || 0
             this.PatientName = contact.patientName;
             this.RegId = contact.regID;
             this.RegNo = contact?.regNo;
@@ -2141,6 +2150,7 @@ getItemNames(): string {
                 this.RegNo = result[0]?.RegNo;
                 this.OP_IP_Id = result[0]?.AdmissionID;
                 this.DoctorName = result[0]?.DoctorName;
+                 this.doctorID = result[0]?.DoctorID;
                 this.ItemSubform.get('regId').setValue(result[0]?.RegId);
                 if ((result[0]?.companyId || 0) > 0) {
                     this.ItemSubform.get('CashPay').setValue('Credit');

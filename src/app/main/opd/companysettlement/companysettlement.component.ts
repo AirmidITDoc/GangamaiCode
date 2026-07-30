@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { RegInsert } from '../registration/registration.component';
 import { CompanysettlementService } from './companysettlement.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-companysettlement',
@@ -80,6 +81,7 @@ export class CompanysettlementComponent implements OnInit {
     vTDSAmount: any = 0;
     vBalanceAmount: any = 0;
     isSearchTriggered = false;
+     UserDiscApplyPer:boolean = false;
     vUPINO: any;
     autocompleteModebank: string = "Bank";
 
@@ -142,7 +144,8 @@ export class CompanysettlementComponent implements OnInit {
         public datePipe: DatePipe, public permissionService: PagePermissionService,
         public accountService: AuthenticationService,
         public _FormvalidationserviceService: FormvalidationserviceService,
-        public toastr: ToastrService, public formBuilder: UntypedFormBuilder
+        public toastr: ToastrService, public formBuilder: UntypedFormBuilder,
+        public _ConfigService:ConfigService
     ) { }
 
     ngOnInit(): void {
@@ -180,6 +183,8 @@ export class CompanysettlementComponent implements OnInit {
         });
 
         // this.getmultiplePaymentList(true);
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'DiscApplyPer');
+        this.UserDiscApplyPer = access?.AccessValue;
     }
 
     createSearchForm() {

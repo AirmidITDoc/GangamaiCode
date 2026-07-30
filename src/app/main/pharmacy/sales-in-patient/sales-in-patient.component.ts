@@ -361,6 +361,7 @@ export class SalesInPatientComponent implements OnInit {
                 bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                doctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]]
             }),
             //Sales draft details
             salesDraftDet: this.formBuilder.array([]),

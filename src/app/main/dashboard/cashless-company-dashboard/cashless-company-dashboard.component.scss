@@ -117,8 +117,9 @@
 
 .card-container {
   display: flex;
-  gap: 20px;
+  gap: 8px;
   flex-wrap: wrap;
+  padding: 5px; 
 }
 
 .dashboard-card {
@@ -296,7 +297,7 @@
 
 .table-container {
   display: flex;
-  gap: 12px;
+  gap: 2px;
   width: 100%;
   overflow: hidden; /* prevents page overflow */
 }
@@ -304,7 +305,7 @@
 .table-box {
   flex: 1; /* equal width */
   min-width: 0; /* 🔥 VERY IMPORTANT (prevents overflow) */
-  height: 500px;
+   //height: 500px;
   overflow: auto;
 }
 

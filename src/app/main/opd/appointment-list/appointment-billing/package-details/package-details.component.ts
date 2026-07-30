@@ -251,6 +251,9 @@ export class PackageDetailsComponent {
             classId: [0, [this._FormvalidationService.onlyNumberValidator()]],
             wardId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
             bedId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
+            unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationService.notEmptyOrZeroValidator()]],
+            tariffId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
+            createdBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationService.notEmptyOrZeroValidator()]] 
         });
 
     }
@@ -283,6 +286,7 @@ export class PackageDetailsComponent {
             this.PacakgeInsertForm.get('classId').setValue(this.registerObj?.classId)
             this.PacakgeInsertForm.get('wardId').setValue(this.registerObj?.wardId)
             this.PacakgeInsertForm.get('bedId').setValue(this.registerObj?.bedId)
+            this.PacakgeInsertForm.get('tariffId').setValue(this.data?.PatientDet?.tariffId || 0)
             console.log(this.PacakgeInsertForm.value)
             this._OpBillingService.InsertIPAddCharges(this.PacakgeInsertForm.value).subscribe(data => {
                 this.getIPDpackagedetList(this.registerObj)

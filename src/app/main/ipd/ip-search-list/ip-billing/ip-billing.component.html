@@ -116,6 +116,13 @@
                     <mat-datepicker #picker1></mat-datepicker>
                   </mat-form-field>
                 </div>
+               <div style="width: 260px">
+                  <airmid-dropdown label="Tariff Name" formControlName="tariffId" [formGroup]="Serviceform"
+                  [validations]="getValidationMessages().tariffId" [mode]="autocompleteModetariff"
+                   (selectionChange)="getSelectedTariffObj($event)" fxFlex [disableAutoNext]="true">
+                   </airmid-dropdown>
+                </div>
+
                 <div style="width: 260px">
                   <airmid-dropdown label="Class Name" formControlName="classId" [formGroup]="Serviceform"
                     [validations]="getValidationMessages().ChargeClass" [mode]="autocompleteModeClass"
@@ -158,13 +165,15 @@
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                       <airmid-textbox label="Discount per" formControlName="concessionPercentage"
                         [formGroup]="Serviceform" [validations]="getValidationMessages().discPer" [min]="0" [max]="100"
-                        [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
+                        [type]="'text'" (keypress)="keyPressCharater($event)"
+                          [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'"></airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                       <airmid-textbox label="Discount amount" [formGroup]="Serviceform"
                         formControlName="concessionAmount" [validations]="getValidationMessages().discAmount"
                         [type]="'text'" [min]="0" [max]="Serviceform.get('totalAmt')?.value"
-                        (keypress)="keyPressCharater($event)"></airmid-textbox>
+                        (keypress)="keyPressCharater($event)"
+                          [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'"></airmid-textbox>
                     </div>
                   </div>
                 </div>
@@ -619,7 +628,9 @@
                               <mat-form-field floatLabel="never" class="compact-field">
                                 <input matInput [(ngModel)]="contact.concessionPercentage" type="text"
                                   placeholder="Disc %" (keyup)="gettablecalculation(contact)"
-                                  (keypress)="keyPressCharater($event)" min="0" max="100">
+                                  (keypress)="keyPressCharater($event)" min="0" max="100"
+                                     [disabled]="UserDiscApplyPer != 'true'"
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                               </mat-form-field>
                             </ng-container>
                             <ng-template #showDiscPer>
@@ -635,7 +646,9 @@
                               <mat-form-field floatLabel="never" class="compact-field">
                                 <input matInput [(ngModel)]="contact.concessionAmount" type="text"
                                   placeholder="Disc Amt" (keyup)="gettablecalculation(contact)"
-                                  (keypress)="keyPressCharater($event)" min="0">
+                                  (keypress)="keyPressCharater($event)" min="0"
+                                     [disabled]="UserDiscApplyPer != 'true'"
+                                                [matTooltip]="UserDiscApplyPer === ture ? '' : 'You do not have permission to apply a discount.'">
                               </mat-form-field>
                             </ng-container>
                             <ng-template #showDiscAmt>
@@ -1009,13 +1022,15 @@
                     <div fxFlex="6%" *ngIf="BillDiscperFlag">
                       <airmid-textbox label="Disc %" formControlName="totaldiscPer" [formGroup]="IpbillFooterform"
                         [type]="'text'" [min]="0" [max]="100" (keypress)="keyPressCharater($event)"
-                        (keyup)="CalFinalDiscper()"></airmid-textbox>
+                        (keyup)="CalFinalDiscper()"
+                        [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'"></airmid-textbox>
                     </div>
 
                     <div fxFlex="6%">
                       <airmid-textbox label="Disc Amount" formControlName="totalconcessionAmt"
                         [formGroup]="IpbillFooterform" [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)"
-                        [readonly]="!BillDiscperFlag" (keyup)="getDiscAmtCal()"></airmid-textbox>
+                        [readonly]="!BillDiscperFlag" (keyup)="getDiscAmtCal()"
+                        [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'"></airmid-textbox>
                     </div>
 
                     <div *ngIf="ConcessionShow" fxFlex="15%">

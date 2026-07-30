@@ -316,7 +316,8 @@
                                             <airmid-textbox label="Discount per" formControlName="discountPer"
                                                 [formGroup]="chargeForm"
                                                 [validations]="getValidationMessages().discountPer" [min]="0"
-                                                [max]="100" [type]="'text'">
+                                                [max]="100" [type]="'text'" 
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                             </airmid-textbox>
 
                                         </div>
@@ -324,7 +325,8 @@
                                             <airmid-textbox label="Discount amount" [formGroup]="chargeForm"
                                                 formControlName="discountAmount"
                                                 [validations]="getValidationMessages().discountAmount" [type]="'text'"
-                                                [min]="0" [max]="chargeForm.get('totalAmount')?.value">
+                                                [min]="0" [max]="chargeForm.get('totalAmount')?.value" 
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
@@ -467,8 +469,11 @@
                                                                         <input matInput placeholder="Disc %"
                                                                             [(ngModel)]="contact.DiscPer" type="text"
                                                                             [min]="0" [max]="100"
-                                                                            (ngModelChange)="onDiscountPerChange(contact)">
+                                                                            (ngModelChange)="onDiscountPerChange(contact)"
+                                                                              [disabled]="UserDiscApplyPer != 'true'"
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                                                     </mat-form-field>
+                                                                    
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -482,7 +487,9 @@
                                                                         <input matInput placeholder="Disc Amt"
                                                                             [(ngModel)]="contact.DiscAmt" type="text"
                                                                             [min]="0" [max]="contact.TotalAmt"
-                                                                            (ngModelChange)="onDiscountAmtChange(contact)">
+                                                                            (ngModelChange)="onDiscountAmtChange(contact)"
+                                                                              [disabled]="UserDiscApplyPer != 'true'"
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                                                     </mat-form-field>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -870,14 +877,16 @@
                                             <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
                                                 [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().discountPer" [type]="'number'"
-                                                [readonly]="isDiscountApplied">
+                                                [readonly]="isDiscountApplied" 
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                             <airmid-textbox label="Discount Amount" formControlName="concessionAmt"
                                                 [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().discountAmount" [type]="'number'"
-                                                [readonly]="isDiscountApplied">
+                                                [readonly]="isDiscountApplied" 
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Consessionres">

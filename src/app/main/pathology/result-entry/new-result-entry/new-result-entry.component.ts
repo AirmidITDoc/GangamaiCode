@@ -830,9 +830,10 @@ export class NewResultEntryComponent {
                 this.dataSource.paginator = this.paginator;
                 this.sIsLoading = '';
                 // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
-                this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-
+                if((this.dataSource.data[0]?.adm_Visit_docId || 0 ) > 0){
+                this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)  
                 this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+                }
                 this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
                 this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
                 console.log(this.PathResultDr1);
@@ -892,8 +893,10 @@ export class NewResultEntryComponent {
                 this.dataSource.data = Visit as Pthologyresult[];
                 //  this.Pthologyresult = Visit as Pthologyresult[];
                 console.log("IP DATA:", this.dataSource.data)
+                  if((this.dataSource.data[0]?.adm_Visit_docId || 0 ) > 0){
                 this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
                 this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+                  }
                 this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
                 this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
                 this.dataSource.sort = this.sort;

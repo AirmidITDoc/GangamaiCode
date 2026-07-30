@@ -1,3 +1,120 @@
+<ng-template #ResultViewTab>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Lab Result View</span>
+        </div>
+         <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="service-table1 p-12" fxFlex="100%">
+        <div class="table-body">
+            <div class="airmid-table">
+                       <mat-table matSort [dataSource]="dsResultViewList" [@animateStagger]="{value:'50'}">
+
+                            <ng-container matColumnDef="sequence">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">Sr.No
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
+                                    {{ i + 1 }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="TestName" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
+                                    Test Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    {{contact.TestName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ParameterName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    Parameter Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.ParameterName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
+                                    Result
+                                </mat-header-cell> 
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.ResultValue}}
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="Flag">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-80 border-right">Flag
+                                </mat-header-cell>
+                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm> 
+                                    {{contact.ParaBoldFlag}}
+                                </mat-cell> 
+                            </ng-container>
+
+                            <ng-container matColumnDef="NormalRange">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    NormalRange
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                    {{contact?.NormalRange}}
+                                </mat-cell>
+                            </ng-container> 
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container> 
+                   
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedResultViewColumns; sticky: true">
+                    </mat-header-row>
+
+                    <mat-row *matRowDef="let contact; columns: displayedResultViewColumns;"
+                        [@animate]="{value:'*',params:{y:'100%'}}" ></mat-row>
+                     <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsResultViewList!=null && dsResultViewList.data.length==0)}">
+                            </mat-footer-row>
+                </mat-table> 
+            </div>
+        </div>
+    </div>
+    <!-- <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">Close</button>
+            </div>
+        </div>
+    </div> -->
+</ng-template>
+
+
+
+
+
+
 <div class="modal-wrapper grid-container">
 
     <div class="modal-header accent">
@@ -1084,6 +1201,11 @@
                                                                     fxShow.gt-sm>
                                                                     Action </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
+                                                                      <button mat-icon-button matTooltip=" View Lab Result"
+                                                                        (click)="getLabResultview(element)" 
+                                                                        [disabled]="!element.isCompleted">
+                                                                        <mat-icon>visibility</mat-icon>
+                                                                    </button>
                                                                     <button mat-icon-button matTooltip="Lab Print"
                                                                         (click)="getLabPrint(element)"
                                                                         [disabled]="!element.isCompleted">

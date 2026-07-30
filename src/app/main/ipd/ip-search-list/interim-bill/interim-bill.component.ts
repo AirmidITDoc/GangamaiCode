@@ -49,6 +49,7 @@ export class InterimBillComponent implements OnInit {
     selectedAdvanceObj: any;
     ConShow: boolean = false;
     DiscountFlag: boolean = false;
+    UserDiscApplyPer: boolean = false;
     onlineflag: boolean = false;
     interimArray: any = [];
     currency: any = '';
@@ -111,6 +112,17 @@ export class InterimBillComponent implements OnInit {
 
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'DiscApplyPer');
+        this.UserDiscApplyPer = access?.AccessValue;
+        if (this.UserDiscApplyPer === true) {
+            this.InterimFooterForm.get('discPer')?.enable();
+            this.InterimFooterForm.get('concessionAmt')?.enable(); 
+            // this.setupFormListener();
+        } else {
+            this.InterimFooterForm.get('discPer')?.disable();
+            this.InterimFooterForm.get('concessionAmt')?.disable(); 
+        }
       
     }
     CreateFooterForm(): FormGroup {

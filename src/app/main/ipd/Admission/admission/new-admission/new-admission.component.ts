@@ -278,7 +278,7 @@ export class NewAdmissionComponent implements OnInit {
             console.log("Admitted:", this.FlagAdmittedCheck[0].Admitted);
 
             // ✅ check inside subscribe
-            if (this.FlagAdmittedCheck[0].Admitted == 1) {
+            if (this.FlagAdmittedCheck[0].Admitted == 1 && this.searchFormGroup.get('regRadio').value != "NewbornBabyRegistration") {
                 Swal.fire({
                     icon: 'warning',
                     title: `Admission for the selected patient has already been completed.`,
@@ -294,8 +294,14 @@ export class NewAdmissionComponent implements OnInit {
 
                 // console.log(this.data)
                 setTimeout(() => {
+                    if(this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration"){
+                    this.searchFormGroup.get('regRadio')?.setValue('NewbornBabyRegistration');
+                    this.onChangeReg({ value: 'NewbornBabyRegistration' });
+                    }else{
                     this.searchFormGroup.get('regRadio')?.setValue('registrered');
                     this.onChangeReg({ value: 'registrered' });
+                    }
+
                     this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
                         this.registerObj = response;
                         this.value = response.dateofBirth
@@ -507,6 +513,39 @@ export class NewAdmissionComponent implements OnInit {
             this.searchFormGroup.get('RegId').reset();
             this.personalFormGroup.reset();
             this.Patientnewold = 2;
+
+            const newPersonalForm = this._AdmissionService.createPesonalForm();
+            this.resetFilteredOptions();
+            Object.keys(newPersonalForm.controls).forEach(key => {
+                if (this.personalFormGroup.contains(key)) {
+                    this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+                } else {
+                    this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+                }
+            });
+
+            const newadmissionForm = this._AdmissionService.createAdmissionForm();
+            Object.keys(newadmissionForm.controls).forEach(key => {
+                if (this.admissionFormGroup.contains(key)) {
+                    this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
+                } else {
+                    this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
+                }
+            });
+
+            this.personalFormGroup.markAllAsTouched();
+            this.admissionFormGroup.markAllAsTouched();
+
+            this.Regflag = true;
+            this.isRegSearchDisabled = true;
+        }
+         else if (event.value === 'NewbornBabyRegistration') {
+
+            this.personalFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').reset();
+            this.personalFormGroup.reset();
+            this.Patientnewold = 1;
 
             const newPersonalForm = this._AdmissionService.createPesonalForm();
             this.resetFilteredOptions();
@@ -903,6 +942,29 @@ export class NewAdmissionComponent implements OnInit {
                     this._matDialog.closeAll();
                 });
             }
+            else if (this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration" && this.AdmissionId == 0) {
+                   this.admissionFormGroup.get('RegId').setValue(0)
+                   this.admissionFormGroup.get('parentOpipid').setValue(this.RegId)
+                const submitData = {
+                    "admissionReg": this.personalFormGroup.value,
+                    "admission": this.admissionFormGroup.value,
+                    "patientPolicy": this.policyFormGroup.value
+                }; 
+                debugger
+                console.log(submitData);
+                this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => { 
+                    if (!this.Is9_Digit_National_Id) {
+                        this.getAdmittedBornBabyCasepaperview(response);
+                    }
+                    console.log(response)
+                    if (this.EmgId > 0) {
+                        this.AddChargesFromEmg(response);
+                        return
+                    }
+                    this.onClear();
+                    this._matDialog.closeAll();
+                });
+            }
             else {
                 // console.log(submitData);
                 const submitData = {
@@ -996,6 +1058,9 @@ export class NewAdmissionComponent implements OnInit {
 
     getAdmittedPatientCasepaperview(AdmissionId) {
         this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
+    }
+    getAdmittedBornBabyCasepaperview(AdmissionId) {
+        this.commonService.Onprint("AdmissionId", AdmissionId, "IpBabyCasepaperReport");
     }
 
     displayFn(user: any): string {

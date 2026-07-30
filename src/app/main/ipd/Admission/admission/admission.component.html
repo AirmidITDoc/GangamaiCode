@@ -149,6 +149,15 @@
         </div>
     </ng-template>
 
+    <ng-template #bornBabyIcon let-element>
+        <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
+            <button mat-icon-button matTooltip="Born Baby Linked to Parent"  
+                *ngIf="element.parentOpipid > 0">
+                <img width="60" height="60" src="assets/images/logos/BornBaby.png">
+            </button>
+        </div>
+    </ng-template>
+
     <ng-template #patientNameWithBadgeTemplate let-element>
         <!-- Patient Name with Token Badge -->
         <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"

@@ -213,6 +213,7 @@ export class PrescriptionComponent implements OnInit {
                     RegId: this.SelectedObj.regId,
                     IPMedID: this.SelectedObj.ipMedID,
                     DoctorName: this.SelectedObj.doctorName,
+                    DoctorID: this.SelectedObj.doctorId || 0,
                     IPDNo: this.SelectedObj.ipdNo,
                     companyId: this.SelectedObj?.companyId || 0,
                     companyName: this.SelectedObj?.companyName || '',

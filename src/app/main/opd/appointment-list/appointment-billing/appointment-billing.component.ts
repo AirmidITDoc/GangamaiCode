@@ -94,6 +94,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     SetCashbydefault: any = 0
     CashCounterType:any = 'OP_BILL';
     vUserID:any=0;
+    UserDiscApplyPer:boolean =false;
     UserWsieCashcounterId:boolean =false;
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
@@ -125,7 +126,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.vUserID = this.accountService.currentUserValue?.userId || 0;
+        debugger
+        this.vUserID = this.accountService.currentUserValue?.userId || 0; 
         this.isModal = !!this.dialogRef;
         this.searchForm = this.createSearchForm();
         this.chargeForm = this.createChargeForm();
@@ -133,7 +135,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OPFooterForm = this.CreateOPFooter();
         this.OPFooterForm.markAllAsTouched();
         this.OpDraftSaveForm = this.createDraftSaveform()
-        debugger
+      
 
         if (this.data) {
             if (this.data.FormName = 'Appointment-OPBill') {
@@ -207,7 +209,26 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
 
         this.OPFooterForm = this.CreateOPFooter();
-        this.setupFormListener();
+       
+
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'DiscApplyPer');
+        this.UserDiscApplyPer = access?.AccessValue;
+        if (this.UserDiscApplyPer === true) {
+            this.chargeForm.get('discountPer')?.enable();
+            this.chargeForm.get('discountAmount')?.enable();
+            this.OPFooterForm.get('totalDiscountPer')?.enable();
+            this.OPFooterForm.get('concessionAmt')?.enable();
+             this.setupFormListener();
+        } else {
+            this.chargeForm.get('discountPer')?.disable();
+            this.chargeForm.get('discountAmount')?.disable();
+            this.OPFooterForm.get('totalDiscountPer')?.disable();
+            this.OPFooterForm.get('concessionAmt')?.disable();
+        }
+          const discountData = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsDiscount');  
+            if (discountData?.AccessValue) {
+                this.UserDicPerLimit = discountData?.AccessInputValue || 0
+            }
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -367,6 +388,22 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.isUpdating = true;
 
         const perControl = this.chargeForm.get("discountPer");
+
+           const DiscountPer = +perControl?.value || 0 
+        if (this.UserDicPerLimit > 0) {
+            if (DiscountPer > this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                    confirmButtonColor: '#d33'
+                });
+                this.chargeForm.get("discountPer").setValue(this.UserDicPerLimit);
+                this.isUpdating = false;
+                //   return; 
+            }
+        } 
+
         if (!perControl.valid) {
             this.chargeForm.get("discountAmount").setValue(0);
             this.chargeForm.get("discountPer").setValue(0);
@@ -427,31 +464,31 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     UserDicPerLimit: any = 0;
     getAccessDetail() {
         // debugger
-        const SelectQuery = {
-            "first": 0,
-            "rows": 999,
-            "sortField": "AccessValueId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "LoginId",
-                    "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": []
-        }
-        this._AppointmentlistService.getAccessDetailList(SelectQuery).subscribe(response => {
-            const getUserAccesDetList = response.data as UserDetail[];
-            console.log("get Access data:", getUserAccesDetList)
+        // const SelectQuery = {
+        //     "first": 0,
+        //     "rows": 999,
+        //     "sortField": "AccessValueId",
+        //     "sortOrder": 0,
+        //     "filters": [
+        //         {
+        //             "fieldName": "LoginId",
+        //             "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
+        //             "opType": "Equals"
+        //         }
+        //     ],
+        //     "exportType": "JSON",
+        //     "columns": []
+        // }
+        // this._AppointmentlistService.getAccessDetailList(SelectQuery).subscribe(response => {
+        //     const getUserAccesDetList = response.data as UserDetail[];
+        //     console.log("get Access data:", getUserAccesDetList)
 
-            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
-            console.log(discountData)
-            if (discountData?.accessValue) {
-                this.UserDicPerLimit = discountData?.accessInputValue || 0
-            }
-        });
+        //     const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+        //     console.log(discountData)
+        //     if (discountData?.accessValue) {
+        //         this.UserDicPerLimit = discountData?.accessInputValue || 0
+        //     }
+        // });
     }
 
     // Form creation Pending section
@@ -1056,6 +1093,20 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         let discountPer = +row.DiscPer || 0;
         const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
 
+ 
+        if (this.UserDicPerLimit > 0) {
+            if (discountPer > this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                    confirmButtonColor: '#d33'
+                });
+                discountPer = this.UserDicPerLimit;
+                //   return; 
+            }
+        } 
+
         if (discountPer < 0 || discountPer > 100) {
             discountPer = 0; // Reset if out of range
             row.DiscPer = 0;
@@ -1337,7 +1388,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             console.log("form values", this.OpBillForm.value)
             const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
 
-            if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
+            if (this.OPFooterForm.get('paymentType').value == 'PayOption' && (this.OPFooterForm.get('netPayableAmt')?.value || 0)>0) {
                 const PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                     PatientHeaderObj['PatientName'] = this.PatientName;
@@ -1397,7 +1448,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     }
                 });
             }
-            else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
+            else if (this.OPFooterForm.get('paymentType').value == 'CashPay' && (this.OPFooterForm.get('netPayableAmt')?.value || 0)>0) {//Cash pay  
                 const ModePaymentObj = [];
                 ModePaymentObj.push({
                     paymentDate: formattedDate,
@@ -1451,7 +1502,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     }
                 });
             }
-            else if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {
+            else if (this.OPFooterForm.get('paymentType').value == 'OnlinePay' && (this.OPFooterForm.get('netPayableAmt')?.value || 0)>0) {
                 const ModePaymentObj = [];
                 ModePaymentObj.push({
                     paymentDate: formattedDate,
@@ -1506,7 +1557,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     }
                 });
             }
-            else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
+            else if (this.OPFooterForm.get('paymentType').value == 'CreditPay' || (this.OPFooterForm.get('netPayableAmt')?.value || 0) == 0) {//Credit pay 
                 this.OpBillForm.get('paidAmt').setValue(0)
                 this.OpBillForm.get('balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.removeControl('payments')

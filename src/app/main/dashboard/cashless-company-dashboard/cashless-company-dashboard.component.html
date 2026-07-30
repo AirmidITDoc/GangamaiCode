@@ -1,8 +1,8 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" dynamicTableHeight>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;"   fusePerfectScrollbar>
 
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-        dynamicTableHeight>
+         >
 
         <div class="top-header accent">
             <div class="top-header-info">
@@ -31,6 +31,8 @@
                 </div>
             </form>
         </div>
+
+        <!-- Cards -->
         <div class="card-container">
             <div *ngFor="let item of vcashlessList" class="dashboard-card">
                 <!-- Header -->
@@ -99,68 +101,209 @@
                 </div>
             </div>
 
-
-             <!-- 👉 SALES CARD -->
+            <!-- 👉 SALES CARD -->
             <!-- <div *ngFor="let item of VSalesSection" class="dashboard-card">
+                
+                
+                        <div class="sales-combined">
+                
+                            <div class="card-header">
+                                <div class="header-left">
+                                    <span class="card-icon">💰</span>
+                                    <span class="card-title">{{ item.section }} Section</span>
+                                </div>
+                
+                                <span class="badge" [ngClass]="item.section === 'OP' ? 'op' : 'ip'">
+                                    {{ item.section }}
+                                </span>
+                
+                                <div class="header-total">
+                                    {{ item.totalCount | number }}
+                                    <div class="total-text">Total</div>
+                                </div>
+                            </div>
+                
+                            <div class="sales-section">
+                                <div class="section-header">
+                                    <span>💊 OPD Sales</span>
+                                    <span class="amount">{{ item.companyCount | number }}</span>
+                                </div>
+                
+                                <div class="payment-row">
+                                    <div class="pay cash">
+                                        💵 Cash <span>{{ item.companyCount | number }}</span>
+                                    </div>
+                                    <div class="pay mpesa">
+                                        📱 Mpesa <span>{{ item.approvedCount | number }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="sales-section">
+                                <div class="section-header">
+                                    <span>🏥 IPD Sales</span>
+                                    <span class="amount">{{ item.companyCount | number }}</span>
+                                </div>
+                
+                                <div class="payment-row">
+                                    <div class="pay cash">
+                                        💵 Cash <span>{{ item.companyCount | number }}</span>
+                                    </div>
+                                    <div class="pay mpesa">
+                                        📱 Mpesa <span>{{ item.approvedCount | number }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                
+                        </div>
+                    </div> -->
 
-               
-                <div class="sales-combined">
+ 
+            <!-- ================= REVENUE ================= -->
 
+            <div style="  background:#fff; padding:10px; border-radius:12px;  box-shadow: 0 3px 8px rgba(0,0,0,0.1); 
                     
-                    <div class="card-header">
-                        <div class="header-left">
-                            <span class="card-icon">💰</span>
-                            <span class="card-title">{{ item.section }} Section</span>
-                        </div>
+  overflow: hidden;
+  transition: 0.3s;
+  cursor: pointer;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,.15)'"
+                onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 3px 10px rgba(0,0,0,.08)'">
 
-                        
-                        <span class="badge" [ngClass]="item.section === 'OP' ? 'op' : 'ip'">
-                            {{ item.section }}
-                        </span>
-
-                        
-                        <div class="header-total">
-                            {{ item.totalCount | number }}
-                            <div class="total-text">Total</div>
-                        </div>
-                    </div>
-
-                  
-                    <div class="sales-section">
-                        <div class="section-header">
-                            <span>💊 OPD Sales</span>
-                            <span class="amount">{{ item.companyCount | number }}</span>
-                        </div>
-
-                        <div class="payment-row">
-                            <div class="pay cash">
-                                💵 Cash <span>{{ item.companyCount | number }}</span>
-                            </div>
-                            <div class="pay mpesa">
-                                📱 Mpesa <span>{{ item.approvedCount | number }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                   
-                    <div class="sales-section">
-                        <div class="section-header">
-                            <span>🏥 IPD Sales</span>
-                            <span class="amount">{{ item.companyCount | number }}</span>
-                        </div>
-
-                        <div class="payment-row">
-                            <div class="pay cash">
-                                💵 Cash <span>{{ item.companyCount | number }}</span>
-                            </div>
-                            <div class="pay mpesa">
-                                📱 Mpesa <span>{{ item.approvedCount | number }}</span>
-                            </div>
-                        </div>
-                    </div>
-
+                <div style=" font-size:18px; font-weight:700; margin-bottom:10px; ">
+                    📊 Overall Revenue
                 </div>
-            </div> -->
+
+
+                <!-- Header -->
+                <div style=" display:grid;  grid-template-columns:100px 1fr 1fr;
+                padding:8px;  background:#f3f4f6;  border-radius:8px;  font-weight:600; ">
+                    <div>Section</div>
+                    <div>💰 Total Net Amount</div>
+                    <div>⚖️ Balance Amount</div>
+                </div>
+
+
+                <!-- OP -->
+                <div
+                    style=" display:grid;  grid-template-columns:100px 1fr 1fr;   padding:8px 8px;  align-items:center;
+                border-bottom:1px solid #eee;  border-left:4px solid #22c55e; margin-top:5px;overflow:hidden; text-overflow:ellipsis; white-space:nowra ">
+                    <b>OP Summary</b>
+
+                    <span>45,250333333</span>
+
+                    <span>5,2003333333</span>
+                </div>
+
+
+                <!-- IP -->
+                <div
+                    style="  display:grid;  grid-template-columns:100px 1fr 1fr;  padding:8px 8px;  align-items:center;
+                border-bottom:1px solid #eee; border-left:4px solid #9333ea;overflow:hidden; text-overflow:ellipsis; white-space:nowra ">
+                    <b>IP Summary</b>
+
+                    <span>1,25,0033330</span>
+
+                    <span>18,50033333</span>
+                </div>
+
+
+                <!-- Overall -->
+                <div
+                    style="  display:grid; grid-template-columns:100px 1fr 1fr; padding:8px 8px; 
+                align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; ">
+                    <b>Overall Sales</b>
+
+                    <span>1,70,2503333</span>
+
+                    <span>23,70033333</span>
+                </div>
+
+                  <!-- Overall total-->
+                <div
+                    style="  display:grid; grid-template-columns:100px 1fr 1fr; padding:8px 8px; 
+                align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; ">
+                    <b>Overall Total</b>
+
+                    <span>1,70,2503333</span>
+
+                    <span>23,70033333</span>
+                </div>
+
+
+            </div>
+
+            <!-- ================= COLLECTION ================= -->
+ 
+            <div style="  background:#fff; padding:10px; border-radius:12px;  box-shadow: 0 3px 8px rgba(0,0,0,0.1); 
+                    
+  overflow: hidden;
+  transition: 0.3s;
+  cursor: pointer;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,.15)'"
+                onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 3px 10px rgba(0,0,0,.08)'">
+
+                <div style=" font-size:18px;  font-weight:700;  margin-bottom:10px;  ">
+                    💳 Overall Collection
+                </div>
+
+
+                <!-- Header -->
+
+                <div style=" display:grid;  grid-template-columns:110px 1fr 1fr 1fr; padding:8px;
+                background:#f3f4f6; border-radius:8px;  font-weight:600; ">
+                    <div>Section (Paid)</div>
+                    <div>✅ Collection</div>
+                    <div>💵 Cash</div>
+                    <div>📱 Mpesa</div>
+                </div>
+
+                <!-- OP -->
+
+                <div
+                    style=" display:grid;  grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px; align-items:center;
+                border-bottom:1px solid #eee; border-left:4px solid #22c55e; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
+
+                    <b>OP Collction</b>
+                    <span>40,00000002112</span>
+                    <span>30,00000011220</span>
+                    <span>10,00-000122120</span>
+                </div>
+
+                <!-- IP -->
+
+                <div
+                    style="  display:grid; grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px;  align-items:center;
+                border-bottom:1px solid #eee;  border-left:4px solid #9333ea; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
+
+                    <b>IP Collection</b>
+                    <span>40,00000002112</span>
+                    <span>30,00000011220</span>
+                    <span>10,00-000122120</span>
+                </div>
+
+                <!-- Overall -->
+
+                <div
+                    style=" display:grid;  grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px; 
+                align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
+                    <b>Sales Collection</b>
+                    <span>40,00000002112</span>
+                    <span>30,00000011220</span>
+                    <span>10,00-000122120</span>
+                </div>
+
+                   <!-- Overall total -->
+
+                <div
+                    style=" display:grid;  grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px; 
+                align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
+                    <b>Overall Total</b>
+                    <span>40,00000002112</span>
+                    <span>30,00000011220</span>
+                    <span>10,00-000122120</span>
+                </div>
+
+            </div>
+
+
         </div>
 
 
@@ -185,7 +328,7 @@
                 </div>
             </ng-template>
 
-            <div class="table-container">
+            <div class="table-container modal-card-container dynamic-table-wrapper  max-h-700" >
                 <div class="table-box">
                     <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" #grid1Ref>
                     </airmid-table>
@@ -198,7 +341,7 @@
             </div>
         </div>
 
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll modal-card-container dynamic-table-wrapper max-h-500">
             <airmid-table [gridConfig]="gridConfig_MonthlyCompanyWise" class="content" [ShowFilter]="false"
                 #grid3Ref></airmid-table>
         </div>

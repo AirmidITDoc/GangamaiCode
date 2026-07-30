@@ -152,6 +152,7 @@ export class AdmissionComponent implements OnInit {
     @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
     @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>;
     @ViewChild('abhaIcon') abhaIcon!: TemplateRef<any>;
+    @ViewChild('bornBabyIcon') bornBabyIcon!: TemplateRef<any>;
 
     ngAfterViewInit() {
         // Assign the template to the column dynamically
@@ -164,9 +165,11 @@ export class AdmissionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isReimbursement')!.template = this.actionisReimbursement;
         this.gridConfig.columnsList.find(col => col.key === 'abhaTranId')!.template = this.abhaIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'parentOpipid')!.template = this.bornBabyIcon;
     }
 
     allcolumns = [
+        { heading: "-", key: "parentOpipid", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "abhaTranId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "admissionType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -671,7 +674,11 @@ export class AdmissionComponent implements OnInit {
     }
 
     getAdmittedPatientCasepaperTempview(element) {
-        this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
+        if((element?.parentOpipid || 0) > 0){
+        this.commonService.Onprint("AdmissionId", element.admissionId, "IpBabyCasepaperReport");
+        }else{
+        this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
+        }
     }
 
     OnPrintPatientIcard(element) {

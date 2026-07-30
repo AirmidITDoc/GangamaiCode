@@ -219,14 +219,16 @@
                     <div fxFlex="6%" *ngIf="!DiscountFlag">
                         <airmid-textbox label="Disc %" formControlName="discPer" [formGroup]="InterimFooterForm"
                             [validations]="getValidationMessages().discPer" [type]="'text'" [min]="0" [max]="100"
-                            (keypress)="keyPressCharater($event)" (keyup)="calculateDiscPer()">
+                            (keypress)="keyPressCharater($event)" (keyup)="calculateDiscPer()"
+                              [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="8%">
                         <airmid-textbox label="Disc Amount" formControlName="concessionAmt"
                             [formGroup]="InterimFooterForm" [validations]="getValidationMessages().concessionAmt"
                             [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)" [readonly]="DiscountFlag"
-                            (keyup)="calculateDiscamt()">
+                            (keyup)="calculateDiscamt()"
+                              [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                         </airmid-textbox>
                     </div>
                     <!-- *ngIf="ConShow" -->

@@ -171,6 +171,7 @@ export class IPBillingComponent implements OnInit {
     vMobileNo: any;
     isLoading: string = '';
     selectedAdvanceObj: any;
+    autocompleteModetariff: string = "Tariff";
     private nextPage$ = new Subject();
     public subscription: Array<Subscription> = [];
     public isUpdating = false;
@@ -202,6 +203,7 @@ export class IPBillingComponent implements OnInit {
     classId = 0
     vUserID:any=0;
     UserWsieCashcounterId:boolean = false;
+    UserDiscApplyPer:boolean = false;
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
 
@@ -249,6 +251,7 @@ export class IPBillingComponent implements OnInit {
             this.getdata(this.selectedAdvanceObj.admissionId)
             this.getadvancelist(this.selectedAdvanceObj.admissionId)
             this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
+            this.Serviceform.get("tariffId").setValue(this.selectedAdvanceObj?.tariffId || 0)
             this.draftSaveform = this.createDraftSaveForm();
             this.IPBillMyForm = this.CreateIPBillForm();
             this.TariffId = this.selectedAdvanceObj.tariffId
@@ -302,7 +305,7 @@ export class IPBillingComponent implements OnInit {
                 this.openServiceTable();
             }, 1000);
         }
-        this.setupFormListener();
+       
         //Admin per retrevied
         if (this.selectedAdvanceObj?.adminPer > 0) {
             this.isAdminDisabled = true;
@@ -317,9 +320,28 @@ export class IPBillingComponent implements OnInit {
         this.currency = CurrencyValue
 
 
-        this.getAccessDetail();
+       
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'DiscApplyPer');
+        this.UserDiscApplyPer = access?.AccessValue;
+        if (this.UserDiscApplyPer === true) {
+            this.Serviceform.get('concessionPercentage')?.enable();
+            this.Serviceform.get('concessionAmount')?.enable();
+            this.IpbillFooterform.get('totaldiscPer')?.enable();
+            this.IpbillFooterform.get('totalconcessionAmt')?.enable();
+            this.setupFormListener();
+        } else {
+            this.Serviceform.get('concessionPercentage')?.disable();
+            this.Serviceform.get('concessionAmount')?.disable();
+            this.IpbillFooterform.get('totaldiscPer')?.disable();
+            this.IpbillFooterform.get('totalconcessionAmt')?.disable();
+        }
+            const discountData = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsDiscount');  
+            if (discountData?.AccessValue) {
+                this.UserDicPerLimit = discountData?.AccessInputValue || 0
+            }
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -351,6 +373,21 @@ export class IPBillingComponent implements OnInit {
         this.isUpdating = true;
 
         const perControl = this.Serviceform.get("concessionPercentage");
+
+        const discountPer = +perControl?.value || 0;
+               if (this.UserDicPerLimit > 0) {
+                   if (discountPer > this.UserDicPerLimit) {
+                       Swal.fire({
+                           icon: 'warning',
+                           title: 'Discount Limit Exceeded',
+                           text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                           confirmButtonColor: '#d33'
+                       });
+                        this.Serviceform.get("concessionPercentage").setValue(this.UserDicPerLimit);
+                       //   return; 
+                   }
+               } 
+
         if (!perControl.valid) {
             this.Serviceform.get("concessionAmount").setValue(0);
             this.Serviceform.get("concessionPercentage").setValue(0);
@@ -435,7 +472,7 @@ export class IPBillingComponent implements OnInit {
             chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
             packageMainChargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tariffId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -788,6 +825,10 @@ export class IPBillingComponent implements OnInit {
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&SrvcName="
         this.classId = event.value
     }
+        getSelectedTariffObj(event) {
+            this.TariffId = event?.value ?? this.selectedAdvanceObj.tariffId;
+            this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.selectedAdvanceObj.classId + "&SrvcName="
+        }
     AllowToaddcharges(event) {
         if (event.checked == true) {
             this.BillReviwe.get('IsSupplimentryBill').setValue(true);
@@ -1273,16 +1314,17 @@ export class IPBillingComponent implements OnInit {
     //Total Bill DiscAMt cal
     vTotalAmount: any;
     getDiscAmtCal() {
+        debugger
         const perControl = this.IpbillFooterform.get("totalconcessionAmt");
         const netAmount = this.FinalNetAmt;
         const totalAmount = this.TotalShowAmt;
-        const discAmt = perControl.value;
+        const discAmt = Number(perControl.value) || 0;
         const AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
         let discper = ''
         let finalNetAmt
         let FinalTotalAmt
 
-        if (perControl.value == 0 || perControl.value == '' || perControl.value > totalAmount) {
+        if (discAmt == 0 || perControl.value == '' || Number(discAmt) > Number(totalAmount)) {
             if (AdminAmt > 0) {
                 finalNetAmt = ((parseFloat(totalAmount) + parseFloat(AdminAmt))).toFixed(2);
             } else {
@@ -1295,10 +1337,10 @@ export class IPBillingComponent implements OnInit {
                 FinalAmount: Math.round(finalNetAmt),
             }, { emitEvent: false });
 
-            this.toastr.error("Enter Discount amt between 0-100");
+            this.toastr.error("Discount amount cannot exceed the total amount.");
             return;
         }
-        if (AdminAmt > 0) {
+        if (Number(AdminAmt) > 0) {
             this.ConcessionShow = true
             FinalTotalAmt = (parseFloat(totalAmount + AdminAmt)).toFixed(2);
             discper = ((discAmt / FinalTotalAmt) * 100).toFixed(2);
@@ -1395,7 +1437,7 @@ export class IPBillingComponent implements OnInit {
 
         const [Is9_Digit_NationalId, value] = this._ConfigService.configParams.Is9_Digit_NationalId.split(":");
         if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
-            if (this.IpbillFooterform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
+            if (this.IpbillFooterform.get('CreditBill').value || this.selectedAdvanceObj.companyId || (this.IpbillFooterform.get('FinalAmount')?.value || 0) == 0) {
                 this.IPBillMyForm.get('bill.paidAmt')?.setValue(0)
                 this.IPBillMyForm.get('bill.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value || 0)
                 this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value || 0)
@@ -2211,6 +2253,7 @@ export class IPBillingComponent implements OnInit {
 
             // Use concessionPercentage or ConcessionPercentage
             const discountPercent = element.concessionPercentage || element.ConcessionPercentage || 0;
+            
             element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
             element.concessionAmount = element.DiscAmt; // Sync lowercase property
 
@@ -2315,7 +2358,8 @@ export class IPBillingComponent implements OnInit {
             discAmount: [{ name: "pattern", Message: "only Number allowed." }],
             netAmount: [{ name: "pattern", Message: "only Number allowed." }],
             concessionId: [{}],
-            DoctorID: [{}]
+            DoctorID: [{}],
+             tariffId: [{}]
         }
     }
 
@@ -2688,35 +2732,7 @@ export class IPBillingComponent implements OnInit {
             this.getChargesList();
         }
     }
-    UserDicPerLimit: any = 0;
-    getAccessDetail() {
-        // debugger
-        const SelectQuery = {
-            "first": 0,
-            "rows": 999,
-            "sortField": "AccessValueId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "LoginId",
-                    "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": []
-        }
-        this._IpSearchListService.getAccessDetailList(SelectQuery).subscribe(response => {
-            const getUserAccesDetList = response.data as UserDetail[];
-            console.log("get Access data:", getUserAccesDetList)
-
-            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
-            console.log(discountData)
-            if (discountData?.accessValue) {
-                this.UserDicPerLimit = discountData?.accessInputValue || 0
-            }
-        });
-    }
+    UserDicPerLimit: any = 0; 
     getStatementPrint() {
         this.commonService.Onprint("AdmissionID", this.selectedAdvanceObj.admissionId, "IpAdvanceStatement");
     }

@@ -78,7 +78,7 @@
                                         <span>:</span>
                                         <span class="patient-col-value gap-4"  
                                            style="background-color: orange;font-weight: bold;">
-                                            {{netPayAmt | currency: currency:'symbol'}}
+                                            {{(netPayAmt || 0) | currency: currency:'symbol'}}
                                         </span>
                                     </div>
                                       <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="25%">

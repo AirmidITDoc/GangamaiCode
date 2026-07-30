@@ -9,6 +9,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { IPSearchListService } from '../ip-search-list.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-discount-after-final-bill',
@@ -48,7 +49,8 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         private accountService: AuthenticationService,
         private formBuilder: FormBuilder,
         public _IpSearchListService: IPSearchListService,
-        public _formvalidationservice: FormvalidationserviceService
+        public _formvalidationservice: FormvalidationserviceService,
+        public _ConfigService:ConfigService
     ) { }
 
     ngOnInit(): void {
@@ -67,8 +69,12 @@ export class DiscountAfterFinalBillComponent implements OnInit {
             this.CompanyName = this.selectedAdvanceObj.companyName || '';
         }
         this.MyFrom = this.CreateMyForm();
-        this.saveform = this.CreatesaveMyForm();
-        this.getAccessDetail();
+        this.saveform = this.CreatesaveMyForm(); 
+
+             const discountData = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsDiscount');  
+            if (discountData?.AccessValue) {
+                this.UserDicPerLimit = discountData?.AccessInputValue || 0
+            }
     }
     CreateMyForm(): FormGroup {
         return this.formBuilder.group({
@@ -280,31 +286,31 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     UserDicPerLimit: any = 0;
     getAccessDetail() {
         // debugger
-        const SelectQuery = {
-            "first": 0,
-            "rows": 999,
-            "sortField": "AccessValueId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "LoginId",
-                    "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": []
-        }
-        this._IpSearchListService.getAccessDetailList(SelectQuery).subscribe(response => {
-            const getUserAccesDetList = response.data as UserDetail[];
-            console.log("get Access data:", getUserAccesDetList)
+        // const SelectQuery = {
+        //     "first": 0,
+        //     "rows": 999,
+        //     "sortField": "AccessValueId",
+        //     "sortOrder": 0,
+        //     "filters": [
+        //         {
+        //             "fieldName": "LoginId",
+        //             "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
+        //             "opType": "Equals"
+        //         }
+        //     ],
+        //     "exportType": "JSON",
+        //     "columns": []
+        // }
+        // this._IpSearchListService.getAccessDetailList(SelectQuery).subscribe(response => {
+        //     const getUserAccesDetList = response.data as UserDetail[];
+        //     console.log("get Access data:", getUserAccesDetList)
 
-            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
-            console.log(discountData)
-            if (discountData?.accessValue) {
-                this.UserDicPerLimit = discountData?.accessInputValue || 0
-            }
-        });
+        //     const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+        //     console.log(discountData)
+        //     if (discountData?.accessValue) {
+        //         this.UserDicPerLimit = discountData?.accessInputValue || 0
+        //     }
+        // });
     }
     keyPressCharater(event) {
         const inp = String.fromCharCode(event.keyCode);
