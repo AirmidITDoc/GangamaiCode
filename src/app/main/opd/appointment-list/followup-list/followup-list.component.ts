@@ -210,6 +210,7 @@ ngAfterViewInit() {
              confirmButtonText: "With Header",
              denyButtonText: "Without Header",
          }).then((flag) => {
+          debugger
              if (flag.isConfirmed) {
  
                  this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
