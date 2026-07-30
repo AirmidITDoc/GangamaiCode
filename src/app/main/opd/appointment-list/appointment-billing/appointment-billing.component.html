@@ -473,7 +473,7 @@
                                                                             [(ngModel)]="contact.DiscPer" type="text"
                                                                             [min]="0" [max]="100"
                                                                             (ngModelChange)="onDiscountPerChange(contact)"
-                                                                              [disabled]="UserDiscApplyPer != 'true'"
+                                                                              [disabled]="UserDiscApplyPer !== true"
                                                 [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                                                     </mat-form-field>
                                                                     
@@ -491,7 +491,7 @@
                                                                             [(ngModel)]="contact.DiscAmt" type="text"
                                                                             [min]="0" [max]="contact.TotalAmt"
                                                                             (ngModelChange)="onDiscountAmtChange(contact)"
-                                                                              [disabled]="UserDiscApplyPer != 'true'"
+                                                                              [disabled]="UserDiscApplyPer !== true"
                                                 [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
                                                                     </mat-form-field>
                                                                 </mat-cell>

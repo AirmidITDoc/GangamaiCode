@@ -217,14 +217,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.chargeForm.get('discountPer')?.enable();
             this.chargeForm.get('discountAmount')?.enable();
             this.OPFooterForm.get('totalDiscountPer')?.enable();
-            this.OPFooterForm.get('concessionAmt')?.enable();
-             this.setupFormListener();
+            this.OPFooterForm.get('concessionAmt')?.enable(); 
         } else {
             this.chargeForm.get('discountPer')?.disable();
             this.chargeForm.get('discountAmount')?.disable();
             this.OPFooterForm.get('totalDiscountPer')?.disable();
             this.OPFooterForm.get('concessionAmt')?.disable();
         }
+         this.setupFormListener();
           const discountData = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsDiscount');  
             if (discountData?.AccessValue) {
                 this.UserDicPerLimit = discountData?.AccessInputValue || 0
@@ -408,10 +408,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.chargeForm.get("discountAmount").setValue(0);
             this.chargeForm.get("discountPer").setValue(0);
             this.isUpdating = false;
-            this.toastrService.error("Enter discount % between 0-100");
+          //  this.toastrService.error("Enter discount % between 0-100");
             return;
         }
-        const percentage = perControl.value;
+        const percentage = perControl?.value || 0;
         const totalAmount = this.chargeForm.get("totalAmount").value;
 
         // let discountAmount = this.getFixedDecimal(totalAmount * percentage / 100);
@@ -420,7 +420,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         const netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
 
         this.chargeForm.patchValue({
-            discountAmount: discountAmount,
+            discountAmount: discountAmount || 0,
             netAmount: netAmount
         }, { emitEvent: false }); // Prevent infinite loop
 
@@ -431,7 +431,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         if (this.isUpdating) return;
         this.isUpdating = true;
 
-        const discountAmount = this.chargeForm.get("discountAmount").value;
+        const discountAmount = this.chargeForm.get("discountAmount")?.value || 0;
         const totalAmount = this.chargeForm.get("totalAmount").value;
 
         if (discountAmount < 0 || discountAmount > totalAmount) {
@@ -816,11 +816,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
         if (this.chargeForm.valid) {
             const formValue = this.chargeForm.value;
-            if (this.chargeForm.value.discountPer > 0)
+            if (this.chargeForm.value?.discountPer > 0)
                 this.Consessionres = true
             // Calculate total amount, discount amount, and net amount
             const totalAmount = formValue.price * formValue.qty;
-            const discountAmount = (totalAmount * formValue.discountPer) / 100;
+            const discountAmount = (totalAmount * (formValue?.discountPer || 0)) / 100;
             const netAmount = totalAmount - discountAmount;
             if (totalAmount > 0) {
                 const newRow = {
@@ -829,7 +829,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     Price: formValue.price,
                     Qty: formValue.qty,
                     TotalAmt: totalAmount,
-                    DiscPer: formValue.discountPer || 0,
+                    DiscPer: formValue?.discountPer || 0,
                     DiscAmt: discountAmount || 0,
                     NetAmount: netAmount,
                     DoctorName: this.doctorName || '-',
@@ -1151,7 +1151,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         debugger
         if (this.isUpdating) return; // Stop recursion
         this.isUpdating = true;
-        const DiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
+        const DiscountPer = +this.OPFooterForm.get("totalDiscountPer")?.value || 0;
         if (this.UserDicPerLimit > 0) {
             if (DiscountPer > this.UserDicPerLimit) {
                 Swal.fire({
@@ -1166,7 +1166,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
         }
 
-        const totalDiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
+        const totalDiscountPer = +this.OPFooterForm.get("totalDiscountPer")?.value || 0;
         if (totalDiscountPer == 0)
             this.OPFooterForm.get("concessionReasonId").setValue(0)
         if (totalDiscountPer < 0 || totalDiscountPer > 100) {

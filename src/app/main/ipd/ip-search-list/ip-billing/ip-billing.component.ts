@@ -331,17 +331,19 @@ export class IPBillingComponent implements OnInit {
             this.Serviceform.get('concessionAmount')?.enable();
             this.IpbillFooterform.get('totaldiscPer')?.enable();
             this.IpbillFooterform.get('totalconcessionAmt')?.enable();
-            this.setupFormListener();
+           
         } else {
             this.Serviceform.get('concessionPercentage')?.disable();
             this.Serviceform.get('concessionAmount')?.disable();
             this.IpbillFooterform.get('totaldiscPer')?.disable();
             this.IpbillFooterform.get('totalconcessionAmt')?.disable();
         }
+       
             const discountData = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsDiscount');  
             if (discountData?.AccessValue) {
                 this.UserDicPerLimit = discountData?.AccessInputValue || 0
             }
+              this.setupFormListener();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -392,7 +394,7 @@ export class IPBillingComponent implements OnInit {
             this.Serviceform.get("concessionAmount").setValue(0);
             this.Serviceform.get("concessionPercentage").setValue(0);
             this.isUpdating = false;
-            this.toastr.warning("Enter discount % between 0-100");
+          //  this.toastr.warning("Enter discount % between 0-100");
             return;
         }
         const discPer = perControl.value;

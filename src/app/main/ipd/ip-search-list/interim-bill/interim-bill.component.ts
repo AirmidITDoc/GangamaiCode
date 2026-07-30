@@ -117,8 +117,7 @@ export class InterimBillComponent implements OnInit {
         this.UserDiscApplyPer = access?.AccessValue;
         if (this.UserDiscApplyPer === true) {
             this.InterimFooterForm.get('discPer')?.enable();
-            this.InterimFooterForm.get('concessionAmt')?.enable(); 
-            // this.setupFormListener();
+            this.InterimFooterForm.get('concessionAmt')?.enable();  
         } else {
             this.InterimFooterForm.get('discPer')?.disable();
             this.InterimFooterForm.get('concessionAmt')?.disable(); 

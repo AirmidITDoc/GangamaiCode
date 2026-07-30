@@ -70,12 +70,16 @@
                 </ng-template>
 
                 <ng-template #actionButtonTemplate let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxLayout="row" fxLayoutAlign="center center"> 
+                         <span
+                            [matTooltip]="!UserDiscApplyPer ? 'You do not have permission to give discounts.' : 'Final Discount'">
 
-                        <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 "
-                            matTooltip="Final Discount" (click)="getFinalDisc(element)">
-                            <mat-icon> money </mat-icon>
-                        </button>
+                            <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0"
+                             [disabled]="UserDiscApplyPer  !== true"
+                             (click)="getFinalDisc(element)" >
+                                <mat-icon> money </mat-icon>
+                            </button>
+                            </span> 
 
                         <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
                             *ngIf="element.balanceAmt!='0'">

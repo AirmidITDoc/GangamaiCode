@@ -69,6 +69,7 @@ export class IPSettlementComponent implements OnInit {
     vTDSAmount: any = 0;
     vBalanceAmount: any = 0;
     isSearchTriggered = false;
+    UserDiscApplyPer : boolean =false;
     vUPINO: any;
     autocompleteModebank: string = "Bank";
     PatientName: any;
@@ -158,6 +159,10 @@ export class IPSettlementComponent implements OnInit {
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._configService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
+
+         // this.getmultiplePaymentList(true);
+        const access = this._configService.userAccessParam.find(x => x.AccessValueName === 'DiscApplyPer');
+        this.UserDiscApplyPer = access?.AccessValue;
     }
     BankId = 0
     BankNam: any;
