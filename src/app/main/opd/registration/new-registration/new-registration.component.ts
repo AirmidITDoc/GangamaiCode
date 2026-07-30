@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
-import { PincodeSearchService } from 'app/main/shared/services/pincode-search.service';
+// import { PincodeSearchService } from 'app/main/shared/services/pincode-search.service';
 
 @Component({
     selector: 'app-new-registration',
