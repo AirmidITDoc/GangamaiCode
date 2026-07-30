@@ -24,7 +24,7 @@ export class FollowpdateUpdateComponent {
         public _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
     ) { }
-
+ followUpDate: Date | null = null
     ngOnInit(): void {
 
 
@@ -34,13 +34,15 @@ export class FollowpdateUpdateComponent {
             this.prevfolloeupdate = this.data.followupDate
             // this.vfollowupdate = new Date(this.prevfolloeupdate)
             this.opdipdno = this.data.visitId
+
+            this.followUpDate = new Date(this.data.followupDate);
         }
         this.FollowupFormGroup = this.createFollowupDateupdateForm();
-
+        
     }
     createFollowupDateupdateForm() {
         return this._formBuilder.group({
-            followupdate: [(new Date()).toISOString()],
+            followupdate: this.followUpDate//[(new Date()).toISOString()],
 
         })
     }

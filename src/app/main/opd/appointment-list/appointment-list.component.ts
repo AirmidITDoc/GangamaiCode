@@ -1799,11 +1799,9 @@ export class AppointmentListComponent implements OnInit {
     openPatientDetailsPopover1(event: MouseEvent) {
         const dialogRef = this.dialogRef.open(FollowupListComponent,
             {
-                maxWidth: "80vw",
-                // width: "85%",
-                height: "90%",
-                // maxHeight: "65%",
-                panelClass: 'responsive-dialog'
+                   maxWidth: "90%",
+                    height: '90%',
+                    width: '95%',
             });
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);

@@ -91,10 +91,14 @@ export class FollowupListComponent {
 
 
   ];
-
+ngAfterViewInit() {
+        // Assign the template to the column dynamically
+         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+      
+    }
   // @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
 
-  // @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   allcolumns = [
     { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 6 },
@@ -112,10 +116,10 @@ export class FollowupListComponent {
     // { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
     // { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // {
-    //   heading: "Action", key: "action", align: "center", width: 80, sticky: false, type: gridColumnTypes.template,
-    //   template: this.actionButtonTemplate  // Assign ng-template to the column
-    // }
+    {
+      heading: "Action", key: "action", align: "center", width: 80, sticky: false, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
   ]
   gridConfig: gridModel = {
     // permissionCode: permissionCodes.Appointment,
@@ -127,49 +131,10 @@ export class FollowupListComponent {
   }
 
   ngOnInit(): void {
-    // this.getFollowupData();
+    
     this.myformSearch = this._AppointmentlistService.filterForm();
-    // this.searchFormGroup = this.createSearchForm();
+    
   }
-
-
-  // getFollowupData() {
-  //   this.isLoadingStr = 'loading';
-  //   const filters: any[] = [];
-  //   filters.push(
-
-  //     {
-  //       "fieldName": "From_Dt",
-  //       "fieldValue": String(this.fromDate),
-  //       "opType": "Equals"
-  //     },
-  //     {
-  //       "fieldName": "To_Dt",
-  //       "fieldValue": this.toDate,
-  //       "opType": "Equals"
-  //     },
-  //     {
-  //       "fieldName": "RegId",
-  //       "fieldValue": this.regNo,
-  //       "opType": "Equals"
-  //     }
-  //   );
-
-  //   const data = {
-  //     "first": 0,
-  //     "rows": 999999,
-  //     "sortField": "AdmissionId",
-  //     "sortOrder": 0,
-  //     "filters": filters,
-  //     "exportType": "JSON",
-  //     "columns": []
-  //   };
-
-  //   this._AppointmentlistService.getFollowupList(data).subscribe((res: any) => {
-  //     console.log(res);
-  //      this.dataSource.data = res.data;
-  //   });
-  // }
 
 
 
@@ -193,23 +158,7 @@ export class FollowupListComponent {
     this.getfilterdata();
     // }
   }
-  ListView(value) {
 
-    const departmentId = this.myformSearch.get('departmentId')?.value;
-    if (!departmentId || departmentId === "0" || departmentId === 0) {
-      // this.ddlDoctor.options = [];
-      this.toastr.warning("Please select a Department First.", "warning");
-      this.DoctorId = "0";
-      return;
-    }
-    console.log(value)
-    if (value.value !== 0)
-      this.DoctorId = value.value
-    else
-      this.DoctorId = "0"
-
-    this.onChangeFirst();
-  }
 
   getfilterdata() {
     debugger
@@ -248,17 +197,27 @@ export class FollowupListComponent {
       return false;
     }
   }
-  getSelectedObj($event) { }
-  GetAppointdetail() { }
-  selectedRow: any = null;
-
-  getSelectedRow(row: any): void {
-    this.selectedRow = row;
-    console.log("Selected row : ", row);
-  }
-  clearSelection() {
-    this.selectedRow = null;
-  }
+    OnViewReportPdf(element) {
+         Swal.fire({
+             title: 'Select Report Format',
+             text: "Choose how you want to view the report:",
+             // icon: "warning",
+             showDenyButton: true,
+             showCancelButton: false,
+             confirmButtonColor: "#3085d6",
+             denyButtonColor: "#6c757d",
+             cancelButtonColor: "#d33",
+             confirmButtonText: "With Header",
+             denyButtonText: "Without Header",
+         }).then((flag) => {
+             if (flag.isConfirmed) {
+ 
+                 this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+             } else
+                 this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceiptWithoutHeader");
+         });
+ 
+     }
   Clearfilter(event) {
     console.log(event)
     if (event == 'FirstName')
@@ -271,14 +230,7 @@ export class FollowupListComponent {
 
     this.onChangeFirst();
   }
-  onMouseEnter() {
-    this.mouseEnter.emit();
-  }
 
-  onMouseLeave() {
-    this.mouseLeave.emit();
-  }
-  //
   onClose() {
     this._matDialog.closeAll()
   }

@@ -21,7 +21,7 @@
     <div class="modal-body">
         <div class="modal-body-container">
             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-<!-- 
+
                 <ng-template #actionButtonTemplate let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -32,8 +32,8 @@
                         </button>
 
                     </div>
-                </ng-template> -->
-                <airmid-table [gridConfig]="gridConfig" class="content">
+                </ng-template>
+                <airmid-table [gridConfig]="gridConfig" class="content airmid-table table3 max-h-600">
                     <ng-container filters>
                         <form [formGroup]="myformSearch">
                             <!-- (dateChange)="GetAppointdetail()" -->

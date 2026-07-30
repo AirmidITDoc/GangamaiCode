@@ -139,8 +139,10 @@
                                   
                                     <mat-form-field appearance="outline" fxFlex="40%">
                                         <mat-label>Follow Up Date</mat-label>
-                                        <input matInput [matDatepicker]="picker" placeholder="Follow Up date"
-                                            formControlName="followupdate"  [value]="data?.followupDate">
+                                        <input matInput 
+       [matDatepicker]="picker" 
+       placeholder="Follow Up date"
+       formControlName="followupdate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>
