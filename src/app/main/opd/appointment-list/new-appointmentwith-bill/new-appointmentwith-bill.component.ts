@@ -204,7 +204,7 @@ export class NewAppointmentwithBillComponent {
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-
+    IsCasepaperBillPrint: boolean = false;
 
     constructor(public _AppointmentlistService: AppointmentlistService,
         public _matDialog: MatDialog,
@@ -263,6 +263,9 @@ export class NewAppointmentwithBillComponent {
                 }
             });
         }
+        const rawValue1 = this?._ConfigService?.configParams?.IsCasepaperBillPrint || "";
+        const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
+        this.IsCasepaperBillPrint = id1 === "1";
 
 
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
@@ -1505,10 +1508,16 @@ export class NewAppointmentwithBillComponent {
 
                             this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
                                 console.log(response)
-                                if (response)
-                                    this.viewgetOPBillReportPdf(response.billNo)
-                                this.closeAllOrNavigateBack();
-                                this.savebtn = true
+                                if (response) {
+                                    if (this.IsCasepaperBillPrint)
+                                        this.OnViewReportPdf(response.opdIpdId);
+                                    else
+                                        this.viewgetOPBillReportPdf(response.billNo)
+
+                                    this.closeAllOrNavigateBack();
+                                    this.savebtn = true
+                                }
+
                             });
                         }
                     });
@@ -1526,11 +1535,16 @@ export class NewAppointmentwithBillComponent {
                     console.log(this.AppointmentBillfinalform.value)
                     this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
-                        if (response)
-                            this.viewgetOPBillReportPdf(response.billNo)
-                        this.closeAllOrNavigateBack();
-                        this.savebtn = true
+                        if (response) {
+                            debugger
+                            if (this.IsCasepaperBillPrint)
+                                this.OnViewReportPdf(response.opdIpdId);
+                            else
+                                this.viewgetOPBillReportPdf(response.billNo)
 
+                            this.closeAllOrNavigateBack();
+                            this.savebtn = true
+                        }
                     });
                 }
                 else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
@@ -1813,6 +1827,13 @@ export class NewAppointmentwithBillComponent {
 
         }
     }
+
+
+    OnViewReportPdf(element) {
+
+        this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+    }
+
 
     getPacakgeDetail(contact) {
         const dialogRef = this._matDialog.open(PackageDetailsComponent,

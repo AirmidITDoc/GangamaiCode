@@ -120,6 +120,8 @@ export class AppointmentlistService {
 
     }
 
+
+
     createVisitdetailForm() {
         return this._formBuilder.group({
 
@@ -146,14 +148,19 @@ export class AppointmentlistService {
             firstFollowupVisit: 0,
             AppPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             campId: [0],
-            followupDate: [(new Date()).toISOString()],
+            followupDate:  [
+                new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()
+            ],//[(new Date()).toISOString()],
             crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
             visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             policyNumber: [0],
             policyLimit: [0],
-            policyValidateDate: [(new Date()).toISOString()]
+            policyValidateDate: [(new Date()).toISOString()],
+            // HealthcardDate: [
+            //     new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()
+            // ]
         });
     }
 
@@ -341,7 +348,9 @@ export class AppointmentlistService {
     public getVisitlist(employee) {
         return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
     }
-
+  public getFollowupList(employee) {
+        return this._httpClient1.PostData("VisitDetail/Follow_up_List", employee)
+    }
     public getBillingServiceList(employee) {
         return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)
     }
@@ -414,7 +423,7 @@ export class AppointmentlistService {
     }
     ///
     public UpdateFollowupdate(param) {
-        return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
+        return this._httpClient1.PutData("VisitDetail/FollowupDateUpdate/"+param.visitId, param);
     }
     public InsertRegistrationBilling(Param: any) {
 

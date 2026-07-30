@@ -115,11 +115,11 @@ export class AbhaLinkComponent {
       abhaAddress: this.abhaForm.value.abhaAddress,
       patient: [
         {
-          referenceNumber: `${this.regNo}${this.visitDet.visitDate.split('T')[0].replace(/-/g, '')}`, //"UHID + VISIT_DATE"
-          display: `${this.patientName} - ${this.visitDet.opdno.replace(/\//g,'')}`, //"PatientName + VISIT_OPDNO"
+          referenceNumber: this.regNo, //`${this.regNo}${this.visitDet.visitDate.split('T')[0].replace(/-/g, '')}`, //"UHID + VISIT_DATE"
+          display: this.patientName, //`${this.patientName} - ${this.visitDet.opdno.replace(/\//g,'')}`, //"PatientName + VISIT_OPDNO"
           careContexts: [
             {
-              referenceNumber: `${this.regNo}${this.visitDet.opdno.replace(/\//g,'')}`, //"UHID + VISIT_OPDNO" removed date bec opdno also have date
+              referenceNumber: this.visitDet.opdno,//`${this.regNo}${this.visitDet.opdno.replace(/\//g,'')}`, //"UHID + VISIT_OPDNO" removed date bec opdno also have date
               display: "Prescription"
             }
           ],

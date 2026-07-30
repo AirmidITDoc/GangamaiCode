@@ -104,8 +104,8 @@ export class NewAppointmentComponent implements OnInit {
     isExpanded3 = false;
     ApiUrl = "PhoneAppointment2/auto-complete?Keyword=a"
 
-    stateId = 0
-    counryId = 0
+    stateId = 1
+    counryId = 1
     vFirstNameConfig: any;
     vmiddleNameConfig: any;
     vlastNameConfig: any;
@@ -698,7 +698,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     getSelectedObjtrust(obj) {
-        debugger
+        
         console.log(obj)
         // if (this.data?.FormName == 'Registration-Page') {
         this.PatientName = obj.firstName + ' ' + obj.lastName;
@@ -766,7 +766,7 @@ export class NewAppointmentComponent implements OnInit {
 
                 this.CityName = this.registerObjtrust?.cityName ?? '';
 
-                debugger
+                
                 this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
                 this.registerObj.dateofBirth = this.registerObjtrust.husbandDob
 
@@ -965,6 +965,10 @@ export class NewAppointmentComponent implements OnInit {
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                 this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
                 this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
+debugger
+                this.VisitFormGroup.get("followupDate").setValue(this.datePipe.transform(this.VisitFormGroup.get("followupDate").value, "yyyy-MM-dd"))
+
+
 
                 console.log('Personal Form : ', this.personalFormGroup.value)
                 console.log('Visit Form : ', this.VisitFormGroup.value)
@@ -1635,7 +1639,7 @@ export class NewAppointmentComponent implements OnInit {
             });
             return;
         }
-        debugger
+        
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);

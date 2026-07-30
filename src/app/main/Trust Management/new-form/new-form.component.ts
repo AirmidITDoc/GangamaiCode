@@ -155,7 +155,8 @@ export class NewFormComponent {
   vwifeFullBodyCheckupDate = new Date();
   vwifedob = new Date();
   vhusbanddob = new Date();
-
+vwdeathDate= new Date();
+vhdeathDate= new Date();
 
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
@@ -188,7 +189,10 @@ export class NewFormComponent {
     this.today = new Date();
 
     this.todayPlus5Years = new Date(this.today);
-    this.todayPlus5Years.setFullYear(this.today.getFullYear() + 5);
+    // this.todayPlus5Years.setFullYear(this.today.getFullYear() + 5);
+
+    this.todayPlus5Years = new Date(
+      this.today.getFullYear() + 5, 2, 1);
 
     console.log(this.todayPlus5Years)
 
@@ -233,7 +237,7 @@ export class NewFormComponent {
 
       }
 
-   
+
       this.vmediclaimenddate = this.data.mediclaimenddate
       this.vhusbandFullBodyCheckupDate = this.data.husbandFullBodyCheckupDate
       this.vmediclaimstartdate = this.data.mediclaimstartdate
@@ -275,8 +279,8 @@ export class NewFormComponent {
 
       ]],
 
-      "husbandDob": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "husbandDob": '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      DateOfBirth: '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "husbandAgeY": [0],
       "husbandAgeM": [0],
       "husbandageD": [0],
@@ -315,8 +319,8 @@ export class NewFormComponent {
 
       ]],
 
-      "wifeDob": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      DateOfBirth1: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wifeDob": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      // DateOfBirth1: '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
 
 
       "wifeAgeY": [0],
@@ -384,6 +388,13 @@ export class NewFormComponent {
       "receiptDate": [(new Date()).toISOString()],
       "feeReceived": [true],
       "feeAmount": ['', [Validators.required]],
+
+
+      "hdeathDate": '1900-01-01',
+      "wdeathDate": '1900-01-01',
+      "haayushmanId": 0,
+      "waayushmanId": 0,
+
 
       tMembershipChildren: this.formBuilder.array([]),
       tMembershipRelatives: this.formBuilder.array([]),
@@ -547,61 +558,77 @@ export class NewFormComponent {
       });
       return;
     }
-    // if (this.personalFormGroup.get("husbandFirstName").value !== '') {
-    //   if (this.personalFormGroup.get('husbandMobile').value == 0 || this.personalFormGroup.get('husbandMobile').value == '') {
-    //     this.toastr.warning('Please select valid husbandMobile ', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   } else if (this.personalFormGroup.get('husbandAadhaar').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
-    //     this.toastr.warning('Please select valid HusbandAadhaar ', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   } else if (this.personalFormGroup.get('husbandOccupationId').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
-    //     this.toastr.warning('Please select valid HusbandOccupation ', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     }); return;
-    //   } else if (this.personalFormGroup.get('nativePlace').value == '') {
-    //     this.toastr.warning('Please enter Native Place', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     }); return;
-    //   } else if (this.personalFormGroup.get('husbandDob').value == '1900-01-01' || this.vhusbanddob == new Date()) {
-    //     this.toastr.warning('Please enter husbandDob', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     }); return;
-    //   }
-    // }
+    if (this.personalFormGroup.get("husbandFirstName").value !== '') {
+      // if (this.personalFormGroup.get('husbandMobile').value == 0 || this.personalFormGroup.get('husbandMobile').value == '') {
+      //   this.toastr.warning('Please select valid husbandMobile ', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // } else if (this.personalFormGroup.get('husbandAadhaar').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
+      //   this.toastr.warning('Please select valid HusbandAadhaar ', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // } else if (this.personalFormGroup.get('husbandOccupationId').value == 0 || this.personalFormGroup.get('husbandAadhaar').value == '') {
+      //   this.toastr.warning('Please select valid HusbandOccupation ', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   }); return;
+      // } else if (this.personalFormGroup.get('nativePlace').value == '') {
+      //   this.toastr.warning('Please enter Native Place', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   }); return;
+      // } else
+      if (this.personalFormGroup.get('DateOfBirth').value == '1900-01-01' || this.vhusbanddob == new Date()) {
+        this.toastr.warning('Please enter husbandDob', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        }); return;
+      }
+    }
 
-    // if (this.personalFormGroup.get("wifeFirstName").value !== '') {
-    //   if (this.personalFormGroup.get('wprefixId').value == 0 || this.personalFormGroup.get('wprefixId').value == '') {
-    //     this.toastr.warning('Please select valid wprefixId ', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   } else if (this.personalFormGroup.get('wifeMobile').value == 0 || this.personalFormGroup.get('wifeMobile').value == '') {
-    //     this.toastr.warning('Please select valid wife Mobile ', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   } else if (this.personalFormGroup.get('wifeAadhaar').value == 0 || this.personalFormGroup.get('wifeAadhaar').value == '') {
-    //     this.toastr.warning('Please select valid wife Aadhaar ', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     }); return;
-    //   } else if (this.personalFormGroup.get('wifeOccupationId').value == 0 || this.personalFormGroup.get('wifeOccupationId').value == '') {
-    //     this.toastr.warning('Please select valid wife Occupation', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     }); return;
-    //   } else if (this.personalFormGroup.get('wifeparentsnativeplace').value == '') {
-    //     this.toastr.warning('Please enter Native Place', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     }); return;
-    //   } else if (this.Wifeform.get('DateOfBirth').value == '1900-01-01' || this.vhusbanddob == new Date()) {
-    //     this.toastr.warning('Please enter Wife DateOfBirth', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     }); return;
-    //   }
-    // }
+    if (this.personalFormGroup.get("wifeFirstName").value !== '') {
+      // if (this.personalFormGroup.get('wprefixId').value == 0 || this.personalFormGroup.get('wprefixId').value == '') {
+      //   this.toastr.warning('Please select valid wprefixId ', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // } else if (this.personalFormGroup.get('wifeMobile').value == 0 || this.personalFormGroup.get('wifeMobile').value == '') {
+      //   this.toastr.warning('Please select valid wife Mobile ', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // } else if (this.personalFormGroup.get('wifeAadhaar').value == 0 || this.personalFormGroup.get('wifeAadhaar').value == '') {
+      //   this.toastr.warning('Please select valid wife Aadhaar ', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   }); return;
+      // } else if (this.personalFormGroup.get('wifeOccupationId').value == 0 || this.personalFormGroup.get('wifeOccupationId').value == '') {
+      //   this.toastr.warning('Please select valid wife Occupation', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   }); return;
+      // } else if (this.personalFormGroup.get('wifeparentsnativeplace').value == '') {
+      //   this.toastr.warning('Please enter Native Place', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   }); return;
+      // } else 
+      if (this.Wifeform.get('DateOfBirth').value == '1900-01-01' || this.vhusbanddob == new Date()) {
+        this.toastr.warning('Please enter Wife DateOfBirth', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        }); return;
+      }
+    }
+    debugger
+    if (this.personalFormGroup.get('cityId').value == 0 || this.personalFormGroup.get('cityId').value == '') {
+      this.toastr.warning('Please select valid City Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    if (this.CityName == '') {
+      this.toastr.warning('Please select valid City Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
 
     if (this.personalFormGroup.get("hasmediclaim").value) {
@@ -621,50 +648,56 @@ export class NewFormComponent {
         }); return;
       }
     }
+    if (this.personalFormGroup.get("DateOfBirth").value != '1900-01-01') {
+      const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+      if (DateOfBirth1) {
+        const todayDate = new Date();
+        const dob = new Date(DateOfBirth1);
+        const timeDiff = Math.abs(Date.now() - dob.getTime());
+        this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+        this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+        this.ageDay = (todayDate.getDate() - dob.getDate());
 
-    const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-    if (DateOfBirth1) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth1);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-      this.ageDay = (todayDate.getDate() - dob.getDate());
+        if (this.ageDay < 0) {
+          (this.ageMonth)--;
+          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+          this.ageDay += previousMonth.getDate(); // Days in previous month
 
-      if (this.ageDay < 0) {
-        (this.ageMonth)--;
-        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-        this.ageDay += previousMonth.getDate(); // Days in previous month
+        }
 
-      }
-
-      if (this.ageMonth < 0) {
-        this.ageYear--;
-        this.ageMonth += 12;
-      }
-    }
-    const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
-    if (DateOfBirth2) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth2);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.ageYear1 = (todayDate.getFullYear() - dob.getFullYear());
-      this.ageMonth1 = (todayDate.getMonth() - dob.getMonth());
-      this.ageDay1 = (todayDate.getDate() - dob.getDate());
-
-      if (this.ageDay1 < 0) {
-        (this.ageMonth1)--;
-        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-        this.ageDay1 += previousMonth.getDate(); // Days in previous month
-
-      }
-
-      if (this.ageMonth1 < 0) {
-        this.ageYear1--;
-        this.ageMonth1 += 12;
+        if (this.ageMonth < 0) {
+          this.ageYear--;
+          this.ageMonth += 12;
+        }
       }
     }
+    debugger
+    if (this.Wifeform.get("DateOfBirth").value != '1900-01-01') {
+      const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
+      if (DateOfBirth2) {
+        const todayDate = new Date();
+        const dob = new Date(DateOfBirth2);
+        const timeDiff = Math.abs(Date.now() - dob.getTime());
+        this.ageYear1 = (todayDate.getFullYear() - dob.getFullYear());
+        this.ageMonth1 = (todayDate.getMonth() - dob.getMonth());
+        this.ageDay1 = (todayDate.getDate() - dob.getDate());
 
+        if (this.ageDay1 < 0) {
+          (this.ageMonth1)--;
+          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+          this.ageDay1 += previousMonth.getDate(); // Days in previous month
+
+        }
+
+        if (this.ageMonth1 < 0) {
+          this.ageYear1--;
+          this.ageMonth1 += 12;
+        }
+      }
+      this.personalFormGroup.get('wifeAgeY').setValue(this.ageDay1)
+      this.personalFormGroup.get('wifeAgeM').setValue(this.ageMonth1)
+      this.personalFormGroup.get('wifeAgeD').setValue(this.ageDay1)
+    }
 
     if (this.personalFormGroup.get("ayushmanEnrolled").value !== false) {
       if (this.personalFormGroup.get('ayushmanSpouseDetails').value == 0 || this.personalFormGroup.get('ayushmanSpouseDetails').value == '') {
@@ -722,7 +755,8 @@ export class NewFormComponent {
     this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.data.wifeFullBodyCheckupDate || '1900-01-01')
     this.personalFormGroup.get("declarationDate").setValue(this.datePipe.transform(this.personalFormGroup.get("declarationDate").value, "yyyy-MM-dd"))
     this.personalFormGroup.get("receiptDate").setValue(this.datePipe.transform(this.personalFormGroup.get("receiptDate").value, "yyyy-MM-dd"))
-
+    debugger
+    console.log(this.personalFormGroup.value)
 
     // if (this.SaveStatus != true) {
     if (!this.personalFormGroup.invalid) {
@@ -1434,7 +1468,7 @@ export class NewFormComponent {
       this.personalFormGroup.get('wifeparentsnativeplace').setValidators([Validators.required]);
       this.personalFormGroup.get('wifeparentsnativeplace').enable();
       this.Wifeform.get('DateOfBirth').setValidators([Validators.required]);
-      this.personalFormGroup.get('DateOfBirth').enable();
+      this.Wifeform.get('DateOfBirth').enable();
     }
   }
 
@@ -1499,7 +1533,7 @@ export class NewFormComponent {
         this.ageMonth--;
         const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
         this.ageDay += previousMonth.getDate(); // Days in previous month
-        
+
       }
 
       if (this.ageMonth < 0) {
@@ -1544,7 +1578,7 @@ export class NewFormComponent {
         this.ageMonth1--;
         const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
         this.ageDay1 += previousMonth.getDate(); // Days in previous month
-       
+
       }
 
       if (this.ageMonth1 < 0) {

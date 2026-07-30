@@ -59,8 +59,8 @@ export class ItemGenericMasterComponent implements OnInit {
     constructor(public _ItemGenericMasterService: ItemGenericMasterService,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
-        @Inject(MAT_DIALOG_DATA) public data: any, public permissionService: PagePermissionService,
-        public dialogRef: MatDialogRef<ItemGenericMasterComponent>,) { }
+         public permissionService: PagePermissionService,
+       ) { }
 
     ngOnInit(): void { }
 

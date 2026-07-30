@@ -29,7 +29,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { RegistrationComponent } from './registration.component';
@@ -37,6 +36,7 @@ import { RegistrationService } from './registration.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 const routes: Routes = [
     {

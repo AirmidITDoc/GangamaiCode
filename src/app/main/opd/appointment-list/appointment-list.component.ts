@@ -48,6 +48,7 @@ import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-po
 import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component';
 import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
+import { FollowupListComponent } from './followup-list/followup-list.component';
 
 // const moment = _rollupMoment || _moment;
 
@@ -71,24 +72,20 @@ export class AppointmentListComponent implements OnInit {
     IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
 
 
-    // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    // IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-    // IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-    // IsOpdEmr: boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
-    // IsBill: boolean = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
-    // IsEditRegistration: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
-    // IsGastrology: boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
-    // IsCheckIn: boolean = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
-    // IsCheckOut: boolean = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
-    IsReqForIp: boolean = true//this.permissionService.getPermission(permissionCodes.ReqForIP, permissionType.Edit);
-
-
+    IsReqForIp: boolean = this.permissionService.getPermission(permissionCodes.requestforip, permissionType.Edit);
+    IsUpdateConsultantDoctor: boolean = this.permissionService.getPermission(permissionCodes.UpdateConsultantDoctor, permissionType.Edit);
+    IsUpdateReferredDoctor: boolean = this.permissionService.getPermission(permissionCodes.UpdateReferredDoctor, permissionType.Edit);
+    IsUpdateFollowupDate: boolean = this.permissionService.getPermission(permissionCodes.UpdateFollowupDate, permissionType.Edit);
+    IsPatientAppointmentCancle: boolean = this.permissionService.getPermission(permissionCodes.PatientAppointmentCancle, permissionType.Edit);
+    IsCrossConsultation: boolean = this.permissionService.getPermission(permissionCodes.CrossConsultation, permissionType.Edit);
+    IsVitalInformation: boolean = this.permissionService.getPermission(permissionCodes.VitalInformation, permissionType.Edit);
+    IsEditRegistration1: boolean = this.permissionService.getPermission(permissionCodes.EditRegistration, permissionType.Edit);
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     myformSearch: FormGroup;
     searchFormGroup: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    menuActions: Array<{ icon: string, text: string,permission:boolean }> = [];
+    menuActions: Array<{ icon: string, text: string, permission: boolean }> = [];
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -102,6 +99,7 @@ export class AppointmentListComponent implements OnInit {
     VBillcount = 0;
     vEMRReady = 0;
     VCrossConscount = 0;
+    VFollowupTodayCount = 0;
     VEMRcount = 0;
     VCheckoutCount = 0;
     VWaitingCount = 0;
@@ -118,6 +116,7 @@ export class AppointmentListComponent implements OnInit {
     IsMark = "2"
     CompanyId = "0"
     Is9_Digit_National_Id: boolean = false;
+    IsGastrologyEMR: boolean = false;
     // Notitifcation Veriable
     IsShowGrid: boolean = false;
     IsPrevApp: boolean = false;
@@ -135,25 +134,12 @@ export class AppointmentListComponent implements OnInit {
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService, public _registrationService: RegistrationService,
         private advanceDataStored: AdvanceDataStored,
-        private formBuilder: FormBuilder,
+        private formBuilder: FormBuilder, private dialogRef: MatDialog,
         public _ConfigService: ConfigService,
         public toastr: ToastrService, public datePipe: DatePipe,
         private _ActRoute: Router, private route: ActivatedRoute,
         private overlay: Overlay, public permissionService: PagePermissionService, private _configue: ConfigService,
     ) {
-        debugger
-        // this.IsAdd = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-        // this.IsEdit = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-        // this.IsDelete = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-        // this.IsOpdEmr = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Add);
-        // this.IsBill = this.permissionService.getPermission(permissionCodes.Bill, permissionType.Add);
-        // this.IsEditRegistration = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Edit);
-        // this.IsGastrology = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper, permissionType.Add);
-        // this.IsCheckIn = this.permissionService.getPermission(permissionCodes.CheckIn, permissionType.Add);
-        // this.IsCheckOut = this.permissionService.getPermission(permissionCodes.CheckOut, permissionType.Add);
-
-
-
     }
 
     ngOnInit(): void {
@@ -166,20 +152,29 @@ export class AppointmentListComponent implements OnInit {
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
 
-        debugger
+        const rawValue1 = this?._configue?.configParams?.IsGastrologyEMR || "";
+        const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
+        this.IsGastrologyEMR = id1 === "1";
+
+
+
         // menu Button List
-        // if (this.IsAdd)
-            this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor",permission:true });
+        if (this.IsUpdateConsultantDoctor)
+            this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor", permission: true });
 
-        // if (this.IsEdit)
-            this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor",permission:true });
+        if (this.IsUpdateReferredDoctor)
+            this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor", permission: true });
+        if (this.IsReqForIp)
+            this.menuActions.push({ icon: "print", text: "Request For IP", permission: true });
 
-        this.menuActions.push({ icon: "language", text: "Request For IP" ,permission:this.IsReqForIp});
-        this.menuActions.push({ icon: "language", text: "Update Followup Date",permission:true });
-        this.menuActions.push({ icon: "print", text: "CasePaper Print",permission:true });
-        this.menuActions.push({ icon: "print", text: "Patient Draft Statement Print",permission:true });
-        this.menuActions.push({ icon: "print", text: "Patient Statement Print",permission:true });
-        this.menuActions.push({ icon: "print", text: "Patient Appointment Cancle",permission:true });
+        // this.menuActions.push({ icon: "language", text: "Request For IP", permission: this.IsReqForIp });
+        if (this.IsUpdateFollowupDate)
+            this.menuActions.push({ icon: "language", text: "Update Followup Date", permission: true });
+        this.menuActions.push({ icon: "print", text: "CasePaper Print", permission: true });
+        this.menuActions.push({ icon: "print", text: "Patient Draft Statement Print", permission: true });
+        this.menuActions.push({ icon: "print", text: "Patient Statement Print", permission: true });
+        if (this.IsPatientAppointmentCancle)
+            this.menuActions.push({ icon: "print", text: "Patient Appointment Cancle", permission: true });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -197,7 +192,7 @@ export class AppointmentListComponent implements OnInit {
             });
         }
 
-        // debugger
+        // 
         this.GetAppointdetail()
         if (this._ActRoute.url == '/opd/appointment') {
             this.id = this.route.snapshot.queryParamMap.get('Id');
@@ -273,7 +268,9 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Age", key: "displayAge", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -314,7 +311,7 @@ export class AppointmentListComponent implements OnInit {
 
     }
     onChangeFirst1(event) {
-        debugger
+
         console.log(event)
         // if (event.key == 13) {
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
@@ -330,7 +327,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -529,7 +526,7 @@ export class AppointmentListComponent implements OnInit {
     OngetRecord(element, m) {
         console.log('Third action clicked for:', element);
         if (m == "Update Consultant Doctor") {
-            debugger
+
             if (!this.Is9_Digit_National_Id) {
                 if (element.mPbillNo == 0) {
 
@@ -651,9 +648,9 @@ export class AppointmentListComponent implements OnInit {
                 if (flag.isConfirmed) {
                     const dialogRef = this._matDialog.open(FollowpdateUpdateComponent,
                         {
-                            maxWidth: "85vw",
-                            maxHeight: '65%',
-                            width: '85%',
+                            maxWidth: "65vw",
+                            maxHeight: '45%',
+                            width: '65%',
                             data: element
                         });
                     dialogRef.afterClosed().subscribe(result => {
@@ -747,7 +744,7 @@ export class AppointmentListComponent implements OnInit {
         }
     }
     OnViewCasepaperReportPdf(element: any, withHeader: boolean) {
-        debugger
+
         const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
         if (PrescriptionA5_Print != 1) {
             const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeader";
@@ -762,7 +759,7 @@ export class AppointmentListComponent implements OnInit {
 
 
     OnAppointmentCancle(row) {
-        debugger
+
         if (row.mPbillNo == 0) {
             const dialogRef = this._matDialog.open(PaAppoCancleComponent,
                 {
@@ -799,7 +796,7 @@ export class AppointmentListComponent implements OnInit {
             denyButtonText: "Without Header",
         }).then((flag) => {
             if (flag.isConfirmed) {
-                debugger
+
                 this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
             } else
                 this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceiptWithoutHeader");
@@ -868,7 +865,7 @@ export class AppointmentListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
             this.GetAppointdetail()
-            debugger
+
             const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
             console.log(result)
             const billId = Number(result || 0); // ensures numeric comparison
@@ -885,7 +882,7 @@ export class AppointmentListComponent implements OnInit {
     currentDate = new Date();
     viewgetOPBillThermalReportPdf(BillNo) {
 
-        debugger
+
         const param = {
             "searchFields": [
                 {
@@ -1267,7 +1264,7 @@ export class AppointmentListComponent implements OnInit {
         patientTimer.checkOut = new Date(); //Capture the check-out time
 
         const totalTime = patientTimer.elapsedTime; //it tells total time taken by patient
-        debugger
+
         //Save updated timer state to localStorage
         this.saveTimersToLocalStorage();
         const data = {
@@ -1303,6 +1300,7 @@ export class AppointmentListComponent implements OnInit {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
+        this.VFollowupTodayCount = 0;
         // let fromDateControl = "1900-01-01"
         // let toDateControl = "1900-01-01"
         const fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
@@ -1403,6 +1401,16 @@ export class AppointmentListComponent implements OnInit {
                     }
                     if (element.emrReady == 1) {
                         this.vEMRReady++;
+                    }
+                    debugger
+                    const today = new Date();
+                    const todayStr =
+                        String(today.getDate()).padStart(2, '0') + '/' +
+                        String(today.getMonth() + 1).padStart(2, '0') + '/' +
+                        today.getFullYear();
+
+                    if (String(element.followupDate) === todayStr) {
+                        this.VFollowupTodayCount++;
                     }
                 });
                 console.log(this.dataSource.data)
@@ -1786,6 +1794,24 @@ export class AppointmentListComponent implements OnInit {
             clearTimeout(this.doctorCloseTimeout);
         }
     }
+ 
+
+    openPatientDetailsPopover1(event: MouseEvent) {
+        const dialogRef = this.dialogRef.open(FollowupListComponent,
+            {
+                maxWidth: "80vw",
+                // width: "85%",
+                height: "90%",
+                // maxHeight: "65%",
+                panelClass: 'responsive-dialog'
+            });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
+
+
+    
 }
 
 
@@ -1823,7 +1849,7 @@ export class VisitMaster1 {
     VisitId: any;
     VisitTime: any;
     VisAdmTime: any;
-
+    followupDate: Date
     /**
      * Constructor
      *
@@ -1863,6 +1889,7 @@ export class VisitMaster1 {
             this.VisitId = VisitMaster1.VisitId || 0
             this.VisitTime = VisitMaster1.VisitTime || ''
             this.VisAdmTime = VisitMaster1.VisAdmTime || ''
+            this.followupDate = VisitMaster1.followupDate || ''
 
 
         }

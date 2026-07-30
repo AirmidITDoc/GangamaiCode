@@ -102,7 +102,7 @@
             </div>
         </ng-template>
 
-                <ng-template #patientNameWithBadgeTemplate let-element>
+        <ng-template #patientNameWithBadgeTemplate let-element>
             <!-- Patient Name with Token Badge and Hover Popover -->
             <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
                 matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
@@ -122,7 +122,7 @@
                     </mat-icon>
                 </button> -->
                 <!-- *nfIf="IsOpdEmr" -->
-                <button mat-icon-button 
+                <button mat-icon-button
                     [matTooltip]="element.emrReady ? 'General CasePaper Ready' : 'General CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady > 0 ? 'circle-icon' : ''">
@@ -130,8 +130,15 @@
                     </mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Gastrology EMR" (click)="getgastrologyCasePaper(element)">
+                <!-- <button mat-icon-button matTooltip="Gastrology EMR" (click)="getgastrologyCasePaper(element)">
                     <mat-icon>
+                        list_alt
+                    </mat-icon>
+                </button> -->
+
+                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="!element.isCancelled && IsGastrologyEMR"
+                    (click)="getgastrologyCasePaper(element)">
+                    <mat-icon style="color: rgb(48, 55, 243);">
                         list_alt
                     </mat-icon>
                 </button>

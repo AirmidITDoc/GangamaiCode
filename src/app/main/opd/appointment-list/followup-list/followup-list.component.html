@@ -1,0 +1,66 @@
+<div class="simple page-layout modal-wrapper grid-container" dynamicTableHeight>
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
+                    Patient Follow Up List
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="modal-body-container">
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<!-- 
+                <ng-template #actionButtonTemplate let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                        <button mat-icon-button matTooltip="Print Case papaer"
+                            style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
+                            (click)="OnViewReportPdf(element)">
+                            <mat-icon> print</mat-icon>
+                        </button>
+
+                    </div>
+                </ng-template> -->
+                <airmid-table [gridConfig]="gridConfig" class="content">
+                    <ng-container filters>
+                        <form [formGroup]="myformSearch">
+                            <!-- (dateChange)="GetAppointdetail()" -->
+                            <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                formStartControlName="fromDate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>UHID NO</mat-label>
+                                <input matInput placeholder="Search UHID No" autocomplete="off"
+                                    [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst1($event)"
+                                    (keypress)="keyPressAlphanumeric($event)" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                        </form>
+
+
+                    </ng-container>
+                </airmid-table>
+            </div>
+        </div>
+    </div>
+
+
+</div>

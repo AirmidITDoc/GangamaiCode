@@ -50,7 +50,8 @@ export class PaAppoCancleComponent {
   CreateCancleeForm() {
     return this.formBuilder.group({
       VisitDate: [(new Date()).toISOString(), Validators.required],
-      Reason: ['']
+      Reason: [''],
+      CancleDate: [(new Date()).toISOString()],
     });
   }
 
@@ -91,16 +92,21 @@ export class PaAppoCancleComponent {
 
       if (flag.isConfirmed) {
         const submitData = {
-          "visitId": this.VisitId
+          "visitId": this.VisitId,
+          "comments": this.CancleTaskForm.get('Reason').value || '',
+          // "isCancelledBy": this.accountService.currentUserValue.userId,
+          // "isCancelledDateTime": this.datePipe.transform(this.CancleTaskForm.get('CancleDate').value, "yyyy-MM-dd"),
+          // "isCancelled": 1,
+
+
         };
         console.log(submitData);
         this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
-          // this.toastr.success(response.message);
-          this._matDialog.closeAll();
+        this._matDialog.closeAll();
         }, (error) => {
           this.toastr.error(error.message);
         }
-      );
+        );
       }
     });
 

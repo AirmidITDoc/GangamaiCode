@@ -876,8 +876,8 @@
                         </mat-card>
                     </div>
                 </div>
-                <!-- //Advance -->
-                <div fxLayout="column" style="padding: 8px 12px 0px 12px;" *ngIf="dataSourceAdvance.data.length">
+                <!-- //Advance  *ngIf="dataSourceAdvance.data.length"-->
+                <div fxLayout="column" style="padding: 8px 12px 0px 12px;">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <mat-card style="padding: 5px;">
                             <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Advance List</span>
@@ -1055,8 +1055,6 @@
                                 </ng-container>
 
 
-
-
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                         Action</mat-header-cell>
@@ -1094,6 +1092,9 @@
                         </mat-card>
                     </div>
                 </div>
+
+
+                
             </div>
         </div>
 

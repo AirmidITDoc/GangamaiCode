@@ -98,6 +98,7 @@ export class NewRegistrationComponent implements OnInit {
     options: string[]
     filteredOptions: Observable<string[]>;
     Is9_Digit_National_Id: boolean = false;
+   pincode = '413007';
     ngOnInit(): void {
 
 
@@ -216,7 +217,7 @@ export class NewRegistrationComponent implements OnInit {
         // this._PincodeSearchService.getCityFromPincode('413007').subscribe(result => {
         //     console.log(result);
         // })
-        // this._PincodeSearchService.getCity('413005').subscribe(result1 => {
+        // this._PincodeSearchService.getCity(this.pincode).subscribe(result1 => {
         //     console.log(result1);
 
 

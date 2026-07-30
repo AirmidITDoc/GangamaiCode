@@ -104,7 +104,9 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+  
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class PersonaldetailModule { }

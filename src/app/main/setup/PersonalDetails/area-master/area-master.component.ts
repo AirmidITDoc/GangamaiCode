@@ -24,6 +24,8 @@ export class AreaMasterComponent implements OnInit {
 
     allcolumns = [
         { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Pincode", key: "pincode", sort: true, align: 'left', emptySign: 'NA' },
+
         { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {

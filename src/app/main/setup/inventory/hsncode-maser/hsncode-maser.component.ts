@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { HsncodeserviceService } from './hsncodeservice.service';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
@@ -8,47 +8,44 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-hsncode-maser',
-  templateUrl: './hsncode-maser.component.html',
-  styleUrls: ['./hsncode-maser.component.scss']
+    selector: 'app-hsncode-maser',
+    templateUrl: './hsncode-maser.component.html',
+    styleUrls: ['./hsncode-maser.component.scss'],
+        encapsulation: ViewEncapsulation.None,
+        animations: fuseAnimations,
 })
 export class HSNCODEMaserComponent {
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemCategoryMaster, permissionType.Add);
-
+    // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemCategoryMaster, permissionType.Add);
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    itemCategoryName: any = "";
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
+    }
     allcolumns = [
         { heading: "HSNCODE", key: "hsncodeName", sort: true, align: 'left', emptySign: 'NA' },
-         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        { heading: "GST", key: "gstRate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Unit", key: "unitOfMeasure", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Effective From ", key: "effectiveFrom", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "Effective To", key: "effectiveTo", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                   
-                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ItemCategoryMaster, permissionType.Edit), callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._HsncodeserviceService.deactivateTheStatus(data.itemCategoryId).subscribe((response: any) => {
-                            this.grid.bindGridData();
-                        });
-                    }
-                }]
-        } 
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
     ]
 
     allfilters = [
-        { fieldName: "hsncodeName", fieldValue: "", opType: OperatorComparer.StartsWith },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        { fieldName: "HsncodeName", fieldValue: "", opType: OperatorComparer.StartsWith }
     ]
     gridConfig: gridModel = {
-        permissionCode: permissionCodes.ItemCategoryMaster,
-        apiUrl: "ItemCategoryMaster/List",
+        // permissionCode: permissionCodes.ItemCategoryMaster,
+        apiUrl: "HSNCodeMaster/List",
         columnsList: this.allcolumns,
-        sortField: "hsncodeId",
+        sortField: "HsncodeId",
         sortOrder: 0,
         filters: this.allfilters
     }
@@ -76,6 +73,13 @@ export class HSNCODEMaserComponent {
             if (result) {
                 that.grid.bindGridData();
             }
+        });
+    }
+
+    delitem(obj) {
+        debugger
+        this._HsncodeserviceService.deactivateTheStatus(obj.hsncodeId).subscribe((response: any) => {
+            this.grid.bindGridData();
         });
     }
 }
