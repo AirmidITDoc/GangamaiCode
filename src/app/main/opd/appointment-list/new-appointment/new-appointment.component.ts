@@ -92,7 +92,7 @@ export class NewAppointmentComponent implements OnInit {
     DoctorId: any;
     vhealthCardNo: any;
     vDays: any = 0;
-    HealthCardExpDate: any;
+    HealthCardExpDate= new Date();
     followUpDate: string;
     ageYear = 0
     ageMonth = 0
@@ -175,26 +175,20 @@ export class NewAppointmentComponent implements OnInit {
         private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
-    ) { }
+    ) {
+        this.searchFormGroup = this.createSearchForm();
+        this.policyFormGroup = this.createPolicyFormGrp();
+    }
     FromRegistration: any;
     chkregisterd: boolean = false;
     Is9_Digit_National_Id: boolean = false;
     IsOPBillProceed: boolean = false;
     ngOnInit(): void {
 
-        // console.log(this._configue.configParams.OPDDefaultDepartment)
-        // console.log(this._configue.configParams.OPDDefaultDoctor)
-
         //this code for Mediforte 9 digit national id
         const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
-
-        // Swal.fire("", this._configue.configParams)
-
-
-        //    const [DefaultDepartment, DepartmentId] = this._configue.configParams.OPDDefaultDepartment.split(":");
-        //       const [DefaultDoctor, DoctorId] = this._configue.configParams.OPDDefaultDoctor.split(":");
 
 
         const rawValue1 = this?._configue?.configParams?.IsOPBillProceed || "";
@@ -209,13 +203,8 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
         this.setNationalIdValidation();
-        // this.ClassId=1
-        //  this.VisitFormGroup.get("UnitId").setValue(this.accountService.currentUserValue.user.unitId)
 
-        // this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
-        this.searchFormGroup = this.createSearchForm();
-        this.policyFormGroup = this.createPolicyFormGrp();
         console.log(this.data)
         if (this.data) {
             this.FromRegistration = this.data?.Obj
@@ -562,6 +551,7 @@ export class NewAppointmentComponent implements OnInit {
                         console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.setNationalIdValidation();
+                        debugger
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName.trim(),
                             MiddleName: this.registerObj.middleName.trim(),
@@ -624,6 +614,7 @@ export class NewAppointmentComponent implements OnInit {
                         this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.setNationalIdValidation();
+                        debugger
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName.trim(),
                             MiddleName: this.registerObj.middleName.trim(),
@@ -698,7 +689,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     getSelectedObjtrust(obj) {
-        
+
         console.log(obj)
         // if (this.data?.FormName == 'Registration-Page') {
         this.PatientName = obj.firstName + ' ' + obj.lastName;
@@ -766,7 +757,7 @@ export class NewAppointmentComponent implements OnInit {
 
                 this.CityName = this.registerObjtrust?.cityName ?? '';
 
-                
+
                 this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
                 this.registerObj.dateofBirth = this.registerObjtrust.husbandDob
 
@@ -965,7 +956,7 @@ export class NewAppointmentComponent implements OnInit {
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                 this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
                 this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-debugger
+                debugger
                 this.VisitFormGroup.get("followupDate").setValue(this.datePipe.transform(this.VisitFormGroup.get("followupDate").value, "yyyy-MM-dd"))
 
 
@@ -1639,7 +1630,7 @@ debugger
             });
             return;
         }
-        
+
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);

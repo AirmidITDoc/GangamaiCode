@@ -34,7 +34,7 @@ export class AreaMasterService {
                 [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             cityName: [""],
-            pincode:0,
+            pincode: ['',Validators.required],
             isActive: [true, [Validators.required]]
         });
     }

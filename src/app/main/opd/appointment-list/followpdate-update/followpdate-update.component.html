@@ -8,8 +8,9 @@
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                     style="color: white;">account_box
                 </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                 Edit FollowUp Date 
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
+                    Edit FollowUp Date
                 </span>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -19,20 +20,22 @@
                 </button>
             </div>
         </mat-toolbar>
-    
+
         <div class="content">
             <div class="center p-12 pb-56" style="border-radius: 4px;">
                 <div class="content-card">
-                     <div class="modal-card-container">
+                    <div class="modal-card-container">
                         <mat-accordion>
                             <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="8px">
-                                            <div fxFlex.gt-sm="76%" fxFlex class="bill-info-title py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between">
-                                            
-                                                <span class="h3 font-weight-600" style="color: blue;font-size: larger;">Patient Information</span>
-                                            
+                                            <div fxFlex.gt-sm="76%" fxFlex class="bill-info-title py-8 border-bottom"
+                                                fxLayout="row" fxLayoutAlign="space-between">
+
+                                                <span class="h3 font-weight-600"
+                                                    style="color: blue;font-size: larger;">Patient Information</span>
+
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Patient Name/UHID No
                                                     </span>
@@ -41,14 +44,15 @@
                                                         class="patient-col-value font-weight-300">{{data?.patientName}}--{{data.regId}}</span>
                                                 </div>
                                                 <div class="patient-col">
-                                                    <span class="patient-col-key" style="color: blue;font-size: larger;">Doctor Name</span>
+                                                    <span class="patient-col-key"
+                                                        style="color: blue;font-size: larger;">Doctor Name</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{data.doctorname}}</span>
                                                 </div>
                                             </div>
-                                      
-                                           
-                                        </div> 
+
+
+                                        </div>
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <mat-card>
@@ -76,7 +80,7 @@
                                                     </div>
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="10px">
-        
+
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">OPD No</span>
                                                         <span>:</span>
@@ -93,14 +97,13 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Department</span>
                                                         <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{data.departmentName}}</span>
+                                                        <span class="patient-col-value">{{data.departmentName}}</span>
                                                     </div>
-        
-        
+
+
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
-        
+
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Patient Type | Tarrif
                                                         </span>
@@ -132,21 +135,21 @@
                     <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
                         <mat-card style="padding: 5px;">
                             <form [formGroup]="FollowupFormGroup">
-                                 <div fxLayout="row" fxLayoutGap="6px"> 
-                                      <span style="font-weight: bold;color: rgb(3, 64, 99);padding: 20px;font-size: large;">Current Follow up date :-{{prevfolloeupdate}}</span>
-                                 </div>
-                                <div fxLayout="row" fxLayoutGap="6px"> 
-                                  
+                                <div fxLayout="row" fxLayoutGap="6px">
+                                    <span
+                                        style="font-weight: bold;color: rgb(3, 64, 99);padding: 20px;font-size: large;">Current
+                                        Follow up date :-{{prevfolloeupdate}}</span>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="6px">
+
                                     <mat-form-field appearance="outline" fxFlex="40%">
                                         <mat-label>Follow Up Date</mat-label>
-                                        <input matInput 
-       [matDatepicker]="picker" 
-       placeholder="Follow Up date"
-       formControlName="followupdate">
+                                        <input matInput [matDatepicker]="picker" placeholder="Follow Up date"
+                                            formControlName="followupdate" [value]="followUpDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>
-    
+
                                     <!-- <mat-form-field appearance="outline" fxFlex="40%">
                                         <mat-label>To Date</mat-label>
                                         <input matInput [matDatepicker]="picker1" placeholder="To date"
@@ -154,14 +157,14 @@
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field> -->
-     
+
                                 </div>
                             </form>
                         </mat-card>
                         <div fxLayoutAlign="end">
                             <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary"   (click)="OnSave()">Update</button>
+                                <button class="btn btn-primary" (click)="OnSave()">Update</button>
                             </div>
                         </div>
                     </div>
@@ -169,4 +172,4 @@
             </div>
         </div>
     </div>
-    </mat-card>
+</mat-card>

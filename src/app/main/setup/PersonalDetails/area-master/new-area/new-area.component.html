@@ -35,9 +35,9 @@
                             label="Pincode"
                             formControlName="pincode"
                             [value]="data?.pincode"
-                            [formGroup]="areaForm"
+                            [formGroup]="areaForm"  (keypress)="keyPressAlphanumeric($event)"
                             [validations]="getValidationMessages().Pincode"
-                            [maxLength]="100">
+                            [maxLength]="6">
                         </airmid-textbox> 
                     </div>
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

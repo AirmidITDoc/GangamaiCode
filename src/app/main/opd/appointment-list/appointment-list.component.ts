@@ -61,6 +61,7 @@ import { FollowupListComponent } from './followup-list/followup-list.component';
 
 })
 export class AppointmentListComponent implements OnInit {
+    debugger
     IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
     IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
     IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
@@ -109,6 +110,7 @@ export class AppointmentListComponent implements OnInit {
     autocompletedepartment: string = "Department";
     autocompleteCompany: string = "Company";
     dataSource = new MatTableDataSource<VisitMaster1>();
+    dataSource1 = new MatTableDataSource<VisitMaster1>();
     vOPIPId = 0;
     f_name: any = "%"
     regNo = 0;
@@ -194,6 +196,7 @@ export class AppointmentListComponent implements OnInit {
 
         // 
         this.GetAppointdetail()
+        this.GetFollowupdetail()
         if (this._ActRoute.url == '/opd/appointment') {
             this.id = this.route.snapshot.queryParamMap.get('Id');
             this.mode = this.route.snapshot.queryParamMap.get('Mode');
@@ -348,6 +351,7 @@ export class AppointmentListComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
         this.GetAppointdetail()
+        this.GetFollowupdetail()
     }
 
 
@@ -648,9 +652,9 @@ export class AppointmentListComponent implements OnInit {
                 if (flag.isConfirmed) {
                     const dialogRef = this._matDialog.open(FollowpdateUpdateComponent,
                         {
-                            maxWidth: "65vw",
+                            maxWidth: "75vw",
                             maxHeight: '45%',
-                            width: '65%',
+                            width: '75%',
                             data: element
                         });
                     dialogRef.afterClosed().subscribe(result => {
@@ -1300,7 +1304,7 @@ export class AppointmentListComponent implements OnInit {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-        this.VFollowupTodayCount = 0;
+
         // let fromDateControl = "1900-01-01"
         // let toDateControl = "1900-01-01"
         const fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
@@ -1402,16 +1406,7 @@ export class AppointmentListComponent implements OnInit {
                     if (element.emrReady == 1) {
                         this.vEMRReady++;
                     }
-                    debugger
-                    const today = new Date();
-                    const todayStr =
-                        String(today.getDate()).padStart(2, '0') + '/' +
-                        String(today.getMonth() + 1).padStart(2, '0') + '/' +
-                        today.getFullYear();
 
-                    if (String(element.followupDate) === todayStr) {
-                        this.VFollowupTodayCount++;
-                    }
                 });
                 console.log(this.dataSource.data)
             }
@@ -1794,22 +1789,88 @@ export class AppointmentListComponent implements OnInit {
             clearTimeout(this.doctorCloseTimeout);
         }
     }
- 
+
 
     openPatientDetailsPopover1(event: MouseEvent) {
         const dialogRef = this.dialogRef.open(FollowupListComponent,
             {
-                   maxWidth: "90%",
-                    height: '90%',
-                    width: '95%',
+                maxWidth: "95vw",
+                height: '85%',
+                width: '90%',
             });
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);
         });
     }
 
+    //
+    GetFollowupdetail() {
 
-    
+        this.VFollowupTodayCount = 0;
+        const fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+
+        // Handle date range
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+
+        debugger
+        filters.push(
+
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "RegId",
+                "fieldValue": String(this.regNo),
+                "opType": "Equals"
+            }
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "FollowupDate",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+        console.log(data)
+        this._AppointmentlistService.getfollowuplist(data).subscribe((response) => {
+            this.dataSource1.data = response.data;
+            if (this.dataSource1.data.length > 0) {
+                this.VFollowupTodayCount = this.dataSource1.data.length
+
+                // this.dataSource1.data.forEach(element => {
+
+                //     debugger
+                //     const today = new Date();
+                //     const todayStr =
+                //         String(today.getDate()).padStart(2, '0') + '/' +
+                //         String(today.getMonth() + 1).padStart(2, '0') + '/' +
+                //         today.getFullYear();
+
+                //     if (String(element.followupDate) === todayStr) {
+                //         this.VFollowupTodayCount++;
+                //     }
+                // });
+                console.log(this.dataSource1.data)
+            }
+        });
+    }
 }
 
 

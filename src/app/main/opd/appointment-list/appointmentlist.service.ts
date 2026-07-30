@@ -148,9 +148,9 @@ export class AppointmentlistService {
             firstFollowupVisit: 0,
             AppPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             campId: [0],
-            followupDate:  [
-                new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()
-            ],//[(new Date()).toISOString()],
+            followupDate: [(new Date()).toISOString()],
+            // HealthcardDate: [  [
+                // new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()],
             crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
@@ -348,6 +348,14 @@ export class AppointmentlistService {
     public getVisitlist(employee) {
         return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
     }
+
+    
+
+
+     public getfollowuplist(employee) {
+        return this._httpClient1.PostData("VisitDetail/Follow_up_List", employee)
+    }
+
   public getFollowupList(employee) {
         return this._httpClient1.PostData("VisitDetail/Follow_up_List", employee)
     }
