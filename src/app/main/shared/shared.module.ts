@@ -92,9 +92,10 @@ import { PatientInformationComponent } from './componets/patient-information/pat
 import { AirmidExcelImportButtonComponent } from './componets/airmid-excel-import-button/airmid-excel-import-button.component';
 import { AirmidExcelImportDialogComponent } from './componets/airmid-excel-import/airmid-excel-import.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { AirmidCommonTableComponent } from './componets/airmid-common-table/airmid-common-table.component';
 @NgModule({
     declarations: [
-        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, StoreUnitComponent, PaymentModeComponent, AirmidAuditComponent, AirmidAuditIconComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        TrimPipe, CommonDateComponent, AirmidTableComponent,AirmidCommonTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, StoreUnitComponent, PaymentModeComponent, AirmidAuditComponent, AirmidAuditIconComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
         AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent,
         AirmidFullDatepickerComponent, AirmidFileuploadComponent, AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
         AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent, SMSDetailsPopupOverComponent, WhatsappDetPopUpOverComponent, PatientInformationComponent,
@@ -155,6 +156,7 @@ import { MatMenuModule } from '@angular/material/menu';
         AirmidAuditIconComponent,
         DyanmicTableHeightDirective,
         AirmidTableComponent,
+        AirmidCommonTableComponent,
         AirmidTextboxComponent,
         AirmidDropDownComponent,
         AirmidAutoCompleteComponent,
