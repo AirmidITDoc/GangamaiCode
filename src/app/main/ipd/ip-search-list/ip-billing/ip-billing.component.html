@@ -629,8 +629,8 @@
                                 <input matInput [(ngModel)]="contact.concessionPercentage" type="text"
                                   placeholder="Disc %" (keyup)="gettablecalculation(contact)"
                                   (keypress)="keyPressCharater($event)" min="0" max="100"
-                                     [disabled]="UserDiscApplyPer != 'true'"
-                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'">
+                                      [disabled]="UserDiscApplyPer !== true"
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'" >
                               </mat-form-field>
                             </ng-container>
                             <ng-template #showDiscPer>
@@ -647,8 +647,8 @@
                                 <input matInput [(ngModel)]="contact.concessionAmount" type="text"
                                   placeholder="Disc Amt" (keyup)="gettablecalculation(contact)"
                                   (keypress)="keyPressCharater($event)" min="0"
-                                     [disabled]="UserDiscApplyPer != 'true'"
-                                                [matTooltip]="UserDiscApplyPer === ture ? '' : 'You do not have permission to apply a discount.'">
+                                      [disabled]="UserDiscApplyPer !== true"
+                                                [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'" >
                               </mat-form-field>
                             </ng-container>
                             <ng-template #showDiscAmt>
