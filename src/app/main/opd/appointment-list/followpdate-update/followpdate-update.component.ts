@@ -17,34 +17,44 @@ export class FollowpdateUpdateComponent {
     FollowupFormGroup: FormGroup
     prevfolloeupdate: any
     opdipdno: any
-    vfollowupdate = new Date()
+
     constructor(
         public _AppointmentlistService: AppointmentlistService,
         public datePipe: DatePipe, private _formBuilder: UntypedFormBuilder,
         public _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
     ) { }
-    followUpDate: Date 
+    followUpDate: any//=new Date()
     ngOnInit(): void {
+        this.FollowupFormGroup = this.createFollowupDateupdateForm();
 
 
         debugger
         if (this.data) {
             console.log(this.data)
             this.prevfolloeupdate = this.data.followupDate
-            // this.vfollowupdate = new Date(this.prevfolloeupdate)
             this.opdipdno = this.data.visitId
-          setTimeout(() => {
-            this.followUpDate = new Date(this.data.followupDate);
-          }, 500);  
-            
+            // setTimeout(() => {
+            //     this.followUpDate = new Date(this.data.followupDate);
+
+            //    this.followUpDate= this.datePipe.transform( this.followUpDate, "dd-MMM-yyyy")
+            //     this.FollowupFormGroup.get('followupdate').patchValue( this.followUpDate)
+            // }, 500);
+
+            const dateParts = this.data.followupDate.split('/'); // ["28", "08", "2026"]
+            const day = +dateParts[0];
+            const month = +dateParts[1] - 1;   // Month is 0-based
+            const year = +dateParts[2];
+
+            const parsedDate = new Date(year, month, day);
+            this.FollowupFormGroup.get('followupdate')?.setValue(parsedDate);
+
         }
-        this.FollowupFormGroup = this.createFollowupDateupdateForm();
 
     }
     createFollowupDateupdateForm() {
         return this._formBuilder.group({
-            followupdate: [(new Date()).toISOString()],
+            followupdate: null,//this.followUpDate,// [(new Date()).toISOString()],
 
         })
     }

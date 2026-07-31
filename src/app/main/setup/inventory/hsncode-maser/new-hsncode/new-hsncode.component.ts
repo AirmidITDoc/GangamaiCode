@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { HsncodeserviceService } from '../hsncodeservice.service';
 import { fuseAnimations } from '@fuse/animations';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-new-hsncode',
@@ -28,7 +29,7 @@ export class NewHsncodeComponent {
     constructor(
         public _HsncodeserviceService: HsncodeserviceService,
         public dialogRef: MatDialogRef<NewHsncodeComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: any, public datePipe: DatePipe,
         public toastr: ToastrService
     ) { }
 
@@ -55,6 +56,8 @@ export class NewHsncodeComponent {
         this.HsnccodeForm.get('gstRate').setValue(parseInt(this.GSTTypeName))
         this.HsnccodeForm.get('unitOfMeasure').setValue(this.vMUnit)
         this.HsnccodeForm.get('unitOfMeasureId').setValue(parseInt(this.vMUnitId))
+
+   this.HsnccodeForm.get('effectiveTo').setValue(this.datePipe.transform(this.HsnccodeForm.get('effectiveTo').value, 'yyyy-MM-dd'))
 
 
         if (!this.HsnccodeForm.invalid) {
