@@ -37,6 +37,7 @@ export interface AbhaVerifyOtp {
     txnId: string;
     otp: string;
     OtpType: number;
+    mobile:string
 }
 
 export interface VerifyUser {
@@ -132,17 +133,17 @@ export interface generateToken {
     name: string,
     gender: string,
     yearOfBirth: number,
-    hipId: string,
-    xCmId: string
+    // hipId: string,
+    // xCmId: string
 }
 
 export interface LinkTokenRequest {
     abhaNumber: string;
     abhaAddress: string;
     patient: Patient[];
-    hipId: string;
+    // hipId: string;
     linkToken: string;
-    xCmId: string;
+    // xCmId: string;
 }
 
 export interface Patient {

@@ -76,6 +76,7 @@ export class ProfileCardStepComponent implements OnInit {
     selectedRow: any;
     abhaAddress: any;
     abhaNumber: any;
+    showRegBtn = true;
     showLinkAbha = false;
     showUpdateAbha = false;
 
@@ -349,6 +350,7 @@ export class ProfileCardStepComponent implements OnInit {
             this.showCard = true
             this.showUpdateAbha = false;
             this.showLinkAbha = true;
+            this.showRegBtn=true;
             this.fullname = obj.patientName
 
             this._AppointmentlistService.getAbhaById(obj.abhaTranId).subscribe((response) => {
@@ -359,10 +361,12 @@ export class ProfileCardStepComponent implements OnInit {
                     // Same ABHA -> Show Update button only
                     this.showUpdateAbha = true;
                     this.showLinkAbha = false;
+                    this.showRegBtn=false
                 } else {
                     // Different ABHA -> Show Link ABHA
                     this.showUpdateAbha = false;
                     this.showLinkAbha = true;
+                    this.showRegBtn=true;
                 }
             });
 

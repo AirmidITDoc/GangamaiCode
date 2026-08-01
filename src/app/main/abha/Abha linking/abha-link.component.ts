@@ -10,6 +10,7 @@ import { AbhaService } from '../abha.service';
 import { AadhaarGenerateOtpResponse } from '../abha-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
+import { HospitalService } from 'app/main/setup/PersonalDetails/hospital-master/hospital.service';
 
 @Component({
   selector: 'app-abha-link',
@@ -27,6 +28,17 @@ export class AbhaLinkComponent {
   visitDet: any;
   regNo: any;
   patientName: any;
+  abhaNumber: any;
+  abhaAddress: any;
+  requestId: any;
+  callbackMessage: string = '';
+  showGenerateTokenBtn = true;
+  showLinkBtn = false;
+  linkToken: any;
+  unitId: any;
+  hospitalName: any;
+  opdNo: any;
+  departmentName: any;
 
   constructor(
     private abhaService: AbhaService,
@@ -37,13 +49,21 @@ export class AbhaLinkComponent {
     private snack: MatSnackBar,
     private accountService: AuthenticationService,
     private _formBuilder: UntypedFormBuilder,
-    private _FormvalidationserviceService: FormvalidationserviceService
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    public _HospitalService: HospitalService,
   ) { }
 
   ngOnInit(): void {
 
     this.abhaForm = this.createAbhaform();
     this.abhaForm.markAllAsTouched();
+    this.unitId = this.accountService.currentUserValue.user.unitId
+
+    if ((this.unitId ?? 0) > 0) {
+      this._HospitalService.gethospitalById(this.unitId).subscribe((response) => {
+        this.hospitalName = response.hospitalName
+      });
+    }
 
     if ((this.data?.abhaTranId ?? 0) > 0) {
       this.isProfileData = true;
@@ -53,17 +73,27 @@ export class AbhaLinkComponent {
         this._registerService.getAbhaById(this.data.abhaTranId).subscribe((response) => {
           console.log('Get ABHA DATA', response)
           this.dateofBirth = response.yearOfBirth
+          this.abhaAddress = response.abhaAddress
+          this.abhaNumber = response.abhaNumber
           this.abhaForm.patchValue({
             abhaAddress: response.abhaAddress,
             abhaNumber: response.abhaNumber,
             abhaFullName: response.abhaFullName,
             gender: response.gender
           });
+          this.loadGetApi();
         });
       }, 500);
       this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
         this.visitDet = response
+        this.opdNo = `${this.visitDet.opdno.replace(/\//g, '')}-V${this.visitDet.visitId}`
         console.log('Visit Details', this.visitDet)
+
+        if ((this.visitDet?.departmentId ?? 0) > 0) {
+          this.abhaService.getdepartmentById(this.visitDet.departmentId).subscribe((response) => {
+            this.departmentName = response.departmentName
+          });
+        }
       });
     }
   }
@@ -84,6 +114,34 @@ export class AbhaLinkComponent {
     });
   }
 
+  loadGetApi(): void {
+    this.abhaService.abhaGetReq(
+      this.abhaNumber.replace(/-/g, ''),
+      this.abhaAddress
+    ).subscribe({
+      next: (res: any) => {
+
+        console.log("Get Request:", res);
+        this.loading = false;
+        if (res.linkToken) {
+
+          this.linkToken = res.linkToken;
+          this.requestId = res.requestId;
+          this.callbackMessage = `Request ID : ${res.requestId}`;
+
+          // Hide Generate Token button
+          this.showGenerateTokenBtn = false;
+
+          // Show Link button
+          this.showLinkBtn = true;
+        }
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
+  }
+
   onSubmit() {
     this.loading = true;
     this.abhaService.GenerateToken({
@@ -91,18 +149,21 @@ export class AbhaLinkComponent {
       abhaAddress: this.abhaForm.value.abhaAddress,
       name: this.abhaForm.value.abhaFullName,
       gender: this.abhaForm.value.gender.trim(),
-      yearOfBirth: new Date(this.dateofBirth).getFullYear(),
-      hipId: "AIRMIDABHA",
-      xCmId: "sbx"
+      yearOfBirth: new Date(this.dateofBirth).getFullYear()
+      // hipId: "AIRMIDABHA",
+      // xCmId: "sbx"
     })
 
       .subscribe((r: AadhaarGenerateOtpResponse) => {
-        if (r.txnId) {
-          this.snack.open(r.message, 'OK', { duration: 2500 });
-        }
-        else {
-          this.snack.open(r.message, 'OK', { duration: 2500 });
-        }
+        // if (r.txnId) {
+        //   this.snack.open(r.message, 'OK', { duration: 2500 });
+        // }
+        // else {
+        this.snack.open(r.message, 'OK', { duration: 2500 });
+        setTimeout(() => {
+          this.loadGetApi();
+        }, 5000);
+        // }
         this.loading = false;
       });
     console.log("Generate Token:", this.abhaForm)
@@ -111,28 +172,29 @@ export class AbhaLinkComponent {
   onLink() {
     this.loading = true;
     const payload = {
-      abhaNumber: `${this.regNo}${this.visitDet.visitDate.split('T')[0].replace(/-/g, '')}`,
+      abhaNumber: this.abhaForm.value.abhaNumber.replace(/-/g, ''),
       abhaAddress: this.abhaForm.value.abhaAddress,
       patient: [
         {
           referenceNumber: this.regNo, //`${this.regNo}${this.visitDet.visitDate.split('T')[0].replace(/-/g, '')}`, //"UHID + VISIT_DATE"
-          display: this.patientName, //`${this.patientName} - ${this.visitDet.opdno.replace(/\//g,'')}`, //"PatientName + VISIT_OPDNO"
+          display: this.hospitalName, //`${this.patientName} - ${this.visitDet.opdno.replace(/\//g,'')}`, //"PatientName + VISIT_OPDNO"
           careContexts: [
             {
-              referenceNumber: this.visitDet.opdno,//`${this.regNo}${this.visitDet.opdno.replace(/\//g,'')}`, //"UHID + VISIT_OPDNO" removed date bec opdno also have date
-              display: "Prescription"
+              referenceNumber: this.opdNo, //"opdNo + visitId" 
+              display: this.departmentName
             }
           ],
           hiType: "Prescription",
           count: 1
         }
       ],
-      hipId: "AIRMIDABHA",
-      linkToken: "", // Token received from Generate Link Token API
-      xCmId: "sbx"
+      // hipId: "AIRMIDABHA",
+      linkToken: String(this.linkToken) // Token received from Generate Link Token API
+      // xCmId: "sbx"
     };
 
     console.log("Link Token Payload:", payload);
+    return;
 
     this.abhaService.LinkToken(payload).subscribe((r: AadhaarGenerateOtpResponse) => {
       if (r.txnId) {

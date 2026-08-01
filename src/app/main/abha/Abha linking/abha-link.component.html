@@ -50,17 +50,27 @@
                     </div>
                 </div>
 
-                <div style="display:flex; justify-content:flex-end; width:100%;">
+                <div style="display:flex; justify-content:flex-end; width:100%;" *ngIf="showGenerateTokenBtn ">
                     <button class="btn btn-primary" color="accent" (click)="onSubmit()">
                         <span>Generate Token</span>
                     </button>
                 </div>
 
-                <p>Call Back message</p>
+                <p *ngIf="requestId">
+                    Callback Request ID :
+                    <strong>{{ requestId }}</strong>
+                </p>
 
             </form>
 
-            <div style="display:flex; justify-content:flex-end; width:100%;">
+            <div *ngIf="showLinkBtn" class="link-info">
+                <div style="font-size: 16px;"><strong style="font-size: 18px;">UHID:</strong> {{ regNo }}</div>
+                <div style="font-size: 16px;"><strong style="font-size: 18px;">Hospital Name:</strong> {{ hospitalName }}</div>
+                <div style="font-size: 16px;"><strong style="font-size: 18px;">OPD No:</strong> {{ opdNo }}</div>
+                <div style="font-size: 16px;"><strong style="font-size: 18px;">Department:</strong> {{ departmentName }}</div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; width:100%;" *ngIf="showLinkBtn">
                 <button class="btn btn-primary" color="accent" (click)="onLink()">
                     <span>Link</span>
                 </button>

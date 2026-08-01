@@ -41,6 +41,9 @@ export class VerifyByAbhaAddressComponent implements OnInit {
     canResend = false;
     resendAttempts = 0;
     otpExpired = false;
+    otpType: any;
+    accessToken = '';
+    showSuccessPopup = false;
     @Output() sessionExpired = new EventEmitter<void>();
 
     constructor(private fb: FormBuilder, private abhaService: AbhaService, private snack: MatSnackBar) {
@@ -117,6 +120,7 @@ export class VerifyByAbhaAddressComponent implements OnInit {
                 this.searchData = r
                 if (r.healthIdNumber) {
                     this.authMethods = r.authMethods || [];
+
                     this.step = 2;
                     this.snack.open('', 'OK', { duration: 2500 });
                 } else {
@@ -132,9 +136,18 @@ export class VerifyByAbhaAddressComponent implements OnInit {
             this.abhaForm.get('otpType')?.markAsTouched();
             return;
         }
+        // const selectedAuthMethod = this.abhaForm.get('otpType').value;
+        // this.otpType = this.authMethods.indexOf(selectedAuthMethod);
+        // console.log(this.otpType);
+        if (this.abhaForm.get('otpType').value === 'AADHAAR_OTP') {
+            this.otpType = 1;
+        } else if (this.abhaForm.get('otpType').value === 'MOBILE_OTP') {
+            this.otpType = 0;
+        }
+
         this.loading = true;
         // if (this.otpSystem === 'aadhaar')
-        this.abhaService.requestAbhaOtp({ AadhaarNumber: this.searchData.abhaAddress, OtpType: 1 })
+        this.abhaService.requestAbhaOtp({ AadhaarNumber: this.searchData.abhaAddress, OtpType: 0 })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.channelLabel = this.abhaForm.value.otpType === 1 ? 'Aadhaar-linked mobile' : 'ABHA-linked mobile';
@@ -189,19 +202,26 @@ export class VerifyByAbhaAddressComponent implements OnInit {
         //             this.loading = false;
         //         });
         // else
-        this.abhaService.verifyAbhaOtp({ otp: this.otpForm.value.otp, txnId: this.txnId, OtpType: this.abhaForm.value.otpType })
+        this.abhaService.verifyAbhaOtp({ txnId: this.txnId, otp: this.otpForm.value.otp, mobile: this.abhaForm.get('abhaNumber').value, OtpType: 0 })
             .subscribe((r: AbhaOtpVerify) => {
                 if (r.authResult === 'success' && r.accounts) {
                     this.snack.open(r.message, 'OK', { duration: 1800 });
-                    this.verified.emit({ accesstoken: r.token, isAddress: true });
+                    this.accessToken = r.token;
+                    this.showSuccessPopup = true;
+                    // this.verified.emit({ accesstoken: r.token, isAddress: true });
                 } else {
                     this.otpForm.get('otp')?.setErrors({ invalid: r.message });
                     this.snack.open(r.message, 'OK', { duration: 3000 });
                 }
                 this.loading = false;
             });
+        // this.abhaForm.value.otpType
     }
 
+    closeSuccessPopup() {
+        this.showSuccessPopup = false;
+        this.verified.emit({ accesstoken: this.accessToken, isAddress: true });
+    }
     // resendOtp(): void {
     //     if (this.resendRemaining <= 0) return;
     //     this.resendRemaining--;
