@@ -33,6 +33,7 @@ export class HospitalMasterComponent implements OnInit {
     autocompletecity: string = "City";
     logo: PageNames = PageNames.HOSPITAL_LOGO;
     nabh: PageNames = PageNames.NABH
+    stamp: PageNames = PageNames.Stamp
     // signature: PageNames = PageNames.HOSPITAL_LOGO;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -188,6 +189,40 @@ export class HospitalMasterComponent implements OnInit {
             // this.onCloseDialog.emit(result);
         });
     }
+
+    // Stamp Upload
+    onFiles2(element) {
+        const dialogRef = this._matDialog.open(
+            AirmidSignatureComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: "70vh",
+                width: "100%",
+                data: { refId: element.hospitalId, refType: 'Stamp_Upload', multiple: 'true', docName: 'Stamp_Upload' }
+            }
+        );
+
+        dialogRef.afterClosed().subscribe((result) => {
+            // this.onCloseDialog.emit(result);
+        });
+    }
+
+    // Stamp Upload
+    onFiles3(element) {
+        const dialogRef = this._matDialog.open(
+            AirmidSignatureComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: "70vh",
+                width: "100%",
+                data: { refId: element.hospitalId, refType: 'logo', multiple: 'true', docName: 'HospitalLogo' }
+            }
+        );
+
+        dialogRef.afterClosed().subscribe((result) => {
+            // this.onCloseDialog.emit(result);
+        });
+    }
 }
 
 
@@ -219,7 +254,7 @@ export class HospitalMaster {
     ipdAdvanceReceiptCounterId: any;
     ipdRefundOfAdvanceReceiptCounterId: any;
     hospitalShortName: any;
-    isHeaderOption:any;
+    isHeaderOption: any;
     /**
      * Constructor
      *

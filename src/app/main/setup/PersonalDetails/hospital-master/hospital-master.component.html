@@ -24,18 +24,23 @@
                 <mat-icon>delete_outline</mat-icon>
             </button>
 
-            <airmid-signature-icon [refId]="element.hospitalId" [refType]="logo" [multiple]="true"
-                docName="HospitalLogo"></airmid-signature-icon>
-
-            <!-- <airmid-signature-icon [refId]="element.hospitalId" [refType]="nabh" [multiple]="true"
+            <!-- <airmid-signature-icon [refId]="element.hospitalId" [refType]="logo" [multiple]="true"
                 docName="HospitalLogo"></airmid-signature-icon> -->
 
-            <button mat-icon-button matTooltip="NABH Logo" (click)="onFiles(element)">
-                 <img width="60" height="60" src="assets/images/logos/nabh.png">
+            <button mat-icon-button matTooltip="Upload Hospital Logo" (click)="onFiles3(element)">
+                <img width="60" height="60" src="assets/images/logos/hospitalLogo.png">
             </button>
 
-            <button mat-icon-button matTooltip="Image Upload" (click)="onFiles1(element)">
-                 <img width="60" height="60" src="assets/images/logos/imgUpload.png">
+            <button mat-icon-button matTooltip="HospitalHeader For Report" (click)="onFiles1(element)">
+                <img width="60" height="60" src="assets/images/logos/imgUpload.png">
+            </button>
+
+            <button mat-icon-button matTooltip="Upload NABH Logo" (click)="onFiles(element)">
+                <img width="60" height="60" src="assets/images/logos/nabh.png">
+            </button>
+
+            <button mat-icon-button matTooltip="Upload Stamp" (click)="onFiles2(element)">
+                <img width="60" height="60" src="assets/images/logos/stamp.png">
             </button>
 
         </div>

@@ -168,7 +168,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
         //             this.loading = false;
         //         });
         // else
-        this.abhaService.verifyAbhaOtp({ otp: this.otpForm.value.otp, txnId: this.txnId, OtpType: this.abhaForm.value.otpType })
+        this.abhaService.verifyAbhaOtp({ otp: this.otpForm.value.otp, txnId: this.txnId, OtpType: this.abhaForm.value.otpType,mobile: this.abhaForm.get('abhaNumber').value })
             .subscribe((r: AbhaOtpVerify) => {
                 if (r.txnId) {
                     if (r.authResult === 'success' && r.accounts) {

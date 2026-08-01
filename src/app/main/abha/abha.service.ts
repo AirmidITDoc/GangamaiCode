@@ -123,4 +123,11 @@ export class AbhaService {
     LinkToken(body: LinkTokenRequest): Observable<AadhaarGenerateOtpResponse> {
         return this.http.PostData('m2/hip-linking/link/carecontext', body);
     }
+    abhaGetReq(abhaNumber: any,abhaAddress:any ) {
+        return this.http.GetData(`m2/hip-linking/${abhaNumber}?abhaAddress=${abhaAddress}`);
+    }
+
+    public getdepartmentById(Id) {
+        return this.http.GetData("DepartmentMaster/" + Id);
+    }
 }

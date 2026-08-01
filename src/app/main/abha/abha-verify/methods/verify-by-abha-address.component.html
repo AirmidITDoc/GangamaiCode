@@ -170,3 +170,20 @@
         </form>
     </mat-card-content>
 </mat-card>
+
+<div class="success-overlay" *ngIf="showSuccessPopup">
+    <div class="success-popup">
+        <h2>Congratulations</h2>
+        <p>Welcome to ABHA Page</p>
+
+        <img src="assets/images/logos/success.png" width="100" height="100" alt="Success">
+
+        <h3>Thank You</h3>
+
+        <p>Your OTP verification has been completed successfully!</p>
+
+        <button mat-raised-button color="primary" (click)="closeSuccessPopup()">
+            OK
+        </button>
+    </div>
+</div>
