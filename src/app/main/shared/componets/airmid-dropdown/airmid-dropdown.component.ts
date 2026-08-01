@@ -171,6 +171,7 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
         if (this.options?.length > 0) {
             this.ddls = this.options as [];
             this.filteredDdls.next(this.ddls.slice());
+            this.setFirstRecordIfRequired();
         } else {
             if (this.ApiUrl == "")
                 this._httpClient
@@ -180,6 +181,7 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
                         this.filteredDdls.next(this.ddls.slice());
                         if (this.value) {
                             this.SetSelection(this.value);
+                            this.setFirstRecordIfRequired();
                         }
                     });
             else
@@ -195,6 +197,7 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
                                 }
                             }
                             this.SetSelection(this.value);
+                            this.setFirstRecordIfRequired();
                         }
                     });
         }
@@ -279,5 +282,38 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
         }
         this.changeDetectorRefs.detectChanges();
     }
+/////   added By Ambadas for set first value bydefault
+@Input() selectFirstByDefault: boolean = false;
+private setFirstRecordIfRequired() {
 
+    if (
+        this.selectFirstByDefault &&
+        this.ddls &&
+        this.ddls.length > 0
+    ) {
+
+        const currentValue = this.formGroup.get(this.formControlName)?.value;
+
+        const isValueExist = this.ddls.some(
+            x => x[this.ValueField].toString() === currentValue?.toString()
+        );
+
+        // Current ID list मध्ये नाही किंवा empty आहे तर first record set करा
+        if (!isValueExist) {
+
+            const first = this.ddls[0];
+
+            this.control.setValue(first);
+
+            if (this.ReqFullObj) {
+                this.formGroup.get(this.formControlName)?.setValue(first);
+            } else {
+                this.formGroup.get(this.formControlName)
+                    ?.setValue(first[this.ValueField]);
+            }
+
+            this.selectionChange.emit(first);
+        }
+    }
+}
 }

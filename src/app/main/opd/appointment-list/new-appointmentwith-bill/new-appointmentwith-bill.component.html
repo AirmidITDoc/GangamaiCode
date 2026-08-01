@@ -57,6 +57,7 @@
 
                                     <airmid-dropdown  *ngIf="UserWsieCashcounterId" class="w-250"  label="Select Cash Counter" formControlName="CashCounterID"
                                        [formGroup]="searchFormGroup"    TextField="cashCounterName" ValueField="cashCounterId"
+                                            [selectFirstByDefault]="true"
                                     [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"
                                       ></airmid-dropdown>
 

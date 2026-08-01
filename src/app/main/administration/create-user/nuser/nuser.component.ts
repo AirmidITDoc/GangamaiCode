@@ -72,6 +72,7 @@ export class NUserComponent implements OnInit {
     @ViewChild('passwordTextbox', { static: false }) passwordTextbox: ElementRef;
     @ViewChild('ddlUnit') ddlUnit: AirmidDropDownComponent;
     @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
+    @ViewChild('ddlCashCounter') ddlCashCounter: AirmidDropDownComponent;
 
     constructor(
         public _CreateUserService: CreateUserService,
@@ -483,7 +484,7 @@ getCashcounterDetail(row) {
    removeCashcounter(item) {
         const removedIndex = this.myuserApprovalform1.value.multipleCashCounterId.findIndex(x => x.value == item.value);
         this.myuserApprovalform1.value.multipleCashCounterId.splice(removedIndex, 1);
-        this.ddlUnit.SetSelection(this.myuserApprovalform1.value.multipleCashCounterId.map(x => x.value));
+        this.ddlCashCounter.SetSelection(this.myuserApprovalform1.value.multipleCashCounterId.map(x => x.value));
     }
     removeUnit(item) {
         const removedIndex = this.myuserApprovalform1.value.multipleUnitId.findIndex(x => x.value == item.value);
