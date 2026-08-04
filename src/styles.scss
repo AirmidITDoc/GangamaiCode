@@ -64,6 +64,45 @@
     --mono: 'JetBrains Mono', monospace;
 }
 
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+}
+
+.docmed-theme {
+
+    --ink-navy: #12283F;
+    --accent-teal: #0E7C7B;
+    --accent-teal-dark: #0a6260;
+    --amber-status: #D98F2B;
+
+    --paper: #F6F5F1;
+    --surface-panel: #FBFAF7;
+    --surface-hover: #EEF3F1;
+    --surface-selected: #E3F1EF;
+    --surface-chip: #EDEBE4;
+    --divider-line: #E1DFD6;
+
+    --text-primary: #1D2733;
+    --text-muted: #6B7684;
+    --danger: #B23A3A;
+
+    --shadow-card: 0 10px 28px rgba(18, 40, 63, .1);
+
+    font-family: 'IBM Plex Sans', sans-serif;
+    // background: var(--paper);
+    color: var(--text-primary);
+}
+
 .mat-card {
     width: 100%;
     padding: 2px;
@@ -533,73 +572,101 @@ legend {
 
 /* ── ANGULAR CALENDAR OVERRIDES ──────────────────────────────── */
 .cal-day-view {
-  background: transparent !important;
-  border: none !important;
+    background: transparent !important;
+    border: none !important;
 }
+
 .cal-day-view .cal-hour-rows {
-  border: 1px solid var(--border) !important;
-  border-radius: 0 0 var(--radius) var(--radius);
-  overflow: hidden;
+    border: 1px solid var(--border) !important;
+    border-radius: 0 0 var(--radius) var(--radius);
+    overflow: hidden;
 }
+
 .cal-day-view .cal-hour {
-  border-bottom: 1px solid #f1f5f9 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
 }
+
 .cal-day-view .cal-hour:nth-child(odd) {
-  background: #fafbfd !important;
+    background: #fafbfd !important;
 }
+
 .cal-day-view .cal-hour-segment {
-  border-top: 1px solid #f1f5f9 !important;
+    border-top: 1px solid #f1f5f9 !important;
 }
+
 .cal-day-view .cal-hour-segment:hover {
-  background: #eff6ff !important;
-  cursor: pointer;
+    background: #eff6ff !important;
+    cursor: pointer;
 }
+
 .cal-day-view .cal-time {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  color: #64748b !important;
-  width: 52px !important;
-  padding: 4px 8px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    width: 52px !important;
+    padding: 4px 8px !important;
 }
 
 /* ── Event wrapper — remove all default styling ──────────────── */
 .cal-day-view .cal-event {
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 10px !important;
-  overflow: hidden !important;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08) !important;
-  /* CRITICAL: let height grow to fit content */
-  height: auto !important;
-  min-height: 130px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08) !important;
+    /* CRITICAL: let height grow to fit content */
+    height: auto !important;
+    min-height: 130px !important;
 }
 
 /* ── Status background colours on the wrapper ────────────────── */
-.cal-day-view .cal-event.cal-event-given     { background: #f0fdf4 !important; }
-.cal-day-view .cal-event.cal-event-overdue   { background: #fef2f2 !important; }
-.cal-day-view .cal-event.cal-event-due-now   { background: #eff6ff !important; }
-.cal-day-view .cal-event.cal-event-hold      { background: #fffbeb !important; }
-.cal-day-view .cal-event.cal-event-cancelled { background: #f9fafb !important; opacity: 0.65; }
-.cal-day-view .cal-event.cal-event-postponed { background: #f5f3ff !important; }
-.cal-day-view .cal-event.cal-event-upcoming  { background: #f8fafc !important; }
+.cal-day-view .cal-event.cal-event-given {
+    background: #f0fdf4 !important;
+}
+
+.cal-day-view .cal-event.cal-event-overdue {
+    background: #fef2f2 !important;
+}
+
+.cal-day-view .cal-event.cal-event-due-now {
+    background: #eff6ff !important;
+}
+
+.cal-day-view .cal-event.cal-event-hold {
+    background: #fffbeb !important;
+}
+
+.cal-day-view .cal-event.cal-event-cancelled {
+    background: #f9fafb !important;
+    opacity: 0.65;
+}
+
+.cal-day-view .cal-event.cal-event-postponed {
+    background: #f5f3ff !important;
+}
+
+.cal-day-view .cal-event.cal-event-upcoming {
+    background: #f8fafc !important;
+}
 
 /* ── Custom event fills wrapper fully ────────────────────────── */
 .cal-day-view .cal-event .custom-cal-event {
-  height: 100%;
-  min-height: 130px;
-  display: flex;
+    height: 100%;
+    min-height: 130px;
+    display: flex;
 }
 
 /* ── Current time marker ─────────────────────────────────────── */
 .cal-day-view .cal-current-time-marker {
-  background: #ef4444 !important;
-  height: 2px !important;
-  opacity: .8;
+    background: #ef4444 !important;
+    height: 2px !important;
+    opacity: .8;
 }
+
 .cal-day-view .cal-current-time-marker::before {
-  background: #ef4444 !important;
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50% !important;
+    background: #ef4444 !important;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
 }

@@ -50,6 +50,7 @@ import { CompanyPatientSummaryDashboardComponent } from './cashless-company-dash
 import { TestingDailyDashBoardComponent } from './testing-daily-dash-board/testing-daily-dash-board.component';
 import { DepartmentSalesComponent } from './lab-financial-dashboard/department-sales/department-sales.component';
 import { NgChartsModule } from 'ng2-charts';
+import { AppointmentlistModule } from '../opd/appointment-list/appointmentlist.module';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -111,7 +112,8 @@ import { NgChartsModule } from 'ng2-charts';
         MatGridListModule,
         MatDialogModule,
         SharedModule,
-        NgChartsModule
+        NgChartsModule,
+        AppointmentlistModule
     ],
     providers: [
         DatePipe

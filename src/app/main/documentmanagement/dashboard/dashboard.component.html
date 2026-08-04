@@ -1,0 +1,74 @@
+<div class="modal-page page-layout inner-scroll labpatientMain resize-form-fields">
+    <div class="modal-wrapper grid-container">
+        <div class="modal-header accent labpatientHeader">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Document Management Module</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-body labpatientMiddle">
+            <div class="docmed-theme">
+                <section class="stat-row">
+                    <div class="stat-card">
+                        <span class="stat-value mono">{{ totalDocuments }}</span>
+                        <span class="stat-label">Documents on file</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value mono">{{ totalPatients }}</span>
+                        <span class="stat-label">Patients indexed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value mono">{{ totalCategories }}</span>
+                        <span class="stat-label">Category &amp; sub-category nodes</span>
+                    </div>
+                    <div class="stat-card accent">
+                        <span class="stat-value mono">4</span>
+                        <span class="stat-label">Levels deep supported (unlimited)</span>
+                    </div>
+                </section>
+
+                <section class="tiles-section">
+                    <h2 class="section-title">Modules</h2>
+                    <div class="tiles-grid">
+                        <a class="tile" *ngFor="let t of tiles" [routerLink]="t.route">
+                            <div class="tile-icon" [style.background]="t.accent">
+                                <mat-icon>{{ t.icon }}</mat-icon>
+                            </div>
+                            <div class="tile-body">
+                                <h3>{{ t.title }}</h3>
+                                <p>{{ t.description }}</p>
+                            </div>
+                            <div class="tile-stat">
+                                <span class="tile-stat-value">{{ t.stat }}</span>
+                                <span class="tile-stat-label">{{ t.statLabel }}</span>
+                            </div>
+                            <mat-icon class="tile-arrow">arrow_outward</mat-icon>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="recent-section">
+                    <h2 class="section-title">Recently uploaded</h2>
+                    <div class="recent-list">
+                        <div class="recent-row" *ngFor="let d of recentDocs">
+                            <mat-icon [ngClass]="'kind-' + d.fileKind">{{ d.fileKind | fileKindIcon
+                                }}</mat-icon>
+                            <div class="recent-main">
+                                <span class="recent-title">{{ d.title }}</span>
+                                <span class="recent-sub">{{ d.patientName }} &middot; {{
+                                    d.categoryPath.join(' / ')
+                                    }}</span>
+                            </div>
+                            <span class="recent-date mono">{{ d.uploadedOn | date:'d MMM' }}</span>
+                        </div>
+                    </div>
+                    <a routerLink="/documentmanagement/documents" class="view-all-link">View full document library
+                        <mat-icon>chevron_right</mat-icon></a>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

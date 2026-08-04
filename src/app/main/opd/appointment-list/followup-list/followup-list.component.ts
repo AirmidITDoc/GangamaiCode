@@ -1,32 +1,22 @@
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { Overlay } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
-import { Component, ComponentRef, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { ConfigService } from 'app/core/services/config.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { CompanyInformationComponent } from 'app/main/ipd/company-information/company-information.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
-import { AppointmentlistService } from '../appointmentlist.service';
 import { RegistrationService } from '../../registration/registration.service';
-import { VisitMaster1 } from '../../medicalrecord/medicalrecord.component';
+import { AppointmentlistService } from '../appointmentlist.service';
 
 @Component({
   selector: 'app-followup-list',
@@ -36,60 +26,60 @@ import { VisitMaster1 } from '../../medicalrecord/medicalrecord.component';
   animations: fuseAnimations,
 })
 export class FollowupListComponent {
-  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-  myformSearch: FormGroup;
-  searchFormGroup: FormGroup;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    myformSearch: FormGroup;
+    searchFormGroup: FormGroup;
 
-  @Input() patientData: any;
-  @Output() mouseEnter = new EventEmitter<void>();
-  @Output() mouseLeave = new EventEmitter<void>();
+    @Input() patientData: any;
+    @Output() mouseEnter = new EventEmitter<void>();
+    @Output() mouseLeave = new EventEmitter<void>();
 
-  isLoading: boolean = false;
-  DoctorId = "0";
-  autocompleteModedeptdoc: string = "ConDoctor";
-  doctorID = "0";
-  f_name: any = "%"
-  regNo = 0;
-  l_name: any = "%"
-  IsMark = "2"
-  CompanyId = "0"
-  autocompletedepartment: string = "Department";
-  autocompleteCompany: string = "Company";
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
-
-  // displayedColumns: string[] = [
-  //   'batchNo',
-  //   'batchExpDate',
-  //   'balanceQty',
-  //   'unitMRP',
-  //   'purchaseRate',
-  //   'converFacto',
-  //   'landedRate',
-  //   'ExpDays',
-  //   'prodLocation',
-  //   'itemGenericName',
-  //   // 'ItemCode',
-  // ];
-  isLoadingStr: string = '';
-  // dataSource = new MatTableDataSource<VisitMaster1>();
+    isLoading: boolean = false;
+    DoctorId = "0";
+    autocompleteModedeptdoc: string = "ConDoctor";
+    doctorID = "0";
+    f_name: any = "%"
+    regNo = 0;
+    l_name: any = "%"
+    IsMark = "2"
+    CompanyId = "0"
+    autocompletedepartment: string = "Department";
+    autocompleteCompany: string = "Company";
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
 
-  constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
-    private commonService: PrintserviceService, public _registrationService: RegistrationService,
-    private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder,
-    public _ConfigService: ConfigService,
-    public toastr: ToastrService, public datePipe: DatePipe,
-    private _ActRoute: Router, private route: ActivatedRoute,
-    private overlay: Overlay, public permissionService: PagePermissionService, private _configue: ConfigService,
-  ) { }
-  allfilters = [
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "RegId", fieldValue: "0", opType: OperatorComparer.Equals },
+    // displayedColumns: string[] = [
+    //   'batchNo',
+    //   'batchExpDate',
+    //   'balanceQty',
+    //   'unitMRP',
+    //   'purchaseRate',
+    //   'converFacto',
+    //   'landedRate',
+    //   'ExpDays',
+    //   'prodLocation',
+    //   'itemGenericName',
+    //   // 'ItemCode',
+    // ];
+    isLoadingStr: string = '';
+    // dataSource = new MatTableDataSource<VisitMaster1>();
+
+
+    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
+        private commonService: PrintserviceService, public _registrationService: RegistrationService,
+        private advanceDataStored: AdvanceDataStored,
+        private formBuilder: FormBuilder,
+        public _ConfigService: ConfigService,
+        public toastr: ToastrService, public datePipe: DatePipe,
+        private _ActRoute: Router, private route: ActivatedRoute,
+        private overlay: Overlay, public permissionService: PagePermissionService, private _configue: ConfigService,
+    ) { }
+    allfilters = [
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "RegId", fieldValue: "0", opType: OperatorComparer.Equals },
 
 
   ];
@@ -100,37 +90,37 @@ export class FollowupListComponent {
   }
   // @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
 
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-  allcolumns = [
-    { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 6 },
+    allcolumns = [
+        { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 6 },
 
-    { heading: "UHID", key: "regID", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-    // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
-    // { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-    { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    {
-      heading: "Action", key: "action", align: "center", width: 80, sticky: false, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+        { heading: "UHID", key: "regID", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
+        // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
+        // { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        {
+            heading: "Action", key: "action", align: "center", width: 80, sticky: false, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+    ]
+    gridConfig: gridModel = {
+        // permissionCode: permissionCodes.Appointment,
+        apiUrl: "VisitDetail/Follow_up_List",
+        columnsList: this.allcolumns,
+        sortField: "FollowupDate",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-  ]
-  gridConfig: gridModel = {
-    // permissionCode: permissionCodes.Appointment,
-    apiUrl: "VisitDetail/Follow_up_List",
-    columnsList: this.allcolumns,
-    sortField: "FollowupDate",
-    sortOrder: 0,
-    filters: this.allfilters
-  }
 
   ngOnInit(): void {
 
@@ -140,55 +130,55 @@ export class FollowupListComponent {
 
 
 
-  onChangeFirst() {
+    onChangeFirst() {
 
-    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-    this.regNo = this.myformSearch.get('RegNo').value || "0"
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.regNo = this.myformSearch.get('RegNo').value || "0"
 
-    this.getfilterdata();
+        this.getfilterdata();
 
-  }
-  onChangeFirst1(event) {
-    debugger
-    console.log(event)
-    // if (event.key == 13) {
-    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-    this.regNo = this.myformSearch.get('RegNo').value || "0"
-
-    this.getfilterdata();
-    // }
-  }
-
-
-  getfilterdata() {
-    debugger
-    this.gridConfig = {
-      apiUrl: "VisitDetail/Follow_up_List",
-      columnsList: this.allcolumns,
-      sortField: "FollowupDate",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-
-        { fieldName: "RegId", fieldValue: String(this.regNo), opType: OperatorComparer.Equals },
-
-      ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    onChangeFirst1(event) {
+        debugger
+        console.log(event)
+        // if (event.key == 13) {
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.regNo = this.myformSearch.get('RegNo').value || "0"
 
-  }
+        this.getfilterdata();
+        // }
+    }
 
-  getValidationdoctorMessages() {
-    return {
-      DoctorId: [
-        { name: "required", Message: "Doctor Name is required" }
-      ]
-    };
-  }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "VisitDetail/Follow_up_List",
+            columnsList: this.allcolumns,
+            sortField: "FollowupDate",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+
+                { fieldName: "RegId", fieldValue: String(this.regNo), opType: OperatorComparer.Equals },
+
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+
+    }
+
+    getValidationdoctorMessages() {
+        return {
+            DoctorId: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+    }
 
   keyPressAlphanumeric(event) {
     const inp = String.fromCharCode(event.keyCode);
@@ -294,10 +284,10 @@ export class FollowupListComponent {
     if (event == 'RegNo')
       this.myformSearch.get('RegNo').setValue("")
 
-    this.onChangeFirst();
-  }
+        this.onChangeFirst();
+    }
 
-  onClose() {
-    this._matDialog.closeAll()
-  }
+    onClose() {
+        this._matDialog.closeAll()
+    }
 }

@@ -1,0 +1,123 @@
+<div class="modal-page page-layout inner-scroll labpatientMain resize-form-fields">
+    <div class="modal-wrapper grid-container">
+        <div class="modal-header accent labpatientHeader">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Records Retrieval</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-body labpatientMiddle">
+            <div class="docmed-theme">
+                <div class="scan-layout">
+                    <!-- LEFT: Scanner surface -->
+                    <section class="scan-panel">
+                        <div class="scan-surface" [ngSwitch]="state">
+                            <div *ngSwitchCase="'idle'" class="idle-state">
+                                <mat-icon class="big-icon">qr_code_2</mat-icon>
+                                <h3>Ready to scan</h3>
+                                <p>Use your device camera, upload a QR image, or tap a sample code on the right to try
+                                    the flow.</p>
+                                <div class="idle-actions">
+                                    <button mat-flat-button color="primary" (click)="startCamera()">
+                                        <mat-icon>photo_camera</mat-icon> Start camera scan
+                                    </button>
+                                    <button mat-stroked-button (click)="fileInput.click()">
+                                        <mat-icon>upload</mat-icon> Upload QR image
+                                    </button>
+                                    <button mat-button (click)="simulateScan()">
+                                        <mat-icon>auto_awesome</mat-icon> Simulate a scan
+                                    </button>
+                                </div>
+                                <p class="error-note" *ngIf="cameraError">{{ cameraError }}</p>
+                                <input #fileInput type="file" accept="image/*" hidden
+                                    (change)="onFileSelected($event)" />
+                            </div>
+
+                            <div *ngSwitchCase="'camera'" class="camera-state">
+                                <div id="qr-reader" #readerEl></div>
+                                <button mat-stroked-button class="stop-btn" (click)="stopCamera()">
+                                    <mat-icon>stop_circle</mat-icon> Cancel scan
+                                </button>
+                            </div>
+
+                            <div *ngSwitchCase="'found'" class="result-state">
+                                <div class="result-badge success">
+                                    <mat-icon>task_alt</mat-icon>
+                                </div>
+                                <h3>Patient found</h3>
+                                <div class="patient-card" *ngIf="foundPatient as p">
+                                    <div class="avatar">{{ p.photoInitials }}</div>
+                                    <div class="patient-meta">
+                                        <span class="patient-name">{{ p.name }}</span>
+                                        <span class="patient-id mono">{{ p.id }}</span>
+                                        <span class="patient-sub">{{ p.gender }}, {{ p.age }} yrs &middot; {{ p.ward
+                                            }}</span>
+                                    </div>
+                                </div>
+                                <div class="result-actions">
+                                    <button mat-flat-button color="primary" (click)="goToPatientRecord()">
+                                        <mat-icon>folder_open</mat-icon> View full record
+                                    </button>
+                                    <button mat-stroked-button [disabled]="zipping" (click)="quickDownloadZip()">
+                                        <mat-icon>{{ zipping ? 'hourglass_top' : 'archive' }}</mat-icon>
+                                        {{ zipping ? 'Packing…' : 'Download all as ZIP' }}
+                                    </button>
+                                </div>
+                                <button mat-button class="scan-again" (click)="reset()">
+                                    <mat-icon>refresh</mat-icon> Scan another code
+                                </button>
+                            </div>
+
+                            <div *ngSwitchCase="'not-found'" class="result-state">
+                                <div class="result-badge fail">
+                                    <mat-icon>error_outline</mat-icon>
+                                </div>
+                                <h3>No match for that code</h3>
+                                <p class="mono raw-value">"{{ lastRawValue }}"</p>
+                                <p>This QR code doesn't match a patient record in the registry. Try a sample code, or
+                                    scan a valid
+                                    patient code.</p>
+                                <button mat-flat-button color="primary" (click)="reset()">
+                                    <mat-icon>refresh</mat-icon> Try again
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- RIGHT: sample codes + how-to -->
+                    <aside class="side-panel">
+                        <div class="panel-card">
+                            <h4><mat-icon>science</mat-icon> Try it with a sample code</h4>
+                            <p class="panel-note">No physical QR handy? Scan these on-screen codes with your phone's
+                                camera, or
+                                click one to simulate a scan instantly.</p>
+                            <div class="sample-grid">
+                                <button class="sample-tile" *ngFor="let p of samplePatients" (click)="scanSample(p.id)">
+                                    <img *ngIf="sampleQrUrls[p.id]" [src]="sampleQrUrls[p.id]"
+                                        [alt]="'QR code for ' + p.name" />
+                                    <span class="sample-name">{{ p.name }}</span>
+                                    <span class="sample-id mono">{{ p.id }}</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="panel-card how-to">
+                            <h4><mat-icon>info_outline</mat-icon> How this works</h4>
+                            <ol>
+                                <li>Each patient's wristband / folder is printed with a QR code that encodes their
+                                    record ID.</li>
+                                <li>Scanning decodes the ID and looks it up instantly in the patient registry — no
+                                    typing required.
+                                </li>
+                                <li>From there, open the full document trail or pull every file as one ZIP archive.</li>
+                            </ol>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,279 @@
+.docmed-theme {
+    .scan-layout {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 24px;
+        align-items: start;
+
+        @media (max-width: 980px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .scan-panel {
+        background: #fff;
+        border: 1px solid var(--divider-line);
+        border-radius: 18px;
+        min-height: 460px;
+        display: flex;
+    }
+
+    .scan-surface {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 32px;
+    }
+
+    .idle-state,
+    .camera-state,
+    .result-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 420px;
+        width: 100%;
+    }
+
+    .big-icon {
+        font-size: 56px;
+        width: 56px;
+        height: 56px;
+        color: var(--accent-teal);
+        margin-bottom: 12px;
+    }
+
+    .idle-state h3,
+    .result-state h3 {
+        font-family: var(--font-display);
+        margin: 0 0 8px;
+        font-size: 20px;
+    }
+
+    .idle-state p,
+    .result-state p {
+        color: var(--text-muted);
+        font-size: 13.5px;
+        margin: 0 0 20px;
+        line-height: 1.55;
+    }
+
+    .idle-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 260px;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    .error-note {
+        color: var(--danger);
+        font-size: 12.5px;
+        margin-top: 16px;
+    }
+
+    #qr-reader {
+        width: 320px;
+        max-width: 80vw;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid var(--accent-teal);
+    }
+
+    .stop-btn {
+        margin-top: 18px;
+    }
+
+    .result-badge {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+
+        mat-icon {
+            font-size: 30px;
+            width: 30px;
+            height: 30px;
+        }
+
+        &.success {
+            background: #e2f2ef;
+            color: var(--accent-teal-dark);
+        }
+
+        &.fail {
+            background: #f6e4e0;
+            color: var(--danger);
+        }
+    }
+
+    .patient-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: var(--surface-panel);
+        border: 1px solid var(--divider-line);
+        border-radius: 14px;
+        padding: 14px 18px;
+        width: 100%;
+        margin-bottom: 20px;
+        text-align: left;
+
+        .avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--ink-navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .patient-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            font-size: 14.5px;
+        }
+
+        .patient-id {
+            font-size: 11.5px;
+            color: var(--accent-teal-dark);
+        }
+
+        .patient-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+    }
+
+    .result-actions {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+
+        button {
+            flex: 1;
+        }
+    }
+
+    .scan-again {
+        margin-top: 14px;
+    }
+
+    .raw-value {
+        font-size: 12.5px;
+        color: var(--text-primary);
+        background: var(--surface-chip);
+        padding: 6px 12px;
+        border-radius: 8px;
+        margin-bottom: 12px !important;
+    }
+
+    /* ---------------- Side panel ---------------- */
+    .side-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .panel-card {
+        background: #fff;
+        border: 1px solid var(--divider-line);
+        border-radius: 16px;
+        padding: 20px;
+
+        h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            font-size: 15px;
+            margin: 0 0 8px;
+
+            mat-icon {
+                color: var(--accent-teal);
+                font-size: 19px;
+                width: 19px;
+                height: 19px;
+            }
+        }
+    }
+
+    .panel-note {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        margin: 0 0 16px;
+        line-height: 1.5;
+    }
+
+    .sample-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .sample-tile {
+        border: 1px solid var(--divider-line);
+        background: var(--surface-panel);
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: border-color 0.15s ease, transform 0.15s ease;
+
+        img {
+            width: 84px;
+            height: 84px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+
+        .sample-name {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .sample-id {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        &:hover {
+            border-color: var(--accent-teal);
+            transform: translateY(-2px);
+        }
+    }
+
+    .how-to ol {
+        margin: 0;
+        padding-left: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 12.5px;
+        color: var(--text-muted);
+        line-height: 1.5;
+    }
+}

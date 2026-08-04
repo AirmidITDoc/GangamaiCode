@@ -1,0 +1,55 @@
+.docmed-theme {
+    .dialog-shell {
+        width: min(420px, 80vw);
+    }
+
+    .dialog-context {
+        margin: -8px 0 8px;
+        font-size: 12.5px;
+        color: var(--text-muted);
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .icon-label {
+        display: block;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin: 4px 0 10px;
+    }
+
+    .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .icon-option {
+        border: 1px solid var(--divider-line);
+        background: #fff;
+        border-radius: 10px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-muted);
+
+        &:hover {
+            background: var(--surface-hover);
+        }
+
+        &.selected {
+            border-color: var(--accent-teal);
+            background: var(--surface-selected);
+            color: var(--accent-teal-dark);
+        }
+    }
+}

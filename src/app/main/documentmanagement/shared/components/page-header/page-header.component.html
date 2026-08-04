@@ -1,0 +1,13 @@
+<header class="page-header">
+  <div class="heading-block">
+    <span class="eyebrow" *ngIf="eyebrow">{{ eyebrow }}</span>
+    <h1>
+      <mat-icon *ngIf="icon" class="title-icon">{{ icon }}</mat-icon>
+      {{ title }}
+    </h1>
+    <p class="subtitle" *ngIf="subtitle">{{ subtitle }}</p>
+  </div>
+  <div class="actions-block">
+    <ng-content></ng-content>
+  </div>
+</header>

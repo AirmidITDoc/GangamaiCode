@@ -1,0 +1,29 @@
+<div class="docmed-theme">
+    <div class="dialog-shell">
+        <h2 mat-dialog-title>
+            {{ data.parentName ? 'Add sub-category' : 'Add top-level category' }}
+        </h2>
+        <p class="dialog-context" *ngIf="data.parentName">Nesting under <strong>{{ data.parentName }}</strong></p>
+
+        <div mat-dialog-content>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Category name</mat-label>
+                <input matInput [(ngModel)]="name" placeholder="e.g. Discharge Summary" (keyup.enter)="submit()"
+                    autofocus />
+            </mat-form-field>
+
+            <label class="icon-label">Choose an icon</label>
+            <div class="icon-grid">
+                <button type="button" class="icon-option" *ngFor="let ic of iconChoices" [class.selected]="icon === ic"
+                    (click)="icon = ic">
+                    <mat-icon>{{ ic }}</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-button (click)="cancel()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="submit()" [disabled]="!name.trim()">Add category</button>
+        </div>
+    </div>
+</div>

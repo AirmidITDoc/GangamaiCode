@@ -1,0 +1,102 @@
+<div class="modal-page page-layout inner-scroll labpatientMain resize-form-fields">
+    <div class="modal-wrapper grid-container">
+        <div class="modal-header accent labpatientHeader">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Patient Search</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-body labpatientMiddle">
+            <div class="docmed-theme">
+                <div class="search-shell" *ngIf="!selectedPatient">
+                    <div class="search-box">
+                        <mat-icon>search</mat-icon>
+                        <input type="text" placeholder="Search patient ID (e.g. PMR-10231) or name…" [(ngModel)]="query"
+                            (ngModelChange)="search()" autofocus />
+                    </div>
+
+                    <div class="patient-results" *ngIf="results.length">
+                        <button class="patient-row" *ngFor="let p of results" (click)="selectPatient(p)">
+                            <span class="avatar">{{ p.photoInitials }}</span>
+                            <span class="patient-main">
+                                <span class="patient-name">{{ p.name }}</span>
+                                <span class="patient-sub mono">{{ p.id }} &middot; {{ p.gender }}, {{ p.age }} &middot;
+                                    {{ p.ward
+                                    }}</span>
+                            </span>
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="empty-hint" *ngIf="!results.length">
+                        <mat-icon>badge</mat-icon>
+                        <p>Start typing a patient ID or name to find their records.</p>
+                        <p class="muted small">Try "PMR-10231" or "Ananya".</p>
+                    </div>
+                </div>
+
+                <div class="patient-view" *ngIf="selectedPatient">
+                    <div class="patient-banner">
+                        <span class="avatar big">{{ selectedPatient.photoInitials }}</span>
+                        <div class="banner-main">
+                            <span class="banner-name">{{ selectedPatient.name }}</span>
+                            <span class="banner-sub mono">{{ selectedPatient.id }} &middot; {{ selectedPatient.gender
+                                }}, {{
+                                selectedPatient.age }} yrs &middot; {{ selectedPatient.ward }}</span>
+                            <span class="banner-phone">{{ selectedPatient.phone }} &middot; Last visit {{
+                                selectedPatient.lastVisit
+                                | date:'d MMM y' }}</span>
+                        </div>
+                        <div class="banner-actions">
+                            <button mat-stroked-button (click)="clearSelection()">
+                                <mat-icon>swap_horiz</mat-icon> Change patient
+                            </button>
+                            <button mat-flat-button color="primary" [disabled]="!patientDocs.length || zipping"
+                                (click)="downloadAllZip()">
+                                <mat-icon>{{ zipping ? 'hourglass_top' : 'folder_zip' }}</mat-icon>
+                                {{ zipping ? 'Packing…' : 'Download all as ZIP' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="doc-count-row">
+                        <span>{{ patientDocs.length }} document{{ patientDocs.length === 1 ? '' : 's' }} on file across
+                            {{
+                            groupedByCategory.length }} categories</span>
+                    </div>
+
+                    <div class="empty-state" *ngIf="!patientDocs.length">
+                        <mat-icon>folder_off</mat-icon>
+                        <h3>No documents yet for this patient</h3>
+                        <a mat-flat-button color="primary" routerLink="/upload">Upload the first document</a>
+                    </div>
+
+                    <div class="category-groups" *ngIf="patientDocs.length">
+                        <div class="group" *ngFor="let g of groupedByCategory">
+                            <div class="group-head">
+                                <mat-icon>folder</mat-icon>
+                                <span>{{ g.path }}</span>
+                                <span class="group-count mono">{{ g.docs.length }}</span>
+                            </div>
+                            <div class="group-docs">
+                                <div class="doc-chip" *ngFor="let d of g.docs">
+                                    <mat-icon [ngClass]="'kind-' + d.fileKind">{{ d.fileKind | fileKindIcon
+                                        }}</mat-icon>
+                                    <span class="doc-chip-title">{{ d.title }}</span>
+                                    <span class="doc-chip-meta mono">{{ d.fileSizeKb | fileSize }}</span>
+                                    <button mat-icon-button matTooltip="Preview"
+                                        (click)="preview(d)"><mat-icon>visibility</mat-icon></button>
+                                    <button mat-icon-button matTooltip="Download"
+                                        (click)="downloadOne(d)"><mat-icon>download</mat-icon></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
