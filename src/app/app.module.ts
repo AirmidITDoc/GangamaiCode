@@ -112,6 +112,11 @@ const appRoutes: Routes = [
             import("./main/canteenmanagement/canteenmanagement.module").then((m) => m.CanteenmanagementModule),
     },
     {
+        path: "documentmanagement",
+        loadChildren: () =>
+            import("./main/documentmanagement/documentmanagement.module").then((m) => m.DocumentmanagementModule),
+    },
+    {
         path: "otmanagement",
         loadChildren: () =>
             import("./main/otmanagement/ot-management.module").then((m) => m.OTManagementModule),

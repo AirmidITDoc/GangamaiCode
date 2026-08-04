@@ -1,0 +1,122 @@
+<div class="modal-page page-layout inner-scroll labpatientMain resize-form-fields">
+    <div class="modal-wrapper grid-container">
+        <div class="modal-header accent labpatientHeader">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Upload Document</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <div class="close-icon">
+                            <a mat-flat-button color="primary" routerLink="/documentmanagement/upload">
+                                <mat-icon>upload_file</mat-icon> Upload document
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-body labpatientMiddle">
+            <div class="docmed-theme">
+                <div class="library-grid">
+                    <aside class="filter-panel">
+                        <div class="search-box">
+                            <mat-icon>search</mat-icon>
+                            <input type="text" placeholder="Search title, patient, tag…" [(ngModel)]="searchTerm"
+                                (ngModelChange)="onSearchChange()" />
+                        </div>
+
+                        <div class="kind-chips">
+                            <button *ngFor="let k of kindFilters" class="kind-chip"
+                                [class.active]="activeKind === k.value" (click)="onKindChange(k.value)">
+                                <mat-icon>{{ k.icon }}</mat-icon> {{ k.label }}
+                            </button>
+                        </div>
+
+                        <div class="filter-tree-head">
+                            <span>Filter by category</span>
+                            <button mat-button *ngIf="activeCategoryId" (click)="clearCategory()">Clear</button>
+                        </div>
+                        <app-category-tree [nodes]="categories" [manageable]="false" [selectable]="true"
+                            [selectedId]="activeCategoryId" (select)="onCategorySelect($event)"></app-category-tree>
+                    </aside>
+
+                    <section class="results-panel">
+                        <div class="results-toolbar">
+                            <span class="result-count">{{ filtered.length }} document{{ filtered.length === 1 ? '' : 's'
+                                }}</span>
+                            <span class="active-filter-chip" *ngIf="activeCategoryId">
+                                <mat-icon>filter_alt</mat-icon>{{ categoryLabel(activeCategoryId) }}
+                                <button mat-icon-button (click)="clearCategory()"><mat-icon>close</mat-icon></button>
+                            </span>
+                            <mat-button-toggle-group [(ngModel)]="view" class="view-toggle">
+                                <mat-button-toggle value="grid"><mat-icon>grid_view</mat-icon></mat-button-toggle>
+                                <mat-button-toggle value="list"><mat-icon>view_list</mat-icon></mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </div>
+
+                        <div class="empty-state" *ngIf="filtered.length === 0">
+                            <mat-icon>search_off</mat-icon>
+                            <h3>No documents match those filters</h3>
+                            <p>Try clearing the category filter or searching a different term.</p>
+                        </div>
+
+                        <div class="doc-grid" *ngIf="view === 'grid' && filtered.length">
+                            <div class="doc-card" *ngFor="let d of paged">
+                                <div class="doc-thumb"
+                                    [style.background]="'linear-gradient(135deg,' + (d.thumbnailColor || '#0E7C7B') + ' 0%, #1d2733 100%)'"
+                                    (click)="preview(d)">
+                                    <mat-icon>{{ d.fileKind | fileKindIcon }}</mat-icon>
+                                </div>
+                                <div class="doc-info">
+                                    <span class="doc-title" [matTooltip]="d.title">{{ d.title }}</span>
+                                    <span class="doc-sub">{{ d.patientName }} &middot; {{ d.patientId }}</span>
+                                    <span class="doc-path">{{ d.categoryPath.join(' / ') }}</span>
+                                    <div class="doc-meta-row">
+                                        <span class="mono">{{ d.fileSizeKb | fileSize }}</span>
+                                        <span class="mono">{{ d.uploadedOn | date:'d MMM y' }}</span>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <button mat-icon-button matTooltip="Preview"
+                                        (click)="preview(d)"><mat-icon>visibility</mat-icon></button>
+                                    <button mat-icon-button matTooltip="Download"
+                                        (click)="download(d)"><mat-icon>download</mat-icon></button>
+                                    <button mat-icon-button matTooltip="Delete"
+                                        (click)="remove(d)"><mat-icon>delete_outline</mat-icon></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="doc-list" *ngIf="view === 'list' && filtered.length">
+                            <div class="doc-list-row" *ngFor="let d of paged">
+                                <mat-icon [ngClass]="'kind-' + d.fileKind">{{ d.fileKind | fileKindIcon }}</mat-icon>
+                                <div class="list-main">
+                                    <span class="doc-title">{{ d.title }}</span>
+                                    <span class="doc-sub">{{ d.patientName }} ({{ d.patientId }}) &middot; {{
+                                        d.categoryPath.join('
+                                        / ') }}</span>
+                                </div>
+                                <span class="mono size-col">{{ d.fileSizeKb | fileSize }}</span>
+                                <span class="mono date-col">{{ d.uploadedOn | date:'d MMM y' }}</span>
+                                <div class="doc-actions">
+                                    <button mat-icon-button matTooltip="Preview"
+                                        (click)="preview(d)"><mat-icon>visibility</mat-icon></button>
+                                    <button mat-icon-button matTooltip="Download"
+                                        (click)="download(d)"><mat-icon>download</mat-icon></button>
+                                    <button mat-icon-button matTooltip="Delete"
+                                        (click)="remove(d)"><mat-icon>delete_outline</mat-icon></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <mat-paginator *ngIf="filtered.length" [length]="filtered.length" [pageSize]="pageSize"
+                            [pageSizeOptions]="[9, 18, 36]" (page)="onPage($event)"></mat-paginator>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

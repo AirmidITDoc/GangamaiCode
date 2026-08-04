@@ -45,6 +45,7 @@
     "dayjs": "1.11.20",
     "file-saver": "2.0.5",
     "font-awesome": "4.7.0",
+    "html5-qrcode": "2.3.8",
     "idlejs": "3.0.0",
     "install": "0.13.0",
     "jquery": "3.7.1",

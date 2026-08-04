@@ -1,0 +1,314 @@
+.docmed-theme {
+    .search-shell {
+        max-width: 640px;
+        margin: 20px auto 0;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid var(--divider-line);
+        border-radius: 12px;
+        padding: 14px 18px;
+        box-shadow: var(--shadow-soft);
+
+        mat-icon {
+            color: var(--text-muted);
+        }
+
+        input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14.5px;
+            width: 100%;
+            font-family: var(--font-body);
+        }
+    }
+
+    .patient-results {
+        margin-top: 14px;
+        border: 1px solid var(--divider-line);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .patient-row {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border: none;
+        border-bottom: 1px solid var(--divider-line);
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            background: var(--surface-hover);
+        }
+
+        .patient-main {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .patient-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .patient-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        >mat-icon:last-child {
+            color: var(--text-muted);
+        }
+    }
+
+    .empty-hint {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+
+        mat-icon {
+            font-size: 40px;
+            height: 40px;
+            width: 40px;
+            opacity: 0.4;
+        }
+
+        p {
+            margin: 8px 0 0;
+        }
+    }
+
+    .avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--accent-teal);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-weight: 600;
+        font-size: 13px;
+        flex-shrink: 0;
+
+        &.big {
+            width: 54px;
+            height: 54px;
+            font-size: 17px;
+        }
+    }
+
+    /* -------------- Patient view -------------- */
+    .patient-banner {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: var(--ink-navy);
+        color: #fff;
+        border-radius: 16px;
+        padding: 22px 24px;
+        margin-bottom: 18px;
+    }
+
+    .banner-main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 3px;
+    }
+
+    .banner-name {
+        font-family: var(--font-display);
+        font-size: 19px;
+        font-weight: 600;
+    }
+
+    .banner-sub {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .banner-phone {
+        font-size: 11.5px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .banner-actions {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+
+        button[mat-stroked-button] {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+    }
+
+    .doc-count-row {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: var(--text-muted);
+
+        mat-icon {
+            font-size: 40px;
+            height: 40px;
+            width: 40px;
+            opacity: 0.4;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            margin: 10px 0 16px;
+        }
+    }
+
+    .category-groups {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .group {
+        background: #fff;
+        border: 1px solid var(--divider-line);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .group-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        background: var(--surface-panel);
+        border-bottom: 1px solid var(--divider-line);
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text-primary);
+
+        mat-icon {
+            color: var(--accent-teal);
+            font-size: 18px;
+            height: 18px;
+            width: 18px;
+        }
+    }
+
+    .group-count {
+        margin-left: auto;
+        background: var(--surface-chip);
+        color: var(--text-muted);
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .group-docs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 16px;
+    }
+
+    .doc-chip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--divider-line);
+        border-radius: 20px;
+        padding: 5px 6px 5px 12px;
+        font-size: 12px;
+
+        mat-icon:first-child {
+            font-size: 16px;
+            height: 16px;
+            width: 16px;
+        }
+
+        .doc-chip-title {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .doc-chip-meta {
+            color: var(--text-muted);
+            font-size: 10.5px;
+        }
+
+        button {
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+        }
+
+        button mat-icon {
+            font-size: 14px;
+            height: 14px;
+            width: 14px;
+            color: var(--text-muted);
+        }
+    }
+
+    .kind-pdf {
+        color: #c1443a;
+    }
+
+    .kind-image {
+        color: #1f8a5f;
+    }
+
+    .kind-doc {
+        color: #2b579a;
+    }
+
+    .kind-xls {
+        color: #1d7a4c;
+    }
+
+    .kind-text {
+        color: #6b7280;
+    }
+
+    .kind-other {
+        color: #6b7280;
+    }
+
+    .small {
+        font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+        .patient-banner {
+            flex-wrap: wrap;
+        }
+
+        .banner-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+}
