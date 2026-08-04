@@ -1,6 +1,6 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,8 @@ import Swal from 'sweetalert2';
 
 import { RegistrationService } from '../../registration/registration.service';
 import { AppointmentlistService } from '../appointmentlist.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-followup-list',

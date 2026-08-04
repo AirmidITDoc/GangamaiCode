@@ -116,6 +116,7 @@ export class NewFormComponent {
 
   today = new Date();
   todayPlus5Years = new Date();
+  wtodayPlus5Years = new Date();
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlGender1') ddlGender1: AirmidDropDownComponent;
 
@@ -149,14 +150,18 @@ export class NewFormComponent {
   ClinicName: any
   vresultDate = new Date();
   vreceiptdate = new Date();
+  vwreceiptdate = new Date();
   vmediclaimenddate = new Date();
   vhusbandFullBodyCheckupDate = new Date();
   vmediclaimstartdate = new Date();
+  vwmediclaimstartdate = new Date();
+  vwmediclaimenddate = new Date();
+  wreceiptDate = new Date();
   vwifeFullBodyCheckupDate = new Date();
   vwifedob = new Date();
   vhusbanddob = new Date();
-vwdeathDate= new Date();
-vhdeathDate= new Date();
+  vwdeathDate = new Date();
+  vhdeathDate = new Date();
 
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
@@ -187,14 +192,27 @@ vhdeathDate= new Date();
 
   ngOnInit(): void {
     this.today = new Date();
+    debugger
+    if ((this.data?.membershipId ?? 0) > 0) {
 
-    this.todayPlus5Years = new Date(this.today);
-    // this.todayPlus5Years.setFullYear(this.today.getFullYear() + 5);
+      this.todayPlus5Years = this.data?.membershipvalidDate
+      this.wtodayPlus5Years = this.data?.wmembershipvalidDate
 
-    this.todayPlus5Years = new Date(
-      this.today.getFullYear() + 5, 2, 1);
+    } else {
+      this.todayPlus5Years = new Date(this.today);
+      this.wtodayPlus5Years = new Date(this.today);
 
-    console.log(this.todayPlus5Years)
+      this.todayPlus5Years = new Date(
+        this.today.getFullYear() + 5, 2, 1);
+
+
+      this.wtodayPlus5Years = new Date(
+        this.today.getFullYear() + 5, 2, 1);
+
+      console.log(this.todayPlus5Years)
+      console.log(this.wtodayPlus5Years)
+    }
+
 
     this.personalFormGroup = this.createFinalProcessForm();
     this.personalFormGroup.patchValue(this.data)
@@ -216,7 +234,7 @@ vhdeathDate= new Date();
       console.log(this.data.wifeDob)
 
 
-      if (this.data.husbandDob != '1900-01-01') {
+      if (this.data.husbandDob != '1900-01-01T00:00:00') {
         this.vhusbanddob = new Date(this.data.husbandDob)
 
         setTimeout(() => {
@@ -226,7 +244,7 @@ vhdeathDate= new Date();
         }, 500);
 
       }
-      if (this.data.wifeDob != '1900-01-01') {
+      if (this.data.wifeDob != '1900-01-01T00:00:00') {
         this.vwifedob = new Date(this.data.wifeDob)
 
         setTimeout(() => {
@@ -242,7 +260,8 @@ vhdeathDate= new Date();
       this.vhusbandFullBodyCheckupDate = this.data.husbandFullBodyCheckupDate
       this.vmediclaimstartdate = this.data.mediclaimstartdate
       this.vwifeFullBodyCheckupDate = this.data.wifeFullBodyCheckupDate
-
+debugger
+      this.personalFormGroup.get("hasmediclaim").setValue(this.data.hasMediclaim)
 
       this.personalFormGroup.get("wifeparentsnativeplace").setValue(this.data.wifeParentsNativePlace)
       this.personalFormGroup.get("mediclaimpolicynumber").setValue(this.data.mediclaimPolicyNumber)
@@ -363,6 +382,8 @@ vhdeathDate= new Date();
       "ayushmanEnrolled": [false],
       "maleFemaleEnrolled": [false],
       "ayushmanSpouseDetails": [''],
+      "haayushmanId": "0",
+      "waayushmanId": "0",
 
       "hasmediclaim": [false],
       "mediclaimcompany": [0],
@@ -372,6 +393,13 @@ vhdeathDate= new Date();
       "mediclaimEndDate": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "monthlyIncomeRange": [0],
 
+      "whasmediclaim": [false],
+      "wmediclaimcompany": [0],
+      "wmediclaimpolicynumber": [''],
+      "wmediclaimIssuanceAmt": 0,
+      "wmediclaimStartDate": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wmediclaimEndDate": [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wmonthlyIncomeRange": [0],
 
       "familyDoctorName": ['', [Validators.required]],
       "familyDoctorContact": ['', [Validators.required,
@@ -387,13 +415,16 @@ vhdeathDate= new Date();
       "membershipvalidDate": this.todayPlus5Years,// [(new Date()).toISOString()],
       "receiptDate": [(new Date()).toISOString()],
       "feeReceived": [true],
-      "feeAmount": ['', [Validators.required]],
+      "feeAmount": ['1000', [Validators.required]],
+
+      "wmembershipvalidDate": this.wtodayPlus5Years,// [(new Date()).toISOString()],
+      "wreceiptDate": [(new Date()).toISOString()],
+      "wfeeReceived": [true],
+      "wfeeAmount": ['1000', [Validators.required]],
 
 
       "hdeathDate": '1900-01-01',
       "wdeathDate": '1900-01-01',
-      "haayushmanId": 0,
-      "waayushmanId": 0,
 
 
       tMembershipChildren: this.formBuilder.array([]),
@@ -648,6 +679,25 @@ vhdeathDate= new Date();
         }); return;
       }
     }
+
+    if (this.personalFormGroup.get("whasmediclaim").value) {
+      if (this.personalFormGroup.get('wmediclaimpolicynumber').value == 0 || this.personalFormGroup.get('wmediclaimpolicynumber').value == '') {
+        this.toastr.warning('Please select valid mediclaim policynumber for Wife ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else if (this.personalFormGroup.get('wmediclaimIssuanceAmt').value == 0 || this.personalFormGroup.get('wmediclaimIssuanceAmt').value == '') {
+        this.toastr.warning('Please select valid  mediclaim IssuanceAmt for Wife ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else if (this.personalFormGroup.get('wmediclaimcompany').value == 0 || this.personalFormGroup.get('wmediclaimcompany').value == '') {
+        this.toastr.warning('Please select valid mediclaim company for Wife ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        }); return;
+      }
+    }
+
     if (this.personalFormGroup.get("DateOfBirth").value != '1900-01-01') {
       const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
       if (DateOfBirth1) {
@@ -1127,6 +1177,8 @@ vhdeathDate= new Date();
       wprefixId: [],
       wgenderId: [],
       hgenderId: [],
+
+      wmediclaimcompany: [],
     };
   }
 
