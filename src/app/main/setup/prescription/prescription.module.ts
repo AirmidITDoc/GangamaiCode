@@ -1,6 +1,8 @@
 import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
+import { ICDEMasterComponent } from './icde-master/icde-master.component';
+import { NewICDEMasterComponent } from './icde-master/new-icde-master/new-icde-master.component';
 
 const appRoutes: Routes = [
     {
@@ -74,12 +76,20 @@ const appRoutes: Routes = [
                 (m) => m.SubresultValueModule
             ),
     },
+    ,
+    {
+        path: "ICDEMaster",
+        loadChildren: () =>
+            import("./icde-master/icde-master.module").then(
+                (m) => m.ICDEMasterModule
+            ),
+    },
 ];
 
 @NgModule({
     declarations: [
 
-    ],
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class PrescriptionModule { }

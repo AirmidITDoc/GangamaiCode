@@ -5,21 +5,21 @@
 
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                     style="color: white;">
-                    Patient Follow Up List
+                   Appointment Cancelled List
                 </span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
 
-                    <mat-icon class="card-icon" (click)="getFolloweupListview()"
-                        matTooltip="Print Follow Up List">print</mat-icon>
+                    <mat-icon class="card-icon" (click)="getAppCancelListview()"
+                        matTooltip="Print Appointment Cancle List">print</mat-icon>
+
 
                     <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -36,7 +36,6 @@
                             <mat-icon> print</mat-icon>
                         </button>
 
-
                     </div>
                 </ng-template>
                 <airmid-table [gridConfig]="gridConfig" class="content airmid-table table3 max-h-700">
@@ -47,7 +46,7 @@
                                 formStartControlName="fromDate" formEndControlName="enddate"
                                 [(fromValue)]="gridConfig.filters[0].fieldValue"
                                 [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
-
+<!-- 
 
                             <mat-form-field appearance="outline">
                                 <mat-label>UHID NO</mat-label>
@@ -57,19 +56,16 @@
                                 <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field>
+                            </mat-form-field> -->
 
                         </form>
 
 
                     </ng-container>
                 </airmid-table>
-
             </div>
-
         </div>
-
-
     </div>
+  
 
 </div>

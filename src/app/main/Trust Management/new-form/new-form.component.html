@@ -548,11 +548,11 @@
                                             Mediclaim Insurance Details</span>
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
+<!-- (change)="hasmediclaimAdd()" -->
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="hasmediclaim"
-                                                        style="margin-left:20px;" [value]="data?.hasmediclaim"
-                                                        (change)="hasmediclaimAdd()">
+                                                        style="margin-left:20px;" [value]="data?.hasMediclaim"
+                                                        >
                                                         Has Mediclaim</mat-checkbox>
                                                 </div>
 
@@ -607,6 +607,73 @@
                                                         <mat-datepicker-toggle matSuffix
                                                             [for]="mediclaimenddate"></mat-datepicker-toggle>
                                                         <mat-datepicker #mediclaimenddate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+ <!-- (change)="hasmediclaimAdd()" -->
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox aria-label="" formControlName="whasmediclaim"
+                                                        style="margin-left:20px;" [value]="data?.whasmediclaim"
+                                                       >
+                                                        Wife Has Mediclaim</mat-checkbox>
+                                                </div>
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="WifeMediclaim policy number"
+                                                        formControlName="wmediclaimpolicynumber"
+                                                        [value]="data?.wmediclaimpolicynumber"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Mediclaim Issuance"
+                                                        formControlName="wmediclaimIssuanceAmt"
+                                                        [value]="data?.wmediclaimIssuanceAmt" maxlength="20"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Company Name"
+                                                        formControlName="wmediclaimcompany"
+                                                        [value]="data?.wmediclaimCompany"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().wmediclaimcompany"
+                                                        [mode]="autocompleteModeCompany">
+                                                    </airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Mediclaim startdate</mat-label>
+                                                        <input matInput [matDatepicker]="wmediclaimstartdate"
+                                                            placeholder="mediclaimstartdate"
+                                                            formControlName="wmediclaimStartDate"
+                                                            [value]="vwmediclaimstartdate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="wmediclaimstartdate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #wmediclaimstartdate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Mediclaim Enddate</mat-label>
+                                                        <input matInput [matDatepicker]="wmediclaimenddate"
+                                                            placeholder="mediclaimenddate"
+                                                            formControlName="wmediclaimEndDate"
+                                                            [value]="vwmediclaimenddate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="wmediclaimenddate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #wmediclaimenddate></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
 
@@ -780,7 +847,61 @@
                                                 </div>
 
                                             </div>
+                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox formControlName="wfeeReceived"
+                                                        style="font-weight: bold;padding-left: 20px;"
+                                                        [value]="data?.wfeeReceived">
+                                                        Amount Received
+                                                    </mat-checkbox>
+
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Membership No" formControlName="membershipNo"
+                                                        [value]="data?.membershipNo"
+                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Fee Amount" formControlName="wfeeAmount"
+                                                        [formGroup]="personalFormGroup"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        [value]="data?.wfeeAmount"
+                                                        [validations]="getValidationMessages().feeamount"
+                                                        [maxLength]="5"></airmid-textbox>
+
+                                                </div>
+
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Receipt Date</mat-label>
+                                                        <input matInput [matDatepicker]="wreceiptDate"
+                                                            placeholder="wreceiptDate" formControlName="wreceiptDate"
+                                                            [value]="vwreceiptdate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="wreceiptDate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #wreceiptDate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Membership valid Date</mat-label>
+                                                        <input matInput [matDatepicker]="wmembershipvalidDate"
+                                                            placeholder="wmembershipvalidDate"
+                                                            formControlName="wmembershipvalidDate"
+                                                            [value]="todayPlus5Years" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="wmembershipvalidDate"></mat-datepicker-toggle>
+                                                        <mat-datepicker #wmembershipvalidDate></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
                                         </form>
 
                                     </mat-card-content>

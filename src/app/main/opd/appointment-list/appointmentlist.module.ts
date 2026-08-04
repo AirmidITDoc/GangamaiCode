@@ -62,6 +62,7 @@ import { PreviousDeptListComponent } from './update-reg-patient-info/previous-de
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
 import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component';
 import { FollowupListComponent } from './followup-list/followup-list.component';
+import { AppointmentCancleListComponent } from './appointment-cancle-list/appointment-cancle-list.component';
 
 
 const routes: Routes = [
@@ -100,6 +101,7 @@ const routes: Routes = [
         NewAppointmentwihBillComponent,
         PaAppoCancleComponent,
         FollowupListComponent,
+        AppointmentCancleListComponent,
 
     ],
     imports: [

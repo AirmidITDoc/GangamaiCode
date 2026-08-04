@@ -40,9 +40,9 @@ app-appointment-list {
 
 .info-badge-top {
   .dashboard-card {
-    min-width: 140px;
+    min-width: 135px;
     border-radius: 12px;
-    padding: 4px 16px;
+    padding: 4px 10px;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -90,6 +90,8 @@ app-appointment-list {
     }
     & .card-value div {
       font-size: 13px;
+    } &.app-Cancel {
+      background: #fb9595;
     }
   }
 

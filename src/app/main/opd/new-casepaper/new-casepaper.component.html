@@ -6,7 +6,7 @@
             </mat-icon>
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Lab Result View</span>
         </div>
-         <div class="close-icon">
+        <div class="close-icon">
             <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
                 <mat-icon>close</mat-icon>
             </button>
@@ -16,87 +16,84 @@
     <div class="service-table1 p-12" fxFlex="100%">
         <div class="table-body">
             <div class="airmid-table">
-                       <mat-table matSort [dataSource]="dsResultViewList" [@animateStagger]="{value:'50'}">
+                <mat-table matSort [dataSource]="dsResultViewList" [@animateStagger]="{value:'50'}">
 
-                            <ng-container matColumnDef="sequence">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">Sr.No
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
-                                    {{ i + 1 }}
-                                </mat-cell>
-                            </ng-container>
+                    <ng-container matColumnDef="sequence">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">Sr.No
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
+                            {{ i + 1 }}
+                        </mat-cell>
+                    </ng-container>
 
-                            <ng-container matColumnDef="TestName" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
-                                    Test Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    {{contact.TestName}}
-                                </mat-cell>
-                            </ng-container>
+                    <ng-container matColumnDef="TestName" sticky>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
+                            Test Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            {{contact.TestName}}
+                        </mat-cell>
+                    </ng-container>
 
-                            <ng-container matColumnDef="ParameterName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                    class="border-right">
-                                    Parameter Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                    {{contact.ParameterName}}
-                                </mat-cell>
-                            </ng-container>
+                    <ng-container matColumnDef="ParameterName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
+                            Parameter Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                            {{contact.ParameterName}}
+                        </mat-cell>
+                    </ng-container>
 
-                            <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
-                                    Result
-                                </mat-header-cell> 
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                    {{contact.ResultValue}}
-                                </mat-cell>
-                            </ng-container>
+                    <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
+                            Result
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                            {{contact.ResultValue}}
+                        </mat-cell>
+                    </ng-container>
 
 
-                            <ng-container matColumnDef="Flag">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                    class="w-80 border-right">Flag
-                                </mat-header-cell>
-                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm> 
-                                    {{contact.ParaBoldFlag}}
-                                </mat-cell> 
-                            </ng-container>
+                    <ng-container matColumnDef="Flag">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80 border-right">Flag
+                        </mat-header-cell>
+                        <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                            {{contact.ParaBoldFlag}}
+                        </mat-cell>
+                    </ng-container>
 
-                            <ng-container matColumnDef="NormalRange">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                    class="border-right">
-                                    NormalRange
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
-                                    {{contact?.NormalRange}}
-                                </mat-cell>
-                            </ng-container> 
+                    <ng-container matColumnDef="NormalRange">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="border-right">
+                            NormalRange
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                            {{contact?.NormalRange}}
+                        </mat-cell>
+                    </ng-container>
 
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
+                    <ng-container matColumnDef="loading">
+                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                        </mat-header-cell>
+                    </ng-container>
 
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container> 
-                   
+                    <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                            no data found...
+                        </mat-footer-cell>
+                    </ng-container>
+
                     <mat-header-row class="accent" *matHeaderRowDef="displayedResultViewColumns; sticky: true">
                     </mat-header-row>
 
                     <mat-row *matRowDef="let contact; columns: displayedResultViewColumns;"
-                        [@animate]="{value:'*',params:{y:'100%'}}" ></mat-row>
-                     <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsResultViewList!=null && dsResultViewList.data.length==0)}">
-                            </mat-footer-row>
-                </mat-table> 
+                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['loading']"
+                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                    </mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="['noData']"
+                        [ngClass]="{'hide':!(dsResultViewList!=null && dsResultViewList.data.length==0)}">
+                    </mat-footer-row>
+                </mat-table>
             </div>
         </div>
     </div>
@@ -336,7 +333,8 @@
                                                         <input matInput formControlName="Temp" placeholder="Temp"
                                                             id="tempField" [maxLength]="10" OnlyNumber
                                                             (keydown)="onEnter($event, 'bloodField')"
-                                                            (keypress)="keyPressDigitDecimalOnly($event)" [(ngModel)]="vTemp"
+                                                            (keypress)="keyPressDigitDecimalOnly($event)"
+                                                            [(ngModel)]="vTemp"
                                                             [style.color]="getVitalColorClass('Temp', vTemp)"
                                                             [style.fontWeight]="'500'">
                                                         <span matSuffix style="font-size: x-large;">|</span>
@@ -379,12 +377,12 @@
                                                         </app-airmid-chipautocomplete>
                                                     </div>
 
-                                                     <!-- <mat-form-field appearance="outline" fxFlex>
+                                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>History of Presenting Illness</mat-label>
                                                         <textarea matInput rows="2" formControlName="HistoryIllness" id="HistoryIllness"
                                                             placeholder="History of Presenting Illness"> </textarea>
                                                     </mat-form-field> -->
-                                                    
+
 
                                                     <div style="margin-bottom: 16px;" fxLayout="column">
                                                         <span style="font-weight: 700;">
@@ -591,8 +589,7 @@
                                                         #ddlService [IsMultiPle]="true" ValueField="serviceId"
                                                         TextField="serviceName"
                                                         [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=1&ServiceName=%'"
-                                                        [ReqFullObj]="true"
-                                                        [disableAutoNext]="true"
+                                                        [ReqFullObj]="true" [disableAutoNext]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
 
@@ -632,8 +629,7 @@
                                                         #ddlService1 [IsMultiPle]="true" ValueField="serviceId"
                                                         TextField="serviceName"
                                                         [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=2&ServiceName=%'"
-                                                        [ReqFullObj]="true"
-                                                        [disableAutoNext]="true"
+                                                        [ReqFullObj]="true" [disableAutoNext]="true"
                                                         (selectionChange)="selectChangeServiceName1($event)">
                                                     </airmid-dropdown>
                                                 </div>
@@ -658,12 +654,23 @@
                                             </div>
                                             <hr>
                                             <div fxLayout="row" fxLayoutGap="6px">
-                                                <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                                                <airmid-dropdown label="Department Name" formControlName="Departmentid"
+                                                    fxFlex="35%" [formGroup]="MedicineItemForm"
+                                                    [validations]="getValidationMessages().departmentId"
+                                                    [mode]="autocompletedepartment"
+                                                    (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
+                                                <!-- <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                                     fxFlex="35%" [formGroup]="MedicineItemForm"
                                                     [validations]="getValidationMessages().DoctorID"
                                                     [mode]="autocompleteModeDoctor"
                                                     (selectionChange)="selectChangeDoctorName($event)">
-                                                </airmid-dropdown>
+                                                </airmid-dropdown> -->
+
+                                                <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                                                    [formGroup]="MedicineItemForm" fxFlex="35%"
+                                                    (selectionChange)="selectChangeDoctorName($event)"
+                                                    [validations]="getValidationMessages().DoctorID"
+                                                    #ddlDoctor></airmid-dropdown>
 
                                             </div>
                                         </form>
@@ -1103,25 +1110,30 @@
                                                     <mat-tab label="Lab">
                                                         <div fxLayout="column" class="gap-8">
 
-                                                        
-                                        <div style="height: 30px;">  
-                                            <button mat-raised-button (click)="Printresultentrymulti(true)"
-                                                style="margin-left: 5px;" *ngIf="selection.selected.length>0">
-                                                Print Result
-                                            </button>
 
-                                            <button mat-raised-button (click)="Printresultentrymulti(false)"
-                                                *ngIf="selection.selected.length>0" style="margin-left: 5px;">
-                                                Print With Header
-                                            </button>
+                                                            <div style="height: 30px;">
+                                                                <button mat-raised-button
+                                                                    (click)="Printresultentrymulti(true)"
+                                                                    style="margin-left: 5px;"
+                                                                    *ngIf="selection.selected.length>0">
+                                                                    Print Result
+                                                                </button>
 
-                                        </div>
+                                                                <button mat-raised-button
+                                                                    (click)="Printresultentrymulti(false)"
+                                                                    *ngIf="selection.selected.length>0"
+                                                                    style="margin-left: 5px;">
+                                                                    Print With Header
+                                                                </button>
 
-                                                        <mat-table class="table2" matSort [dataSource]="LabMap[visitId]"
-                                                            [@animateStagger]="{value:'50'}"
-                                                            style="overflow: auto;height:250px;"> 
+                                                            </div>
 
-                                                            <!-- <ng-container matColumnDef="Buttons">
+                                                            <mat-table class="table2" matSort
+                                                                [dataSource]="LabMap[visitId]"
+                                                                [@animateStagger]="{value:'50'}"
+                                                                style="overflow: auto;height:250px;">
+
+                                                                <!-- <ng-container matColumnDef="Buttons">
                                                                 <mat-header-cell *matHeaderCellDef>
                                                                     <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue()"
                                                                         [indeterminate]="selection.hasValue() && !isAllSelected()">
@@ -1136,111 +1148,120 @@
                                                                 </mat-cell>
                                                             </ng-container>  -->
 
-                                                             <ng-container matColumnDef="Buttons">
-                                                <mat-header-cell *matHeaderCellDef >
-                                                    <mat-checkbox (change)="masterToggle()" [checked]="isAllSelected()"
-                                                        [indeterminate]="isSomeSelected()">
-                                                    </mat-checkbox>
-                                                </mat-header-cell>
+                                                                <ng-container matColumnDef="Buttons">
+                                                                    <mat-header-cell *matHeaderCellDef>
+                                                                        <mat-checkbox (change)="masterToggle()"
+                                                                            [checked]="isAllSelected()"
+                                                                            [indeterminate]="isSomeSelected()">
+                                                                        </mat-checkbox>
+                                                                    </mat-header-cell>
 
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  > 
-                                                    <mat-checkbox (click)="$event.stopPropagation()" 
-                                                      (change)="tableElementChecked($event, contact)"
-                                                        [checked]="selection.isSelected(contact)">
-                                                    </mat-checkbox> 
-                                                </mat-cell>
-                                            </ng-container>
+                                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                                                            (change)="tableElementChecked($event, contact)"
+                                                                            [checked]="selection.isSelected(contact)">
+                                                                        </mat-checkbox>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="labDate">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    Date </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.pathDate}}
-                                                                </mat-cell>
-                                                            </ng-container>
+                                                                <ng-container matColumnDef="labDate">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm>
+                                                                        Date </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide
+                                                                        fxShow.gt-sm>
+                                                                        {{element.pathDate}}
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="ServiceName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    ServiceName </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.serviceName}} </mat-cell>
-                                                            </ng-container>
+                                                                <ng-container matColumnDef="ServiceName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm>
+                                                                        ServiceName </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide
+                                                                        fxShow.gt-sm>
+                                                                        {{element.serviceName}} </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="BillNo">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    BillNo </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.pBillNo}} </mat-cell>
-                                                            </ng-container>
+                                                                <ng-container matColumnDef="BillNo">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm>
+                                                                        BillNo </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide
+                                                                        fxShow.gt-sm>
+                                                                        {{element.pBillNo}} </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="PatientType">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                    Status </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <!-- <mat-icon *ngIf="element.isCompleted"
+                                                                <ng-container matColumnDef="PatientType">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm>
+                                                                        Status </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide
+                                                                        fxShow.gt-sm>
+                                                                        <!-- <mat-icon *ngIf="element.isCompleted"
                                                                         matTooltip="Completed"
                                                                          class="pill green-600 s-16">circle</mat-icon>
                                                                     <mat-icon *ngIf="!element.isCompleted"
                                                                           matTooltip="Pending"
                                                                   class="pill red-500 s-16">circle</mat-icon> -->
-                                                            
-                                                                    <span [ngClass]="{
+
+                                                                        <span [ngClass]="{
                                                                           'status-not-requested': !element.isCompleted,
                                                                           'status-received': element.isCompleted
                                                                         }">
-                                                                        {{ element.isCompleted ? 'Completed' : 'Pending' }}
-                                                                    </span>
-                                                                </mat-cell>
-                                                            </ng-container>
+                                                                            {{ element.isCompleted ? 'Completed' :
+                                                                            'Pending' }}
+                                                                        </span>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="Action" stickyEnd>
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    Action </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element">
-                                                                      <button mat-icon-button matTooltip=" View Lab Result"
-                                                                        (click)="getLabResultview(element)" 
-                                                                        [disabled]="!element.isCompleted">
-                                                                        <mat-icon>visibility</mat-icon>
-                                                                    </button>
-                                                                    <button mat-icon-button matTooltip="Lab Print"
-                                                                        (click)="getLabPrint(element)"
-                                                                        [disabled]="!element.isCompleted">
-                                                                        <mat-icon>print</mat-icon>
-                                                                    </button>
-                                                                </mat-cell>
-                                                            </ng-container>
+                                                                <ng-container matColumnDef="Action" stickyEnd>
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxShow.gt-sm>
+                                                                        Action </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        <button mat-icon-button
+                                                                            matTooltip=" View Lab Result"
+                                                                            (click)="getLabResultview(element)"
+                                                                            [disabled]="!element.isCompleted">
+                                                                            <mat-icon>visibility</mat-icon>
+                                                                        </button>
+                                                                        <button mat-icon-button matTooltip="Lab Print"
+                                                                            (click)="getLabPrint(element)"
+                                                                            [disabled]="!element.isCompleted">
+                                                                            <mat-icon>print</mat-icon>
+                                                                        </button>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="loading">
-                                                                <mat-header-cell *matFooterCellDef colspan="6"
-                                                                    style="display: none;">
-                                                                </mat-header-cell>
-                                                            </ng-container>
+                                                                <ng-container matColumnDef="loading">
+                                                                    <mat-header-cell *matFooterCellDef colspan="6"
+                                                                        style="display: none;">
+                                                                    </mat-header-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="noData">
-                                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                    no data found...
-                                                                </mat-footer-cell>
-                                                            </ng-container>
+                                                                <ng-container matColumnDef="noData">
+                                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                        no data found...
+                                                                    </mat-footer-cell>
+                                                                </ng-container>
 
-                                                            <mat-header-row class="accent"
-                                                                *matHeaderRowDef="labColumns; sticky: true">
-                                                            </mat-header-row>
-                                                            <mat-row *matRowDef="let row; columns: labColumns;"
-                                                                class="element"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        </mat-table>
-                                                        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"
-                                                            [pageSize]="10" showFirstLastButtons>
-                                                        </mat-paginator>
-                                                        
+                                                                <mat-header-row class="accent"
+                                                                    *matHeaderRowDef="labColumns; sticky: true">
+                                                                </mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: labColumns;"
+                                                                    class="element"
+                                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            </mat-table>
+                                                            <mat-paginator #paginator
+                                                                [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                                                showFirstLastButtons>
+                                                            </mat-paginator>
 
-                                                        <!-- <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+
+                                                            <!-- <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
                                                     </airmid-table> -->
-                                                </div>
+                                                        </div>
 
                                                     </mat-tab>
 
@@ -1250,20 +1271,20 @@
                                                             [@animateStagger]="{value:'50'}"
                                                             style="overflow: auto;height:250px;">
 
-                                                              <ng-container matColumnDef="Buttons">
+                                                            <ng-container matColumnDef="Buttons">
                                                                 <mat-header-cell *matHeaderCellDef>
                                                                     <!-- <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue()"
                                                                         [indeterminate]="selection.hasValue() && !isAllSelected()">
                                                                     </mat-checkbox> -->
-                                                               </mat-header-cell>
-                                                            
-                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> 
-                                                                        <!-- <mat-checkbox (click)="$event.stopPropagation()" 
+                                                                </mat-header-cell>
+
+                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                    <!-- <mat-checkbox (click)="$event.stopPropagation()" 
                                                                             (change)="$event ? selection.toggle(element) : null"  
                                                                             [checked]="selection.isSelected(element)" [disabled]="element.isCompleted">
                                                                         </mat-checkbox>   -->
                                                                 </mat-cell>
-                                                            </ng-container> 
+                                                            </ng-container>
 
                                                             <ng-container matColumnDef="labDate">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -1629,6 +1650,7 @@
                 </form>
 
                 <div class="sales-footer-buttons gap-6" fxLayout="row">
+                     <button class="btn btn-danger-outline" (click)="OnipRequest()">IP Request</button>
                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     <button class="btn btn-primary" (click)="onSave()">Save</button>
                 </div>

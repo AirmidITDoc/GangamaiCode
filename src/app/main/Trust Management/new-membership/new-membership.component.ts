@@ -515,9 +515,7 @@ export class trustRegInsert {
             this.wifePan = trustRegInsert.wifePan || 0;
             this.cityId = trustRegInsert.cityId || 0;
             this.cityName = trustRegInsert.cityName || '';
-            this.residenceAddress
-                = trustRegInsert.residenceAddress
-                || '';
+            this.residenceAddress= trustRegInsert.residenceAddress|| '';
         }
     }
 }

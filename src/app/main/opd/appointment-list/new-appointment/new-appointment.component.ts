@@ -689,7 +689,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     getSelectedObjtrust(obj) {
-
+debugger
         console.log(obj)
         // if (this.data?.FormName == 'Registration-Page') {
         this.PatientName = obj.firstName + ' ' + obj.lastName;

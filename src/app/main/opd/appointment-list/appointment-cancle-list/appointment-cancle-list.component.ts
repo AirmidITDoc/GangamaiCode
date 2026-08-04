@@ -22,20 +22,16 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-
-import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { RegistrationService } from '../../registration/registration.service';
-import { VisitMaster1 } from '../../medicalrecord/medicalrecord.component';
-
 @Component({
-  selector: 'app-followup-list',
-  templateUrl: './followup-list.component.html',
-  styleUrls: ['./followup-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  selector: 'app-appointment-cancle-list',
+  templateUrl: './appointment-cancle-list.component.html',
+  styleUrls: ['./appointment-cancle-list.component.scss'],
+      encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
-export class FollowupListComponent {
+export class AppointmentCancleListComponent {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   myformSearch: FormGroup;
   searchFormGroup: FormGroup;
@@ -60,22 +56,6 @@ export class FollowupListComponent {
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
 
-  // displayedColumns: string[] = [
-  //   'batchNo',
-  //   'batchExpDate',
-  //   'balanceQty',
-  //   'unitMRP',
-  //   'purchaseRate',
-  //   'converFacto',
-  //   'landedRate',
-  //   'ExpDays',
-  //   'prodLocation',
-  //   'itemGenericName',
-  //   // 'ItemCode',
-  // ];
-  isLoadingStr: string = '';
-  // dataSource = new MatTableDataSource<VisitMaster1>();
-
 
   constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
     private commonService: PrintserviceService, public _registrationService: RegistrationService,
@@ -89,9 +69,7 @@ export class FollowupListComponent {
   allfilters = [
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "RegId", fieldValue: "0", opType: OperatorComparer.Equals },
-
-
+   
   ];
   ngAfterViewInit() {
     // Assign the template to the column dynamically
@@ -103,10 +81,10 @@ export class FollowupListComponent {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 6 },
+    { heading: "Cancelled Date", key: "isCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 130, type: 6 },
 
     { heading: "UHID", key: "regID", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -125,9 +103,9 @@ export class FollowupListComponent {
   ]
   gridConfig: gridModel = {
     // permissionCode: permissionCodes.Appointment,
-    apiUrl: "VisitDetail/Follow_up_List",
+    apiUrl: "VisitDetail/AppointmentCancelList",
     columnsList: this.allcolumns,
-    sortField: "FollowupDate",
+    sortField: "VisitDate",
     sortOrder: 0,
     filters: this.allfilters
   }
@@ -139,12 +117,11 @@ export class FollowupListComponent {
   }
 
 
-
   onChangeFirst() {
 
     this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-    this.regNo = this.myformSearch.get('RegNo').value || "0"
+    // this.regNo = this.myformSearch.get('RegNo').value || "0"
 
     this.getfilterdata();
 
@@ -155,7 +132,7 @@ export class FollowupListComponent {
     // if (event.key == 13) {
     this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-    this.regNo = this.myformSearch.get('RegNo').value || "0"
+    // this.regNo = this.myformSearch.get('RegNo').value || "0"
 
     this.getfilterdata();
     // }
@@ -165,15 +142,13 @@ export class FollowupListComponent {
   getfilterdata() {
     debugger
     this.gridConfig = {
-      apiUrl: "VisitDetail/Follow_up_List",
+      apiUrl: "VisitDetail/AppointmentCancelList",
       columnsList: this.allcolumns,
-      sortField: "FollowupDate",
+      sortField: "VisitDate",
       sortOrder: 0,
       filters: [
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-
-        { fieldName: "RegId", fieldValue: String(this.regNo), opType: OperatorComparer.Equals },
 
       ]
     }
@@ -223,28 +198,10 @@ export class FollowupListComponent {
   }
 
   WardId = 0
-  getFolloweupListview() {
+  getAppCancelListview() {
     setTimeout(() => {
 
-      //  const param = {
-
-      //      "searchFields": [
-      //          {
-      //              "fieldName": "From_Dt",
-      //              "fieldValue": this.fromDate,
-      //              "opType": "13"
-      //          },
-      //          {
-      //              "fieldName": "To_Dt",
-      //              "fieldValue": this.toDate,
-      //              "opType": "13"
-      //          }
-
-      //      ],
-
-      //      "mode": "40348"
-      //  }
-
+      
       const param = {
         "searchFields": [
           {
@@ -254,11 +211,12 @@ export class FollowupListComponent {
           },
           {
             "fieldName": "ToDate",
-            "fieldValue": this.toDate,
+            "fieldValue":this.toDate,
             "opType": "Equals"
           }
         ],
-        "reportId": 40348
+        "reportId": 40347
+
       }
 
 
@@ -271,7 +229,7 @@ export class FollowupListComponent {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "Follow Up List  Viewer"
+              title: "Appointment Cancel List  Viewer"
 
             }
           });
@@ -291,9 +249,7 @@ export class FollowupListComponent {
     else
       if (event == 'LastName')
         this.myformSearch.get('LastName').setValue("")
-    if (event == 'RegNo')
-      this.myformSearch.get('RegNo').setValue("")
-
+   
     this.onChangeFirst();
   }
 

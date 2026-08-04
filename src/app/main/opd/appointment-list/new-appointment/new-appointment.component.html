@@ -71,8 +71,9 @@
                         <airmid-autocomplete class="w-250" label="Search Membership No / Patient Name "
                           [formGroup]="searchFormGroup" formControlName="tRegId" *ngIf="IsTrustAppflag"
                           placeholderText="Search Reg No / Patient Name / Mobile No"
-                          ApiUrl="TrustMemershipReg/auto-complete?Keyword="
-                          (selectionChange)="getSelectedObjtrust($event)"></airmid-autocomplete>
+                          ApiUrl="TrustMemershipReg/search_TruestMembership?Keyword="
+                          (selectionChange)="getSelectedObjtrust($event)" ValueField="membershipId"
+                          TextField="firstName"></airmid-autocomplete>
 
 
                         <form [formGroup]="VisitFormGroup">

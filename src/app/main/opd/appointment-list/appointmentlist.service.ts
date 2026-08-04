@@ -331,6 +331,12 @@ export class AppointmentlistService {
     public getReportViewOld(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
     }
+
+ 
+
+      public getNewReportView(Param) {
+        return this._httpClient1.PostData("Report/NewViewReport", Param);
+    }
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
@@ -359,6 +365,11 @@ export class AppointmentlistService {
   public getFollowupList(employee) {
         return this._httpClient1.PostData("VisitDetail/Follow_up_List", employee)
     }
+
+ public getCanclelist(employee) {
+        return this._httpClient1.PostData("VisitDetail/AppointmentCancelList", employee)
+    }
+    
     public getBillingServiceList(employee) {
         return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)
     }

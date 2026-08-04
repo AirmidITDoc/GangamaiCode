@@ -226,6 +226,15 @@ export class IPBillBrowseListComponent implements OnInit {
     }
     Is9_Digit_National_Id: boolean = false;
     IsChennaiIPFinalPrint: boolean = false;
+    IsGroupWise: boolean = false;
+    IsClassWise: boolean = false;
+    IsClassService: boolean = false;
+    IsFinalBill: boolean = false;
+    IsChargeDateWise: boolean = false;
+    IsPatientStatementPrint: boolean = false;
+    IsAdvanceStatementPrint: boolean = false;
+    IsChargeDateWithGroupWise: boolean = false;
+    IsChargeDateWithGroupWiseWithoutAdvance: boolean = false;
     constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
@@ -245,23 +254,70 @@ export class IPBillBrowseListComponent implements OnInit {
         const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
-debugger
+        debugger
         const rawValue1 = this?._configue?.configParams?.IsChennaiIPFinalPrint || "";
-        const [id1, val1] = rawValue.includes(":") ? rawValue1.split(":") : [null, null];
+        const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
         this.IsChennaiIPFinalPrint = id1 === "1";
 
+
+        const vIsGroupWise = this?._configue?.configParams?.IsGroupWise || "";
+        const [id2, val2] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        this.IsGroupWise = id2 === "1";
+
+        const vIsClassWise = this?._configue?.configParams?.IsClassWise || "";
+        const [id3, val3] = vIsClassWise.includes(":") ? vIsClassWise.split(":") : [null, null];
+        this.IsClassWise = id3 === "1";
+
+        const vIsClassService = this?._configue?.configParams?.IsClassService || "";
+        const [id4, val4] = vIsClassService.includes(":") ? vIsClassService.split(":") : [null, null];
+        this.IsClassService = id4 === "1";
+
+        const vIsFinalBill = this?._configue?.configParams?.IsFinalBill || "";
+        const [id5, val5] = vIsFinalBill.includes(":") ? vIsFinalBill.split(":") : [null, null];
+        this.IsFinalBill = id5 === "1";
+
+        const vIsChargeDateWise = this?._configue?.configParams?.IsChargeDateWise || "";
+        const [id6, val6] = vIsChargeDateWise.includes(":") ? vIsChargeDateWise.split(":") : [null, null];
+        this.IsChargeDateWise = id6 === "1";
+
+        const vIsPatientStatementPrint = this?._configue?.configParams?.IsPatientStatementPrint || "";
+        const [id7, val7] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        this.IsPatientStatementPrint = id7 === "1";
+
+        const vIsAdvanceStatementPrint = this?._configue?.configParams?.IsAdvanceStatementPrint || "";
+        const [id8, val8] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        this.IsAdvanceStatementPrint = id8 === "1";
+
+        const vIsChargeDateWithGroupWise = this?._configue?.configParams?.IsChargeDateWithGroupWise || "";
+        const [id9, val9] = vIsChargeDateWithGroupWise.includes(":") ? vIsChargeDateWithGroupWise.split(":") : [null, null];
+        this.IsChargeDateWithGroupWise = id9 === "1";
+        const IsChargeDateWithGroupWiseWithoutAdvance = this?._configue?.configParams?.IsChargeDateWithGroupWiseWithoutAdvance || "";
+        const [id10, val10] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        this.IsChargeDateWithGroupWiseWithoutAdvance = id2 === "1";
+
+debugger
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
             if (!this.Is9_Digit_National_Id) {
-                this.menuActions.push('Print Final Bill - Group wise');
-                this.menuActions.push('Print Final Bill - Class wise');
-                this.menuActions.push('Print Final Bill - Class Service');
-                this.menuActions.push('Print Final Bill');
-                this.menuActions.push('Print Final Bill - Charge Date Wise');
-                this.menuActions.push('Patient Statement Print');
-                this.menuActions.push('Advance Statement Print');
+                debugger
+                if (this.IsGroupWise)
+                    this.menuActions.push('Print Final Bill - Group wise');
+                if (this.IsClassWise)
+                    this.menuActions.push('Print Final Bill - Class wise');
+                if (this.IsClassService)
+                    this.menuActions.push('Print Final Bill - Class Service');
+                if (this.IsFinalBill)
+                    this.menuActions.push('Print Final Bill');
+                if (this.IsChargeDateWise)
+                    this.menuActions.push('Print Final Bill - Charge Date Wise');
+                if (this.IsPatientStatementPrint)
+                    this.menuActions.push('Patient Statement Print');
+                if (this.IsAdvanceStatementPrint)
+                    this.menuActions.push('Advance Statement Print');
             } else {
-                this.menuActions.push('Print Final Bill - Charge Date with Group wise');
-                this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
+                if (this.IsChargeDateWithGroupWise)
+                    this.menuActions.push('Print Final Bill - Charge Date with Group wise');
+                if (this.IsChargeDateWithGroupWiseWithoutAdvance)
+                    this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
                 // this.menuActions.push('Advance Statement Print');
             }
 
@@ -427,9 +483,9 @@ debugger
         else if (m == "Print Final Bill - Charge Date with Group wise Without Advance") {
             this.viewgetFinalGroupWisChargeatewiseWithoutAdvanceReportPdf(contact.billNo)
         }
-         else if (m == "Advance Statement Print") { 
-        this.commonService.Onprint("AdmissionID", contact.opdipdid, "IpAdvanceStatement");
-    }
+        else if (m == "Advance Statement Print") {
+            this.commonService.Onprint("AdmissionID", contact.opdipdid, "IpAdvanceStatement");
+        }
     }
 
     OnPaitentFinalPrint(element) {
@@ -479,11 +535,11 @@ debugger
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
     viewgetFinalBillReportGroupwisePdf(billNo) {
-      //  this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");  
+        //  this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");  
         setTimeout(() => {
             const param = {
                 "searchFields": [
-                    { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "13" }, 
+                    { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "13" },
                 ],
                 "mode": "IPFinalBillGroupwise"
             }
@@ -501,7 +557,7 @@ debugger
                 matDialog.afterClosed().subscribe(result => {
                 });
             });
-        }, 100); 
+        }, 100);
     }
     viewgetFinalBillReportChargeDatewisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");
@@ -750,11 +806,11 @@ debugger
         //     this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
         // else
         //     this.viewgetInterimBillReportPdf(data.billNo)  
- debugger
-        if(this.IsChennaiIPFinalPrint){
-             this.viewgetFinalBillReportGroupwisePdf(data.billNo)
-        }else{
-             if (!data.interimOrFinal)
+        debugger
+        if (this.IsChennaiIPFinalPrint) {
+            this.viewgetFinalBillReportGroupwisePdf(data.billNo)
+        } else {
+            if (!data.interimOrFinal)
                 this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
             else
                 this.viewgetInterimBillReportPdf(data.billNo)

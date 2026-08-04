@@ -49,6 +49,7 @@ import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component
 import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 import { FollowupListComponent } from './followup-list/followup-list.component';
+import { AppointmentCancleListComponent } from './appointment-cancle-list/appointment-cancle-list.component';
 
 // const moment = _rollupMoment || _moment;
 
@@ -101,6 +102,7 @@ export class AppointmentListComponent implements OnInit {
     vEMRReady = 0;
     VCrossConscount = 0;
     VFollowupTodayCount = 0;
+    VCancleTodayCount = 0
     VEMRcount = 0;
     VCheckoutCount = 0;
     VWaitingCount = 0;
@@ -111,6 +113,7 @@ export class AppointmentListComponent implements OnInit {
     autocompleteCompany: string = "Company";
     dataSource = new MatTableDataSource<VisitMaster1>();
     dataSource1 = new MatTableDataSource<VisitMaster1>();
+    dataSource2 = new MatTableDataSource<VisitMaster1>();
     vOPIPId = 0;
     f_name: any = "%"
     regNo = 0;
@@ -197,6 +200,7 @@ export class AppointmentListComponent implements OnInit {
         // 
         this.GetAppointdetail()
         this.GetFollowupdetail()
+        this.GetAppCancledetail()
         if (this._ActRoute.url == '/opd/appointment') {
             this.id = this.route.snapshot.queryParamMap.get('Id');
             this.mode = this.route.snapshot.queryParamMap.get('Mode');
@@ -1791,8 +1795,20 @@ export class AppointmentListComponent implements OnInit {
     }
 
 
-    openPatientDetailsPopover1(event: MouseEvent) {
+    openPatientFollowUpList(event: MouseEvent) {
         const dialogRef = this.dialogRef.open(FollowupListComponent,
+            {
+                maxWidth: "95vw",
+                height: '85%',
+                width: '90%',
+            });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
+
+    openAppointmentcancelDetails(event: MouseEvent) {
+        const dialogRef = this.dialogRef.open(AppointmentCancleListComponent,
             {
                 maxWidth: "95vw",
                 height: '85%',
@@ -1871,6 +1887,58 @@ export class AppointmentListComponent implements OnInit {
             }
         });
     }
+
+
+    GetAppCancledetail() {
+
+        this.VCancleTodayCount = 0;
+        const fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+
+        // Handle date range
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+
+        debugger
+        filters.push(
+
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "GreaterThanOrEqual"
+            }
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "VisitDate",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+        console.log(data)
+        this._AppointmentlistService.getCanclelist(data).subscribe((response) => {
+            this.dataSource2.data = response.data;
+            if (this.dataSource2.data.length > 0) {
+                this.VCancleTodayCount = this.dataSource2.data.length
+
+                console.log(this.dataSource2.data)
+            }
+        });
+    }
+
 }
 
 
@@ -1909,6 +1977,7 @@ export class VisitMaster1 {
     VisitTime: any;
     VisAdmTime: any;
     followupDate: Date
+    isCancelledDate: Date
     /**
      * Constructor
      *
@@ -1949,6 +2018,7 @@ export class VisitMaster1 {
             this.VisitTime = VisitMaster1.VisitTime || ''
             this.VisAdmTime = VisitMaster1.VisAdmTime || ''
             this.followupDate = VisitMaster1.followupDate || ''
+            this.isCancelledDate = VisitMaster1.isCancelledDate || ''
 
 
         }

@@ -181,5 +181,19 @@ export enum permissionCodes {
     PatientAppointmentCancle = 'PatientAppointmentCancle',
     CrossConsultation='CrossConsultation',
     VitalInformation='VitalInformation',
-    EditRegistration='EditRegistration'
+    EditRegistration='EditRegistration',
+
+    //Ip Billing report
+    GroupWiseSummaryReport= 'GroupWiseSummaryReport',
+IPDBillDetails= 'IPDBillDetails',
+InsuranceWiseReport= 'InsuranceWiseReport',
+IPCompanyWiseDailyCollectionReport= 'IPCompanyWiseDailyCollectionReport',
+IPDailyCollectionReport= 'IPDailyCollectionReport',
+IPDischargeBillGenerationPendingReport= 'IPDischargeBillGenerationPendingReport',
+RefundOfBillReport= 'RefundOfBillReport',
+RefundOfAdvanceReport= 'RefundOfAdvanceReport',
+CreditReport= 'CreditReport',
+BillSummaryReport= 'BillSummaryReport',
+IPBillReport= 'IPBillReport',
+IPAdvanceReceipt= 'IPAdvanceReceipt',
 }

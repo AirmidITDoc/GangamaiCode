@@ -79,14 +79,20 @@
                     <div class="card-value">{{VFollowupTodayCount}}</div>
                     <!-- <mat-icon class="card-icon">groups</mat-icon> -->
                     <!-- <button mat-icon-button (click)="openPatientDetailsPopover1($event)" style="padding: 0px;"> -->
-                    <mat-icon (click)="openPatientDetailsPopover1($event)"
+                    <mat-icon (click)="openPatientFollowUpList($event)" class="card-icon">notifications_none</mat-icon>
+                    <!-- </button> -->
+                </div>
+                <div class="dashboard-card app-Cancel">
+                    <div class="card-label">Todays Cancle </div>
+                    <div class="card-value">{{VCancleTodayCount}}</div>
+                    <mat-icon (click)="openAppointmentcancelDetails($event)"
                         class="card-icon">notifications_none</mat-icon>
                     <!-- </button> -->
                 </div>
             </div>
 
         </div>
-        <form [formGroup]="searchFormGroup" class="input-error-hidden w-400">
+        <form [formGroup]="searchFormGroup" class="input-error-hidden w-300">
             <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
                 formControlName="RegId" placeholderText="Search UHID / Patient Name / Mobile No" fxFlex
                 ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"

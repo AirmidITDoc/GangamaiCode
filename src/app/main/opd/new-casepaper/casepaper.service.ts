@@ -167,4 +167,14 @@ export class CasepaperService {
         public getLabResultView(Param) {
         return this._httpClient1.PostData("Common", Param)
     }
+
+    
+    public getDoctorsByDepartment(deptId) {
+        return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
+    }
+
+    public converOPtoIP(param) {
+        return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
+    }
+
 }
