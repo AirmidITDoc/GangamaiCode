@@ -22,6 +22,23 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+           <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button matTooltip="Edit Item" (click)="onSave(element)">
+                    <mat-icon> edit</mat-icon>
+                </button>
+
+
+                <button mat-icon-button matTooltip="Delete" (click)="delitem(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+
+            </div>
+        </ng-template>
+        
         <airmid-table [gridConfig]="gridConfig" class="content">
          
             <ng-container filters>

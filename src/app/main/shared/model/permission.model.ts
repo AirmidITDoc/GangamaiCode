@@ -196,4 +196,7 @@ CreditReport= 'CreditReport',
 BillSummaryReport= 'BillSummaryReport',
 IPBillReport= 'IPBillReport',
 IPAdvanceReceipt= 'IPAdvanceReceipt',
+
+//ICDE
+MICDE_Master='MICDE_Master'
 }

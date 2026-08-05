@@ -218,40 +218,38 @@ export class FollowupListComponent {
   getFolloweupListview() {
     setTimeout(() => {
 
-      //  const param = {
+      // const param = {
+      //   "searchFields": [
+      //     {
+      //       "fieldName": "FromDate",
+      //       "fieldValue": this.fromDate,
+      //       "opType": "Equals"
+      //     },
+      //     {
+      //       "fieldName": "ToDate",
+      //       "fieldValue": this.toDate,
+      //       "opType": "Equals"
+      //     }
+      //   ],
+      //   "reportId": 40348
+      // }
 
-      //      "searchFields": [
-      //          {
-      //              "fieldName": "From_Dt",
-      //              "fieldValue": this.fromDate,
-      //              "opType": "13"
-      //          },
-      //          {
-      //              "fieldName": "To_Dt",
-      //              "fieldValue": this.toDate,
-      //              "opType": "13"
-      //          }
-
-      //      ],
-
-      //      "mode": "40348"
-      //  }
-
-      const param = {
+         const param = {
         "searchFields": [
           {
-            "fieldName": "FromDate",
+            "fieldName": "From_Dt",
             "fieldValue": this.fromDate,
             "opType": "Equals"
           },
           {
-            "fieldName": "ToDate",
+            "fieldName": "To_Dt",
             "fieldValue": this.toDate,
             "opType": "Equals"
           }
         ],
-        "reportId": 40348
+        "mode": "AppointmentCancelReport"
       }
+   
 
 
       console.log(param)

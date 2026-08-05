@@ -35,11 +35,11 @@ export class ICDEMasterComponent {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DoseMaster, permissionType.Edit), callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.MICDE_Master, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 }, {
-                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DoseMaster, permissionType.Delete), callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.MICDE_Master, permissionType.Delete), callback: (data: any) => {
                         this._ICDEMasterService.deactivateTheStatus(data.icdid).subscribe((data: any) => {
                             this.grid.bindGridData();
                         });

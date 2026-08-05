@@ -28,8 +28,8 @@ import { RegistrationService } from '../../registration/registration.service';
   selector: 'app-appointment-cancle-list',
   templateUrl: './appointment-cancle-list.component.html',
   styleUrls: ['./appointment-cancle-list.component.scss'],
-      encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class AppointmentCancleListComponent {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -69,7 +69,7 @@ export class AppointmentCancleListComponent {
   allfilters = [
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-   
+
   ];
   ngAfterViewInit() {
     // Assign the template to the column dynamically
@@ -201,59 +201,75 @@ export class AppointmentCancleListComponent {
   getAppCancelListview() {
     setTimeout(() => {
 
-      
+
+      // const param = {
+      //   "searchFields": [
+      //     {
+      //       "fieldName": "FromDate",
+      //       "fieldValue": this.fromDate,
+      //       "opType": "Equals"
+      //     },
+      //     {
+      //       "fieldName": "ToDate",
+      //       "fieldValue":this.toDate,
+      //       "opType": "Equals"
+      //     }
+      //   ],
+      //   "reportId": 40347
+
+      // }
+
       const param = {
         "searchFields": [
           {
-            "fieldName": "FromDate",
+            "fieldName": "From_Dt",
             "fieldValue": this.fromDate,
             "opType": "Equals"
           },
           {
-            "fieldName": "ToDate",
-            "fieldValue":this.toDate,
+            "fieldName": "To_Dt",
+            "fieldValue": this.toDate,
             "opType": "Equals"
           }
         ],
-        "reportId": 40347
-
+        "mode": "AppointmentCancelReport"
       }
-
+   
 
       console.log(param)
-      this._AppointmentlistService.getNewReportView(param).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Appointment Cancel List  Viewer"
+      this._AppointmentlistService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Appointment Cancel List  Viewer"
 
-            }
-          });
-
-        matDialog.afterClosed().subscribe(result => {
-
+          }
         });
+
+      matDialog.afterClosed().subscribe(result => {
+
       });
+    });
 
-    }, 100);
+  }, 100);
 
-  }
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'FirstName')
-      this.myformSearch.get('FirstName').setValue("")
-    else
-      if (event == 'LastName')
-        this.myformSearch.get('LastName').setValue("")
-   
-    this.onChangeFirst();
-  }
+}
+Clearfilter(event) {
+  console.log(event)
+  if (event == 'FirstName')
+    this.myformSearch.get('FirstName').setValue("")
+  else
+    if (event == 'LastName')
+      this.myformSearch.get('LastName').setValue("")
 
-  onClose() {
-    this._matDialog.closeAll()
-  }
+  this.onChangeFirst();
+}
+
+onClose() {
+  this._matDialog.closeAll()
+}
 }

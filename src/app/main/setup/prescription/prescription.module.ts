@@ -76,14 +76,13 @@ const appRoutes: Routes = [
                 (m) => m.SubresultValueModule
             ),
     },
-    ,
-    {
+   {
         path: "ICDEMaster",
         loadChildren: () =>
             import("./icde-master/icde-master.module").then(
                 (m) => m.ICDEMasterModule
             ),
-    },
+    }
 ];
 
 @NgModule({
