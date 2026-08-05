@@ -81,12 +81,12 @@ export class ServiceMasterComponent implements OnInit {
                         this.onNew(data);
                     }
                 },
-                 {
-                   
+                {
+
                     action: gridActions.view, visible: this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Edit), callback: (data: any) => {
                         this.onClassRate(data);
                     }
-                },  {
+                }, {
                     action: gridActions.delete, callback: (data: any) => {
 
                         this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
@@ -217,8 +217,8 @@ export class ServiceMasterComponent implements OnInit {
         });
     }
 
-     onClassRate(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; 
+    onClassRate(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur();
 
         const dialogRef = this._matDialog.open(NewServicePriceComponent,
@@ -242,10 +242,13 @@ export class ServiceMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ServiceMasterFormNewComponent,
             {
+                // maxWidth: "95vw",
+                // maxHeight: '95vh',
+                // height: '95%',
+                // width: '70%',
                 maxWidth: "95vw",
-                maxHeight: '95vh',
                 height: '95%',
-                width: '70%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -326,7 +329,7 @@ export class ServiceMaster {
     IsDeleted: any;
     tariffId: any;
     isApplicableFor: any;
-   tariffName:any
+    tariffName: any
 
     /**
      * Constructor
@@ -359,7 +362,7 @@ export class ServiceMaster {
             this.IsDeleted = ServiceMaster.IsDeleted || "";
             this.tariffId = ServiceMaster.tariffId || "";
             this.isApplicableFor = ServiceMaster.isApplicableFor || 0
-              this.tariffName = ServiceMaster.tariffName || ""
+            this.tariffName = ServiceMaster.tariffName || ""
         }
     }
 }
@@ -381,7 +384,7 @@ export class Servicedetail {
     ServiceName: any;
     TariffName: any;
     SubGroupName: any;
-    tariffName:any
+    tariffName: any
 
 
     constructor(Servicedetail) {
@@ -402,7 +405,7 @@ export class Servicedetail {
             this.ServiceName = Servicedetail.ServiceName || "";
             this.TariffName = Servicedetail.TariffName || ""
             this.SubGroupName = Servicedetail.SubGroupName || ""
-                        this.tariffName = Servicedetail.tariffName || ""
+            this.tariffName = Servicedetail.tariffName || ""
         }
     }
 }

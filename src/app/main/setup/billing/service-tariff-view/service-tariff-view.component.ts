@@ -36,11 +36,12 @@ export class ServiceTariffViewComponent {
 
   applyFilters() {
 
+    const SearchServiceName = this.myformSearch.get('searchServiceName')?.value || '%';
     const selectedTariffId = this.myformSearch.get('searchTariffName')?.value;
 
     if (selectedTariffId > 0) {
 
-      this._serviceMasterService.getServicesNew(selectedTariffId).subscribe((response: any) => {
+      this._serviceMasterService.getServicesNew(selectedTariffId,SearchServiceName).subscribe((response: any) => {
 
         this.ServiceList = response.data;
         this.ColumnList = response.columns;
