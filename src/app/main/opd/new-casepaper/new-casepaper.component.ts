@@ -96,6 +96,7 @@ export class NewCasepaperComponent implements OnInit {
     ItemName: any;
     ItemId: any;
     vDay: any;
+    vDayInput:any
     vInstruction: any;
     Chargelist: any[] = [];  // changed here for onAdd purpose
     PatientType: any;
@@ -165,6 +166,11 @@ export class NewCasepaperComponent implements OnInit {
     selectedFile: File | null = null;
     previewUrl: string | null = null;
     vTariffId: any;
+
+    departmentId: any;
+    departmentName = ''
+
+
     displayedColumns1: string[] = [
         'CertificateDate',
         'CertificateName',
@@ -190,7 +196,7 @@ export class NewCasepaperComponent implements OnInit {
     autocompleteModeServcie: string = "Service"; //ServiceName
     autocompleteModeDoctor: string = "ConDoctor";
     autocompleteModeDiagnosis: string = "CasepaperDignosis";
-
+    autocompletedepartment: string = "Department";
     vstoreId = this._loggedService.currentUserValue.user.storeId;
 
     @ViewChild('ddlDiagnosis') ddlDiagnosis: AirmidDropDownComponent;
@@ -199,6 +205,7 @@ export class NewCasepaperComponent implements OnInit {
     @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
     @ViewChild('ddlService1') ddlService1: AirmidDropDownComponent;
     @ViewChild('medicineTableRef') medicineTableRef: MedicineTableNewComponent;
+    @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
     BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -216,7 +223,16 @@ export class NewCasepaperComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public speechService: SpeechRecognitionService,
         public _ConfigService: ConfigService,
-    ) { }
+    ) {
+
+        debugger
+        const rawValue = this?._ConfigService?.configParams?.FollowUpdateSet || "";
+        const [id, FollowUpdateSet] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        if (id == "1" && FollowUpdateSet) {
+            this.vDayInput = FollowUpdateSet
+            this.vDays = FollowUpdateSet
+        }
+    }
 
     ngOnInit(): void {
         //Common language list
@@ -448,7 +464,7 @@ export class NewCasepaperComponent implements OnInit {
             FollowupDays: '',
             start: [new Date()],
             Remark: ['', [Validators.maxLength(200)]],
-            Days: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            Days:this.vDayInput,// [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: '',
             FollowupMonths: '',
             FollowupYears: '',
@@ -488,7 +504,7 @@ export class NewCasepaperComponent implements OnInit {
             daysOption3: [0],
             instructionId: [element.instructionId || element.InstructionId || 0],
             qtyPerDay: [Math.round(element.QtyPerDay ?? element.qtyPerDay ?? 0)],
-            totalQty: [ element?.totalQty || element?.TotalQty || 0 //Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
+            totalQty: [element?.totalQty || element?.TotalQty || 0 //Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],
             isClosed: false,
             isEnglishOrIsMarathi: [true],
@@ -501,7 +517,7 @@ export class NewCasepaperComponent implements OnInit {
             bsl: [element.bsl ?? element.BSL ?? ''],
             spO2: [element.spO2 ?? element.SPO2 ?? ''],
             temp: [element.temp ?? element.PWeight ?? ''],
-            pulse: [element.pulse ?? element.Pulse ?? ''], 
+            pulse: [element.pulse ?? element.Pulse ?? ''],
             bp: [element.bp ?? element.BP ?? ''],
             storeId: [this._loggedService.currentUserValue.user.storeId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             patientReferDocId: [element.patientReferDocId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -684,9 +700,9 @@ export class NewCasepaperComponent implements OnInit {
                         else
                             this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
                     }
-                }else{
-               this.toastr.warning("Please check your network connection and try again.");
-            }
+                } else {
+                    this.toastr.warning("Please check your network connection and try again.");
+                }
 
                 this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
                 this.onClear();
@@ -1231,7 +1247,8 @@ export class NewCasepaperComponent implements OnInit {
             DoctorID: [],
             Diagnosis: [],
             ChiefComplaint: [],
-            Examination: []
+            Examination: [],
+            departmentId: []
         }
     }
 
@@ -1541,7 +1558,7 @@ export class NewCasepaperComponent implements OnInit {
         this.addDiagnolist = [];
         this.addExaminlist = [];
         this.specificDate = new Date();
-        this.vDays = 10
+        this.vDays = this.vDayInput
     }
     SpinLoading: any = ""
     viewgetOpprescriptionReportwithheaderPdf() {
@@ -1949,21 +1966,21 @@ export class NewCasepaperComponent implements OnInit {
     getDosemaster() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
- 
+
         const dialogRef = this._matDialog.open(NewDoseMasterComponent,
-                {
-                    maxWidth: "50vw",
-                    maxHeight: '50%',
-                    width: '70%',
-                });
-       // dialogRef.componentInstance.openedFromOPD = true;
-        dialogRef.afterClosed().subscribe(result => { 
+            {
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '70%',
+            });
+        // dialogRef.componentInstance.openedFromOPD = true;
+        dialogRef.afterClosed().subscribe(result => {
             this.showDoseDropdownRefresh = false;
             setTimeout(() => {
                 this.showDoseDropdownRefresh = true;
             }, 100);
         });
-    } 
+    }
 
     getInstrMaster() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -1973,10 +1990,10 @@ export class NewCasepaperComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewInstructionMasterComponent,
             {
                 maxWidth: "50vw",
-                    maxHeight: '50%',
-                    width: '70%',
+                maxHeight: '50%',
+                width: '70%',
             });
-       // dialogRef.componentInstance.openedFromOPD = true;
+        // dialogRef.componentInstance.openedFromOPD = true;
         dialogRef.afterClosed().subscribe(result => {
             //  Force re-render of dropdown to reload internal data
             // this.showDoseDropdownRefresh = false;
@@ -2637,11 +2654,11 @@ export class NewCasepaperComponent implements OnInit {
             }
         }
     }
-        public displayedResultViewColumns =
-        ['sequence', 'TestName', 'ParameterName', 'ResultValue','Flag','NormalRange'];
-        @ViewChild('ResultViewTab') ResultViewTab!: TemplateRef<any>;
+    public displayedResultViewColumns =
+        ['sequence', 'TestName', 'ParameterName', 'ResultValue', 'Flag', 'NormalRange'];
+    @ViewChild('ResultViewTab') ResultViewTab!: TemplateRef<any>;
 
-    getLabResultview(row: any): void { 
+    getLabResultview(row: any): void {
         this._matDialog.open(this.ResultViewTab, {
             width: '60%',
             height: '70%',
@@ -2656,47 +2673,47 @@ export class NewCasepaperComponent implements OnInit {
             ],
             "mode": "PathologyResultEntryOPCompleted"
         }
-//         {
-//     "TestId": 2,
-//     "TestName": "CBC",
-//     "PrintTestName": "COMPLETE BLOOD COUNT",
-//     "SubTestId": 0,
-//     "SubTestName": "CBC",
-//     "SubTestNamePrint": "COMPLETE BLOOD COUNT",
-//     "ParameterName": "HCT",
-//     "ParameterShortName": "HCT",
-//     "ParameterId": 19,
-//     "PrintParameterName": "HCT",
-//     "ResultValue": " 2323",
-//     "NormalRange": "33 - 50 %",
-//     "PrintOrder": 1,
-//     "PIsNumeric": 1,
-//     "PathReportId": 571684,
-//     "CategoryId": 20029,
-//     "CategoryName": "HEMATOLOGY",
-//     "PatientName": "Miss Raksha Rajesh Netalkar",
-//     "VisitDate": "2026-07-28T00:00:00",
-//     "VisitTime": "2026-07-28T11:48:41",
-//     "OPDNo": "OP/07/2026/140",
-//     "ConsultantDocName": "DEMO demo",
-//     "AgeYear": "25        ",
-//     "RegNo": "3242",
-//     "CompanyName": "",
-//     "PathResultDrName": "Kavita j",
-//     "PathResultDr1": 70403,
-//     "SuggestionNote": "askjal adsjlkjasd dsaaskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa",
-//     "FootNote": "",
-//     "MachineName": "",
-//     "TechniqueName": "",
-//     "UnitId": 5,
-//     "MinValue": 33,
-//     "MaxValue": 50,
-//     "PathReportdetid": 255768,
-//     "Formula": "",
-//     "ParaBoldFlag": "B",
-//     "OPD_IPD_ID": 535955,
-//     "OPD_IPD_Type": 0
-// }
+        //         {
+        //     "TestId": 2,
+        //     "TestName": "CBC",
+        //     "PrintTestName": "COMPLETE BLOOD COUNT",
+        //     "SubTestId": 0,
+        //     "SubTestName": "CBC",
+        //     "SubTestNamePrint": "COMPLETE BLOOD COUNT",
+        //     "ParameterName": "HCT",
+        //     "ParameterShortName": "HCT",
+        //     "ParameterId": 19,
+        //     "PrintParameterName": "HCT",
+        //     "ResultValue": " 2323",
+        //     "NormalRange": "33 - 50 %",
+        //     "PrintOrder": 1,
+        //     "PIsNumeric": 1,
+        //     "PathReportId": 571684,
+        //     "CategoryId": 20029,
+        //     "CategoryName": "HEMATOLOGY",
+        //     "PatientName": "Miss Raksha Rajesh Netalkar",
+        //     "VisitDate": "2026-07-28T00:00:00",
+        //     "VisitTime": "2026-07-28T11:48:41",
+        //     "OPDNo": "OP/07/2026/140",
+        //     "ConsultantDocName": "DEMO demo",
+        //     "AgeYear": "25        ",
+        //     "RegNo": "3242",
+        //     "CompanyName": "",
+        //     "PathResultDrName": "Kavita j",
+        //     "PathResultDr1": 70403,
+        //     "SuggestionNote": "askjal adsjlkjasd dsaaskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa",
+        //     "FootNote": "",
+        //     "MachineName": "",
+        //     "TechniqueName": "",
+        //     "UnitId": 5,
+        //     "MinValue": 33,
+        //     "MaxValue": 50,
+        //     "PathReportdetid": 255768,
+        //     "Formula": "",
+        //     "ParaBoldFlag": "B",
+        //     "OPD_IPD_ID": 535955,
+        //     "OPD_IPD_Type": 0
+        // }
         this._CasepaperService.getLabResultView(param).subscribe((response) => {
             debugger
             if (response) {
@@ -2705,6 +2722,63 @@ export class NewCasepaperComponent implements OnInit {
             }
         });
     }
+
+    //
+
+
+    OnipRequest() {
+
+        Swal.fire({
+            title: 'Do you want to convert OP to IP?',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+                const Convert = {
+                    "visitId": this.vOPIPId,
+                    "isConvertRequestForIp": true
+                }
+                this._CasepaperService.converOPtoIP(Convert).subscribe((response: any) => {
+                    this._matDialog.closeAll()
+                    this.grid.bindGridData();
+                });
+            }
+        });
+
+    }
+
+    selectChangedepartment(obj: any) {
+        this.departmentId = obj.value;
+        this.departmentName = obj.text;
+
+        if (obj.value) {
+            this._CasepaperService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+                this.ddlDoctor.options = data;
+                this.ddlDoctor.bindGridAutoComplete();
+            });
+        } else {
+            this._CasepaperService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+                console.log(data)
+                if (data) {
+
+                    this.ddlDoctor.options = data;
+                    this.ddlDoctor.bindGridAutoComplete();
+                    const incomingDoctorId = obj.consultantDocId || obj.doctorId;
+                    if (incomingDoctorId) {
+                        const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                        if (matchedDoctor) {
+                            this.MedicineItemForm.get('DoctorID')?.setValue(matchedDoctor.value);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
 }
 
 
