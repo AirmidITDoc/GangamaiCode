@@ -164,8 +164,8 @@ export class ServiceMasterService {
     }
 
 
-    public getServicesNew(param) {
-        return this._httpClient.GetData("BillingService/GetServicesNew?TariffId=" + param);
+    public getServicesNew(id, param) {
+        return this._httpClient.GetData("BillingService/GetServicesNew?TariffId=" + id + "&ServiceName=" + param);
     }
     public saveServicesNew(param) {
         return this._httpClient.PostData("BillingService/save-services-new", param);
