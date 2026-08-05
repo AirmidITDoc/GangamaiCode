@@ -47,18 +47,18 @@ export class QrScanComponent implements OnDestroy {
     // Wait a tick so the #readerEl div is in the DOM before html5-qrcode attaches to it.
     await new Promise((r) => setTimeout(r, 0));
     try {
-      const { Html5Qrcode } = await import('html5-qrcode');
-      this.html5Qr = new Html5Qrcode('qr-reader');
-      const cameras = await Html5Qrcode.getCameras();
-      if (!cameras.length) throw new Error('No camera found on this device.');
-      await this.html5Qr.start(
-        cameras[0].id,
-        { fps: 10, qrbox: 240 },
-        (decodedText: string) => this.handleDecoded(decodedText),
-        () => {
-          /* per-frame scan miss — ignore, this fires continuously */
-        }
-      );
+      // const { Html5Qrcode } = await import('html5-qrcode');
+      // this.html5Qr = new Html5Qrcode('qr-reader');
+      // const cameras = await Html5Qrcode.getCameras();
+      // if (!cameras.length) throw new Error('No camera found on this device.');
+      // await this.html5Qr.start(
+      //   cameras[0].id,
+      //   { fps: 10, qrbox: 240 },
+      //   (decodedText: string) => this.handleDecoded(decodedText),
+      //   () => {
+      //     /* per-frame scan miss — ignore, this fires continuously */
+      //   }
+      // );
     } catch (err: any) {
       this.cameraError =
         err?.message ?? 'Could not access the camera. Check browser permissions or use image upload instead.';
@@ -84,7 +84,7 @@ export class QrScanComponent implements OnDestroy {
     input.value = '';
     if (!file) return;
     try {
-      const { Html5Qrcode } = await import('html5-qrcode');
+      // const { Html5Qrcode } = await import('html5-qrcode');
       const scannerId = 'qr-file-scratch';
       let scratch = document.getElementById(scannerId);
       if (!scratch) {
@@ -93,9 +93,9 @@ export class QrScanComponent implements OnDestroy {
         scratch.style.display = 'none';
         document.body.appendChild(scratch);
       }
-      const scanner = new Html5Qrcode(scannerId);
-      const text = await scanner.scanFile(file, false);
-      this.handleDecoded(text);
+      // const scanner = new Html5Qrcode(scannerId);
+      // const text = await scanner.scanFile(file, false);
+      // this.handleDecoded(text);
     } catch (err) {
       this.snackBar.open('Could not read a QR code from that image.', 'Dismiss', { duration: 3000 });
     }
