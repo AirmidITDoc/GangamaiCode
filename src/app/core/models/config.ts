@@ -117,15 +117,25 @@ export class ConfigSettingParams {
     IsMaterialAcceptAgainstIndent: any
     IsMaterialAccept: any;
     IsOPBillProceed: any;
-  IsSalesDiscUpdate: any;
-  LoginPageHeading:any;
-  IsChennaiIPFinalPrint:any;
-LoginBrowserHeading:any;
-IsSampleCollectionRequired:any;
-IsApprovalRequired:any;
-IsUserwiseCashCounterflow:any;
-IsGastrologyEMR:any
-IsCasepaperBillPrint:any
+    IsSalesDiscUpdate: any;
+    LoginPageHeading: any;
+    IsChennaiIPFinalPrint: any;
+    LoginBrowserHeading: any;
+    IsSampleCollectionRequired: any;
+    IsApprovalRequired: any;
+    IsUserwiseCashCounterflow: any;
+    IsGastrologyEMR: any
+    IsCasepaperBillPrint: any
+    IsChargeDateWithGroupWiseWithoutAdvance: any;
+    IsChargeDateWithGroupWise: any;
+    IsAdvanceStatementPrint: any;
+    IsPatientStatementPrint: any;
+    IsChargeDateWise: any;
+    IsFinalBill: any;
+    IsClassService: any;
+    IsClassWise: any;
+    IsGroupWise: any;
+    FollowUpdateSet: any;
     /**
         * Constructor
         *
@@ -255,18 +265,29 @@ IsCasepaperBillPrint:any
         this.LoginBrowserHeading = ConfigSettingParams.LoginBrowserHeading;
         this.IsSampleCollectionRequired = ConfigSettingParams.IsSampleCollectionRequired;
         this.IsApprovalRequired = ConfigSettingParams.IsApprovalRequired;
-          this.IsUserwiseCashCounterflow = ConfigSettingParams.IsUserwiseCashCounterflow;
-         this.IsGastrologyEMR = ConfigSettingParams.IsGastrologyEMR;
-         this.IsCasepaperBillPrint = ConfigSettingParams.IsCasepaperBillPrint;
-        
+        this.IsUserwiseCashCounterflow = ConfigSettingParams.IsUserwiseCashCounterflow;
+        this.IsGastrologyEMR = ConfigSettingParams.IsGastrologyEMR;
+        this.IsCasepaperBillPrint = ConfigSettingParams.IsCasepaperBillPrint;
 
-          
-           }
+        this.IsGroupWise = ConfigSettingParams.IsGroupWise;
+        this.IsClassWise = ConfigSettingParams.IsClassWise;
+        this.IsClassService = ConfigSettingParams.IsClassService;
+        this.IsFinalBill = ConfigSettingParams.IsFinalBill;
+        this.IsChargeDateWise = ConfigSettingParams.IsChargeDateWise;
+        this.IsPatientStatementPrint = ConfigSettingParams.IsPatientStatementPrint;
+        this.IsAdvanceStatementPrint = ConfigSettingParams.IsAdvanceStatementPrint;
+        this.IsChargeDateWithGroupWise = ConfigSettingParams.IsChargeDateWithGroupWise;
+        this.IsChargeDateWithGroupWiseWithoutAdvance = ConfigSettingParams.IsChargeDateWithGroupWiseWithoutAdvance;
+ this.FollowUpdateSet = ConfigSettingParams.FollowUpdateSet;
+
+
+
+    }
 
 }
 
 export class DashConfigSettingParams {
-      IsDailyDashboard: any;
+    IsDailyDashboard: any;
     IsBedAccupancyDashboard: any;
     IsCashlessDashboard: any;
     IsPharmacy: any;
@@ -274,11 +295,11 @@ export class DashConfigSettingParams {
     IsInvestigation: any;
     IsLabFinancialDashboard: any;
 
-      /**
-        * Constructor
-        *
-        * @param DashConfigSettingParams
-        */
+    /**
+      * Constructor
+      *
+      * @param DashConfigSettingParams
+      */
 
     constructor(DashConfigSettingParams) {
 
@@ -373,7 +394,7 @@ export class ConfigSettingUserAccessParams {
     AccessValue: any;
     AccessInputValue: any;
     AccessValueName: any;
-    EdiConsultDoctor:any
+    EdiConsultDoctor: any
     /**
         * Constructor
         *
