@@ -330,6 +330,7 @@ export class AppointmentListComponent implements OnInit {
         this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
 
         this.getfilterdata();
+
         // }
     }
 
@@ -354,8 +355,13 @@ export class AppointmentListComponent implements OnInit {
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
-        this.GetAppointdetail()
-        this.GetFollowupdetail()
+
+        setTimeout(() => {
+            this.GetAppointdetail()
+            this.GetFollowupdetail()
+            this.GetAppCancledetail()
+        }, 500);
+
     }
 
 
@@ -1867,23 +1873,12 @@ export class AppointmentListComponent implements OnInit {
         console.log(data)
         this._AppointmentlistService.getfollowuplist(data).subscribe((response) => {
             this.dataSource1.data = response.data;
-            if (this.dataSource1.data.length > 0) {
-                this.VFollowupTodayCount = this.dataSource1.data.length
+            console.log(this.dataSource1.data)
+            if (response) {
+                if (this.dataSource1.data.length > 0) {
+                    this.VFollowupTodayCount = this.dataSource1.data.length
 
-                // this.dataSource1.data.forEach(element => {
-
-                //     debugger
-                //     const today = new Date();
-                //     const todayStr =
-                //         String(today.getDate()).padStart(2, '0') + '/' +
-                //         String(today.getMonth() + 1).padStart(2, '0') + '/' +
-                //         today.getFullYear();
-
-                //     if (String(element.followupDate) === todayStr) {
-                //         this.VFollowupTodayCount++;
-                //     }
-                // });
-                console.log(this.dataSource1.data)
+                }
             }
         });
     }
@@ -1931,10 +1926,12 @@ export class AppointmentListComponent implements OnInit {
         console.log(data)
         this._AppointmentlistService.getCanclelist(data).subscribe((response) => {
             this.dataSource2.data = response.data;
-            if (this.dataSource2.data.length > 0) {
-                this.VCancleTodayCount = this.dataSource2.data.length
+            console.log(this.dataSource2.data)
+            if (response) {
+                if (this.dataSource2.data.length > 0) {
+                    this.VCancleTodayCount = this.dataSource2.data.length
 
-                console.log(this.dataSource2.data)
+                }
             }
         });
     }
