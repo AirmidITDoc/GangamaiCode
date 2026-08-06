@@ -260,63 +260,63 @@ export class IPBillBrowseListComponent implements OnInit {
         this.IsChennaiIPFinalPrint = id1 === "1";
 
 
-        const vIsGroupWise = this?._configue?.configParams?.IsGroupWise || "";
-        const [id2, val2] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        this.IsGroupWise = id2 === "1";
+        // const vIsGroupWise = this?._configue?.configParams?.IsGroupWise || "";
+        // const [id2, val2] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        // this.IsGroupWise = id2 === "1";
 
-        const vIsClassWise = this?._configue?.configParams?.IsClassWise || "";
-        const [id3, val3] = vIsClassWise.includes(":") ? vIsClassWise.split(":") : [null, null];
-        this.IsClassWise = id3 === "1";
+        // const vIsClassWise = this?._configue?.configParams?.IsClassWise || "";
+        // const [id3, val3] = vIsClassWise.includes(":") ? vIsClassWise.split(":") : [null, null];
+        // this.IsClassWise = id3 === "1";
 
-        const vIsClassService = this?._configue?.configParams?.IsClassService || "";
-        const [id4, val4] = vIsClassService.includes(":") ? vIsClassService.split(":") : [null, null];
-        this.IsClassService = id4 === "1";
+        // const vIsClassService = this?._configue?.configParams?.IsClassService || "";
+        // const [id4, val4] = vIsClassService.includes(":") ? vIsClassService.split(":") : [null, null];
+        // this.IsClassService = id4 === "1";
 
-        const vIsFinalBill = this?._configue?.configParams?.IsFinalBill || "";
-        const [id5, val5] = vIsFinalBill.includes(":") ? vIsFinalBill.split(":") : [null, null];
-        this.IsFinalBill = id5 === "1";
+        // const vIsFinalBill = this?._configue?.configParams?.IsFinalBill || "";
+        // const [id5, val5] = vIsFinalBill.includes(":") ? vIsFinalBill.split(":") : [null, null];
+        // this.IsFinalBill = id5 === "1";
 
-        const vIsChargeDateWise = this?._configue?.configParams?.IsChargeDateWise || "";
-        const [id6, val6] = vIsChargeDateWise.includes(":") ? vIsChargeDateWise.split(":") : [null, null];
-        this.IsChargeDateWise = id6 === "1";
+        // const vIsChargeDateWise = this?._configue?.configParams?.IsChargeDateWise || "";
+        // const [id6, val6] = vIsChargeDateWise.includes(":") ? vIsChargeDateWise.split(":") : [null, null];
+        // this.IsChargeDateWise = id6 === "1";
 
-        const vIsPatientStatementPrint = this?._configue?.configParams?.IsPatientStatementPrint || "";
-        const [id7, val7] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        this.IsPatientStatementPrint = id7 === "1";
+        // const vIsPatientStatementPrint = this?._configue?.configParams?.IsPatientStatementPrint || "";
+        // const [id7, val7] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        // this.IsPatientStatementPrint = id7 === "1";
 
-        const vIsAdvanceStatementPrint = this?._configue?.configParams?.IsAdvanceStatementPrint || "";
-        const [id8, val8] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        this.IsAdvanceStatementPrint = id8 === "1";
+        // const vIsAdvanceStatementPrint = this?._configue?.configParams?.IsAdvanceStatementPrint || "";
+        // const [id8, val8] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        // this.IsAdvanceStatementPrint = id8 === "1";
 
-        const vIsChargeDateWithGroupWise = this?._configue?.configParams?.IsChargeDateWithGroupWise || "";
-        const [id9, val9] = vIsChargeDateWithGroupWise.includes(":") ? vIsChargeDateWithGroupWise.split(":") : [null, null];
-        this.IsChargeDateWithGroupWise = id9 === "1";
-        const IsChargeDateWithGroupWiseWithoutAdvance = this?._configue?.configParams?.IsChargeDateWithGroupWiseWithoutAdvance || "";
-        const [id10, val10] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        this.IsChargeDateWithGroupWiseWithoutAdvance = id2 === "1";
+        // const vIsChargeDateWithGroupWise = this?._configue?.configParams?.IsChargeDateWithGroupWise || "";
+        // const [id9, val9] = vIsChargeDateWithGroupWise.includes(":") ? vIsChargeDateWithGroupWise.split(":") : [null, null];
+        // this.IsChargeDateWithGroupWise = id9 === "1";
+        // const IsChargeDateWithGroupWiseWithoutAdvance = this?._configue?.configParams?.IsChargeDateWithGroupWiseWithoutAdvance || "";
+        // const [id10, val10] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
+        // this.IsChargeDateWithGroupWiseWithoutAdvance = id2 === "1";
 
 debugger
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
             if (!this.Is9_Digit_National_Id) {
                 debugger
-                if (this.IsGroupWise)
+                // if (this.IsGroupWise)
                     this.menuActions.push('Print Final Bill - Group wise');
-                if (this.IsClassWise)
+               // if (this.IsClassWise)
                     this.menuActions.push('Print Final Bill - Class wise');
-                if (this.IsClassService)
+               // if (this.IsClassService)
                     this.menuActions.push('Print Final Bill - Class Service');
-                if (this.IsFinalBill)
+               // if (this.IsFinalBill)
                     this.menuActions.push('Print Final Bill');
-                if (this.IsChargeDateWise)
+                //if (this.IsChargeDateWise)
                     this.menuActions.push('Print Final Bill - Charge Date Wise');
-                if (this.IsPatientStatementPrint)
+               // if (this.IsPatientStatementPrint)
                     this.menuActions.push('Patient Statement Print');
-                if (this.IsAdvanceStatementPrint)
+               // if (this.IsAdvanceStatementPrint)
                     this.menuActions.push('Advance Statement Print');
             } else {
-                if (this.IsChargeDateWithGroupWise)
+               // if (this.IsChargeDateWithGroupWise)
                     this.menuActions.push('Print Final Bill - Charge Date with Group wise');
-                if (this.IsChargeDateWithGroupWiseWithoutAdvance)
+               // if (this.IsChargeDateWithGroupWiseWithoutAdvance)
                     this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
                 // this.menuActions.push('Advance Statement Print');
             }
