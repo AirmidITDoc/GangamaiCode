@@ -2,8 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileKind, HospitalDocument } from 'app/core/models/documentmanagement/document.model';
-import { Category } from 'app/core/models/documentmanagement/category.model';
-import { MockDataService, nextId } from '../mock-data.service';
+import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
+import { MockDataService } from '../mock-data.service';
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
 
 interface StagedFile {
@@ -21,7 +21,7 @@ interface StagedFile {
 export class UploadComponent {
   @ViewChild('stepper') stepper?: MatStepper;
 
-  categories: Category[] = [];
+  categories: DocumentCategory[] = [];
 
   /* Step 1 — patient */
   patientQuery = '';
@@ -31,7 +31,7 @@ export class UploadComponent {
   newPatient: Partial<Patient> = { gender: 'Female' };
 
   /* Step 2 — category */
-  selectedCategoryId: string | null = null;
+  selectedCategoryId: number | null = null;
 
   /* Step 3 — files */
   staged: StagedFile[] = [];
@@ -61,7 +61,7 @@ export class UploadComponent {
   }
 
   /* ---------------- Step 2 ---------------- */
-  onCategorySelect(id: string): void {
+  onCategorySelect(id: number): void {
     this.selectedCategoryId = id;
   }
 
@@ -124,13 +124,13 @@ export class UploadComponent {
     const path = this.selectedCategoryPath;
     this.staged.forEach((s) => {
       const doc: HospitalDocument = {
-        id: nextId('doc'),
+        id: '0',
         title: s.title || s.file.name,
         fileName: s.file.name,
         fileKind: s.kind,
         fileSizeKb: Math.max(1, Math.round(s.file.size / 1024)),
         categoryPath: path,
-        categoryId: this.selectedCategoryId!,
+        categoryId: this.selectedCategoryId!.toString(),
         patientId: this.selectedPatient!.id,
         patientName: this.selectedPatient!.name,
         uploadedBy: 'Front Desk — S. Kulkarni',

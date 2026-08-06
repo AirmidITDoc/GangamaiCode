@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CategoriesComponent } from './categories/categories.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const appRoutes: Routes = [
@@ -41,7 +42,9 @@ const appRoutes: Routes = [
 
     ],
     imports: [
+        CommonModule,
         RouterModule.forChild(appRoutes),
+        SharedModule,
     ]
 })
 

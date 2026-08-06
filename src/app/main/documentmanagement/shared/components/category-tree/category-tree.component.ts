@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Category } from 'app/core/models/documentmanagement/category.model';
+import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
 
 @Component({
   selector: 'app-category-tree',
@@ -9,21 +9,21 @@ import { Category } from 'app/core/models/documentmanagement/category.model';
   styleUrls: ['./category-tree.component.scss'],
 })
 export class CategoryTreeComponent implements OnChanges {
-  @Input() nodes: Category[] = [];
+  @Input() nodes: DocumentCategory[] = [];
   @Input() manageable = false;
   @Input() selectable = true;
   @Input() selectedId: string | null = null;
   @Input() expandAll = false;
 
-  @Output() select = new EventEmitter<string>();
+  @Output() select = new EventEmitter<number>();
   @Output() addChild = new EventEmitter<string | null>();
-  @Output() rename = new EventEmitter<{ id: string; name: string }>();
+  @Output() rename = new EventEmitter<{ id: number; name: string }>();
   @Output() remove = new EventEmitter<string>();
 
-  treeControl = new NestedTreeControl<Category>((node) => node.children);
-  dataSource = new MatTreeNestedDataSource<Category>();
+  treeControl = new NestedTreeControl<DocumentCategory>((node) => node.children);
+  dataSource = new MatTreeNestedDataSource<DocumentCategory>();
 
-  editingId: string | null = null;
+  editingId: number | null = null;
   editValue = '';
 
   ngOnChanges(): void {
@@ -33,26 +33,26 @@ export class CategoryTreeComponent implements OnChanges {
     }
   }
 
-  private expandAllNodes(nodes: Category[]): void {
+  private expandAllNodes(nodes: DocumentCategory[]): void {
     for (const n of nodes) {
       this.treeControl.expand(n);
       if (n.children?.length) this.expandAllNodes(n.children);
     }
   }
 
-  hasChild = (_: number, node: Category): boolean => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: DocumentCategory): boolean => !!node.children && node.children.length > 0;
 
-  onSelect(node: Category): void {
+  onSelect(node: DocumentCategory): void {
     if (!this.selectable) return;
     this.select.emit(node.id);
   }
 
-  startEdit(node: Category): void {
+  startEdit(node: DocumentCategory): void {
     this.editingId = node.id;
-    this.editValue = node.name;
+    this.editValue = node.docCategory;
   }
 
-  confirmEdit(node: Category): void {
+  confirmEdit(node: DocumentCategory): void {
     if (this.editValue.trim()) {
       this.rename.emit({ id: node.id, name: this.editValue.trim() });
     }

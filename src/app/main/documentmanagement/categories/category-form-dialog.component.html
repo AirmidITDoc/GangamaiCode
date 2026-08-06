@@ -6,19 +6,23 @@
         <p class="dialog-context" *ngIf="data.parentName">Nesting under <strong>{{ data.parentName }}</strong></p>
 
         <div mat-dialog-content>
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Category name</mat-label>
-                <input matInput [(ngModel)]="name" placeholder="e.g. Discharge Summary" (keyup.enter)="submit()"
-                    autofocus />
-            </mat-form-field>
-
-            <label class="icon-label">Choose an icon</label>
-            <div class="icon-grid">
-                <button type="button" class="icon-option" *ngFor="let ic of iconChoices" [class.selected]="icon === ic"
-                    (click)="icon = ic">
-                    <mat-icon>{{ ic }}</mat-icon>
-                </button>
-            </div>
+            <form [formGroup]="categoryForm">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Category name</mat-label>
+                    <input matInput [(ngModel)]="name" placeholder="e.g. Discharge Summary" (keyup.enter)="submit()"
+                        autofocus />
+                </mat-form-field>
+                <!-- <airmid-textbox label="Category" formControlName="docCategory" [formGroup]="categoryForm"
+                    maxLength="250" value="obj?.docCategory">
+                </airmid-textbox> -->
+                <label class="icon-label">Choose an icon</label>
+                <div class="icon-grid">
+                    <button type="button" class="icon-option" *ngFor="let ic of iconChoices"
+                        [class.selected]="icon === ic" (click)="icon = ic">
+                        <mat-icon>{{ ic }}</mat-icon>
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div mat-dialog-actions align="end">

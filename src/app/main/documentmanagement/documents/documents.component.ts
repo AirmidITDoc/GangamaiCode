@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileKind, HospitalDocument } from 'app/core/models/documentmanagement/document.model';
-import { Category } from 'app/core/models/documentmanagement/category.model';
+import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
 import { MockDataService } from '../mock-data.service';
 import { ZipService } from '../zip.service';
 import { PreviewDialogComponent } from '../shared/components/preview-dialog/preview-dialog.component';
@@ -15,7 +15,7 @@ import { PreviewDialogComponent } from '../shared/components/preview-dialog/prev
 })
 export class DocumentsComponent implements OnInit {
   allDocuments: HospitalDocument[] = [];
-  categories: Category[] = [];
+  categories: DocumentCategory[] = [];
 
   searchTerm = '';
   activeKind: FileKind | 'all' = 'all';
@@ -109,7 +109,7 @@ export class DocumentsComponent implements OnInit {
     this.snackBar.open('Document deleted', 'Dismiss', { duration: 2000 });
   }
 
-  categoryLabel(id: string | null): string {
+  categoryLabel(id: number | null): string {
     if (!id) return '';
     const match = this.data.getAllPaths().find((p) => p.id === id);
     return match ? match.path.join(' / ') : '';
