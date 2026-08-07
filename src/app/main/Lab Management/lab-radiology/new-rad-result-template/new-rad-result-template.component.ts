@@ -126,7 +126,7 @@ export class NewRadResultTemplateComponent {
             this.DepartmentName = this.regObj.departmentName
             this.PatientType = this.regObj.patientType
             this.CompanyName = this.regObj.companyName
-            this.RefDocName = this.regObj.refDocName || this.regObj.refDoctor
+            this.RefDocName = this.regObj.refDocName || this.regObj.refDoctor || this.regObj.refDoctorName
             this.vClassId = this.regObj.classId
             this.Lbl = this.regObj.lbl
             this.DOA = this.regObj.doa
@@ -171,6 +171,10 @@ export class NewRadResultTemplateComponent {
 
     onEditorValueChange(content: string) {
         this._radiologytemplateService.myform.get('ResultEntry')?.setValue(content);
+    }
+
+    get ageString(): string {
+        return `${this.AgeYear ?? 0}Y|${this.AgeMonth ?? 0}M|${this.AgeDay ?? 0}D | ${this.GenderName ?? ''}`;
     }
 
     onVerify(row) {

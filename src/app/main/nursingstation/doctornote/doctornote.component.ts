@@ -229,7 +229,7 @@ export class DoctornoteComponent implements OnInit {
     onChangetemplate(event) {
         console.log("Template:", event)
         this.tempdesc = event.templateDesc
-        this.docNoteTempId = event.docNoteTempId
+        this.docNoteTempId = event.nursingId
         this.IsAddFlag = false;
     }
 

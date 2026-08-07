@@ -38,8 +38,8 @@
                                         <div class="Ipd-patient-info w-100-p">
                                             <app-patient-information [uhidNo]="regObj?.labRequestNo"
                                                 [patientName]="PatientName"
-                                                [ageString]="(AgeYear !== undefined ? AgeYear + 'Y|' + AgeMonth + 'M|' + AgeDay + 'D | ' + GenderName : '')"
-                                                [refDocName]="Doctorname" [patientType]="PatientType"
+                                                [ageString]="ageString"
+                                                [refDocName]="RefDocName" [patientType]="PatientType"
                                                 [companyName]="CompanyName">
                                             </app-patient-information>
                                         </div>
