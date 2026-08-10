@@ -227,6 +227,17 @@ export class RegistrationService {
     //  public getareaList1() {
     //     return this._httpClient1.GetData("VisitDetail/GetAreaList");
     // }
+
+
+    
+    public getbypincode(pin) {
+        return this._httpClient1.GetData("AreaMaster/search_AreaMaster?Keyword=" + pin)
+    }
+ public getstatebypincode(obj) {
+        return this._httpClient1.GetData("CityMaster/" + obj)
+    }
+
+    
 }
 
 

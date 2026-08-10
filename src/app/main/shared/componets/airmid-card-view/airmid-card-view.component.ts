@@ -146,7 +146,7 @@ getRowClasses(row: any): { [key: string]: boolean } {
         'table-row-green': row?.isMark == true,
 
         // added by raksha on 20/8/25 for admission list if company present
-        'table-row-yellow' : row?.companyId > 0
+        'table-row-yellow' : row?.companyId > 0 
     }
 
 

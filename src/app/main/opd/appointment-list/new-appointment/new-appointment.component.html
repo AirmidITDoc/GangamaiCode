@@ -484,27 +484,43 @@
                       <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <!-- <div fxLayout="row" class="gap-8"> -->
-                          <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.areaId ?? 0"
+                          <!-- <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.areaId ?? 0"
                             [formGroup]="personalFormGroup" [validations]="getValidationMessages().areaId"
-                            [mode]="autocompleteModearea"></airmid-dropdown>
+                            [mode]="autocompleteModearea"></airmid-dropdown> -->
+
+                          <airmid-dropdown label="Area" formControlName="AreaId" [formGroup]="personalFormGroup"
+                            [value]="registerObj?.areaId" [validations]="getValidationMessages().areaId"
+                            ValueField="areaId" TextField="area" (selectionChange)="onChangeArea($event)"
+                            ApiUrl="AreaMaster/search_AreaMaster?Keyword=%">
+                          </airmid-dropdown>
                           <!-- </div> -->
                         </div>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <!-- ApiUrl="CityMaster/get-cities" -->
+                          <airmid-textbox label="Pin Code" formControlName="PinNo" [value]="pincode"
+                            [formGroup]="personalFormGroup" [validations]="getValidationMessages().PinNo"
+                            [maxLength]="6" (keypress)="keyPressAlphanumeric($event)"
+                            (keyup)="onChangePincode($event.target.value)">
+                          </airmid-textbox>
+
+                        </div>
+
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-dropdown label="MaritalStatus" formControlName="MaritalStatusId"
                             [value]="registerObj?.maritalStatusId ?? 0" [formGroup]="personalFormGroup"
                             [validations]="getValidationMessages().MaritalStatusId"
                             [mode]="autocompleteModemstatus"></airmid-dropdown>
                         </div>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-dropdown label="Religion Name" formControlName="ReligionId"
                             [value]="registerObj?.religionId ?? 0" [formGroup]="personalFormGroup"
                             [validations]="getValidationMessages().religionId"
                             [mode]="autocompleteModereligion"></airmid-dropdown>
                         </div>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-textbox label="PhoneNo" formControlName="PhoneNo"
                             (keypress)="keyPressAlphanumeric($event)" [validations]="getValidationMessages().phoneNo"
                             [value]="registerObj.phoneNo ?? ''" [formGroup]="personalFormGroup"
@@ -512,7 +528,7 @@
 
                         </div>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <mat-checkbox formControlName="IsNRI">
                             ISNRI
                           </mat-checkbox>

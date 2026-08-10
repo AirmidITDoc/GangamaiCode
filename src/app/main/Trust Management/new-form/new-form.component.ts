@@ -72,6 +72,9 @@ export class NewFormComponent {
   vpcpndtprocessId = 0
   registerObj1 = new RegInsert({});
   dateofBirth = new Date()
+
+  isExpanded1 = false;
+isExpanded2 = false;
   //
   vName = ''
   vMobileNo = ''

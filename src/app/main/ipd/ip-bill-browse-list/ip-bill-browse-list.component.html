@@ -8,6 +8,75 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
+
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+                    class="px-12 py-4 border-bottom gap-8">
+                    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                            <!-- New Admissions -->
+                            <div class="dashboard-card admissions">
+                                <div class="card-label">Total Amount</div>
+                                <div class="card-value">{{Vtotal}}</div>
+                                <mat-icon class="card-icon">event</mat-icon>
+                            </div>
+                            <!-- Admissions New/Follow-up -->
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">Total Disc</div>
+                                <div class="card-value">
+                                    <div>Total {{Vtotaldisc}}</div>
+                                    <!-- <div>Follow-up {{VFollowupcount}}</div> -->
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+                            <!-- Bills -->
+                            <div class="dashboard-card bills">
+                                <div class="card-label">Total Net</div>
+                                <div class="card-value">{{Vtotalnet}}</div>
+                                <mat-icon class="card-icon">receipt_long</mat-icon>
+                            </div>
+
+                            <div class="dashboard-card balamt">
+                                <div class="card-label">Balance Amt</div>
+                                <div class="card-value">
+                                  
+                                    <div> {{Vtotbal}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+
+                            
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">Cash Amt</div>
+                                <div class="card-value">
+                                  
+                                    <div> {{Vcashtotbal}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+
+                            
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">Card Amt</div>
+                                <div class="card-value">
+                                  
+                                    <div> {{Vcardtotbal}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+
+                            
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">PhonePay Amt</div>
+                                <div class="card-value">
+                                  
+                                    <div> {{Vphonepaytotl}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                 <div class="info-badge-top p-12 border-bottom">
                     <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
@@ -123,7 +192,7 @@
                             <form [formGroup]="myFilterform">
                                 <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"  (dateChange)="GetIPbilldetail()"
                                     [(toValue)]="gridConfig.filters[3].fieldValue">
                                 </airmid-datepicker>
 

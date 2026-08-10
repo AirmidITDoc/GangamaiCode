@@ -88,6 +88,9 @@ export class IPBrowseBillService {
         return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseIPDBill", param)
     }
 
+
+
+
     public getTemplate(query) {
         return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
     }
@@ -185,4 +188,10 @@ export class IPBrowseBillService {
 
         return this._httpClient1.PostData("IPBill/PaymentSettelment", employee)
     }
+
+ public getIPbilllist(employee) {
+
+        return this._httpClient1.PostData("Billing/BrowseIPBillList", employee)
+    }
+    
 }

@@ -92,11 +92,15 @@ export class NewAppointmentComponent implements OnInit {
     DoctorId: any;
     vhealthCardNo: any;
     vDays: any = 0;
-    HealthCardExpDate= new Date();
+    HealthCardExpDate = new Date();
     followUpDate: string;
     ageYear = 0
     ageMonth = 0
     ageDay = 0
+
+    pincode = '';
+    area = ''
+
     value = new Date()
     // <mat-expansion-panel> default to closed,
     isExpanded1 = false; // Defaults to closed
@@ -594,7 +598,7 @@ export class NewAppointmentComponent implements OnInit {
                     this.CityName = this.registerObj?.city ?? '';
                     this.stateId = this.registerObj?.stateId ?? 0;
                     this.counryId = this.registerObj?.countryId ?? 0;
-
+                    this.pincode = this.registerObj?.pinNo || ''
                 }, 100);
             }
 
@@ -689,12 +693,10 @@ export class NewAppointmentComponent implements OnInit {
 
 
     getSelectedObjtrust(obj) {
-debugger
+        debugger
         console.log(obj)
         // if (this.data?.FormName == 'Registration-Page') {
         this.PatientName = obj.firstName + ' ' + obj.lastName;
-
-
         this.MembershipId = obj.membershipId;
         // this.VisitFlagDisp = true;
 
@@ -709,8 +711,10 @@ debugger
 
                 console.log(new Date(this.registerObjtrust.husbandDob))
                 this.onChangeDateofBirth(new Date(this.registerObjtrust.husbandDob))
+                //set state
 
-                // this.setNationalIdValidation();
+                this.onChangecityDD(this.registerObjtrust.cityId);
+                debugger
                 this.personalFormGroup.patchValue({
                     prefixId: this.registerObjtrust.hprefixId,
                     FirstName: this.registerObjtrust.husbandFirstName.trim(),
@@ -723,8 +727,8 @@ debugger
                     emailId: this.registerObjtrust?.husbandEmail ?? '',
                     PinNo: '',
                     City: this.registerObjtrust?.cityId ?? '',
-                    StateId: 0,
-                    CountryId: 0,
+                    StateId: this.stateId,
+                    CountryId: this.counryId,
                     PhoneNo: '',
                     MaritalStatusId: 0,
                     ReligionId: 0,
@@ -774,7 +778,18 @@ debugger
 
         // this.onChangeDateofBirth(this.registerObj.dateofBirth)
     }
-
+    onChangecityDD(obj) {
+        debugger
+        this._AppointmentlistService.getstatebypincode(obj).subscribe((data: any) => {
+            console.log(data)
+            debugger
+            this.registerObj.stateId = data.stateId
+            this.stateId = data.stateId
+            this._AppointmentlistService.getstateId(data.stateId).subscribe((Response) => {
+                this.counryId = Response.countryId
+            });
+        });
+    }
     //   changed by raksha date:17/6/25
     getSelectedObjphone(obj) {
         console.log("Phone data:", obj)
@@ -955,6 +970,10 @@ debugger
                 this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                 this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
+
+                this.personalFormGroup.get('medTourismNationalityId').setValue(this.personalFormGroup.get('medTourismNationalityId').value || '')
+
+
                 this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
                 debugger
                 this.VisitFormGroup.get("followupDate").setValue(this.datePipe.transform(this.VisitFormGroup.get("followupDate").value, "yyyy-MM-dd"))
@@ -1371,6 +1390,7 @@ debugger
             EmailId: [
                 { name: "pattern", Message: "Enter valid Email Address" }
             ],
+            PinNo: []
         };
     }
 
@@ -1676,6 +1696,50 @@ debugger
 
         dialogRef.afterClosed().subscribe(result => {
 
+        });
+    }
+
+    onChangeArea(event) {
+        console.log(event)
+        this.pincode = event.pincode
+        this.CityName = event.cityName
+        this.area = event.area
+        this.personalFormGroup.get('CityId').setValue(event.cityId)
+
+        this.onChangepincityDD(event.cityId)
+    }
+
+
+    onChangePincode(obj: string) {
+        // Call API only when exactly 6 digits are entered
+        if (obj && obj.length === 6) {
+            this._AppointmentlistService.getbypincode(obj).subscribe((data: any) => {
+                if (data && data.length > 0) {
+                    console.log(data);
+
+                    this.CityName = data[0].cityName;
+                    this.area = data[0].area;
+
+                    this.personalFormGroup.get('AreaId').setValue(data[0].areaId);
+                    // this.personalFormGroup.get('CityId').setValue(data[0].cityId);
+
+                    this.onChangepincityDD(data[0].cityId);
+                    this.registerObj.cityId = data[0].cityId;
+                } else {
+                    Swal.fire("Pincode does not exist.")
+                }
+            });
+        }
+    }
+    onChangepincityDD(obj) {
+        debugger
+        this._AppointmentlistService.getstatebypincode(obj).subscribe((data: any) => {
+            console.log(data)
+
+            this.registerObj.stateId = data.stateId
+            this._AppointmentlistService.getstateId(data.stateId).subscribe((Response) => {
+                this.ddlCountry.SetSelection(Response.countryId);
+            });
         });
     }
 }

@@ -330,7 +330,7 @@ export class AppointmentListComponent implements OnInit {
         this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
 
         this.getfilterdata();
-
+          this.GetAppCancledetail()
         // }
     }
 
@@ -356,12 +356,14 @@ export class AppointmentListComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
 
-        setTimeout(() => {
-            this.GetAppointdetail()
-            this.GetFollowupdetail()
-            this.GetAppCancledetail()
-        }, 500);
-
+        if (this.gridConfig) {
+            debugger
+            setTimeout(() => {
+                this.GetAppointdetail()
+                this.GetFollowupdetail()
+                // this.GetAppCancledetail()
+            }, 500);
+        }
     }
 
 
@@ -1308,6 +1310,8 @@ export class AppointmentListComponent implements OnInit {
     }
     // Vregtotalcount=0
     GetAppointdetail() {
+
+          this.GetAppCancledetail()
         //   this.Vregtotalcount = 0;
         this.Vtotalcount = 0;
         this.VNewcount = 0;
@@ -1898,9 +1902,8 @@ export class AppointmentListComponent implements OnInit {
             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
         }
 
-        debugger
-        filters.push(
 
+        filters.push(
 
             {
                 "fieldName": "From_Dt",
@@ -1927,6 +1930,7 @@ export class AppointmentListComponent implements OnInit {
         this._AppointmentlistService.getCanclelist(data).subscribe((response) => {
             this.dataSource2.data = response.data;
             console.log(this.dataSource2.data)
+            debugger
             if (response) {
                 if (this.dataSource2.data.length > 0) {
                     this.VCancleTodayCount = this.dataSource2.data.length
@@ -1935,7 +1939,7 @@ export class AppointmentListComponent implements OnInit {
             }
         });
     }
-
+//
 }
 
 

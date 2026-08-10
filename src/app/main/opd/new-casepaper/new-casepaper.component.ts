@@ -96,7 +96,7 @@ export class NewCasepaperComponent implements OnInit {
     ItemName: any;
     ItemId: any;
     vDay: any;
-    vDayInput:any
+    vDayInput: any
     vInstruction: any;
     Chargelist: any[] = [];  // changed here for onAdd purpose
     PatientType: any;
@@ -143,7 +143,7 @@ export class NewCasepaperComponent implements OnInit {
     vdoseName: any;
     AllTypeDescription: any = []
     filteredCheifComplaint: Observable<string[]>
-    vDays: any = 10;
+    vDays: any = 0;
     followUpDate: string;
     specificDate: Date;
     dateStyle: string;
@@ -169,7 +169,7 @@ export class NewCasepaperComponent implements OnInit {
 
     departmentId: any;
     departmentName = ''
-
+    vIcdcode = ''
 
     displayedColumns1: string[] = [
         'CertificateDate',
@@ -232,6 +232,18 @@ export class NewCasepaperComponent implements OnInit {
             this.vDayInput = FollowUpdateSet
             this.vDays = FollowUpdateSet
         }
+
+
+        if (this.vDays == 0) {
+            const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'FollowUpDateSet');
+
+            this.vDayInput = access?.AccessInputValue || this.vDays
+            this.vDays = access?.AccessInputValue || this.vDays
+
+            console.log(this.vDays);
+
+        }
+
     }
 
     ngOnInit(): void {
@@ -464,7 +476,7 @@ export class NewCasepaperComponent implements OnInit {
             FollowupDays: '',
             start: [new Date()],
             Remark: ['', [Validators.maxLength(200)]],
-            Days:this.vDayInput,// [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            Days: this.vDayInput,// [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: '',
             FollowupMonths: '',
             FollowupYears: '',
@@ -2315,7 +2327,7 @@ export class NewCasepaperComponent implements OnInit {
     getLabdata(visitId: string) {
         const D_data = {
             first: 0,
-            rows: 10,
+            rows: 999,
             sortField: "VisitId",
             sortOrder: 0,
             filters: [
@@ -2375,7 +2387,7 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     Printresultentry(row) {
-        // debugger
+        // 
         console.log("WithHeader", row);
         const pathologyDelete = [{
             pathReportId: row.pathReportID
@@ -2660,8 +2672,8 @@ export class NewCasepaperComponent implements OnInit {
 
     getLabResultview(row: any): void {
         this._matDialog.open(this.ResultViewTab, {
-            width: '60%',
-            height: '70%',
+            width: '65%',
+            height: '75%',
         })
         var param = {
             "searchFields": [
@@ -2715,7 +2727,7 @@ export class NewCasepaperComponent implements OnInit {
         //     "OPD_IPD_Type": 0
         // }
         this._CasepaperService.getLabResultView(param).subscribe((response) => {
-            debugger
+
             if (response) {
                 this.dsResultViewList.data = response;
                 console.log(this.dsResultViewList.data)

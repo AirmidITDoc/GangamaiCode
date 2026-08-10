@@ -364,10 +364,27 @@
                                                 </div>
 
                                                 <div fxLayout="column">
-                                                    <div style="margin-bottom: 16px;" fxLayout="column">
+                                                    <div style="margin-bottom: 10px;" fxLayout="column">
                                                         <span style="font-weight: 700;">
-                                                            Chief Complaints
+                                                            Chief Complaints :
                                                         </span>
+                                                        <div *ngFor="let visit of getVisitDataById(VisitId)">
+                                                            <!-- <div class="patient-col" fxLayout="row" fxLayoutGap="6px"> -->
+
+                                                            <span class="patient-col-value">
+                                                                <ng-container
+                                                                    *ngIf="visit.complaints?.length > 0; else noComplaints">
+                                                                    <ng-container
+                                                                        *ngFor="let complaint of visit.complaints; let last = last">
+                                                                        {{ complaint }}<span *ngIf="!last">, </span>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <ng-template #noComplaints>N/A</ng-template>
+                                                            </span>
+                                                            <!-- </div> -->
+
+                                                        </div>
+
                                                         <hr>
                                                         <app-airmid-chipautocomplete fxFlex
                                                             [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
@@ -384,10 +401,27 @@
                                                     </mat-form-field> -->
 
 
-                                                    <div style="margin-bottom: 16px;" fxLayout="column">
-                                                        <span style="font-weight: 700;">
-                                                            Diagnosis
-                                                        </span>
+                                                    <div style="margin-bottom: 10px;" fxLayout="column">
+                                                        <span style="font-weight: 700;">Diagnosis :</span>
+
+                                                        <div *ngFor="let visit of getVisitDataById(VisitId)">
+
+                                                            <!-- <div class="patient-col" fxLayout="row" fxLayoutGap="6px"> -->
+
+                                                            <span class="patient-col-value">
+                                                                <ng-container
+                                                                    *ngIf="visit.diagnoses?.length > 0; else noDiagnosis">
+                                                                    <ng-container
+                                                                        *ngFor="let diagnosis of visit.diagnoses; let last = last">
+                                                                        {{ diagnosis }}<span *ngIf="!last">, </span>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <ng-template #noDiagnosis>N/A</ng-template>
+                                                            </span>
+                                                            <!-- </div> -->
+
+
+                                                        </div>
                                                         <hr>
                                                         <app-airmid-chipautocomplete fxFlex
                                                             [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
@@ -395,12 +429,46 @@
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeDiagnosis($event)">
                                                         </app-airmid-chipautocomplete>
+
+                                                        <!-- <app-airmid-chipautocomplete fxFlex
+                                                            [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
+                                                            [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword=A%'"
+                                                            [displayKey]="'diagnosisName'" [allowCustom]="true"
+                                                            (chipsChange)="selectChangeDiagnosis($event)">
+                                                        </app-airmid-chipautocomplete> -->
+
+
+                                                        <!-- <airmid-dropdown label="Diagnosis" formControlName="AreaId"
+                                                            [formGroup]="caseFormGroup" [value]="vIcdcode"
+                                                            [validations]="getValidationMessages().icdcode"
+                                                            ValueField="icdcode" TextField="diagnosisName"
+                                                            (selectionChange)="selectChangeDiagnosis1($event)"
+                                                            ApiUrl="MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword=%">
+                                                        </airmid-dropdown>  -->
+
                                                     </div>
 
                                                     <div style="margin-bottom: 16px;" fxLayout="column">
-                                                        <span style="font-weight: 700;">
-                                                            Examination
-                                                        </span>
+                                                        <span style="font-weight: 700;">Examination :</span>
+
+                                                        <div *ngFor="let visit of getVisitDataById(VisitId)">
+
+                                                            <div fxLayout="row" fxLayoutGap="6px" class="patient-col">
+
+                                                                <span class="patient-col-value">
+                                                                    <ng-container
+                                                                        *ngIf="visit.examinations && visit.examinations.length > 0; else noExam">
+                                                                        <ng-container
+                                                                            *ngFor="let exam of visit.examinations; let last = last">
+                                                                            {{ exam }}<span *ngIf="!last">,
+                                                                            </span>
+                                                                        </ng-container>
+                                                                    </ng-container>
+                                                                    <ng-template #noExam>N/A</ng-template>
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
                                                         <hr>
                                                         <app-airmid-chipautocomplete fxFlex
                                                             [chips]="caseFormGroup.get('mAssignExamination')?.value"
@@ -1650,7 +1718,7 @@
                 </form>
 
                 <div class="sales-footer-buttons gap-6" fxLayout="row">
-                     <button class="btn btn-danger-outline" (click)="OnipRequest()">IP Request</button>
+                    <!-- <button class="btn btn-danger-outline" (click)="OnipRequest()">IP Request</button> -->
                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     <button class="btn btn-primary" (click)="onSave()">Save</button>
                 </div>

@@ -39,6 +39,12 @@ import { NewFormComponent } from './new-form/new-form.component';
 import { NewMembershipComponent } from './new-membership/new-membership.component';
 import { NewMemberService } from './new-member.service';
 import { SharedModule } from '../shared/shared.module';
+import { MatStepperModule } from '@angular/material/stepper';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatChipsModule } from '@angular/material/chips';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { WebcamModule } from 'ngx-webcam';
 
 const routes: Routes = [
 
@@ -94,7 +100,18 @@ const routes: Routes = [
         FormsModule,
         MatButtonToggleModule,
         //    NgxJsonViewerModule,
-        MatMenuModule
+        MatMenuModule,
+        FuseSharedModule,
+
+        MatStepperModule,
+
+        ScrollingModule,
+        MatSidenavModule,
+
+        WebcamModule,
+        MatChipsModule,
+        OverlayModule,
+
 
     ],
     providers: [
