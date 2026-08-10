@@ -92,6 +92,7 @@ export enum permissionCodes {
 
     // Ot Master
     SetupOtManagment = 'SetupOtManagment',
+    SetupOTConsent='SetupOTConsent',
 
     //Pathology
 

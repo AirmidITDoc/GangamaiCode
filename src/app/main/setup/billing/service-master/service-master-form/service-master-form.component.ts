@@ -259,11 +259,47 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     //if dont want then comment
+    // onClassRateChange(element: any) {
+    //     // Only update if user has NOT edited patientRate
+    //     if (!element.isRateEdited) {
+    //         element.patientRate = element.classRate;
+    //         element.cprate = element.classRate;
+    //     }
+    // }
+    applyClassRateToAll: boolean = false;
+    applyPatientRateToAll: boolean = false;
+    applyCpRateToAll: boolean = false;
+
     onClassRateChange(element: any) {
-        // Only update if user has NOT edited patientRate
-        if (!element.isRateEdited) {
-            element.patientRate = element.classRate;
-            element.cprate = element.classRate;
+        if (this.applyClassRateToAll) {
+            this.DSServicedetailList.data.forEach((row: any) => {
+                row.classRate = element.classRate;
+                row.isRateEdited = true;
+            });
+        } else {
+            element.isRateEdited = true;
+        }
+    }
+
+    onPatientRateChange(element: any) {
+        if (this.applyPatientRateToAll) {
+            this.DSServicedetailList.data.forEach((row: any) => {
+                row.patientRate = element.patientRate;
+                row.isRateEdited = true;
+            });
+        } else {
+            element.isRateEdited = true;
+        }
+    }
+
+    onCpRateChange(element: any) {
+        if (this.applyCpRateToAll) {
+            this.DSServicedetailList.data.forEach((row: any) => {
+                row.cprate = element.cprate;
+                row.isRateEdited = true;
+            });
+        } else {
+            element.isRateEdited = true;
         }
     }
 
@@ -577,6 +613,30 @@ export class ServiceMasterFormComponent implements OnInit {
         };
     }
 
+    onRateKeydown(event: KeyboardEvent, colName: string) {
+        if (event.key !== 'Enter' && event.key !== 'ArrowDown' && event.key !== 'ArrowUp') {
+            return;
+        }
+        event.preventDefault();
+
+        const input = event.target as HTMLInputElement;
+        const currentRow = input.closest('mat-row') as HTMLElement;
+        if (!currentRow) return;
+
+        const allRows = Array.from(document.querySelectorAll('mat-row'));
+        const rowIndex = allRows.indexOf(currentRow);
+        if (rowIndex === -1) return;
+
+        const targetRowIndex = event.key === 'ArrowUp' ? rowIndex - 1 : rowIndex + 1;
+        const targetRow = allRows[targetRowIndex];
+        if (!targetRow) return;
+
+        const nextInput = targetRow.querySelector<HTMLInputElement>(`input[data-col="${colName}"]`);
+        if (nextInput) {
+            nextInput.focus();
+            nextInput.select();
+        }
+    }
 
 }
 

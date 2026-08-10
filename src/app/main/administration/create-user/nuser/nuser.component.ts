@@ -173,7 +173,7 @@ export class NUserComponent implements OnInit {
         // debugger
         const SelectQuery = {
             "first": 0,
-            "rows": 100,
+            "rows": 999,
             "sortField": "AccessValueId",
             "sortOrder": 0,
             "filters": [
@@ -216,7 +216,7 @@ export class NUserComponent implements OnInit {
         // debugger
         const SelectQuery = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "LoginUnitDetId",
             "sortOrder": 0,
             "filters": [
@@ -263,7 +263,7 @@ export class NUserComponent implements OnInit {
     getStoreDetail(row) {
         const SelectQuery = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "LoginStoreDetId",
             "sortOrder": 0,
             "filters": [
@@ -308,7 +308,7 @@ export class NUserComponent implements OnInit {
 getCashcounterDetail(row) {
         const SelectQuery = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "LoginCashCounterDetId",
             "sortOrder": 0,
             "filters": [
@@ -464,6 +464,7 @@ getCashcounterDetail(row) {
             loginCashCounterDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cashCounterId: [Number(item.value)],
+            isDefault:[(item.isDefault) || false],
         });
     }
 
