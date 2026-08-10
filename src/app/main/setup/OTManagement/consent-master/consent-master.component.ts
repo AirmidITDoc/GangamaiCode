@@ -20,7 +20,7 @@ import { NewConsentMasterComponent } from './new-consent-master/new-consent-mast
 export class ConsentMasterComponent implements OnInit {
     msg: any;
     consentName: any = "";
-    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Add);
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOTConsent, permissionType.Add);
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -34,11 +34,11 @@ export class ConsentMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Edit), callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOTConsent, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 }, {
-                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Delete), callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOTConsent, permissionType.Delete), callback: (data: any) => {
                         this._ConsentMasterService.deactivateTheStatus(data.consentId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -51,7 +51,7 @@ export class ConsentMasterComponent implements OnInit {
         { fieldName: "ConsentName", fieldValue: "", opType: OperatorComparer.StartsWith },
     ]
     gridConfig: gridModel = {
-        permissionCode: permissionCodes.SetupOtManagment,
+        permissionCode: permissionCodes.SetupOTConsent,
         apiUrl: "ConsentMaster/List",
         columnsList: this.allColumns,
         sortField: "ConsentId",
