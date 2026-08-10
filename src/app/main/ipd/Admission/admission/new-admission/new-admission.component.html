@@ -166,7 +166,8 @@
                                                     <mat-radio-button value="registration">New Registration
                                                     </mat-radio-button>
                                                     <mat-radio-button value="registrered">Registered</mat-radio-button>
-                                                    <mat-radio-button value="NewbornBabyRegistration">Newborn Baby Registration</mat-radio-button>
+                                                    <mat-radio-button value="NewbornBabyRegistration">Newborn Baby
+                                                        Registration</mat-radio-button>
                                                 </mat-radio-group>
 
                                                 <div *ngIf="vRegNo > 0"
@@ -204,13 +205,24 @@
                                                     (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
 
-                                                <airmid-autocomplete class="w-250"
+                                                <!-- <airmid-autocomplete class="w-250"
                                                     label="Search Membership No / Patient Name "
                                                     [formGroup]="searchFormGroup" formControlName="tRegId"
                                                     *ngIf="IsTrustAppflag"
                                                     placeholderText="Search Reg No / Patient Name / Mobile No"
                                                     ApiUrl="TrustMemershipReg/auto-complete?Keyword="
-                                                    (selectionChange)="getSelectedObjtrust($event)"></airmid-autocomplete>
+                                                    (selectionChange)="getSelectedObjtrust($event)"></airmid-autocomplete> -->
+
+                                                <airmid-autocomplete class="w-250"
+                                                    label="Search Membership No / Patient Name "
+                                                    [formGroup]="searchFormGroup" formControlName="tRegId"
+                                                    *ngIf="IsTrustAppflag"
+                                                    placeholderText="Search Reg No / Patient Name / Mobile No"
+                                                    ApiUrl="TrustMemershipReg/search_TruestMembership?Keyword="
+                                                    (selectionChange)="getSelectedObjtrust($event)"
+                                                    ValueField="membershipId"
+                                                    TextField="patientName"></airmid-autocomplete>
+
 
                                                 <airmid-dropdown class="w-350" label="Hospital"
                                                     formControlName="HospitalId" [formGroup]="searchFormGroup"

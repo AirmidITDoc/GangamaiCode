@@ -1269,8 +1269,28 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         // }
         this.getRtevPackageDetList(obj)
     }
+        getcleardata(){
+        this.chargeList = [];
+        this.dsChargeList.data = []  
+        this.PacakgeList = [];
+        this.dsPackageList.data =[];
+        this.dsOpDraftlist.data = []; 
+        this.OPFooterForm.reset({
+            totalAmt: 0,
+            totalDiscountPer: 0,
+            concessionAmt: 0,
+            netPayableAmt: 0,
+            concessionReasonId: 0,
+            UpiNo: 0,
+            GovrnApprovAmt:0,
+            mpesaMobile:0
+        });  
+        this.ConcessionId = 0;
+        this.ConcessionReason ='';
+    }
     getSelectedObj(obj) {
-        console.log(obj)
+        console.log(obj) 
+       this.getcleardata();
         this.patientDetail = obj
         this.patientDetail.doctorId = obj.consultantDocId
         this.patientDetail.doctorname = obj.doctorName
@@ -1661,7 +1681,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             concessionReasonId: 0,
             UpiNo: 0
         });
-        this.OPFooterForm.get('paymentType').setValue('CreditPay')
+        const paymentType = this.SetCashbydefault == 1 ? "CashPay" : this.SetCashbydefault == 2 ? "PayOption" : "CreditPay";
+        this.OPFooterForm.get('paymentType').setValue(paymentType)
         this.PatientName = ''
     }
     viewgetCreditOPBillReportPdf(element) {
@@ -1800,7 +1821,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         if (companyId > 0) {
             this.OPFooterForm.get('paymentType').setValue('CreditPay');
         } else {
-            this.OPFooterForm.get('paymentType').setValue('CreditPay');
+           const paymentType = this.SetCashbydefault == 1 ? "CashPay" : this.SetCashbydefault == 2 ? "PayOption" : "CreditPay";
+            this.OPFooterForm.get('paymentType').setValue(paymentType);
         }
     }
     isWaiting = false;

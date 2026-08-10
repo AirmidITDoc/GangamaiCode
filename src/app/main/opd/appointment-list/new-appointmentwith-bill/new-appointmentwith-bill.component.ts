@@ -205,6 +205,7 @@ export class NewAppointmentwithBillComponent {
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
     IsCasepaperBillPrint: boolean = false;
+     IsOPCasePaperPrtWithoutPreviewID: boolean = false;
 
     constructor(public _AppointmentlistService: AppointmentlistService,
         public _matDialog: MatDialog,
@@ -270,6 +271,27 @@ export class NewAppointmentwithBillComponent {
 
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+         const [IsOPCasePaperPrtWithoutPreviewID, IsOPCasePaperPrtWithoutPreviewVal] = this._ConfigService.configParams.IsOPCasePaperPrtWithoutPreview.split(":");
+        this.IsOPCasePaperPrtWithoutPreviewID = IsOPCasePaperPrtWithoutPreviewID === "1";
+
+
+        const [OPDDefaultDepartmentId, OPDDefaultDepartmentVal] = this._ConfigService.configParams.OPDDefaultDepartment.split(":");
+ 
+        const [OPDDefaultDoctorId, OPDDefaultDoctorVal] = this._ConfigService.configParams.OPDDefaultDoctor.split(":");
+         if(OPDDefaultDepartmentId === "1"){
+            setTimeout(() => {
+             this.VisitFormGroup.get('DepartmentId').setValue(OPDDefaultDepartmentVal);
+            this.selectChangedepartment(this.VisitFormGroup.get('DepartmentId'))
+            }, 1000); 
+        }
+        debugger
+        if(OPDDefaultDoctorId === "1"){
+            setTimeout(() => {
+            this.VisitFormGroup.get('ConsultantDocId').setValue(OPDDefaultDoctorVal);
+            this.getDocServicelist(this.VisitFormGroup.get('ConsultantDocId').value)
+            }, 1000); 
+        }
     }
 
     // Load data by ID when opened as standalone page
@@ -766,7 +788,7 @@ export class NewAppointmentwithBillComponent {
 
 
     onSaveEntry(row) {
-
+debugger
         const doctorid = 0;
         const formValue = this.myForm.value
 
@@ -950,6 +972,7 @@ export class NewAppointmentwithBillComponent {
     isRowDiscountApplied = false;
     Doctorflag = false
     onAddCharges(row): void {
+        debugger
         const isPackage = (row.isPackage ?? row.IsPackage) == 1;
 
         if (row.isPathology !== undefined || row.IsPathology !== undefined) {
@@ -1004,7 +1027,7 @@ export class NewAppointmentwithBillComponent {
             NetAmount: netAmount || 0,
             ClassName: 1,//this.className || '-',
             creditedtoDoctor: row.creditedtoDoctor,
-            DoctorId: row.Doctorflag ? this.VisitFormGroup.get('ConsultantDocId')?.value ?? 0 : 0,
+            DoctorId: row.Doctorflag ? (this.VisitFormGroup.get('ConsultantDocId')?.value || row?.DoctorId) ?? 0 : 0,
             DoctorName: row.Doctorflag ? this.doctorName ?? '' : '',
             ChargesAddedName: this.accountService.currentUserValue.userName,
             IsPathology: row.isPathology == 1 ? true : false,
@@ -1159,6 +1182,7 @@ export class NewAppointmentwithBillComponent {
         this.doctorId = value.value
         this.doctorName1 = value.text
         console.log(this.doctorName1)
+        this.getDocServicelist(value.value)
 
     }
 
@@ -1224,9 +1248,10 @@ export class NewAppointmentwithBillComponent {
                         const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
                         if (matchedDoctor) {
                             this.ddlDoctor.SetSelection(matchedDoctor.value);
+                            this.getDocServicelist(matchedDoctor.value)
                         }
                     }
-                }, 100);
+                }, 300);
             });
         }
 
@@ -2062,7 +2087,12 @@ export class NewAppointmentwithBillComponent {
     }
 
     viewgetOPBillReportPdf(element) {
-        this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+        debugger
+        if(this.IsOPCasePaperPrtWithoutPreviewID){
+        this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt",true); 
+        }else{
+         this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt",false); 
+        }
     }
     Patientnewold: any = 1;
     resetFilteredOptions() {
@@ -2480,8 +2510,8 @@ export class NewAppointmentwithBillComponent {
             this.myForm.reset();
             this.myForm.get('RegId').reset();
             this.searchFormGroup.get('RegId').disable();
-            this.VisitFormGroup.get('DepartmentId')?.reset();
-            this.VisitFormGroup.get('ConsultantDocId')?.reset();
+            // this.VisitFormGroup.get('DepartmentId')?.reset();
+            // this.VisitFormGroup.get('ConsultantDocId')?.reset();
             this.isRegSearchDisabled = false;
             this.Patientnewold = 1;
 
@@ -2903,6 +2933,44 @@ export class NewAppointmentwithBillComponent {
             }
         });
     }
+    docServiceList:any=[];
+ 
+getDocServicelist(DoctorId: number) {
 
+  const vdata = {
+    searchFields: [
+      {
+        fieldName: 'DoctorId',
+        fieldValue: String(DoctorId),
+        opType: 'Equals'
+      }
+    ],
+    mode: 'DoctorWiseCharges'
+  };
+
+  this._AppointmentlistService.getDocServicelist(vdata).subscribe((data: any[]) => { 
+    this.docServiceList = data || []; 
+    debugger
+    this.chargeList = [];
+    this.dstable1.data = this.chargeList;
+    const tempList = this.docServiceList.map(row => ({
+      serviceId: row.ServiceId,
+      serviceName: row.ServiceName,
+      price: row.Price ?? 0, 
+      creditedtoDoctor: row.CreditedtoDoctor,
+      DoctorId: row.CreditedtoDoctor ? (row.DoctorId ?? 0) : 0,
+      DoctorName: row.Doctorflag ? (row.DoctorName ?? '') : '',
+      isPathology: row.IsPathology == 1,
+      isRadiology: row.IsRadiology == 1,
+      isPackage: row.IsPackage 
+    })); 
+    
+    this.doctorName1 = (this.docServiceList[0]?.DoctorId ?? 0) > 0  ? this.docServiceList[0]?.DoctorName ?? ''  : '';
+    
+    tempList.forEach(item => {
+      this.onSaveEntry(item);
+    }); 
+  });
+}
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

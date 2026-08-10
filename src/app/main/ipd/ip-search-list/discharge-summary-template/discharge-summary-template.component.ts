@@ -106,11 +106,20 @@ export class DischargeSummaryTemplateComponent {
         console.log(this.data)
         if (this.data) {
             this.registerObj = this.data;
+            console.log(this.data)
             this.vAdmissionId = this.data.admissionId;
             this.DischargesumForm.get("discharge.admissionId")?.setValue(this.data.admissionId)
             this.getDischargeSummaryData(this.vAdmissionId)
             this.getPrescription(this.vAdmissionId)
         }
+
+        debugger
+        setTimeout(() => {
+            this.DischargesumForm.get("discharge.dischargeDoctor1").setValue(this.data.docNameId)
+            this.DischargesumForm.get("discharge.dischargeDoctor2").setValue(this.data.refDocNameId || 0)
+            this.DischargesumForm.get("discharge.dischargeDoctor3").setValue(this.data.admittedDoctor1ID || 0)
+
+        }, 1000);
 
         if ((this.data?.regId ?? 0) > 0) {
 
@@ -968,9 +977,11 @@ export class DischargeSummaryTemplateComponent {
                 if (this.RetrDischargeSumryList[0].templateDescriptionHtml !== "")
                     this.DischargesumForm.get('TemplateId').disable();
                 console.log(this.vTemplateDesc);
+
+                debugger
                 this.DischargesumForm.get("discharge.dischargeDoctor1").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor1))
                 this.DischargesumForm.get("discharge.dischargeDoctor2").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor2))
-                this.DischargesumForm.get("discharge.dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
+                this.DischargesumForm.get("discharge.dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3 || this.data.admittedDoctor1ID || 0)
 
                 if (this.RetrDischargeSumryList[0].isNormalOrDeath == 0)
                     this.vIsNormalDeath = '0'
@@ -1157,7 +1168,8 @@ export class DischargeSummaryTemplateComponent {
             wardId: [
                 { name: "required", Message: "wardId Name is required" }
             ],
-            DoseId: []
+            DoseId: [],
+
 
         };
     }

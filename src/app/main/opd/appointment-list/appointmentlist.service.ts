@@ -479,4 +479,16 @@ export class AppointmentlistService {
     public getGenderbyId(Id) {
         return this._httpClient1.GetData("Gender/" + Id);
     }
+
+
+      public getbypincode(pin) {
+        return this._httpClient1.GetData("AreaMaster/search_AreaMaster?Keyword=" + pin)
+    }
+ public getstatebypincode(obj) {
+        return this._httpClient1.GetData("CityMaster/" + obj)
+    }
+
+     public getDocServicelist(Param) {
+        return this._httpClient1.PostData("Common", Param)
+    }
 }

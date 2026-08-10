@@ -203,6 +203,7 @@ export class DischargeSummaryComponent implements OnInit {
                 dischargeSummaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
             prescriptionDischarge: this._formBuilder.array([]),
+            // icdedata: this._formBuilder.array([]),
         });
     }
 

@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
+import { exists } from 'fs';
 // import { PincodeSearchService } from 'app/main/shared/services/pincode-search.service';
 
 @Component({
@@ -98,7 +99,7 @@ export class NewRegistrationComponent implements OnInit {
     options: string[]
     filteredOptions: Observable<string[]>;
     Is9_Digit_National_Id: boolean = false;
-   pincode = '413007';
+    pincode = '';
     ngOnInit(): void {
 
 
@@ -213,7 +214,7 @@ export class NewRegistrationComponent implements OnInit {
 
         this.setNameValidations();
 
-        
+
         // this._PincodeSearchService.getCityFromPincode('413007').subscribe(result => {
         //     console.log(result);
         // })
@@ -559,8 +560,56 @@ export class NewRegistrationComponent implements OnInit {
             EmailId: [
                 { name: "pattern", Message: "Enter valid Email Address" }
             ],
+            PinNo: []
         };
     }
+
+
+    area = ''
+    onChangeArea(event) {
+        console.log(event)
+        this.pincode = event.pincode
+        this.CityName = event.cityName
+        this.area = event.area
+        this.personalFormGroup.get('CityId').setValue(event.cityId)
+
+        this.onChangecityDD(event.cityId)
+    }
+
+
+    onChangePincode(obj: string) {
+        // Call API only when exactly 6 digits are entered
+        if (obj && obj.length === 6) {
+            this._registerService.getbypincode(obj).subscribe((data: any) => {
+                if (data && data.length > 0) {
+                    console.log(data);
+
+                    this.CityName = data[0].cityName;
+                    this.area = data[0].area;
+
+                    this.personalFormGroup.get('AreaId').setValue(data[0].areaId);
+                    // this.personalFormGroup.get('CityId').setValue(data[0].cityId);
+
+                    this.onChangecityDD(data[0].cityId);
+                    this.registerObj.cityId = data[0].cityId;
+                } else {
+                    Swal.fire("Pincode does not exist.")
+                }
+            });
+        }
+    }
+    onChangecityDD(obj) {
+        debugger
+        this._registerService.getstatebypincode(obj).subscribe((data: any) => {
+            console.log(data)
+
+            this.registerObj.stateId = data.stateId
+            this._registerService.getstateId(data.stateId).subscribe((Response) => {
+                this.ddlCountry.SetSelection(Response.countryId);
+            });
+        });
+    }
+
 
     value = new Date()
     onChangeDateofBirth(DateOfBirth: Date | string) {
@@ -602,27 +651,6 @@ export class NewRegistrationComponent implements OnInit {
 
     areaList: any[] = [];
 
-    // getarealist(){
-    //     
-    // this._registerService.getareaList1().subscribe(response => {
-    //     console.log(response)
-    // this.AreaList = response;
-    // });
-    // }
-
-
-
-    //   getAreaList() {
-    //     this._registerService.getAreaCombo().subscribe(data => {
-    //       this.AreaList = data;
-    //       if (this.data) {
-    //         const ddValue = this.AreaList.filter(c => c.AreaId == this.registerObj.AreaId);
-    //         this.personalFormGroup.get('AreaId').setValue(ddValue[0]);
-    //         this.personalFormGroup.updateValueAndValidity();
-    //         return;
-    //       }
-    //     });
-    //   }
 
     CalcDOB(mode, e) {
         // 
@@ -775,6 +803,7 @@ export class NewRegistrationComponent implements OnInit {
             setTimeout(() => {
                 this._registerService.getRegistraionById(obj?.regId).subscribe((response) => {
                     this.registerObj = response;
+                    this.pincode=response.pinNo || ''
                     console.log(this.registerObj)
                     this.isEditMode = true;
                     this.regNo = this.registerObj.regNo
@@ -783,6 +812,7 @@ export class NewRegistrationComponent implements OnInit {
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)
                 });
             }, 500);
+
         }
     }
 

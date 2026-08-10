@@ -548,11 +548,10 @@
                                             Mediclaim Insurance Details</span>
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-<!-- (change)="hasmediclaimAdd()" -->
+                                                <!-- (change)="hasmediclaimAdd()" -->
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="hasmediclaim"
-                                                        style="margin-left:20px;" [value]="data?.hasMediclaim"
-                                                        >
+                                                        style="margin-left:20px;" [value]="data?.hasMediclaim">
                                                         Has Mediclaim</mat-checkbox>
                                                 </div>
 
@@ -614,11 +613,10 @@
 
 
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
- <!-- (change)="hasmediclaimAdd()" -->
+                                                <!-- (change)="hasmediclaimAdd()" -->
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="whasmediclaim"
-                                                        style="margin-left:20px;" [value]="data?.whasmediclaim"
-                                                       >
+                                                        style="margin-left:20px;" [value]="data?.whasmediclaim">
                                                         Wife Has Mediclaim</mat-checkbox>
                                                 </div>
 
@@ -680,45 +678,53 @@
                                             </div>
 
                                         </form>
-                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
 
-                                            <span
+                                        <mat-expansion-panel  [(expanded)]="isExpanded1" class="mt-12">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title
+                                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58)">Health
+                                                    Information</mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                            <form [formGroup]="personalFormGroup" class="input-error-hidden">
+
+                                                <!-- <span
                                                 style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                                Health Information</span>
+                                                Health Information</span> -->
 
-                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
 
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <mat-form-field appearance="outline"
-                                                        style="width: 100%; height: 70px;">
-                                                        <mat-label>Male / Husband Current Medications /
-                                                            Treatment</mat-label>
-                                                        <textarea matInput formControlName="husbandmedications"
-                                                            placeholder="husband medications"
-                                                            [value]="data?.husbandMedications"
-                                                            style="height: 100%; resize: none;"></textarea>
-                                                    </mat-form-field>
+                                                        <mat-form-field appearance="outline"
+                                                            style="width: 100%; height: 70px;">
+                                                            <mat-label>Male / Husband Current Medications /
+                                                                Treatment</mat-label>
+                                                            <textarea matInput formControlName="husbandmedications"
+                                                                placeholder="husband medications"
+                                                                [value]="data?.husbandMedications"
+                                                                style="height: 100%; resize: none;"></textarea>
+                                                        </mat-form-field>
+                                                    </div>
+
+
+                                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                        <mat-form-field appearance="outline"
+                                                            style="width: 100%; height: 70px;">
+                                                            <mat-label>Female / Wife Current Medications /
+                                                                Treatment</mat-label>
+                                                            <textarea matInput formControlName="wifemedications"
+                                                                placeholder="wife medications"
+                                                                [value]="data?.wifeMedications"
+                                                                style="height: 100%; resize: none;"></textarea>
+                                                        </mat-form-field>
+                                                    </div>
+
                                                 </div>
 
-
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                    <mat-form-field appearance="outline"
-                                                        style="width: 100%; height: 70px;">
-                                                        <mat-label>Female / Wife Current Medications /
-                                                            Treatment</mat-label>
-                                                        <textarea matInput formControlName="wifemedications"
-                                                            placeholder="wife medications"
-                                                            [value]="data?.wifeMedications"
-                                                            style="height: 100%; resize: none;"></textarea>
-                                                    </mat-form-field>
-                                                </div>
-
-                                            </div>
-
-                                        </form>
+                                            </form>
+                                        </mat-expansion-panel>
 
                                         <span
                                             style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
@@ -786,123 +792,127 @@
 
                                         </form>
 
+                                        <mat-expansion-panel  [(expanded)]="isExpanded2" class="mt-12">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title
+                                                    style="font-size: large;font-weight: bold;color: rgb(7, 47, 58)">
+                                                    For Office Use Information Details
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                            <form [formGroup]="personalFormGroup" class="input-error-hidden">
+                                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                        <span
-                                            style="font-size: large;font-weight: bold;color: rgb(7, 47, 58);text-align: left;align-items: left;padding:10px">
-                                            For Office Use Information Details</span>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <mat-checkbox formControlName="feeReceived"
+                                                            style="font-weight: bold;padding-left: 20px;"
+                                                            [value]="data?.feereceived">
+                                                            Amount Received
+                                                        </mat-checkbox>
 
-                                        <form [formGroup]="personalFormGroup" class="input-error-hidden">
-                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                                    </div>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Membership No"
+                                                            formControlName="membershipNo" [value]="data?.membershipNo"
+                                                            [formGroup]="personalFormGroup"></airmid-textbox>
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-checkbox formControlName="feeReceived"
-                                                        style="font-weight: bold;padding-left: 20px;"
-                                                        [value]="data?.feereceived">
-                                                        Amount Received
-                                                    </mat-checkbox>
+                                                    </div>
 
-                                                </div>
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Membership No" formControlName="membershipNo"
-                                                        [value]="data?.membershipNo"
-                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Fee Amount" formControlName="feeAmount"
+                                                            [formGroup]="personalFormGroup"
+                                                            (keypress)="keyPressAlphanumeric($event)"
+                                                            [value]="data?.feeAmount"
+                                                            [validations]="getValidationMessages().feeamount"
+                                                            [maxLength]="5"></airmid-textbox>
 
-                                                </div>
-
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Fee Amount" formControlName="feeAmount"
-                                                        [formGroup]="personalFormGroup"
-                                                        (keypress)="keyPressAlphanumeric($event)"
-                                                        [value]="data?.feeAmount"
-                                                        [validations]="getValidationMessages().feeamount"
-                                                        [maxLength]="5"></airmid-textbox>
-
-                                                </div>
-
-
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Receipt Date</mat-label>
-                                                        <input matInput [matDatepicker]="receiptdate"
-                                                            placeholder="receiptdate" formControlName="receiptDate"
-                                                            [value]="vreceiptdate" />
-                                                        <mat-datepicker-toggle matSuffix
-                                                            [for]="receiptdate"></mat-datepicker-toggle>
-                                                        <mat-datepicker #receiptdate></mat-datepicker>
-                                                    </mat-form-field>
-                                                </div>
+                                                    </div>
 
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Membership valid Date</mat-label>
-                                                        <input matInput [matDatepicker]="membershipvalidDate"
-                                                            placeholder="membershipvalidDate"
-                                                            formControlName="membershipvalidDate"
-                                                            [value]="todayPlus5Years" />
-                                                        <mat-datepicker-toggle matSuffix
-                                                            [for]="membershipvalidDate"></mat-datepicker-toggle>
-                                                        <mat-datepicker #membershipvalidDate></mat-datepicker>
-                                                    </mat-form-field>
-                                                </div>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Receipt Date</mat-label>
+                                                            <input matInput [matDatepicker]="receiptdate"
+                                                                placeholder="receiptdate" formControlName="receiptDate"
+                                                                [value]="vreceiptdate" />
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="receiptdate"></mat-datepicker-toggle>
+                                                            <mat-datepicker #receiptdate></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
 
-                                            </div>
-                                            <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-checkbox formControlName="wfeeReceived"
-                                                        style="font-weight: bold;padding-left: 20px;"
-                                                        [value]="data?.wfeeReceived">
-                                                        Amount Received
-                                                    </mat-checkbox>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Membership valid Date</mat-label>
+                                                            <input matInput [matDatepicker]="membershipvalidDate"
+                                                                placeholder="membershipvalidDate"
+                                                                formControlName="membershipvalidDate"
+                                                                [value]="todayPlus5Years" />
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="membershipvalidDate"></mat-datepicker-toggle>
+                                                            <mat-datepicker #membershipvalidDate></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
 
                                                 </div>
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Membership No" formControlName="membershipNo"
-                                                        [value]="data?.membershipNo"
-                                                        [formGroup]="personalFormGroup"></airmid-textbox>
+                                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <mat-checkbox formControlName="wfeeReceived"
+                                                            style="font-weight: bold;padding-left: 20px;"
+                                                            [value]="data?.wfeeReceived">
+                                                            Amount Received
+                                                        </mat-checkbox>
+
+                                                    </div>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Membership No"
+                                                            formControlName="membershipNo" [value]="data?.membershipNo"
+                                                            [formGroup]="personalFormGroup"></airmid-textbox>
+
+                                                    </div>
+
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Fee Amount" formControlName="wfeeAmount"
+                                                            [formGroup]="personalFormGroup"
+                                                            (keypress)="keyPressAlphanumeric($event)"
+                                                            [value]="data?.wfeeAmount"
+                                                            [validations]="getValidationMessages().feeamount"
+                                                            [maxLength]="5"></airmid-textbox>
+
+                                                    </div>
+
+
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Receipt Date</mat-label>
+                                                            <input matInput [matDatepicker]="wreceiptDate"
+                                                                placeholder="wreceiptDate"
+                                                                formControlName="wreceiptDate"
+                                                                [value]="vwreceiptdate" />
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="wreceiptDate"></mat-datepicker-toggle>
+                                                            <mat-datepicker #wreceiptDate></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+
+
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Membership valid Date</mat-label>
+                                                            <input matInput [matDatepicker]="wmembershipvalidDate"
+                                                                placeholder="wmembershipvalidDate"
+                                                                formControlName="wmembershipvalidDate"
+                                                                [value]="todayPlus5Years" />
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="wmembershipvalidDate"></mat-datepicker-toggle>
+                                                            <mat-datepicker #wmembershipvalidDate></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
 
                                                 </div>
-
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Fee Amount" formControlName="wfeeAmount"
-                                                        [formGroup]="personalFormGroup"
-                                                        (keypress)="keyPressAlphanumeric($event)"
-                                                        [value]="data?.wfeeAmount"
-                                                        [validations]="getValidationMessages().feeamount"
-                                                        [maxLength]="5"></airmid-textbox>
-
-                                                </div>
-
-
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Receipt Date</mat-label>
-                                                        <input matInput [matDatepicker]="wreceiptDate"
-                                                            placeholder="wreceiptDate" formControlName="wreceiptDate"
-                                                            [value]="vwreceiptdate" />
-                                                        <mat-datepicker-toggle matSuffix
-                                                            [for]="wreceiptDate"></mat-datepicker-toggle>
-                                                        <mat-datepicker #wreceiptDate></mat-datepicker>
-                                                    </mat-form-field>
-                                                </div>
-
-
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Membership valid Date</mat-label>
-                                                        <input matInput [matDatepicker]="wmembershipvalidDate"
-                                                            placeholder="wmembershipvalidDate"
-                                                            formControlName="wmembershipvalidDate"
-                                                            [value]="todayPlus5Years" />
-                                                        <mat-datepicker-toggle matSuffix
-                                                            [for]="wmembershipvalidDate"></mat-datepicker-toggle>
-                                                        <mat-datepicker #wmembershipvalidDate></mat-datepicker>
-                                                    </mat-form-field>
-                                                </div>
-
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </mat-expansion-panel>
 
                                     </mat-card-content>
                                 </mat-card>

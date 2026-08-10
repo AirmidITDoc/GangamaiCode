@@ -136,6 +136,7 @@ export class ConfigSettingParams {
     IsClassWise: any;
     IsGroupWise: any;
     FollowUpdateSet: any;
+    IsOPCasePaperPrtWithoutPreview:any;
     /**
         * Constructor
         *
@@ -268,7 +269,7 @@ export class ConfigSettingParams {
         this.IsUserwiseCashCounterflow = ConfigSettingParams.IsUserwiseCashCounterflow;
         this.IsGastrologyEMR = ConfigSettingParams.IsGastrologyEMR;
         this.IsCasepaperBillPrint = ConfigSettingParams.IsCasepaperBillPrint;
-
+        this.IsOPCasePaperPrtWithoutPreview = ConfigSettingParams.IsOPCasePaperPrtWithoutPreview;
         this.IsGroupWise = ConfigSettingParams.IsGroupWise;
         this.IsClassWise = ConfigSettingParams.IsClassWise;
         this.IsClassService = ConfigSettingParams.IsClassService;

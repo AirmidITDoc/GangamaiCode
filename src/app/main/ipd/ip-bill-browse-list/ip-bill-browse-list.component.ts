@@ -28,6 +28,13 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { ToastrService } from 'ngx-toastr';
+import { IPBillBrowseModule } from './ip-bill-browse.module';
+import { MatTableDataSource } from '@angular/material/table';
+import { element } from 'protractor';
+import { Bill } from '../ip-search-list/interim-bill/interim-bill.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { sum } from 'lodash';
 
 
 @Component({
@@ -42,6 +49,19 @@ export class IPBillBrowseListComponent implements OnInit {
     myFilterFormIPBrowsePayment: FormGroup;
     myFilterFormIPBrowseRefund: FormGroup;
     menuActions: Array<string> = [];
+
+
+    IsGroupWise: boolean = this.permissionService.getPermission(permissionCodes.GroupWise, permissionType.Edit);
+    IsClassWise: boolean = this.permissionService.getPermission(permissionCodes.ClassWise, permissionType.Edit);
+    IsClassService: boolean = this.permissionService.getPermission(permissionCodes.ClassService, permissionType.Edit);
+    IsFinalBill: boolean = this.permissionService.getPermission(permissionCodes.FinalBill, permissionType.Edit);
+    IsChargeDateWise: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWise, permissionType.Edit);
+    IsPatientStatementPrint: boolean = this.permissionService.getPermission(permissionCodes.PatientStatementPrint, permissionType.Edit);
+    IsAdvanceStatementPrint: boolean = this.permissionService.getPermission(permissionCodes.AdvanceStatementPrint, permissionType.Edit);
+    IsChargeDateWithGroupWise: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWithGroupWise, permissionType.Edit);
+    IsChargeDateWithGroupWiseWithoutAdvance: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWithGroupWiseWithoutAdvance, permissionType.Edit);
+
+
     // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
@@ -71,6 +91,16 @@ export class IPBillBrowseListComponent implements OnInit {
     rl_name: any = "%"
     rregNo: any = "0"
 
+    Vtotal: any = "0"
+    Vtotaldisc: any = "0"
+    Vtotalnet: any = "0"
+    Vtotbal: any = "0"
+
+    Vcashtotbal: any = "0"
+    Vcardtotbal: any = "0"
+    Vphonepaytotl: any = "0"
+
+    dataSource = new MatTableDataSource<IPbill>();
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;
         this.gridConfig.columnsList.find(col => col.key === 'patientTypeId')!.template = this.patientTypetemp;
@@ -100,7 +130,7 @@ export class IPBillBrowseListComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals }
+        { fieldName: "IsIntrimOrFinal", fieldValue: "2", opType: OperatorComparer.Equals }
     ]
 
     allIPBillListColumns = [
@@ -226,22 +256,15 @@ export class IPBillBrowseListComponent implements OnInit {
     }
     Is9_Digit_National_Id: boolean = false;
     IsChennaiIPFinalPrint: boolean = false;
-    IsGroupWise: boolean = false;
-    IsClassWise: boolean = false;
-    IsClassService: boolean = false;
-    IsFinalBill: boolean = false;
-    IsChargeDateWise: boolean = false;
-    IsPatientStatementPrint: boolean = false;
-    IsAdvanceStatementPrint: boolean = false;
-    IsChargeDateWithGroupWise: boolean = false;
-    IsChargeDateWithGroupWiseWithoutAdvance: boolean = false;
+
+
     constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
         private accountService: AuthenticationService,
         public formBuilder: FormBuilder, public _whatsppService: WhatsAppEmailService,
         private overlay: Overlay,
-        public _configue: ConfigService,
+        public _configue: ConfigService, public permissionService: PagePermissionService,
         public _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
@@ -254,78 +277,46 @@ export class IPBillBrowseListComponent implements OnInit {
         const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
-        debugger
+
         const rawValue1 = this?._configue?.configParams?.IsChennaiIPFinalPrint || "";
         const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
         this.IsChennaiIPFinalPrint = id1 === "1";
 
 
-        // const vIsGroupWise = this?._configue?.configParams?.IsGroupWise || "";
-        // const [id2, val2] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        // this.IsGroupWise = id2 === "1";
-
-        // const vIsClassWise = this?._configue?.configParams?.IsClassWise || "";
-        // const [id3, val3] = vIsClassWise.includes(":") ? vIsClassWise.split(":") : [null, null];
-        // this.IsClassWise = id3 === "1";
-
-        // const vIsClassService = this?._configue?.configParams?.IsClassService || "";
-        // const [id4, val4] = vIsClassService.includes(":") ? vIsClassService.split(":") : [null, null];
-        // this.IsClassService = id4 === "1";
-
-        // const vIsFinalBill = this?._configue?.configParams?.IsFinalBill || "";
-        // const [id5, val5] = vIsFinalBill.includes(":") ? vIsFinalBill.split(":") : [null, null];
-        // this.IsFinalBill = id5 === "1";
-
-        // const vIsChargeDateWise = this?._configue?.configParams?.IsChargeDateWise || "";
-        // const [id6, val6] = vIsChargeDateWise.includes(":") ? vIsChargeDateWise.split(":") : [null, null];
-        // this.IsChargeDateWise = id6 === "1";
-
-        // const vIsPatientStatementPrint = this?._configue?.configParams?.IsPatientStatementPrint || "";
-        // const [id7, val7] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        // this.IsPatientStatementPrint = id7 === "1";
-
-        // const vIsAdvanceStatementPrint = this?._configue?.configParams?.IsAdvanceStatementPrint || "";
-        // const [id8, val8] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        // this.IsAdvanceStatementPrint = id8 === "1";
-
-        // const vIsChargeDateWithGroupWise = this?._configue?.configParams?.IsChargeDateWithGroupWise || "";
-        // const [id9, val9] = vIsChargeDateWithGroupWise.includes(":") ? vIsChargeDateWithGroupWise.split(":") : [null, null];
-        // this.IsChargeDateWithGroupWise = id9 === "1";
-        // const IsChargeDateWithGroupWiseWithoutAdvance = this?._configue?.configParams?.IsChargeDateWithGroupWiseWithoutAdvance || "";
-        // const [id10, val10] = vIsGroupWise.includes(":") ? vIsGroupWise.split(":") : [null, null];
-        // this.IsChargeDateWithGroupWiseWithoutAdvance = id2 === "1";
-
-debugger
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
             if (!this.Is9_Digit_National_Id) {
-                debugger
-                // if (this.IsGroupWise)
+
+                if (this.IsGroupWise)
                     this.menuActions.push('Print Final Bill - Group wise');
-               // if (this.IsClassWise)
+               if (this.IsClassWise)
                     this.menuActions.push('Print Final Bill - Class wise');
-               // if (this.IsClassService)
+               if (this.IsClassService)
                     this.menuActions.push('Print Final Bill - Class Service');
-               // if (this.IsFinalBill)
+                if (this.IsFinalBill)
                     this.menuActions.push('Print Final Bill');
-                //if (this.IsChargeDateWise)
+                if (this.IsChargeDateWise)
                     this.menuActions.push('Print Final Bill - Charge Date Wise');
-               // if (this.IsPatientStatementPrint)
+                if (this.IsPatientStatementPrint)
                     this.menuActions.push('Patient Statement Print');
-               // if (this.IsAdvanceStatementPrint)
+                if (this.IsAdvanceStatementPrint)
                     this.menuActions.push('Advance Statement Print');
             } else {
-               // if (this.IsChargeDateWithGroupWise)
+                if (this.IsChargeDateWithGroupWise)
                     this.menuActions.push('Print Final Bill - Charge Date with Group wise');
-               // if (this.IsChargeDateWithGroupWiseWithoutAdvance)
+                if (this.IsChargeDateWithGroupWiseWithoutAdvance)
                     this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
-                // this.menuActions.push('Advance Statement Print');
+
             }
 
         }
+
+
+        this.GetIPbilldetail()
     }
 
     onChangeIPBill() {
-        debugger
+
+
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
@@ -333,7 +324,13 @@ debugger
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.PBillNo = this.myFilterform.get('PBillNo').value || "%"
         this.IsIntrimOrFinal = this.myFilterform.get('IsInterimOrFinal').value
+        // setTimeout(() => {
         this.getfilterdataIPBill();
+        // }, 500);
+        // setTimeout(() => {
+
+        // }, 1000);
+
     }
 
     getfilterdataIPBill() {
@@ -353,6 +350,9 @@ debugger
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
+
+        // this.GetIPbilldetail()
+
     }
 
     ClearfilterIPbill(event) {
@@ -806,7 +806,7 @@ debugger
         //     this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
         // else
         //     this.viewgetInterimBillReportPdf(data.billNo)  
-        debugger
+
         if (this.IsChennaiIPFinalPrint) {
             this.viewgetFinalBillReportGroupwisePdf(data.billNo)
         } else {
@@ -1043,7 +1043,7 @@ debugger
 
     getWhatsappsharePayment(el) {
         console.log(el);
-        debugger
+
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
@@ -1054,7 +1054,7 @@ debugger
     }
     openWhatsappDetailsPopoverpay(event: MouseEvent, patientData: any) {
         console.log(patientData)
-        debugger
+
         event.stopPropagation();
 
         // Clear any existing timeout
@@ -1147,7 +1147,7 @@ debugger
 
     getWhatsappshareRefund(el) {
         console.log(el);
-        debugger
+
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
@@ -1158,7 +1158,7 @@ debugger
     }
     openWhatsappDetailsPopoverrefund(event: MouseEvent, patientData: any) {
         console.log(patientData)
-        debugger
+
         event.stopPropagation();
 
         // Clear any existing timeout
@@ -1315,5 +1315,135 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
         });
+    }
+
+
+    GetIPbilldetail() {
+
+        this.Vtotal = 0
+        this.Vtotaldisc = 0
+        this.Vtotalnet = 0
+        this.Vtotbal = 0
+
+        const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
+        this.f_name = this.myFilterform.get('FirstName').value + "%"
+        this.l_name = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        this.PBillNo = this.myFilterform.get('PBillNo').value || "%"
+        this.IsIntrimOrFinal = this.myFilterform.get('IsInterimOrFinal').value
+
+        const filters: any[] = [];
+
+        // Handle date range
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        } else {
+            this.fromDate = "1900-01-01";
+            this.toDate = "1900-01-01";
+        }
+
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.f_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.l_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.regNo),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "PBillNo",
+                "fieldValue": String(this.PBillNo),
+                "opType": "Equals"
+            },
+
+            {
+                "fieldName": "IsIntrimOrFinal",
+                "fieldValue": String(this.IsIntrimOrFinal),
+                "opType": "Equals"
+            }
+
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "AdmissionId",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._IPBrowseBillService.getIPbilllist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+            debugger
+            // setTimeout(() => {
+            if (this.dataSource.data.length > 0) {
+
+                this.Vtotal = this.dataSource.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
+                this.Vtotaldisc = this.dataSource.data.reduce((sum, r) => sum + (r.concessionAmt || 0), 0);
+                this.Vtotalnet = this.dataSource.data.reduce((sum, r) => sum + (r.netPayableAmt || 0), 0);
+                this.Vtotbal = this.dataSource.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
+
+                this.Vcashtotbal = this.dataSource.data.reduce((sum, r) => sum + (r.cashPay || 0), 0);
+                this.Vcardtotbal = this.dataSource.data.reduce((sum, r) => sum + (r.cardPay || 0), 0);
+                this.Vphonepaytotl = this.dataSource.data.reduce((sum, r) => sum + (r.neftPay || 0), 0);
+
+            }
+
+            this.Vtotal = Math.round(this.Vtotal)
+            this.Vtotaldisc = Math.round(this.Vtotaldisc)
+            this.Vtotalnet = Math.round(this.Vtotalnet)
+            this.Vtotbal = Math.round(this.Vtotbal)
+            // }, 500);
+
+        });
+    }
+
+
+}
+
+
+export class IPbill {
+    totalAmt: any
+    concessionAmt: any
+    netPayableAmt: any
+    balanceAmt: any
+    cashPay: any
+    cardPay: any
+    neftPay: any
+    constructor(IPbill) {
+        {
+            this.totalAmt = IPbill.totalAmt || 0;
+            this.concessionAmt = IPbill.concessionAmt || 0;
+            this.netPayableAmt = IPbill.netPayableAmt || 0;
+            this.constructor = IPbill.constructor || 0
+
+            this.cashPay = IPbill.cashPay || 0;
+            this.cardPay = IPbill.cardPay || 0;
+            this.neftPay = IPbill.neftPay || 0
+        }
     }
 }

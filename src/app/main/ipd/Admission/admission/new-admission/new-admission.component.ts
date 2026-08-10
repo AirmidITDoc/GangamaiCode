@@ -294,12 +294,12 @@ export class NewAdmissionComponent implements OnInit {
 
                 // console.log(this.data)
                 setTimeout(() => {
-                    if(this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration"){
-                    this.searchFormGroup.get('regRadio')?.setValue('NewbornBabyRegistration');
-                    this.onChangeReg({ value: 'NewbornBabyRegistration' });
-                    }else{
-                    this.searchFormGroup.get('regRadio')?.setValue('registrered');
-                    this.onChangeReg({ value: 'registrered' });
+                    if (this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration") {
+                        this.searchFormGroup.get('regRadio')?.setValue('NewbornBabyRegistration');
+                        this.onChangeReg({ value: 'NewbornBabyRegistration' });
+                    } else {
+                        this.searchFormGroup.get('regRadio')?.setValue('registrered');
+                        this.onChangeReg({ value: 'registrered' });
                     }
 
                     this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
@@ -384,17 +384,13 @@ export class NewAdmissionComponent implements OnInit {
 
     // }
 
-
+  PatientName: any = '';
     getSelectedObjtrust(obj) {
 
         console.log(obj)
-        // if (this.data?.FormName == 'Registration-Page') {
-        // this.PatientName = obj.firstName + ' ' + obj.lastName;
-
-
+         this.PatientName = obj.firstName + ' ' + obj.lastName;
         this.MembershipId = obj.membershipId;
-        // this.VisitFlagDisp = true;
-        debugger
+       
         this._AdmissionService.getMemeberbyIdList(obj.membershipId).subscribe(response => {
             console.log(response)
 
@@ -539,7 +535,7 @@ export class NewAdmissionComponent implements OnInit {
             this.Regflag = true;
             this.isRegSearchDisabled = true;
         }
-         else if (event.value === 'NewbornBabyRegistration') {
+        else if (event.value === 'NewbornBabyRegistration') {
 
             this.personalFormGroup.get('RegId').enable();
             this.searchFormGroup.get('RegId').enable();
@@ -876,10 +872,10 @@ export class NewAdmissionComponent implements OnInit {
             this.admissionFormGroup.get('convertId').setValue(this.VvisitId)
             this.admissionFormGroup.get('AdmissionType').setValue(1)
         }
-        if (this.MembershipId > 0)
+        if (this.MembershipId > 0) {
             this.personalFormGroup.get('isMember').setValue(true)
-
-        this.personalFormGroup.get('membershipId').setValue(this.MembershipId)
+            this.personalFormGroup.get('membershipId').setValue(this.MembershipId)
+        }
 
         this.personalFormGroup.get('Age').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
@@ -943,16 +939,16 @@ export class NewAdmissionComponent implements OnInit {
                 });
             }
             else if (this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration" && this.AdmissionId == 0) {
-                   this.admissionFormGroup.get('RegId').setValue(0)
-                   this.admissionFormGroup.get('parentOpipid').setValue(this.RegId)
+                this.admissionFormGroup.get('RegId').setValue(0)
+                this.admissionFormGroup.get('parentOpipid').setValue(this.RegId)
                 const submitData = {
                     "admissionReg": this.personalFormGroup.value,
                     "admission": this.admissionFormGroup.value,
                     "patientPolicy": this.policyFormGroup.value
-                }; 
+                };
                 debugger
                 console.log(submitData);
-                this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => { 
+                this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
                     if (!this.Is9_Digit_National_Id) {
                         this.getAdmittedBornBabyCasepaperview(response);
                     }

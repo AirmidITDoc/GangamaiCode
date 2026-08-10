@@ -20,7 +20,7 @@ export enum permissionCodes {
     HospitalMaster = 'HospitalMaster',
     CampMaster = 'CampMaster',
     QuestionMaster = 'QuestionMaster',
-    AdmissionType='AdmissionType',
+    AdmissionType = 'AdmissionType',
 
 
     //  BillingMaster
@@ -71,7 +71,7 @@ export enum permissionCodes {
 
     // Prescription Master
     Prescription = 'Prescription',
-    NursingPrescription= 'NursingPrescription',
+    NursingPrescription = 'NursingPrescription',
     PGenericMaster = 'GenericMaster',
     DrugMaster = 'DrugMaster',
     DoseMaster = 'DoseMaster',
@@ -109,11 +109,11 @@ export enum permissionCodes {
     Refund = 'Refund',
     Advance = 'Advance',
     Bill = 'Bill',
-    MedicalRecords='MedicalRecords',
-    GastrologyCasePaper='GastrologyCasePaper',
-    CheckIn='CheckIn',
-    CheckOut='CheckOut',
-    ReqForIP='requestforip',
+    MedicalRecords = 'MedicalRecords',
+    GastrologyCasePaper = 'GastrologyCasePaper',
+    CheckIn = 'CheckIn',
+    CheckOut = 'CheckOut',
+    ReqForIP = 'requestforip',
 
     // IPD?
     Admission = 'Admission',
@@ -124,8 +124,8 @@ export enum permissionCodes {
 
     //Nursing Station
     NursingConsent = 'NursingConsent',
-    NursingNote='NursingNote',
-    DoctorNote='DoctorNote',
+    NursingNote = 'NursingNote',
+    DoctorNote = 'DoctorNote',
 
     //Pathology
     SamplecollectionList = 'SamplecollectionList',
@@ -152,20 +152,20 @@ export enum permissionCodes {
     MaterialConsumption = 'MaterialConsumption',
     // WorkOrder = 'WorkOrder',
     Indent = 'Indent',
-    TallyInterface='TallyInterface',
+    TallyInterface = 'TallyInterface',
 
     // Pharmacy?
-    Sales='Sales',
+    Sales = 'Sales',
 
     // AdministrationModule?
-    RoleTemplateMaster='RoleTemplateMaster',
-    Login='Login',
-    Configuration='Configuration',
-    Paymentmodechanges='Paymentmodechanges',
-    smsconfigrationtool='smsconfigrationtool',
-    TemplateDescription='TemplateDescription',
-    ReportConfig='ReportConfig',
-    BarcodeConfig='BarcodeConfig',
+    RoleTemplateMaster = 'RoleTemplateMaster',
+    Login = 'Login',
+    Configuration = 'Configuration',
+    Paymentmodechanges = 'Paymentmodechanges',
+    smsconfigrationtool = 'smsconfigrationtool',
+    TemplateDescription = 'TemplateDescription',
+    ReportConfig = 'ReportConfig',
+    BarcodeConfig = 'BarcodeConfig',
 
     //    Employee master
     EmployeeMaster = 'EmployeeMaster',
@@ -180,24 +180,37 @@ export enum permissionCodes {
     UpdateReferredDoctor = 'UpdateReferredDoctor',
     UpdateFollowupDate = 'UpdateFollowupDate',
     PatientAppointmentCancle = 'PatientAppointmentCancle',
-    CrossConsultation='CrossConsultation',
-    VitalInformation='VitalInformation',
-    EditRegistration='EditRegistration',
+    CrossConsultation = 'CrossConsultation',
+    VitalInformation = 'VitalInformation',
+    EditRegistration = 'EditRegistration',
 
     //Ip Billing report
-    GroupWiseSummaryReport= 'GroupWiseSummaryReport',
-IPDBillDetails= 'IPDBillDetails',
-InsuranceWiseReport= 'InsuranceWiseReport',
-IPCompanyWiseDailyCollectionReport= 'IPCompanyWiseDailyCollectionReport',
-IPDailyCollectionReport= 'IPDailyCollectionReport',
-IPDischargeBillGenerationPendingReport= 'IPDischargeBillGenerationPendingReport',
-RefundOfBillReport= 'RefundOfBillReport',
-RefundOfAdvanceReport= 'RefundOfAdvanceReport',
-CreditReport= 'CreditReport',
-BillSummaryReport= 'BillSummaryReport',
-IPBillReport= 'IPBillReport',
-IPAdvanceReceipt= 'IPAdvanceReceipt',
+    GroupWiseSummaryReport = 'GroupWiseSummaryReport',
+    IPDBillDetails = 'IPDBillDetails',
+    InsuranceWiseReport = 'InsuranceWiseReport',
+    IPCompanyWiseDailyCollectionReport = 'IPCompanyWiseDailyCollectionReport',
+    IPDailyCollectionReport = 'IPDailyCollectionReport',
+    IPDischargeBillGenerationPendingReport = 'IPDischargeBillGenerationPendingReport',
+    RefundOfBillReport = 'RefundOfBillReport',
+    RefundOfAdvanceReport = 'RefundOfAdvanceReport',
+    CreditReport = 'CreditReport',
+    BillSummaryReport = 'BillSummaryReport',
+    IPBillReport = 'IPBillReport',
+    IPAdvanceReceipt = 'IPAdvanceReceipt',
 
-//ICDE
-MICDE_Master='MICDE_Master'
+
+    //browse Ip bill 
+    GroupWise = 'GroupWise',
+    ClassWise = 'ClassWise',
+    ClassService = 'ClassService',
+    FinalBill = 'FinalBill',
+    ChargeDateWise = 'ChargeDateWise',
+    PatientStatementPrint = 'PatientStatementPrint',
+    AdvanceStatementPrint = 'AdvanceStatementPrint',
+    ChargeDateWithGroupWise = 'ChargeDateWithGroupWise',
+    ChargeDateWithGroupWiseWithoutAdvance = 'ChargeDateWithGroupWiseWithoutAdvance',
+
+
+    //ICDE
+    MICDE_Master = 'MICDE_Master'
 }

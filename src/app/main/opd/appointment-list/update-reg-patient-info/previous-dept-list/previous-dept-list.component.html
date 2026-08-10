@@ -51,6 +51,14 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="opdNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OPD No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.opdNo || '-'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="loading">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             loading data...

@@ -143,41 +143,38 @@
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Address" formControlName="Address"
                                                         [value]="registerObj.address" [formGroup]="personalFormGroup"
-                                                        [validations]="getValidationMessages().address" 
+                                                        [validations]="getValidationMessages().address"
                                                         [maxLength]="200">
                                                     </airmid-textbox>
 
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown label="Area" formControlName="AreaId"
+                                                    <!-- <airmid-dropdown label="Area" formControlName="AreaId"
                                                         [value]="registerObj?.areaId" [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().areaId"
                                                         [mode]="autocompleteModearea">
+                                                    </airmid-dropdown> -->
+
+                                                    <airmid-dropdown label="Area" formControlName="AreaId"
+                                                        [formGroup]="personalFormGroup" [value]="registerObj?.areaId"
+                                                        [validations]="getValidationMessages().areaId"
+                                                        ValueField="areaId" TextField="area"
+                                                        (selectionChange)="onChangeArea($event)"
+                                                        ApiUrl="AreaMaster/search_AreaMaster?Keyword=%">
                                                     </airmid-dropdown>
 
-                                                    
-                                                    <!-- <div style="margin-bottom: 16px;" fxLayout="column">
-                                                        <app-airmid-chipautocomplete fxFlex
-                                                            [chips]="personalFormGroup.get('AreaId')?.value"
-                                                            [apiUrl]="'VisitDetail/GetAreaList'"
-                                                            [displayKey]="'areaName'" [allowCustom]="true" >
-                                                        </app-airmid-chipautocomplete>
-                                                    </div> -->
+                                                  
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <!-- ApiUrl="CityMaster/get-cities" -->
+                                                    <airmid-textbox label="Pin Code" formControlName="PinNo"
+                                                        [value]="pincode" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().PinNo" [maxLength]="6"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        (keyup)="onChangePincode($event.target.value)">
+                                                    </airmid-textbox>
 
-
-                                                    <!-- <mat-form-field appearance="outline" style="width: 300px;">
-                                                    <mat-label>Choose a Area</mat-label>
-                                                    <input type="text" matInput formControlName="AreaId"
-                                                        [matAutocomplete]="auto">
-
-                                                    <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
-                                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                                            [value]="option">
-                                                            {{ option.areaName }}
-                                                        </mat-option>
-                                                    </mat-autocomplete>
-                                                </mat-form-field> -->
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

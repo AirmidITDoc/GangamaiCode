@@ -63,8 +63,8 @@
                         <div class="label">Self</div>
                     </div>
 
-                    <!-- Company (Clickable) -->
-                    <div class="split-box company" (click)="onViewCompanyPatientSummary(item)">
+                    <!-- Company (Clickable)  (click)="onViewCompanyPatientSummary(item)-->
+                    <div class="split-box company">
 
                         <div class="count">{{ item.companyCount }}</div>
                         <div class="label">Company</div>
@@ -169,64 +169,68 @@
                 onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 3px 10px rgba(0,0,0,.08)'">
 
                 <div style=" font-size:18px; font-weight:700; margin-bottom:10px; ">
-                    📊 Overall Revenue
+                    📊  Overall Revenue 
                 </div>
 
 
                 <!-- Header -->
                 <div style=" display:grid;  grid-template-columns:100px 1fr 1fr;
                 padding:8px;  background:#f3f4f6;  border-radius:8px;  font-weight:600; ">
-                    <div>Section</div>
-                    <div>💰 Total Net Amount</div>
+                    <div>Section</div> 
+                    <div>💰 Total Net Amount</div> 
                     <div>⚖️ Balance Amount</div>
                 </div>
 
 
                 <!-- OP -->
-                <div
-                    style=" display:grid;  grid-template-columns:100px 1fr 1fr;   padding:8px 8px;  align-items:center;
-                border-bottom:1px solid #eee;  border-left:4px solid #22c55e; margin-top:5px;overflow:hidden; text-overflow:ellipsis; white-space:nowra ">
-                    <b>OP Summary</b>
+                <div  *ngFor="let item of vCashLessRevenu"  
+                    style=" display:grid;  grid-template-columns:100px 1fr 1fr;   padding:5px 5px;  align-items:center;
+                border-bottom:1px solid #eee;  border-left:4px solid #22c55e; margin-top:2px;overflow:hidden; text-overflow:ellipsis; white-space:nowra ">
+                 
+                  <b>{{item.lbl}}</b>
+                   
+                    <span style="text-align: right;">{{item.netAmount}}</span>
 
-                    <span>45,250333333</span>
-
-                    <span>5,2003333333</span>
+                    <span style="text-align: right;">{{item.balanceAmount}}</span>
                 </div>
 
 
                 <!-- IP -->
-                <div
+                <!-- <div *ngIf="item.lbl == 'IP Summary'"
                     style="  display:grid;  grid-template-columns:100px 1fr 1fr;  padding:8px 8px;  align-items:center;
                 border-bottom:1px solid #eee; border-left:4px solid #9333ea;overflow:hidden; text-overflow:ellipsis; white-space:nowra ">
-                    <b>IP Summary</b>
+                 
+                  <b>{{item.lbl}}</b>
+                   
+                    <span>{{item.netAmount}}</span>
 
-                    <span>1,25,0033330</span>
-
-                    <span>18,50033333</span>
-                </div>
+                    <span>5{{item.balanceAmount}}</span>
+                </div> -->
 
 
                 <!-- Overall -->
-                <div
+                <!-- <div *ngIf="item.lbl == 'Overall Sales'"  
                     style="  display:grid; grid-template-columns:100px 1fr 1fr; padding:8px 8px; 
                 align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; ">
-                    <b>Overall Sales</b>
+                 
+                  <b>{{item.lbl}}</b>
+                   
+                    <span>{{item.netAmount}}</span>
 
-                    <span>1,70,2503333</span>
-
-                    <span>23,70033333</span>
-                </div>
+                    <span>5{{item.balanceAmount}}</span>
+                </div> -->
 
                   <!-- Overall total-->
-                <div
+                <!-- <div *ngIf="item.lbl == 'Total'"  
                     style="  display:grid; grid-template-columns:100px 1fr 1fr; padding:8px 8px; 
                 align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; ">
-                    <b>Overall Total</b>
+                  
+                  <b>{{item.lbl}}</b>
+                   
+                    <span>{{item.netAmount}}</span>
 
-                    <span>1,70,2503333</span>
-
-                    <span>23,70033333</span>
-                </div>
+                    <span>5{{item.balanceAmount}}</span>
+                </div> -->
 
 
             </div>
@@ -257,19 +261,28 @@
 
                 <!-- OP -->
 
-                <div
+                <div *ngFor="let item of vCashLessCollection"  
                     style=" display:grid;  grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px; align-items:center;
                 border-bottom:1px solid #eee; border-left:4px solid #22c55e; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
 
-                    <b>OP Collction</b>
+                    <!-- <b>OP Collction</b>
                     <span>40,00000002112</span>
                     <span>30,00000011220</span>
-                    <span>10,00-000122120</span>
+                    <span>10,00-000122120</span> -->
+                    <b>{{item.lbl}}</b> 
+                    <span style="text-align: right;">{{item.totalCollection}}</span>
+                    <span style="text-align: right;">{{item.cashCollection}}</span> 
+                    <span style="text-align: right;">{{item.upiCollection}}</span>
+                     <!-- <span>{{item.chequeCollection}}</span> 
+                    <span>5{{item.cardCollection}}</span>
+                    <span>5{{item.neftCollection}}</span> -->
+                  
+ 
                 </div>
 
                 <!-- IP -->
 
-                <div
+                <!-- <div
                     style="  display:grid; grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px;  align-items:center;
                 border-bottom:1px solid #eee;  border-left:4px solid #9333ea; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
 
@@ -277,10 +290,10 @@
                     <span>40,00000002112</span>
                     <span>30,00000011220</span>
                     <span>10,00-000122120</span>
-                </div>
+                </div> -->
 
                 <!-- Overall -->
-
+<!-- 
                 <div
                     style=" display:grid;  grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px; 
                 align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
@@ -288,10 +301,10 @@
                     <span>40,00000002112</span>
                     <span>30,00000011220</span>
                     <span>10,00-000122120</span>
-                </div>
+                </div> -->
 
                    <!-- Overall total -->
-
+<!-- 
                 <div
                     style=" display:grid;  grid-template-columns:110px 1fr 1fr 1fr;  padding:8px 8px; 
                 align-items:center;  border-left:4px solid #2563eb; overflow:hidden; text-overflow:ellipsis; white-space:nowra">
@@ -299,7 +312,7 @@
                     <span>40,00000002112</span>
                     <span>30,00000011220</span>
                     <span>10,00-000122120</span>
-                </div>
+                </div> -->
 
             </div>
 
