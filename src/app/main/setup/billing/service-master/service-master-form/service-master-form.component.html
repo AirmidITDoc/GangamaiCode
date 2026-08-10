@@ -98,8 +98,6 @@
                             style="max-height: 400px; overflow-y: auto;">
                             <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table"
                                 [@animateStagger]="{ value: '50' }">
-                                <!-- <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table" [@animateStagger]="{ value: '50' }"
-                        style="overflow: auto;height:250px;"> -->
                                 <ng-container matColumnDef="classId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                         fxShow.gt-sm>Code</mat-header-cell>
@@ -112,38 +110,74 @@
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.className }}</mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="classRate">
+                                <!-- <ng-container matColumnDef="classRate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                         fxShow.gt-sm>ClassRate</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                         <mat-form-field appearance="fill">
                                             <input matInput [(ngModel)]="element.classRate" OnlyNumber
-                                            (ngModelChange)="onClassRateChange(element)"
-                                                (keypress)="keyPressCharater($event)" />
+                                                 data-col="classRate"
+                                                (ngModelChange)="onClassRateChange(element)"
+                                                (keypress)="keyPressCharater($event)"
+                                                (keydown)="onRateKeydown($event, 'classRate')" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container> -->
+
+                                <ng-container matColumnDef="classRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-checkbox [(ngModel)]="applyClassRateToAll"
+                                            [ngModelOptions]="{standalone: true}"
+                                            matTooltip="Apply this rate to all rows">
+                                        </mat-checkbox>
+                                        ClassRate
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill">
+                                            <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                                                data-col="classRate" (ngModelChange)="onClassRateChange(element)"
+                                                (keypress)="keyPressCharater($event)"
+                                                (keydown)="onRateKeydown($event, 'classRate')" />
                                         </mat-form-field>
                                     </mat-cell>
                                 </ng-container>
 
-                                 <ng-container matColumnDef="patientRate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        fxShow.gt-sm>PatientRate</mat-header-cell>
+                                <ng-container matColumnDef="patientRate">
+                                    <!-- <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        fxShow.gt-sm>PatientRate</mat-header-cell> -->
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-checkbox [(ngModel)]="applyPatientRateToAll"
+                                            [ngModelOptions]="{standalone: true}"
+                                            matTooltip="Apply this rate to all rows">
+                                        </mat-checkbox>
+                                        PatientRate
+                                    </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                         <mat-form-field appearance="fill">
                                             <input matInput [(ngModel)]="element.patientRate" OnlyNumber
-                                            (ngModelChange)="element.isRateEdited = true"
-                                                (keypress)="keyPressCharater($event)" />
+                                                data-col="patientRate" (ngModelChange)="element.isRateEdited = true"
+                                                (keypress)="keyPressCharater($event)" (ngModelChange)="onPatientRateChange(element)"
+                                                (keydown)="onRateKeydown($event, 'patientRate')" />
                                         </mat-form-field>
                                     </mat-cell>
                                 </ng-container>
 
-                                 <ng-container matColumnDef="cpRate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        fxShow.gt-sm>CPRate</mat-header-cell>
+                                <ng-container matColumnDef="cpRate">
+                                    <!-- <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        fxShow.gt-sm>CPRate</mat-header-cell> -->
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-checkbox [(ngModel)]="applyCpRateToAll"
+                                            [ngModelOptions]="{standalone: true}"
+                                            matTooltip="Apply this rate to all rows">
+                                        </mat-checkbox>
+                                        CPRate
+                                    </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                         <mat-form-field appearance="fill">
-                                            <input matInput [(ngModel)]="element.cprate" OnlyNumber
-                                            (ngModelChange)="element.isRateEdited = true"
-                                                (keypress)="keyPressCharater($event)" />
+                                            <input matInput [(ngModel)]="element.cprate" OnlyNumber data-col="cpRate"
+                                                (ngModelChange)="element.isRateEdited = true"
+                                                (keypress)="keyPressCharater($event)" (ngModelChange)="onCpRateChange(element)"
+                                                (keydown)="onRateKeydown($event, 'cpRate')" />
                                         </mat-form-field>
                                     </mat-cell>
                                 </ng-container>
@@ -219,7 +253,7 @@
                                         <div fxLayout="row" fxLayoutGap="6px" fxFlex="60%">
                                             <mat-checkbox name="IsDocEditable" value="false" fxFlex="30%"
                                                 formControlName="isDocEditable" [(ngModel)]="showDoctor"
-                                                *ngIf="isDocEditableBoolen"  (change)="onDocEditableChange($event)">
+                                                *ngIf="isDocEditableBoolen" (change)="onDocEditableChange($event)">
                                                 Is Doc Editable For Service
                                             </mat-checkbox>
 
@@ -253,8 +287,8 @@
                                         </div>
 
                                         <div fxLayoutGap="8px">
-                                            <mat-checkbox name="IsOtherService" formControlName="isOtherService" value="false"
-                                               >IsOtherTest</mat-checkbox>
+                                            <mat-checkbox name="IsOtherService" formControlName="isOtherService"
+                                                value="false">IsOtherTest</mat-checkbox>
                                         </div>
 
                                     </div>
