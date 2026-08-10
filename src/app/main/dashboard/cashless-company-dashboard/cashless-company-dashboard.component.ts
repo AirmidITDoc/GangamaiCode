@@ -216,6 +216,8 @@ export class CashlessCompanyDashboardComponent implements OnInit {
     VSalesSection: CashlessPatientSummary[] = [];
     vCashlessData: any;
     vcashlessList: CashlessPatientSummary[] = [];
+    vCashLessRevenu: CashlessPatientRevenu[] = [];
+    vCashLessCollection: CashlessPatientCollection[] = [];
     getCashlessDashboardData() {
         this._CashlessDashboardService.getCashlessDashboard({ "UnitId": 1, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((data) => {
             this.vCashlessData = data;
@@ -227,7 +229,13 @@ export class CashlessCompanyDashboardComponent implements OnInit {
                 this.VSalesSection =   this.vcashlessList 
                 console.log(this.vcashlessList) 
                 this.vcashlessList = this.vcashlessList.filter( item => item.section !== 'Sales'); 
-                this.VSalesSection = this.VSalesSection.filter( item => item.section === 'Sales'); 
+                this.VSalesSection = this.VSalesSection.filter( item => item.section === 'Sales');
+                
+                
+
+                this.vCashLessRevenu = (data?.revenueSummaries || []).map((item:any) => new CashlessPatientRevenu(item))
+                this.vCashLessCollection = (data?.revenueSummaries || []).map((item:any) => new CashlessPatientCollection(item))
+                
             }
         });
 
@@ -256,3 +264,32 @@ export class CashlessPatientSummary {
         this.pendingCount = data.pendingCount || '0';
     }
 }
+export class CashlessPatientRevenu {
+    lbl: any;
+    netAmount: any;
+    balanceAmount: any; 
+    constructor(data: any) {
+        this.lbl = data.lbl || '';
+        this.netAmount = data.netAmount || '0';
+        this.balanceAmount = data.balanceAmount || '0'; 
+    } 
+}
+
+export class CashlessPatientCollection {
+    lbl: any;
+    cashCollection: any;
+    chequeCollection: any; 
+    cardCollection: any;
+    upiCollection: any;
+    neftCollection: any; 
+    totalCollection:any;
+    constructor(data: any) {
+        this.lbl = data.lbl || '';
+        this.cashCollection = data.cashCollection || '0';
+        this.chequeCollection = data.chequeCollection || '0'; 
+        this.cardCollection = data.cardCollection || '0';
+        this.upiCollection = data.upiCollection || '0';
+         this.neftCollection = data.neftCollection || '0';
+        this.totalCollection = data.totalCollection || '0';  
+    } 
+} 

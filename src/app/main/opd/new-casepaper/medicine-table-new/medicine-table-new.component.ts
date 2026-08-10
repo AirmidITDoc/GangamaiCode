@@ -143,9 +143,17 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.drugId = row.itemId;
         this.drugName = row.itemName;
         this.vdoseName = row.doseName;
-        this.vDay = row.doseDay;
+        this.vDay = row.doseDay;  
 
         this.medicineForm.get('DoseId').setValue(this.vdoseName);
+        this.medicineForm.get('Day').setValue(this.vDay);  
+ 
+        if (row?.instructionId && row?.instruction) {
+            this.onInsetSelected({
+                value: row?.instructionId ?? 0,
+                text: row?.instruction ?? ''
+            });
+        }  
 
         if (this.vdoseName) {
             const doseRow = { value: this.vdoseName, text: this.vdoseName };

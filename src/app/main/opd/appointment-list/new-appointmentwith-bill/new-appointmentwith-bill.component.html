@@ -721,12 +721,12 @@
 
                                                         <ng-container matColumnDef="DoctorName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                fxShow.gt-sm class="w-230">Doctor
+                                                                fxShow.gt-sm class="w-250">Doctor
                                                                 Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                class="w-230">
+                                                                class="w-250">
                                                                 <span *ngIf="!contact.EditDoctor">{{ contact.DoctorName}}</span>
-                                                                <div *ngIf="contact.creditedtoDoctor == true">
+                                                                <div *ngIf="contact.creditedtoDoctor == true" fxLayout="row">
                                                                     <ng-container
                                                                         *ngIf="!contact.EditDoctor; else showInput">
                                                                         <button mat-icon-button

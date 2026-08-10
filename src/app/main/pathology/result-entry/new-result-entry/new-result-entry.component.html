@@ -183,7 +183,7 @@
                             [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
 
                             <ng-container matColumnDef="sequence">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">Sr.No
+                                <mat-header-cell *matHeaderCellDef   fxShow.gt-sm class="w-70">Sr.No
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
                                     {{ i + 1 }}
@@ -191,7 +191,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="TestName" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
+                                <mat-header-cell *matHeaderCellDef  fxShow.gt-sm class="border-right">
                                     Test Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
@@ -200,7 +200,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ParameterName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                <mat-header-cell *matHeaderCellDef   fxHide fxShow.gt-md
                                     class="border-right">
                                     Parameter Name
                                 </mat-header-cell>
@@ -210,7 +210,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
+                                <mat-header-cell *matHeaderCellDef  class="border-right">
                                     Result
                                 </mat-header-cell>
 
@@ -242,7 +242,7 @@
 
 
                             <ng-container matColumnDef="Flag">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                <mat-header-cell *matHeaderCellDef  fxShow.gt-sm
                                     class="w-80 border-right">Flag
                                 </mat-header-cell>
                                 <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
@@ -254,7 +254,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="NormalRange">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md
                                     class="border-right">
                                     NormalRange
                                 </mat-header-cell>
@@ -264,7 +264,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="Formula">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                <mat-header-cell *matHeaderCellDef   fxHide fxShow.gt-md
                                     class="border-right">
                                     Formula
                                 </mat-header-cell>

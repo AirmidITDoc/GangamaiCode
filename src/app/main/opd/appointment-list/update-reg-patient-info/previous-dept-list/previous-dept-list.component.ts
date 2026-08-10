@@ -17,6 +17,7 @@ import { AppointmentlistService } from '../../appointmentlist.service';
 export class PreviousDeptListComponent {
     displayedColumns: string[] = [
         'visitDate',
+        'opdNo',
         'departmentName',
         'doctorName'
     ]
