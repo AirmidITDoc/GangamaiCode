@@ -288,23 +288,23 @@ export class IPBillBrowseListComponent implements OnInit {
 
                 if (this.IsGroupWise)
                     this.menuActions.push('Print Final Bill - Group wise');
-               // if (this.IsClassWise)
+               if (this.IsClassWise)
                     this.menuActions.push('Print Final Bill - Class wise');
-               // if (this.IsClassService)
+               if (this.IsClassService)
                     this.menuActions.push('Print Final Bill - Class Service');
-                // if (this.IsFinalBill)
-                //     this.menuActions.push('Print Final Bill');
-                // if (this.IsChargeDateWise)
-                //     this.menuActions.push('Print Final Bill - Charge Date Wise');
-                // if (this.IsPatientStatementPrint)
-                //     this.menuActions.push('Patient Statement Print');
-                // if (this.IsAdvanceStatementPrint)
-                //     this.menuActions.push('Advance Statement Print');
+                if (this.IsFinalBill)
+                    this.menuActions.push('Print Final Bill');
+                if (this.IsChargeDateWise)
+                    this.menuActions.push('Print Final Bill - Charge Date Wise');
+                if (this.IsPatientStatementPrint)
+                    this.menuActions.push('Patient Statement Print');
+                if (this.IsAdvanceStatementPrint)
+                    this.menuActions.push('Advance Statement Print');
             } else {
-                // if (this.IsChargeDateWithGroupWise)
-                //     this.menuActions.push('Print Final Bill - Charge Date with Group wise');
-                // if (this.IsChargeDateWithGroupWiseWithoutAdvance)
-                //     this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
+                if (this.IsChargeDateWithGroupWise)
+                    this.menuActions.push('Print Final Bill - Charge Date with Group wise');
+                if (this.IsChargeDateWithGroupWiseWithoutAdvance)
+                    this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
 
             }
 
