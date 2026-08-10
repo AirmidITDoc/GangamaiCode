@@ -1,20 +1,18 @@
-export interface Category {
-  id: string;
-  name: string;
-  description?: string;
-  icon?: string;
-  color?: string;
-  children: Category[];
-  documentCount?: number;
+export interface DocumentCategory {
+    id: number;
+    parentId: number;
+    docCategory: string;
+    icon?: string;
+    children: DocumentCategory[];
+    documentCount?: number;
 }
 
 /** Flat, display-friendly representation used by the CDK tree */
-export interface CategoryFlatNode {
-  id: string;
-  name: string;
-  level: number;
-  expandable: boolean;
-  icon?: string;
-  color?: string;
-  documentCount?: number;
+export interface DocumentCategoryFlatNode {
+    id: string;
+    name: string;
+    level: number;
+    expandable: boolean;
+    icon?: string;
+    documentCount?: number;
 }

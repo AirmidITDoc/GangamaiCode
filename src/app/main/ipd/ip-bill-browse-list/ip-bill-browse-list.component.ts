@@ -288,9 +288,9 @@ export class IPBillBrowseListComponent implements OnInit {
 
                 if (this.IsGroupWise)
                     this.menuActions.push('Print Final Bill - Group wise');
-                if (this.IsClassWise)
+               // if (this.IsClassWise)
                     this.menuActions.push('Print Final Bill - Class wise');
-                if (this.IsClassService)
+               // if (this.IsClassService)
                     this.menuActions.push('Print Final Bill - Class Service');
                 // if (this.IsFinalBill)
                 //     this.menuActions.push('Print Final Bill');
