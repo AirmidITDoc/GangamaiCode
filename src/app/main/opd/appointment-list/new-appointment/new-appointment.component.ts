@@ -400,7 +400,7 @@ export class NewAppointmentComponent implements OnInit {
             this.searchFormGroup.get('RegId').reset();
             this.personalFormGroup.reset();
             this.Patientnewold = 2;
-
+            this.IsTrustAppflag=false
             const newPersonalForm = this.createPesonalForm();
             this.resetFilteredOptions();
             Object.keys(newPersonalForm.controls).forEach(key => {

@@ -38,37 +38,37 @@
                             <div class="dashboard-card balamt">
                                 <div class="card-label">Balance Amt</div>
                                 <div class="card-value">
-                                  
+
                                     <div> {{Vtotbal}}</div>
                                 </div>
                                 <mat-icon class="card-icon">group</mat-icon>
                             </div>
 
-                            
+
                             <div class="dashboard-card admissions-split">
                                 <div class="card-label">Cash Amt</div>
                                 <div class="card-value">
-                                  
+
                                     <div> {{Vcashtotbal}}</div>
                                 </div>
                                 <mat-icon class="card-icon">group</mat-icon>
                             </div>
 
-                            
+
                             <div class="dashboard-card admissions-split">
                                 <div class="card-label">Card Amt</div>
                                 <div class="card-value">
-                                  
+
                                     <div> {{Vcardtotbal}}</div>
                                 </div>
                                 <mat-icon class="card-icon">group</mat-icon>
                             </div>
 
-                            
+
                             <div class="dashboard-card admissions-split">
                                 <div class="card-label">PhonePay Amt</div>
                                 <div class="card-value">
-                                  
+
                                     <div> {{Vphonepaytotl}}</div>
                                 </div>
                                 <mat-icon class="card-icon">group</mat-icon>
@@ -192,8 +192,8 @@
                             <form [formGroup]="myFilterform">
                                 <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[2].fieldValue"  (dateChange)="GetIPbilldetail()"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue">
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue" (dateChange)="GetIPbilldetail()">
                                 </airmid-datepicker>
 
                                 <mat-form-field appearance="outline">
