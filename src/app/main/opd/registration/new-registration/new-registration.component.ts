@@ -116,6 +116,7 @@ export class NewRegistrationComponent implements OnInit {
                     console.log(this.registerObj)
                     this.isEditMode = true;
                     this.regNo = this.registerObj.regNo
+                     this.pincode = this.registerObj.pinNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                     this.value = this.registerObj.dateofBirth
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)

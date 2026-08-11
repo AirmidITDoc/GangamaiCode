@@ -659,6 +659,7 @@ export class NewAppointmentComponent implements OnInit {
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
                         this.counryId = this.registerObj?.countryId ?? 0;
+                          this.pincode = this.registerObj?.pinNo || ''
                     });
 
                 }, 100);
