@@ -11,8 +11,9 @@ export class QzTrayService implements OnDestroy {
     readonly errorMessage = signal<string | null>(null);
 
     constructor() {
+        this.setupProductionSecurity();
         this.setupListeners();
-        this.connect();
+        this.connect(); 
     }
 
     private setupListeners(): void {
@@ -27,6 +28,26 @@ export class QzTrayService implements OnDestroy {
             this.errorMessage.set(`WebSocket Error: ${err}`);
         });
     }
+    private setupProductionSecurity(): void {
+    qz.security.setCertificatePromise((resolve, reject) => {
+      fetch('assets/signing/digital-certificate.txt')
+        .then((res) => res.text())
+        .then(resolve)
+        .catch(reject);
+    });
+    qz.security.setSignaturePromise((toSign) => {
+      return (resolve, reject) => {
+        fetch('/api/qz/sign-message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ request: toSign })
+        })
+          .then((res) => res.text())
+          .then(resolve)
+          .catch(reject);
+      };
+    });
+  }
 
     // async connect(): Promise<void> {
     //     try {
