@@ -170,9 +170,10 @@
                                                 style="padding: 10px;">IsEmployee
                                             </mat-checkbox>&nbsp;
 
-                                            <airmid-dropdown label="Employee Name" formControlName="employeId" fxFlex="50%"
-                                                [formGroup]="myuserApprovalform" ApiUrl="CompanyEmployeInfo/get-employe"
-                                                ValueField="executiveId" TextField="fullName" *ngIf="empflag"
+                                            <airmid-dropdown label="Employee Name" formControlName="employeId"
+                                                fxFlex="50%" [formGroup]="myuserApprovalform"
+                                                ApiUrl="CompanyEmployeInfo/get-employe" ValueField="executiveId"
+                                                TextField="fullName" *ngIf="empflag"
                                                 (selectionChange)="getSelectedObjEmp($event)"></airmid-dropdown>
 
                                         </div>
@@ -357,20 +358,23 @@
                                         </div>
 
 
-                                           <!-- Cash Counter dropdown -->
+                                        <!-- Cash Counter dropdown -->
                                         <div fxLayout="row">
                                             <div fxFlex="35%">
-                                                <airmid-dropdown label="CashCounter Name" formControlName="multipleCashCounterId"
+                                                <airmid-dropdown label="CashCounter Name"
+                                                    formControlName="multipleCashCounterId"
                                                     [formGroup]="myuserApprovalform1"
                                                     [validations]="getValidationMessages().CashCounterId"
                                                     [mode]="autocompleteModeCashcounter" [IsMultiPle]="true"
-                                                    ValueField="value" #ddlCashCounter TextField="text" [ReqFullObj]="true"
+                                                    ValueField="value" #ddlCashCounter TextField="text"
+                                                    [ReqFullObj]="true"
                                                     (selectionChange)="selectChangeCashCounterName($event)">
                                                 </airmid-dropdown>
                                             </div>
 
                                             <mat-chip-listbox #chipList>
-                                                <mat-chip *ngFor="let item of myuserApprovalform1.value.multipleCashCounterId">
+                                                <mat-chip
+                                                    *ngFor="let item of myuserApprovalform1.value.multipleCashCounterId">
                                                     {{ item.text }} <mat-icon
                                                         (click)="removeCashcounter(item)">close</mat-icon>
                                                 </mat-chip>
@@ -412,10 +416,12 @@
                                                         (element.IsInputField &&
                                                         (element.AccessValueId === 'IsDiscount' ||
                                                         element.AccessValueId === 'IsLoginTimeOut' ||
+                                                        element.AccessValueId === 'FollowUpDateSet' ||
                                                         element.AccessValueId === 'IsSetCategoryId')) ||
                                                         (element.accessValue &&
                                                         (element.accessValueName === 'IsDiscount' ||
                                                         element.accessValueName === 'IsLoginTimeOut' ||
+                                                           element.accessValueName === 'FollowUpDateSet' ||
                                                         element.accessValueName === 'IsSetCategoryId'))
                                                     ">
                                                     <mat-form-field appearance="fill">
