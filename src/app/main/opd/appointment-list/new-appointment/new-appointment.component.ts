@@ -1701,13 +1701,16 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangeArea(event) {
+        debugger
         console.log(event)
+        if(event.cityId){
         this.pincode = event.pincode
         this.CityName = event.cityName
         this.area = event.area
         this.personalFormGroup.get('CityId').setValue(event.cityId)
 
         this.onChangepincityDD(event.cityId)
+        }
     }
 
 
@@ -1722,8 +1725,6 @@ export class NewAppointmentComponent implements OnInit {
                     this.area = data[0].area;
 
                     this.personalFormGroup.get('AreaId').setValue(data[0].areaId);
-                    // this.personalFormGroup.get('CityId').setValue(data[0].cityId);
-
                     this.onChangepincityDD(data[0].cityId);
                     this.registerObj.cityId = data[0].cityId;
                 } else {

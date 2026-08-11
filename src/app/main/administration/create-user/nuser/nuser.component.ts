@@ -188,7 +188,7 @@ export class NUserComponent implements OnInit {
         }
         this._CreateUserService.getAccessDetailList(SelectQuery).subscribe(response => {
             this.dsApprovalList.data = response.data as UserDetail[];
-            // console.log("get Access data:", this.dsApprovalList.data)
+            console.log("get Access data:", this.dsApprovalList.data)
             this.dsApprovalList.sort = this.sort;
             this.dsApprovalList.paginator = this.paginator;
 
