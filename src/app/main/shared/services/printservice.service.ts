@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
@@ -11,9 +11,10 @@ import { QzTrayService } from './QzTrayService.service';
 })
 export class PrintserviceService  {
 
+    readonly qzService = inject(QzTrayService);
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         public toastr: ToastrService,
-        private qzService: QzTrayService 
+       // private qzService: QzTrayService 
     ) {  }
 
     /**
@@ -23,9 +24,7 @@ export class PrintserviceService  {
      * @param Id - The field value
      * @param data - The report mode
      */
-    ngOnInit() {
- // this.qzService.init(); 
-}
+ 
     Onprint(field, Id, data) {
         setTimeout(() => {
             const param = {
@@ -61,63 +60,50 @@ export class PrintserviceService  {
             });
         }, 100);
     }
-    OnprintDirect(field: string, Id: number | string, data: string, IsPrintWithoutPreview: boolean = false) {
- debugger
-        const param = {
+ 
+// Update code //
+
+OnprintDirect(field: string, Id: number | string, data: string, IsPrintWithoutPreview: boolean = false) {
+  debugger;
+  const param = {
     searchFields: [{ fieldName: field, fieldValue: String(Id), opType: "13" }],
     mode: data
   };
 
-  this._AppointmentlistService.getReportView(param).subscribe(res => {
+  this._AppointmentlistService.getReportView(param).subscribe(async res => {
     if (res) {
-      const pdfBase64 = res["base64"] as string;
+      let pdfBase64 = res["base64"] as string;
 
-      if (IsPrintWithoutPreview) {
-        const byteArray = Uint8Array.from(atob(pdfBase64), c => c.charCodeAt(0));
-        const blob = new Blob([byteArray], { type: 'application/pdf' });
-
-        // qz.websocket.connect().then(() => {
-        //   const config = qz.configs.create(null, { // null = default printer
-        //     copies: 1,
-        //     duplex: false
-        //   });
-
-        //   const dataToPrint = [{
-        //     type: 'pdf',
-        //     data: blob
-        //   }];
-
-        //   qz.print(config, dataToPrint).catch(err => {
-        //     console.error("QZ Tray print error:", err);
-        //     this.toastr.error('Silent print failed, check QZ Tray connection.', 'Error!');
-        //   });
-        // }).catch(err => {
-        //   console.error("QZ Tray connection error:", err);
-        //   this.toastr.error('Unable to connect to QZ Tray.', 'Error!');
-        // });
-
-        //this.qzService.printPdf(blob).catch(err => console.error(err));
-  
+      if (IsPrintWithoutPreview) { 
+        if (pdfBase64.includes(',')) { pdfBase64 = pdfBase64.split(',')[1];         } 
         const dataToPrint = [
           {
-            type: 'pdf',
-            data: blob
+            type: 'pixel',
+            format: 'pdf',
+            flavor: 'base64', 
+            data: pdfBase64   
           }
-        ];
-
-        this.qzService.printCommand(dataToPrint, 1)
-          .then(() => {
-            console.log('Print successful');
-          })
-          .catch((err: any) => {
-            console.error('QZ Tray print error:', err);
-
+        ]; 
+    
+        try {
+          const success = await this.qzService.printCommand(dataToPrint, 1); 
+        
+          if (success) {      
+            console.log("Printed successfully to default printer!");  
+          } else {
             this.toastr.error(
-              'Silent print failed, check QZ Tray connection.',
+              'Silent print failed, check QZ Tray connection or logs.',
               'Error!'
             );
-          });
-        
+          }
+          
+        } catch (error) {
+          console.error('QZ Tray print error:', error);
+          this.toastr.error(
+            'Silent print failed, check QZ Tray connection.',
+            'Error!'
+          );
+        }
 
       } else {
         this._matDialog.open(PdfviewerComponent, {
@@ -137,6 +123,13 @@ export class PrintserviceService  {
     }
   });
 }
+
+
+
+
+
+
+
 
 //     OnprintDirect(field: string, Id: number | string, data: string, IsPrintWithoutPreview: boolean = false) {
 //   const param = {
