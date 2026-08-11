@@ -569,12 +569,15 @@ export class NewRegistrationComponent implements OnInit {
     area = ''
     onChangeArea(event) {
         console.log(event)
+debugger
+        if(event.cityId){
         this.pincode = event.pincode
         this.CityName = event.cityName
         this.area = event.area
         this.personalFormGroup.get('CityId').setValue(event.cityId)
 
         this.onChangecityDD(event.cityId)
+        }
     }
 
 
