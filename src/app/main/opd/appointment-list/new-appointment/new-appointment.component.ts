@@ -400,7 +400,7 @@ export class NewAppointmentComponent implements OnInit {
             this.searchFormGroup.get('RegId').reset();
             this.personalFormGroup.reset();
             this.Patientnewold = 2;
-
+            this.IsTrustAppflag=false
             const newPersonalForm = this.createPesonalForm();
             this.resetFilteredOptions();
             Object.keys(newPersonalForm.controls).forEach(key => {
@@ -659,6 +659,7 @@ export class NewAppointmentComponent implements OnInit {
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
                         this.counryId = this.registerObj?.countryId ?? 0;
+                          this.pincode = this.registerObj?.pinNo || ''
                     });
 
                 }, 100);

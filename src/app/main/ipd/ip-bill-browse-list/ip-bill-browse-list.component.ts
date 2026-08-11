@@ -288,9 +288,9 @@ export class IPBillBrowseListComponent implements OnInit {
 
                 if (this.IsGroupWise)
                     this.menuActions.push('Print Final Bill - Group wise');
-               if (this.IsClassWise)
+                if (this.IsClassWise)
                     this.menuActions.push('Print Final Bill - Class wise');
-               if (this.IsClassService)
+                if (this.IsClassService)
                     this.menuActions.push('Print Final Bill - Class Service');
                 if (this.IsFinalBill)
                     this.menuActions.push('Print Final Bill');
@@ -327,9 +327,9 @@ export class IPBillBrowseListComponent implements OnInit {
         // setTimeout(() => {
         this.getfilterdataIPBill();
         // }, 500);
-        // setTimeout(() => {
-
-        // }, 1000);
+        setTimeout(() => {
+            this.GetIPbilldetail()
+        }, 1000);
 
     }
 
@@ -1325,25 +1325,34 @@ export class IPBillBrowseListComponent implements OnInit {
         this.Vtotalnet = 0
         this.Vtotbal = 0
 
-        const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
-        const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
+        this.Vcashtotbal = 0
+        this.Vcardtotbal = 0
+        this.Vphonepaytotl = 0
+
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.PBillNo = this.myFilterform.get('PBillNo').value || "%"
         this.IsIntrimOrFinal = this.myFilterform.get('IsInterimOrFinal').value
 
-        const filters: any[] = [];
+        const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
 
+        const filters: any[] = [];
+debugger
         // Handle date range
-        if (fromDateControl && toDateControl) {
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+
+         if (fromDateControl && toDateControl) {
             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
-        } else {
-            this.fromDate = "1900-01-01";
-            this.toDate = "1900-01-01";
         }
-
         filters.push(
             {
                 "fieldName": "F_Name",
@@ -1398,8 +1407,7 @@ export class IPBillBrowseListComponent implements OnInit {
         this._IPBrowseBillService.getIPbilllist(data).subscribe((response) => {
             this.dataSource.data = response.data;
             console.log(this.dataSource.data)
-            debugger
-            // setTimeout(() => {
+         
             if (this.dataSource.data.length > 0) {
 
                 this.Vtotal = this.dataSource.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
@@ -1417,8 +1425,7 @@ export class IPBillBrowseListComponent implements OnInit {
             this.Vtotaldisc = Math.round(this.Vtotaldisc)
             this.Vtotalnet = Math.round(this.Vtotalnet)
             this.Vtotbal = Math.round(this.Vtotbal)
-            // }, 500);
-
+      
         });
     }
 

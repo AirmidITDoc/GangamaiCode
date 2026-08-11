@@ -182,7 +182,8 @@ export class NewAppointmentwithBillComponent {
     vUPINO: any = ""
     UserWsieCashcounterId: boolean = false;
     doctorName1 = ""
-
+    pincode = '';
+    area = ''
     displayedServiceColumns: string[] = [
         'ServiceName',
         'price',
@@ -205,7 +206,7 @@ export class NewAppointmentwithBillComponent {
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
     IsCasepaperBillPrint: boolean = false;
-     IsOPCasePaperPrtWithoutPreviewID: boolean = false;
+    IsOPCasePaperPrtWithoutPreviewID: boolean = false;
 
     constructor(public _AppointmentlistService: AppointmentlistService,
         public _matDialog: MatDialog,
@@ -272,25 +273,25 @@ export class NewAppointmentwithBillComponent {
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
 
-         const [IsOPCasePaperPrtWithoutPreviewID, IsOPCasePaperPrtWithoutPreviewVal] = this._ConfigService.configParams.IsOPCasePaperPrtWithoutPreview.split(":");
+        const [IsOPCasePaperPrtWithoutPreviewID, IsOPCasePaperPrtWithoutPreviewVal] = this._ConfigService.configParams.IsOPCasePaperPrtWithoutPreview.split(":");
         this.IsOPCasePaperPrtWithoutPreviewID = IsOPCasePaperPrtWithoutPreviewID === "1";
 
 
         const [OPDDefaultDepartmentId, OPDDefaultDepartmentVal] = this._ConfigService.configParams.OPDDefaultDepartment.split(":");
- 
+
         const [OPDDefaultDoctorId, OPDDefaultDoctorVal] = this._ConfigService.configParams.OPDDefaultDoctor.split(":");
-         if(OPDDefaultDepartmentId === "1"){
+        if (OPDDefaultDepartmentId === "1") {
             setTimeout(() => {
-             this.VisitFormGroup.get('DepartmentId').setValue(OPDDefaultDepartmentVal);
-            this.selectChangedepartment(this.VisitFormGroup.get('DepartmentId'))
-            }, 1000); 
+                this.VisitFormGroup.get('DepartmentId').setValue(OPDDefaultDepartmentVal);
+                this.selectChangedepartment(this.VisitFormGroup.get('DepartmentId'))
+            }, 1000);
         }
         debugger
-        if(OPDDefaultDoctorId === "1"){
+        if (OPDDefaultDoctorId === "1") {
             setTimeout(() => {
-            this.VisitFormGroup.get('ConsultantDocId').setValue(OPDDefaultDoctorVal);
-            this.getDocServicelist(this.VisitFormGroup.get('ConsultantDocId').value)
-            }, 1000); 
+                this.VisitFormGroup.get('ConsultantDocId').setValue(OPDDefaultDoctorVal);
+                this.getDocServicelist(this.VisitFormGroup.get('ConsultantDocId').value)
+            }, 1000);
         }
     }
 
@@ -788,7 +789,7 @@ export class NewAppointmentwithBillComponent {
 
 
     onSaveEntry(row) {
-debugger
+        debugger
         const doctorid = 0;
         const formValue = this.myForm.value
 
@@ -2088,10 +2089,10 @@ debugger
 
     viewgetOPBillReportPdf(element) {
         debugger
-        if(this.IsOPCasePaperPrtWithoutPreviewID){
-        this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt",true); 
-        }else{
-         this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt",false); 
+        if (this.IsOPCasePaperPrtWithoutPreviewID) {
+            this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt", true);
+        } else {
+            this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt", false);
         }
     }
     Patientnewold: any = 1;
@@ -2197,7 +2198,7 @@ debugger
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
                         this.countryId = this.registerObj?.countryId ?? 0;
-
+                        this.pincode = this.registerObj?.pinNo || ''
 
                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
@@ -2265,7 +2266,7 @@ debugger
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
                         this.countryId = this.registerObj?.countryId ?? 0;
-
+                        this.pincode = this.registerObj?.pinNo || ''
                         this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.myForm.patchValue({
@@ -2719,7 +2720,9 @@ debugger
             location: [],
             adharCardNo: [],
             MaritalStatusId: [],
-            companyId: []
+            companyId: [],
+            PinNo: [],
+
         }
     }
     aadharRaw = '';
@@ -2933,44 +2936,88 @@ debugger
             }
         });
     }
-    docServiceList:any=[];
- 
-getDocServicelist(DoctorId: number) {
+    docServiceList: any = [];
 
-  const vdata = {
-    searchFields: [
-      {
-        fieldName: 'DoctorId',
-        fieldValue: String(DoctorId),
-        opType: 'Equals'
-      }
-    ],
-    mode: 'DoctorWiseCharges'
-  };
+    getDocServicelist(DoctorId: number) {
 
-  this._AppointmentlistService.getDocServicelist(vdata).subscribe((data: any[]) => { 
-    this.docServiceList = data || []; 
-    debugger
-    this.chargeList = [];
-    this.dstable1.data = this.chargeList;
-    const tempList = this.docServiceList.map(row => ({
-      serviceId: row.ServiceId,
-      serviceName: row.ServiceName,
-      price: row.Price ?? 0, 
-      creditedtoDoctor: row.CreditedtoDoctor,
-      DoctorId: row.CreditedtoDoctor ? (row.DoctorId ?? 0) : 0,
-      DoctorName: row.Doctorflag ? (row.DoctorName ?? '') : '',
-      isPathology: row.IsPathology == 1,
-      isRadiology: row.IsRadiology == 1,
-      isPackage: row.IsPackage 
-    })); 
-    
-    this.doctorName1 = (this.docServiceList[0]?.DoctorId ?? 0) > 0  ? this.docServiceList[0]?.DoctorName ?? ''  : '';
-    
-    tempList.forEach(item => {
-      this.onSaveEntry(item);
-    }); 
-  });
-}
+        const vdata = {
+            searchFields: [
+                {
+                    fieldName: 'DoctorId',
+                    fieldValue: String(DoctorId),
+                    opType: 'Equals'
+                }
+            ],
+            mode: 'DoctorWiseCharges'
+        };
+
+        this._AppointmentlistService.getDocServicelist(vdata).subscribe((data: any[]) => {
+            this.docServiceList = data || [];
+            debugger
+            this.chargeList = [];
+            this.dstable1.data = this.chargeList;
+            const tempList = this.docServiceList.map(row => ({
+                serviceId: row.ServiceId,
+                serviceName: row.ServiceName,
+                price: row.Price ?? 0,
+                creditedtoDoctor: row.CreditedtoDoctor,
+                DoctorId: row.CreditedtoDoctor ? (row.DoctorId ?? 0) : 0,
+                DoctorName: row.Doctorflag ? (row.DoctorName ?? '') : '',
+                isPathology: row.IsPathology == 1,
+                isRadiology: row.IsRadiology == 1,
+                isPackage: row.IsPackage
+            }));
+
+            this.doctorName1 = (this.docServiceList[0]?.DoctorId ?? 0) > 0 ? this.docServiceList[0]?.DoctorName ?? '' : '';
+
+            tempList.forEach(item => {
+                this.onSaveEntry(item);
+            });
+        });
+    }
+
+    onChangeArea(event) {
+        console.log(event)
+        this.pincode = event.pincode
+        this.CityName = event.cityName
+        this.area = event.area
+        this.myForm.get('cityId').setValue(event.cityId)
+
+        this.onChangepincityDD(event.cityId)
+    }
+
+
+    onChangePincode(obj: string) {
+        // Call API only when exactly 6 digits are entered
+        if (obj && obj.length === 6) {
+            this._AppointmentlistService.getbypincode(obj).subscribe((data: any) => {
+                if (data && data.length > 0) {
+                    console.log(data);
+
+                    this.CityName = data[0].cityName;
+                    this.area = data[0].area;
+
+                    this.myForm.get('areaId').setValue(data[0].areaId);
+                    // this.personalFormGroup.get('CityId').setValue(data[0].cityId);
+
+                    this.onChangepincityDD(data[0].cityId);
+                    this.registerObj.cityId = data[0].cityId;
+                } else {
+                    Swal.fire("Pincode does not exist.")
+                }
+            });
+        }
+    }
+    onChangepincityDD(obj) {
+        debugger
+        this._AppointmentlistService.getstatebypincode(obj).subscribe((data: any) => {
+            console.log(data)
+
+            this.registerObj.stateId = data.stateId
+            this._AppointmentlistService.getstateId(data.stateId).subscribe((Response) => {
+                this.ddlCountry.SetSelection(Response.countryId);
+            });
+        });
+    }
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

@@ -48,18 +48,18 @@
 
                                     <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
 
-                                          <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="CashCounterID" formControlName="CashCounterID" 
-                                            [formGroup]="searchFormGroup" class="w-250"
+                                        <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="CashCounterID"
+                                            formControlName="CashCounterID" [formGroup]="searchFormGroup" class="w-250"
                                             [validations]="getValidationMessages().CashCounterID"
                                             [mode]="autocompleteModeCashcounter" [disableAutoNext]="true">
                                         </airmid-dropdown>
- 
 
-                                    <airmid-dropdown  *ngIf="UserWsieCashcounterId" class="w-250"  label="Select Cash Counter" formControlName="CashCounterID"
-                                       [formGroup]="searchFormGroup"    TextField="cashCounterName" ValueField="cashCounterId"
-                                            [selectFirstByDefault]="true"
-                                    [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"
-                                      ></airmid-dropdown>
+
+                                        <airmid-dropdown *ngIf="UserWsieCashcounterId" class="w-250"
+                                            label="Select Cash Counter" formControlName="CashCounterID"
+                                            [formGroup]="searchFormGroup" TextField="cashCounterName"
+                                            ValueField="cashCounterId" [selectFirstByDefault]="true"
+                                            [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"></airmid-dropdown>
 
 
                                         <airmid-autocomplete class="w-450"
@@ -232,7 +232,7 @@
                                                                             [formGroup]="myForm"
                                                                             [validations]="getValidationMessages().middleName"
                                                                             [maxLength]="100"
-                                                                              (valueChange)="handleInputChangeDebounced('middleName')"></airmid-textbox>
+                                                                            (valueChange)="handleInputChangeDebounced('middleName')"></airmid-textbox>
                                                                     </div>
 
                                                                     <div fxFlex="33%">
@@ -284,7 +284,7 @@
                                                                         <airmid-textbox label="National ID"
                                                                             formControlName="aadharCardNo"
                                                                             [value]="registerObj.aadharCardNo ?? ''"
-                                                                            [formGroup]="myForm"  [maxLength]="12"
+                                                                            [formGroup]="myForm" [maxLength]="12"
                                                                             [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
                                                                     </div>
                                                                 </div>
@@ -364,7 +364,7 @@
                                                     <form [formGroup]="myForm" class="mat-form-field-100">
 
                                                         <div fxLayout="row" fxLayoutGap="4px">
-                                                            <div fxFlex="33%">
+                                                            <div fxFlex="25%">
                                                                 <airmid-dropdown label="Religion Name"
                                                                     formControlName="religionId"
                                                                     [value]="registerObj?.religionId ?? 0"
@@ -372,14 +372,32 @@
                                                                     [validations]="getValidationMessages().religionId"
                                                                     [mode]="autocompleteModereligion"></airmid-dropdown>
                                                             </div>
-                                                            <div fxFlex="33%">
-                                                                <airmid-dropdown label="Area" formControlName="areaId"
+                                                            <div fxFlex="25%">
+                                                                <!-- <airmid-dropdown label="Area" formControlName="areaId"
                                                                     [value]="registerObj?.areaId ?? 0"
                                                                     [formGroup]="myForm"
                                                                     [validations]="getValidationMessages().areaId"
-                                                                    [mode]="autocompleteModearea"></airmid-dropdown>
+                                                                    [mode]="autocompleteModearea"></airmid-dropdown> -->
+
+                                                                <airmid-dropdown label="Area" formControlName="areaId"
+                                                                    [formGroup]="myForm"
+                                                                    [value]="registerObj?.areaId"
+                                                                    [validations]="getValidationMessages().areaId"
+                                                                    ValueField="areaId" TextField="area"
+                                                                    (selectionChange)="onChangeArea($event)"
+                                                                    ApiUrl="AreaMaster/search_AreaMaster?Keyword=%">
+                                                                </airmid-dropdown>
                                                             </div>
-                                                            <div fxFlex="33%">
+                                                            <div fxFlex="25%">
+                                                                <airmid-textbox label="Pin Code" formControlName="PinNo"
+                                                                    [value]="pincode" [formGroup]="myForm"
+                                                                    [validations]="getValidationMessages().PinNo"
+                                                                    [maxLength]="6"
+                                                                    (keypress)="keyPressAlphanumeric($event)"
+                                                                    (keyup)="onChangePincode($event.target.value)">
+                                                                </airmid-textbox>
+                                                            </div>
+                                                            <div fxFlex="25%">
                                                                 <airmid-dropdown label="MaritalStatus"
                                                                     formControlName="maritalStatusId"
                                                                     [value]="registerObj?.maritalStatusId ?? 0"
@@ -625,7 +643,8 @@
                                     <div class="billing-middle-zone" [dynamicTableHeight]="120">
                                         <div class="airmid-table-container">
                                             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
-                                                style="width: 100%" [(selectedIndex)]="selectedTabIndex" animationDuration="0ms">
+                                                style="width: 100%" [(selectedIndex)]="selectedTabIndex"
+                                                animationDuration="0ms">
                                                 <mat-tab label="Charges List">
                                                     <mat-table #table1 matSort [dataSource]="dstable1"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table table">
@@ -725,8 +744,10 @@
                                                                 Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm
                                                                 class="w-250">
-                                                                <span *ngIf="!contact.EditDoctor">{{ contact.DoctorName}}</span>
-                                                                <div *ngIf="contact.creditedtoDoctor == true" fxLayout="row">
+                                                                <span *ngIf="!contact.EditDoctor">{{
+                                                                    contact.DoctorName}}</span>
+                                                                <div *ngIf="contact.creditedtoDoctor == true"
+                                                                    fxLayout="row">
                                                                     <ng-container
                                                                         *ngIf="!contact.EditDoctor; else showInput">
                                                                         <button mat-icon-button
