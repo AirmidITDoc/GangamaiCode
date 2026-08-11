@@ -171,6 +171,7 @@ export class NewAppointmentwithBillComponent {
     serviceId: any;
     SrvcName1: any = ""
     vQty: any;
+    vDefaaultDoctorId:any=0;
     vPrice = '0';
     TotalPrice: any = 0;
     className = "OPD";
@@ -289,6 +290,7 @@ export class NewAppointmentwithBillComponent {
         debugger
         if (OPDDefaultDoctorId === "1") {
             setTimeout(() => {
+                this.vDefaaultDoctorId= OPDDefaultDoctorVal
                 this.VisitFormGroup.get('ConsultantDocId').setValue(OPDDefaultDoctorVal);
                 this.getDocServicelist(this.VisitFormGroup.get('ConsultantDocId').value)
             }, 1000);
