@@ -143,7 +143,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
     }
 
     // ============== Verify OTP ==============
-    
+
     verifyOtp(): void {
         if (this.otpForm.invalid) {
             this.otpForm.markAllAsTouched();
@@ -168,7 +168,7 @@ export class VerifyByAbhaOtpComponent implements OnInit {
         //             this.loading = false;
         //         });
         // else
-        this.abhaService.verifyAbhaOtp({ otp: this.otpForm.value.otp, txnId: this.txnId, OtpType: this.abhaForm.value.otpType,mobile: this.abhaForm.get('abhaNumber').value })
+        this.abhaService.verifyAbhaOtp({ otp: this.otpForm.value.otp, txnId: this.txnId, OtpType: this.abhaForm.value.otpType, mobile: this.abhaForm.get('abhaNumber').value })
             .subscribe((r: AbhaOtpVerify) => {
                 if (r.txnId) {
                     if (r.authResult === 'success' && r.accounts) {
@@ -192,14 +192,10 @@ export class VerifyByAbhaOtpComponent implements OnInit {
         this.showSuccessPopup = false;
         this.verified.emit({ accesstoken: this.accessToken, isAddress: false });
     }
-    // resendOtp(): void {
-    //     if (this.resendRemaining <= 0) return;
-    //     this.resendRemaining--;
-    //     this.sendOtp();
-    //     this.snack.open(`OTP resent. ${this.resendRemaining} attempt(s) remaining.`, 'OK', {
-    //         duration: 2000
-    //     });
-    // }
+
+    get maxAttemptsReached(): boolean {
+        return this.resendAttempts >= 2;
+    }
 
     resendOtp(): void {
         // if (this.resendRemaining <= 0) return;

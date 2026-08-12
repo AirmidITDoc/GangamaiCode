@@ -193,6 +193,10 @@ export class VerifyByAadhaarComponent implements OnInit {
         this.verified.emit({ accesstoken: this.accessToken, isAddress: false });
     }
 
+    get maxAttemptsReached(): boolean {
+        return this.resendAttempts >= 2;
+    }
+
     resendOtp(): void {
         // if (this.resendRemaining <= 0) return;
         // this.resendRemaining--;
@@ -241,10 +245,6 @@ export class VerifyByAadhaarComponent implements OnInit {
 
                     this.canResend = true;
                 }
-                // if (this.resendAttempts < 2) {
-                //     this.canResend = true;
-                // }
-
             }
 
         }, 1000);

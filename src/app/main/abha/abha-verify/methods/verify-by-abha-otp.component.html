@@ -61,7 +61,7 @@
         <!-- ====== STEP 2 ====== -->
         <form *ngIf="step === 2" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
             <div class="info-box">
-                We've sent a 6-digit OTP on the <strong>{{ channelLabel }}</strong>.<br>
+                <!-- We've sent a 6-digit OTP on the <strong>{{ channelLabel }}</strong>.<br> -->
                 {{msg}} <br>
                 Enter it below to verify your ABHA.
             </div>
@@ -90,12 +90,12 @@
                     <div class="otp-info">
 
                         <!-- Timer -->
-                        <span class="timer" *ngIf="!canResend">
+                        <span class="timer" *ngIf="!canResend && !maxAttemptsReached">
                             {{ countdown }}
                         </span>
 
                         <!-- warning -->
-                        <div class="warning-text" *ngIf="!canResend && timeLeft > 0 && timeLeft <= 10">
+                        <div class="warning-text" *ngIf="!canResend && !maxAttemptsReached && timeLeft > 0 && timeLeft <= 10">
                             OTP will expire in {{ timeLeft }} seconds.
                         </div>
 
@@ -117,37 +117,14 @@
                     </div>
 
                 </div>
-
-                <!-- <mat-form-field appearance="outline" class="full-width">
-                    <input matInput type="password" formControlName="otp" placeholder="••••••" inputmode="numeric"
-                        maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
-                    <mat-error *ngIf="otpForm.get('otp')?.errors as e">
-                        <span *ngIf="e['required']">OTP is required</span>
-                        <span *ngIf="e['otp']">{{ e['otp'] }}</span>
-                        <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
-                    </mat-error>
-                </mat-form-field> -->
-                <!-- <p class="helper-text">
-                    Demo OTP: <span class="mono">{{ demoOtp }}</span>
-                </p> -->
             </div>
-
-            <!-- <div class="row-between">
-                <span class="resend-info">
-                    Resend attempts remaining: <strong>{{ resendRemaining }}/2</strong>
-                </span>
-                <button type="button" mat-button color="primary" (click)="resendOtp()"
-                    [disabled]="resendRemaining === 0 || loading">
-                    <mat-icon>refresh</mat-icon> Resend OTP
-                </button>
-            </div> -->
 
             <div class="actions">
                 <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
                     <mat-icon>arrow_back</mat-icon> Back
                 </button>
                 <button mat-raised-button color="primary" type="submit"
-                    [disabled]="loading || otpForm.invalid || otpExpired" class="action-btn">
+                    [disabled]="loading || otpForm.invalid || (otpExpired && !maxAttemptsReached)" class="action-btn">
                     <ng-container *ngIf="!loading">
                         Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
                     </ng-container>

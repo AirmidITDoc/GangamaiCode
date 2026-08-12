@@ -152,27 +152,6 @@ export class VerifyByMobileComponent implements OnInit {
             });
     }
 
-    // sendOtp(): void {
-    //     if (this.mobileForm.invalid) {
-    //         this.mobileForm.markAllAsTouched();
-    //         return;
-    //     }
-    //     this.loading = true;
-    //     this.abhaService.requestMobileOtp({ AadhaarNumber: this.mobileForm.value.mobile })
-    //         .subscribe((r: AadhaarGenerateOtpResponse) => {
-    //             if (r.txnId) {
-    //                 this.txnId = r.txnId;
-    //                 this.step = 3;
-    //                 this.snack.open(r.message, 'OK', { duration: 2500 });
-    //                 this.startTimer();
-    //             }
-    //             else {
-    //                 this.snack.open(r.message, 'OK', { duration: 2500 });
-    //             }
-    //             this.loading = false;
-    //         });
-    // }
-
     // ============== Step 3: Verify OTP ==============
     verifyOtp(): void {
         if (this.otpForm.invalid) {
@@ -182,6 +161,7 @@ export class VerifyByMobileComponent implements OnInit {
         this.loading = true;
         this.abhaService.verifyMobileOtp({ otp: this.otpForm.value.otp, txnId: this.txnId })
             .subscribe((r: AbhaOtpVerify) => {
+                this.loading = false;
                 if (r.txnId) {
                     if (r.authResult !== 'success') {
                         this.otpForm.get('otp')?.setErrors({ invalid: r.message });
@@ -241,11 +221,9 @@ export class VerifyByMobileComponent implements OnInit {
             });
     }
 
-    // resendOtp(): void {
-    //     if (this.resendRemaining <= 0) return;
-    //     this.resendRemaining--;
-    //     this.sendOtp();
-    // }
+    get maxAttemptsReached(): boolean {
+        return this.resendAttempts >= 2;
+    }
 
     resendOtp(): void {
         this.otpExpired = false;

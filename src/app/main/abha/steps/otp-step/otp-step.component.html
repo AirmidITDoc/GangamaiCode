@@ -56,12 +56,12 @@
                     <div class="otp-info">
 
                         <!-- Timer -->
-                        <span class="timer" *ngIf="!canResend">
+                        <span class="timer" *ngIf="!canResend && !maxAttemptsReached">
                             {{ countdown }}
                         </span>
 
                         <!-- warning -->
-                        <div class="warning-text" *ngIf="!canResend && timeLeft > 0 && timeLeft <= 10">
+                        <div class="warning-text" *ngIf="!canResend && !maxAttemptsReached && timeLeft > 0 && timeLeft <= 10">
                             OTP will expire in {{ timeLeft }} seconds.
                         </div>
 
@@ -105,7 +105,7 @@
                     Back
                 </button>
                 <button type="submit" mat-raised-button color="primary"
-                    [disabled]="loading || form.invalid || otpExpired" class="action-btn">
+                    [disabled]="loading || form.invalid || (otpExpired && !maxAttemptsReached)" class="action-btn">
                     <ng-container *ngIf="!loading">
                         Verify
                         <mat-icon iconPositionEnd>arrow_forward</mat-icon>

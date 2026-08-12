@@ -158,6 +158,10 @@ export class OtpStepComponent implements OnInit {
         }
     }
 
+    get maxAttemptsReached(): boolean {
+        return this.resendAttempts >= 2;
+    }
+
     onResend(): void {
 
         this.otpExpired = false;
