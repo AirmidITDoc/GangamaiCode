@@ -550,7 +550,9 @@ export class NewCasepaperComponent implements OnInit {
         return this._formBuilder.group({
             visitId: [this.VisitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]]
+            descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            icdcode: [''],
+            diagnosisName: ['']
         });
     }
     // 5.FormArray Getters
