@@ -330,7 +330,7 @@ export class AppointmentListComponent implements OnInit {
         this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
 
         this.getfilterdata();
-          this.GetAppCancledetail()
+        this.GetAppCancledetail()
         // }
     }
 
@@ -836,9 +836,14 @@ export class AppointmentListComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                that.grid.bindGridData();
                 this.GetAppointdetail();
             }
+
+            setTimeout(() => {
+                that.grid.bindGridData();
+
+            }, 500);
+
         });
     }
 
@@ -1311,7 +1316,7 @@ export class AppointmentListComponent implements OnInit {
     // Vregtotalcount=0
     GetAppointdetail() {
 
-          this.GetAppCancledetail()
+        this.GetAppCancledetail()
         //   this.Vregtotalcount = 0;
         this.Vtotalcount = 0;
         this.VNewcount = 0;
@@ -1939,7 +1944,7 @@ export class AppointmentListComponent implements OnInit {
             }
         });
     }
-//
+    //
 }
 
 

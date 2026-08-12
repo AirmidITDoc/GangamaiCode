@@ -226,6 +226,7 @@ export class NewCasepaperComponent implements OnInit {
     ) {
 
         debugger
+
         const rawValue = this?._ConfigService?.configParams?.FollowUpdateSet || "";
         const [id, FollowUpdateSet] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         if (id == "1" && FollowUpdateSet) {
@@ -300,10 +301,28 @@ export class NewCasepaperComponent implements OnInit {
             // this.getCheifComplaintList();
             this.getCertificateList();
             // this.getLabdata();
+            if (this.data.emrReady > 0) {
+                this.calculateDays(this.regObj);
+            }
         }
 
         this.loadGridDataForVisit(this.VisitId);
     }
+    calculateDays(regObj) {
+        debugger
+        const today = new Date();
+
+        const [day, month, year] = regObj.followupDate.split('/').map(Number);
+        const followUp = new Date(year, month - 1, day);
+
+        today.setHours(0, 0, 0, 0);
+        followUp.setHours(0, 0, 0, 0);
+
+        const diff = followUp.getTime() - today.getTime();
+
+        this.vDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    }
+
 
     // showing color for vitals
     getVitalColorClass(vital: string, value: any): string {
