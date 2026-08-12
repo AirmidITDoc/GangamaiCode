@@ -259,10 +259,16 @@ debugger
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
+        
+             if (result) {
                 this.GetAppointdetail();
             }
+
+            setTimeout(() => {
+                that.grid.bindGridData();
+
+            }, 500);
+
         });
     }
 

@@ -722,23 +722,23 @@
                                             </div>
                                             <hr>
                                             <div fxLayout="row" fxLayoutGap="6px">
-                                                <airmid-dropdown label="Department Name" formControlName="Departmentid"
+                                                <!-- <airmid-dropdown label="Department Name" formControlName="Departmentid"
                                                     fxFlex="35%" [formGroup]="MedicineItemForm"
                                                     [validations]="getValidationMessages().departmentId"
                                                     [mode]="autocompletedepartment"
-                                                    (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
-                                                <!-- <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                                                    (selectionChange)="selectChangedepartment($event)"></airmid-dropdown> -->
+                                                <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                                     fxFlex="35%" [formGroup]="MedicineItemForm"
                                                     [validations]="getValidationMessages().DoctorID"
                                                     [mode]="autocompleteModeDoctor"
                                                     (selectionChange)="selectChangeDoctorName($event)">
-                                                </airmid-dropdown> -->
-
+                                                </airmid-dropdown>
+<!-- 
                                                 <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                                     [formGroup]="MedicineItemForm" fxFlex="35%"
                                                     (selectionChange)="selectChangeDoctorName($event)"
                                                     [validations]="getValidationMessages().DoctorID"
-                                                    #ddlDoctor></airmid-dropdown>
+                                                    #ddlDoctor></airmid-dropdown> -->
 
                                             </div>
                                         </form>
