@@ -400,7 +400,7 @@ export class NewAppointmentComponent implements OnInit {
             this.searchFormGroup.get('RegId').reset();
             this.personalFormGroup.reset();
             this.Patientnewold = 2;
-            this.IsTrustAppflag=false
+            this.IsTrustAppflag = false
             const newPersonalForm = this.createPesonalForm();
             this.resetFilteredOptions();
             Object.keys(newPersonalForm.controls).forEach(key => {
@@ -659,7 +659,7 @@ export class NewAppointmentComponent implements OnInit {
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
                         this.counryId = this.registerObj?.countryId ?? 0;
-                          this.pincode = this.registerObj?.pinNo || ''
+                        this.pincode = this.registerObj?.pinNo || ''
                     });
 
                 }, 100);
@@ -694,7 +694,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     getSelectedObjtrust(obj) {
-        debugger
+        
         console.log(obj)
         // if (this.data?.FormName == 'Registration-Page') {
         this.PatientName = obj.firstName + ' ' + obj.lastName;
@@ -703,7 +703,7 @@ export class NewAppointmentComponent implements OnInit {
 
         this._AppointmentlistService.getMemeberbyIdList(obj.membershipId).subscribe(response => {
             console.log(response)
-
+debugger
             if (response) {
 
                 this.registerObjtrust = response;
@@ -711,60 +711,119 @@ export class NewAppointmentComponent implements OnInit {
                 this.vRegNo = response.regno
 
                 console.log(new Date(this.registerObjtrust.husbandDob))
-                this.onChangeDateofBirth(new Date(this.registerObjtrust.husbandDob))
                 //set state
-
-                this.onChangecityDD(this.registerObjtrust.cityId);
                 debugger
-                this.personalFormGroup.patchValue({
-                    prefixId: this.registerObjtrust.hprefixId,
-                    FirstName: this.registerObjtrust.husbandFirstName.trim(),
-                    MiddleName: this.registerObjtrust.husbandMiddleName.trim(),
-                    LastName: this.registerObjtrust.husbandLastName.trim(),
-                    MobileNo: this.registerObjtrust.husbandMobile.trim(),
-                    Address: this.registerObjtrust.residenceAddress.trim(),
-                    aadharCardNo: this.registerObjtrust.husbandAadhaar ?? '',
-                    panCardNo: this.registerObjtrust?.husbandPan ?? '',
-                    emailId: this.registerObjtrust?.husbandEmail ?? '',
-                    PinNo: '',
-                    City: this.registerObjtrust?.cityId ?? '',
-                    StateId: this.stateId,
-                    CountryId: this.counryId,
-                    PhoneNo: '',
-                    MaritalStatusId: 0,
-                    ReligionId: 0,
-                    AreaId: 0,
-                    DateOfBirth: this.registerObjtrust.husbandDob,
-                    emgContactPersonName: '',
-                    emgRelationshipId: 0,
-                    emgMobileNo: '',
-                    emgLandlineNo: '',
-                    engAddress: '',
-                    emgAadharCardNo: '',
-                    emgDrivingLicenceNo: '',
-                    medTourismPassportNo: '',
-                    medTourismVisaIssueDate: '',
-                    medTourismVisaValidityDate: '',
-                    medTourismNationalityId: '',
-                    medTourismCitizenship: 0,
-                    medTourismPortOfEntry: '',
-                    medTourismDateOfEntry: '',
-                    medTourismResidentialAddress: '',
-                    medTourismOfficeWorkAddress: '',
-                    RegDate: this.currentDate,
-                    RegTime: this.currentDate
-                });
+                // if (this.registerObjtrust.husbandDob !== '1900-01-01T00:00:00') {
+                  if (this.registerObjtrust.hprefixId !==0) {
+                    this.onChangeDateofBirth(new Date(this.registerObjtrust.husbandDob))
+                    var Bdate = this.registerObjtrust.husbandDob
 
-                this.personalFormGroup.get("PrefixId").setValue(this.registerObjtrust.hprefixId)
-                this.personalFormGroup.get("GenderId").setValue(this.registerObjtrust.hgenderId)
+
+                    this.personalFormGroup.patchValue({
+                        prefixId: this.registerObjtrust.hprefixId,
+                        FirstName: this.registerObjtrust.husbandFirstName.trim(),
+                        MiddleName: this.registerObjtrust.husbandMiddleName.trim(),
+                        LastName: this.registerObjtrust.husbandLastName.trim(),
+                        MobileNo: this.registerObjtrust.husbandMobile.trim(),
+                        Address: this.registerObjtrust.residenceAddress.trim(),
+                        aadharCardNo: this.registerObjtrust.husbandAadhaar ?? '',
+                        panCardNo: this.registerObjtrust?.husbandPan ?? '',
+                        emailId: this.registerObjtrust?.husbandEmail ?? '',
+                        PinNo: '',
+                        City: this.registerObjtrust?.cityId ?? '',
+                        StateId: this.stateId,
+                        CountryId: this.counryId,
+                        PhoneNo: '',
+                        MaritalStatusId: 0,
+                        ReligionId: 0,
+                        AreaId: 0,
+                        DateOfBirth: Bdate,//this.registerObjtrust.husbandDob,
+                        emgContactPersonName: '',
+                        emgRelationshipId: 0,
+                        emgMobileNo: '',
+                        emgLandlineNo: '',
+                        engAddress: '',
+                        emgAadharCardNo: '',
+                        emgDrivingLicenceNo: '',
+                        medTourismPassportNo: '',
+                        medTourismVisaIssueDate: '',
+                        medTourismVisaValidityDate: '',
+                        medTourismNationalityId: '',
+                        medTourismCitizenship: 0,
+                        medTourismPortOfEntry: '',
+                        medTourismDateOfEntry: '',
+                        medTourismResidentialAddress: '',
+                        medTourismOfficeWorkAddress: '',
+                        RegDate: this.currentDate,
+                        RegTime: this.currentDate
+                    });
+
+                    this.personalFormGroup.get("PrefixId").setValue(obj.prefixId)
+                    this.personalFormGroup.get("GenderId").setValue(obj.genderId)
+                } else {
+debugger
+                    this.personalFormGroup.patchValue({
+                        prefixId: this.registerObjtrust.wprefixId,
+                        FirstName: this.registerObjtrust.wifeFirstName.trim(),
+                        MiddleName: this.registerObjtrust.wifeMiddleName.trim(),
+                        LastName: this.registerObjtrust.wifeLastName.trim(),
+                        MobileNo: this.registerObjtrust.wifeMobile.trim(),
+                        Address: this.registerObjtrust.residenceAddress.trim(),
+                        aadharCardNo: this.registerObjtrust.wifeAadhaar ?? '',
+                        panCardNo: this.registerObjtrust?.wifePan ?? '',
+                        emailId: this.registerObjtrust?.wifeEmail ?? '',
+                        PinNo: '',
+                        City: this.registerObjtrust?.cityId ?? '',
+                        StateId: this.stateId,
+                        CountryId: this.counryId,
+                        PhoneNo: '',
+                        MaritalStatusId: 0,
+                        ReligionId: 0,
+                        AreaId: 0,
+                        DateOfBirth: Bdate,//this.registerObjtrust.husbandDob,
+                        emgContactPersonName: '',
+                        emgRelationshipId: 0,
+                        emgMobileNo: '',
+                        emgLandlineNo: '',
+                        engAddress: '',
+                        emgAadharCardNo: '',
+                        emgDrivingLicenceNo: '',
+                        medTourismPassportNo: '',
+                        medTourismVisaIssueDate: '',
+                        medTourismVisaValidityDate: '',
+                        medTourismNationalityId: '',
+                        medTourismCitizenship: 0,
+                        medTourismPortOfEntry: '',
+                        medTourismDateOfEntry: '',
+                        medTourismResidentialAddress: '',
+                        medTourismOfficeWorkAddress: '',
+                        RegDate: this.currentDate,
+                        RegTime: this.currentDate
+                    });
+
+                     this.personalFormGroup.get("PrefixId").setValue(obj.prefixId)
+                    this.personalFormGroup.get("GenderId").setValue(obj.genderId) 
+                     this.onChangeDateofBirth1(new Date(this.registerObjtrust.wifeDob))
+                    var Bdate = this.registerObjtrust.wifeDob
+                }
+                           
+             
+             
+                if (this.registerObjtrust.husbandDob !== '1900-01-01T00:00:00') {
+                    this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
+                    this.registerObj.dateofBirth = this.registerObjtrust.husbandDob
+                } else {
+                    this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.wifeDob)
+                    this.registerObj.dateofBirth = this.registerObjtrust.wifeDob
+                }
+
 
                 this.personalFormGroup.get("CityId").setValue(this.registerObjtrust.cityId)
 
                 this.CityName = this.registerObjtrust?.cityName ?? '';
 
+                this.onChangecityDD(this.registerObjtrust.cityId);
 
-                this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
-                this.registerObj.dateofBirth = this.registerObjtrust.husbandDob
 
             }
         });
@@ -1686,6 +1745,48 @@ export class NewAppointmentComponent implements OnInit {
         }
     }
 
+    onChangeDateofBirth1(DateOfBirth: Date) {
+
+        if (DateOfBirth > this.minDate) {
+            this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+            return;
+        }
+
+        if (DateOfBirth) {
+            const todayDate = new Date();
+            const dob = new Date(DateOfBirth);
+            const timeDiff = Math.abs(Date.now() - dob.getTime());
+
+            this.ageYear = todayDate.getFullYear() - dob.getFullYear();
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+            this.ageDay = (todayDate.getDate() - dob.getDate());
+
+            if (this.ageDay < 0) {
+                this.ageMonth--;
+                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                this.ageDay += previousMonth.getDate(); // Days in previous month
+                // this.ageDay =this.ageDay +1;
+            }
+
+            if (this.ageMonth < 0) {
+                this.ageYear--;
+                this.ageMonth += 12;
+            }
+
+            this.value = DateOfBirth;
+            this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+
+            console.log(DateOfBirth)
+            console.log(this.ageYear)
+            console.log(this.ageDay)
+            if (this.ageYear > 110)
+                this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
+        }
+    }
     onSaveArea() {
         const dialogRef = this._matDialog.open(NewAreaComponent,
             {
@@ -1703,13 +1804,13 @@ export class NewAppointmentComponent implements OnInit {
     onChangeArea(event) {
         debugger
         console.log(event)
-        if(event.cityId){
-        this.pincode = event.pincode
-        this.CityName = event.cityName
-        this.area = event.area
-        this.personalFormGroup.get('CityId').setValue(event.cityId)
+        if (event.cityId) {
+            this.pincode = event.pincode
+            this.CityName = event.cityName
+            this.area = event.area
+            this.personalFormGroup.get('CityId').setValue(event.cityId)
 
-        this.onChangepincityDD(event.cityId)
+            this.onChangepincityDD(event.cityId)
         }
     }
 
