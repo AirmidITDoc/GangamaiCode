@@ -154,6 +154,16 @@
                                                             placeholder="Enter time (mins)" />
                                                     </mat-form-field>
 
+                                                      <mat-form-field
+                                                        *ngIf="element.IsInputField && element.SystemName=='FollowUpdateSet'"
+                                                        appearance="outline" style="width: 200px;">
+                                                        <input matInput [maxLength]="3"
+                                                            (keypress)="keyPressCharater($event)"
+                                                            formControlName="FollowupDays"
+                                                            [(ngModel)]="element.SystemInputValue"
+                                                            placeholder="Enter value" />
+                                                    </mat-form-field>
+
                                                     <!-- Toggle for all configs -->
                                                     <mat-slide-toggle (change)="tableElementChecked($event, element)"
                                                         [(ngModel)]="element.IsInputField"

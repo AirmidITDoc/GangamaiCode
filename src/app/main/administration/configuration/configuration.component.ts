@@ -204,7 +204,8 @@ export class ConfigurationComponent implements OnInit {
             OPDNo: 0,
             OPSalesdisc: 0,
             IPSalesdisc: 0,
-            SystemLogOutTime: 0
+            SystemLogOutTime: 0,
+            FollowupDays:0
         });
     }
     onSubmit() {
