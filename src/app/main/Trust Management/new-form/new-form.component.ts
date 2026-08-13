@@ -302,7 +302,7 @@ debugger
       ]],
 
       "husbandDob": '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      DateOfBirth: '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "DateOfBirth": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "husbandAgeY": [0],
       "husbandAgeM": [0],
       "husbandageD": [0],
@@ -439,7 +439,7 @@ debugger
   }
   Createwifeform(): FormGroup {
     return this._formBuilder.group({
-      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      DateOfBirth: ['1900-01-01', this._FormvalidationserviceService.validDateValidator()],
 
     });
   }
@@ -612,6 +612,7 @@ debugger
       //     toastClass: 'tostr-tost custom-toast-warning',
       //   }); return;
       // } else
+        debugger
       if (this.personalFormGroup.get('DateOfBirth').value == '1900-01-01' || this.vhusbanddob == new Date()) {
         this.toastr.warning('Please enter husbandDob', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -643,6 +644,7 @@ debugger
       //     toastClass: 'tostr-tost custom-toast-warning',
       //   }); return;
       // } else 
+        debugger
       if (this.Wifeform.get('DateOfBirth').value == '1900-01-01' || this.vhusbanddob == new Date()) {
         this.toastr.warning('Please enter Wife DateOfBirth', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
