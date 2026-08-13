@@ -80,6 +80,7 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.markAllAsTouched();
 
         this.serviceDetailsArray.push(this.createserviceDetails());
+        this.serviceMasterArray.push(this.createserviceMaster());
 
         this.serviceForm.get('EffectiveDate').setValue(new Date());
 
@@ -181,6 +182,7 @@ export class ServiceMasterFormComponent implements OnInit {
             packageIcudays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageConsumableAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceMaster: this._formBuilder.array([]),
             serviceDetails: this._formBuilder.array([]),
 
             // extra field which we not insert
@@ -205,6 +207,15 @@ export class ServiceMasterFormComponent implements OnInit {
     }
     get serviceDetailsArray(): FormArray {
         return this.serviceForm.get('serviceDetails') as FormArray;
+    }
+
+    createserviceMaster(oldTariffId: any = 0): FormGroup {
+        return this._formBuilder.group({
+            oldTariffId: [oldTariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+    get serviceMasterArray(): FormArray {
+        return this.serviceForm.get('serviceMaster') as FormArray;
     }
 
     classList: any = [];
@@ -350,46 +361,34 @@ export class ServiceMasterFormComponent implements OnInit {
     onSubmit() {
         this.updateEmergencyValidators();
         if (!this.serviceForm.invalid) {
-            // if (this.serviceForm.get('opipType').value == false) {
-            //     this.toastr.warning('IsApplicableFor is required', 'Warning !', {
-            //         toastClass: 'tostr-tost custom-toast-warning',
-            //     });
-            //     return;
-            // }
+            if (this.serviceForm.get('serviceId')?.value) {
+                // ServiceId exists -> skip confirmation, go straight to update
+                this.runNoPart();
+            } else {
 
-            Swal.fire({
-                title: 'Confirm Action',
-                text: 'Do you want to assign this tariff to another tariff?',
-                icon: 'warning',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                denyButtonColor: '#6c757d',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes',
-                denyButtonText: 'No',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const dialogRef = this._matDialog.open(TariffComponent,
-                        {
-                            maxWidth: "50vw",
-                            maxHeight: '50%',
-                            width: '70%',
-                            // data: { context: 'new' }
-                        });
-                    dialogRef.afterClosed().subscribe(result => {
-                        if (result == true) {
-                            this.runNoPart();
-                        }
-                    });
+                Swal.fire({
+                    title: 'Confirm Action',
+                    text: 'Do you want to assign this Service to all tariff?',
+                    icon: 'warning',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    denyButtonColor: '#6c757d',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes',
+                    denyButtonText: 'No',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.saveToAllTariff();
 
-                } else if (result.isDenied) {
-                    this.runNoPart();
-                } else if (result.isDismissed) {
+                    } else if (result.isDenied) {
+                        this.runNoPart();
+                    } else if (result.isDismissed) {
 
-                }
-            });
+                    }
+                });
+            }
 
         } else {
             const invalidFields = [];
@@ -418,6 +417,9 @@ export class ServiceMasterFormComponent implements OnInit {
             this.serviceDetailsArray.push(this.createserviceDetails(item));
         });
 
+        this.serviceMasterArray.clear();
+        this.serviceMasterArray.push(this.createserviceMaster(0));
+
         const controlsToRemove = ['EffectiveDate', 'opipType'];
         controlsToRemove.forEach(control => {
             this.serviceForm.removeControl(control);
@@ -438,6 +440,45 @@ export class ServiceMasterFormComponent implements OnInit {
         // this.serviceForm.get("isApplicableFor")?.setValue(this.serviceForm.get("opipType")?.value);
 
         console.log("FormValue", this.serviceForm.value)
+
+        this._serviceMasterService.serviceMasterInsert(this.serviceForm.value, this.vTariffId).subscribe((response) => {
+            this.onClear(true);
+            this.onClose();
+        })
+    }
+
+    saveToAllTariff() {
+        // debugger
+
+        this.serviceDetailsArray.clear();
+        this.DSServicedetailList.data.forEach(item => {
+            this.serviceDetailsArray.push(this.createserviceDetails(item));
+        });
+
+        this.serviceMasterArray.clear();
+        this.serviceMasterArray.push(this.createserviceMaster(this.serviceForm.get('tariffId')?.value));
+
+        const controlsToRemove = ['EffectiveDate', 'opipType'];
+        controlsToRemove.forEach(control => {
+            this.serviceForm.removeControl(control);
+        });
+        this.serviceForm.get('price').setValue(0)
+        this.serviceForm.get('tariffId').setValue(this.serviceForm.get('tariffId')?.value);
+        this.serviceForm.get('doctorId')?.setValue(this.serviceForm.get('doctorId')?.value || 0);
+        this.serviceForm.get("isPathology")?.setValue(this.serviceForm.get("isPathology")?.value ? 1 : 0);
+        this.serviceForm.get("isRadiology")?.setValue(this.serviceForm.get("isRadiology")?.value ? 1 : 0);
+        this.serviceForm.get("isPackage")?.setValue(this.serviceForm.get("isPackage")?.value ? 1 : 0);
+        this.serviceForm.get("subGroupId")?.setValue(this.serviceForm.get("subGroupId")?.value ?? 0);
+        this.serviceForm.get("isDiscount")?.setValue(this.serviceForm.get("isDiscount")?.value ? true : false);
+        this.serviceForm.get("isEditable")?.setValue(this.serviceForm.get("isEditable")?.value ? true : false);
+        this.serviceForm.get("isPathOutSource")?.setValue(this.serviceForm.get("isPathOutSource")?.value ? true : false);
+        this.serviceForm.get("isRadOutSource")?.setValue(this.serviceForm.get("isRadOutSource")?.value ? true : false);
+        this.serviceForm.get("isActive")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
+        this.serviceForm.get("creditedtoDoctor")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
+        // this.serviceForm.get("isApplicableFor")?.setValue(this.serviceForm.get("opipType")?.value);
+
+        console.log("FormValue", this.serviceForm.value)
+
         this._serviceMasterService.serviceMasterInsert(this.serviceForm.value, this.vTariffId).subscribe((response) => {
             this.onClear(true);
             this.onClose();

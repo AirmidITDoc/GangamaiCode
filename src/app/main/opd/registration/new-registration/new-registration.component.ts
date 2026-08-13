@@ -59,6 +59,7 @@ export class NewRegistrationComponent implements OnInit {
     dateofBirth: any;
     prevResults: any[] = [];
     filteredOptions1: any[] = [];
+    ABHAId = 0
     debounceTimers: { [key: string]: any } = {};
 
     autocompleteModegender: string = "Gender";
@@ -115,11 +116,23 @@ export class NewRegistrationComponent implements OnInit {
                     this.registerObj = response;
                     console.log(this.registerObj)
                     this.isEditMode = true;
+                    this.ABHAId = response.abhaTranId
                     this.regNo = this.registerObj.regNo
-                     this.pincode = this.registerObj.pinNo
+                    this.pincode = this.registerObj.pinNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                     this.value = this.registerObj.dateofBirth
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)
+
+                    this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
+                        this.isProfileData = true;
+                        this.abhaForm.patchValue({
+                            abhaAddress: response.abhaAddress,
+                            abhaNumber: response.abhaNumber,
+                            abhaFullName: response.abhaFullName,
+                            gender: response.gender,
+                            yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
+                        });
+                    });
                 });
             }, 500);
         }
@@ -151,7 +164,8 @@ export class NewRegistrationComponent implements OnInit {
                 MiddleName: this.data.profile.middleName,
                 LastName: this.data.profile.lastName,
                 MobileNo: this.data.profile.mobile,
-                Address: this.data.profile.address
+                Address: this.data.profile.address,
+                PinNo: this.data.profile.pincode
             });
 
             this.abhaForm.patchValue({
@@ -569,14 +583,14 @@ export class NewRegistrationComponent implements OnInit {
     area = ''
     onChangeArea(event) {
         console.log(event)
-debugger
-        if(event.cityId){
-        this.pincode = event.pincode
-        this.CityName = event.cityName
-        this.area = event.area
-        this.personalFormGroup.get('CityId').setValue(event.cityId)
+        debugger
+        if (event.cityId) {
+            this.pincode = event.pincode
+            this.CityName = event.cityName
+            this.area = event.area
+            this.personalFormGroup.get('CityId').setValue(event.cityId)
 
-        this.onChangecityDD(event.cityId)
+            this.onChangecityDD(event.cityId)
         }
     }
 
@@ -807,7 +821,7 @@ debugger
             setTimeout(() => {
                 this._registerService.getRegistraionById(obj?.regId).subscribe((response) => {
                     this.registerObj = response;
-                    this.pincode=response.pinNo || ''
+                    this.pincode = response.pinNo || ''
                     console.log(this.registerObj)
                     this.isEditMode = true;
                     this.regNo = this.registerObj.regNo
