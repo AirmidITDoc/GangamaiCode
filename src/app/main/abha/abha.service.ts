@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ApiCaller } from 'app/core/services/apiCaller';
 import {
@@ -123,11 +123,18 @@ export class AbhaService {
     LinkToken(body: LinkTokenRequest): Observable<AadhaarGenerateOtpResponse> {
         return this.http.PostData('m2/hip-linking/link/carecontext', body);
     }
-    abhaGetReq(abhaNumber: any,abhaAddress:any ) {
+    abhaGetReq(abhaNumber: any, abhaAddress: any) {
         return this.http.GetData(`m2/hip-linking/${abhaNumber}?abhaAddress=${abhaAddress}`);
     }
 
     public getdepartmentById(Id) {
         return this.http.GetData("DepartmentMaster/" + Id);
+    }
+
+    private switchToCreateSource = new Subject<void>();
+    switchToCreate$ = this.switchToCreateSource.asObservable();
+
+    requestCreateAbha(): void {
+        this.switchToCreateSource.next();
     }
 }

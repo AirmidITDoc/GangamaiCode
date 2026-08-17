@@ -14,28 +14,19 @@
                     </div>
                 </label>
 
-                <!-- Custom -->
+                <!-- Custom (now also carries suggestions) -->
                 <label class="radio-card" [class.selected]="form.value.addressOption === 'custom'">
                     <mat-radio-button value="custom" color="primary"></mat-radio-button>
                     <div class="radio-content">
-                        <div class="radio-title">Create Custom ABHA Address</div>
-                        <div class="radio-subtitle">Choose a unique address you'll remember</div>
-                    </div>
-                </label>
-
-                <!-- Suggestion -->
-                <label class="radio-card" [class.selected]="form.value.addressOption === 'suggestion'">
-                    <mat-radio-button value="suggestion" color="primary"></mat-radio-button>
-                    <div class="radio-content">
-                        <div class="radio-title">Pick from Suggestions</div>
-                        <div class="radio-subtitle">System-suggested addresses based on your name</div>
+                        <div class="radio-title">Create Your ABHA Address</div>
+                        <div class="radio-subtitle">Type your own, or pick a suggestion below</div>
                     </div>
                 </label>
             </mat-radio-group>
 
-            <!-- Custom ABHA Address Input -->
+            <!-- Custom ABHA Address Input + Suggestions -->
             <div *ngIf="form.value.addressOption === 'custom'" class="custom-block">
-                <label class="field-label">Custom ABHA Address</label>
+                <label class="field-label">ABHA Address</label>
                 <div class="input-with-suffix">
                     <mat-form-field appearance="outline" class="full-width custom-input">
                         <input matInput formControlName="customAbhaAddress" placeholder="e.g. rahul.kumar92"
@@ -76,20 +67,20 @@
                 <p class="helper-text">
                     Try <span class="mono">{{ takenAbhaAddress }}</span> to see the "already exists" message.
                 </p>
-            </div>
 
-            <!-- Suggestion picker -->
-            <div *ngIf="form.value.addressOption === 'suggestion'" class="suggestion-block">
-                <label class="field-label">Pick a suggestion</label>
-                <div class="suggestions-list" *ngIf="!suggestionsLoading">
-                    <button *ngFor="let s of suggestions" type="button" mat-stroked-button class="suggestion-chip"
-                        [class.active]="form.value.selectedSuggestion === s" (click)="selectSuggestion(s)">
-                        {{ s }}<span class="muted">&#64;sbx</span>
-                    </button>
-                </div>
-                <div *ngIf="suggestionsLoading" class="loading-row">
-                    <mat-spinner diameter="20"></mat-spinner>
-                    <span>Loading suggestions...</span>
+                <!-- Suggestions -->
+                <div class="suggestion-block">
+                    <label class="field-label">Or pick a suggestion</label>
+                    <div class="suggestions-list" *ngIf="!suggestionsLoading">
+                        <button *ngFor="let s of suggestions" type="button" mat-stroked-button class="suggestion-chip"
+                            [class.active]="form.value.customAbhaAddress === s" (click)="selectSuggestion(s)">
+                            {{ s }}<span class="muted">&#64;sbx</span>
+                        </button>
+                    </div>
+                    <div *ngIf="suggestionsLoading" class="loading-row">
+                        <mat-spinner diameter="20"></mat-spinner>
+                        <span>Loading suggestions...</span>
+                    </div>
                 </div>
             </div>
 

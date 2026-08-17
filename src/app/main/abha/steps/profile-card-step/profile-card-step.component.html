@@ -572,7 +572,7 @@
                             {{ element.dateofBirth | date:'dd-MM-yyyy' }}
                         </span></mat-cell>
                 </ng-container>
-<!-- 
+                <!-- 
                 <ng-container matColumnDef="NoData">
                     <mat-footer-cell *matFooterCellDef>
                         <span>No Data Found</span>
@@ -582,7 +582,7 @@
                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onSelectPatient(row)"
                     [class.selected-row]="selectedRow === row"></mat-row>
-                <mat-footer-row ></mat-footer-row><!--*matFooterRowDef="['NoData']"-->
+                <mat-footer-row></mat-footer-row><!--*matFooterRowDef="['NoData']"-->
             </mat-table>
         </div>
 
@@ -667,14 +667,9 @@
                             </button>
                         </div>
 
-                        <!-- <div>
-                            <button mat-stroked-button (click)="onNewregistration()">
-                                New Registration
-                            </button>
-                        </div> -->
-
                         <!-- Update ABHA -->
-                        <div *ngIf="showUpdateAbha">
+                        <div *ngIf="showUpdateAbha" class="already-registered-row">
+                            <h2 style="font-weight: bold;">Already Registered</h2>
                             <button mat-raised-button color="primary" (click)="OnEditRegistration()">
                                 Update ABHA
                             </button>

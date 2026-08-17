@@ -38,11 +38,23 @@
             <span *ngIf="e['mobile']">{{ e['mobile'] }}</span>
           </mat-error>
         </mat-form-field>
+
+        <p *ngIf="errorMessage" style="color: #d32f2f; font-size: 0.85rem; margin: 0 0 4px 0;">
+          {{ errorMessage }}
+        </p>
+
         <p class="helper-text">
           Single ABHA demo: <span class="mono">{{ demoMobileSingle }}</span> ·
           Multiple ABHAs demo: <span class="mono">{{ demoMobileMulti }}</span>
         </p>
       </div>
+
+      <a (click)="onCreateAbhaClick()" *ngIf="showCreateAbhaLink"
+        style="color: #1976d2; font-size: 13px; font-weight: 500; text-decoration: underline; cursor: pointer; display: inline-block;"
+        onmouseover="this.style.textDecoration='none'; this.style.color='#115293';"
+        onmouseout="this.style.textDecoration='underline'; this.style.color='#1976d2';">
+        Create your ABHA now
+      </a>
 
       <div class="actions end">
         <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="action-btn">
@@ -151,8 +163,8 @@
         <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
           <mat-icon>arrow_back</mat-icon> Back
         </button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid || (otpExpired && !maxAttemptsReached)"
-          class="action-btn">
+        <button mat-raised-button color="primary" type="submit"
+          [disabled]="loading || otpForm.invalid || (otpExpired && !maxAttemptsReached)" class="action-btn">
           <ng-container *ngIf="!loading">
             Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
           </ng-container>
@@ -216,18 +228,18 @@
 </mat-card>
 
 <div class="success-overlay" *ngIf="showSuccessPopup">
-    <div class="success-popup">
-        <h2>Congratulations</h2>
-        <p>Welcome to ABHA Page</p>
+  <div class="success-popup">
+    <h2>Congratulations</h2>
+    <p>Welcome to ABHA Page</p>
 
-        <img src="assets/images/logos/success.png" width="100" height="100" alt="Success">
+    <img src="assets/images/logos/success.png" width="100" height="100" alt="Success">
 
-        <h3>Thank You</h3>
+    <h3>Thank You</h3>
 
-        <p>Your OTP verification has been completed successfully!</p>
+    <p>Your OTP verification has been completed successfully!</p>
 
-        <button mat-raised-button color="primary" (click)="closeSuccessPopup()">
-            OK
-        </button>
-    </div>
+    <button mat-raised-button color="primary" (click)="closeSuccessPopup()">
+      OK
+    </button>
+  </div>
 </div>

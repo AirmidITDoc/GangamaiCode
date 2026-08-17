@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { AbstractControl, FormArray, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AbhaService } from '../../abha.service';
 import { AadhaarGenerateOtpResponse, AadhaarVerifyOtpResponse } from '../../abha-model';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-otp-step',
@@ -23,17 +24,27 @@ export class OtpStepComponent implements OnInit {
     demoOtp: string;
 
     countdown = '01:00';
+    countdown1 = '01:00';
+    timeLeft1 = 60;
     timeLeft = 60;
     timer: any;
+    timer1: any;
     canResend = false;
+    canResend1 = false;
     resendAttempts = 0;
+    resendAttempts1 = 0;
     otpExpired = false;
+    otpExpired1 = false;
     @Output() sessionExpired = new EventEmitter<void>();
+    @Output() sessionExpired1 = new EventEmitter<void>();
     @Input() aadhaarNumber!: string;
     showSuccessPopup = false;
     accessToken: any;
+    @ViewChild('OtpForm') OtpForm!: TemplateRef<any>;
 
-    constructor(private abhaService: AbhaService, private snack: MatSnackBar) {
+    constructor(private abhaService: AbhaService, private snack: MatSnackBar,
+        public _matDialog: MatDialog,
+    ) {
         //this.demoOtp = this.abhaService.DEMO_OTP;
     }
 
@@ -43,12 +54,52 @@ export class OtpStepComponent implements OnInit {
         if (changes['txnId']?.currentValue) {
             this.startTimer();
         }
+        this.startTimer1();
 
         console.log("Aadhar number:", this.aadhaarNumber);
     }
 
     ngOnInit(): void {
-        // this.startTimer();
+        this.form.get('mobile')?.setValidators([
+            Validators.required,
+            this.lastFourDigitsMatchValidator()
+        ]);
+        this.form.get('mobile')?.updateValueAndValidity();
+    }
+
+    private getLastFourDigits(value: string): string {
+        const digitsOnly = (value || '').replace(/\D/g, '');
+        return digitsOnly.slice(-4);
+    }
+
+    private lastFourDigitsMatchValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const enteredValue: string = control.value || '';
+            if (!enteredValue) return null; // let 'required' handle empty case
+
+            const enteredLast4 = this.getLastFourDigits(enteredValue);
+            const maskedLast4 = this.getLastFourDigits(this.maskedAadhaarMobile);
+
+            // only compare once user has typed at least 4 digits
+            if (enteredLast4.length < 4) return null;
+
+            if (enteredLast4 !== maskedLast4) {
+                return { mismatch: 'Mobile number does not match' };
+            }
+            return null;
+        };
+    }
+
+    onMobileInput(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        // allow digits only
+        const cleaned = input.value.replace(/\D/g, '').slice(0, 10);
+        if (input.value !== cleaned) {
+            input.value = cleaned;
+            this.form.get('mobile')?.setValue(cleaned);
+        }
+        // re-run validation on every keystroke since validator was set once with a snapshot value
+        this.form.get('mobile')?.updateValueAndValidity();
     }
 
     startTimer() {
@@ -163,7 +214,6 @@ export class OtpStepComponent implements OnInit {
     }
 
     onResend(): void {
-
         this.otpExpired = false;
         if (this.resendAttemptsRemaining <= 0) {
             this.snack.open('No resend attempts remaining.', 'OK', { duration: 2500 });
@@ -213,5 +263,72 @@ export class OtpStepComponent implements OnInit {
 
     onBack(): void {
         this.back.emit();
+    }
+
+    LinkMobile(row: any = null): void {
+        console.log(row)
+        const dialogRef = this._matDialog.open(this.OtpForm, {
+            width: '30%',
+            height: '25%'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+        });
+    }
+
+    linkBtnVerify() {
+
+    }
+
+    get maxAttemptsReached1(): boolean {
+        return this.resendAttempts >= 2;
+    }
+
+    startTimer1() {
+        clearInterval(this.timer1);
+        this.canResend1 = false;
+        this.otpExpired1 = false;
+        this.timeLeft1 = 60;
+
+        this.updateCounter1();
+
+        this.timer1 = setInterval(() => {
+            if (this.timeLeft1 > 0) {
+                this.timeLeft1--;
+                this.updateCounter1();
+            } else {
+                clearInterval(this.timer1);
+                this.otpExpired1 = true;
+                if (this.resendAttempts1 >= 2) {
+                    this.sessionExpired1.emit();
+                } else {
+                    this.canResend1 = true;
+                }
+            }
+        }, 1000);
+    }
+
+    updateCounter1() {
+        const min = Math.floor(this.timeLeft1 / 60);
+        const sec = this.timeLeft1 % 60;
+        this.countdown1 =
+            `${min}:${sec < 10 ? '0' + sec : sec}`;
+    }
+
+    onOtpInput1(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        const cleaned = input.value.replace(/\D/g, '').slice(0, 6);
+        if (input.value !== cleaned) {
+            input.value = cleaned;
+            this.form.get('aadhaarOtp1')?.setValue(cleaned);
+        }
+    }
+
+    resendOtp1(): void {
+
+        if (this.resendAttempts1 >= 2) {
+            return;
+        }
+        this.form.get('aadhaarOtp1')?.reset();
+        // this.onSendOtp();
     }
 }

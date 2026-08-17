@@ -61,6 +61,11 @@ export class NewRegistrationComponent implements OnInit {
     filteredOptions1: any[] = [];
     ABHAId = 0
     debounceTimers: { [key: string]: any } = {};
+    genderList: any[] = [];
+    prefixList: any[] = [];
+    abhaGender: any;
+    isExpanded = false;
+    isExpanded1 = false;
 
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -71,6 +76,11 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModereligion: string = "Religion";
     autocompleteModerelationship: string = "Relationship";
 
+    normalizePrefix(value: string): string {
+        return value?.replace(/[^a-zA-Z]/g, '').trim().toLowerCase();
+        // "Mr.", "MR", "Mr", "MR." -> "mr"
+        // "Ms.", "MS", "Ms", "MS." -> "ms"
+    }
 
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
@@ -95,7 +105,11 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     onChangePrefix(e) {
-        this.ddlGender.SetSelection(e.sexId);
+        if (this.ABHAId > 0) {
+
+        } else {
+            this.ddlGender.SetSelection(e.sexId);
+        }
     }
     options: string[]
     filteredOptions: Observable<string[]>;
@@ -117,22 +131,28 @@ export class NewRegistrationComponent implements OnInit {
                     console.log(this.registerObj)
                     this.isEditMode = true;
                     this.ABHAId = response.abhaTranId
+
+                    if (this.ABHAId > 0) {
+                        this.isProfileData = true;
+                        this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
+                            this.abhaForm.patchValue({
+                                abhaAddress: response.abhaAddress,
+                                abhaNumber: response.abhaNumber,
+                                abhaFullName: response.abhaFullName,
+                                gender: response.gender,
+                                yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
+                            });
+                        });
+                    } else {
+                        this.isProfileData = false;
+                    }
+
                     this.regNo = this.registerObj.regNo
                     this.pincode = this.registerObj.pinNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                     this.value = this.registerObj.dateofBirth
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)
-
-                    this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
-                        this.isProfileData = true;
-                        this.abhaForm.patchValue({
-                            abhaAddress: response.abhaAddress,
-                            abhaNumber: response.abhaNumber,
-                            abhaFullName: response.abhaFullName,
-                            gender: response.gender,
-                            yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
-                        });
-                    });
+                    this.onChangePincode(this.pincode)
                 });
             }, 500);
         }
@@ -142,7 +162,8 @@ export class NewRegistrationComponent implements OnInit {
             setTimeout(() => {
                 this._registerService.getAbhaById(this.data.abhaTranId).subscribe((response) => {
                     console.log('Get ABHA DATA', response)
-
+                    this.abhaGender = response.gender
+                    this.tryMapGenderAndPrefix();
                     this.abhaForm.patchValue({
                         abhaAddress: response.abhaAddress,
                         abhaNumber: response.abhaNumber,
@@ -158,6 +179,9 @@ export class NewRegistrationComponent implements OnInit {
         if (this.data?.profile) {
             this.isProfileData = true;
             console.log('Profile data from ABHA', this.data.profile)
+            this.abhaGender = this.data.profile.gender
+            this.tryMapGenderAndPrefix();
+            this.onChangePincode(this.data.profile.pincode)
 
             this.personalFormGroup.patchValue({
                 FirstName: this.data.profile.firstName,
@@ -238,6 +262,10 @@ export class NewRegistrationComponent implements OnInit {
 
 
         // })
+        setTimeout(() => {
+            this.fetchGenderlist();
+            this.fetchPrefixlist();
+        }, 500);
     }
 
     get getAbhaInfo(): FormArray {
@@ -481,6 +509,154 @@ export class NewRegistrationComponent implements OnInit {
             this.ddlCountry.SetSelection(Response.countryId);
         });
 
+    }
+
+    tryMapGenderAndPrefix() {
+        debugger
+        if (!this.abhaGender) return;
+        if (this.genderList?.length) {
+            this.mapGenderLetterToGenderId(this.abhaGender);
+        }
+        if (this.prefixList?.length) {
+            this.mapGenderLetterToPrefix(this.abhaGender);
+        }
+    }
+
+    fetchGenderlist() {
+        const m_data =
+        {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "genderId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "GenderName",
+                    "fieldValue": "",
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "isActive",
+                    "fieldValue": "",
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+
+        this._registerService.GenderList(m_data).subscribe(list => {
+            this.genderList = list.data; // adjust based on your API response shape
+            this.tryMapGenderAndPrefix();
+
+            // If ABHA data is already available at this point, map it now
+            // if (this.abhaGender) {
+            //     this.mapAbhaGenderToId(this.abhaGender);
+            // }
+        });
+    }
+
+    fetchPrefixlist() {
+        const m_data =
+        {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "PrefixID",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "PrefixName",
+                    "fieldValue": "",
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "isActive",
+                    "fieldValue": "",
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+
+        this._registerService.PrefixList(m_data).subscribe(list => {
+            this.prefixList = list.data; // adjust based on your API response shape
+            this.tryMapGenderAndPrefix();
+        });
+    }
+
+    // mapAbhaGenderToId(abhaGenderValue: string) {
+    //     debugger
+    //     if (!abhaGenderValue || !this.genderList?.length) return;
+
+    //     const matched = this.genderList.find((g) => {
+    //         const name = g.genderName?.trim().toLowerCase();
+    //         const val = abhaGenderValue.trim().toLowerCase();
+    //         return name === val || name?.charAt(0) === val; // handles "M" vs "Male"
+    //     });
+
+    //     if (matched) {
+    //         this.registerObj.genderId = matched.genderId;
+
+    //         // update the form control
+    //         this.personalFormGroup.patchValue({ GenderId: matched.genderId });
+
+    //         // update the dropdown UI selection
+    //         this.ddlGender.SetSelection(matched.genderId);
+    //     } else {
+    //         console.warn('No matching gender found for ABHA value:', abhaGenderValue);
+    //     }
+    // }
+
+    mapGenderLetterToPrefix(genderLetter: string) {
+        debugger
+        if (!genderLetter || !this.prefixList?.length) return;
+
+        const letter = genderLetter.trim().toLowerCase(); // 'm' or 'f'
+        const targetPrefix = letter === 'm' ? 'mr' : letter === 'f' ? 'ms' : null;
+
+        if (!targetPrefix) {
+            console.warn('Unrecognized gender letter from ABHA:', genderLetter);
+            return;
+        }
+
+        // find ALL matching variants (there will be 4)
+        const matchedVariants = this.prefixList.filter(
+            p => this.normalizePrefix(p.prefixName) === targetPrefix
+        );
+
+        if (matchedVariants.length > 0) {
+            // pick the one you want as "default style" — e.g. first one, 
+            // or specifically look for the one with a dot: "Mr." / "Ms."
+            const preferred =
+                matchedVariants.find(p => p.prefixName === (targetPrefix === 'mr' ? 'Mr.' : 'Ms.'))
+                || matchedVariants[0]; // fallback to whichever comes first
+
+            this.registerObj.prefixId = preferred.prefixId;
+            this.personalFormGroup.patchValue({ PrefixId: preferred.prefixId });
+            // this.ddlPrefix.SetSelection(preferred.prefixId);
+
+            // now also set gender using existing prefix->gender logic
+            this.onChangePrefix({ sexId: preferred.sexId ?? this.registerObj.genderId });
+        }
+    }
+
+    mapGenderLetterToGenderId(genderLetter: string) {
+        debugger
+        if (!genderLetter || !this.genderList?.length) return;
+
+        const letter = genderLetter.trim().toLowerCase();
+        const targetGenderName = letter === 'm' ? 'male' : letter === 'f' ? 'female' : null;
+
+        const matched = this.genderList.find(
+            g => g.genderName?.trim().toLowerCase() === targetGenderName
+        );
+
+        if (matched) {
+            this.registerObj.genderId = matched.genderId;
+            this.personalFormGroup.patchValue({ GenderId: matched.genderId });
+            this.ddlGender.SetSelection(matched.genderId);
+        }
     }
 
     getValidationMessages() {

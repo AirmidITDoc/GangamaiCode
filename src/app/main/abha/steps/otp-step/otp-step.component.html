@@ -16,24 +16,22 @@
             <div class="field-block">
                 <label class="field-label">Mobile No:</label>
                 <mat-form-field appearance="outline" class="full-width">
-                    <input matInput formControlName="mobile" placeholder="Mobile No" autocomplete="off" />
+                    <input matInput formControlName="mobile" placeholder="Mobile No" autocomplete="off" maxlength="10"
+                        (input)="onMobileInput($event)" />
                     <mat-error *ngIf="form.get('mobile')?.errors as e">
                         <span *ngIf="e['required']">Mobile no is required</span>
                         <span *ngIf="e['name']">{{ e['name'] }}</span>
+                        <span *ngIf="e['mismatch']">{{ e['mismatch'] }}</span>
                     </mat-error>
                 </mat-form-field>
+
+                <button type="button" mat-raised-button color="primary" *ngIf="form.get('mobile')?.errors?.['mismatch']"
+                    (click)="LinkMobile()" style="margin-left: 5px;">
+                    Link
+                </button>
             </div>
             <div class="field-block">
                 <label class="field-label">6-digit OTP</label>
-                <!-- <mat-form-field appearance="outline" class="full-width">
-                    <input matInput type="password" formControlName="aadhaarOtp" placeholder="••••••"
-                        inputmode="numeric" maxlength="6" (input)="onOtpInput($event)" autocomplete="one-time-code" />
-                    <mat-error *ngIf="form.get('aadhaarOtp')?.errors as e">
-                        <span *ngIf="e['required']">OTP is required</span>
-                        <span *ngIf="e['otp']">{{ e['otp'] }}</span>
-                        <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
-                    </mat-error>
-                </mat-form-field> -->
 
                 <div class="otp-wrapper">
                     <mat-form-field appearance="outline" class="full-width">
@@ -61,7 +59,8 @@
                         </span>
 
                         <!-- warning -->
-                        <div class="warning-text" *ngIf="!canResend && !maxAttemptsReached && timeLeft > 0 && timeLeft <= 10">
+                        <div class="warning-text"
+                            *ngIf="!canResend && !maxAttemptsReached && timeLeft > 0 && timeLeft <= 10">
                             OTP will expire in {{ timeLeft }} seconds.
                         </div>
 
@@ -133,3 +132,78 @@
         </button>
     </div>
 </div>
+
+<ng-template #OtpForm>
+    <mat-toolbar class="accent" style="width: 100%; height: 45px; justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span style="font-size: 16px;">Confirm OTP</span>
+        </div>
+
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="field-block" style="padding: 5px;">
+        <!-- <label class="field-label">6-digit OTP</label> -->
+
+        <div class="otp-wrapper">
+            <mat-form-field appearance="outline" class="full-width">
+                <input matInput [type]="hideOtp ? 'password' : 'text'" formControlName="aadhaarOtp1" placeholder="••••••"
+                    inputmode="numeric" maxlength="6" (input)="onOtpInput1($event)" autocomplete="one-time-code" />
+
+                <button mat-icon-button matSuffix type="button" (click)="hideOtp = !hideOtp"
+                    [attr.aria-label]="'Toggle OTP visibility'">
+                    <mat-icon>{{ hideOtp ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+
+                <mat-error *ngIf="form.get('aadhaarOtp1')?.errors as e">
+                    <span *ngIf="e['required']">OTP is required</span>
+                    <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+                    <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="otp-info">
+
+                <!-- Timer -->
+                <span class="timer" *ngIf="!canResend1 && !maxAttemptsReached1">
+                    {{ countdown1 }}
+                </span>
+
+                <!-- warning -->
+                <div class="warning-text" *ngIf="!canResend1 && !maxAttemptsReached1 && timeLeft1 > 0 && timeLeft1 <= 10">
+                    OTP will expire in {{ timeLeft1 }} seconds.
+                </div>
+
+                <!-- Resend -->
+                <button mat-button color="primary" type="button" *ngIf="canResend1 && resendAttempts1 < 2"
+                    (click)="resendOtp1()">
+                    Resend OTP
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+
+                <small *ngIf="resendAttempts1 < 2">
+                    Attempts left: {{2 - resendAttempts1}}/2
+                </small>
+
+                <small class="text-danger" *ngIf="resendAttempts1 >=2">
+                    Attempts left: 0/2 (No more resend attempts)
+                </small>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end center" class="p-12 border-top" style="width: 100%;">
+        <button class="btn btn-danger-outline" [mat-dialog-close]="true">
+            Close
+        </button>
+        <button class="btn btn-primary" color="accent" (click)="linkBtnVerify()">
+            Verify
+        </button>
+    </div>
+</ng-template>

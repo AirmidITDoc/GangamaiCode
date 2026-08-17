@@ -945,3 +945,11 @@
 .selected-row:hover {
   background-color: #bbdefb !important;
 }
+.already-registered-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 5px;
+    padding: 8px 12px;
+}
