@@ -23,8 +23,8 @@ export class DocumentmanagementService {
             sortOrder: null
         })
     }
-    public getItemTable1List(Param) {
-        return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
+    public saveCategory(Param) {
+        return this._httpClient.PostData("DocumentCategory/" , Param);
     }
     public getItemTable1ListData(Param) {
         return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);

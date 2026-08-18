@@ -9,6 +9,7 @@ import { FileSizePipe } from './pipes/file-size.pipe';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { CategoryTreeComponent } from './components/category-tree/category-tree.component';
 import { PreviewDialogComponent } from './components/preview-dialog/preview-dialog.component';
+import { SharedModule as MainSharedModule  } from 'app/main/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,8 +20,8 @@ import { PreviewDialogComponent } from './components/preview-dialog/preview-dial
     CategoryTreeComponent,
     PreviewDialogComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, MaterialModule],
-  exports: [
+  imports: [MainSharedModule,CommonModule, FormsModule, ReactiveFormsModule, RouterModule, MaterialModule],
+  exports: [MainSharedModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

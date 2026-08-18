@@ -29,9 +29,12 @@ export class CategoryFormDialogComponent {
         this.categoryForm.markAllAsTouched();
     }
     submit(): void {
-        if (!this.name.trim()) return;
-        const result: CategoryFormResult = { name: this.name.trim(), icon: this.icon };
-        this.dialogRef.close(result);
+        if (!this.categoryForm.invalid) {
+            this.categoryForm.controls["icon"].setValue(this.icon);
+            this._service.saveCategory(this.categoryForm.value).subscribe((res) => {
+                this.dialogRef.close(res);
+            })
+        }
     }
 
     cancel(): void {
