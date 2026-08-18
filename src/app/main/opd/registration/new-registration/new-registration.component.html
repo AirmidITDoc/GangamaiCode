@@ -486,6 +486,11 @@
                         <mat-panel-title>View ABHA Address's</mat-panel-title>
                     </mat-expansion-panel-header>
 
+                    <mat-chip-set>
+                        <mat-chip *ngFor="let item of abhaList">
+                            {{ item.abhaAddress }}
+                        </mat-chip>
+                    </mat-chip-set>
                 </mat-expansion-panel>
             </mat-accordion>
 

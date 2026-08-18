@@ -220,6 +220,9 @@ export class RegistrationService {
     public getAbhaById(Id) {
         return this._httpClient1.GetData("PatientAbhaInformation/" + Id);
     }
+    public getAbhaByNumber(Id) {
+        return this._httpClient1.GetData("PatientAbhaInformation/ByAbhaNumber/" + Id);
+    }
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
 
         return this._httpClient1.GetData(apiUrl + inputValue);

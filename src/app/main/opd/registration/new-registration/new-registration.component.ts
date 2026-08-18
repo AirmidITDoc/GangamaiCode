@@ -66,6 +66,8 @@ export class NewRegistrationComponent implements OnInit {
     abhaGender: any;
     isExpanded = false;
     isExpanded1 = false;
+    abhaNumber: any;
+    abhaList: any = [];
 
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -131,10 +133,11 @@ export class NewRegistrationComponent implements OnInit {
                     console.log(this.registerObj)
                     this.isEditMode = true;
                     this.ABHAId = response.abhaTranId
-
                     if (this.ABHAId > 0) {
                         this.isProfileData = true;
                         this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
+                            this.abhaNumber = response.abhaNumber
+
                             this.abhaForm.patchValue({
                                 abhaAddress: response.abhaAddress,
                                 abhaNumber: response.abhaNumber,
@@ -142,6 +145,13 @@ export class NewRegistrationComponent implements OnInit {
                                 gender: response.gender,
                                 yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
                             });
+
+                            if (this.abhaNumber) {
+                                this._registerService.getAbhaByNumber(this.abhaNumber).subscribe((response) => {
+                                    this.abhaList = response
+                                    console.log("ABHA List:", this.abhaList)
+                                });
+                            }
                         });
                     } else {
                         this.isProfileData = false;
@@ -512,7 +522,6 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     tryMapGenderAndPrefix() {
-        debugger
         if (!this.abhaGender) return;
         if (this.genderList?.length) {
             this.mapGenderLetterToGenderId(this.abhaGender);
@@ -585,31 +594,8 @@ export class NewRegistrationComponent implements OnInit {
         });
     }
 
-    // mapAbhaGenderToId(abhaGenderValue: string) {
-    //     debugger
-    //     if (!abhaGenderValue || !this.genderList?.length) return;
-
-    //     const matched = this.genderList.find((g) => {
-    //         const name = g.genderName?.trim().toLowerCase();
-    //         const val = abhaGenderValue.trim().toLowerCase();
-    //         return name === val || name?.charAt(0) === val; // handles "M" vs "Male"
-    //     });
-
-    //     if (matched) {
-    //         this.registerObj.genderId = matched.genderId;
-
-    //         // update the form control
-    //         this.personalFormGroup.patchValue({ GenderId: matched.genderId });
-
-    //         // update the dropdown UI selection
-    //         this.ddlGender.SetSelection(matched.genderId);
-    //     } else {
-    //         console.warn('No matching gender found for ABHA value:', abhaGenderValue);
-    //     }
-    // }
-
     mapGenderLetterToPrefix(genderLetter: string) {
-        debugger
+        // debugger
         if (!genderLetter || !this.prefixList?.length) return;
 
         const letter = genderLetter.trim().toLowerCase(); // 'm' or 'f'
@@ -642,7 +628,7 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     mapGenderLetterToGenderId(genderLetter: string) {
-        debugger
+        // debugger
         if (!genderLetter || !this.genderList?.length) return;
 
         const letter = genderLetter.trim().toLowerCase();
@@ -759,7 +745,7 @@ export class NewRegistrationComponent implements OnInit {
     area = ''
     onChangeArea(event) {
         console.log(event)
-        debugger
+        // debugger
         if (event.cityId) {
             this.pincode = event.pincode
             this.CityName = event.cityName
@@ -793,7 +779,7 @@ export class NewRegistrationComponent implements OnInit {
         }
     }
     onChangecityDD(obj) {
-        debugger
+        // debugger
         this._registerService.getstatebypincode(obj).subscribe((data: any) => {
             console.log(data)
 
@@ -807,7 +793,7 @@ export class NewRegistrationComponent implements OnInit {
 
     value = new Date()
     onChangeDateofBirth(DateOfBirth: Date | string) {
-        debugger
+        // debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
