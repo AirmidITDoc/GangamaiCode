@@ -36,6 +36,7 @@ export class CategoriesComponent {
     }
 
     openAddDialog(parentId: any): void {
+        debugger
         if (parentId.mode == 'delete') {
             this.onDelete(parentId.id);
         }
