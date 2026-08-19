@@ -45,6 +45,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatChipsModule } from '@angular/material/chips';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { WebcamModule } from 'ngx-webcam';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatSliderModule } from '@angular/material/slider';
 
 const routes: Routes = [
 
@@ -112,6 +115,10 @@ const routes: Routes = [
         MatChipsModule,
         OverlayModule,
 
+
+        MatGridListModule,
+        MatTreeModule,
+        MatSliderModule,
 
     ],
     providers: [

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -27,7 +27,16 @@ export class AirmidCommonTableComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.loadData();
     }
+
+    ngOnChanges(changes: SimpleChanges): void {
+    if (changes['filters'] || changes['mode']) {
+    this.loadData();
+    }
+  }
+  
     loadData() {
+
+        debugger
         var param = { Mode: this.mode, SearchFields: this.filters };
         this._httpClient.PostData("Common/get-data-table-by-proc", param).subscribe(res => {
             const data = res;

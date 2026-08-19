@@ -11,6 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { NewTallyInerfaceComponent } from './new-tally-inerface/new-tally-inerface.component';
 
 
 const appRoutes: Routes = [
@@ -54,9 +55,13 @@ const appRoutes: Routes = [
         path: "paymentmodechangesforpharmacy",
         loadChildren: () => import("./paymentmodechangesfor-pharmacy/paymentmodechangesfor-pharmacy.module").then((m) => m.PaymentmodechangesforPharmacyModule),
     },
-    {
+    // {
+    //     path: "tallyinterface",
+    //     loadChildren: () => import("./tally-interface/tally-interface.module").then((m) => m.TallyInterfaceModule),
+    // },
+     {
         path: "tallyinterface",
-        loadChildren: () => import("./tally-interface/tally-interface.module").then((m) => m.TallyInterfaceModule),
+        loadChildren: () => import("./new-tally-inerface/new-tally-interface.module").then((m) => m.NewTallyInterfaceModule),
     },
     {
         path: "dischargecancel",
@@ -103,8 +108,8 @@ const appRoutes: Routes = [
     declarations: [
 
 
-
-    ],
+    
+  ],
     imports: [
         RouterModule.forChild(appRoutes),
         MatToolbarModule,

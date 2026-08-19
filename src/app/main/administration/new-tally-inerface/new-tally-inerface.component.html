@@ -1,0 +1,401 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+
+
+        <mat-tab label="OP Tally ">
+            <div fusePerfectScrollbar>
+
+                <div fxLayout="column" class="gap-4 h-10-p">
+                    <div class="modal-card-container" style="padding: 10px;">
+                        <mat-card>
+                            <form [formGroup]="myFilteropcashcounerform">
+                                <div class="patient-search">
+                                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                        <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="Picker1">
+                                                    <input matStartDate formControlName="fromDate"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="Picker1"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #Picker1></mat-date-range-picker>
+                                            </mat-form-field>
+
+
+                                            <div class="action-buttons" style="padding: 10px;">
+
+                                                <button mat-raised-button class="search-button" (click)="onChangeDateOP()"
+                                                    matTooltip="search">
+                                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-card>
+                    </div>
+                </div>
+
+ <!-- OP Bill  -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    OP Payment
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeOPbill" [filters]="filtersop"
+                            *ngIf="modeOPbill!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+               
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    OP Refund
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeOPbillrefund" [filters]="filtersop"
+                            *ngIf="modeOPbillrefund!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+            </div>
+        </mat-tab>
+        <mat-tab label="IP Tally ">
+            <div fusePerfectScrollbar>
+
+                <div fxLayout="column" class="gap-4 h-10-p">
+                    <div class="modal-card-container" style="padding: 10px;">
+                        <mat-card>
+                            <form [formGroup]="myFilterIpBillform">
+                                <div class="patient-search">
+                                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                        <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="Picker2">
+                                                    <input matStartDate formControlName="fromDate"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="Picker2"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #Picker2></mat-date-range-picker>
+                                            </mat-form-field>
+
+
+                                            <div class="action-buttons" style="padding: 10px;">
+
+                                                <button mat-raised-button class="search-button" (click)="onChangeDateIP()"
+                                                    matTooltip="search">
+                                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-card>
+                    </div>
+                </div>
+
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Payment
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeIPPay" [filters]="filtersIP"
+                            *ngIf="modeIPPay!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+                <!-- IP Bill  -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Patient Wise
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeIPBillPatientwise" [filters]="filtersIP"
+                            *ngIf="modeIPBillPatientwise!=''"></airmid-common-table>
+                    </div>
+                </div>
+                <!-- //IP Advance -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Detail Wise
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeIPbilldetail" [filters]="filtersIP"
+                            *ngIf="modeIPbilldetail!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+                <!-- //IP Adv Refund -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Refund
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeIpbillrefund" [filters]="filtersIP"
+                            *ngIf="modeIpbillrefund!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+
+            </div>
+        </mat-tab>
+        <mat-tab label="IP Advance Tally ">
+            <div fusePerfectScrollbar>
+
+                <div fxLayout="column" class="gap-4 h-10-p">
+                    <div class="modal-card-container" style="padding: 10px;">
+                        <mat-card>
+                            <form [formGroup]="myFilterIpAdvform">
+                                <div class="patient-search">
+                                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                        <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="Picker3">
+                                                    <input matStartDate formControlName="fromDate"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="Picker3"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #Picker3></mat-date-range-picker>
+                                            </mat-form-field>
+
+
+                                            <div class="action-buttons" style="padding: 10px;">
+
+                                                <button mat-raised-button class="search-button" (click)="onChangeDateAdv()"
+                                                    matTooltip="search">
+                                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-card>
+                    </div>
+                </div>
+
+
+                <!-- //IP Advance -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Advance
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeIPadv" [filters]="filtersAdv"
+                            *ngIf="modeIPadv!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+                <!-- //IP Adv Refund -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Advance Refund
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeAdvrefund" [filters]="filtersAdv"
+                            *ngIf="modeAdvrefund!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+            </div>
+        </mat-tab>
+        <mat-tab label="Pharmacy Sales Tally ">
+            <div fusePerfectScrollbar>
+
+                <div fxLayout="column" class="gap-4 h-10-p">
+                    <div class="modal-card-container" style="padding: 10px;">
+                        <mat-card>
+                            <form [formGroup]="myFiltersalesform">
+                                <div class="patient-search">
+                                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                        <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="Picker4">
+                                                    <input matStartDate formControlName="fromDate"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="Picker4"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #Picker4></mat-date-range-picker>
+                                            </mat-form-field>
+
+
+                                            <div class="action-buttons" style="padding: 10px;">
+
+                                                <button mat-raised-button class="search-button" (click)="onChangeDatesales()"
+                                                    matTooltip="search">
+                                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-card>
+                    </div>
+                </div>
+
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    Pharmacy Sales Payment List
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeSalesPaydetail" [filters]="filterssales"
+                            *ngIf="modeSalesPaydetail!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+                <!-- IP Bill Refund -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    Pharmacy Sales Detail
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeSalesdetail" [filters]="filterssales" *ngIf="modeSalesdetail!=''"></airmid-common-table>
+                    </div>
+                </div>
+                <!-- //IP Advance -->
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    Pharmacy Sales Return
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-common-table [mode]="modeSalesdetail" [filters]="filterssales"
+                            *ngIf="modeSalesdetail!=''"></airmid-common-table>
+                    </div>
+                </div>
+
+               
+
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+
+
+</div>

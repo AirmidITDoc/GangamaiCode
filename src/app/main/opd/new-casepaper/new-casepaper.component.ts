@@ -34,6 +34,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { SampleList } from 'app/main/pathology/result-entry/result-entry.component';
 import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
 import { NewInstructionMasterComponent } from 'app/main/setup/prescription/instructionmaster/new-instruction-master/new-instruction-master.component';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -166,8 +167,9 @@ export class NewCasepaperComponent implements OnInit {
     selectedFile: File | null = null;
     previewUrl: string | null = null;
     vTariffId: any;
-
-    departmentId: any;
+    vhistoryofillness: any;
+    departmentId: any = 0;
+    doctorId: any = 0
     departmentName = ''
     vIcdcode = ''
 
@@ -187,6 +189,7 @@ export class NewCasepaperComponent implements OnInit {
     dsItemList = new MatTableDataSource<MedicineItemList>();
     dsCopyItemList = new MatTableDataSource<MedicineItemList>();
     public dsResultViewList = new MatTableDataSource<MedicineItemList>();
+    public dsResultViewList1 = new MatTableDataSource<MedicineItemList>();
 
     autocompleteModeItem: string = "Item"; //ItemType
     autocompleteModeItemGeneric: string = "ItemGeneric";
@@ -224,8 +227,6 @@ export class NewCasepaperComponent implements OnInit {
         public speechService: SpeechRecognitionService,
         public _ConfigService: ConfigService,
     ) {
-
-        debugger
 
         const rawValue = this?._ConfigService?.configParams?.FollowUpdateSet || "";
         const [id, FollowUpdateSet] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
@@ -274,6 +275,7 @@ export class NewCasepaperComponent implements OnInit {
 
         if (this.data) {
             this.regObj = this.data
+            console.log(this.data)
             this.RegNo = this.regObj.regNoWithPrefix
             this.vOPIPId = this.regObj.visitId
             this.VisitId = this.regObj.visitId
@@ -304,12 +306,33 @@ export class NewCasepaperComponent implements OnInit {
             if (this.data.emrReady > 0) {
                 this.calculateDays(this.regObj);
             }
+
+
+        }
+        debugger
+        if (this.data.emrReady == 0) {
+
+            this.MedicineItemForm.get('departmentId').setValue(this.regObj.departmentId)
+            if (this.regObj.departmentId) {
+                this.departmentId = this.regObj.departmentId
+                this.doctorId = this.regObj.doctorId
+                setTimeout(() => {
+                    this._CasepaperService.getDoctorsByDepartment(this.regObj.departmentId).subscribe((data: any) => {
+                        this.ddlDoctor.options = data;
+                        console.log(data)
+
+                        this.ddlDoctor.bindGridAutoComplete();
+
+                    });
+                }, 500);
+            }
+            this.MedicineItemForm.get('DoctorID')?.setValue(this.regObj.doctorId);
         }
 
         this.loadGridDataForVisit(this.VisitId);
     }
     calculateDays(regObj) {
-        debugger
+
         const today = new Date();
 
         const [day, month, year] = regObj.followupDate.split('/').map(Number);
@@ -478,7 +501,7 @@ export class NewCasepaperComponent implements OnInit {
             mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
-            //HistoryIllness:['']
+            historyOfIllness: ['']
         });
     }
 
@@ -490,8 +513,8 @@ export class NewCasepaperComponent implements OnInit {
             Day: ['', [Validators.required, Validators.pattern("^^[1-9]+[0-9]*$")]],
             ItemGenericNameId: '',
             Instruction: ['', [Validators.maxLength(200)]],
-            DoctorID: '',
-            Departmentid: '',
+            DoctorID: [this.doctorId],
+            departmentId: [this.departmentId],
             FollowupDays: '',
             start: [new Date()],
             Remark: ['', [Validators.maxLength(200)]],
@@ -552,10 +575,12 @@ export class NewCasepaperComponent implements OnInit {
             bp: [element.bp ?? element.BP ?? ''],
             storeId: [this._loggedService.currentUserValue.user.storeId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             patientReferDocId: [element.patientReferDocId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId: [element.departmentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             advice: [element.advice ?? element.Remark ?? ''],
             isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             allergy: [element.allergy ?? ''],
             bloodGroup: [element.bloodGroup ?? ''],
+            historyOfIllness: [element.historyOfIllness ?? '']
         });
     }
 
@@ -570,8 +595,8 @@ export class NewCasepaperComponent implements OnInit {
             visitId: [this.VisitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            icdcode: [''],
-            diagnosisName: ['']
+            icdcode:[''],// [element.icdcode ?? ''],
+            diagnosisName:['']// [element.diagnosisName ?? '']
         });
     }
     // 5.FormArray Getters
@@ -654,7 +679,9 @@ export class NewCasepaperComponent implements OnInit {
                 examination: this.caseFormGroup.get('Examination')?.value,
                 advice: this.MedicineItemForm.get('Remark')?.value,
                 isEnglishOrIsMarathi: JSON.parse(this.caseFormGroup.get('LangaugeRadio')?.value),
-                patientReferDocId: Number(ReferDocNameID)
+                patientReferDocId: Number(ReferDocNameID),
+                departmentId: this.departmentId,//this.MedicineItemForm.get('departmentId')?.value,
+                historyOfIllness: this.caseFormGroup.get('historyOfIllness')?.value,
             };
 
             if (this.dsItemList.data.length === 0) {
@@ -719,7 +746,7 @@ export class NewCasepaperComponent implements OnInit {
                 //   this.OnViewReportWithHeaderPdf(this.VisitId)
                 // else
                 //   this.OnViewReportWithoutHeaderPdf(this.VisitId)
-                debugger
+
                 const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
                 if (response) {
                     if (PrescriptionA5_Print != 1) {
@@ -830,7 +857,8 @@ export class NewCasepaperComponent implements OnInit {
 
         this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
             const allItems = Visit?.data as MedicineItemList[] || [];
-            // debugger
+            console.log(allItems)
+            // 
             if (allItems.length > 0 && allItems[0].precriptionId) {
                 const firstItem = allItems[0];
 
@@ -845,9 +873,10 @@ export class NewCasepaperComponent implements OnInit {
                     BP: current.BP || firstItem.bp,
                     Temp: current.Temp || firstItem.temp,
                     Allergies: current.Allergies || firstItem.allergy,
-                    BloodGroup: current.BloodGroup || firstItem.bloodGroup
+                    BloodGroup: current.BloodGroup || firstItem.bloodGroup,
+                    historyOfIllness: current.historyOfIllness || firstItem.historyOfIllness
                 });
-
+                this.vhistoryofillness = firstItem.historyOfIllness
                 this.vChiefComplaint = firstItem.chiefComplaint;
                 this.vDiagnosis = firstItem.diagnosis;
                 this.vExamination = firstItem.examination;
@@ -855,6 +884,21 @@ export class NewCasepaperComponent implements OnInit {
                 this.MedicineItemForm.get('start')?.setValue(new Date(this.PrefollowUpDate));
                 this.MedicineItemForm.get('Remark')?.setValue(firstItem.advice);
                 this.RefDocName = firstItem.doctorname;
+                this.departmentId = firstItem.departmentId
+                this.doctorId = firstItem.patientReferDocId
+                this.MedicineItemForm.get('departmentId').setValue(firstItem.departmentId)
+                if (firstItem.departmentId) {
+
+                    setTimeout(() => {
+                        this._CasepaperService.getDoctorsByDepartment(firstItem.departmentId).subscribe((data: any) => {
+                            this.ddlDoctor.options = data;
+                            console.log(data)
+                            debugger
+                            this.ddlDoctor.bindGridAutoComplete();
+
+                        });
+                    }, 500);
+                }
                 this.MedicineItemForm.get('DoctorID')?.setValue(firstItem.patientReferDocId);
 
                 this.vDrugName = firstItem.drugName;
@@ -2172,7 +2216,7 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     addTemplateDescription() {
-        debugger
+
         this.isButtonDisabled = false;
         if (!this.mycertificateForm.get('CertificateTemplateId').value) {
             this.toastr.warning('Please select Certificate Template ', 'Warning !', {
@@ -2292,7 +2336,7 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     getCertificatesByVisitId(visitId: string) {
-        // debugger
+        // 
         const D_data = {
             "first": 0,
             "rows": 9999,
@@ -2364,7 +2408,7 @@ export class NewCasepaperComponent implements OnInit {
 
         this._CasepaperService.getLabRadList(D_data).subscribe(Visit => {
             const allData = Visit.data as labRadList[];
-            // debugger
+            // 
             this.LabMap[visitId] = allData.filter(item => item.patientType === 'PathologyTestList');
             this.RadMap[visitId] = allData.filter(item => item.patientType === 'RadiologyTestList');
 
@@ -2609,7 +2653,44 @@ export class NewCasepaperComponent implements OnInit {
     }
     CompletdFlag: any = 0;
     Printresultentrymulti(row: any) {
-        debugger
+
+        const pathologyDelete = [];
+        this.selectedItem = this.selection.selected[0];
+        this.selection.selected.forEach((element) => {
+            if (element?.isCompleted) {
+                this.CompletdFlag = 1
+                pathologyDelete.push({ pathReportId: element.pathReportID });
+            }
+            else {
+                this.CompletdFlag = 0
+            }
+        });
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+        console.log(submitData);
+        if (this.CompletdFlag) {
+            if (row == true) {
+                this._CasepaperService.PathPrintResultentryInsert(submitData).subscribe(res => {
+                    if (res) {
+                        this.viewgetPathologyTestReportPdf("0")
+                    }
+                });
+            } else {
+                this._CasepaperService.PathPrintResultentryInsert(submitData).subscribe(res => {
+                    if (res) {
+                        this.viewgetPathologyTestReportwithheaderPdf("0")
+                    }
+                });
+            }
+        } else {
+            Swal.fire("Selcted test Not Completd for Print.....")
+        }
+    }
+
+
+    Printresultentrymulti1(row: any) {
+
         const pathologyDelete = [];
         this.selectedItem = this.selection.selected[0];
         this.selection.selected.forEach((element) => {
@@ -2690,7 +2771,7 @@ export class NewCasepaperComponent implements OnInit {
     public displayedResultViewColumns =
         ['sequence', 'TestName', 'ParameterName', 'ResultValue', 'Flag', 'NormalRange'];
     @ViewChild('ResultViewTab') ResultViewTab!: TemplateRef<any>;
-
+    @ViewChild('ResultViewTab1') ResultViewTab1!: TemplateRef<any>;
     getLabResultview(row: any): void {
         this._matDialog.open(this.ResultViewTab, {
             width: '65%',
@@ -2755,10 +2836,34 @@ export class NewCasepaperComponent implements OnInit {
             }
         });
     }
+    abnormal: boolean = false
+    getLabResultview1(row: any): void {
+        this._matDialog.open(this.ResultViewTab1, {
+            width: '65%',
+            height: '75%',
+        })
+        var param = {
+            "searchFields": [
+                {
+                    "fieldName": "PathReportId",
+                    "fieldValue": String(row.pathReportID), //"150598",  
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "PathologyResultListabnormal"
+        }
 
-    //
+        this._CasepaperService.getabnormalLabResultView(param).subscribe((response) => {
 
-
+            if (response) {
+                this.dsResultViewList1.data = response;
+                if (this.dsResultViewList1.data.length > 0)
+                    this.abnormal = true
+                console.log(this.dsResultViewList1.data)
+            }
+        });
+    }
+    
     OnipRequest() {
 
         Swal.fire({
@@ -2785,6 +2890,8 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     selectChangedepartment(obj: any) {
+
+        console.log(obj)
         this.departmentId = obj.value;
         this.departmentName = obj.text;
 
@@ -2913,6 +3020,8 @@ export class CasepaperVisitDetails {
     patientReferDocId: any
     drugName: any;
     tariffId: any;
+    departmentId: any;
+    doctorId: any
     MAssignService: ServiceDet[];
     MAssignService1: ServiceDet[];
 
@@ -2992,6 +3101,10 @@ export class CasepaperVisitDetails {
         this.MAssignService = casePaperDetails.MAssignService;
         this.MAssignService1 = casePaperDetails.MAssignService1;
         this.tariffId = casePaperDetails.tariffId;
+        this.departmentId = casePaperDetails.departmentId || 0;
+        this.doctorId = casePaperDetails.doctorId || 0;
+
+
     }
 
 
@@ -3100,6 +3213,8 @@ export class MedicineItemList {
     allergy: any;
     bloodGroup: any;
     editable: any;
+    departmentId: any
+    historyOfIllness: any
     /**
     * Constructor
     *
@@ -3185,6 +3300,10 @@ export class MedicineItemList {
             this.allergy = MedicineItemList.allergy || ''
             this.bloodGroup = MedicineItemList.bloodGroup || ''
             this.editable = MedicineItemList.editable || ''
+            this.departmentId = MedicineItemList.departmentId || 0
+            this.historyOfIllness = MedicineItemList.historyOfIllness || ''
+
+
         }
     }
 }

@@ -62,7 +62,10 @@ export class AdministrationService {
     public getDateTimeChangeBill(m_data) {
         return this._httpClient.PutData("Administration/UpdateBilldatetime" + m_data.billNo, m_data);
     }
-
+    
+ public ChangeadvRefunddate(m_data) {
+        return this._httpClient.PutData("Administration/UpdateBilldatetime" + m_data.billNo, m_data);
+    }
     public OPBillDetailList(m_data) {
         return this._httpClient.PostData("OPBill/BrowseOPDBillPagiList", m_data);
     }
@@ -98,6 +101,11 @@ export class AdministrationService {
 
         return this._httpClient.PostData("Common", param)
     }
+ public getAdvanceRefundList(param) {
+
+        return this._httpClient.PostData("Common", param)
+    }
+    
 
     public getBillRefundDetailList(param) {
 

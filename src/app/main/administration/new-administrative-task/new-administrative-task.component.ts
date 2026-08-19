@@ -34,7 +34,7 @@ export class NewAdministrativeTaskComponent {
     @ViewChild('visitTable') visitTable!: TemplateRef<any>;
     @ViewChild('admissionCancle') admissionCancle!: TemplateRef<any>;
 
-
+    @ViewChild('Refunddate') Refunddate!: TemplateRef<any>;
 
 
     myForm: FormGroup;
@@ -143,6 +143,15 @@ export class NewAdministrativeTaskComponent {
         'action'
     ];
 
+    displayedColumnsadv: string[] = [
+        'RefundTime',
+        'RefundNo',
+        'RefundAmount',
+        'Remark',
+
+        'action'
+    ];
+
     dataSource = new MatTableDataSource<VisitAdmissionList>();
     dataSource1 = new MatTableDataSource<VisitAdmissionList>();
 
@@ -151,7 +160,7 @@ export class NewAdministrativeTaskComponent {
     dataSourceAdvance = new MatTableDataSource<AdvanceDetail>();
     dataSourceRefund = new MatTableDataSource<RefundBillMaster>();
     dataSourceAdmission = new MatTableDataSource<Bill>();
-
+    dataSourceadvRefund = new MatTableDataSource<RefundBillMaster>();
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -308,6 +317,7 @@ export class NewAdministrativeTaskComponent {
                     if (this.VistId > 0) {
                         this.GetRefundData()
                         this.GetAdvanceData()
+                        this.GetAdvanceRefundData()
                     }
                 }
 
@@ -318,12 +328,6 @@ export class NewAdministrativeTaskComponent {
 
 
     GetBillData() {
-        // if (element.VisitId)
-        //       this.VistId = element.VisitId
-        //     else
-        //       this.VistId = element.AdmissionID
-
-
         const SelectQuery =
         {
             "searchFields": [
@@ -431,7 +435,34 @@ export class NewAdministrativeTaskComponent {
 
         });
     }
+    GetAdvanceRefundData() {
 
+
+        const SelectQuery =
+        {
+            "searchFields": [
+                {
+                    "fieldName": "VisitId",
+                    "fieldValue": String(this.VistId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "OPIPType",
+                    "fieldValue": String(this.OPIPType),
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "BrowseIPRefundAdvanceAdmin"
+        }
+
+        console.log(SelectQuery);
+
+        this._AdministrativetaskService.getAdvanceRefundList(SelectQuery).subscribe(data => {
+            this.dataSourceadvRefund.data = data as RefundBillMaster[];
+            console.log(this.dataSourceadvRefund.data)
+
+        });
+    }
 
     DischargeCancel(contact) {
 
@@ -483,8 +514,8 @@ export class NewAdministrativeTaskComponent {
     }
 
     AdmissionCancle() {
-debugger
-        if (this.dataSourceAdmission.data.length >0) {
+        debugger
+        if (this.dataSourceAdmission.data.length > 0) {
             if (!this.AdmissionCancleTaskForm.invalid) {
                 Swal.fire({
                     title: 'Do you want to cancel the Admission ',
@@ -538,6 +569,53 @@ debugger
         }
     }
 
+
+    openrefunddatetask(contact): void {
+        console.log(contact)
+        this.AdvanceDetailId = contact.AdvancedetailId
+        this.RefundId = contact.RefundId || contact.AdvRefundId
+
+        this.AdvDate = contact.PaymentDate
+
+        this._matDialog.open(this.Refunddate, {
+            maxHeight: "65vh",
+            maxWidth: '90vh',
+
+        })
+        this.getOpPatientdata()
+    }
+    AdvRefundDatechange() {
+        
+        this.formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+        const formattedTime = this.formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+        debugger
+        if (this.formattedDate > this.minDate) {
+            this.toastr.warning('Select Date Before Todays Date', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+            return;
+        }
+        if (this.RefundId) {
+            const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+            const d2 = new Date(this.AdvDate);
+            if (d1 < d2) {
+                Swal.fire("Enter Refund Date after Payment Date :" + this.datePipe.transform(this.AdvDate, "yyyy-MM-dd"))
+                return;
+            } else {
+                const data2 = {
+                    "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+                    "refundTime": this.formattedDate + this.dateTimeObj.time,
+                    "refundId": this.RefundId
+                }
+                console.log(data2);
+                this._AdministrativetaskService.getDateTimeChangeRefundId(data2).subscribe(response => {
+                    this._matDialog.closeAll();
+                    this.GetAdvanceRefundData()
+                });
+            }
+        }
+
+    }
     OnopenVisitDateUpdate(contact) {
 
         this.vIPDNo = contact.IPDNo
@@ -840,6 +918,7 @@ debugger
         })
         this.getOpPatientdata()
     }
+    AdvDate: any
 
 
     onChangeDate1(value) {
@@ -926,8 +1005,11 @@ debugger
     PaymentId: any;
     SalesDate: any;
     refundDate: any;
+    AdvRefundId: any;
     minDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
     formattedDate: any
+
+
     Billdateupdate1() {
 
 
@@ -943,7 +1025,7 @@ debugger
 
 
         Swal.fire({
-            title: 'Do you want to Update Bill Date & Time ',
+            title: 'Do you want to Update  Date & Time ',
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
@@ -1050,22 +1132,47 @@ debugger
                                 this.GetPaymentData(this.BillNo)
                         });
                     }
-                }
+                }//Adv refund
+                // else if (this.AdvRefundId) {
+
+                //     const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+                //     const d2 = new Date(this.SalesDate);
+                //     if (d1 < d2) {
+                //         Swal.fire("Enter Refund Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
+                //         return;
+                //     } else {
+                //         var data8 = {
+                //             "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+                //             "time": this.formattedDate + this.dateTimeObj.time,
+                //             "refundId": this.AdvRefundId
+                //         }
+                //         console.log(data8);
+                //         this._AdministrativetaskService.ChangeadvRefunddate(data8).subscribe(response => {
+                //             this._matDialog.closeAll();
+                //             if (response)
+                //                 this.GetAdvanceRefundData()
+                //         });
+                //     }
+                // }
             }
         });
 
     }
     screenFromString = 'billform-form';
     openBilldateupdatetask(contact): void {
-
+        debugger
 
         this.BillNo = contact.BillNo;
         this.AdvanceDetailId = contact.AdvancedetailId
-        this.RefundId = contact.RefundId
+        this.RefundId = contact.RefundId || contact.AdvRefundId
+
         this.SalesId = contact.salesId
         this.PaymentId = contact.PaymentId
         this.SalesDate = contact.date
-        this.refundDate = contact.refundDate
+        this.refundDate = contact.refundDate || contact.RefundDate
+        this.AdvRefundId = contact.advRefundId
+
+
         console.log(this.BillNo)
         console.log(this.AdvanceDetailId)
         console.log(this.RefundId)

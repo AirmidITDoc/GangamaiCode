@@ -183,16 +183,18 @@
                                                                         [validations]="getValidationMessages().husbandhobbies"></airmid-textbox>
                                                                 </div>
 
+
+
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <mat-form-field appearance="outline" fxFlex>
-                                                                        <mat-label>Wife Death Date</mat-label>
-                                                                        <input matInput [matDatepicker]="WdeathDate"
-                                                                            placeholder="WdeathDate"
-                                                                            formControlName="wdeathDate"
-                                                                            [value]="vwdeathDate" />
+                                                                        <mat-label>Husband Death Date</mat-label>
+                                                                        <input matInput [matDatepicker]="hdeathDate"
+                                                                            placeholder="hdeathDate"
+                                                                            formControlName="hdeathDate"
+                                                                            [value]="vhdeathDate" />
                                                                         <mat-datepicker-toggle matSuffix
-                                                                            [for]="WdeathDate"></mat-datepicker-toggle>
-                                                                        <mat-datepicker #WdeathDate></mat-datepicker>
+                                                                            [for]="hdeathDate"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #hdeathDate></mat-datepicker>
                                                                     </mat-form-field>
                                                                 </div>
 
@@ -381,16 +383,17 @@
                                                                 </div>
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <mat-form-field appearance="outline" fxFlex>
-                                                                        <mat-label>Husband Death Date</mat-label>
-                                                                        <input matInput [matDatepicker]="hdeathDate"
-                                                                            placeholder="hdeathDate"
-                                                                            formControlName="hdeathDate"
-                                                                            [value]="vhdeathDate" />
+                                                                        <mat-label>Wife Death Date</mat-label>
+                                                                        <input matInput [matDatepicker]="WdeathDate"
+                                                                            placeholder="WdeathDate"
+                                                                            formControlName="wdeathDate"
+                                                                            [value]="vwdeathDate" />
                                                                         <mat-datepicker-toggle matSuffix
-                                                                            [for]="hdeathDate"></mat-datepicker-toggle>
-                                                                        <mat-datepicker #hdeathDate></mat-datepicker>
+                                                                            [for]="WdeathDate"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #WdeathDate></mat-datepicker>
                                                                     </mat-form-field>
                                                                 </div>
+
                                                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                                     <form [formGroup]="Wifeform">
@@ -445,13 +448,8 @@
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-checkbox aria-label="" formControlName="residencetype"
-                                                        style="margin-left:20px;" [value]="data?.residencetype">
-                                                        Residence Type Own / Rented </mat-checkbox>
 
-                                                </div>
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-dropdown label="City" formControlName="cityId"
                                                         [formGroup]="personalFormGroup" [value]="data?.cityId"
                                                         [validations]="getValidationMessages().cityId"
@@ -461,11 +459,30 @@
                                                     </airmid-dropdown>
                                                 </div>
 
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox aria-label="" formControlName="residencetype"
+                                                        style="margin-left:20px;" [value]="data?.residencetype">
+                                                        Residence Rented / Own </mat-checkbox>
 
-                                                <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Residence Address"
                                                         formControlName="residenceAddress"
                                                         [value]="data?.residenceAddress" [formGroup]="personalFormGroup"
+                                                        (keydown)="onResidenceAddressEnter()"
+                                                        [validations]="getValidationMessages().residenceaddress"></airmid-textbox>
+                                                </div>
+                                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <mat-checkbox aria-label="" formControlName="wresidencetype"
+                                                        style="margin-left:20px;" [value]="data?.wresidencetype">
+                                                        WifeResidence Rented / Own </mat-checkbox>
+
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Residence Address"
+                                                        formControlName="wresidenceAddress"
+                                                        [value]="data?.wresidenceAddress"
+                                                        [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().residenceaddress"></airmid-textbox>
                                                 </div>
 
@@ -479,9 +496,9 @@
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <airmid-textbox label="Family Doctor Name"
+                                                    <airmid-textbox label="Husband Family Doctor Name"
                                                         (keypress)="allowOnlyAlphabets($event)"
                                                         formControlName="familyDoctorName"
                                                         [value]="data?.familydoctorname" [formGroup]="personalFormGroup"
@@ -489,9 +506,9 @@
 
                                                 </div>
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <airmid-textbox label="Family Doctor contact"
+                                                    <airmid-textbox label="Husband Doctor contactNo"
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         formControlName="familyDoctorContact"
                                                         [value]="data?.familydoctorcontact"
@@ -501,21 +518,37 @@
 
                                                 </div>
 
-                                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Wife Family Doctor Name"
+                                                        (keypress)="allowOnlyAlphabets($event)"
+                                                        formControlName="wfamilyDoctorName"
+                                                        [value]="data?.wfamilyDoctorName"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().wfamilyDoctorName"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="Wife Doctor contactNo"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        formControlName="wfamilyDoctorContact"
+                                                        [value]="data?.wfamilyDoctorContact"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().wfamilyDoctorContact"
+                                                        [maxLength]="10"></airmid-textbox>
+
+                                                </div>
+
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
-                                                        style="margin-left:20px;" [value]="data?.ayushmanmaleenrolled">
-                                                        Ayushman Enrolled </mat-checkbox>
+                                                        [value]="data?.ayushmanEnrolled"
+                                                        (change)="onhayushhange($event)">
+                                                        Husband Ayushman Enrolled </mat-checkbox>
                                                 </div>
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                    <mat-checkbox aria-label="Male / Female"
-                                                        formControlName="maleFemaleEnrolled" style="margin-left:20px;"
-                                                        [value]="data?.maleFemaleEnrolled">
-                                                        Male / Female Enrolled </mat-checkbox>
-                                                </div>
-
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="HAyushman">
 
                                                     <airmid-textbox label="Husband Ayushman Id"
                                                         formControlName="haayushmanId"
@@ -523,20 +556,29 @@
 
                                                 </div>
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <mat-checkbox aria-label="Male / Female"
+                                                        formControlName="maleFemaleEnrolled"
+                                                        [value]="data?.maleFemaleEnrolled"
+                                                        (change)="onwayushhange($event)">
+                                                        Wife Enrolled </mat-checkbox>
+                                                </div>
+
+                                                <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="wAyushman">
 
                                                     <airmid-textbox label="Wife Ayushman Id"
                                                         formControlName="waayushmanId"
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                 </div>
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <!-- <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-textbox label="Ayushman Spouse details"
                                                         formControlName="ayushmanSpouseDetails"
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
-                                                </div>
+                                                </div> -->
 
 
                                             </div>
@@ -548,14 +590,16 @@
                                             Mediclaim Insurance Details</span>
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-                                                <!-- (change)="hasmediclaimAdd()" -->
+
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="hasmediclaim"
-                                                        style="margin-left:20px;" [value]="data?.hasMediclaim">
+                                                        style="margin-left:20px;" [value]="data?.hasMediclaim"
+                                                        (change)="onMediclaimChange($event)">
                                                         Has Mediclaim</mat-checkbox>
                                                 </div>
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="hasmediclaimstatus">
 
                                                     <airmid-textbox label="Mediclaim policy number"
                                                         formControlName="mediclaimpolicynumber"
@@ -565,7 +609,8 @@
                                                 </div>
 
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="hasmediclaimstatus">
 
                                                     <airmid-textbox label="Mediclaim Issuance"
                                                         formControlName="mediclaimIssuanceAmt"
@@ -574,7 +619,8 @@
 
                                                 </div>
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="hasmediclaimstatus">
                                                     <airmid-dropdown label="Company Name"
                                                         formControlName="mediclaimcompany"
                                                         [value]="data?.mediclaimCompany" [formGroup]="personalFormGroup"
@@ -582,7 +628,8 @@
                                                         [mode]="autocompleteModeCompany">
                                                     </airmid-dropdown>
                                                 </div>
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="hasmediclaimstatus">
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Mediclaim startdate</mat-label>
                                                         <input matInput [matDatepicker]="mediclaimstartdate"
@@ -595,7 +642,8 @@
                                                     </mat-form-field>
                                                 </div>
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="hasmediclaimstatus">
 
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Mediclaim Enddate</mat-label>
@@ -613,14 +661,16 @@
 
 
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-                                                <!-- (change)="hasmediclaimAdd()" -->
+
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="whasmediclaim"
-                                                        style="margin-left:20px;" [value]="data?.whasmediclaim">
+                                                        style="margin-left:20px;" [value]="data?.whasmediclaim"
+                                                        (change)="onwifeMediclaimChange($event)">
                                                         Wife Has Mediclaim</mat-checkbox>
                                                 </div>
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="whasmediclaimstatus">
 
                                                     <airmid-textbox label="WifeMediclaim policy number"
                                                         formControlName="wmediclaimpolicynumber"
@@ -630,7 +680,8 @@
                                                 </div>
 
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="whasmediclaimstatus">
 
                                                     <airmid-textbox label="Mediclaim Issuance"
                                                         formControlName="wmediclaimIssuanceAmt"
@@ -639,7 +690,8 @@
 
                                                 </div>
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="whasmediclaimstatus">
                                                     <airmid-dropdown label="Company Name"
                                                         formControlName="wmediclaimcompany"
                                                         [value]="data?.wmediclaimCompany"
@@ -648,7 +700,8 @@
                                                         [mode]="autocompleteModeCompany">
                                                     </airmid-dropdown>
                                                 </div>
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="whasmediclaimstatus">
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Mediclaim startdate</mat-label>
                                                         <input matInput [matDatepicker]="wmediclaimstartdate"
@@ -661,7 +714,8 @@
                                                     </mat-form-field>
                                                 </div>
 
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="whasmediclaimstatus">
 
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Mediclaim Enddate</mat-label>
@@ -679,7 +733,7 @@
 
                                         </form>
 
-                                        <mat-expansion-panel  [(expanded)]="isExpanded1" class="mt-12">
+                                        <mat-expansion-panel [(expanded)]="isExpanded1" class="mt-12">
                                             <mat-expansion-panel-header>
                                                 <mat-panel-title
                                                     style="font-size: large;font-weight: bold;color: rgb(7, 47, 58)">Health
@@ -792,7 +846,7 @@
 
                                         </form>
 
-                                        <mat-expansion-panel  [(expanded)]="isExpanded2" class="mt-12">
+                                        <mat-expansion-panel [(expanded)]="isExpanded2" class="mt-12">
                                             <mat-expansion-panel-header>
                                                 <mat-panel-title
                                                     style="font-size: large;font-weight: bold;color: rgb(7, 47, 58)">
@@ -805,19 +859,23 @@
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <mat-checkbox formControlName="feeReceived"
                                                             style="font-weight: bold;padding-left: 20px;"
-                                                            [value]="data?.feereceived">
+                                                            [value]="data?.feereceived"
+                                                            (change)="onHfeesChange($event)">
                                                             Amount Received
                                                         </mat-checkbox>
 
                                                     </div>
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="hFeesstatus">
                                                         <airmid-textbox label="Membership No"
                                                             formControlName="membershipNo" [value]="data?.membershipNo"
                                                             [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                     </div>
 
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="hFeesstatus">
                                                         <airmid-textbox label="Fee Amount" formControlName="feeAmount"
                                                             [formGroup]="personalFormGroup"
                                                             (keypress)="keyPressAlphanumeric($event)"
@@ -828,7 +886,8 @@
                                                     </div>
 
 
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="hFeesstatus">
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Receipt Date</mat-label>
                                                             <input matInput [matDatepicker]="receiptdate"
@@ -841,9 +900,10 @@
                                                     </div>
 
 
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="hFeesstatus">
                                                         <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>Membership valid Date</mat-label>
+                                                            <mat-label>Membership ended Date</mat-label>
                                                             <input matInput [matDatepicker]="membershipvalidDate"
                                                                 placeholder="membershipvalidDate"
                                                                 formControlName="membershipvalidDate"
@@ -859,20 +919,23 @@
 
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <mat-checkbox formControlName="wfeeReceived"
+                                                            (change)="onWfeesChange($event)"
                                                             style="font-weight: bold;padding-left: 20px;"
                                                             [value]="data?.wfeeReceived">
                                                             Amount Received
                                                         </mat-checkbox>
 
                                                     </div>
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="WFeesstatus">
                                                         <airmid-textbox label="Membership No"
                                                             formControlName="membershipNo" [value]="data?.membershipNo"
                                                             [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                     </div>
 
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="WFeesstatus">
                                                         <airmid-textbox label="Fee Amount" formControlName="wfeeAmount"
                                                             [formGroup]="personalFormGroup"
                                                             (keypress)="keyPressAlphanumeric($event)"
@@ -883,7 +946,8 @@
                                                     </div>
 
 
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="WFeesstatus">
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Receipt Date</mat-label>
                                                             <input matInput [matDatepicker]="wreceiptDate"
@@ -897,9 +961,10 @@
                                                     </div>
 
 
-                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        *ngIf="WFeesstatus">
                                                         <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>Membership valid Date</mat-label>
+                                                            <mat-label>Membership ended Date</mat-label>
                                                             <input matInput [matDatepicker]="wmembershipvalidDate"
                                                                 placeholder="wmembershipvalidDate"
                                                                 formControlName="wmembershipvalidDate"
@@ -980,21 +1045,52 @@
                                 </div>
 
                                 <div
-                                    style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
+                                    style="height: 160px; max-height: 170px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table matSort [dataSource]="DSChildrenList"
                                         [@animateStagger]="{ value: '50' }">
 
 
-                                        <ng-container matColumnDef="Prefix">
+                                        <!-- <ng-container matColumnDef="Prefix">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-100">
                                                 Prefix </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                                 <span>{{ element.PrefixName }}</span>
                                             </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="Prefix">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-230">
+                                                Prefix
+                                            </mat-header-cell>
+
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+
+                                                <ng-container *ngIf="!isEditing(contact); else editTemplate">
+                                                    <span>{{ contact.PrefixName }}</span>
+                                                    <button mat-icon-button (click)="CenableEditing(contact)"
+                                                        class="clear-button">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                </ng-container>
+
+
+                                                <ng-template #editTemplate>
+                                                    <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px"
+                                                        fxLayoutAlign="start center">
+                                                        <airmid-dropdown formControlName="CEditPrefixId" class="w-180"
+                                                            appearance="fill" [formGroup]="Relform"
+                                                            [mode]="autocompleteModeprefix"
+                                                            [validations]="getValidationMessages().CEditPrefixId"
+                                                            (selectionChange)="CDropDownValue($event)">
+                                                        </airmid-dropdown>
+                                                    </form>
+                                                </ng-template>
+                                            </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="Name">
+                                        <!-- <ng-container matColumnDef="Name">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-450">
                                                 Child
@@ -1020,14 +1116,49 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-400">
                                                 <span>{{ element.Address }}</span>
                                             </mat-cell>
+                                        </ng-container> -->
+
+
+                                        <ng-container matColumnDef="Name">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="element.childName || element.Name">
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+
+                                        <ng-container matColumnDef="MobileNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>MobileNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput (keypress)="keyPressAlphanumeric($event)"
+                                                        [maxLength]="10"
+                                                        [(ngModel)]="element.childMobile || element.MobileNo">
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Address">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Address
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput
+                                                        [(ngModel)]="element.childAddress || element.Address">
+                                                </mat-form-field>
+                                            </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="Action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef
                                                 class="table-actions">Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
+                                            <mat-cell *matCellDef="let element">
                                                 <ng-container class="actions">
-                                                    <mat-icon (click)="deleteTableRow($event, contact)"
+                                                    <mat-icon (click)="deleteTableRow($event, element)"
                                                         color="warn">delete</mat-icon>
                                                 </ng-container>
                                             </mat-cell>
@@ -1036,7 +1167,9 @@
                                         <mat-header-row class="accent"
                                             *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
-                                            [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                            style="height: 60px; min-height: 60px;"
+                                            [@animate]="{ value: '*', params: { y: '100%' } }">
+                                        </mat-row>
                                     </mat-table>
                                 </div>
 
@@ -1074,6 +1207,7 @@
                                                 <airmid-textbox label="Relative MobileNo" formControlName="RMobileNo"
                                                     [value]="vRMobileNo" [type]="'text'" fxFlex="20%"
                                                     (keypress)="keyPressAlphanumeric($event)"
+                                                    (keypress)="keyPressAlphanumeric($event)" [maxLength]="10"
                                                     [validations]="getValidationMessages().MobileNo" [maxLength]="10"
                                                     [formGroup]="Relativeform"></airmid-textbox>
 
@@ -1102,22 +1236,52 @@
                                 </div>
 
                                 <div
-                                    style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
+                                    style="height: 160px; max-height: 170px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table class="airmid-table" matSort [dataSource]="DSRelativeList"
                                         [@animateStagger]="{ value: '50' }">
 
-
-
-                                        <ng-container matColumnDef="Prefix">
+                                        <!-- <ng-container matColumnDef="Prefix">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-100">
                                                 Prefix </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                                 <span>{{ element.PrefixName }}</span>
                                             </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="Prefix">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-230">
+                                                Prefix
+                                            </mat-header-cell>
+
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+
+                                                <ng-container *ngIf="!isEditingR(contact); else editTemplate1">
+                                                    <span>{{ contact.PrefixName }}</span>
+                                                    <button mat-icon-button (click)="RenableEditing(contact)"
+                                                        class="clear-button">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                </ng-container>
+
+
+                                                <ng-template #editTemplate1>
+                                                    <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
+                                                        <airmid-dropdown formControlName="REditPrefixId" class="w-180"
+                                                            appearance="fill" [formGroup]="Relform"
+                                                            [mode]="autocompleteModeprefix"
+                                                            [validations]="getValidationMessages().REditPrefixId"
+                                                            (selectionChange)="RDropDownValue($event)">
+                                                        </airmid-dropdown>
+
+                                                    </form>
+                                                </ng-template>
+                                            </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="RName">
+
+                                        <!-- <ng-container matColumnDef="RName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-450">
                                                 Relative
@@ -1125,22 +1289,58 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-450">
                                                 <span>{{ element.RName }}</span>
                                             </mat-cell>
+                                        </ng-container>-->
+
+
+                                        <ng-container matColumnDef="RName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="element.relativeName || element.RName">
+                                                </mat-form-field>
+                                            </mat-cell>
                                         </ng-container>
 
 
-                                        <ng-container matColumnDef="RMobileNo">
+                                        <!-- <ng-container matColumnDef="RMobileNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-250">MobileNo</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
                                                 <span>{{ element.RMobileNo }}</span>
                                             </mat-cell>
+                                        </ng-container> -->
+                                        <ng-container matColumnDef="RMobileNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Relative
+                                                MobileNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput (keypress)="keyPressAlphanumeric($event)"
+                                                        [maxLength]="10"
+                                                        [(ngModel)]=" element.relativeMobile || element.RMobileNo ">
+                                                </mat-form-field>
+                                            </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="RAddress">
+
+                                        <!-- <ng-container matColumnDef="RAddress">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-400">Address</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-400">
                                                 <span>{{ element.RAddress }}</span>
+                                            </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="RAddress">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Relative
+                                                Address
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput
+                                                        [(ngModel)]="element.relativeAddress || element.RAddress">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
@@ -1151,13 +1351,39 @@
                                                 <span>{{ element.RelationName }}</span>
                                             </mat-cell>
                                         </ng-container>
+                                     
+                                        <!-- <ng-container matColumnDef="Relation">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-230">Relation</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230">
+                                                <span>{{ element.RelationId}}</span>
+                                                <div>
+                                                    <ng-container *ngIf="!element.ShowDD; else showInput">
+                                                        <button mat-icon-button (click)="RelativeDropDownValue(element)"
+                                                            class="clear-button">
+                                                            <mat-icon>edit</mat-icon></button>
+                                                    </ng-container>
+                                                    <ng-template #showInput>
+                                                        <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
+                                                            <airmid-dropdown formControlName="Relation" class="w-180"
+                                                                appearance="fill" [formGroup]="Relform"
+                                                                [value]="element.relationId"
+                                                                [mode]="autocompleteModerelationship"
+                                                                [validations]="getValidationMessages().Relation1"
+                                                                (selectionChange)="RelativeDropDownValue($event)"></airmid-dropdown>
+                                                        </form>
+                                                    
+                                                    </ng-template>
+                                                </div>
+                                            </mat-cell>
+                                        </ng-container> -->
 
                                         <ng-container matColumnDef="Action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef
                                                 class="table-actions">Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
+                                            <mat-cell *matCellDef="let element">
                                                 <ng-container class="actions">
-                                                    <mat-icon (click)="deleteTableRow1($event, contact)"
+                                                    <mat-icon (click)="deleteTableRow1($event, element)"
                                                         color="warn">delete</mat-icon>
                                                 </ng-container>
                                             </mat-cell>
@@ -1227,11 +1453,11 @@
                                 </div>
 
                                 <div
-                                    style="height: 130px; max-height: 140px; overflow-y: auto; border: 1px solid #ddd;">
+                                    style="height: 160px; max-height: 170px; overflow-y: auto; border: 1px solid #ddd;">
                                     <mat-table class="airmid-table" matSort [dataSource]="DSEmrgencyList"
                                         [@animateStagger]="{ value: '50' }">
 
-
+                                        <!-- 
                                         <ng-container matColumnDef="Prefix">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-100">
@@ -1239,41 +1465,104 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                                 <span>{{ element.PrefixName }}</span>
                                             </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="Prefix">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-230">
+                                                Prefix
+                                            </mat-header-cell>
+
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+
+                                                <ng-container *ngIf="!isEditingE(contact); else editTemplate2">
+                                                    <span>{{ contact.PrefixName }}</span>
+                                                    <button mat-icon-button (click)="EenableEditing(contact)"
+                                                        class="clear-button">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                </ng-container>
+
+                                                <ng-template #editTemplate2>
+                                                    <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
+                                                        <airmid-dropdown formControlName="EEditPrefixId" class="w-180"
+                                                            appearance="fill" [formGroup]="Relform"
+                                                            [mode]="autocompleteModeprefix"
+                                                            [validations]="getValidationMessages().EEditPrefixId"
+                                                            (selectionChange)="EDropDownValue($event)">
+                                                        </airmid-dropdown>
+
+                                                    </form>
+                                                </ng-template>
+                                            </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="EName">
+
+                                        <!-- <ng-container matColumnDef="EName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-450">
                                                 Emergency Name</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-450">
-                                                <span>{{ element.EName }}</span>
+                                                <span>{{ element.EName || element.emrgencyName}}</span>
+                                            </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="EName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>EName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="element.emrgencyName || element.EName">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="EMobileNo">
+                                        <!-- <ng-container matColumnDef="EMobileNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-250">EMobileNo</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
-                                                <span>{{ element.EMobileNo }}</span>
+                                                <span>{{ element.EMobileNo || element.emrgencyMobile }}</span>
+                                            </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="EMobileNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>EMobileNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput (keypress)="keyPressAlphanumeric($event)"
+                                                        [maxLength]="10"
+                                                        [(ngModel)]="element.emrgencyMobile || element.EMobileNo  ">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
-
-
-                                        <ng-container matColumnDef="EAddress">
+                                        <!-- <ng-container matColumnDef="EAddress">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                                 class="w-400">EAddress</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-400">
-                                                <span>{{ element.Address }}</span>
+                                                <span>{{ element.Address || element.emrgencyAddress}}</span>
+                                            </mat-cell>
+                                        </ng-container> -->
+
+
+                                        <ng-container matColumnDef="EAddress">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>EAddress
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput
+                                                        [(ngModel)]=" element.emrgencyAddress || element.Address">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="Action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef
                                                 class="table-actions">Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
+                                            <mat-cell *matCellDef="let element">
                                                 <ng-container class="actions">
-                                                    <mat-icon (click)="deleteTableRow2($event, contact)"
+                                                    <mat-icon (click)="deleteTableRow2($event, element)"
                                                         color="warn">delete</mat-icon>
                                                 </ng-container>
                                             </mat-cell>

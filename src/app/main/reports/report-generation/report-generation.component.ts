@@ -691,10 +691,12 @@ export class ReportGenerationComponent implements OnInit {
     }
     mode: string='';
     filters: [];
+    
     SampleReport() {
         this.mode = "GetList";
     }
 
+  
     CallReportData(type) {
         this.StoreId = this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
@@ -962,6 +964,7 @@ export class ReportGenerationComponent implements OnInit {
                 });
             }
             else {
+                debugger
                 this._ReportService.getReportView(param).subscribe(res => {
                     const matDialog = this._matDialog.open(PdfviewerComponent,
                         {

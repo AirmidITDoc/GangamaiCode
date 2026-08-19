@@ -168,7 +168,9 @@ export class CasepaperService {
         return this._httpClient1.PostData("Common", Param)
     }
 
-    
+        public getabnormalLabResultView(Param) {
+        return this._httpClient1.PostData("Common", Param)
+    }
     public getDoctorsByDepartment(deptId) {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
