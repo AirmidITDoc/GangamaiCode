@@ -41,6 +41,14 @@ export class BillingClassMasterService {
         });
     }
 
+    createClassToServiceForm(): FormGroup {
+        return this._formBuilder.group({
+            OldClassId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            NewClassId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            TariffId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+        });
+    }
+
     initializeFormGroup() {
         this.createClassForm();
     }
@@ -49,6 +57,10 @@ export class BillingClassMasterService {
         if (Param.classId) {
             return this._httpClient.PutData("ClassMaster/" + Param.classId, Param);
         } else return this._httpClient.PostData("ClassMaster", Param);
+    }
+
+     public classSaveToService(Param: any) {
+        return this._httpClient.PostData("ClassMaster/classApplyToAllService", Param);
     }
 
     public deactivateTheStatus(m_data) {

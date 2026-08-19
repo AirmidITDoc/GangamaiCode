@@ -242,10 +242,15 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Estimate Time</mat-label>
                                         <input matInput type="time" formControlName="estimateTime"
                                             (change)="onChangeTime($event)" (keydown.enter)="surgeryDateInput.focus()">
+                                    </mat-form-field> -->
+                                     <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Estimate (hrs or min)</mat-label>
+                                        <input matInput type="text" formControlName="estimateTime"
+                                            pattern="^[0-9]+(\.[0-9]{1,2})?$">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>

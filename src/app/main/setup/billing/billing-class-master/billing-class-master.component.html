@@ -11,7 +11,10 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">+ New Class
+            <button mat-raised-button (click)="onApplytoAllService()" *ngIf="IsAdd">+ Apply To AllService
+            </button>
+
+             <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">+ New Class
             </button>
         </div>
     </div>

@@ -37,6 +37,8 @@ export class VerifyByAadhaarComponent implements OnInit {
     @Output() sessionExpired = new EventEmitter<void>();
     showSuccessPopup = false;
     accessToken = '';
+    showCreateAbhaLink = false;
+    private readonly NO_ABHA_MSG = 'No ABHA user registered with this Aadhaar number.';
 
     constructor(
         private fb: FormBuilder,
@@ -168,6 +170,7 @@ export class VerifyByAadhaarComponent implements OnInit {
             return;
         }
         this.loading = true;
+        this.showCreateAbhaLink = false;
         this.abhaService.verifyAadharOtp({ otp: this.otpForm.value.otp, txnId: this.txnId })
             .subscribe((r: AbhaOtpVerify) => {
                 if (r.txnId) {
@@ -183,6 +186,9 @@ export class VerifyByAadhaarComponent implements OnInit {
                 }
                 else {
                     this.snack.open(r.message, 'OK', { duration: 2500 });
+                    if (r.message?.trim() === this.NO_ABHA_MSG) {
+                            this.showCreateAbhaLink = true;
+                        }
                 }
                 this.loading = false;
             });
@@ -259,5 +265,10 @@ export class VerifyByAadhaarComponent implements OnInit {
         this.countdown =
             `${min}:${sec < 10 ? '0' + sec : sec}`;
 
+    }
+
+     onCreateAbhaClick(): void {
+        console.log('Create ABHA link clicked');
+        this.abhaService.requestCreateAbha();
     }
 }

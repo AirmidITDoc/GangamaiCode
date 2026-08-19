@@ -207,6 +207,11 @@
 
                             </table>
 
+                             <mat-paginator [length]="totalRecords" [pageSize]="pageSize" class="fixed-paginator"
+                                [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex"
+                                (page)="onPageChange($event)" showFirstLastButtons>
+                            </mat-paginator>
+
                         </div>
                     </div>
 

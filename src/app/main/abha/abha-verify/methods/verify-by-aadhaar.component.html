@@ -74,7 +74,8 @@
                         </span>
 
                         <!-- warning -->
-                        <div class="warning-text" *ngIf="!canResend && !maxAttemptsReached && timeLeft > 0 && timeLeft <= 10">
+                        <div class="warning-text"
+                            *ngIf="!canResend && !maxAttemptsReached && timeLeft > 0 && timeLeft <= 10">
                             OTP will expire in {{ timeLeft }} seconds.
                         </div>
 
@@ -95,6 +96,19 @@
 
                     </div>
 
+                    <!-- click here for link -->
+
+                    <div class="no-abha-error" *ngIf="showCreateAbhaLink" style="margin-top: 8px;">
+                        <p style="color: #d32f2f; font-size: 13px; margin: 0 0 4px 0;">
+                            {{ NO_ABHA_MSG }}
+                        </p>
+                        <a (click)="onCreateAbhaClick()"
+                            style="color: #1976d2; font-size: 13px; font-weight: 500; text-decoration: underline; cursor: pointer; display: inline-block;"
+                            onmouseover="this.style.textDecoration='none'; this.style.color='#115293';"
+                            onmouseout="this.style.textDecoration='underline'; this.style.color='#1976d2';">
+                            Create your ABHA now
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -102,8 +116,8 @@
                 <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
                     <mat-icon>arrow_back</mat-icon> Back
                 </button>
-                <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid || (otpExpired && !maxAttemptsReached)"
-                    class="action-btn">
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="loading || otpForm.invalid || (otpExpired && !maxAttemptsReached)" class="action-btn">
                     <ng-container *ngIf="!loading">
                         Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
                     </ng-container>

@@ -161,24 +161,26 @@ export class NewRequestComponent implements OnInit {
                 });
             }, 500);
 
-            if (this.registerObj1?.estimateTime) {
-                const date = new Date(this.registerObj1.estimateTime);
+            // if (this.registerObj1?.estimateTime) {
+            //     const date = new Date(this.registerObj1.estimateTime);
 
-                if (!isNaN(date.getTime())) {
-                    const hours = date.getHours().toString().padStart(2, '0');
-                    const minutes = date.getMinutes().toString().padStart(2, '0');
+            //     if (!isNaN(date.getTime())) {
+            //         const hours = date.getHours().toString().padStart(2, '0');
+            //         const minutes = date.getMinutes().toString().padStart(2, '0');
 
-                    const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+            //         const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
 
-                    setTimeout(() => {
-                        this.requestForm.get('estimateTime')?.setValue(formattedTime);
-                    });
-                    console.log("Control value after patch:", this.requestForm.get('estimateTime')?.value);
-                }
-            }
+            //         setTimeout(() => {
+            //             this.requestForm.get('estimateTime')?.setValue(formattedTime);
+            //         });
+            //         console.log("Control value after patch:", this.requestForm.get('estimateTime')?.value);
+            //     }
+            // }
 
             console.log("Data:", this.registerObj1)
             this.requestForm.patchValue(this.registerObj1);
+            this.requestForm.get('estimateTime')?.setValue(Number(this.registerObj1.estimateTime).toFixed(2) ?? null)
+
             this.selectChangedepdoctorType(this.registerObj1)
             this.getdiagnosisList(this.registerObj1);
             this.getRequestSurgeryDetList(this.registerObj1);
@@ -334,7 +336,7 @@ export class NewRequestComponent implements OnInit {
             this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
             this.vIPDNo = obj.ipdNo
             this.opIpId = obj.admissionID;
-            this.opIpType=1
+            this.opIpType = 1
             //   this.vTariffName = obj.tariffName
             // this.vCompanyName = obj.companyName
             //   this.vWardName = obj.roomName
@@ -352,7 +354,7 @@ export class NewRequestComponent implements OnInit {
             const extractedName = nameField.split('|')[0].trim();
             this.vPatientName = extractedName;
             this.opIpId = obj.visitId;
-            this.opIpType=0
+            this.opIpType = 0
         }
     }
 
@@ -474,9 +476,9 @@ export class NewRequestComponent implements OnInit {
                 const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
                 // const surgeryEndTime = end ? end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
                 const surgeryEndTime = end && !isNaN(end.getTime()) ? end.toLocaleTimeString('en-GB', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }) : '';
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : '';
 
                 this.Chargelist.push(
                     {
@@ -523,6 +525,22 @@ export class NewRequestComponent implements OnInit {
     }
 
     /////////////////////////////// surgery detail part /////////////////////////////
+
+    parseDurationToMinutes(duration: any): number {
+        if (!duration) return 0;
+        const parts = duration.toString().split('.');
+        const hrs = Number(parts[0]) || 0;
+        const mins = parts[1] ? Number(parts[1].padEnd(2, '0')) : 0;
+        return hrs * 60 + mins;
+    }
+
+    // Helper: convert total minutes back to "H.MM" format
+    minutesToDurationFormat(totalMinutes: number): string {
+        const hrs = Math.floor(totalMinutes / 60);
+        const mins = totalMinutes % 60;
+        return `${hrs}.${mins.toString().padStart(2, '0')}`;
+    }
+
     onAdd() {
         if (!this.requestForm.get("surgeryCategoryId")?.value) {
             this.toastr.warning('Please select a surgery Type', 'Warning !', {
@@ -629,6 +647,21 @@ export class NewRequestComponent implements OnInit {
         // }
 
         this.dsattendentDetailList.data = [...this.Chargelist1];
+
+        // --- NEW: sum all row durations and compare against estimateTime ---
+        const totalMinutes = this.Chargelist.reduce((sum, row) => {
+            return sum + this.parseDurationToMinutes(row.surgeryDuration);
+        }, 0);
+
+        const currentEstimate = this.requestForm.get('estimateTime')?.value;
+        const currentEstimateMinutes = this.parseDurationToMinutes(currentEstimate);
+
+        if (totalMinutes > currentEstimateMinutes) {
+            const newEstimate = this.minutesToDurationFormat(totalMinutes);
+            this.requestForm.get('estimateTime')?.setValue(newEstimate, { emitEvent: false });
+        }
+        // else: estimateTime remains unchanged
+        // --- END NEW ---
 
         this.requestForm.patchValue({
             surgeryCategoryId: '',
@@ -883,21 +916,21 @@ export class NewRequestComponent implements OnInit {
         const formattedTime = formattedDate + this.dateTimeObj.time;
 
         const surgeryDate = this.datePipe.transform(this.requestForm.get('surgeryDate')?.value, 'yyyy-MM-dd');
-        const time = this.requestForm.get('estimateTime')?.value;
-        if (surgeryDate && time) {
-            const combinedDateTime = `${surgeryDate} ${time}`;
-            this.requestForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
-        }
-        let est = this.requestForm.get('estimateTime')?.value;
-        if (est) {
-            const parts = est.split(" ");
+        // const time = this.requestForm.get('estimateTime')?.value;
+        // if (surgeryDate && time) {
+        //     const combinedDateTime = `${surgeryDate} ${time}`;
+        //     this.requestForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
+        // }
+        // let est = this.requestForm.get('estimateTime')?.value;
+        // if (est) {
+        //     const parts = est.split(" ");
 
-            // If first two parts are a date → remove one
-            if (parts.length >= 3 && parts[0] === parts[1]) {
-                est = parts.slice(1).join(" ");
-            }
-            this.requestForm.get('estimateTime')?.setValue(est, { emitEvent: false });
-        }
+        //     // If first two parts are a date → remove one
+        //     if (parts.length >= 3 && parts[0] === parts[1]) {
+        //         est = parts.slice(1).join(" ");
+        //     }
+        //     this.requestForm.get('estimateTime')?.setValue(est, { emitEvent: false });
+        // }
 
         this.requestForm.get('opipid').setValue(this.opIpId);
         this.requestForm.get('otrequestId')?.setValue(this.vrequestId || 0);

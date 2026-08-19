@@ -9,6 +9,7 @@ import { PagePermissionService } from "app/main/shared/services/page-permission.
 import { ToastrService } from "ngx-toastr";
 import { BillingClassMasterService } from "./billing-class-master.service";
 import { NewClassComponent } from "./new-class/new-class.component";
+import { ClassapplyToserviceComponent } from "./classapply-toservice/classapply-toservice.component";
 
 @Component({
     selector: "app-billing-class-master",
@@ -110,6 +111,25 @@ export class BillingClassMasterComponent implements OnInit {
 
         const that = this;
         const dialogRef = this._matDialog.open(NewClassComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    onApplytoAllService(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        const that = this;
+        const dialogRef = this._matDialog.open(ClassapplyToserviceComponent,
             {
                 maxWidth: "50vw",
                 maxHeight: '50%',

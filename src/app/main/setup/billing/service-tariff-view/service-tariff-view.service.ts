@@ -21,7 +21,16 @@ export class ServiceTariffViewService {
     });
   }
 
-  public getServicesNew(id, param) {
-    return this._httpClient.GetData("BillingService/GetServicesNew?TariffId=" + id + "&ServiceName=" + param);
+  // public getServicesNew(id, param) {
+  //   return this._httpClient.GetData("BillingService/GetServicesNew?TariffId=" + id + "&ServiceName=" + param);
+  // }
+
+  public getServicesNew(id: number, param: string, pageIndex: number = 0, pageSize: number = 10) {
+    return this._httpClient.GetData(
+      "BillingService/GetServicesNew?TariffId=" + id +
+      "&ServiceName=" + param +
+      "&PageIndex=" + pageIndex +
+      "&PageSize=" + pageSize
+    );
   }
 }

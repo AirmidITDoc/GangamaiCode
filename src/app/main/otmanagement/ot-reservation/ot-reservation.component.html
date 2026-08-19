@@ -78,12 +78,13 @@
                         </mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Post-Operation" (click)="postOperationForm(element)">
-                        <!-- this icon should disable when i do aneths then only enable -->
+
+                    <!-- this icon should disable when i do aneths then only enable -->
+                    <!-- <button mat-icon-button matTooltip="Post-Operation" (click)="postOperationForm(element)">
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/postOper.png">
                         </mat-icon>
-                    </button>
+                    </button> -->
                 </div>
             </ng-template>
 
@@ -178,11 +179,12 @@
                             <span style="font-size: 13px;">Status</span>
                         </button>
 
-                        <button mat-menu-item (click)="openmaerialConsumpion(element)" style="height: 32px; min-height: 32px;">
+                        <button mat-menu-item (click)="openmaerialConsumpion(element)"
+                            style="height: 32px; min-height: 32px;">
                             <mat-icon
                                 style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">add</mat-icon>
-                          
-                                <span style="font-size: 13px;">Patien Material Consumpion</span>
+
+                            <span style="font-size: 13px;">Patient Material Consumpion</span>
                         </button>
 
                         <button mat-menu-item (click)="summeryPrint(element)" style="height: 32px; min-height: 32px;">

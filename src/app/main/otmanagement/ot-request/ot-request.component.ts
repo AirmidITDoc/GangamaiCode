@@ -65,7 +65,7 @@ export class OTRequestComponent implements OnInit {
         { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-        { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
+        { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
             heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,

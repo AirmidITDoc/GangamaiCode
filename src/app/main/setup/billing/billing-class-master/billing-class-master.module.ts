@@ -23,6 +23,7 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { BillingClassMasterComponent } from "./billing-class-master.component";
 import { BillingClassMasterService } from "./billing-class-master.service";
 import { NewClassComponent } from './new-class/new-class.component';
+import { ClassapplyToserviceComponent } from './classapply-toservice/classapply-toservice.component';
 
 const routes: Routes = [
     {
@@ -32,7 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [BillingClassMasterComponent, NewClassComponent],
+    declarations: [BillingClassMasterComponent, NewClassComponent, ClassapplyToserviceComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,

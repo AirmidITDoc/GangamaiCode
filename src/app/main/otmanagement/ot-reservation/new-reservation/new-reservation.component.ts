@@ -148,7 +148,7 @@ export class NewReservationComponent implements OnInit {
             this.vPatientName = this.registerObj1.patientName
             this.vrequestId = this.registerObj1.otRequestId;
             this.opIpType = this.registerObj1.opIpType
-            this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
+            // this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
             this.reservationForm.get('isAnaesthetistPaid')?.setValue(this.registerObj1.isAnaesthetistPaid)
             this.reservationForm.get('isMaterialReplacement')?.setValue(this.registerObj1.isMaterialReplacement)
 
@@ -195,6 +195,8 @@ export class NewReservationComponent implements OnInit {
             // }
 
             this.reservationForm.patchValue(this.registerObj1);
+            this.reservationForm.get('estimateTime')?.setValue(Number(this.registerObj1.estimateTime).toFixed(2) ?? null)
+
             this.getdiagnosisList(this.registerObj1);
             this.getReservationSurgeryDetList(this.registerObj1);
             this.getReservationAttendentDetList(this.registerObj1);
@@ -351,7 +353,7 @@ export class NewReservationComponent implements OnInit {
 
     /////////////////////////////// ot request detail part /////////////////////////////
     onChangeOtRequest(obj: any) {
-       
+
         if (obj.otReservationId > 0) {
             const name = obj.patientName?.split('|')[0]?.trim();
             Swal.fire({
@@ -380,7 +382,7 @@ export class NewReservationComponent implements OnInit {
 
         this.registerObj1 = obj
         this.vPatientName = this.registerObj1.patientName;
-         this.opIpType = obj.opipType == '1' ? true : false;
+        this.opIpType = obj.opipType == '1' ? true : false;
         console.log("search data:", this.registerObj1);
 
         if (obj.otRequestId) {
@@ -398,6 +400,7 @@ export class NewReservationComponent implements OnInit {
                 this.reservationForm.get('opiptype').setValue(mappedOpIpType);
 
                 this.reservationForm.patchValue(this.registerObj2);
+                this.reservationForm.get('estimateTime')?.setValue(Number(this.registerObj2.estimateTime).toFixed(2) ?? null)
 
                 // this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
                 this.reservationForm.get('pacrequired').setValue(this.registerObj2.pacrequired ? '1' : '0')
@@ -412,19 +415,19 @@ export class NewReservationComponent implements OnInit {
                     });
                 }, 200);
 
-                if (this.registerObj2?.estimateTime) {
-                    const date = new Date(this.registerObj2.estimateTime);
-                    if (!isNaN(date.getTime())) {
-                        const hours = date.getHours().toString().padStart(2, '0');
-                        const minutes = date.getMinutes().toString().padStart(2, '0');
+                // if (this.registerObj2?.estimateTime) {
+                //     const date = new Date(this.registerObj2.estimateTime);
+                //     if (!isNaN(date.getTime())) {
+                //         const hours = date.getHours().toString().padStart(2, '0');
+                //         const minutes = date.getMinutes().toString().padStart(2, '0');
 
-                        const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+                //         const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
 
-                        setTimeout(() => {
-                            this.reservationForm.get('estimateTime')?.setValue(formattedTime);
-                        });
-                    }
-                }
+                //         setTimeout(() => {
+                //             this.reservationForm.get('estimateTime')?.setValue(formattedTime);
+                //         });
+                //     }
+                // }
 
                 // this.reservationForm.patchValue(this.registerObj2);
                 this.getotReqdiagnosisList(obj.otRequestId);
@@ -845,6 +848,21 @@ export class NewReservationComponent implements OnInit {
         return `${hours}:${minutes}`;
     }
 
+    parseDurationToMinutes(duration: any): number {
+        if (!duration) return 0;
+        const parts = duration.toString().split('.');
+        const hrs = Number(parts[0]) || 0;
+        const mins = parts[1] ? Number(parts[1].padEnd(2, '0')) : 0;
+        return hrs * 60 + mins;
+    }
+
+    // Helper: convert total minutes back to "H.MM" format
+    minutesToDurationFormat(totalMinutes: number): string {
+        const hrs = Math.floor(totalMinutes / 60);
+        const mins = totalMinutes % 60;
+        return `${hrs}.${mins.toString().padStart(2, '0')}`;
+    }
+
     onAdd() {
         if (!this.reservationForm.get("surgeryId")?.value || this.reservationForm.get("surgeryId")?.value == "0") {
             this.toastr.warning('Please select a Surgery', 'Warning !', {
@@ -918,7 +936,6 @@ export class NewReservationComponent implements OnInit {
             return;
         }
 
-
         const newEntry = {
             surgeryCategoryName: this.surgCategoryName,
             surgeryCategoryId: this.reservationForm.get('surgeryCategoryId').value,
@@ -966,6 +983,21 @@ export class NewReservationComponent implements OnInit {
         // }
 
         this.dsattendentDetailList.data = [...this.Chargelist1];
+
+        // --- NEW: sum all row durations and compare against estimateTime ---
+        const totalMinutes = this.Chargelist.reduce((sum, row) => {
+            return sum + this.parseDurationToMinutes(row.surgeryDuration);
+        }, 0);
+
+        const currentEstimate = this.reservationForm.get('estimateTime')?.value;
+        const currentEstimateMinutes = this.parseDurationToMinutes(currentEstimate);
+
+        if (totalMinutes > currentEstimateMinutes) {
+            const newEstimate = this.minutesToDurationFormat(totalMinutes);
+            this.reservationForm.get('estimateTime')?.setValue(newEstimate, { emitEvent: false });
+        }
+        // else: estimateTime remains unchanged
+        // --- END NEW ---
 
         this.reservationForm.patchValue({
             surgeryCategoryId: '',

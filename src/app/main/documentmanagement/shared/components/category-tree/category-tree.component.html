@@ -1,69 +1,60 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="cat-tree">
-  <!-- Leaf node -->
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle class="cat-node leaf">
-    <div class="node-row" [class.active]="selectedId === node.id" (click)="onSelect(node)">
-      <span class="spacer-toggle"></span>
-      <mat-icon class="node-icon" [style.color]="node.color || 'var(--accent-teal)'">{{ node.icon || 'label' }}</mat-icon>
+    <!-- Leaf node -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle class="cat-node leaf">
+        <div class="node-row" [class.active]="selectedId === node.id" (click)="onSelect(node)">
+            <span class="spacer-toggle"></span>
+            <mat-icon class="node-icon" [style.color]="node.color || 'var(--accent-teal)'">
+                {{ node.icon || 'label' }}</mat-icon>
+            <span class="node-label">{{ node.docCategory }}</span>
+            <span class="doc-count" *ngIf="node.documentCount">{{ node.documentCount }}</span>
+            <span class="node-actions" *ngIf="manageable">
+                <button mat-icon-button title="Add sub-category"
+                    (click)="addChild.emit({id:node.id,mode:'add'}); $event.stopPropagation()">
+                    <mat-icon>create_new_folder</mat-icon>
+                </button>
+                <button mat-icon-button title="Rename"
+                    (click)="addChild.emit({id:node.id,mode:'edit'}); $event.stopPropagation()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button title="Delete"
+                    (click)="addChild.emit({id:node.id,mode:'delete'}); $event.stopPropagation()">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+            </span>
+        </div>
+    </mat-tree-node>
 
-      <ng-container *ngIf="editingId === node.id; else plainLabel">
-        <input class="edit-input" [(ngModel)]="editValue" (keyup.enter)="confirmEdit(node)" (click)="$event.stopPropagation()" />
-        <button mat-icon-button (click)="confirmEdit(node); $event.stopPropagation()"><mat-icon>check</mat-icon></button>
-        <button mat-icon-button (click)="cancelEdit(); $event.stopPropagation()"><mat-icon>close</mat-icon></button>
-      </ng-container>
-      <ng-template #plainLabel>
-        <span class="node-label">{{ node.name }}</span>
-        <span class="doc-count" *ngIf="node.documentCount">{{ node.documentCount }}</span>
-      </ng-template>
+    <!-- Expandable / nested node -->
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" class="cat-node branch">
+        <div class="node-row" [class.active]="selectedId === node.id" (click)="onSelect(node)">
+            <button mat-icon-button class="toggle-btn" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name"
+                (click)="$event.stopPropagation()">
+                <mat-icon class="toggle-icon">
+                    {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                </mat-icon>
+            </button>
+            <mat-icon class="node-icon" [style.color]="node.color || 'var(--accent-teal)'">
+                {{ node.icon || 'folder' }}</mat-icon>
+            <span class="node-label">{{ node.docCategory }}</span>
+            <span class="child-count">{{ node.children.length }} sub</span>
+            <span class="node-actions" *ngIf="manageable">
+                <button mat-icon-button title="Add sub-category"
+                    (click)="addChild.emit({id:node.id,mode:'add'}); $event.stopPropagation()">
+                    <mat-icon>create_new_folder</mat-icon>
+                </button>
+                <button mat-icon-button title="Rename"
+                    (click)="addChild.emit({id:node.id,mode:'edit'}); $event.stopPropagation()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button title="Delete"
+                    (click)="addChild.emit({id:node.id,mode:'delete'}); $event.stopPropagation()">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+            </span>
+        </div>
 
-      <span class="node-actions" *ngIf="manageable && editingId !== node.id">
-        <button mat-icon-button title="Add sub-category" (click)="addChild.emit(node.id); $event.stopPropagation()">
-          <mat-icon>create_new_folder</mat-icon>
-        </button>
-        <button mat-icon-button title="Rename" (click)="startEdit(node); $event.stopPropagation()">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button title="Delete" (click)="remove.emit(node.id); $event.stopPropagation()">
-          <mat-icon>delete_outline</mat-icon>
-        </button>
-      </span>
-    </div>
-  </mat-tree-node>
-
-  <!-- Expandable / nested node -->
-  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" class="cat-node branch">
-    <div class="node-row" [class.active]="selectedId === node.id" (click)="onSelect(node)">
-      <button mat-icon-button class="toggle-btn" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="$event.stopPropagation()">
-        <mat-icon class="toggle-icon">
-          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-        </mat-icon>
-      </button>
-      <mat-icon class="node-icon" [style.color]="node.color || 'var(--accent-teal)'">{{ node.icon || 'folder' }}</mat-icon>
-
-      <ng-container *ngIf="editingId === node.id; else plainBranchLabel">
-        <input class="edit-input" [(ngModel)]="editValue" (keyup.enter)="confirmEdit(node)" (click)="$event.stopPropagation()" />
-        <button mat-icon-button (click)="confirmEdit(node); $event.stopPropagation()"><mat-icon>check</mat-icon></button>
-        <button mat-icon-button (click)="cancelEdit(); $event.stopPropagation()"><mat-icon>close</mat-icon></button>
-      </ng-container>
-      <ng-template #plainBranchLabel>
-        <span class="node-label">{{ node.name }}</span>
-        <span class="child-count">{{ node.children.length }} sub</span>
-      </ng-template>
-
-      <span class="node-actions" *ngIf="manageable && editingId !== node.id">
-        <button mat-icon-button title="Add sub-category" (click)="addChild.emit(node.id); $event.stopPropagation()">
-          <mat-icon>create_new_folder</mat-icon>
-        </button>
-        <button mat-icon-button title="Rename" (click)="startEdit(node); $event.stopPropagation()">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button title="Delete" (click)="remove.emit(node.id); $event.stopPropagation()">
-          <mat-icon>delete_outline</mat-icon>
-        </button>
-      </span>
-    </div>
-
-    <div class="children-wrapper" [class.hidden]="!treeControl.isExpanded(node)">
-      <ng-container matTreeNodeOutlet></ng-container>
-    </div>
-  </mat-nested-tree-node>
+        <div class="children-wrapper" [class.hidden]="!treeControl.isExpanded(node)">
+            <ng-container matTreeNodeOutlet></ng-container>
+        </div>
+    </mat-nested-tree-node>
 </mat-tree>

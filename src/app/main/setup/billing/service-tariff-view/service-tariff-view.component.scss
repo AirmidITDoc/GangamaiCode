@@ -110,3 +110,12 @@
     outline: none;
     border-color: #3f51b5;
 }
+
+.fixed-paginator {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 10;
+    border-top: 1px solid #e0e0e0;
+    flex-shrink: 0; // prevents it from shrinking when table content is long
+}

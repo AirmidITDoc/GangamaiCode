@@ -162,7 +162,7 @@ export class AbhaLinkComponent {
         this.snack.open(r.message, 'OK', { duration: 2500 });
         setTimeout(() => {
           this.loadGetApi();
-        }, 5000);
+        }, 1000);
         // }
         this.loading = false;
       });
@@ -194,7 +194,7 @@ export class AbhaLinkComponent {
     };
 
     console.log("Link Token Payload:", payload);
-    return;
+    // return;
 
     this.abhaService.LinkToken(payload).subscribe((r: AadhaarGenerateOtpResponse) => {
       if (r.txnId) {

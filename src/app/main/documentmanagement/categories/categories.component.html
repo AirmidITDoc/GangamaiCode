@@ -8,7 +8,7 @@
                 <div class="modal-header-right">
                     <div class="comman-date-container">
                         <div class="close-icon">
-                            <button mat-flat-button color="primary" (click)="openAddDialog(null)">
+                            <button mat-flat-button color="primary" (click)="openAddDialog({id:0,mode:'add'})">
                                 <mat-icon>add</mat-icon> New top-level category
                             </button>
                         </div>
@@ -20,20 +20,11 @@
 
         <div class="modal-body labpatientMiddle">
             <div class="docmed-theme">
-                <div class="stats-strip">
-                    <div class="stat-pill"><strong>{{ totalNodes }}</strong><span>total nodes</span></div>
-                    <div class="stat-pill"><strong>{{ maxDepth }}</strong><span>levels deep (unlimited supported)</span>
-                    </div>
-                    <div class="stat-pill" *ngIf="selectedId"><strong class="path-text">{{ selectedPath
-                            }}</strong><span>selected
-                            path</span></div>
-                </div>
-
                 <div class="manager-grid">
                     <mat-card class="tree-card">
                         <div class="tree-card-head">
                             <mat-icon>folder_open</mat-icon>
-                            <span>Filing structure</span>
+                            <span>Document Categories</span>
                             <span class="hint">hover a row for add / rename / delete</span>
                         </div>
                         <app-category-tree [nodes]="categories" [manageable]="true" [selectable]="true"

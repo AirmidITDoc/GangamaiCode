@@ -220,6 +220,9 @@ export class RegistrationService {
     public getAbhaById(Id) {
         return this._httpClient1.GetData("PatientAbhaInformation/" + Id);
     }
+    public getAbhaByNumber(Id) {
+        return this._httpClient1.GetData("PatientAbhaInformation/ByAbhaNumber/" + Id);
+    }
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
 
         return this._httpClient1.GetData(apiUrl + inputValue);
@@ -228,16 +231,21 @@ export class RegistrationService {
     //     return this._httpClient1.GetData("VisitDetail/GetAreaList");
     // }
 
+    public GenderList(param) {
+        return this._httpClient1.PostData("Gender/List", param);
+    }
+    public PrefixList(param) {
+        return this._httpClient1.PostData("Prefix/List", param);
+    }
 
-    
     public getbypincode(pin) {
         return this._httpClient1.GetData("AreaMaster/search_AreaMaster?Keyword=" + pin)
     }
- public getstatebypincode(obj) {
+    public getstatebypincode(obj) {
         return this._httpClient1.GetData("CityMaster/" + obj)
     }
 
-    
+
 }
 
 

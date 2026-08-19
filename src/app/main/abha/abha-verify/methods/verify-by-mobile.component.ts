@@ -38,6 +38,7 @@ export class VerifyByMobileComponent implements OnInit {
     demoMobileMulti: string;
     demoOtp: string;
     genderLabels = GENDER_LABELS;
+    showCreateAbhaLink = false;
 
     countdown = '01:00';
     timeLeft = 60;
@@ -49,6 +50,7 @@ export class VerifyByMobileComponent implements OnInit {
     mobileNo: any;
     showSuccessPopup = false;
     accessToken = '';
+    errorMessage: string | null = null;
 
     constructor(
         private fb: FormBuilder,
@@ -106,8 +108,10 @@ export class VerifyByMobileComponent implements OnInit {
             this.mobileForm.markAllAsTouched();
             return;
         }
+        this.errorMessage = null;
         this.mobileNo = this.mobileForm.value.mobile
         this.loading = true;
+        this.showCreateAbhaLink = false;
         this.abhaService.findAbha({ mobile: this.mobileForm.value.mobile })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 console.log("Search DATA:", r)
@@ -121,13 +125,18 @@ export class VerifyByMobileComponent implements OnInit {
                         this.snack.open('Transaction ID not found.', 'OK', { duration: 2500 });
                     }
                 } else {
-                    // Error response
-                    this.snack.open(r.message, 'OK', { duration: 2500 });
+                    // this.snack.open(r.message, 'OK', { duration: 2500 });
+                    this.errorMessage = 'The mobile number you have entered does not match with any of the records. Please enter a correct number';
+                    this.showCreateAbhaLink = true;
                 }
                 this.loading = false;
             });
     }
 
+     onCreateAbhaClick(): void {
+        console.log('Create ABHA link clicked');
+        this.abhaService.requestCreateAbha();
+    }
     // ============== Step 2: Send OTP ==============
     selectedAbha: any;
     sendOtp(data?: any): void {

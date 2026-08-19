@@ -39,9 +39,12 @@ export class AbhaAddressStepComponent implements OnInit {
         // React to addressOption changes
         this.form.get('addressOption')?.valueChanges.subscribe((opt) => {
             this.applyOptionValidators(opt);
-            if (opt === 'suggestion' && this.suggestions.length === 0) {
+            if (opt === 'custom' && this.suggestions.length === 0) {
                 this.loadSuggestions();
             }
+            // if (opt === 'suggestion' && this.suggestions.length === 0) {
+            //     this.loadSuggestions();
+            // }
         });
 
         // //Live availability check for custom address
@@ -69,19 +72,32 @@ export class AbhaAddressStepComponent implements OnInit {
 
     private applyOptionValidators(option: string): void {
         const custom = this.form.get('customAbhaAddress');
-        const suggestion = this.form.get('selectedSuggestion');
         custom?.clearValidators();
-        suggestion?.clearValidators();
         this.availability = { available: null, message: '' };
+        this.isCustomPatternValid = false;
 
         if (option === 'custom') {
             custom?.setValidators([Validators.required, AbhaValidators.abhaAddress]);
-        } else if (option === 'suggestion') {
-            suggestion?.setValidators([Validators.required]);
         }
         custom?.updateValueAndValidity();
-        suggestion?.updateValueAndValidity();
     }
+
+    // private applyOptionValidators(option: string): void {
+    //     const custom = this.form.get('customAbhaAddress');
+    //     const suggestion = this.form.get('selectedSuggestion');
+    //     custom?.clearValidators();
+    //     suggestion?.clearValidators();
+    //     this.availability = { available: null, message: '' };
+
+    //     if (option === 'custom') {
+    //         custom?.setValidators([Validators.required, AbhaValidators.abhaAddress]);
+    //     } 
+    //     else if (option === 'suggestion') {
+    //         suggestion?.setValidators([Validators.required]);
+    //     }
+    //     custom?.updateValueAndValidity();
+    //     suggestion?.updateValueAndValidity();
+    // }
 
     loadSuggestions(): void {
         this.suggestionsLoading = true;
@@ -92,7 +108,9 @@ export class AbhaAddressStepComponent implements OnInit {
     }
 
     selectSuggestion(s: string): void {
-        this.form.patchValue({ selectedSuggestion: s });
+        // this.form.patchValue({ selectedSuggestion: s });
+        this.form.get('customAbhaAddress')?.setValue(s);
+        this.applyCustomValue(s);
     }
 
     /** Rule pills (visual indicators of which rules pass) */
@@ -142,6 +160,12 @@ export class AbhaAddressStepComponent implements OnInit {
         this.isCustomPatternValid = /^(?=.{8,18}$)(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9]+[._][A-Za-z0-9]+$/.test(cleaned);
     }
 
+    private applyCustomValue(val: string): void {
+        this.isCustomPatternValid = /^(?=.{8,18}$)(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9]+[._][A-Za-z0-9]+$/.test(val);
+        // reset availability state whenever the value changes (manually or via chip)
+        this.availability = { available: null, message: '' };
+    }
+
     get canCreate(): boolean {
         const opt = this.form.value.addressOption;
         if (!opt) return false;
@@ -150,9 +174,9 @@ export class AbhaAddressStepComponent implements OnInit {
             // return (this.form.get('customAbhaAddress')?.valid === true);
             return (this.form.get('customAbhaAddress')?.valid === true) && this.isCustomPatternValid; //added by raksha
         }
-        if (opt === 'suggestion') {
-            return !!this.form.value.selectedSuggestion;
-        }
+        // if (opt === 'suggestion') {
+        //     return !!this.form.value.selectedSuggestion;
+        // }
         return false;
     }
 
@@ -166,7 +190,7 @@ export class AbhaAddressStepComponent implements OnInit {
         const opt = this.form.value.addressOption;
         if (opt === 'existing') address = this.existingAddress;
         if (opt === 'custom') address = this.form.get('customAbhaAddress').value;
-        if (opt === 'suggestion') address = this.form.value.selectedSuggestion;
+        // if (opt === 'suggestion') address = this.form.value.selectedSuggestion;
         // The service-level createAbha is invoked from parent; just emit
         setTimeout(() => {
             this.loading = false;

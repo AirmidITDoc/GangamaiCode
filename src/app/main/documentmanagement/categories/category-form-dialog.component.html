@@ -7,14 +7,14 @@
 
         <div mat-dialog-content>
             <form [formGroup]="categoryForm">
-                <mat-form-field appearance="outline" class="full-width">
+                <!-- <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Category name</mat-label>
                     <input matInput [(ngModel)]="name" placeholder="e.g. Discharge Summary" (keyup.enter)="submit()"
                         autofocus />
-                </mat-form-field>
-                <!-- <airmid-textbox label="Category" formControlName="docCategory" [formGroup]="categoryForm"
+                </mat-form-field> -->
+                <airmid-textbox label="Category" formControlName="docCategory" [formGroup]="categoryForm"
                     maxLength="250" value="obj?.docCategory">
-                </airmid-textbox> -->
+                </airmid-textbox>
                 <label class="icon-label">Choose an icon</label>
                 <div class="icon-grid">
                     <button type="button" class="icon-option" *ngFor="let ic of iconChoices"
@@ -27,7 +27,7 @@
 
         <div mat-dialog-actions align="end">
             <button mat-button (click)="cancel()">Cancel</button>
-            <button mat-flat-button color="primary" (click)="submit()" [disabled]="!name.trim()">Add category</button>
+            <button mat-flat-button color="primary" (click)="submit()">Add category</button>
         </div>
     </div>
 </div>
