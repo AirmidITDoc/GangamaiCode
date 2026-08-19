@@ -18,13 +18,22 @@ export class DocumentmanagementService {
         return this._frombuilder.group({
             id: 0,
             parentId: null,
-            docCategory: ['',[Validators.required]],
+            docCategory: ['', [Validators.required]],
             icon: '',
             sortOrder: null
         })
     }
+    public getCategoryTree() {
+        return this._httpClient.GetData("DocumentCategory/List");
+    }
     public saveCategory(Param) {
-        return this._httpClient.PostData("DocumentCategory/" , Param);
+        if (Param.id > 0)
+            return this._httpClient.PutData("DocumentCategory/" + Param.id, Param);
+        else
+            return this._httpClient.PostData("DocumentCategory/", Param);
+    }
+    public getCategory(id) {
+        return this._httpClient.GetData("DocumentCategory/" + id);
     }
     public getItemTable1ListData(Param) {
         return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
