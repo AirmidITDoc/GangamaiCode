@@ -148,7 +148,7 @@ export class NewReservationComponent implements OnInit {
             this.vPatientName = this.registerObj1.patientName
             this.vrequestId = this.registerObj1.otRequestId;
             this.opIpType = this.registerObj1.opIpType
-            this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
+            // this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
             this.reservationForm.get('isAnaesthetistPaid')?.setValue(this.registerObj1.isAnaesthetistPaid)
             this.reservationForm.get('isMaterialReplacement')?.setValue(this.registerObj1.isMaterialReplacement)
 
@@ -195,7 +195,7 @@ export class NewReservationComponent implements OnInit {
             // }
 
             this.reservationForm.patchValue(this.registerObj1);
-            // this.reservationForm.get('estimateTime')?.setValue(Number(this.registerObj2.estimateTime).toFixed(2))
+            this.reservationForm.get('estimateTime')?.setValue(Number(this.registerObj1.estimateTime).toFixed(2) ?? null)
 
             this.getdiagnosisList(this.registerObj1);
             this.getReservationSurgeryDetList(this.registerObj1);
@@ -400,7 +400,7 @@ export class NewReservationComponent implements OnInit {
                 this.reservationForm.get('opiptype').setValue(mappedOpIpType);
 
                 this.reservationForm.patchValue(this.registerObj2);
-                // this.reservationForm.get('estimateTime')?.setValue(Number(this.registerObj2.estimateTime).toFixed(2))
+                this.reservationForm.get('estimateTime')?.setValue(Number(this.registerObj2.estimateTime).toFixed(2) ?? null)
 
                 // this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
                 this.reservationForm.get('pacrequired').setValue(this.registerObj2.pacrequired ? '1' : '0')

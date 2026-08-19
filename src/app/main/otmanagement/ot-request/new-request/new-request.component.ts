@@ -179,7 +179,7 @@ export class NewRequestComponent implements OnInit {
 
             console.log("Data:", this.registerObj1)
             this.requestForm.patchValue(this.registerObj1);
-            // this.requestForm.get('estimateTime')?.setValue(Number(this.registerObj1.estimateTime).toFixed(2))
+            this.requestForm.get('estimateTime')?.setValue(Number(this.registerObj1.estimateTime).toFixed(2) ?? null)
 
             this.selectChangedepdoctorType(this.registerObj1)
             this.getdiagnosisList(this.registerObj1);
