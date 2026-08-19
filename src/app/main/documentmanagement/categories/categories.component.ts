@@ -5,6 +5,7 @@ import { CategoryFormDialogComponent, CategoryFormResult } from './category-form
 import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
 import { MockDataService } from '../mock-data.service';
 import { DocumentmanagementService } from '../documentmanagement.service';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-categories',
@@ -14,7 +15,7 @@ import { DocumentmanagementService } from '../documentmanagement.service';
 export class CategoriesComponent {
     categories: DocumentCategory[] = [];
     selectedId: number | null = null;
-   
+
     constructor(
         private data: MockDataService,
         private dialog: MatDialog,
@@ -35,12 +36,28 @@ export class CategoriesComponent {
     }
 
     openAddDialog(parentId: any): void {
-        const parentName = parentId.id ? this.data.findNode(this.categories, parentId.id)?.docCategory ?? null : null;
-        const ref = this.dialog.open(CategoryFormDialogComponent, { data: { parentName, parentId: parentId.id, mode: parentId.mode } });
-        ref.afterClosed().subscribe((result: CategoryFormResult | undefined) => {
-            if (!result) return;
-            this.bindCategories();
-            this.snackBar.open(`Added "${result.name}"`, 'Dismiss', { duration: 2500 });
+        if (parentId.mode == 'delete') {
+            this.onDelete(parentId.id);
+        }
+        else {
+            const parentName = parentId.id ? this.data.findNode(this.categories, parentId.id)?.docCategory ?? null : null;
+            const ref = this.dialog.open(CategoryFormDialogComponent, { data: { parentName, parentId: parentId.id, mode: parentId.mode } });
+            ref.afterClosed().subscribe((result: CategoryFormResult | undefined) => {
+                if (!result) return;
+                this.bindCategories();
+                this.snackBar.open(`Added "${result.name}"`, 'Dismiss', { duration: 2500 });
+            });
+        }
+    }
+    onDelete(id) {
+        const ref = this.dialog.open(FuseConfirmDialogComponent, { disableClose: false, });
+        ref.componentInstance.confirmMessage = "Are you sure you want to delete this document category?";
+        ref.afterClosed().subscribe((result) => {
+            if (result) {
+                this._service.deleteCategory(id).subscribe((res) => {
+                    this.bindCategories();
+                });
+            }
         });
     }
 

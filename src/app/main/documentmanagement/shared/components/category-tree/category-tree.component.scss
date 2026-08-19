@@ -1,125 +1,132 @@
 .cat-tree {
-  background: transparent;
-  font-family: var(--font-body);
+    background: transparent;
+    font-family: var(--font-body);
+}
+.node-actions button{
+    padding-top: 0px !important;
+    padding-left: 2px !important;
 }
 
 .node-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 7px 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  min-height: 40px;
-  transition: background-color 0.15s ease;
-  position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 40px;
+    transition: background-color 0.15s ease;
+    position: relative;
 
-  &:hover {
-    background: var(--surface-hover);
-  }
-
-  &.active {
-    background: var(--surface-selected);
-
-    .node-label {
-      font-weight: 600;
-      color: var(--accent-teal-dark);
+    &:hover {
+        background: var(--surface-hover);
     }
 
-    &::before {
-      content: '';
-      position: absolute;
-      left: -8px;
-      top: 6px;
-      bottom: 6px;
-      width: 3px;
-      border-radius: 2px;
-      background: var(--accent-teal);
+    &.active {
+        background: var(--surface-selected);
+
+        .node-label {
+            font-weight: 600;
+            color: var(--accent-teal-dark);
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 6px;
+            bottom: 6px;
+            width: 3px;
+            border-radius: 2px;
+            background: var(--accent-teal);
+        }
     }
-  }
 }
 
 .spacer-toggle {
-  width: 32px;
-  display: inline-block;
+    width: 32px;
+    display: inline-block;
 }
 
 .toggle-btn {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    color: var(--text-muted);
 }
 
 .toggle-icon {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .node-icon {
-  font-size: 19px;
-  height: 19px;
-  width: 19px;
-  margin-right: 6px;
-  flex-shrink: 0;
+    font-size: 19px;
+    height: 19px;
+    width: 19px;
+    margin-right: 6px;
+    flex-shrink: 0;
 }
 
 .node-label {
-  font-size: 13.5px;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    flex: 1; // take remaining space
+    min-width: 0; // required for ellipsis
+    font-size: 13.5px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .child-count,
 .doc-count {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--text-muted);
-  margin-left: 8px;
-  background: var(--surface-chip);
-  padding: 1px 6px;
-  border-radius: 20px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-muted);
+    margin-left: 8px;
+    background: var(--surface-chip);
+    padding: 1px 6px;
+    border-radius: 20px;
 }
 
 .node-actions {
-  margin-left: auto;
-  display: none;
-  flex-shrink: 0;
+    margin-left: auto;
+    display: none;
+    flex-shrink: 0;
 
-  button {
-    width: 28px;
-    height: 28px;
-    line-height: 28px;
+    button {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
 
-    mat-icon {
-      font-size: 16px;
-      height: 16px;
-      width: 16px;
+        mat-icon {
+            font-size: 16px;
+            height: 16px;
+            width: 16px;
+        }
     }
-  }
 }
 
 .node-row:hover .node-actions {
-  display: inline-flex;
+    display: inline-flex;
 }
 
 .children-wrapper {
-  margin-left: 28px;
-  border-left: 1px dashed var(--divider-line);
-  padding-left: 6px;
+    margin-left: 28px;
+    border-left: 1px dashed var(--divider-line);
+    padding-left: 6px;
 
-  &.hidden {
-    display: none;
-  }
+    &.hidden {
+        display: none;
+    }
 }
 
 .edit-input {
-  font-size: 13px;
-  padding: 4px 8px;
-  border: 1px solid var(--accent-teal);
-  border-radius: 6px;
-  outline: none;
-  font-family: var(--font-body);
-  width: 160px;
+    font-size: 13px;
+    padding: 4px 8px;
+    border: 1px solid var(--accent-teal);
+    border-radius: 6px;
+    outline: none;
+    font-family: var(--font-body);
+    width: 160px;
 }

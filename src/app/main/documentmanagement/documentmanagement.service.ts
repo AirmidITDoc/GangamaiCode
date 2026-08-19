@@ -35,8 +35,8 @@ export class DocumentmanagementService {
     public getCategory(id) {
         return this._httpClient.GetData("DocumentCategory/" + id);
     }
-    public getItemTable1ListData(Param) {
-        return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
+    public deleteCategory(id) {
+        return this._httpClient.DeleteData("DocumentCategory?Id=" + id);
     }
 
 
