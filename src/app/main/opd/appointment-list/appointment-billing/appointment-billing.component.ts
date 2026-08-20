@@ -2598,7 +2598,7 @@ export class ChargesList {
     DoctorName: any;
     OpdIpdId: any;
     serviceName: any;
-
+isEditable:any;
     RegNo: any;
     PatientName: any;
     BillNo: any;
@@ -2668,7 +2668,7 @@ export class ChargesList {
         this.isPathology = ChargesList.isPathology || 0;
         this.isRadiology = ChargesList.isRadiology || 0;
         this.userName = ChargesList.userName || '';
-
+this.isEditable = ChargesList.isEditable || 0;
         this.RegNo = ChargesList.RegNo || 0;
         this.BillNo = ChargesList.BillNo || 0;
         this.PatientName = ChargesList.PatientName || '';

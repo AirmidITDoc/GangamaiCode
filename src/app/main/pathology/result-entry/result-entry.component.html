@@ -277,7 +277,7 @@
                                             <ng-container matColumnDef="select">
                                                 <th mat-header-cell *matHeaderCellDef>
                                                     <mat-checkbox (change)="$event ? masterToggle() : null"
-                                                        [checked]="isAllSelected()"
+                                                        [checked]="selection.hasValue()"
                                                         [indeterminate]="selection.hasValue() && !isAllSelected()">
                                                     </mat-checkbox>
                                                 </th>
@@ -294,7 +294,7 @@
                                                             (change)="$event ? selection.toggle(contact) : null"
                                                             *ngIf="contact.isTemplateTest !='1' else noMLC"
                                                             [checked]="selection.isSelected(contact)"
-                                                                [disabled]="isCheckboxDisabled(contact)">
+                                                            [disabled]="isCheckboxDisabled(contact)">
                                                         </mat-checkbox>
                                                     </span>
 
@@ -303,19 +303,20 @@
                                                             style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                                             <span>----</span>
                                                         </div>
-                                                    </ng-template>
-                                                      <button mat-icon-button matTooltip="Service has been refunded" *ngIf="contact?.isRefunded == 1 ">
-                                                         <mat-icon>replay</mat-icon>
-                                                      </button>
+                                                    </ng-template> 
                                                 </td>
                                             </ng-container>
 
                                             <ng-container matColumnDef="action1">
                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                    class="w-200">Status</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" class="w-200">
+                                                    class="w-220">Status</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-220">
 
                                                     <div fxLayout="row" fxLayoutAlign="center center">
+
+                                                      <button mat-icon-button matTooltip="Service has been refunded" *ngIf="contact?.isRefunded == 1 ">
+                                                         <mat-icon>replay</mat-icon>
+                                                      </button>
 
                                                         <mat-icon *ngIf="contact.isTemplateTest=='1'"
                                                             matTooltip="Template Test" class="s-20 mr-4"

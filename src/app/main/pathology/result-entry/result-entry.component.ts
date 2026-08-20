@@ -1257,7 +1257,7 @@ export class ResultEntryComponent implements OnInit {
         } else {
             this.isAllSelected()
                 ? this.selection.clear()
-                : this.dataSource1.data.forEach(row => this.selection.select(row));
+                : collectedTests.forEach(row => this.selection.select(row));
         }
 
         console.log('Selected items count:', this.selection.selected.length);
@@ -1300,7 +1300,7 @@ export class ResultEntryComponent implements OnInit {
        if (contact.isRefunded == 1) {
             return  true
         }
-        if (contact.isSampleCollection === 'True') {
+        if (contact.isSampleCollection === 'False') {
            return true
         } 
         return false; // Self patient → always enabled

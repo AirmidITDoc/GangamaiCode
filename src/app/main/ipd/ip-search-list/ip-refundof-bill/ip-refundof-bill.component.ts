@@ -181,7 +181,7 @@ export class IPRefundofBillComponent implements OnInit {
             refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [item.serviceId ?? 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceAmount: [item.netAmount ?? 0],
-            refundAmount: [item.refundAmount ?? 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+            refundAmount: [item.refundAmount ||  0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
             doctorId: [item.doctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly(), Validators.maxLength(50)]],
             addBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -193,7 +193,7 @@ export class IPRefundofBillComponent implements OnInit {
     createAddCharge(item: any = {}): FormGroup {
         return this.formBuilder.group({
             chargesId: [item.chargesId ?? 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-            refundAmount: [item.refundAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+            refundAmount: [item.refundAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }
     CreateModePaymentform(item: any): FormGroup {
@@ -204,11 +204,11 @@ export class IPRefundofBillComponent implements OnInit {
             opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
-            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            payAmount: [item?.payAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             validationDate: [item?.validationDate ?? ''],
-            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            advanceUsedAmount: [item?.advanceUsedAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
