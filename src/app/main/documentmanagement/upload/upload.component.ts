@@ -43,12 +43,16 @@ export class UploadComponent {
     lastSubmittedCount = 0;
 
     constructor(private data: MockDataService, private snackBar: MatSnackBar, private _service: DocumentmanagementService) {
-        this.data.categories$.subscribe((c) => (this.categories = c));
+        this.bindCategories();
+    }
+    bindCategories() {
+        this._service.getCategoryTree().subscribe((res) => {
+            this.categories = res;
+        })
     }
 
     /* ---------------- Step 1 ---------------- */
     searchPatients(): void {
-        debugger
         this._service.seachPatient(this.patientQuery).subscribe((res) => {
             this.patientResults = res;
         });
