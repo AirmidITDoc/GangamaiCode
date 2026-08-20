@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { ApprovalListService } from '../approval-list.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfigService } from 'app/core/services/config.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -29,8 +29,9 @@ export class ApprovalUserNameListComponent implements OnInit {
     ];
 
     UserForm: FormGroup;
-    SendAppForm: FormGroup;
+    SendAppForm: FormGroup; 
     registerObj: any = '';
+    TransId:any=0;
     FormName: any = '';
     dateTimeObj: any;
     screenFromString = 'Common-form';
@@ -49,16 +50,23 @@ export class ApprovalUserNameListComponent implements OnInit {
         public toastr: ToastrService,
         public _formbuilder: FormBuilder,
         public _FormvalidationserviceService: FormvalidationserviceService,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: any,        
+        public dialogRef: MatDialogRef<ApprovalUserNameListComponent>
     ) { }
 
     ngOnInit(): void {
         this.UserForm = this.CreateUserform();
-        this.SendAppForm = this.CreateSendAppForm();
-
+        this.SendAppForm = this.CreateSendAppForm(); 
+debugger
         if (this.data) {
             this.registerObj = this.data.Obj;
             this.FormName = this.data?.FormName || ''
+            if(this.data?.FormName == 'OPD Discount Approval'){
+                  this.TransId = 0;
+            }
+            else if(this.data?.FormName == 'PURCHASE ORDER'){
+                this.TransId = this.registerObj?.purchaseID;
+            }
         }
     }
     CreateUserform() {
@@ -94,12 +102,13 @@ export class ApprovalUserNameListComponent implements OnInit {
             approvalNo: ['0', this._FormvalidationserviceService.allowEmptyStringValidator()],
             date: [new Date().toISOString],
             time: [new Date().toISOString],
-            tranId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            tranId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             transactionType: ['', this._FormvalidationserviceService.allowEmptyStringValidator()],
             approvalStatus: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-            authorizeBy: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            authorizeBy: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             approvedDateTime: ['1900-01-01'],
             comment: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
+            createdBy:['']
         })
     }
 //     {
@@ -113,13 +122,14 @@ export class ApprovalUserNameListComponent implements OnInit {
         const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
         const FormattedDateTime = formattedDate + ' ' + formattedTime
 debugger
+
         this.SendAppForm.patchValue({
             date:formattedDate || '',
             time:FormattedDateTime || '',
-            tranId: this.registerObj?.purchaseID || 0,
+            tranId: this.TransId || 0,
             transactionType: this.FormName || '',
             comment: this.UserForm.get('Remark').value || '',
-            authorizeBy:contact?.userId || 0
+            authorizeBy:this.accountService.currentUserValue.userId 
         })
         console.log("submitobj:", this.SendAppForm.value)
         if (this.SendAppForm.valid) {
@@ -132,7 +142,7 @@ debugger
             const invalidFields = [];
             if (this.SendAppForm.invalid) {
                 for (const controlName in this.SendAppForm.controls) {
-                    if (this.SendAppForm.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
+                    if (this.SendAppForm.controls[controlName].invalid) { invalidFields.push(`Approvaal Form: ${controlName}`); }
                 }
             }
             if (invalidFields.length > 0) {
@@ -146,12 +156,58 @@ debugger
         this.UserForm.reset();
         this.FormName = '';
         this.registerObj = '';
+        this.TransId
         this._matDialog.closeAll();
     }
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }
+////opd draft approval -----------
+ 
+      OnSendopdApproval(contact) {
+        const formattedTime = this.datePipe.transform(new Date(), 'hh:mm a');
+        const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+        const FormattedDateTime = formattedDate + ' ' + formattedTime
+debugger
+        this.SendAppForm.patchValue({
+            date:formattedDate || '',
+            time:FormattedDateTime || '',
+            tranId: this.TransId || 0,
+            transactionType: this.FormName || '',
+            comment: this.UserForm.get('Remark').value || '',
+            authorizeBy:0,
+            createdBy:String(this.accountService.currentUserValue.userId) 
+        })
+  
+          const OPDApprovalSavePayload = {
+              ...this.data.Obj,
+              approvalHeader: this.SendAppForm.value
+          };
 
+        console.log("submitobj:", OPDApprovalSavePayload)
+        if (this.SendAppForm.valid) {
+            this._ApprovalListService.getInsertOPDApproval(OPDApprovalSavePayload).subscribe(response => {
+                if (response) {
+                  
+                    this.onClose();
+                    this.dialogRef.close(response)
+                    
+                }
+            })
+        } else {
+            const invalidFields = [];
+            if (this.SendAppForm.invalid) {
+                for (const controlName in this.SendAppForm.controls) {
+                    if (this.SendAppForm.controls[controlName].invalid) { invalidFields.push(`Approvaal Form: ${controlName}`); }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
+        }
+
+    } 
+  
 }
 
 export class UsernameList {

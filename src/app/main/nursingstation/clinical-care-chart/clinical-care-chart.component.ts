@@ -564,14 +564,17 @@ export class ClinicalCareChartComponent implements OnInit {
     gridConfig7: gridModel = new gridModel();
     @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+        this.gridConfig7.columnsList.find(col => col.key === 'action')!.template = this.isTestCompletedIcon;
     }
 
     columns7 = [
         { heading: "Date&Time", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
         { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IsCompleted", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
+        { heading: "IsCompleted", key: "isCompleted", sort: true, type: gridColumnTypes.status,align: 'left', width: 100  }, 
+        { heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+        template: this.isTestCompletedIcon  // Assign ng-template to the column
+                 }
     ]
     getReporttestList() {
         const admid = this.vAdmission ?? 0
@@ -1347,6 +1350,78 @@ export class ClinicalCareChartComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
+        });
+    }
+
+    /// added by ambadas result view option
+    public dsResultViewList = new MatTableDataSource<any>();
+    public displayedResultViewColumns =
+        ['sequence', 'TestName', 'ParameterName', 'ResultValue', 'Flag', 'NormalRange'];
+    @ViewChild('ResultViewTab') ResultViewTab!: TemplateRef<any>;
+
+
+     getLabResultview(row: any): void {
+        this._matDialog.open(this.ResultViewTab, {
+            width: '65%',
+            height: '75%',
+        })
+        var param = {
+            "searchFields": [
+                {
+                    "fieldName": "PathReportId",
+                    "fieldValue": String(row.pathReportID), //"150598",  
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "PathologyResultEntryIPCompleted"
+        }
+        //         {
+        //     "TestId": 2,
+        //     "TestName": "CBC",
+        //     "PrintTestName": "COMPLETE BLOOD COUNT",
+        //     "SubTestId": 0,
+        //     "SubTestName": "CBC",
+        //     "SubTestNamePrint": "COMPLETE BLOOD COUNT",
+        //     "ParameterName": "HCT",
+        //     "ParameterShortName": "HCT",
+        //     "ParameterId": 19,
+        //     "PrintParameterName": "HCT",
+        //     "ResultValue": " 2323",
+        //     "NormalRange": "33 - 50 %",
+        //     "PrintOrder": 1,
+        //     "PIsNumeric": 1,
+        //     "PathReportId": 571684,
+        //     "CategoryId": 20029,
+        //     "CategoryName": "HEMATOLOGY",
+        //     "PatientName": "Miss Raksha Rajesh Netalkar",
+        //     "VisitDate": "2026-07-28T00:00:00",
+        //     "VisitTime": "2026-07-28T11:48:41",
+        //     "OPDNo": "OP/07/2026/140",
+        //     "ConsultantDocName": "DEMO demo",
+        //     "AgeYear": "25        ",
+        //     "RegNo": "3242",
+        //     "CompanyName": "",
+        //     "PathResultDrName": "Kavita j",
+        //     "PathResultDr1": 70403,
+        //     "SuggestionNote": "askjal adsjlkjasd dsaaskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa",
+        //     "FootNote": "",
+        //     "MachineName": "",
+        //     "TechniqueName": "",
+        //     "UnitId": 5,
+        //     "MinValue": 33,
+        //     "MaxValue": 50,
+        //     "PathReportdetid": 255768,
+        //     "Formula": "",
+        //     "ParaBoldFlag": "B",
+        //     "OPD_IPD_ID": 535955,
+        //     "OPD_IPD_Type": 0
+        // }
+        this._ClinicalcareService.getLabResultView(param).subscribe((response) => {
+
+            if (response) {
+                this.dsResultViewList.data = response;
+                console.log(this.dsResultViewList.data)
+            }
         });
     }
 }

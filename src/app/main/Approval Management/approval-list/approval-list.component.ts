@@ -18,7 +18,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { ApprovalListService } from './approval-list.service';
-import { NewPurchaseorderComponent } from '../purchase-order/new-purchaseorder/new-purchaseorder.component';
+import { NewPurchaseorderComponent } from '../../purchase/purchase-order/new-purchaseorder/new-purchaseorder.component';
 
 
 @Component({
@@ -51,9 +51,9 @@ export class ApprovalListComponent implements OnInit {
 
     allColumns = [
         {
-            heading: "-", key: "approvalStatus", sort: true, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.template,
+            heading: "-", key: "approvalStatus", sort: false, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.template,
             template: this.approvalStatus
-        },
+        }, 
         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 6 },
         { heading: "", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 60, type: 7 },
         { heading: "Approval No", key: "approvalNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
@@ -63,7 +63,7 @@ export class ApprovalListComponent implements OnInit {
         { heading: "AddedBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Remark", key: "comment", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
             template: this.actionTemplate
         }
     ]
@@ -187,11 +187,11 @@ export class ApprovalListComponent implements OnInit {
             "isVerifiedId": 1
         };
         this._ApprovalListService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
-            this.onApproval(Obj);
+            this.getDirectApproval(Obj,'Approval');
             this.grid.bindGridData() 
         });
     }
-     onApproval(row) {
+     getDirectApproval(row,Type) {
          debugger
         const formattedTime = this.datePipe.transform(new Date(), 'hh:mm a');
         const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -200,8 +200,12 @@ export class ApprovalListComponent implements OnInit {
         const submitData = {
             "approvalId": row?.approvalId || 0,
             "approvalStatus": 1,
-            "approvedDateTime": FormattedDateTime
+            "approvedDateTime": FormattedDateTime,
+            "tranId":  row?.tranId || 0,
+            "isApproved": Type == 'Approval' ? true : false,
+            "stageStatus": Type == 'Approval' ? "APPROVED" : "REJECTED"
         };
+ 
         this._ApprovalListService.getApprovalStatus((row?.approvalId || 0),submitData).subscribe(response => {
             this.grid.bindGridData()
         });

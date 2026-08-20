@@ -434,8 +434,9 @@
                                                                     <mat-form-field floatLabel="never"
                                                                         *ngIf="!Is9_Digit_National_Id">
                                                                         <input matInput placeholder="Price" type="text"
-                                                                            [(ngModel)]="contact.Price" required
-                                                                            (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                                            [(ngModel)]="contact.Price" required     [readonly]="!contact.isEditable"
+                                                                            (ngModelChange)="onPriceOrQtyChange(contact)"
+                                                                            [matTooltip]="!contact.isEditable ? 'You do not have edit rights for this field' : ''">
                                                                     </mat-form-field>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -752,53 +753,70 @@
                                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                                     <mat-card-content class="py-4 h-100-p">
                                         <div fxLayout="column" class="h-100-p">
-                                            <div class="draft-list-info-title border-bottom" style="padding: 12px;">
+                                            <div class="draft-list-info-title border-bottom" style="padding: 12px;" fxLayoutAlign="space-between">
                                                 <span style="font-weight: bold;font-size: large;">
                                                     Draft List
                                                 </span>
+                                                <div fxLayout="row" fxLayoutAlign="end" class="gap-8" style="margin-right: 20px;">
+                                                
+                                                    <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                        <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                        <span class="green-600-fg">APPROVED</span>
+                                                    </div>
+                                                
+                                                    <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                        <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                        <span class="orange-600-fg">MODIFIED</span>
+                                                    </div>
+                                                
+                                                    <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                        <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                                        <span class="blue-600-fg">REJECTED</span>
+                                                    </div>
+                                                
+                                                </div>
                                             </div>
-                                            <div class="airmid-table-container ">
+                                            <div class="airmid-table-container dynamic-table-wrapper">
                                                 <mat-table #table matSort [dataSource]="dsOpDraftlist"
                                                     [@animateStagger]="{value:'50'}" class="airmid-table table">
 
                                                     <ng-container matColumnDef="Status" StickEnd>
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                            class="w-60">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
-                                                            <button mat-icon-button
-                                                                (click)="getdraftchargelist(contact)">
+                                                            <button mat-icon-button (click)="getdraftchargelist(contact)"
+                                                                [disabled]="!contact.isApproved && IsOPDDiscountApprovalReq">
                                                                 <span class="material-icons">
-                                                                    <mat-icon
-                                                                        matTooltip="Add">add_shopping_cart</mat-icon>
+                                                                    <mat-icon matTooltip="Add">add_shopping_cart</mat-icon>
                                                                 </span>
-                                                                <!--  (click)="getdraftchargelist(contact)" -->
                                                             </button>
+                                                    
+                                                            <button *ngIf="!contact.isApproved && IsOPDDiscountApprovalReq"
+                                                                mat-icon-button
+                                                                matTooltip="Already sent for approval."  matTooltipPosition="above">
+                                                                <mat-icon style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+                                                            </button>
+                                                    
+                                                            <button *ngIf="contact.isApproved && IsOPDDiscountApprovalReq" mat-icon-button
+                                                                matTooltip="This OPD discount has already been approved."  matTooltipPosition="above">
+                                                                <img width="22" height="22" src="assets/images/logos/approve.png">
+                                                            </button>
+                                                    
                                                         </mat-cell>
                                                     </ng-container>
 
                                                     <ng-container matColumnDef="DraftDate">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                            class="w-120">
+                                                            class="w-170">
                                                             Date
                                                         </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
                                                             <span
                                                                 matTooltip="{{contact.billDate | date:'dd/MM/YYYY'}}-{{contact.billTime | date:'hh:mm a'}}">
-                                                                {{contact.billDate | date:'dd/MM/YYYY'}}
-                                                                <!-- -{{contact.billTime | date:'hh:mm a'}} -->
+                                                                {{contact.billDate | date:'dd/MM/YYYY'}}-{{contact.billTime | date:'hh:mm a'}} 
                                                             </span>
                                                         </mat-cell>
-                                                    </ng-container>
-
-                                                    <!-- <ng-container matColumnDef="draftNo">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                                                    Draft No
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                                                    <span  matTooltip="{{contact.drbno}}"> {{contact.drbno}}</span>
-                                                                </mat-cell>
-                                                            </ng-container> -->
+                                                    </ng-container> 
 
                                                     <ng-container matColumnDef="NetAmount">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -810,7 +828,33 @@
                                                         </mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="Action" StickEnd>
+                                                     <ng-container matColumnDef="approvedDate">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-170">
+                                                            Approved Date
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
+                                                            <span
+                                                                matTooltip="{{contact.approvedDateTime | date:'dd/MM/YYYY'}}-{{contact.approvedDateTime | date:'hh:mm a'}}">
+                                                                {{contact.approvedDateTime | date:'dd/MM/YYYY'}}-{{contact.approvedDateTime | date:'hh:mm a'}} 
+                                                            </span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                     <ng-container matColumnDef="approvedBy">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-120">
+                                                            Approved By
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                                            <span
+                                                                matTooltip="{{contact.authorizeBy || '-'}}">
+                                                                {{contact.authorizeBy || '-'}} 
+                                                            </span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Action" stickyEnd>
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                             class="w-80">
                                                         </mat-header-cell>
@@ -823,9 +867,11 @@
                                                             </button>
 
                                                             <button mat-icon-button matTooltip="Cancel Draft Bill"
-                                                                (click)="DraftbillCancel(contact.drbno)">
+                                                                (click)="DraftbillCancel(contact.drbno)"
+                                                            [disabled]="IsOPDDiscountApprovalReq">
                                                                 <mat-icon matTooltip="Cancel">cancel</mat-icon>
-                                                            </button>
+                                                            </button>  
+ 
                                                         </mat-cell>
                                                     </ng-container>
 
@@ -841,12 +887,15 @@
                                                         </mat-footer-cell>
                                                     </ng-container>
 
-                                                    <mat-header-row class="accent"
+                                                    <mat-header-row class="accent min-width-700"
                                                         *matHeaderRowDef="displayedColumnsDraft; sticky: true">
                                                     </mat-header-row>
                                                     <mat-row *matRowDef="let contact; columns: displayedColumnsDraft;"
-                                                        [ngClass]="{'red-row': contact.isCancelled == '1'}"
-                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                      [ngClass]="{ 'approved-row': contact.stageStatus === 'APPROVED', 
+                                                      'rejected-row': contact.stageStatus === 'REJECTED',
+                                                      'modified-row': contact.stageStatus === 'MODIFIED'}"    class="min-width-700"
+                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>  
+
                                                     <mat-footer-row *matFooterRowDef="['loading']"
                                                         [ngClass]="{'hide':dsOpDraftlist!=null}">
                                                     </mat-footer-row>

@@ -223,7 +223,8 @@
                                 <mat-form-field appearance="fill">
                                     <input matInput [(ngModel)]="element.refundAmount" type="text" OnlyNumber
                                         (keyup)="gettablecalculation(element,element.refundAmount)"
-                                        (keypress)="keyPressCharater($event)">
+                                        (keypress)="keyPressCharater($event)" [disabled]="element.isSampleCollection"
+                       [matTooltip]="element.isSampleCollection ? 'Sample collection has already been completed, so the refund cannot be processed.' : ''">
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>

@@ -787,6 +787,25 @@ export class IPBillingComponent implements OnInit {
         this.Serviceform.patchValue({
             price: obj.price
         })
+
+           // Price validation based on selected service 
+const price = this.Serviceform.get('price');
+const totalAmt = this.Serviceform.get('totalAmt');
+const netAmount = this.Serviceform.get('netAmount');
+
+if (obj?.isAllowZeroPrice === true) { 
+    price.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+    totalAmt.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+    netAmount.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]); 
+} else { 
+    price.setValidators([ this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator() ]);
+    totalAmt.setValidators([ this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator() ]);
+    netAmount.setValidators([ this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator() ]);
+} 
+price.updateValueAndValidity();
+totalAmt.updateValueAndValidity();
+netAmount.updateValueAndValidity();
+
         if (obj.creditedtoDoctor == true) {
             this.Serviceform.get('doctorId').reset();
             this.Serviceform.get('doctorId').setValidators([Validators.required]);

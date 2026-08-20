@@ -22,7 +22,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { PurchaseRequisitionComponent } from './purchase-requisition/purchase-requisition.component';
 import { ConfigService } from 'app/core/services/config.service';
-import { ApprovalUserNameListComponent } from '../approval-list/approval-user-name-list/approval-user-name-list.component';
+import { ApprovalUserNameListComponent } from '../../Approval Management/approval-list/approval-user-name-list/approval-user-name-list.component';
 
 
 @Component({

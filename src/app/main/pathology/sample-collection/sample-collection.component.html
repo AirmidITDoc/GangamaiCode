@@ -74,13 +74,18 @@
             </ng-template>
 
             <ng-template #iconisCompeleted let-element>
-                <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box gap-4" >
                     <span [ngClass]="{
                             'status-completed': element.isSampleCollection == 'True',
                             'status-pending': element.isSampleCollection == 'False'
                         }">
                         {{ element.isSampleCollection == 'True' ? 'Completed' : 'Pending' }}
                     </span>
+
+
+                     <button mat-icon-button matTooltip="Service has been refunded" *ngIf="element?.isRefunded == 1 ">
+                                <mat-icon>replay</mat-icon>
+                     </button>
                 </div>
             </ng-template>
 

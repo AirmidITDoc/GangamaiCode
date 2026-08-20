@@ -51,11 +51,7 @@ const appRoutes: Routes = [
     {
         path: "purchaserequisitionverification",
         loadChildren: () => import("./purchase-requisition-verification/purchase-requisition-verification.module").then((m) => m.PurchaseRequisitionVerificationModule)
-    },
-        {
-        path: "approvallist",
-        loadChildren: () => import("./approval-list/approval-list.module").then((m) => m.ApprovalListModule)
-    },
+    }, 
 ];
 
 

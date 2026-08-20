@@ -884,7 +884,7 @@ export class AppointmentListComponent implements OnInit {
             }
         });
         dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
+            //this.grid.bindGridData();
             this.GetAppointdetail()
 
             const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
@@ -898,6 +898,10 @@ export class AppointmentListComponent implements OnInit {
             else {
                 console.log('No bill generated or dialog cancelled');
             }
+
+            setTimeout(() => {
+                this.grid.bindGridData();
+            }, 300);
         });
     }
     currentDate = new Date();

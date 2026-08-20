@@ -598,7 +598,8 @@
                             <mat-form-field floatLabel="never" class="compact-field"  *ngIf="!Is9_Digit_National_Id" >
                               <input matInput [(ngModel)]="contact.price" type="text" OnlyNumber placeholder="price"
                                 (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)"
-                                [readonly]="!contact.isNewRow && !contact.isEditMode">
+                                [readonly]="(!contact.isNewRow && !contact.isEditMode) || !contact.isEditable"
+                               [matTooltip]="!contact.isEditable ? 'You do not have edit rights for this field' : ''">
                             </mat-form-field>
                           </mat-cell>
                         </ng-container>

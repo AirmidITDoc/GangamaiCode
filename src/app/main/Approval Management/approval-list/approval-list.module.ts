@@ -33,9 +33,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';  
-import { ApprovalListComponent } from './approval-list.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';   
 import { ApprovalUserNameListComponent } from './approval-user-name-list/approval-user-name-list.component'; 
+import { ApprovalListComponent } from './approval-list.component';
 
 const routes: Routes = [
     {

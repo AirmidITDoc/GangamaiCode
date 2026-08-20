@@ -65,7 +65,15 @@ export class NUserComponent implements OnInit {
         'CheckBox',
         'InputField'
     ]
+        CashCounterdisplayedColumn: string[] = [
+        'sequence',
+        'CashCounterName',
+        'IsBydefault',
+        'ReceiptCashCounter',
+        //'Type', 
+    ]
     dsApprovalList = new MatTableDataSource<UserDetail>();
+    dsCashcounterList = new MatTableDataSource<any>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -342,6 +350,13 @@ getCashcounterDetail(row) {
                 this.myuserApprovalform1.patchValue({
                     multipleCashCounterId: assignedCashcounter
                 });
+
+                const selectedCounters = assignedCashcounter
+                this.dsCashcounterList.data = selectedCounters.map((x: any) => ({
+                    value: x.value,
+                    text: x.text,
+                    isDefault:(x?.isDefault || false)
+                })); 
             });
 
             // setTimeout(() => {
@@ -486,6 +501,8 @@ getCashcounterDetail(row) {
         const removedIndex = this.myuserApprovalform1.value.multipleCashCounterId.findIndex(x => x.value == item.value);
         this.myuserApprovalform1.value.multipleCashCounterId.splice(removedIndex, 1);
         this.ddlCashCounter.SetSelection(this.myuserApprovalform1.value.multipleCashCounterId.map(x => x.value));
+
+        this.dsCashcounterList.data = this.dsCashcounterList.data.filter( x => x.value != item.value );
     }
     removeUnit(item) {
         const removedIndex = this.myuserApprovalform1.value.multipleUnitId.findIndex(x => x.value == item.value);
@@ -687,7 +704,185 @@ getCashcounterDetail(row) {
         console.log(obj)
         this.CashCounterName = obj.value
         console.log("set:", this.myuserApprovalform1.get('multipleCashCounterId').value)
+  
+
+//     const selectedCounters =  this.myuserApprovalform1.get('multipleCashCounterId')?.value || []; 
+//     this.dsCashcounterList.data = selectedCounters.map((x: any) => ({
+     
+//         value: x.value,
+//         text: x.text,
+//         isDefault:false,
+//         Type: x.text === 'OP Billing Counter' ? 'OP_BILL' : 'IP_BILL'
+ 
+//       Type: x.Type || x.type 
+//     .sort((a: any, b: any) =>
+//       (a.Type || '').localeCompare(b.Type || '')
+//     );
+
+//   console.log('Table Data:', this.dsCashcounterList.data
+//    }));
     }
+//  selectChangeCashCounterName(obj: any) {
+
+//   const selectedCounters =
+//     this.myuserApprovalform1.get('multipleCashCounterId')?.value || [];
+
+//   const groupedData: any[] = [];
+
+//   // Type wise sort
+//   const sortedCounters = [...selectedCounters].sort((a: any, b: any) =>
+//     (a.Type || a.type || '').localeCompare(b.Type || b.type || '')
+//   );
+
+//   let previousType = null;
+
+//   sortedCounters.forEach((x: any) => {
+
+//     const currentType = x.Type || x.type;
+
+//     // Type पहिल्यांदा आला तर Group Header
+//     if (currentType !== previousType) {
+
+//       groupedData.push({
+//         isGroup: true,
+//         Type: currentType
+//       });
+
+//       previousType = currentType;
+//     }
+
+//     // Actual row
+//     groupedData.push({
+//       value: x.value,
+//       text: x.text,
+//       isDefault: false,
+//       Type: currentType,
+//       isGroup: false
+//     });
+
+//   });
+
+//   this.dsCashcounterList.data = groupedData;
+
+//   console.log('Grouped Data:', this.dsCashcounterList.data);
+// }
+selectChangeCashCounterName1(obj: any) {
+console.log(obj)
+  const selectedCounters =
+    this.myuserApprovalform1.get('multipleCashCounterId')?.value || [];
+
+  const groupedData: any[] = [];
+
+  // Get Type from CashCounter Name
+  const getCashCounterType = (text: string): string => {
+
+    const name = (text || '').trim().toUpperCase();
+
+    // ---------------- OP LAB ----------------
+    if (name.startsWith('OP NEW LAB')) {
+      return 'OP_LAB';
+    }
+
+    // ---------------- PHARMACY ----------------
+    if (name.startsWith('PHARMACY')) {
+      return 'PHARMACY';
+    }
+
+    // ---------------- OP ----------------
+    if (
+      name.startsWith('OP ') ||
+      name.startsWith('OPD ')
+    ) {
+      return 'OP';
+    }
+
+    // ---------------- IP ----------------
+    if (name.startsWith('IP ')) {
+      return 'IP';
+    }
+
+    // ---------------- OTHER ----------------
+    return 'OTHER';
+  };
+
+
+  // Type wise sort
+  const typeOrder: any = {
+    OP: 1,
+    IP: 2,
+    PHARMACY: 3,
+    OP_LAB: 4,
+    OTHER: 5
+  };
+
+  const sortedCounters = [...selectedCounters].sort((a: any, b: any) => {
+
+    const typeA = getCashCounterType(a.text);
+    const typeB = getCashCounterType(b.text);
+
+    return typeOrder[typeA] - typeOrder[typeB];
+  });
+
+
+  let previousType: string | null = null;
+
+
+  sortedCounters.forEach((x: any) => {
+
+    const currentType = getCashCounterType(x.text);
+
+
+    // Type first time आला तर Header तयार करा
+    if (currentType !== previousType) {
+
+      groupedData.push({
+        isGroup: true,
+        Type: currentType
+      });
+
+      previousType = currentType;
+    }
+
+
+    // Actual CashCounter
+    groupedData.push({
+      value: x.value,
+      text: x.text,
+      isDefault: false,
+      Type: currentType,
+      isGroup: false
+    });
+
+  });
+
+
+  this.dsCashcounterList.data = groupedData;
+
+  console.log('Grouped Data:', this.dsCashcounterList.data);
+}
+isGroupRow = (index: number, row: any): boolean => {
+  return row.isGroup === true;
+};
+
+isDataRow = (index: number, row: any): boolean => {
+  return row.isGroup !== true;
+};
+isLastTypeRow(index: number): boolean {
+
+  const data = this.dsCashcounterList.data;
+
+  if (!data || data.length === 0) {
+    return false;
+  }
+
+  // Last row
+  if (index === data.length - 1) {
+    return true;
+  }
+
+  // पुढच्या row चा Type वेगळा असेल तर current row last आहे
+  return data[index].Type !== data[index + 1].Type;
+}
     selectChangeRoleName(obj: any) {
         this.rolename = obj.value
     }

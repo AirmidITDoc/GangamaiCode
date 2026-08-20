@@ -2,3 +2,16 @@ airmid-textbox[formControlName="password"] input {
     -webkit-text-security: disc !important;
     text-security: disc !important;
 }
+.type-group-row {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.type-group-header {
+  flex: 1 1 100%;
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1976d2;
+  padding: 10px 16px;
+}

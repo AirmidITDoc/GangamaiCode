@@ -180,6 +180,10 @@ const appRoutes: Routes = [
         loadChildren: () => import("./main/Trust Management/new-member.module").then(m => m.NewMemberModule)
     },
     {
+        path: "Approval Management",
+        loadChildren: () => import("./main/Approval Management/approval-management.module").then(m => m.ApprovalManagementModule)
+    },
+    {
         path: '',
         redirectTo: 'auth/login',
         pathMatch: 'full'

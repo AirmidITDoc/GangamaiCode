@@ -1,4 +1,5 @@
 import { Injectable, signal, OnDestroy } from '@angular/core';
+import { AppConfigService } from 'app/core/services/api-config.service';
 import * as qzImport from 'qz-tray';
 
 const qz: typeof qzImport = (qzImport as any).default || qzImport;
@@ -10,12 +11,14 @@ export class QzTrayService implements OnDestroy {
     readonly isConnected = signal<boolean>(false);
     readonly errorMessage = signal<string | null>(null);
 
-    constructor() {
+    constructor(
+         private config: AppConfigService
+    ) {
         this.setupProductionSecurity();
         this.setupListeners();
         this.connect(); 
     }
-
+   
     private setupListeners(): void {
         qz.websocket.setClosedCallbacks((evt: any) => {
             this.isConnected.set(false);
@@ -28,26 +31,36 @@ export class QzTrayService implements OnDestroy {
             this.errorMessage.set(`WebSocket Error: ${err}`);
         });
     }
-    private setupProductionSecurity(): void {
-    qz.security.setCertificatePromise((resolve, reject) => {
-      fetch('assets/signing/digital-certificate.txt')
-        .then((res) => res.text())
+  
+private setupProductionSecurity(): void {
+  qz.security.setCertificatePromise((resolve, reject) => {
+    fetch('assets/signing/digital-certificate.txt')
+      .then((res) => {
+        if (!res.ok) throw new Error('Certificate file not found in assets');
+        return res.text();
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+ 
+  qz.security.setSignaturePromise((toSign) => {
+    return (resolve, reject) => {
+      fetch(this.config.apiBaseUrl+'qz/sign-message', { 
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ request: toSign })
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to get signature from server');
+          return res.text();
+        })
         .then(resolve)
         .catch(reject);
-    });
-    qz.security.setSignaturePromise((toSign) => {
-      return (resolve, reject) => {
-        fetch('/api/qz/sign-message', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ request: toSign })
-        })
-          .then((res) => res.text())
-          .then(resolve)
-          .catch(reject);
-      };
-    });
-  }
+    };
+  });
+} 
 
     // async connect(): Promise<void> {
     //     try {
@@ -83,7 +96,7 @@ export class QzTrayService implements OnDestroy {
     // }
 
     async connect(): Promise<void> {
-      debugger
+    //  debugger
         try {
             if (qz.websocket.isActive()) {
                 this.isConnected.set(true);
@@ -103,7 +116,7 @@ export class QzTrayService implements OnDestroy {
     }
 
     async ensureConnected(): Promise<void> {
-      debugger
+      
         if (qz.websocket.isActive()) {
             return;
         }
@@ -116,7 +129,7 @@ export class QzTrayService implements OnDestroy {
     }
 
     async printCommand(data: any[], copies: number = 1): Promise<boolean> {
-      debugger
+    
         try {
             await this.ensureConnected();
 

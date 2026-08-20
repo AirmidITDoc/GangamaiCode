@@ -18,6 +18,7 @@ import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.c
 import { RegInsert } from '../../registration/registration.component';
 import { AppointmentBillService } from './appointment-bill.service';
 import { PackageDetailsComponent } from './package-details/package-details.component';
+import { ApprovalUserNameListComponent } from 'app/main/Approval Management/approval-list/approval-user-name-list/approval-user-name-list.component';
 
 @Component({
     selector: 'app-appointment-billing',
@@ -34,7 +35,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         ['groupName', 'serviceName', 'classRate', 'userName'];
     public mPesaColumns = ['PayStatus', 'transactionDate', 'phoneNumber', 'mpesaReceiptNumber', 'amount', 'ResponseDate', 'Description', 'Action'];
     public displayedColumnsDraft: string[] =
-        ['Status', 'DraftDate', 'NetAmount', 'Action'];
+        ['Status', 'DraftDate', 'NetAmount','approvedDate', 'approvedBy','Action'];
 
     countdown: number = 180; // 3 minutes
     countdownColorClass = 'green';
@@ -88,6 +89,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public isDoctor = false;
     public isUpdating = false;
     Is9_Digit_National_Id: boolean = false
+    IsOPDDiscountApprovalReq: boolean = false
     serviceSelct = false
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     currency: any = '';
@@ -207,6 +209,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         debugger
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+        const [IsOPDDiscountApprovalReqID, IsOPDDiscountApprovalReqVal] = this._ConfigService.configParams.IsOPDDiscountApprovalReq.split(":");
+        this.IsOPDDiscountApprovalReq = IsOPDDiscountApprovalReqID === "1";
 
         this.OPFooterForm = this.CreateOPFooter();
        
@@ -627,7 +632,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
             tdrBill: this.formBuilder.group({
                 drbno: [0],
-                isCancelled: [0]
+                isCancelled: [0],
+                pBillNo: ['0'],
             })
         });
     }
@@ -840,7 +846,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     IsRadiology: this.IsRadiology,
                     IsPackage: this.vIsPackage,
                     serviceCode: formValue.serviceName.companyCode,
-                    isInclusionExclusion: formValue.serviceName.isInclusionOrExclusion
+                    isInclusionExclusion: formValue.serviceName.isInclusionOrExclusion,
+                    isEditable : formValue?.serviceName?.isEditable
                 };
                 if (!this.isDiscountApplied && discountAmount > 0) {
                     this.isDiscountApplied = true;
@@ -1148,7 +1155,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.calculateTotalAmount();
     }
     updateTotalDiscountAmt(): void {
-        debugger
+    
         if (this.isUpdating) return; // Stop recursion
         this.isUpdating = true;
         const DiscountPer = +this.OPFooterForm.get("totalDiscountPer")?.value || 0;
@@ -1309,6 +1316,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.savebtn = false
         this.Regstatus = false
         this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
+        this.getdraftlist()
     }
     getSelectedTariffObj(event) {
         this.vTariffId = event?.value ?? this.patientDetail.tariffId;
@@ -2165,11 +2173,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 concessionAuthorizationName: [0],
                 taxPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 taxAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                isApproved: false,
+                stageStatus: ['DRAFT'],
             }),
             // ✅ Fixed: should be FormArray
             tDrbillDet: this.formBuilder.array([]),
             // ✅ Fixed: should be FormArray
             tDraddCharge: this.formBuilder.array([]),
+            approvalHeader:[]
         });
     }
     CreateDraftDet(item: any) {
@@ -2245,7 +2256,32 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     get draftdetlist(): FormArray {
         return this.OpDraftSaveForm.get('tDrbillDet') as FormArray;
     }
+getApproval(contact): Promise<any> {
+    return new Promise((resolve) => {
 
+        const dialogRef = this._matDialog.open(ApprovalUserNameListComponent, {
+            maxWidth: "100%",
+            height: '70%',
+            width: '44%',
+            data: {
+                Obj: contact,
+                FormName: "OPD Discount Approval"
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed', result);
+            resolve(result);
+            if (result) {
+                console.log(result)
+                this.savebtn = true;
+                this.resetform();
+                this._matDialog.closeAll();
+                this.viewgetOPBillDraftReportPdf(result)
+            }
+        });
+    });
+}
     DraftbillSave() {
         Swal.fire({
             title: 'Confirm Save',
@@ -2280,6 +2316,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                             this.draftdetlist.push(this.CreateDraftDet(item as ChargesList));
                             this.draftchargesArray.push(this.CreateDraftAddchargeform(item as ChargesList));
                         });
+
+                        const VconcessionAmt = this.OPFooterForm.get('concessionAmt')?.value || 0
+                        if(this.IsOPDDiscountApprovalReq && VconcessionAmt > 0){
+                           this.OpDraftSaveForm.get('drBill.stageStatus')?.setValue("SENT FOR APPROVAL")
+                            this.getApproval(this.OpDraftSaveForm.value);
+                            return;
+                        }
                         this._AppointmentlistService.InsertOPDraftBilling(this.OpDraftSaveForm.value)
                             .subscribe(response => {
                                 console.log(response)
@@ -2388,6 +2431,18 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.draftChargelist = response.data as any;
             if (this.draftChargelist.length) {
                 this.onAddDraftCharges();
+debugger
+                if ((contact?.concessionAmt || 0) > 0) {
+                    this.OPFooterForm.patchValue({
+                        concessionAmt: Math.round(contact?.concessionAmt),
+                        netPayableAmt: Math.round(contact?.netPayableAmt)
+                    }, { emitEvent: false });
+
+                    if (!this.isDiscountApplied && contact?.totalDiscount > 0) {
+                        this.isDiscountApplied = true;
+                        this.Consessionres = true 
+                    } 
+                } 
             }
         })
     }

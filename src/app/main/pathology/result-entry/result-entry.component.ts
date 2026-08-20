@@ -1240,7 +1240,7 @@ export class ResultEntryComponent implements OnInit {
         debugger
         const totalTests = this.dataSource1.data.length;
         const collectedTests = this.dataSource1.data.filter(
-            (row: any) => row.isSampleCollection === 'True'
+            (row: any) =>  !this.isCheckboxDisabled(row)
         );
         const notCollectedCount = totalTests - collectedTests.length;
         // if (notCollectedCount > 0 && this.IsSampleCollectionCheckon) {
@@ -1266,8 +1266,12 @@ export class ResultEntryComponent implements OnInit {
     }
 
     isSomeSelected() {
+        const selectableRows = this.dataSource1.data.filter(
+            row => !this.isCheckboxDisabled(row)
+        ); 
         // console.log(this.selection.selected);
-        return this.selection.selected.length > 0;
+        return this.selection.selected.length > 0 && 
+        this.selection.selected.length < selectableRows.length;  
     }
     keyPressAlphanumeric(event) {
         const inp = String.fromCharCode(event.keyCode);
@@ -1284,12 +1288,23 @@ export class ResultEntryComponent implements OnInit {
     }
 
     isAllSelected() {
+         const selectableRows = this.dataSource1.data.filter(
+            row => !this.isCheckboxDisabled(row)
+        );
         const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource1.data.length;
+        const numRows =  selectableRows.length; //    this.dataSource1.data.length;
 
         return numSelected === numRows;
+    } 
+    isCheckboxDisabled(contact: any): boolean { 
+       if (contact.isRefunded == 1) {
+            return  true
+        }
+        if (contact.isSampleCollection === 'True') {
+           return true
+        } 
+        return false; // Self patient → always enabled
     }
-
     onClear() {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
         this._SampleService.myformSearch.get('StatusSearch').setValue("0");

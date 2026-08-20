@@ -283,4 +283,7 @@ export class ClinicalCareChartService {
     public OnDeleteOxygenVen(param) {
         return this._httpClient1.PostData('ClinicalCare/TNursingOrygenVentilatorCancel', param)
     }
+        public getLabResultView(Param) {
+        return this._httpClient1.PostData("Common", Param)
+    }
 }
