@@ -136,14 +136,27 @@ export class MockDataService {
     /* PATIENTS                                                            */
     /* ------------------------------------------------------------------ */
     private readonly seedPatients: Patient[] = [
-        { id: 'PMR-10231', name: 'Ananya Sharma', gender: 'Female', age: 34, phone: '+91 98200 11234', lastVisit: '2026-07-18', ward: 'General Medicine', photoInitials: 'AS' },
-        { id: 'PMR-10245', name: 'Rohit Verma', gender: 'Male', age: 52, phone: '+91 98220 88123', lastVisit: '2026-07-21', ward: 'Cardiology', photoInitials: 'RV' },
-        { id: 'PMR-10298', name: 'Fatima Sheikh', gender: 'Female', age: 27, phone: '+91 90040 55123', lastVisit: '2026-07-24', ward: 'Maternity', photoInitials: 'FS' },
-        { id: 'PMR-10312', name: 'Karan Patel', gender: 'Male', age: 8, phone: '+91 99250 44112', lastVisit: '2026-07-11', ward: 'Pediatrics', photoInitials: 'KP' },
-        { id: 'PMR-10356', name: 'Meera Iyer', gender: 'Female', age: 61, phone: '+91 98765 22110', lastVisit: '2026-07-27', ward: 'Orthopedics', photoInitials: 'MI' },
-        { id: 'PMR-10401', name: 'Suresh Nair', gender: 'Male', age: 45, phone: '+91 97120 66234', lastVisit: '2026-06-30', ward: 'Neurology', photoInitials: 'SN' },
-        { id: 'PMR-10420', name: 'Divya Reddy', gender: 'Female', age: 19, phone: '+91 96380 12987', lastVisit: '2026-07-25', ward: 'General Surgery', photoInitials: 'DR' },
-        { id: 'PMR-10477', name: 'Imran Qureshi', gender: 'Male', age: 70, phone: '+91 93280 77451', lastVisit: '2026-07-15', ward: 'ICU', photoInitials: 'IQ' },
+        {
+            id: 1, firstName: 'Ananya Sharma', gender: 'Female', ageYear: 34, mobileNo: '+91 98200 11234', photoInitials: 'AS',
+            lastName: '',
+            middleName: '',
+            regNo: '',
+            dateofBirth: ''
+        },
+        {
+            id: 1, firstName: 'Rohit Verma', gender: 'Male', ageYear: 52, mobileNo: '+91 98220 88123', photoInitials: 'RV',
+            lastName: '',
+            middleName: '',
+            regNo: '',
+            dateofBirth: ''
+        },
+        {
+            id: 1, firstName: 'Fatima Sheikh', gender: 'Female', ageYear: 27, mobileNo: '+91 90040 55123', photoInitials: 'FS',
+            lastName: '',
+            middleName: '',
+            regNo: '',
+            dateofBirth: ''
+        },
     ];
 
     private patientsSubject = new BehaviorSubject<Patient[]>(this.seedPatients);
@@ -157,12 +170,12 @@ export class MockDataService {
         const t = term.trim().toLowerCase();
         if (!t) return [];
         return this.patients.filter(
-            (p) => p.id.toLowerCase().includes(t) || p.name.toLowerCase().includes(t)
+            (p) => p.id.toString().toLowerCase().includes(t) || p.firstName.toLowerCase().includes(t)
         );
     }
 
     getPatient(id: string): Patient | undefined {
-        return this.patients.find((p) => p.id === id);
+        return this.patients.find((p) => p.id.toString() === id);
     }
 
     /* ------------------------------------------------------------------ */
@@ -178,7 +191,7 @@ export class MockDataService {
         tags: string[] = [],
         thumbnailColor = '#0E7C7B'
     ): HospitalDocument {
-        const patient = this.seedPatients.find((p) => p.id === patientId)!;
+        const patient = this.seedPatients.find((p) => p.id.toString() === patientId)!;
         const paths = this.getAllPaths();
         const match = paths.find((p) => p.path.join('>') === categoryPath.join('>'));
         const ext: Record<FileKind, string> = {
@@ -194,12 +207,12 @@ export class MockDataService {
             fileKind,
             fileSizeKb: sizeKb,
             categoryPath,
-            patientId,
-            patientName: patient?.name ?? 'Unknown',
+            patientName: patient?.firstName ?? 'Unknown',
             uploadedBy: 'Front Desk — S. Kulkarni',
             uploadedOn: d.toISOString(),
             tags,
             thumbnailColor,
+            patientId: 0,
         };
     }
 
@@ -260,6 +273,6 @@ export class MockDataService {
     }
 
     getDocumentsForPatient(patientId: string): HospitalDocument[] {
-        return this.documents.filter((d) => d.patientId === patientId);
+        return this.documents.filter((d) => d.patientId.toString() === patientId);
     }
 }

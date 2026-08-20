@@ -1,11 +1,13 @@
 export interface Patient {
-  id: string;            // e.g. P-10231
-  name: string;
-  gender: 'Male' | 'Female' | 'Other';
-  age: number;
-  phone: string;
-  lastVisit: string;     // ISO date
-  ward?: string;
-  photoInitials?: string;
-  documentCount?: number;
+    id: number;
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    ageYear: number;
+    regNo: string;
+    mobileNo: string;
+    dateofBirth: string;
+    gender: string;
+    documentCount?: number;
+    photoInitials:string;
 }

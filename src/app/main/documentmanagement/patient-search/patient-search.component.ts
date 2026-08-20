@@ -44,7 +44,7 @@ export class PatientSearchComponent implements OnInit {
 
   selectPatient(p: Patient): void {
     this.selectedPatient = p;
-    this.patientDocs = this.data.getDocumentsForPatient(p.id);
+    this.patientDocs = this.data.getDocumentsForPatient(p.id.toString());
     this.results = [];
     this.query = '';
   }

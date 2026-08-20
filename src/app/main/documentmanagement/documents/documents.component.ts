@@ -57,7 +57,7 @@ export class DocumentsComponent implements OnInit {
         !term ||
         d.title.toLowerCase().includes(term) ||
         d.patientName.toLowerCase().includes(term) ||
-        d.patientId.toLowerCase().includes(term) ||
+        d.patientId.toString().toLowerCase().includes(term) ||
         d.tags.some((t) => t.toLowerCase().includes(term)) ||
         d.categoryPath.join(' ').toLowerCase().includes(term);
       const matchesKind = this.activeKind === 'all' || d.fileKind === this.activeKind;
