@@ -1556,8 +1556,9 @@ export class NewAppointmentwithBillComponent {
                                             else
                                                 this.viewgetOPBillReportPdf(response.billNo)
                                         } else {
-                                            this.OnViewReportPdf(response.opdIpdId);
-                                            this.viewgetOPBillReportPdf(response.billNo)
+                                            // this.OnViewReportPdf(response.opdIpdId);
+                                            // this.viewgetOPBillReportPdf(response.billNo)
+                                            this.printBothReports(response);
                                         }
 
                                     })
@@ -1669,8 +1670,9 @@ export class NewAppointmentwithBillComponent {
                                     else
                                         this.viewgetOPBillReportPdf(response.billNo)
                                 } else {
-                                    this.OnViewReportPdf(response.opdIpdId);
-                                    this.viewgetOPBillReportPdf(response.billNo)
+                                    // this.OnViewReportPdf(response.opdIpdId);
+                                    // this.viewgetOPBillReportPdf(response.billNo)
+                                    this.printBothReports(response);
                                 }
 
                             })
@@ -1761,8 +1763,34 @@ export class NewAppointmentwithBillComponent {
                             console.log(this.RegiAppointmentBillfinalform.value)
 
                             this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
-                                if (response)
-                                    this.viewgetOPBillReportPdf(response.billNo)
+                                // if (response)
+                                //     this.viewgetOPBillReportPdf(response.billNo)
+                                if (response) {
+                                    Swal.fire({
+                                        title: 'Select Report Format',
+                                        text: "Choose how you want to view the report:",
+                                        icon: "warning",
+                                        showDenyButton: true,
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#3085d6",
+                                        denyButtonColor: "#6c757d",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Single Bill",
+                                        denyButtonText: "Both Print",
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            if (this.IsCasepaperBillPrint)
+                                                this.OnViewReportPdf(response.opdIpdId);
+                                            else
+                                                this.viewgetOPBillReportPdf(response.billNo)
+                                        } else {
+                                            // this.OnViewReportPdf(response.opdIpdId);
+                                            // this.viewgetOPBillReportPdf(response.billNo)
+                                            this.printBothReports(response);
+                                        }
+
+                                    })
+                                }
                                 this.closeAllOrNavigateBack();
                                 this.savebtn = true
                             });
@@ -1792,8 +1820,34 @@ export class NewAppointmentwithBillComponent {
                     //  console.log(formValue)
                     this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
-                        if (response)
-                            this.viewgetOPBillReportPdf(response.billNo)
+                        // if (response)
+                        //     this.viewgetOPBillReportPdf(response.billNo)
+                        if (response) {
+                            Swal.fire({
+                                title: 'Select Report Format',
+                                text: "Choose how you want to view the report:",
+                                icon: "warning",
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                denyButtonColor: "#6c757d",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Single Bill",
+                                denyButtonText: "Both Print",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    if (this.IsCasepaperBillPrint)
+                                        this.OnViewReportPdf(response.opdIpdId);
+                                    else
+                                        this.viewgetOPBillReportPdf(response.billNo)
+                                } else {
+                                    // this.OnViewReportPdf(response.opdIpdId);
+                                    // this.viewgetOPBillReportPdf(response.billNo)
+                                    this.printBothReports(response);
+                                }
+
+                            })
+                        }
                         this.closeAllOrNavigateBack();
                         this.savebtn = true
 
@@ -1861,8 +1915,34 @@ export class NewAppointmentwithBillComponent {
 
                     this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
                         console.log(response)
-                        if (response)
-                            this.viewgetOPBillReportPdf(response.billNo)
+                        // if (response)
+                        //     this.viewgetOPBillReportPdf(response.billNo)
+                        if (response) {
+                            Swal.fire({
+                                title: 'Select Report Format',
+                                text: "Choose how you want to view the report:",
+                                icon: "warning",
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                denyButtonColor: "#6c757d",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Single Bill",
+                                denyButtonText: "Both Print",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    if (this.IsCasepaperBillPrint)
+                                        this.OnViewReportPdf(response.opdIpdId);
+                                    else
+                                        this.viewgetOPBillReportPdf(response.billNo)
+                                } else {
+                                    // this.OnViewReportPdf(response.opdIpdId);
+                                    // this.viewgetOPBillReportPdf(response.billNo)
+                                    this.printBothReports(response);
+                                }
+
+                            })
+                        }
                         this.closeAllOrNavigateBack();
                         this.savebtn = true
 
@@ -1920,7 +2000,7 @@ export class NewAppointmentwithBillComponent {
     async printBothReports(response: any) {
         this.OnViewReportPdf(response.opdIpdId);
 
-        await this.delay(1000); 
+        await this.delay(1000);
 
         this.viewgetOPBillReportPdf(response.billNo);
     }

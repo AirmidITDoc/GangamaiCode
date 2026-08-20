@@ -269,6 +269,9 @@ export class NewAdministrativeTaskComponent {
             this.dataSource1.data = []
             this.dataSourceBill.data = []
             this.dataSourcepayment.data = []
+            this.dataSourceAdvance.data = []
+            this.dataSourceadvRefund.data = []
+            this.dataSourceRefund.data = []
 
         }
         else {
@@ -279,6 +282,9 @@ export class NewAdministrativeTaskComponent {
             this.dataSource1.data = []
             this.dataSourceBill.data = []
             this.dataSourcepayment.data = []
+            this.dataSourceAdvance.data = []
+            this.dataSourceadvRefund.data = []
+            this.dataSourceRefund.data = []
         }
     }
 
@@ -436,7 +442,7 @@ export class NewAdministrativeTaskComponent {
         });
     }
     GetAdvanceRefundData() {
-
+        debugger
 
         const SelectQuery =
         {
@@ -585,7 +591,7 @@ export class NewAdministrativeTaskComponent {
         this.getOpPatientdata()
     }
     AdvRefundDatechange() {
-        
+
         this.formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
         const formattedTime = this.formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
         debugger
@@ -775,6 +781,16 @@ export class NewAdministrativeTaskComponent {
     registerObj = new RegInsert({});
 
     getSelectedObj(obj) {
+
+        this.dataSource.data = []
+        this.dataSource1.data = []
+        this.dataSourceBill.data = []
+        this.dataSourcepayment.data = []
+        this.dataSourceAdvance.data = []
+        this.dataSourceadvRefund.data = []
+        this.dataSourceRefund.data = []
+
+
         console.log(obj)
         this.vRegId = obj.value;
         this.vRegNo = obj.regNo
