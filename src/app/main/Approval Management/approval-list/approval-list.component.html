@@ -42,6 +42,16 @@
                        matTooltipPosition="above" style="padding: 4px;color: white;background-color: green;"
                         *ngIf="element.approvalStatus"> Approved
                     </button>
+                     <button class="btn btn-success"   matTooltip="Direct Approval"
+                       matTooltipPosition="above" style="padding: 4px;color: white;background-color: orange;"
+                        *ngIf="!element.approvalStatus && element.transactionType == 'OPD Discount Approval'"
+                        (click)="getDirectApproval(element,'Approval')"> Direct Approve
+                    </button>
+                     <button class="btn btn-danger"   matTooltip="Reject Approval"
+                       matTooltipPosition="above" style="padding: 4px;color: white;background-color: rgb(243, 97, 97);"
+                        *ngIf="!element.approvalStatus && element.transactionType == 'OPD Discount Approval'"
+                        (click)="getDirectApproval(element,'Reject')"> Reject
+                    </button>
                 </div>
             </ng-template>
 

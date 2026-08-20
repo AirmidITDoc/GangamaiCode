@@ -16,8 +16,26 @@
                 </div>
             </div>
 
+           
+
             <form [formGroup]="myformSearch" class="resize-form-fields">
+                 
                 <div class="date-filter-container">
+                    <div class="info-badge-top p-12 border-bottom">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                    <span class="orange-600-fg">OP Patient</span>
+                                </div>
+                                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                    <span class="green-600-fg">IP Patient</span>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
                     <mat-form-field appearance="outline">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
@@ -338,6 +356,16 @@
                     <button mat-icon-button matTooltip="OnView" (click)="onViewCompanyPatientSummary(element)">
                         <mat-icon>remove_red_eye</mat-icon>
                     </button>
+                </div>
+            </ng-template>
+
+              <ng-template #ActionButtonCompnayPatientType let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.opdIpdType =='1'" matTooltip="IP Patient" class="pill green-600 s-16"
+                    title="IP Patient">circle</mat-icon>
+                
+                    <mat-icon *ngIf="element.opdIpdType =='0'" matTooltip="OP Patient" class="pill orange-600 s-16"
+                    title="OP Patient" >circle</mat-icon>
                 </div>
             </ng-template>
 

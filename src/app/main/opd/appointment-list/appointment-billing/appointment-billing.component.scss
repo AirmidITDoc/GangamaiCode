@@ -295,3 +295,17 @@
     display: none !important;
   }
 }
+
+
+//  disocunt approval colors for draft table
+.approved-row {
+    background-color: #98ed9c !important; 
+}
+
+.rejected-row {
+    background-color: #f39a9a!important; 
+}
+
+.modified-row {
+    background-color: #efbf98 !important; 
+}

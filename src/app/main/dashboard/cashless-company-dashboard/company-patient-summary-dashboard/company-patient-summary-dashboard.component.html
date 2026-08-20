@@ -528,10 +528,10 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="VisitDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
-                                            Visit Date
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                            Visit/Adm Date
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                             <span> {{contact.visitDate | date:'yyyy-MM-dd'}}</span>
                                         </mat-cell>
                                     </ng-container>
@@ -567,11 +567,12 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="BillDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">
                                             Bill Date
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-                                            <span> {{contact.billDate | date:'yyyy-MM-dd'}}</span>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220"
+                                            mat-Tooltip="{{contact.billDate}}">
+                                            <span> {{contact.billDate}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -882,11 +883,11 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-2400"
+                                    <mat-header-row class="accent min-width-2500"
                                         *matHeaderRowDef="parentColumns; sticky: true"> </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: parentColumns;" 
                                          [ngClass]="{'red-row': +contact.balAmount_ful == 0 }"
-                                        class="example-element-row contact  min-width-2400"
+                                        class="example-element-row contact  min-width-2500"
                                         [@animate]="{value:'*',params:{y:'100%'}}"
                                         [class.example-expanded-row]="expandedElement === contact"
                                         (click)="toggleRow(contact)" style="cursor: pointer;"></mat-row>

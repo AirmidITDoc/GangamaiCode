@@ -25,6 +25,7 @@ export class CashlessCompanyDashboardComponent implements OnInit {
     @ViewChild('grid3Ref') grid3: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButTemplate') actionButTemplate!: TemplateRef<any>;
+    @ViewChild('ActionButtonCompnayPatientType') ActionButtonCompnayPatientType!: TemplateRef<any>;
 
     fromDate = this.datePipe.transform(new Date(new Date().getFullYear(), new Date().getMonth(), 1), "yyyy-MM-dd");
     toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd");
@@ -37,6 +38,7 @@ export class CashlessCompanyDashboardComponent implements OnInit {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig_CompanyWise.columnsList.find(col => col.key === 'action')!.template = this.actionButTemplate;
+        this.gridConfig_CompanyWise.columnsList.find(col => col.key === 'opdIpdType')!.template = this.ActionButtonCompnayPatientType;
     }
 
 
@@ -70,6 +72,9 @@ export class CashlessCompanyDashboardComponent implements OnInit {
     // ===== Start Table Count Wise summary  =================
 
     allcolumns_CompanyWise = [
+        { heading: "", key: "opdIpdType", sort: false, align: "left", emptySign: 'NA', width:70, type: gridColumnTypes.template,
+               template: this.ActionButtonCompnayPatientType 
+        },
         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Count", key: "patientCount", sort: true, align: "center", emptySign: 'NA' },
         { heading: "Net Bill Amt", key: "draftBill", sort: true, align: "center", emptySign: 'NA' },
@@ -234,7 +239,7 @@ export class CashlessCompanyDashboardComponent implements OnInit {
                 
 
                 this.vCashLessRevenu = (data?.revenueSummaries || []).map((item:any) => new CashlessPatientRevenu(item))
-                this.vCashLessCollection = (data?.revenueSummaries || []).map((item:any) => new CashlessPatientCollection(item))
+                this.vCashLessCollection = (data?.collectionSummaries || []).map((item:any) => new CashlessPatientCollection(item))
                 
             }
         });

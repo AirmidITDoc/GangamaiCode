@@ -162,6 +162,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isPathOutSource: [false],
             isRadiology: [0],
             isRadOutSource: [false],
+            isAllowZeroPrice: [false],
             isDiscount: [false],
             isProcedure: [false],
             isPackage: [0],
@@ -433,6 +434,7 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get("subGroupId")?.setValue(this.serviceForm.get("subGroupId")?.value ?? 0);
         this.serviceForm.get("isDiscount")?.setValue(this.serviceForm.get("isDiscount")?.value ? true : false);
         this.serviceForm.get("isEditable")?.setValue(this.serviceForm.get("isEditable")?.value ? true : false);
+        this.serviceForm.get("isAllowZeroPrice")?.setValue(this.serviceForm.get("isAllowZeroPrice")?.value ? true : false);
         this.serviceForm.get("isPathOutSource")?.setValue(this.serviceForm.get("isPathOutSource")?.value ? true : false);
         this.serviceForm.get("isRadOutSource")?.setValue(this.serviceForm.get("isRadOutSource")?.value ? true : false);
         this.serviceForm.get("isActive")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);

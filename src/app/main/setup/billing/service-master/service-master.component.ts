@@ -65,6 +65,7 @@ export class ServiceMasterComponent implements OnInit {
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
         { heading: "EmergencyAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
         { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
+        { heading: "IsAllowZeroPrice", key: "isAllowZeroPrice", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
         { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
         { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
         { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },

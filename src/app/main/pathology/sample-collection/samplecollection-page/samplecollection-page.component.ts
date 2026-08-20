@@ -229,7 +229,10 @@ export class SamplecollectionPageComponent {
         });
     }
 
-    isCheckboxDisabled(contact: any): boolean {
+    isCheckboxDisabled(contact: any): boolean { 
+      if (contact.isRefunded == 1) {
+            return   true
+        }
         if (contact.patientTypeId > 1) {
             return !contact.isApprovedByCamp;
         }

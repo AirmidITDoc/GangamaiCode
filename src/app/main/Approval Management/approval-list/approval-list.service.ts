@@ -31,6 +31,9 @@ export class ApprovalListService {
   public getInsertApproval(Param) {
     return this.httpClient.PostData("Approval", Param);
   }
+  public getInsertOPDApproval(Param) {
+    return this.httpClient.PostData("OPBill/OPDraftBillInsert", Param);
+  }
   public getApprovalList(data) {
     return this.httpClient.PostData("Approval/ApprovalList", data)
   }
