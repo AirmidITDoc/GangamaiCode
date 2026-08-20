@@ -503,6 +503,8 @@ export class NewFormComponent {
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
       RAddress: '',
+      RelationName: ''
+
 
     });
   }
@@ -551,7 +553,8 @@ export class NewFormComponent {
       "relationId": [item.RelationId || 0],
       "relativeName": [item.RName || ''],
       "relativeMobile": [item.RMobileNo || ''],
-      "relativeAddress": [item.RAddress || '']
+      "relativeAddress": [item.RAddress || ''],
+      "relationName": [item.RelationName || '']
     });
   }
   get relativeDArray(): FormArray {
@@ -890,7 +893,7 @@ export class NewFormComponent {
               RName: element.relativeName || '',
               RMobileNo: element.relativeMobile || '',
               RAddress: element.relativeAddress || '',
-              // RelationName: element.relativeAddress || '',
+              RelationName: element.relationName || '',
             }
             this.RClist1.push(newEntry);
 
@@ -1432,8 +1435,6 @@ export class NewFormComponent {
 
     if (this.vmembershipId > 0 && this.DSRelativeList.data.length > 0) {
 
-
-
       const newEntry1 = {
         PrefixId: this.Relativeform.get('RPrefixId').value || 0,
         PrefixName: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
@@ -1442,6 +1443,7 @@ export class NewFormComponent {
         RelationName: this.relationName,// this.Relativeform.get('Relation').value || '',
         RMobileNo: this.Relativeform.get('RMobileNo').value || '',
         RAddress: this.Relativeform.get('RAddress').value || '',
+        // RelationName: this.Relativeform.get('RelationName').value || '',
       }
       this.DSRelativeList.data.push(newEntry1 as any);
       this.DSRelativeList.data = this.DSRelativeList.data
@@ -1456,7 +1458,7 @@ export class NewFormComponent {
         RelationName: this.relationName,// this.Relativeform.get('Relation').value || '',
         RMobileNo: this.Relativeform.get('RMobileNo').value || '',
         RAddress: this.Relativeform.get('RAddress').value || '',
-
+        // RelationName: this.Relativeform.get('RelationName').value || '',
       }
       this.list2.push(newEntry);
       this.DSRelativeList.data = [...this.list2];
@@ -1466,6 +1468,7 @@ export class NewFormComponent {
     this.Relativeform.get('Relation').reset('');
     this.Relativeform.get('RMobileNo').reset('');
     this.Relativeform.get('RAddress').reset('');
+    this.Relativeform.get('RelationName').reset('');
     this.relationName = ''
     const serviceIdElement = document.querySelector(`[name='RName']`) as HTMLElement;
     if (serviceIdElement) {
@@ -1906,6 +1909,8 @@ export class Relativedetail {
   PrefixName: any;
   RelationId: any;
   RelationName: any;
+  relationName: any;
+
   constructor(Relativedetail) {
     this.RName = Relativedetail.RName || '';
     this.Relation = Relativedetail.Relation || '';
@@ -1926,6 +1931,9 @@ export class Relativedetail {
 
     this.RelationId = Relativedetail.RelationId || '';
     this.RelationName = Relativedetail.RelationName || '';
+    this.relationName = Relativedetail.relationName || '';
+
+
   }
 }
 
