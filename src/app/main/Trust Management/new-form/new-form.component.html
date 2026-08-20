@@ -1265,7 +1265,6 @@
                                                     </button>
                                                 </ng-container>
 
-
                                                 <ng-template #editTemplate1>
                                                     <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
                                                         <airmid-dropdown formControlName="REditPrefixId" class="w-180"
@@ -1351,33 +1350,37 @@
                                                 <span>{{ element.RelationName }}</span>
                                             </mat-cell>
                                         </ng-container>
-                                     
+
+                                        
                                         <!-- <ng-container matColumnDef="Relation">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-230">Relation</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230">
-                                                <span>{{ element.RelationId}}</span>
-                                                <div>
-                                                    <ng-container *ngIf="!element.ShowDD; else showInput">
-                                                        <button mat-icon-button (click)="RelativeDropDownValue(element)"
-                                                            class="clear-button">
-                                                            <mat-icon>edit</mat-icon></button>
-                                                    </ng-container>
-                                                    <ng-template #showInput>
-                                                        <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
-                                                            <airmid-dropdown formControlName="Relation" class="w-180"
-                                                                appearance="fill" [formGroup]="Relform"
-                                                                [value]="element.relationId"
-                                                                [mode]="autocompleteModerelationship"
-                                                                [validations]="getValidationMessages().Relation1"
-                                                                (selectionChange)="RelativeDropDownValue($event)"></airmid-dropdown>
-                                                        </form>
-                                                    
-                                                    </ng-template>
-                                                </div>
+                                                class="w-230">
+                                                Relation
+                                            </mat-header-cell>
+
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+
+                                                <ng-container *ngIf="!isEditingRel(contact); else editTemplate4">
+                                                    <span>{{ contact.RelationName }}</span>
+                                                    <button mat-icon-button (click)="RelationenableEditing(contact)"
+                                                        class="clear-button">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                </ng-container>
+
+                                                <ng-template #editTemplate4>
+                                                    <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
+                                                        <airmid-dropdown formControlName="RelationEdit" class="w-180"
+                                                            appearance="fill" [formGroup]="Relform"
+                                                            [mode]="autocompleteModerelationship"
+                                                            [validations]="getValidationMessages().RelationEdit"
+                                                            (selectionChange)="RelaionDropDownValue($event)">
+                                                        </airmid-dropdown>
+
+                                                    </form>
+                                                </ng-template>
                                             </mat-cell>
                                         </ng-container> -->
-
                                         <ng-container matColumnDef="Action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef
                                                 class="table-actions">Action</mat-header-cell>

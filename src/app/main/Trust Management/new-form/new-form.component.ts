@@ -580,6 +580,7 @@ export class NewFormComponent {
       CEditPrefixId: [''],
       REditPrefixId: [''],
       EEditPrefixId: [''],
+      RelationEdit: ['']
     });
   }
 
@@ -1186,23 +1187,25 @@ export class NewFormComponent {
       REditPrefixId: [],
       CEditPrefixId: [],
       EEditPrefixId: [],
+      RelationEdit: []
     };
   }
   // Edit Prefix
-  editingContactId: number | null = null;  
+  editingContactId: number | null = null;
   ReditingContactId: number | null = null;
   EeditingContactId: number | null = null;
+  RelationeditingtId: number | null = null;
 
 
   isEditing(contact: any): boolean {
-    return this.editingContactId === contact.Prefix;  
+    return this.editingContactId === contact.Prefix;
   }
 
   CenableEditing(contact: any): void {
     debugger
     this.editingContactId = contact.Prefix;
     this.Relform.patchValue({
-      CEditPrefixId: contact.Prefix  
+      CEditPrefixId: contact.Prefix
     });
   }
 
@@ -1214,7 +1217,7 @@ export class NewFormComponent {
     if (contact) {
       debugger
       contact.Prefix = event?.value ?? event?.Prefix ?? event;
-      contact.PrefixName = event?.name ?? event?.text ?? event?.PrefixName; 
+      contact.PrefixName = event?.name ?? event?.text ?? event?.PrefixName;
     }
 
 
@@ -1225,11 +1228,11 @@ export class NewFormComponent {
   RenableEditing(contact: any): void {
     this.ReditingContactId = contact.Prefix;
     this.Relform.patchValue({
-      REditPrefixId: contact.Prefix  
+      REditPrefixId: contact.Prefix
     });
   }
   isEditingR(contact: any): boolean {
-    return this.ReditingContactId === contact.Prefix;   
+    return this.ReditingContactId === contact.Prefix;
   }
 
   RDropDownValue(event: any): void {
@@ -1238,8 +1241,8 @@ export class NewFormComponent {
 
     if (contact) {
 
-      contact.Prefix = event?.value ?? event?.id ?? event;
-      contact.PrefixName = event?.name ?? event?.text ?? event?.PrefixName; 
+      contact.Prefix = event?.value ?? event?.Prefix ?? event;
+      contact.PrefixName = event?.name ?? event?.text ?? event?.PrefixName;
     }
 
 
@@ -1249,11 +1252,11 @@ export class NewFormComponent {
   EenableEditing(contact: any): void {
     this.EeditingContactId = contact.Prefix;
     this.Relform.patchValue({
-      EEditPrefixId: contact.Prefix   
+      EEditPrefixId: contact.Prefix
     });
   }
   isEditingE(contact: any): boolean {
-    return this.EeditingContactId === contact.Prefix;  
+    return this.EeditingContactId === contact.Prefix;
   }
 
   EDropDownValue(event: any): void {
@@ -1262,12 +1265,38 @@ export class NewFormComponent {
 
     if (contact) {
 
-      contact.Prefix = event?.value ?? event?.id ?? event;
+      contact.Prefix = event?.value ?? event?.Prefix ?? event;
       contact.PrefixName = event?.name ?? event?.text ?? event?.PrefixName;
     }
     this.EeditingContactId = null;
     this.Relform.reset();
   }
+
+
+  RelationenableEditing(contact: any): void {
+    debugger
+    this.RelationeditingtId = contact.RelationId;
+    this.Relform.patchValue({
+      RelationEdit: contact.RelationId
+    });
+  }
+  isEditingRel(contact: any): boolean {
+    return this.RelationeditingtId === contact.RelationId;
+  }
+
+  RelaionDropDownValue(event: any): void {
+    if (!this.RelationeditingtId) return;
+    const contact = this.DSRelativeList.data.find(c => c.RelationId === this.RelationeditingtId);
+
+    if (contact) {
+
+      contact.RelationId = event?.value ?? event?.RelationId ?? event;
+      contact.RelationName = event?.name ?? event?.text ?? event?.RelationName;
+    }
+    this.RelationeditingtId = null;
+    this.Relform.reset();
+  }
+
 
   onClose() {
 
@@ -1859,8 +1888,6 @@ export class Childdetail {
   }
 }
 
-
-
 export class Relativedetail {
   Prefix: any
   RName: any;
@@ -1877,6 +1904,8 @@ export class Relativedetail {
   relativeAddress: any;
   prefixName: any;
   PrefixName: any;
+  RelationId: any;
+  RelationName: any;
   constructor(Relativedetail) {
     this.RName = Relativedetail.RName || '';
     this.Relation = Relativedetail.Relation || '';
@@ -1894,6 +1923,9 @@ export class Relativedetail {
     this.relativeAddress = Relativedetail.relativeAddress || '';
     this.prefixName = Relativedetail.prefixName || '';
     this.PrefixName = Relativedetail.PrefixName || '';
+
+    this.RelationId = Relativedetail.RelationId || '';
+    this.RelationName = Relativedetail.RelationName || '';
   }
 }
 
