@@ -140,8 +140,14 @@
                                 <div class="review-grid">
                                     <div class="review-block">
                                         <span class="review-label">Patient</span>
-                                        <strong>{{ selectedPatient?.name }}</strong>
-                                        <span class="mono muted small">{{ selectedPatient?.id }}</span>
+                                        <strong>{{ selectedPatient?.firstName+' '+selectedPatient?.middleName+'
+                                            '+selectedPatient?.lastName }}</strong>
+                                        <span class="mono muted small">Reg No : {{ selectedPatient?.regNo }}</span>
+                                        <span class="summary-sub mono">
+                                            Gender : {{ selectedPatient?.gender
+                                            }}, Year : {{ selectedPatient?.ageYear }} &middot; Mobile : {{
+                                            selectedPatient?.mobileNo }}
+                                        </span>
                                     </div>
                                     <div class="review-block">
                                         <span class="review-label">Category</span>

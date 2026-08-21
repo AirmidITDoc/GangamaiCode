@@ -75,8 +75,21 @@ export class UploadComponent {
 
     get selectedCategoryPath(): string[] {
         if (!this.selectedCategoryId) return [];
-        const match = this.data.getAllPaths().find((p) => p.id === this.selectedCategoryId);
+        const match = this.getAllPaths().find((p) => p.id === this.selectedCategoryId);
         return match ? match.path : [];
+    }
+    /** Returns every root-to-leaf path in the tree, useful for pickers / breadcrumbs */
+    getAllPaths(): { id: number; path: string[]; icon?: string }[] {
+        const out: { id: number; path: string[]; icon?: string }[] = [];
+        const walk = (nodes: DocumentCategory[], trail: string[]) => {
+            for (const n of nodes) {
+                const newTrail = [...trail, n.docCategory];
+                out.push({ id: n.id, path: newTrail, icon: n.icon });
+                if (n.children.length) walk(n.children, newTrail);
+            }
+        };
+        walk(this.categories, []);
+        return out;
     }
 
     /* ---------------- Step 3 ---------------- */
