@@ -54,16 +54,19 @@ export class ApprovalListComponent implements OnInit {
             heading: "-", key: "approvalStatus", sort: false, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.template,
             template: this.approvalStatus
         }, 
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 6 },
-        { heading: "", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 60, type: 7 },
-        { heading: "Approval No", key: "approvalNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-        { heading: "Approval Assign To", key: "authorizedBy", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 7 },
+        { heading: "Approval No", key: "approvalNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Approval Assign To", key: "authorizedBy", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Transaction Type", key: "transactionType", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Approval Date", key: "approvedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
         { heading: "AddedBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Remark", key: "comment", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount },
+        { heading: "Discount Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+        { heading: "NetPay Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
         {
-            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 230, sticky: true, type: gridColumnTypes.template,
             template: this.actionTemplate
         }
     ]
