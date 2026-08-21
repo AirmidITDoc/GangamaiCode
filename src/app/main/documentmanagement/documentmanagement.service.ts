@@ -40,32 +40,9 @@ export class DocumentmanagementService {
     }
 
 
-    public canteenrequestSave(employee) {
-        return this._httpClient.PostData("CanteenRequest/Insert", employee);
-    }
-    public getBillList(Param) {
-        return this._httpClient.PostData("CanteenRequest/CanteenRequestHeaderList", Param);
-    }
-    public getBillDetailsList(Param) {
-        return this._httpClient.PostData("CanteenRequest/CanteenRequestList", Param);
-    }
-    public getNursingBill(Param) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
-    }
 
-    public getItemLatestList(Param) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
-    }
-
-    public canteenBillSave(employee) {
-        return this._httpClient.PostData("CanteenBill/Insert", employee);
-    }
-    public getReportView(Param) {
-        return this._httpClient.PostData("Report/ViewReport", Param);
-    }
-
-    public BillCancle(Param) {
-        return this._httpClient.PostData("CanteenBill/Cancel", Param)
+    public seachPatient(keyword) {
+        return this._httpClient.GetData("DocumentUpload/search-patient?Keyword=" + keyword);
     }
 
 

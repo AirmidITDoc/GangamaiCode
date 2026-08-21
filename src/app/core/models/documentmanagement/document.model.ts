@@ -8,7 +8,7 @@ export interface HospitalDocument {
   fileSizeKb: number;
   categoryPath: string[];   // e.g. ['Clinical Records', 'Radiology', 'CT Scan', 'Head']
   categoryId: string;       // id of the leaf category
-  patientId: string;
+  patientId: number;
   patientName: string;
   uploadedBy: string;
   uploadedOn: string;       // ISO date

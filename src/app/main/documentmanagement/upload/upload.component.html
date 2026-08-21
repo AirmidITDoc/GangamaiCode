@@ -21,7 +21,7 @@
                             <div class="step-body" *ngIf="!selectedPatient">
                                 <div class="search-row">
                                     <mat-icon>person_search</mat-icon>
-                                    <input type="text" placeholder="Search by patient ID or name…"
+                                    <input type="text" placeholder="Search UHID / Patient Name / Mobile No"
                                         [(ngModel)]="patientQuery" (ngModelChange)="searchPatients()" />
                                 </div>
 
@@ -30,10 +30,12 @@
                                         (click)="pickPatient(p)">
                                         <span class="avatar">{{ p.photoInitials }}</span>
                                         <span class="patient-main">
-                                            <span class="patient-name">{{ p.name }}</span>
-                                            <span class="patient-sub mono">{{ p.id }} &middot; {{ p.gender }}, {{ p.age
-                                                }} &middot;
-                                                {{ p.ward }}</span>
+                                            <span class="patient-name">
+                                                {{ p.firstName+' '+p.middleName+' '+p.lastName }}</span>
+                                            <span class="patient-sub mono">
+                                                RegNo : {{ p.regNo }} &middot; Gender : {{ p.gender }}, Year: {{
+                                                p.ageYear }} &middot; Mobile: {{ p.mobileNo }}
+                                            </span>
                                         </span>
                                         <mat-icon>chevron_right</mat-icon>
                                     </button>
@@ -44,10 +46,13 @@
                             <div class="selected-summary" *ngIf="selectedPatient">
                                 <span class="avatar big">{{ selectedPatient.photoInitials }}</span>
                                 <div class="summary-main">
-                                    <span class="summary-title">{{ selectedPatient.name }}</span>
-                                    <span class="summary-sub mono">{{ selectedPatient.id }} &middot; {{
-                                        selectedPatient.gender }},
-                                        {{ selectedPatient.age }} &middot; {{ selectedPatient.ward }}</span>
+                                    <span class="summary-title">{{ selectedPatient.firstName+'
+                                        '+selectedPatient.middleName+' '+selectedPatient.lastName }}</span>
+                                    <span class="summary-sub mono">
+                                        RegNo : {{ selectedPatient.regNo }} &middot; Gender : {{ selectedPatient.gender
+                                        }}, Year : {{ selectedPatient.ageYear }} &middot; Mobile : {{
+                                        selectedPatient.mobileNo }}
+                                    </span>
                                 </div>
                                 <button mat-button (click)="clearPatient()">Change</button>
                             </div>

@@ -17,8 +17,6 @@ export class CategoryTreeComponent implements OnChanges {
 
     @Output() select = new EventEmitter<number>();
     @Output() addChild = new EventEmitter<any>();
-    @Output() rename = new EventEmitter<{ id: number; name: string }>();
-    @Output() remove = new EventEmitter<string>();
 
     treeControl = new NestedTreeControl<DocumentCategory>((node) => node.children);
     dataSource = new MatTreeNestedDataSource<DocumentCategory>();

@@ -29,7 +29,7 @@ export class ZipService {
 
   async downloadPatientArchive(patient: Patient, docs: HospitalDocument[]): Promise<void> {
     const zip = new JSZip();
-    const root = zip.folder(`${patient.name.replace(/\s+/g, '_')}_${patient.id}`);
+    const root = zip.folder(`${patient.firstName.replace(/\s+/g, '_')}_${patient.id}`);
     const manifestRows = ['Title,Category,FileType,SizeKB,UploadedOn'];
 
     docs.forEach((doc) => {

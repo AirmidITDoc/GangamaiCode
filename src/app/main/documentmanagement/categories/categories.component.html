@@ -29,8 +29,7 @@
                         </div>
                         <app-category-tree [nodes]="categories" [manageable]="true" [selectable]="true"
                             [selectedId]="selectedId" [expandAll]="true" (select)="onSelect($event)"
-                            (addChild)="openAddDialog($event)" (rename)="onRename($event)"
-                            (remove)="onRemove($event)"></app-category-tree>
+                            (addChild)="openAddDialog($event)"></app-category-tree>
                     </mat-card>
 
                     <aside class="side-panel">

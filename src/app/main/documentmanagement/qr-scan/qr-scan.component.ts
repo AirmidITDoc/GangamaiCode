@@ -103,7 +103,7 @@ export class QrScanComponent implements OnDestroy {
 
   simulateScan(): void {
     const random = this.data.patients[Math.floor(Math.random() * this.data.patients.length)];
-    this.handleDecoded(random.id);
+    this.handleDecoded(random.id.toString());
   }
 
   scanSample(id: string): void {
@@ -140,7 +140,7 @@ export class QrScanComponent implements OnDestroy {
     if (!this.foundPatient) return;
     this.zipping = true;
     try {
-      const docs = this.data.getDocumentsForPatient(this.foundPatient.id);
+      const docs = this.data.getDocumentsForPatient(this.foundPatient.id.toString());
       await this.zipService.downloadPatientArchive(this.foundPatient, docs);
       this.snackBar.open(`ZIP ready — ${docs.length} files packed`, 'Dismiss', { duration: 3000 });
     } finally {
