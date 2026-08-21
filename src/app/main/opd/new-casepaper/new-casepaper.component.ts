@@ -310,24 +310,24 @@ export class NewCasepaperComponent implements OnInit {
 
         }
         debugger
-        if (this.data.emrReady == 0) {
+        // if (this.data.emrReady == 0) {
 
-            this.MedicineItemForm.get('departmentId').setValue(this.regObj.departmentId)
-            if (this.regObj.departmentId) {
-                this.departmentId = this.regObj.departmentId
-                this.doctorId = this.regObj.doctorId
-                setTimeout(() => {
-                    this._CasepaperService.getDoctorsByDepartment(this.regObj.departmentId).subscribe((data: any) => {
-                        this.ddlDoctor.options = data;
-                        console.log(data)
+        //     this.MedicineItemForm.get('departmentId').setValue(this.regObj.departmentId)
+        //     if (this.regObj.departmentId) {
+        //         this.departmentId = this.regObj.departmentId
+        //         this.doctorId = this.regObj.doctorId
+        //         setTimeout(() => {
+        //             this._CasepaperService.getDoctorsByDepartment(this.regObj.departmentId).subscribe((data: any) => {
+        //                 this.ddlDoctor.options = data;
+        //                 console.log(data)
 
-                        this.ddlDoctor.bindGridAutoComplete();
+        //                 this.ddlDoctor.bindGridAutoComplete();
 
-                    });
-                }, 500);
-            }
-            this.MedicineItemForm.get('DoctorID')?.setValue(this.regObj.doctorId);
-        }
+        //             });
+        //         }, 500);
+        //     }
+        //     this.MedicineItemForm.get('DoctorID')?.setValue(this.regObj.doctorId);
+        // }
 
         this.loadGridDataForVisit(this.VisitId);
     }
