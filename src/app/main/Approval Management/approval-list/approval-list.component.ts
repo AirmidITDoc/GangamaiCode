@@ -66,7 +66,7 @@ export class ApprovalListComponent implements OnInit {
         { heading: "Discount Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
         { heading: "NetPay Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
         {
-            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 230, sticky: true, type: gridColumnTypes.template,
             template: this.actionTemplate
         }
     ]
