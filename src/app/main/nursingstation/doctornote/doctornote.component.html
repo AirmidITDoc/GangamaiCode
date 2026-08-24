@@ -17,7 +17,7 @@
                         <form [formGroup]="myform">
                             <div class="patient-search">
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
-                                    <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayoutGap="4px">
                                         <airmid-autocomplete class="w-500" lbl="RgId" [formGroup]="myform"
                                             formControlName="RegID" label="Search Reg No / Patient Name / Mobile No"
                                             ApiUrl="Admission/search-patient?Keyword="
@@ -25,6 +25,26 @@
                                             (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                             TextField="formattedText"> </airmid-autocomplete>
                                     </div>
+
+                                    <mat-card style="padding: 2px 10px;">
+                                        <div class="patient-info-sales">
+                                            <div class="patient-info-title border-bottom pb-1 mb-1">
+                                                <span class="h1 m-0" style="line-height: normal;">Patient
+                                                    Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info w-100-p">
+                                                <app-patient-information [uhidNo]="registerObj?.regNo"
+                                                    [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                                    [departmentName]="registerObj?.departmentName" [doa]="vDOA"
+                                                    [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                                    [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                                    [refDocName]="vRefDocName"
+                                                    [wardBedName]="(vWardName && vBedName) ? (vWardName + ' | ' + vBedName) : ''"
+                                                    [patientType]="vPatientType" [tariffName]="vTariffName"
+                                                    [companyName]="vCompanyName"></app-patient-information>
+                                            </div>
+                                        </div>
+                                    </mat-card>
                                 </div>
                             </div>
                         </form>
@@ -32,30 +52,30 @@
                 </div>
                 <form [formGroup]="myform">
                     <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-  <!-- Patient Info Section -->
-                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                        <!-- Patient Info Section -->
+                        <!-- <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                            <div fxFlex.gt-sm="100%" fxFlex>
+                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                    <div class="patient-info-sales">
+                                        <div class="patient-info-title border-bottom pb-1 mb-1">
+                                            <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                        </div>
+                                        <div class="Ipd-patient-info w-100-p">
+                                            <app-patient-information [uhidNo]="registerObj?.regNo"
+                                                [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                                [departmentName]="registerObj?.departmentName" [doa]="vDOA"
+                                                [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                                [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                                [refDocName]="vRefDocName"
+                                                [wardBedName]="(vWardName && vBedName) ? (vWardName + ' | ' + vBedName) : ''"
+                                                [patientType]="vPatientType" [tariffName]="vTariffName"
+                                                [companyName]="vCompanyName"></app-patient-information>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div> -->
                         <div fxFlex.gt-sm="100%" fxFlex>
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
-                                <div class="patient-info-sales">
-                                    <div class="patient-info-title border-bottom pb-1 mb-1">
-                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
-                                    </div>
-                                    <div class="Ipd-patient-info w-100-p">
-                                        <app-patient-information [uhidNo]="registerObj?.regNo"
-                                            [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
-                                            [departmentName]="registerObj?.departmentName" [doa]="vDOA"
-                                            [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
-                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
-                                            [refDocName]="vRefDocName"
-                                            [wardBedName]="(vWardName && vBedName) ? (vWardName + ' | ' + vBedName) : ''"
-                                            [patientType]="vPatientType" [tariffName]="vTariffName"
-                                            [companyName]="vCompanyName"></app-patient-information>
-                                    </div>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                       <div fxFlex.gt-sm="100%" fxFlex>
                             <mat-tab-group>
                                 <mat-tab label="Doctor Note">
                                     <div class="content" style="overflow: auto;">
@@ -107,29 +127,38 @@
                                                                             </div>
                                                                         </div>
                                                                     </form>
-                                                                    <mat-card class="mat-elevation-z2" fxLayout="column"
+                                                                    <!-- <mat-card class="mat-elevation-z2" fxLayout="column"
                                                                         fxFlex fxFlexFill>
                                                                         <div fxLayout="column" fxFlexFill>
                                                                             <div fxFlex fxFlexFill
-                                                                                style="min-height: 400px;">
-                                                                                <airmid-editor
-                                                                                    formControlName="doctorsNotes"
-                                                                                    [formGroup]="myNoteform"
-                                                                                    (valueChange)="onEditorValueChange($event)">
-                                                                                </airmid-editor>
-                                                                            </div>
+                                                                                style="min-height: 400px;"> -->
+                                                                    <airmid-editor formControlName="doctorsNotes"
+                                                                        [formGroup]="myNoteform"
+                                                                        (valueChange)="onEditorValueChange($event)">
+                                                                    </airmid-editor>
+                                                                    <!-- </div>
                                                                         </div>
-                                                                    </mat-card>
+                                                                    </mat-card> -->
                                                                     <div fxLayout="row"
                                                                         fxLayoutAlign="space-between center"
                                                                         fxLayoutGap="6px" class="mt-16">
-                                                                        <div>
+                                                                        <div fxLayout="row" fxLayoutGap="6px">
+                                                                            <airmid-dropdown label="Doctor Name"
+                                                                                formControlName="conDoctorId"
+                                                                                [formGroup]="myNoteform" fxFlex="55%"
+                                                                                [mode]="autocompleteModeConDoctor"></airmid-dropdown>
+
+                                                                            <airmid-dropdown label="RMO.Doctor Name"
+                                                                                formControlName="rmoDoctorId"
+                                                                                [formGroup]="myNoteform" fxFlex="55%"
+                                                                                [mode]="autocompleteModeRmoDoctor"></airmid-dropdown>
+                                                                        </div>
+
+                                                                        <div fxLayout="row" fxLayoutGap="6px">
                                                                             <button class="btn btn-primary-outline"
                                                                                 (click)="NewTemplate()">
                                                                                 New Template
                                                                             </button>
-                                                                        </div>
-                                                                        <div fxLayout="row" fxLayoutGap="6px">
                                                                             <button class="btn btn-danger-outline"
                                                                                 (click)="onClear()">
                                                                                 Reset
@@ -258,6 +287,43 @@
                                                 </div> -->
                                                 </div>
                                             </form>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Lab Request">
+                                    <div class="tab-container tab-grid">
+                                        <div class="tab-body">
+                                            <div class="tab-box">
+                                                <div>
+                                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                                        <div class="top-header-info">
+                                                            <div class="top-header-title"
+                                                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                                                <span class="h2 font-weight-600">Lab Request List</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="top-header-right">
+                                                            <div class="header-add-button">
+                                                                <button mat-raised-button
+                                                                    (click)="getLabRequest()">Request New Test</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <airmid-table [gridConfig]="gridConfig2" #grid2 class="content"
+                                                        [ShowFilter]="false" [ShowButtons]="false"
+                                                        (onSelectRow)="getSelectedRow($event)">
+                                                    </airmid-table>
+                                                </div>
+
+                                                <div *ngIf="isShowDetailTable2">
+                                                    <airmid-table [gridConfig]="gridConfig3" class="content" #grid3
+                                                        [ShowFilter]="false" [ShowButtons]="false">
+                                                    </airmid-table>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </mat-tab>

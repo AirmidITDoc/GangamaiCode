@@ -14,11 +14,11 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <airmid-excel-import-button [config]="importConfig" label="Import Services" color="warn"
                 (imported)="onImported($event)"></airmid-excel-import-button>
-            <button mat-raised-button (click)="onTariff()">+ New Tariff
+            <button mat-raised-button (click)="onTariff()">+ Clone Tariff
             </button>
             <button mat-raised-button (click)="onNew()">+ New Service
             </button>
-            <button mat-raised-button (click)="onNewNew()" title="Tariff Wise Data Update">+ New Service Tariff
+            <button mat-raised-button (click)="onNewNew()" title="Tariff Wise Data Update">+ Update Tariff Rates
             </button>
         </div>
     </div>

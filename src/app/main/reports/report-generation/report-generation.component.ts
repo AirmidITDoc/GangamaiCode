@@ -98,6 +98,7 @@ export class ReportGenerationComponent implements OnInit {
     sIsLoading = '';
     ItemCategory: any;
     PatientStatus: any;
+    PaymentMode2: any;
     selectedNode: ExampleFlatNode | null = null;
 
     isSuperAdmin: any;
@@ -159,6 +160,7 @@ export class ReportGenerationComponent implements OnInit {
     flagItemCategorySelected: boolean = false;
     flagdaysSelected: boolean = false;
     flagPatientStatus: boolean = false;
+    flagPaymentModeSelected2: boolean = false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -252,6 +254,9 @@ export class ReportGenerationComponent implements OnInit {
 
         this._ReportService.userForm.get('PatientStatus')?.valueChanges.subscribe(val => {
             this.PatientStatus = (val == 0) ? 0 : val
+        });
+         this._ReportService.userForm.get('PaymentMode2')?.valueChanges.subscribe(val => {
+            this.PaymentMode2 = (val == 0) ? 0 : val
         });
 
     }
@@ -391,6 +396,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagMultiGenericSelected = true;
         if (controllerPermission.filter(x => x == "PatientStatus")?.length > 0)
             this.flagPatientStatus = true;
+        if (controllerPermission.filter(x => x == "PaymentMode2")?.length > 0)
+            this.flagPaymentModeSelected2 = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -611,6 +618,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('ItemCategory').setValue('');
         this._ReportService.userForm.get('PatientStatus').setValue('');
         this._ReportService.userForm.get('itemMoleculeName').setValue([]);
+        this._ReportService.userForm.get('PaymentMode2').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -639,6 +647,7 @@ export class ReportGenerationComponent implements OnInit {
         this.PatientType = 0;
         this.status = 0;
         this.RegNo = 0;
+        this.PaymentMode2=0;
         this.ItemCategory = 0;
         this.PatientStatus = 0;
         this.flagDoctorSelected = false;
@@ -669,6 +678,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagOPIPTypeSelected = false;
         this.flagTypeSelected = false;
         this.flagPaymentModeSelected = false;
+        this.flagPaymentModeSelected2 = false;
         this.FlaExpCategorySelected = false;
         this.FlaExpHeadSelected = false;
         this.flagPatientTypeSelected = false;
@@ -689,14 +699,14 @@ export class ReportGenerationComponent implements OnInit {
         if (event == 'days')
             this._ReportService.userForm.get('days').setValue("0")
     }
-    mode: string='';
+    mode: string = '';
     filters: [];
-    
+
     SampleReport() {
         this.mode = "GetList";
     }
 
-  
+
     CallReportData(type) {
         this.StoreId = this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
@@ -922,6 +932,12 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "Days",
                     "fieldValue": this._ReportService.userForm.get('days').value.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagPaymentModeSelected2)
+                paramFilterList.push({
+                    "fieldName": "PaymentMode2",
+                    "fieldValue": this.PaymentMode2.toString() || "2",
                     "opType": OperatorComparer.Equals
                 });
             if (this.flagMultiGenericSelected) {

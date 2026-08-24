@@ -62,7 +62,8 @@ export class ReportService {
             ItemCategory: [""],
             days: [""],
             itemMoleculeName: [[]],
-            PatientStatus: [""]
+            PatientStatus: [""],
+            PaymentMode2:[""]
             // 
         });
     }

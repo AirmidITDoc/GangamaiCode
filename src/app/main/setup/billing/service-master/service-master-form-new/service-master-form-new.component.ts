@@ -35,7 +35,7 @@ export class ServiceMasterFormNewComponent implements OnInit {
 
     displayedColumns: string[] = [];
     totalRecords = 0;
-    pageSize = 10;
+    pageSize = 25;
     pageIndex = 0;
     pageSizeOptions = [25, 50, 120, 200];
     selectedTariffId: number | null = null;

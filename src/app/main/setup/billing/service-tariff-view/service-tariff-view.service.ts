@@ -25,7 +25,7 @@ export class ServiceTariffViewService {
   //   return this._httpClient.GetData("BillingService/GetServicesNew?TariffId=" + id + "&ServiceName=" + param);
   // }
 
-  public getServicesNew(id: number, param: string, pageIndex: number = 0, pageSize: number = 10) {
+  public getServicesNew(id: number, param: string, pageIndex: number = 0, pageSize: number = 25) {
     return this._httpClient.GetData(
       "BillingService/GetServicesNew?TariffId=" + id +
       "&ServiceName=" + param +

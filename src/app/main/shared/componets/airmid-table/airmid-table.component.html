@@ -155,6 +155,12 @@
                     </span>
                     <span>Excel</span>
                 </button>
+                <!-- <button class="btn btn-primary btn-with-icon" (click)="onExportClick(GridExportType.Excel, false)">
+                    <span>Excel (current page: {{ paginator?.pageSize ?? pageSize }})</span>
+                </button>
+                <button class="btn btn-secondary btn-with-icon" (click)="onExportClick(GridExportType.Excel, true)">
+                    <span>Excel (all {{ resultsLength }} filtered records)</span>
+                </button> -->
                 <button class="btn btn-primary btn-with-icon" (click)="onExportClick(GridExportType.Pdf)">
                     <span class="btn-icon">
                         <i class="fa-solid fa-file-pdf fa-lg"></i>

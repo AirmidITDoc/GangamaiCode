@@ -469,6 +469,14 @@
                                         </div>
                                     </ng-container>
 
+                                    <ng-container *ngIf="flagPaymentModeSelected2">
+                                        <div style="max-width: 265px;">
+                                            <airmid-dropdown label="Payment Mode" formControlName="PaymentMode2"
+                                                [formGroup]="_ReportService.userForm"
+                                                ApiUrl="Report/Paymentmode/auto-complete?Keyword=%"></airmid-dropdown>
+                                        </div>
+                                    </ng-container>
+
                                     <mat-form-field appearance="outline" *ngIf="flagdaysSelected"
                                         style="max-width: 265px;">
                                         <mat-label>Days</mat-label>

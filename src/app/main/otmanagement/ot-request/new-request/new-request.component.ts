@@ -12,6 +12,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { ToastrService } from 'ngx-toastr';
 import { OtReqInsert } from '../ot-request.component';
 import { OtRequestService } from '../ot-request.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-new-request',
@@ -185,6 +186,10 @@ export class NewRequestComponent implements OnInit {
             this.getdiagnosisList(this.registerObj1);
             this.getRequestSurgeryDetList(this.registerObj1);
             this.getRequestAttendentDetList(this.registerObj1);
+
+            this.requestForm.get('estimateTime')?.valueChanges.subscribe(() => {
+                this.updateRemainingTime();
+            });
         }
     }
 
@@ -541,7 +546,9 @@ export class NewRequestComponent implements OnInit {
         return `${hrs}.${mins.toString().padStart(2, '0')}`;
     }
 
+    remainingTime: string = '00.00';
     onAdd() {
+
         if (!this.requestForm.get("surgeryCategoryId")?.value) {
             this.toastr.warning('Please select a surgery Type', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -584,39 +591,77 @@ export class NewRequestComponent implements OnInit {
             });
             return;
         }
+
         if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value == "0") {
             this.AnthName = ""
         }
-        // if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value == "0") {
-        //   this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
-        //     toastClass: 'tostr-tost custom-toast-warning',
-        //   });
-        //   return;
-        // }
-        // debugger
-
         const selectedPrimary = this.requestForm.get('isPrimary').value;
         const alreadyHasPrimary = this.dssurgeryDetailList.data.some(x => x.isPrimary === "true" || x.isPrimary === true);
         if (selectedPrimary && alreadyHasPrimary) {
             this.toastr.warning("Primary surgery already added. You can only select one primary.");
             return;
         }
+
         const newEntry = {
             surgeryCategoryName: this.surgCategoryName,
             surgeryCategoryId: this.requestForm.get('surgeryCategoryId').value,
-            surgeryId: this.requestForm.get('surgeryId').value,//
+            surgeryId: this.requestForm.get('surgeryId').value,
             surgeryName: this.surgName,
             surgeryPart: this.requestForm.get('surgeryPart').value,
             surgeryDuration: this.requestForm.get('surgeryDuration').value,
             surgeryFromTime: this.requestForm.get('surgeryFromTime').value,
             surgeryEndTime: this.requestForm.get('surgeryEndTime').value,
             isPrimary: String(this.requestForm.get('isPrimary').value),
-            surgeonId: this.requestForm.get('surgeonId').value,//
+            surgeonId: this.requestForm.get('surgeonId').value,
             surgeonName: this.surgeonName,
-            anestheticsId: this.requestForm.get('anesthetistId').value, //
+            anestheticsId: this.requestForm.get('anesthetistId').value,
             anestheticsName: this.AnthName,
         };
-        // this.Chargelist.push(newEntry);
+
+        debugger
+        // --- Check BEFORE adding: will this entry push total over the estimate? ---
+        const existingMinutes = this.Chargelist.reduce((sum, row, idx) => {
+            // if editing, exclude the row being replaced from the existing total
+            if (this.editIndex !== null && idx === this.editIndex) return sum;
+            return sum + this.parseDurationToMinutes(row.surgeryDuration);
+        }, 0);
+
+        const newRowMinutes = this.parseDurationToMinutes(newEntry.surgeryDuration);
+        const totalMinutes = existingMinutes + newRowMinutes;
+
+        const currentEstimate = this.requestForm.get('estimateTime')?.value;
+        const currentEstimateMinutes = this.parseDurationToMinutes(currentEstimate);
+
+        if (totalMinutes > currentEstimateMinutes) {
+            const newEstimate = this.minutesToDurationFormat(totalMinutes);
+
+            Swal.fire({
+                title: 'Estimate time exceeded',
+                text: `Total duration (${newEstimate}) exceeds the current estimate (${currentEstimate || '00.00'}). Do you want to change the estimate time automatically?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, update it',
+                cancelButtonText: 'No, I will change it manually'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // YES: auto-update estimate, then add the entry
+                    this.requestForm.get('estimateTime')?.setValue(newEstimate, { emitEvent: false });
+                    this.finalizeAdd(newEntry);
+                } else {
+                    // NO: don't touch estimate automatically, just inform the user
+                    this.toastr.warning("Please change the estimate hours manually.");
+                    // this.finalizeAdd(newEntry);
+                }
+            });
+        } else {
+            // Within estimate, add directly
+            this.finalizeAdd(newEntry);
+        }
+    }
+
+    // Pushes/updates the row, refreshes tables, recalculates remaining time, and resets the form
+    private finalizeAdd(newEntry: any) {
+        debugger
         if (this.editIndex !== null) {
             this.Chargelist[this.editIndex] = newEntry;
             this.editIndex = null;
@@ -624,44 +669,10 @@ export class NewRequestComponent implements OnInit {
             this.Chargelist.push(newEntry);
         }
         this.dssurgeryDetailList.data = [...this.Chargelist];
-
-        //  Also add surgeon & anesthetist to second table (attendants) ---
-        // if (this.surgeonName) {
-        //   let surgeonEntry = {
-        //     doctorTypeId: null,
-        //     doctorType: "Surgeon",
-        //     doctorId: newEntry.surgeonId,
-        //     doctorName: this.surgeonName
-        //   };
-        //   this.Chargelist1.push(surgeonEntry);
-        // }
-
-        // if (this.AnthName) {
-        //   let anesthetistEntry = {
-        //     doctorTypeId: null,
-        //     doctorType: "Anesthetist",
-        //     doctorId: newEntry.anestheticsId,
-        //     doctorName: this.AnthName
-        //   };
-        //   this.Chargelist1.push(anesthetistEntry);
-        // }
-
         this.dsattendentDetailList.data = [...this.Chargelist1];
 
-        // --- NEW: sum all row durations and compare against estimateTime ---
-        const totalMinutes = this.Chargelist.reduce((sum, row) => {
-            return sum + this.parseDurationToMinutes(row.surgeryDuration);
-        }, 0);
-
-        const currentEstimate = this.requestForm.get('estimateTime')?.value;
-        const currentEstimateMinutes = this.parseDurationToMinutes(currentEstimate);
-
-        if (totalMinutes > currentEstimateMinutes) {
-            const newEstimate = this.minutesToDurationFormat(totalMinutes);
-            this.requestForm.get('estimateTime')?.setValue(newEstimate, { emitEvent: false });
-        }
-        // else: estimateTime remains unchanged
-        // --- END NEW ---
+        // Recalculate remaining time = estimateTime - sum of all durations
+        this.updateRemainingTime();
 
         this.requestForm.patchValue({
             surgeryCategoryId: '',
@@ -674,12 +685,162 @@ export class NewRequestComponent implements OnInit {
             surgeonId: '',
             anesthetistId: ''
         });
-
         this.surgName = '';
         this.surgeonName = '';
         this.AnthName = '';
         this.surgCategoryName = '';
     }
+
+    // Recalculates remaining time = estimateTime - sum of all added durations
+    updateRemainingTime() {
+        debugger
+        const estimateMinutes = this.parseDurationToMinutes(this.requestForm.get('estimateTime')?.value);
+        const totalMinutes = this.Chargelist.reduce((sum, row) => {
+            return sum + this.parseDurationToMinutes(row.surgeryDuration);
+        }, 0);
+        const remainingMinutes = estimateMinutes - totalMinutes;
+        this.remainingTime = this.minutesToDurationFormat(Math.max(remainingMinutes, 0));
+    }
+
+    // onAdd() {
+    //     if (!this.requestForm.get("surgeryCategoryId")?.value) {
+    //         this.toastr.warning('Please select a surgery Type', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     if (!this.requestForm.get("surgeryId")?.value || this.requestForm.get("surgeryId")?.value == "0") {
+    //         this.toastr.warning('Please select a Surgery', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     if (!this.requestForm.get("surgeryPart")?.value) {
+    //         this.toastr.warning('Please select a Surgery Part', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     if (!this.requestForm.get("surgeryDuration")?.value) {
+    //         this.toastr.warning('Please enter Duration', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     if (!this.requestForm.get("surgeryFromTime")?.value) {
+    //         this.toastr.warning('Please enter From time', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     if (!this.requestForm.get("surgeryEndTime")?.value) {
+    //         this.toastr.warning('Please enter To time', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     if (!this.requestForm.get("surgeonId")?.value || this.requestForm.get("surgeonId")?.value == "0") {
+    //         this.toastr.warning('Please select a Surgeon', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value == "0") {
+    //         this.AnthName = ""
+    //     }
+    //     // if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value == "0") {
+    //     //   this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
+    //     //     toastClass: 'tostr-tost custom-toast-warning',
+    //     //   });
+    //     //   return;
+    //     // }
+    //     // debugger
+
+    //     const selectedPrimary = this.requestForm.get('isPrimary').value;
+    //     const alreadyHasPrimary = this.dssurgeryDetailList.data.some(x => x.isPrimary === "true" || x.isPrimary === true);
+    //     if (selectedPrimary && alreadyHasPrimary) {
+    //         this.toastr.warning("Primary surgery already added. You can only select one primary.");
+    //         return;
+    //     }
+    //     const newEntry = {
+    //         surgeryCategoryName: this.surgCategoryName,
+    //         surgeryCategoryId: this.requestForm.get('surgeryCategoryId').value,
+    //         surgeryId: this.requestForm.get('surgeryId').value,//
+    //         surgeryName: this.surgName,
+    //         surgeryPart: this.requestForm.get('surgeryPart').value,
+    //         surgeryDuration: this.requestForm.get('surgeryDuration').value,
+    //         surgeryFromTime: this.requestForm.get('surgeryFromTime').value,
+    //         surgeryEndTime: this.requestForm.get('surgeryEndTime').value,
+    //         isPrimary: String(this.requestForm.get('isPrimary').value),
+    //         surgeonId: this.requestForm.get('surgeonId').value,//
+    //         surgeonName: this.surgeonName,
+    //         anestheticsId: this.requestForm.get('anesthetistId').value, //
+    //         anestheticsName: this.AnthName,
+    //     };
+    //     // this.Chargelist.push(newEntry);
+    //     if (this.editIndex !== null) {
+    //         this.Chargelist[this.editIndex] = newEntry;
+    //         this.editIndex = null;
+    //     } else {
+    //         this.Chargelist.push(newEntry);
+    //     }
+    //     this.dssurgeryDetailList.data = [...this.Chargelist];
+
+    //     //  Also add surgeon & anesthetist to second table (attendants) ---
+    //     // if (this.surgeonName) {
+    //     //   let surgeonEntry = {
+    //     //     doctorTypeId: null,
+    //     //     doctorType: "Surgeon",
+    //     //     doctorId: newEntry.surgeonId,
+    //     //     doctorName: this.surgeonName
+    //     //   };
+    //     //   this.Chargelist1.push(surgeonEntry);
+    //     // }
+
+    //     // if (this.AnthName) {
+    //     //   let anesthetistEntry = {
+    //     //     doctorTypeId: null,
+    //     //     doctorType: "Anesthetist",
+    //     //     doctorId: newEntry.anestheticsId,
+    //     //     doctorName: this.AnthName
+    //     //   };
+    //     //   this.Chargelist1.push(anesthetistEntry);
+    //     // }
+
+    //     this.dsattendentDetailList.data = [...this.Chargelist1];
+
+    //     // --- NEW: sum all row durations and compare against estimateTime ---
+    //     const totalMinutes = this.Chargelist.reduce((sum, row) => {
+    //         return sum + this.parseDurationToMinutes(row.surgeryDuration);
+    //     }, 0);
+
+    //     const currentEstimate = this.requestForm.get('estimateTime')?.value;
+    //     const currentEstimateMinutes = this.parseDurationToMinutes(currentEstimate);
+
+    //     if (totalMinutes > currentEstimateMinutes) {
+    //         const newEstimate = this.minutesToDurationFormat(totalMinutes);
+    //         this.requestForm.get('estimateTime')?.setValue(newEstimate, { emitEvent: false });
+    //     }
+    //     // else: estimateTime remains unchanged
+    //     // --- END NEW ---
+
+    //     this.requestForm.patchValue({
+    //         surgeryCategoryId: '',
+    //         surgeryId: '',
+    //         surgeryPart: '',
+    //         surgeryDuration: '',
+    //         surgeryFromTime: '',
+    //         surgeryEndTime: '',
+    //         isPrimary: false,
+    //         surgeonId: '',
+    //         anesthetistId: ''
+    //     });
+
+    //     this.surgName = '';
+    //     this.surgeonName = '';
+    //     this.AnthName = '';
+    //     this.surgCategoryName = '';
+    // }
 
     deleteTableRow(event, element) {
 

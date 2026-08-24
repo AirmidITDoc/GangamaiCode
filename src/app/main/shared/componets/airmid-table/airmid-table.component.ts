@@ -22,7 +22,7 @@ export class AirmidTableComponent implements OnInit {
 
     constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService,
         public permissionService: PagePermissionService,
-        public ConfigSettingParams:ConfigService
+        public ConfigSettingParams: ConfigService
     ) {
     }
     dateType = DATE_TYPES;
@@ -57,10 +57,10 @@ export class AirmidTableComponent implements OnInit {
             this.pageSize = this.gridConfig.row;
         this.bindGridData();
         this.ShowButtons = this.permissionService.getPermission(this.gridConfig.permissionCode, permissionType.Export);
-        
+
         // Set Current from DB
         const rawValue = this.ConfigSettingParams.configParams.CurrencyValue;
-          // Get value after colon
+        // Get value after colon
         this.currencyValue = rawValue?.split(':')[1];
         console.log(this.currencyValue); // USD / INR / KES
     }
@@ -153,10 +153,10 @@ export class AirmidTableComponent implements OnInit {
             'table-row-green': row?.isMark == true,
 
             // added by raksha on 20/8/25 for admission list if company present
-            'table-row-yellow' : row?.companyId > 0,
+            'table-row-yellow': row?.companyId > 0,
 
             // added by raksha on 25/10/25 for cancelled row
-            'table-row-lightRed' : row?.isCancelled || row?.isCancel == true
+            'table-row-lightRed': row?.isCancelled || row?.isCancel == true
         }
 
 
@@ -164,21 +164,67 @@ export class AirmidTableComponent implements OnInit {
     public get GridExportType() {
         return gridResponseType;
     }
-    onExportClick(type: gridResponseType) {
-        this.gridDataRequest.exportType = type;
-        debugger
-       // let filename = this.gridConfig.fileName;
-        let filename = this.gridConfig.fileName || "Document";
-      //  if ((filename ?? "") == "") filename = "Document";
-        if (type == gridResponseType.Csv)
-            filename = filename + ".csv";
-        else if (type == gridResponseType.Pdf)
-            filename = filename + ".pdf";
-        else if (type == gridResponseType.Excel)
-            filename = filename + ".xlsx";
-        this._httpClient.downloadFile(this.gridConfig.apiUrl, this.gridDataRequest, 1, filename).subscribe((data) => {
 
-        });
+    // original code
+    // onExportClick(type: gridResponseType) {
+    //     this.gridDataRequest.exportType = type;
+    //     debugger
+    //    // let filename = this.gridConfig.fileName;
+    //     let filename = this.gridConfig.fileName || "Document";
+    //   //  if ((filename ?? "") == "") filename = "Document";
+    //     if (type == gridResponseType.Csv)
+    //         filename = filename + ".csv";
+    //     else if (type == gridResponseType.Pdf)
+    //         filename = filename + ".pdf";
+    //     else if (type == gridResponseType.Excel)
+    //         filename = filename + ".xlsx";
+    //     this._httpClient.downloadFile(this.gridConfig.apiUrl, this.gridDataRequest, 1, filename).subscribe((data) => {
+
+    //     });
+    // }
+
+    // onExportClick(type: gridResponseType, exportAll: boolean = false) {
+    //     const exportRequest: gridRequest = {
+    //         first: 0,
+    //         rows: exportAll
+    //             ? 2147483647                                   // ignore page size, export all filtered rows
+    //             : (this.paginator?.pageSize ?? this.pageSize),  // export only current page size (25/50/120/200)
+    //         sortField: this.sort?.active ?? this.gridConfig.sortField,
+    //         sortOrder: (this.sort?.direction ?? 'asc') == 'asc' ? 0 : -1,
+    //         filters: this.gridConfig.filters,
+    //         columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+    //         exportType: type
+    //     };
+
+    //     let filename = this.gridConfig.fileName || "Document";
+    //     if (type == gridResponseType.Csv) filename += ".csv";
+    //     else if (type == gridResponseType.Pdf) filename += ".pdf";
+    //     else if (type == gridResponseType.Excel) filename += ".xlsx";
+
+    //     this._httpClient.downloadFile(this.gridConfig.apiUrl, exportRequest, 1, filename)
+    //         .subscribe();
+    // }
+
+    // added new way so as per date selected all record will export in excel
+    onExportClick(type: gridResponseType) {
+        debugger
+        const exportRequest: gridRequest = {
+            first: 0,
+            rows: 2147483647, // int.MaxValue — effectively "no limit" without sending 0
+            sortField: this.sort?.active ?? this.gridConfig.sortField,
+            sortOrder: (this.sort?.direction ?? 'asc') == 'asc' ? 0 : -1,
+            filters: this.gridConfig.filters,
+            columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+            exportType: type
+        };
+
+        let filename = this.gridConfig.fileName || "Document";
+        if (type == gridResponseType.Csv) filename += ".csv";
+        else if (type == gridResponseType.Pdf) filename += ".pdf";
+        else if (type == gridResponseType.Excel) filename += ".xlsx";
+
+        this._httpClient.downloadFile(this.gridConfig.apiUrl, exportRequest, 1, filename)
+            .subscribe();
     }
 
 }

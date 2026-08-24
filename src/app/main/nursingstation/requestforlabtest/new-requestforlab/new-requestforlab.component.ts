@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -73,6 +73,7 @@ export class NewRequestforlabComponent implements OnInit {
         'Price',
         'buttons'
     ]
+    IpFilterDisable=false
 
     dstable1 = new MatTableDataSource<LabRequest>();
     dsLabRequest2 = new MatTableDataSource<LabRequest>();
@@ -89,9 +90,9 @@ export class NewRequestforlabComponent implements OnInit {
         private advanceDataStored: AdvanceDataStored,
         private commonService: PrintserviceService,
         private _FormvalidationserviceService: FormvalidationserviceService,
-        private _loggedService: AuthenticationService) {
+        private _loggedService: AuthenticationService,
+        @Inject(MAT_DIALOG_DATA) public data: any) {
         this.date = new Date();
-
     }
 
     ngOnInit(): void {
@@ -105,6 +106,12 @@ export class NewRequestforlabComponent implements OnInit {
         this.labReqFormArray = this.createlabRequestFormArray();
         this.labReqFormArray.markAllAsTouched();
         this.labeRequestArray.push(this.createlabRequestFormArray());
+
+        if ((this.data?.regID ?? 0) > 0) {
+            this.IpFilterDisable=true
+            console.log('Data From DoctorNote:', this.data)
+            this.getSelectedObjIP(this.data)
+        }
     }
 
     createMyForm(): FormGroup {

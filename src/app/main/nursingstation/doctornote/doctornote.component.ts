@@ -14,7 +14,8 @@ import { permissionCodes } from "app/main/shared/model/permission.model";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
 import { ToastrService } from "ngx-toastr";
 import { DoctornoteService } from "./doctornote.service";
-import { NewTemplateComponent } from './new-template/new-template.component';
+import { NewRequestforlabComponent } from "../requestforlabtest/new-requestforlab/new-requestforlab.component";
+import { NursingTemplateComponent } from "app/main/setup/nursing-master/nursing-template/nursing-template.component";
 
 @Component({
     selector: 'app-doctornote',
@@ -70,6 +71,8 @@ export class DoctornoteComponent implements OnInit {
     openedFromClinical = false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    autocompleteModeRmoDoctor: string = "RMODoctor";
+    autocompleteModeConDoctor: string = "ConDoctor";
 
     constructor(
         public _NursingStationService: DoctornoteService,
@@ -88,7 +91,7 @@ export class DoctornoteComponent implements OnInit {
 
     NewTemplate(row: any = null) {
         const that = this;
-        const dialogRef = this._matDialog.open(NewTemplateComponent,
+        const dialogRef = this._matDialog.open(NursingTemplateComponent,
             {
                 maxHeight: '90vh',
                 width: '90%',
@@ -106,6 +109,8 @@ export class DoctornoteComponent implements OnInit {
         { heading: "Date", key: "tdate", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Time", key: "ttime", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "ConDoctor", key: "conDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "RmoDoctor", key: "rmoDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -163,6 +168,8 @@ export class DoctornoteComponent implements OnInit {
         this.myHandOverform.markAllAsTouched()
         this.myNoteform = this._NursingStationService.createDoctorNoteForm();
         this.myNoteform.markAllAsTouched()
+
+        this.getLabRequesttList();
     }
 
     gridConfig: gridModel = {
@@ -220,6 +227,8 @@ export class DoctornoteComponent implements OnInit {
         this.registerObj = row;
         this.vDescription = this.registerObj.doctorsNotes || '';
         this.myNoteform.get('doctorsNotes').setValue(this.registerObj.doctorsNotes);
+        this.myNoteform.get('conDoctorId').setValue(this.registerObj.conDoctorId);
+        this.myNoteform.get('rmoDoctorId').setValue(this.registerObj.rmoDoctorId);
         // this.myNoteform.get('doctorsNotes').setValue(this.vDescription);
         this.vDoctNoteId = this.registerObj.doctNoteId
         this.IsAddFlag = true;
@@ -399,9 +408,11 @@ export class DoctornoteComponent implements OnInit {
             this.vCompanyName = obj.companyName
             this.vDOA = obj.admissionDate
             this.OP_IP_Id = obj.admissionID;
+            this.myNoteform.get('conDoctorId').setValue(obj.docNameID);
 
             this.initializeGridConfig();
             this.getHandOverNotelist();
+            this.getLabRequesttList();
         }
     }
 
@@ -414,6 +425,8 @@ export class DoctornoteComponent implements OnInit {
     onClear() {
         // this.myNoteform.reset();
         this.myNoteform.get('doctorsNotes')?.setValue('');
+        this.myNoteform.get('conDoctorId')?.setValue(0);
+        this.myNoteform.get('rmoDoctorId')?.setValue(0);
         this.vDescription = '';
         this.IsAddFlag = true
         this.vDoctNoteId = 0;
@@ -466,6 +479,96 @@ export class DoctornoteComponent implements OnInit {
     onEditorValueChange(content: string) {
         console.log("Got from editor:", content);
         this.myNoteform.get('doctorsNotes')?.setValue(content);
+    }
+
+    ///////////////////////// Lab Request ////////////////////////////
+
+    gridConfig2: gridModel = new gridModel();
+    gridConfig3: gridModel = new gridModel();
+    @ViewChild('grid2') grid2: AirmidTableComponent;
+    @ViewChild('grid3') grid3: AirmidTableComponent;
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    isShowDetailTable2: boolean = false;
+
+    allColumns2 = [
+        { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
+        { heading: "Admission Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
+    ]
+
+    getLabRequesttList() {
+        const regNo1 = this.vRegNo ?? 19000101 //this is default value because if i provide 0 then bydefault list will come
+        this.gridConfig2 = {
+            apiUrl: "IPPrescription/LabRadRequestList",
+            columnsList: this.allColumns2,
+            sortField: "RegNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: String(regNo1), opType: OperatorComparer.Equals },
+                { fieldName: "F_Name", fieldValue: '%', opType: OperatorComparer.Equals },
+                { fieldName: "L_Name", fieldValue: '%', opType: OperatorComparer.Equals }
+            ]
+        }
+        setTimeout(() => {
+            this.grid2.gridConfig = this.gridConfig2;
+            this.grid2.bindGridData();
+        });
+    }
+
+    getSelectedRow(row: any): void {
+        console.log("Selected row : ", row);
+        const vRequestId = row.requestId
+        this.gridConfig3 = {
+            apiUrl: "IPPrescription/LabRadRequestDetailList",
+            columnsList: [
+                { heading: "IsBillingStatus", key: "isStatus", type: gridColumnTypes.status, align: "center" },
+                { heading: "IsTestStatus", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" },
+                { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BillDateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+            ],
+            sortField: "RequestId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "RequestId", fieldValue: String(vRequestId), opType: OperatorComparer.Equals }
+            ]
+        }
+        this.isShowDetailTable2 = true;
+        setTimeout(() => {
+            this.grid3.gridConfig = this.gridConfig3;
+            this.grid3.bindGridData();
+        });
+    }
+
+    getLabRequest() {
+        if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+            this.toastr.warning('Please select Patient', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            })
+            return;
+        }
+        // this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
+        const dialogRef = this._matDialog.open(NewRequestforlabComponent,
+            {
+                maxHeight: '95vh',
+                width: '90%',
+                data: this.registerObj
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.getLabRequesttList();
+        });
     }
 }
 export class DocNote {

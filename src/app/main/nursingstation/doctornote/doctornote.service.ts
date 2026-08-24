@@ -54,7 +54,9 @@ export class DoctornoteService {
             tdate: [(new Date()).toISOString()],
             ttime: [(new Date()).toISOString()],
             doctorsNotes: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            isAddedBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+            isAddedBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            conDoctorId: [0],
+            rmoDoctorId: [0],
         });
     }
 
