@@ -51,15 +51,15 @@ export class IPBillBrowseListComponent implements OnInit {
     menuActions: Array<string> = [];
 
 
-    IsGroupWise: boolean = this.permissionService.getPermission(permissionCodes.GroupWise, permissionType.Edit);
-    IsClassWise: boolean = this.permissionService.getPermission(permissionCodes.ClassWise, permissionType.Edit);
-    IsClassService: boolean = this.permissionService.getPermission(permissionCodes.ClassService, permissionType.Edit);
-    IsFinalBill: boolean = this.permissionService.getPermission(permissionCodes.FinalBill, permissionType.Edit);
-    IsChargeDateWise: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWise, permissionType.Edit);
-    IsPatientStatementPrint: boolean = this.permissionService.getPermission(permissionCodes.PatientStatementPrint, permissionType.Edit);
-    IsAdvanceStatementPrint: boolean = this.permissionService.getPermission(permissionCodes.AdvanceStatementPrint, permissionType.Edit);
-    IsChargeDateWithGroupWise: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWithGroupWise, permissionType.Edit);
-    IsChargeDateWithGroupWiseWithoutAdvance: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWithGroupWiseWithoutAdvance, permissionType.Edit);
+    IsGroupWise: boolean = this.permissionService.getPermission(permissionCodes.GroupWise, permissionType.View);
+    IsClassWise: boolean = this.permissionService.getPermission(permissionCodes.ClassWise, permissionType.View);
+    IsClassService: boolean = this.permissionService.getPermission(permissionCodes.ClassService, permissionType.View);
+    IsFinalBill: boolean = this.permissionService.getPermission(permissionCodes.FinalBill, permissionType.View);
+    IsChargeDateWise: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWise, permissionType.View);
+    IsPatientStatementPrint: boolean = this.permissionService.getPermission(permissionCodes.PatientStatementPrint, permissionType.View);
+    IsAdvanceStatementPrint: boolean = this.permissionService.getPermission(permissionCodes.AdvanceStatementPrint, permissionType.View);
+    IsChargeDateWithGroupWise: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWithGroupWise, permissionType.View);
+    IsChargeDateWithGroupWiseWithoutAdvance: boolean = this.permissionService.getPermission(permissionCodes.ChargeDateWithGroupWiseWithoutAdvance, permissionType.View);
 
 
     // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -99,8 +99,34 @@ export class IPBillBrowseListComponent implements OnInit {
     Vcashtotbal: any = "0"
     Vcardtotbal: any = "0"
     Vphonepaytotl: any = "0"
+    VpPaytmtotl: any = "0"
+    //payment
+
+    Vptotal: any = "0"
+    Vptotaldisc: any = "0"
+    Vptotalnet: any = "0"
+    Vptotbal: any = "0"
+
+    Vpcashtotbal: any = "0"
+    Vpcardtotbal: any = "0"
+    Vpphonepaytotl: any = "0"
+    Vpnefttotl: any = "0"
+    //refund
+
+    Vrtotal: any = "0"
+    Vrtotaldisc: any = "0"
+    Vrtotalnet: any = "0"
+    Vrtotbal: any = "0"
+
+    Vrcashtotbal: any = "0"
+    Vrcardtotbal: any = "0"
+    Vrchetotbal: any = "0"
+    Vrnefttotl: any = "0"
 
     dataSource = new MatTableDataSource<IPbill>();
+    dataSourcepay = new MatTableDataSource<IPbill>();
+    dataSourceRef = new MatTableDataSource<IPbill>();
+
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;
         this.gridConfig.columnsList.find(col => col.key === 'patientTypeId')!.template = this.patientTypetemp;
@@ -235,7 +261,7 @@ export class IPBillBrowseListComponent implements OnInit {
         { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -312,6 +338,8 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
         this.GetIPbilldetail()
+        this.GetIPpaybilldetail()
+        this.GetIPRefundbilldetail()
     }
 
     onChangeIPBill() {
@@ -378,6 +406,11 @@ export class IPBillBrowseListComponent implements OnInit {
         this.pPBillNo = this.myFilterFormIPBrowsePayment.get('PBillNo').value || "%"
         this.pReceiptNo = this.myFilterFormIPBrowsePayment.get('ReceiptNo').value || "0"
         this.getfilterdataIPPayment();
+
+        setTimeout(() => {
+            this.GetIPpaybilldetail()
+        }, 1000);
+
     }
 
     getfilterdataIPPayment() {
@@ -422,6 +455,10 @@ export class IPBillBrowseListComponent implements OnInit {
         this.rl_name = this.myFilterFormIPBrowseRefund.get('LastName').value + "%"
         this.rregNo = this.myFilterFormIPBrowseRefund.get('RegNo').value || "0"
         this.getfilterdataIPRefund();
+        setTimeout(() => {
+            this.GetIPRefundbilldetail()
+        }, 1000);
+
     }
 
     getfilterdataIPRefund() {
@@ -1339,7 +1376,7 @@ export class IPBillBrowseListComponent implements OnInit {
         const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
 
         const filters: any[] = [];
-debugger
+        debugger
         // Handle date range
         // if (fromDateControl && toDateControl) {
         //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
@@ -1349,7 +1386,7 @@ debugger
         //     this.toDate = "1900-01-01";
         // }
 
-         if (fromDateControl && toDateControl) {
+        if (fromDateControl && toDateControl) {
             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
         }
@@ -1407,7 +1444,7 @@ debugger
         this._IPBrowseBillService.getIPbilllist(data).subscribe((response) => {
             this.dataSource.data = response.data;
             console.log(this.dataSource.data)
-         
+
             if (this.dataSource.data.length > 0) {
 
                 this.Vtotal = this.dataSource.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
@@ -1419,17 +1456,258 @@ debugger
                 this.Vcardtotbal = this.dataSource.data.reduce((sum, r) => sum + (r.cardPay || 0), 0);
                 this.Vphonepaytotl = this.dataSource.data.reduce((sum, r) => sum + (r.neftPay || 0), 0);
 
+            } else {
+                this.Vtotal = 0
+                this.Vtotaldisc = 0
+                this.Vtotalnet = 0
+                this.Vtotbal = 0
+
+                this.Vcashtotbal = 0
+                this.Vcardtotbal = 0
+                this.Vphonepaytotl = 0
             }
 
             this.Vtotal = Math.round(this.Vtotal)
             this.Vtotaldisc = Math.round(this.Vtotaldisc)
             this.Vtotalnet = Math.round(this.Vtotalnet)
             this.Vtotbal = Math.round(this.Vtotbal)
-      
+
         });
     }
 
 
+    GetIPpaybilldetail() {
+
+        this.Vptotal = 0
+        this.Vptotaldisc = 0
+        this.Vptotalnet = 0
+        this.Vptotbal = 0
+
+        this.Vpcashtotbal = 0
+        this.Vpcardtotbal = 0
+        this.Vpphonepaytotl = 0
+
+        this.pf_name = this.myFilterFormIPBrowsePayment.get('FirstName').value + "%"
+        this.pl_name = this.myFilterFormIPBrowsePayment.get('LastName').value + "%"
+        this.pregNo = this.myFilterFormIPBrowsePayment.get('RegNo').value || "0"
+        this.pPBillNo = this.myFilterFormIPBrowsePayment.get('PBillNo').value || "%"
+        this.pReceiptNo = this.myFilterFormIPBrowsePayment.get('ReceiptNo').value
+
+        const fromDateControl = this.datePipe.transform(this.myFilterFormIPBrowsePayment.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterFormIPBrowsePayment.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+        debugger
+        // Handle date range
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+
+        if (fromDateControl && toDateControl) {
+            this.pfromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.ptoDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.pf_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.pl_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.pfromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.ptoDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.pregNo),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "PBillNo",
+                "fieldValue": String(this.pPBillNo),
+                "opType": "Equals"
+            },
+
+            {
+                "fieldName": "ReceiptNo",
+                "fieldValue": String(this.pReceiptNo),
+                "opType": "Equals"
+            }
+
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+        debugger
+        this._IPBrowseBillService.getIPpaybilllist(data).subscribe((response) => {
+            this.dataSourcepay.data = response.data;
+            console.log(this.dataSourcepay.data)
+
+            if (this.dataSourcepay.data.length > 0) {
+
+                this.Vptotal = this.dataSourcepay.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
+                // this.Vptotaldisc = this.dataSourcepay.data.reduce((sum, r) => sum + (r.concessionAmt || 0), 0);
+                this.Vptotalnet = this.dataSourcepay.data.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+                this.Vptotbal = this.dataSourcepay.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
+
+                this.Vpcashtotbal = this.dataSourcepay.data.reduce((sum, r) => sum + (r.cashPayAmount || 0), 0);
+                this.Vpcardtotbal = this.dataSourcepay.data.reduce((sum, r) => sum + (r.cardPayAmount || 0), 0);
+                this.Vpnefttotl = this.dataSourcepay.data.reduce(
+                    (sum, r) => sum + (r.nEFTPayAmount || 0) + (r.payTmPayAmount || 0),
+                    0
+                );
+            } else {
+                this.Vptotal = 0
+                this.Vptotaldisc = 0
+                this.Vptotalnet = 0
+                this.Vptotbal = 0
+
+                this.Vpcashtotbal = 0
+                this.Vpcardtotbal = 0
+                this.Vpphonepaytotl = 0
+            }
+
+            this.Vptotal = Math.round(this.Vptotal)
+            this.Vptotaldisc = Math.round(this.Vptotaldisc)
+            this.Vptotalnet = Math.round(this.Vptotalnet)
+            this.Vptotbal = Math.round(this.Vptotbal)
+
+        });
+    }
+
+    GetIPRefundbilldetail() {
+
+        this.Vrtotal = 0
+        this.Vrtotaldisc = 0
+        this.Vrtotalnet = 0
+        this.Vrtotbal = 0
+
+        this.Vrcashtotbal = 0
+        this.Vrcardtotbal = 0
+        this.Vrnefttotl = 0
+
+        this.rf_name = this.myFilterFormIPBrowseRefund.get('FirstName').value + "%"
+        this.rl_name = this.myFilterFormIPBrowseRefund.get('LastName').value + "%"
+        this.rregNo = this.myFilterFormIPBrowseRefund.get('RegNo').value || "0"
+
+        const fromDateControl = this.datePipe.transform(this.myFilterFormIPBrowseRefund.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterFormIPBrowseRefund.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+        debugger
+        // Handle date range
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+
+        if (fromDateControl && toDateControl) {
+            this.rfromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.rtoDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.rf_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.rl_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.rfromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.rtoDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.rregNo),
+                "opType": "Equals"
+            }
+
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._IPBrowseBillService.getIPRefundbilllist(data).subscribe((response) => {
+            this.dataSourceRef.data = response.data;
+            console.log(this.dataSourceRef.data)
+
+            if (this.dataSourceRef.data.length > 0) {
+                this.Vrtotalnet = this.dataSourceRef.data.reduce((sum, r) => sum + (r.refundAmount || 0), 0);
+
+                this.Vrcashtotbal = this.dataSourceRef.data.reduce((sum, r) => sum + (r.cashPayAmount || 0), 0);
+                this.Vrcardtotbal = this.dataSourceRef.data.reduce((sum, r) => sum + (r.cardPayAmount || 0), 0);
+                this.Vrchetotbal = this.dataSourceRef.data.reduce((sum, r) => sum + (r.chequePayAmount || 0), 0);
+                this.Vrnefttotl = this.dataSourceRef.data.reduce(
+                    (sum, r) => sum + (r.nEFTPayAmount || 0) + (r.payTmPayAmount || 0),
+                    0
+                );
+            } else {
+
+                this.Vrtotal = 0
+                this.Vrtotaldisc = 0
+                this.Vrtotalnet = 0
+                this.Vrtotbal = 0
+
+                this.Vrcashtotbal = 0
+                this.Vrcardtotbal = 0
+                this.Vrnefttotl = 0
+
+            }
+
+            this.Vrtotal = Math.round(this.Vrtotal)
+            this.Vrtotaldisc = Math.round(this.Vrtotaldisc)
+            this.Vrtotalnet = Math.round(this.Vrtotalnet)
+            this.Vrchetotbal = Math.round(this.Vrchetotbal)
+            this.Vrnefttotl = Math.round(this.Vrnefttotl)
+
+
+
+        });
+    }
 }
 
 
@@ -1441,6 +1719,15 @@ export class IPbill {
     cashPay: any
     cardPay: any
     neftPay: any
+
+
+    paidAmount: any
+    cashPayAmount: any
+    chequePayAmount: any
+    cardPayAmount: any
+    nEFTPayAmount: any
+    payTmPayAmount: any
+    refundAmount: any
     constructor(IPbill) {
         {
             this.totalAmt = IPbill.totalAmt || 0;
@@ -1451,6 +1738,15 @@ export class IPbill {
             this.cashPay = IPbill.cashPay || 0;
             this.cardPay = IPbill.cardPay || 0;
             this.neftPay = IPbill.neftPay || 0
+
+            this.paidAmount = IPbill.paidAmount || 0;
+            this.cashPayAmount = IPbill.cashPayAmount || 0
+
+            this.chequePayAmount = IPbill.chequePayAmount || 0;
+            this.cardPayAmount = IPbill.cardPayAmount || 0;
+            this.nEFTPayAmount = IPbill.nEFTPayAmount || 0
+            this.payTmPayAmount = IPbill.payTmPayAmount || 0
+            this.refundAmount = IPbill.refundAmount || 0
         }
     }
 }

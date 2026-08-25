@@ -16,6 +16,8 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { ToastrService } from 'ngx-toastr';
+import { MatTableDataSource } from '@angular/material/table';
+import { IPbill } from '../ip-bill-browse-list/ip-bill-browse-list.component';
 
 @Component({
     selector: 'app-browse-ip-advance',
@@ -25,6 +27,40 @@ import { ToastrService } from 'ngx-toastr';
     animations: fuseAnimations
 })
 export class BrowseIPAdvanceComponent implements OnInit {
+    Vtotal: any = "0"
+    Vtotaldisc: any = "0"
+    Vtotalnet: any = "0"
+    Vtotalused: any = "0"
+    Vtotalref: any = "0"
+    Vtotbal: any = "0"
+    Vcashtotbal: any = "0"
+    Vcardtotbal: any = "0"
+    Vphonepaytotl: any = "0"
+    VpPaytmtotl: any = "0"
+    Vchequetot: any = "0"
+
+    //payment
+
+    Vptotal: any = "0"
+    Vptotaldisc: any = "0"
+    Vptotaladvused: any = "0"
+    Vptotbal: any = "0"
+    Vptotalref: any = "0"
+    Vpcashtotbal: any = "0"
+    Vpcardtotbal: any = "0"
+    VpChequetot: any = "0"
+    Vpnefttotl: any = "0"
+
+
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+    rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+
+    dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+    dataSourcerefadv = new MatTableDataSource<IpdAdvanceBrowseModel>();
 
     constructor(
         public _BrowseIpAdvanceService: BrowseIpAdvanceService,
@@ -35,10 +71,11 @@ export class BrowseIPAdvanceComponent implements OnInit {
         private commonService: PrintserviceService,
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.GetAdvance()
+        this.GetRefAdvance()
+    }
 
-    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -64,6 +101,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     al_name: any = ""
     afromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     atoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
 
     allAdvanceFilter = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
@@ -112,8 +150,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
         { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Advance Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Advance UsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 150 },
+        { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Advance UsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 150 },
         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6 },
@@ -152,6 +190,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
         this.regNo = this._BrowseIpAdvanceService.UserFormGroup.get('RegNo').value || "0"
         this.PBillNo = this._BrowseIpAdvanceService.UserFormGroup.get('PBillNo').value || "0"
         this.getfilterAdvanceList();
+
+        this.GetAdvance()
     }
 
     getfilterAdvanceList() {
@@ -195,6 +235,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
         this.al_name = this._BrowseIpAdvanceService.AdvanceOfRefund.get('LastName').value + "%"
         this.aregNo = this._BrowseIpAdvanceService.AdvanceOfRefund.get('RegNo').value || "0"
         this.getfilterAdvanceOfRefundList();
+        this.GetRefAdvance()
     }
 
     getfilterAdvanceOfRefundList() {
@@ -564,6 +605,265 @@ export class BrowseIPAdvanceComponent implements OnInit {
     }
 
 
+    GetAdvance() {
+
+        this.Vtotal = 0
+        this.Vtotaldisc = 0
+        this.Vtotalnet = 0
+        this.Vtotbal = 0
+
+        this.Vtotalused = 0
+        this.Vtotalref = 0
+
+        this.Vcashtotbal = 0
+        this.Vcardtotbal = 0
+        this.Vphonepaytotl = 0
+
+        this.f_name = this._BrowseIpAdvanceService.UserFormGroup.get('FirstName').value + "%"
+        this.l_name = this._BrowseIpAdvanceService.UserFormGroup.get('LastName').value + "%"
+        this.regNo = this._BrowseIpAdvanceService.UserFormGroup.get('RegNo').value || "0"
+        this.PBillNo = this._BrowseIpAdvanceService.UserFormGroup.get('PBillNo').value || "0"
+
+        const fromDateControl = this.datePipe.transform(this._BrowseIpAdvanceService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this._BrowseIpAdvanceService.UserFormGroup.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+
+        // Handle date range
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.f_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.l_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.regNo),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "PBillNo",
+                "fieldValue": String(this.PBillNo),
+                "opType": "Equals"
+            }
+
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RegID",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._BrowseIpAdvanceService.getIPAdvlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+
+            if (this.dataSource.data.length > 0) {
+                debugger
+
+                this.calculateTotals()
+            } else {
+                this.Vtotal = 0
+                this.Vtotaldisc = 0
+                this.Vtotalnet = 0
+                this.Vtotbal = 0
+
+                this.Vtotalused = 0
+                this.Vtotalref = 0
+
+                this.Vcashtotbal = 0
+                this.Vcardtotbal = 0
+                this.Vphonepaytotl = 0
+            }
+
+            // this.Vtotal = Math.round(this.Vtotal)
+            // this.Vtotalused = Math.round(this.Vtotalused)
+            // this.Vtotalref = Math.round(this.Vtotalref)
+            // this.Vtotbal = Math.round(this.Vtotbal)
+
+            // this.Vcashtotbal = Math.round(this.Vcashtotbal)
+            // this.Vcardtotbal = Math.round(this.Vcardtotbal)
+            // this.Vphonepaytotl = Math.round(this.Vphonepaytotl)
+
+        });
+    }
+    calculateTotals() {
+        const data = this.dataSource.filteredData?.length
+            ? this.dataSource.filteredData
+            : this.dataSource.data;
+
+        let advance = 0, used = 0, balance = 0, refund = 0;
+        let cash = 0, cheque = 0, card = 0, paytm = 0;
+
+        for (const r of data) {
+            advance += +r.advanceAmount || 0;
+            used += +r.usedAmount || 0;
+            balance += +r.balanceAmount || 0;
+            refund += +r.refundAmount || 0;
+            cash += +r.cashPayAmount || 0;
+            cheque += +r.chequePayAmount || 0;
+            card += +r.cardPayAmount || 0;
+            paytm += +r.payTMAmount || 0;
+        }
+
+        this.Vtotal = advance;
+        this.Vtotalused = used;
+        this.Vtotbal = balance;
+        this.Vtotalref = refund;
+        this.Vcashtotbal = cash;
+        this.Vchequetot = cheque;
+        this.Vcardtotbal = card;
+        this.Vphonepaytotl = paytm;
+    }
+    GetRefAdvance() {
+
+        this.Vptotal = 0
+        this.Vptotalref = 0
+        this.Vptotaladvused = 0
+        this.Vptotbal = 0
+
+        this.Vpcashtotbal = 0
+        this.Vpcardtotbal = 0
+        this.Vphonepaytotl = 0
+        this.VpChequetot = 0
+        
+        this.af_name = this._BrowseIpAdvanceService.AdvanceOfRefund.get('FirstName').value + "%"
+        this.al_name = this._BrowseIpAdvanceService.AdvanceOfRefund.get('LastName').value + "%"
+        this.aregNo = this._BrowseIpAdvanceService.AdvanceOfRefund.get('RegNo').value || "0"
+
+        const fromDateControl = this.datePipe.transform(this._BrowseIpAdvanceService.AdvanceOfRefund.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this._BrowseIpAdvanceService.AdvanceOfRefund.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+        debugger
+
+
+        if (fromDateControl && toDateControl) {
+            this.rfromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.rtoDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.af_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.al_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.rfromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.rtoDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.aregNo),
+                "opType": "Equals"
+            }
+
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RegId",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._BrowseIpAdvanceService.getIPAdvRefundlist(data).subscribe((response) => {
+            this.dataSourcerefadv.data = response.data;
+            console.log(this.dataSourcerefadv.data)
+            debugger
+            if (this.dataSourcerefadv.data.length > 0) {
+                this.calculateTotalsRefund()
+            } else {
+                this.Vptotal = 0
+                this.Vptotalref = 0
+                this.Vptotaladvused = 0
+                this.Vptotbal = 0
+
+                this.Vpcashtotbal = 0
+                this.Vpcardtotbal = 0
+                this.Vpnefttotl = 0
+                this.VpChequetot = 0
+            }
+
+
+        });
+    }
+    calculateTotalsRefund() {
+        const data = this.dataSourcerefadv.filteredData?.length
+            ? this.dataSourcerefadv.filteredData
+            : this.dataSourcerefadv.data;
+
+        let advance = 0, used = 0, balance = 0, refund = 0;
+        let cash = 0, cheque = 0, card = 0, paytm = 0;
+
+        for (const r of data) {
+            advance += +r.advanceAmount || 0;
+            used += +r.usedAmount || 0;
+            balance += +r.balanceAmount || 0;
+            refund += +r.refundAmount || 0;
+            cash += +r.cashPayAmount || 0;
+            cheque += +r.chequePayAmount || 0;
+            card += +r.cardPayAmount || 0;
+            paytm += +r.payTMAmount || 0;
+        }
+
+        this.Vptotal = advance;
+        this.Vptotaladvused = used;
+        this.Vptotbal = balance;
+        this.Vtotalref = refund;
+        this.Vpcashtotbal = cash;
+        this.VpChequetot = cheque;
+        this.Vcardtotbal = card;
+        this.Vpnefttotl = paytm;
+    }
 }
 
 
@@ -610,6 +910,14 @@ export class IpdAdvanceBrowseModel {
     usedAmount: any;
     balanceAmount: any;
     advanceDetailId: any;
+
+    cashPayAmount: any;
+    chequePayAmount: any;
+    payTMAmount: any;
+    cardPayAmount: any;
+    advanceUsedAmt: any;
+
+    advanceUsedAmount: any
     /**
   * Constructor
   *
@@ -657,6 +965,16 @@ export class IpdAdvanceBrowseModel {
             this.AdvanceUsedAmount = IpdAdvanceBrowseModel.AdvanceUsedAmount || 0;
             this.AdvanceUsedAmount = IpdAdvanceBrowseModel.AdvanceUsedAmount || 0;
             this.Remark = IpdAdvanceBrowseModel.Remark || 0;
+            this.cashPayAmount = IpdAdvanceBrowseModel.cashPayAmount || 0;
+
+            this.chequePayAmount = IpdAdvanceBrowseModel.chequePayAmount || 0;
+            this.payTMAmount = IpdAdvanceBrowseModel.payTMAmount || 0;
+            this.cardPayAmount = IpdAdvanceBrowseModel.cardPayAmount || 0;
+            this.advanceUsedAmt = IpdAdvanceBrowseModel.advanceUsedAmt || 0;
+            this.advanceUsedAmount = IpdAdvanceBrowseModel.advanceUsedAmount || 0;
+
+
+
         }
     }
 

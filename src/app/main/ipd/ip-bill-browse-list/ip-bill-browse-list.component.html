@@ -13,27 +13,27 @@
                     class="px-12 py-4 border-bottom gap-8">
                     <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                            <!-- New Admissions -->
-                            <div class="dashboard-card admissions">
+                         
+                            <!-- <div class="dashboard-card admissions">
                                 <div class="card-label">Total Amount</div>
                                 <div class="card-value">{{Vtotal}}</div>
                                 <mat-icon class="card-icon">event</mat-icon>
-                            </div>
-                            <!-- Admissions New/Follow-up -->
-                            <div class="dashboard-card admissions-split">
-                                <div class="card-label">Total Disc</div>
-                                <div class="card-value">
-                                    <div>Total {{Vtotaldisc}}</div>
-                                    <!-- <div>Follow-up {{VFollowupcount}}</div> -->
-                                </div>
-                                <mat-icon class="card-icon">group</mat-icon>
-                            </div>
-                            <!-- Bills -->
-                            <div class="dashboard-card bills">
+                            </div> -->
+                             <div class="dashboard-card bills">
                                 <div class="card-label">Total Net</div>
                                 <div class="card-value">{{Vtotalnet}}</div>
                                 <mat-icon class="card-icon">receipt_long</mat-icon>
                             </div>
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">Total Disc</div>
+                                <div class="card-value">
+                                    <div>Total {{Vtotaldisc}}</div>
+                                  
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+                            <!-- Bills -->
+                          
 
                             <div class="dashboard-card balamt">
                                 <div class="card-label">Balance Amt</div>
@@ -178,7 +178,7 @@
                                 (click)="$event.stopPropagation();" *ngIf="element.interimOrFinal=='0'">
                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                             </button>
-                            <mat-menu #moreMenu="matMenu">
+                            <mat-menu #moreMenu="matMenu" *ngIf="element.balanceAmt !=0 && element.isCancelled !=1 ">
                                 <ng-container *ngFor="let m of menuActions, let n of menuActions">
                                     <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
                                         <span>{{m}}</span>
@@ -259,7 +259,74 @@
         </mat-tab>
 
         <mat-tab label="IP Payment Receipt List">
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+                class="px-12 py-4 border-bottom gap-8">
+                <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                  
+                        <div class="dashboard-card admissions">
+                            <div class="card-label">Total Amount</div>
+                            <div class="card-value">{{Vptotal}}</div>
+                            <mat-icon class="card-icon">event</mat-icon>
+                        </div>
+                      
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Total Disc</div>
+                            <div class="card-value">
+                                <div>Total {{Vptotaldisc}}</div>
+                               
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+                        <!-- Bills -->
+                        <!-- <div class="dashboard-card bills">
+                            <div class="card-label">Total Net</div>
+                            <div class="card-value">{{Vptotalnet}}</div>
+                            <mat-icon class="card-icon">receipt_long</mat-icon>
+                        </div> -->
 
+                        <div class="dashboard-card balamt">
+                            <div class="card-label">Balance Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vptotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Cash Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vpcashtotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Card Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vpcardtotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Online Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vpnefttotl}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -299,7 +366,7 @@
                                 <airmid-datepicker [formGroup]="myFilterFormIPBrowsePayment" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig1.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig1.filters[3].fieldValue">
+                                    [(toValue)]="gridConfig1.filters[3].fieldValue" (dateChange)="GetIPpaybilldetail()">
                                 </airmid-datepicker>
 
                                 <mat-form-field appearance="outline">
@@ -365,7 +432,50 @@
         </mat-tab>
 
         <mat-tab label="IP Refund Of Bill List">
+     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+                class="px-12 py-4 border-bottom gap-8">
+                <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                    
+                        <div class="dashboard-card bills">
+                            <div class="card-label">Total Refund</div>
+                            <div class="card-value">{{Vrtotalnet}}</div>
+                            <mat-icon class="card-icon">receipt_long</mat-icon>
+                        </div>
 
+                      
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Cash Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vrcashtotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Card Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vrcardtotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Online Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vrnefttotl}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -403,7 +513,7 @@
                                 <airmid-datepicker [formGroup]="myFilterFormIPBrowseRefund" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig2.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig2.filters[3].fieldValue">
+                                    [(toValue)]="gridConfig2.filters[3].fieldValue" (dateChange)="GetIPRefundbilldetail()">
                                 </airmid-datepicker>
 
                                 <mat-form-field appearance="outline">

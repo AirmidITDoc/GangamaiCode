@@ -193,5 +193,14 @@ export class IPBrowseBillService {
 
         return this._httpClient1.PostData("Billing/BrowseIPBillList", employee)
     }
+
+public getIPpaybilllist(employee) {
+
+        return this._httpClient1.PostData("Billing/BrowseIPPaymentList", employee)
+    }
+   public getIPRefundbilllist(employee) {
+
+        return this._httpClient1.PostData("Billing/BrowseIPRefundlist", employee)
+    } 
     
 }

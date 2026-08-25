@@ -93,4 +93,17 @@ export class BrowseIpAdvanceService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
     }
+
+    
+
+    
+
+    public getIPAdvlist(employee) {
+
+        return this._httpClient.PostData("Advance/BrowseAdvanceList", employee)
+    }
+   public getIPAdvRefundlist(employee) {
+
+        return this._httpClient.PostData("Advance/BrowseRefundOfAdvanceList", employee)
+    } 
 }

@@ -24,8 +24,8 @@ export class OPListService {
             enddate: [(new Date()).toISOString()],
             PBillNo: '',
             RegNo: '',
-            CompanyId: 0
-            //  ReceiptNo: '',
+            CompanyId: 0,
+             CashCounterId: 0,
         });
     }
     myFilterpaymentbrowseform(): FormGroup {
@@ -141,4 +141,17 @@ export class OPListService {
     public UpdateGovernAmt(m_data) {
         return this._httpClient.PostData("IPBill/BillGovtUpdate", m_data);
     }
+    public getOPbilllist(employee) {
+
+        return this._httpClient1.PostData("OPBill/BrowseOPDBillPagiList", employee)
+    }
+    public getOPpaybilllist(employee) {
+
+        return this._httpClient1.PostData("OPBill/BrowseOPPaymentList", employee)
+    }
+    public getOPRefundbilllist(employee) {
+
+        return this._httpClient1.PostData("OPBill/BrowseOPRefundList", employee)
+    }
+
 }

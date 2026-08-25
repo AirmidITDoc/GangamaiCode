@@ -15,6 +15,79 @@
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <!-- 1st -->
         <mat-tab label="IP Browse Advance List">
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+                    class="px-12 py-4 border-bottom gap-8">
+                    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                           
+                            <div class="dashboard-card admissions">
+                                <div class="card-label">Total Advance</div>
+                                <div class="card-value">{{Vtotal}}</div>
+                                <mat-icon class="card-icon">event</mat-icon>
+                            </div>
+                          
+                            <!-- <div class="dashboard-card admissions-split">
+                                <div class="card-label">Total used</div>
+                                <div class="card-value">
+                                    <div>Total {{Vtotalused}}</div>
+                                    
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div> -->
+                         
+
+                            <div class="dashboard-card balamt">
+                                <div class="card-label">Balance Amt</div>
+                                <div class="card-value">
+
+                                    <div> {{Vtotbal}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+
+
+                            
+                            <div class="dashboard-card balamt">
+                                <div class="card-label">Refund Amt</div>
+                                <div class="card-value">
+
+                                    <div> {{Vtotalref}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">Cash Amt</div>
+                                <div class="card-value">
+
+                                    <div> {{Vcashtotbal}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+
+
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">Card Amt</div>
+                                <div class="card-value">
+
+                                    <div> {{Vcardtotbal}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+
+
+                            <div class="dashboard-card admissions-split">
+                                <div class="card-label">Online Amt</div>
+                                <div class="card-value">
+
+                                    <div> {{Vphonepaytotl}}</div>
+                                </div>
+                                <mat-icon class="card-icon">group</mat-icon>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -52,7 +125,7 @@
                                 <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.UserFormGroup"
                                     [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
+                                    [(toValue)]="gridConfig.filters[3].fieldValue" (dateChange)="GetAdvance()"></airmid-datepicker>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Advance No</mat-label>
@@ -128,6 +201,74 @@
 
         <!-- 2nd -->
         <mat-tab label="IP Refund Of Advance">
+                  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+                class="px-12 py-4 border-bottom gap-8">
+                <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                  
+                        <div class="dashboard-card admissions">
+                            <div class="card-label">Total Advance</div>
+                            <div class="card-value">{{Vptotal}}</div>
+                            <mat-icon class="card-icon">event</mat-icon>
+                        </div>
+                      
+                        <!-- <div class="dashboard-card admissions-split">
+                            <div class="card-label">Total Disc</div>
+                            <div class="card-value">
+                                <div>Total {{Vptotaldisc}}</div>
+                               
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div> -->
+                        <!-- Bills -->
+                        <div class="dashboard-card bills">
+                            <div class="card-label">Total Refund</div>
+                            <div class="card-value">{{Vtotalref}}</div>
+                            <mat-icon class="card-icon">receipt_long</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card balamt">
+                            <div class="card-label">Balance Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vptotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Cash Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vpcashtotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Card Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vpcardtotbal}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+
+                        <div class="dashboard-card admissions-split">
+                            <div class="card-label">Online Amt</div>
+                            <div class="card-value">
+
+                                <div> {{Vpnefttotl}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -169,7 +310,7 @@
                                 <airmid-datepicker [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund"
                                     [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig1.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig1.filters[3].fieldValue"></airmid-datepicker>
+                                    [(toValue)]="gridConfig1.filters[3].fieldValue" (dateChange)="GetRefAdvance()"></airmid-datepicker>
 
 
                                 <mat-form-field appearance="outline">

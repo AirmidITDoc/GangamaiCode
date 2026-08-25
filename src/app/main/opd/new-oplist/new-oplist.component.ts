@@ -22,6 +22,7 @@ import { Subscription } from 'rxjs';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { OPListService } from './oplist.service';
 import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -54,18 +55,60 @@ export class NewOPListComponent implements OnInit {
     l_name: any = ""
     CompanyId = 0
     PBillNo: any = "%"
+    receiptNo: any = "%"
+    CashCounterId = 0
+
+    autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModecompany: string = "Company";
     autocompleteModecompany1: string = "Company";
+
     pf_name: any = ""
     pregNo: any = "0"
     pl_name: any = ""
     precptNo = "0"
     pPBillNo: any = "%"
-
+    pCompanyId = "0"
     rf_name: any = ""
     rregNo: any = "0"
     rl_name: any = ""
     rPBillNo: any = "%"
+    rrecptNo = "0"
+    rCompanyId: any = "0"
+
+    Vtotal: any = "0"
+    Vtotaldisc: any = "0"
+    Vtotalnet: any = "0"
+    Vtotbal: any = "0"
+
+    Vcashtot: any = "0"
+    Vcardtot: any = "0"
+    Vchequetot: any = "0"
+    Vnefttotl: any = "0"
+
+
+    Vptotal: any = "0"
+    Vptotaldisc: any = "0"
+    Vptotalnet: any = "0"
+    Vptotbal: any = "0"
+    Vrtotalref: any = "0"
+
+    Vpcashtotbal: any = "0"
+    Vpcardtotbal: any = "0"
+    Vponlinetot: any = "0"
+    Vpnefttotl: any = "0"
+
+
+
+    Vrtotal: any = "0"
+    Vrtotaldisc: any = "0"
+    Vrtotalnet: any = "0"
+    Vrtotbal: any = "0"
+
+    Vrcashtot: any = "0"
+    Vrcardtot: any = "0"
+    Vrchequetot: any = "0"
+    Vrnefttotl: any = "0"
+
     rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -81,6 +124,12 @@ export class NewOPListComponent implements OnInit {
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
 
+    dataSourceBill = new MatTableDataSource<OPbill>();
+    dataSourcepayBill = new MatTableDataSource<OPbill>();
+    dataSourceRef = new MatTableDataSource<OPbill>();
+
+
+
     allOBillfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -88,7 +137,8 @@ export class NewOPListComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
+        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
+        { fieldName: "CashCounterId", fieldValue: "0", opType: OperatorComparer.Equals }
     ];
 
     allOPbillcolumns = [
@@ -154,8 +204,9 @@ export class NewOPListComponent implements OnInit {
         { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
-        { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -186,6 +237,12 @@ export class NewOPListComponent implements OnInit {
         { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', type: 8 },
         { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+
+        { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
+        // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center", type: gridColumnTypes.amount },
+
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -259,6 +316,10 @@ export class NewOPListComponent implements OnInit {
         this.menuActions.push("Bill Print-Package Info");
         this.menuActions.push("Bill Print");
         this.menuActions.push("Patient Statement Print");
+
+        this.GetOPbilldetail()
+        this.GetOPpaybilldetail()
+        this.GetOPbillrefunddetail()
     }
 
 
@@ -508,9 +569,14 @@ export class NewOPListComponent implements OnInit {
         this.regNo = this.myFilterbillform.get('RegNo').value || "0"
         this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
         this.CompanyId = this.myFilterbillform.get('CompanyId').value || "0"
-
+        this.CashCounterId = this.myFilterbillform.get('CashCounterId').value || "0"
 
         this.getfilterdataOpBill();
+        debugger
+        // setTimeout(() => {
+        this.GetOPbilldetail()
+        // }, 1000);
+
     }
 
     getfilterdataOpBill() {
@@ -526,7 +592,8 @@ export class NewOPListComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-            { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals }
+            { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals },
+            { fieldName: "CashCounterId", fieldValue: this.CashCounterId, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -557,7 +624,15 @@ export class NewOPListComponent implements OnInit {
 
         this.onChangeOPBill();
     }
-
+   ListViewCashCounter(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.CashCounterId = value.value
+        else
+            this.CashCounterId = 0
+ 
+        this.onChangeOPBill();
+    }
 
     CompanyId1 = 0
     ListView1(value) {
@@ -582,6 +657,10 @@ export class NewOPListComponent implements OnInit {
         this.precptNo = this.myFilterpayform.get('ReceiptNo').value || "0"
         this.CompanyId1 = this.myFilterpayform.get('CompanyId').value || "0"
         this.getfilterdataOpPayment();
+
+        // setTimeout(() => {
+        this.GetOPpaybilldetail()
+        // }, 1000);
     }
 
     getfilterdataOpPayment() {
@@ -634,6 +713,10 @@ export class NewOPListComponent implements OnInit {
         this.rl_name = this.myFilterrefundform.get('LastName').value + "%"
         this.rregNo = this.myFilterrefundform.get('RegNo').value || "0"
         this.getfilterdataOPRefund();
+
+        setTimeout(() => {
+            this.GetOPbillrefunddetail()
+        }, 1000);
     }
 
     getfilterdataOPRefund() {
@@ -1079,6 +1162,365 @@ export class NewOPListComponent implements OnInit {
     Onmessage(data) { }
 
 
+    GetOPbilldetail() {
+
+        this.Vtotal = 0
+        this.Vtotaldisc = 0
+        this.Vtotalnet = 0
+        this.Vtotbal = 0
+
+        this.Vcashtot = 0
+        this.Vcardtot = 0
+        this.Vchequetot = 0
+
+        this.f_name = this.myFilterbillform.get('FirstName').value + "%"
+        this.l_name = this.myFilterbillform.get('LastName').value + "%"
+        this.regNo = this.myFilterbillform.get('RegNo').value || "0"
+        this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
+        this.CompanyId = this.myFilterbillform.get('CompanyId').value
+
+        const fromDateControl = this.datePipe.transform(this.myFilterbillform.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+        debugger
+        // Handle date range
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.f_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.l_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.regNo),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "PBillNo",
+                "fieldValue": String(this.PBillNo),
+                "opType": "Equals"
+            },
+
+            {
+                "fieldName": "CompanyId",
+                "fieldValue": String(this.CompanyId),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "CashCounterId",
+                "fieldValue": "0",
+                "opType": "Equals"
+            },
+
+
+        );
+        debugger
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "PbillNo",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._OPListService.getOPbilllist(data).subscribe((response) => {
+            this.dataSourceBill.data = response.data;
+            console.log(this.dataSourceBill.data)
+
+            if (this.dataSourceBill.data.length > 0) {
+
+                this.Vtotal = this.dataSourceBill.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
+                this.Vptotaldisc = this.dataSourceBill.data.reduce((sum, r) => sum + (r.concessionAmt || 0), 0);
+                this.Vtotalnet = this.dataSourceBill.data.reduce((sum, r) => sum + (r.netPayableAmt || 0), 0);
+                this.Vtotbal = this.dataSourceBill.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
+
+                this.Vcashtot = this.dataSourceBill.data.reduce((sum, r) => sum + (r.cashPay || 0), 0);
+                this.Vcardtot = this.dataSourceBill.data.reduce((sum, r) => sum + (r.cardPay || 0), 0);
+                this.Vchequetot = this.dataSourceBill.data.reduce((sum, r) => sum + (r.chequePay || 0), 0);
+
+                this.Vnefttotl = this.dataSourceBill.data.reduce(
+                    (sum, r) => sum + (r.onlinePay || 0),
+                    0
+                );
+            }
+
+            this.Vtotal = Math.round(this.Vtotal)
+            this.Vtotaldisc = Math.round(this.Vtotaldisc)
+            this.Vtotalnet = Math.round(this.Vtotalnet)
+            this.Vtotbal = Math.round(this.Vtotbal)
+
+        });
+    }
+
+
+    GetOPpaybilldetail() {
+
+        this.Vptotal = 0
+        this.Vptotaldisc = 0
+        this.Vptotalnet = 0
+        this.Vptotbal = 0
+
+        this.Vpcashtotbal = 0
+        this.Vpcardtotbal = 0
+
+        this.pf_name = this.myFilterpayform.get('FirstName').value + "%"
+        this.pl_name = this.myFilterpayform.get('LastName').value + "%"
+        this.pregNo = this.myFilterpayform.get('RegNo').value || "0"
+        this.pPBillNo = this.myFilterpayform.get('PBillNo').value || "0"
+        this.precptNo = this.myFilterpayform.get('ReceiptNo').value || "0"
+        this.pCompanyId = this.myFilterpayform.get('CompanyId').value || "0"
+
+        const fromDateControl = this.datePipe.transform(this.myFilterpayform.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterpayform.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+        debugger
+        // Handle date range
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+
+        if (fromDateControl && toDateControl) {
+            this.pfromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.ptoDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.pf_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.pl_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.pfromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.ptoDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.pregNo),
+                "opType": "Equals"
+            }, {
+
+            "fieldName": "ReceiptNo",
+            "fieldValue": String(this.precptNo),
+            "opType": "Equals"
+        },
+            {
+                "fieldName": "PBillNo",
+                "fieldValue": String(this.pPBillNo),
+                "opType": "Equals"
+            },
+
+            {
+                "fieldName": "CompanyId",
+                "fieldValue": String(this.CompanyId),
+                "opType": "Equals"
+            }
+
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._OPListService.getOPpaybilllist(data).subscribe((response) => {
+            this.dataSourcepayBill.data = response.data;
+            console.log(this.dataSourcepayBill.data)
+            debugger
+            if (this.dataSourcepayBill.data.length > 0) {
+
+                this.Vptotal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.billAmount || 0), 0);
+                this.Vptotaldisc = this.dataSourceBill.data.reduce((sum, r) => sum + (r.discAmount || 0), 0);
+                this.Vptotalnet = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.netAmount || 0), 0);
+                this.Vptotbal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
+
+                this.Vpcashtotbal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.cashPayAmount || 0), 0);
+                this.Vpcardtotbal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.cardPayAmount || 0), 0);
+                this.Vponlinetot = this.dataSourcepayBill.data.reduce(
+                    (sum, r) => sum + (r.onlinePay || 0),
+                    0
+                );
+            } else {
+                this.Vptotal = 0
+                this.Vptotaldisc = 0
+                this.Vptotalnet = 0
+                this.Vptotbal = 0
+
+                this.Vpcashtotbal = 0
+                this.Vpcardtotbal = 0
+            }
+
+            this.Vptotal = Math.round(this.Vptotal)
+            this.Vptotaldisc = Math.round(this.Vptotaldisc)
+            this.Vptotalnet = Math.round(this.Vptotalnet)
+            this.Vptotbal = Math.round(this.Vptotbal)
+
+        });
+    }
+    GetOPbillrefunddetail() {
+
+        this.Vrtotal = 0
+        this.Vrtotaldisc = 0
+        this.Vrtotalnet = 0
+        this.Vrtotbal = 0
+
+        this.Vrcashtot = 0
+        this.Vrcardtot = 0
+        this.Vrchequetot = 0
+
+        this.rf_name = this.myFilterrefundform.get('FirstName').value + "%"
+        this.rl_name = this.myFilterrefundform.get('LastName').value + "%"
+        this.rregNo = this.myFilterrefundform.get('RegNo').value || "0"
+
+        const fromDateControl = this.datePipe.transform(this.myFilterrefundform.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterrefundform.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+        debugger
+        // Handle date range
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+
+        if (fromDateControl && toDateControl) {
+            this.rfromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.rtoDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.rf_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.rl_name),
+                "opType": "Contains"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.rfromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.rtoDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.rregNo),
+                "opType": "Equals"
+            }
+
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RefundId",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._OPListService.getOPRefundbilllist(data).subscribe((response) => {
+            this.dataSourceRef.data = response.data;
+            console.log(this.dataSourceRef.data)
+
+            if (this.dataSourceRef.data.length > 0) {
+
+                this.Vrtotal = this.dataSourceRef.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
+                this.Vptotaldisc = this.dataSourceBill.data.reduce((sum, r) => sum + (r.concessionAmt || 0), 0);
+                this.Vrtotalref = this.dataSourceRef.data.reduce((sum, r) => sum + (r.refundAmount || 0), 0);
+                this.Vrtotbal = this.dataSourceRef.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
+
+                this.Vrcashtot = this.dataSourceRef.data.reduce((sum, r) => sum + (r.cashPayAmount || 0), 0);
+                this.Vrcardtot = this.dataSourceRef.data.reduce((sum, r) => sum + (r.cardPayAmount || 0), 0);
+                this.Vrchequetot = this.dataSourceRef.data.reduce((sum, r) => sum + (r.chequePayAmount || 0), 0);
+
+                this.Vrnefttotl = this.dataSourceRef.data.reduce(
+                    (sum, r) => sum + (r.nEFTPayAmount || 0) + (r.payTmPayAmount || 0),
+                    0
+                );
+            } else {
+
+                this.Vrtotal = 0
+                this.Vrtotaldisc = 0
+                this.Vrtotalnet = 0
+                this.Vrtotbal = 0
+
+                this.Vrcashtot = 0
+                this.Vrcardtot = 0
+                this.Vrchequetot = 0
+            }
+
+            this.Vrtotal = Math.round(this.Vrtotal)
+            this.Vrtotaldisc = Math.round(this.Vrtotaldisc)
+            this.Vrtotalnet = Math.round(this.Vrtotalnet)
+            this.Vrtotbal = Math.round(this.Vrtotbal)
+            this.Vrchequetot = Math.round(this.Vrchequetot)
+        });
+    }
+
 }
 
 export class BrowseOPDBill {
@@ -1183,4 +1625,55 @@ export class BrowseOPDBill {
         }
     }
 
+}
+
+
+
+export class OPbill {
+    totalAmt: any
+    concessionAmt: any
+    netPayableAmt: any
+    balanceAmt: any
+    cashPay: any
+    cardPay: any
+    neftPay: any
+    chequePay: any
+    onlinePay: any
+    paidAmount: any
+    cashPayAmount: any
+    chequePayAmount: any
+    cardPayAmount: any
+    nEFTPayAmount: any
+    payTmPayAmount: any
+    billAmount: any
+    discAmount: any
+    netAmount: any
+    refundAmount: any
+    constructor(OPbill) {
+        {
+            this.totalAmt = OPbill.totalAmt || 0;
+            this.concessionAmt = OPbill.concessionAmt || 0;
+            this.netPayableAmt = OPbill.netPayableAmt || 0;
+            this.constructor = OPbill.constructor || 0
+
+            this.cashPay = OPbill.cashPay || 0;
+            this.cardPay = OPbill.cardPay || 0;
+            this.neftPay = OPbill.neftPay || 0
+            this.chequePay = OPbill.chequePay || 0;
+            this.onlinePay = OPbill.onlinePay || 0
+            this.paidAmount = OPbill.paidAmount || 0;
+            this.cashPayAmount = OPbill.cashPayAmount || 0
+
+            this.chequePayAmount = OPbill.chequePayAmount || 0;
+            this.cardPayAmount = OPbill.cardPayAmount || 0;
+            this.nEFTPayAmount = OPbill.nEFTPayAmount || 0
+            this.payTmPayAmount = OPbill.payTmPayAmount || 0
+
+            this.billAmount = OPbill.billAmount || 0;
+            this.discAmount = OPbill.discAmount || 0
+            this.netAmount = OPbill.netAmount || 0
+
+            this.refundAmount = OPbill.refundAmount || 0
+        }
+    }
 }
