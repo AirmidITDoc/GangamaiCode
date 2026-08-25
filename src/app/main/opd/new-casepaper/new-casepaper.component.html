@@ -1,4 +1,4 @@
- <ng-template #ResultViewTab>
+<ng-template #ResultViewTab>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -98,8 +98,8 @@
         </div>
     </div>
 
-</ng-template>  
- 
+</ng-template>
+
 
 <div class="modal-wrapper grid-container">
 
@@ -233,7 +233,7 @@
 
                                                 <div fxLayout="row wrap" fxLayoutGap="10px">
                                                     <!-- Height [(ngModel)]="vHeight"  -->
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>Height</mat-label>
                                                         <input matInput formControlName="Height"
                                                             placeholder="Height in cm" [maxLength]="20"
@@ -246,7 +246,7 @@
                                                     </mat-form-field>
 
                                                     <!-- Weight [(ngModel)]="vWeight" -->
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>Weight</mat-label>
                                                         <input matInput formControlName="Weight" id="weightField"
                                                             placeholder="Weight in Kg" [maxLength]="20"
@@ -259,7 +259,7 @@
                                                     </mat-form-field>
 
                                                     <!-- BMI [(ngModel)]="vBMI"-->
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>BMI</mat-label>
                                                         <input matInput formControlName="BMI" placeholder="BMI" readonly
                                                             [(ngModel)]="vBMI" id="bmiField"
@@ -269,7 +269,7 @@
                                                     </mat-form-field>
 
                                                     <!-- BSL [(ngModel)]="vBSL"-->
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>BSL</mat-label>
                                                         <input matInput formControlName="BSL" placeholder="BSL"
                                                             id="bslField" [maxLength]="20"
@@ -278,7 +278,7 @@
                                                     </mat-form-field>
 
                                                     <!-- SpO2 [(ngModel)]="vSpO2" -->
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>SpO2</mat-label>
                                                         <input matInput formControlName="SpO2" placeholder="SpO2"
                                                             id="spo2Field" [maxLength]="20"
@@ -289,7 +289,7 @@
                                                     </mat-form-field>
 
                                                     <!-- Pulse [(ngModel)]="vPulse" -->
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>Pulse</mat-label>
                                                         <input matInput formControlName="Pulse" placeholder="Pulse"
                                                             id="pulseField" [maxLength]="10"
@@ -303,7 +303,7 @@
                                                     </mat-form-field>
 
                                                     <!-- BP [(ngModel)]="vBP"-->
-                                                    <mat-form-field appearance="outline" fxFlex="13%">
+                                                    <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BP</mat-label>
                                                         <input matInput formControlName="BP" placeholder="BP"
                                                             id="bpField" [maxLength]="10"
@@ -317,7 +317,7 @@
                                                     </mat-form-field>
 
                                                     <!-- Temperature [(ngModel)]="vTemp" -->
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>Temp</mat-label>
                                                         <input matInput formControlName="Temp" placeholder="Temp"
                                                             id="tempField" [maxLength]="10" OnlyNumber
@@ -332,7 +332,7 @@
                                                             style="margin-right: 15px; font-size: x-large;">°C</span>
                                                     </mat-form-field>
 
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>B.Group</mat-label>
                                                         <mat-select placeholder="BloodGroup" id="bloodField"
                                                             (selectionChange)="focusNext('allergyField')"
@@ -342,7 +342,7 @@
                                                         </mat-select>
                                                     </mat-form-field>
 
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>ALGY </mat-label>
                                                         <input matInput formControlName="Allergies" id="allergyField"
                                                             placeholder="Allergies" [maxLength]="50">
@@ -362,7 +362,15 @@
                                                             <textarea formControlName="historyOfIllness"
                                                                 placeholder="historyofillness" matInput
                                                                 [(ngModel)]="vhistoryofillness" cols="300"
-                                                                rows="3"></textarea>
+                                                                rows="2"></textarea>
+
+
+                                                            <button mat-icon-button matSuffix (click)="onMicToggle1()"
+                                                                [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                                type="button">
+                                                                <i
+                                                                    [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                            </button>
                                                         </mat-form-field>
 
                                                     </div>
@@ -395,6 +403,13 @@
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeChiefComplaint($event)">
                                                         </app-airmid-chipautocomplete>
+
+                                                        <!-- <button mat-icon-button matSuffix (click)="onExmaniUpdate(caseFormGroup.get('mAssignChiefComplaint')?.value)"
+                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                            type="button">
+                                                            <i
+                                                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                        </button> -->
                                                     </div>
 
                                                     <!-- <mat-form-field appearance="outline" fxFlex>
@@ -426,27 +441,19 @@
 
                                                         </div>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete fxFlex
+                                                        <!-- <app-airmid-chipautocomplete fxFlex
                                                             [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeDiagnosis($event)">
-                                                        </app-airmid-chipautocomplete>
-                                                        <!-- all ok -->
-                                                        <!-- <app-airmid-chipautocomplete fxFlex
-                                                            [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
-                                                            [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword=%'"
-                                                            [displayKey]="'diagnosisName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeDiagnosis($event)">
                                                         </app-airmid-chipautocomplete> -->
 
-                                                        <!-- <app-airmid-chipautocomplete fxFlex
+                                                        <app-airmid-diagnos-chipautocomplete fxFlex
                                                             [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
-                                                            ApiUrl="MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword=I"
-                                                            [displayKey]="'diagnosisName'" [allowCustom]="true"
+                                                            [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
+                                                            [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeDiagnosis($event)">
-                                                        </app-airmid-chipautocomplete> -->
-
+                                                        </app-airmid-diagnos-chipautocomplete>
                                                     </div>
 
                                                     <div style="margin-bottom: 16px;" fxLayout="column">
@@ -476,7 +483,11 @@
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeExamination($event)">
+
                                                         </app-airmid-chipautocomplete>
+
+
+
                                                     </div>
 
 

@@ -25,7 +25,7 @@ export class ICDEMasterService {
             icdversion: ["",
                 [
                     Validators.required, Validators.maxLength(200),
-                    Validators.pattern('^[a-zA-Z0-9 .&/-]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 .&/-]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ]
@@ -33,14 +33,14 @@ export class ICDEMasterService {
             icdcode: ["",
                 [
                     Validators.required,
-                    Validators.pattern('^[0-9]+(\\.[0-9]+)?$')
+                    // Validators.pattern('^[0-9]+(\\.[0-9]+)?$')
                    // Validators.pattern('^[0-9]*$')
                 ]
             ],
             diagnosisName: ["",
                 [
                     Validators.required, Validators.maxLength(500),
-                    Validators.pattern('^[a-zA-Z0-9 .&-]*$')
+                    // Validators.pattern('^[a-zA-Z0-9 .&-]*$')
                 ]
             ],
             shortName: ["",

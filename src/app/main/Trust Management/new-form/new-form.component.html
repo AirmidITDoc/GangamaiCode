@@ -462,7 +462,7 @@
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="residencetype"
                                                         style="margin-left:20px;" [value]="data?.residencetype">
-                                                        Residence  Own </mat-checkbox>
+                                                        Residence Own </mat-checkbox>
 
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -475,7 +475,7 @@
                                                 <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="wresidencetype"
                                                         style="margin-left:20px;" [value]="data?.wresidencetype">
-                                                        WifeResidence  Own </mat-checkbox>
+                                                        WifeResidence Own </mat-checkbox>
 
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -855,13 +855,13 @@
                                             </mat-expansion-panel-header>
                                             <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
+                                                    <!-- <span style="font-weight: bold;">Male office Information</span> -->
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <mat-checkbox formControlName="feeReceived"
                                                             style="font-weight: bold;padding-left: 20px;"
                                                             [value]="data?.feereceived"
                                                             (change)="onHfeesChange($event)">
-                                                            Amount Received
+                                                            Male Amount Received
                                                         </mat-checkbox>
 
                                                     </div>
@@ -922,7 +922,7 @@
                                                             (change)="onWfeesChange($event)"
                                                             style="font-weight: bold;padding-left: 20px;"
                                                             [value]="data?.wfeeReceived">
-                                                            Amount Received
+                                                            Female Amount Received
                                                         </mat-checkbox>
 
                                                     </div>
@@ -1124,7 +1124,8 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [(ngModel)]="element.childName || element.Name">
+                                                    <input matInput [(ngModel)]="element.childName || element.Name"
+                                                        (keypress)="allowOnlyAlphabets($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -1296,7 +1297,8 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [(ngModel)]="element.relativeName || element.RName">
+                                                    <input matInput [(ngModel)]="element.relativeName || element.RName"
+                                                        (keypress)="allowOnlyAlphabets($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -1351,7 +1353,7 @@
                                             </mat-cell>
                                         </ng-container> -->
 
-                                        
+
                                         <ng-container matColumnDef="Relation">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                 class="w-230">
@@ -1515,7 +1517,8 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [(ngModel)]="element.emrgencyName || element.EName">
+                                                    <input matInput [(ngModel)]="element.emrgencyName || element.EName"
+                                                        (keypress)="allowOnlyAlphabets($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>

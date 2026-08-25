@@ -1,3 +1,4 @@
+
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
@@ -35,6 +36,7 @@ import { SampleList } from 'app/main/pathology/result-entry/result-entry.compone
 import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
 import { NewInstructionMasterComponent } from 'app/main/setup/prescription/instructionmaster/new-instruction-master/new-instruction-master.component';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+// import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabtest/lababnormal-list/lababnormal-list.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -172,7 +174,8 @@ export class NewCasepaperComponent implements OnInit {
     doctorId: any = 0
     departmentName = ''
     vIcdcode = ''
-
+displayedColumns: string[] = ['CertificateDate', 'CertificateName', 'CertificateText', 'Action'];
+ 
     displayedColumns1: string[] = [
         'CertificateDate',
         'CertificateName',
@@ -394,6 +397,16 @@ export class NewCasepaperComponent implements OnInit {
             this.MedicineItemForm.get('Remark')?.setValue(updated);
         });
     }
+    onMicToggle1() {
+        // console.log(this.selectedLang);
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+            const currentText = this.caseFormGroup.get('historyOfIllness')?.value || '';
+            const updated = currentText ? `${currentText} ${text}` : text;
+            this.caseFormGroup.get('historyOfIllness')?.setValue(updated);
+        });
+    }
+   
+
 
     onFileSelected(event: any) {
         this.selectedFile = event.target.files[0];
@@ -595,8 +608,8 @@ export class NewCasepaperComponent implements OnInit {
             visitId: [this.VisitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            icdcode:[''],// [element.icdcode ?? ''],
-            diagnosisName:['']// [element.diagnosisName ?? '']
+            icdcode: [element.icdcode ?? ''],
+            diagnosisName: [element.diagnosisName ?? '']
         });
     }
     // 5.FormArray Getters
@@ -633,9 +646,13 @@ export class NewCasepaperComponent implements OnInit {
 
         if (this.addDiagnolist.length > 0) {
             this.addDiagnolist.forEach(element => {
+
+                debugger
                 this.AllTypeDescription.push({
-                    descriptionName: element.descriptionName,
-                    descriptionType: "Diagnosis"
+                    descriptionName: element.descriptionName || element.icdCodeWithDignosis,
+                    descriptionType: "Diagnosis",
+                    icdcode: element.icdcode || '',
+                    diagnosisName: element.diagnosisName,
                 });
             });
         }
@@ -970,10 +987,16 @@ export class NewCasepaperComponent implements OnInit {
                 const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
                 if (Diagnosis.length > 0) {
                     Diagnosis.forEach(element => {
+                        debugger
+                        console.log(element)
                         this.addDiagnolist.push(
                             {
                                 id: element.id,
-                                descriptionName: element.descriptionName
+                                descriptionName: element.descriptionName,
+                                icdcode: element.icdcode || '',
+                                diagnosisName: element.diagnosisName || element.descriptionName,
+                                icdCodeWithDignosis:element.descriptionName
+
                             }
                         )
                     })
@@ -1300,12 +1323,16 @@ export class NewCasepaperComponent implements OnInit {
     selectChangeDoctorName(row) {
     }
 
+  
     selectChangeChiefComplaint(selectedChips: string[]) {
+debugger
         this.addCheiflist = selectedChips;
         this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
     }
 
     selectChangeDiagnosis(selectedChips: string[]) {
+        console.log(selectedChips)
+        debugger
         this.addDiagnolist = selectedChips;
         this.caseFormGroup.get('mAssignDiagnosis')?.setValue(this.addDiagnolist);
     }
@@ -1876,7 +1903,7 @@ export class NewCasepaperComponent implements OnInit {
                         examinations: []
                     };
                 }
-
+                debugger
                 if (item.descriptionType === 'Complaint') grouped[visitId].complaints.push(item.descriptionName);
                 else if (item.descriptionType === 'Diagnosis') grouped[visitId].diagnoses.push(item.descriptionName);
                 else if (item.descriptionType === 'Examination') grouped[visitId].examinations.push(item.descriptionName);
@@ -2090,7 +2117,7 @@ export class NewCasepaperComponent implements OnInit {
     addDiagnos(event: any): void {
         const input = event.input;
         const value = event.value;
-        // Add cheif
+        console.log(event)
         if ((value || '').trim()) {
             this.addDiagnolist.push(value.trim());
         }
@@ -2772,98 +2799,73 @@ export class NewCasepaperComponent implements OnInit {
         ['sequence', 'TestName', 'ParameterName', 'ResultValue', 'Flag', 'NormalRange'];
     @ViewChild('ResultViewTab') ResultViewTab!: TemplateRef<any>;
     @ViewChild('ResultViewTab1') ResultViewTab1!: TemplateRef<any>;
-    getLabResultview(row: any): void {
-        this._matDialog.open(this.ResultViewTab, {
-            width: '65%',
-            height: '75%',
-        })
-        var param = {
-            "searchFields": [
-                {
-                    "fieldName": "PathReportId",
-                    "fieldValue": String(row.pathReportID), //"150598",  
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "PathologyResultEntryOPCompleted"
-        }
-        //         {
-        //     "TestId": 2,
-        //     "TestName": "CBC",
-        //     "PrintTestName": "COMPLETE BLOOD COUNT",
-        //     "SubTestId": 0,
-        //     "SubTestName": "CBC",
-        //     "SubTestNamePrint": "COMPLETE BLOOD COUNT",
-        //     "ParameterName": "HCT",
-        //     "ParameterShortName": "HCT",
-        //     "ParameterId": 19,
-        //     "PrintParameterName": "HCT",
-        //     "ResultValue": " 2323",
-        //     "NormalRange": "33 - 50 %",
-        //     "PrintOrder": 1,
-        //     "PIsNumeric": 1,
-        //     "PathReportId": 571684,
-        //     "CategoryId": 20029,
-        //     "CategoryName": "HEMATOLOGY",
-        //     "PatientName": "Miss Raksha Rajesh Netalkar",
-        //     "VisitDate": "2026-07-28T00:00:00",
-        //     "VisitTime": "2026-07-28T11:48:41",
-        //     "OPDNo": "OP/07/2026/140",
-        //     "ConsultantDocName": "DEMO demo",
-        //     "AgeYear": "25        ",
-        //     "RegNo": "3242",
-        //     "CompanyName": "",
-        //     "PathResultDrName": "Kavita j",
-        //     "PathResultDr1": 70403,
-        //     "SuggestionNote": "askjal adsjlkjasd dsaaskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa",
-        //     "FootNote": "",
-        //     "MachineName": "",
-        //     "TechniqueName": "",
-        //     "UnitId": 5,
-        //     "MinValue": 33,
-        //     "MaxValue": 50,
-        //     "PathReportdetid": 255768,
-        //     "Formula": "",
-        //     "ParaBoldFlag": "B",
-        //     "OPD_IPD_ID": 535955,
-        //     "OPD_IPD_Type": 0
-        // }
-        this._CasepaperService.getLabResultView(param).subscribe((response) => {
+    // getLabResultview(row: any): void {
+    //     this._matDialog.open(this.ResultViewTab, {
+    //         width: '65%',
+    //         height: '75%',
+    //     })
+    //     var param = {
+    //         "searchFields": [
+    //             {
+    //                 "fieldName": "PathReportId",
+    //                 "fieldValue": String(row.pathReportID), //"150598",  
+    //                 "opType": "Equals"
+    //             }
+    //         ],
+    //         "mode": "PathologyResultEntryOPCompleted"
+    //     }
+    //     //         {
+    //     //     "TestId": 2,
+    //     //     "TestName": "CBC",
+    //     //     "PrintTestName": "COMPLETE BLOOD COUNT",
+    //     //     "SubTestId": 0,
+    //     //     "SubTestName": "CBC",
+    //     //     "SubTestNamePrint": "COMPLETE BLOOD COUNT",
+    //     //     "ParameterName": "HCT",
+    //     //     "ParameterShortName": "HCT",
+    //     //     "ParameterId": 19,
+    //     //     "PrintParameterName": "HCT",
+    //     //     "ResultValue": " 2323",
+    //     //     "NormalRange": "33 - 50 %",
+    //     //     "PrintOrder": 1,
+    //     //     "PIsNumeric": 1,
+    //     //     "PathReportId": 571684,
+    //     //     "CategoryId": 20029,
+    //     //     "CategoryName": "HEMATOLOGY",
+    //     //     "PatientName": "Miss Raksha Rajesh Netalkar",
+    //     //     "VisitDate": "2026-07-28T00:00:00",
+    //     //     "VisitTime": "2026-07-28T11:48:41",
+    //     //     "OPDNo": "OP/07/2026/140",
+    //     //     "ConsultantDocName": "DEMO demo",
+    //     //     "AgeYear": "25        ",
+    //     //     "RegNo": "3242",
+    //     //     "CompanyName": "",
+    //     //     "PathResultDrName": "Kavita j",
+    //     //     "PathResultDr1": 70403,
+    //     //     "SuggestionNote": "askjal adsjlkjasd dsaaskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa",
+    //     //     "FootNote": "",
+    //     //     "MachineName": "",
+    //     //     "TechniqueName": "",
+    //     //     "UnitId": 5,
+    //     //     "MinValue": 33,
+    //     //     "MaxValue": 50,
+    //     //     "PathReportdetid": 255768,
+    //     //     "Formula": "",
+    //     //     "ParaBoldFlag": "B",
+    //     //     "OPD_IPD_ID": 535955,
+    //     //     "OPD_IPD_Type": 0
+    //     // }
+    //     this._CasepaperService.getLabResultView(param).subscribe((response) => {
 
-            if (response) {
-                this.dsResultViewList.data = response;
-                console.log(this.dsResultViewList.data)
-            }
-        });
-    }
+    //         if (response) {
+    //             this.dsResultViewList.data = response;
+    //             console.log(this.dsResultViewList.data)
+    //         }
+    //     });
+    // }
     abnormal: boolean = false
-    getLabResultview1(row: any): void {
-        this._matDialog.open(this.ResultViewTab1, {
-            width: '65%',
-            height: '75%',
-        })
-        var param = {
-            "searchFields": [
-                {
-                    "fieldName": "PathReportId",
-                    "fieldValue": String(row.pathReportID), //"150598",  
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "PathologyResultListabnormal"
-        }
+  
 
-        this._CasepaperService.getabnormalLabResultView(param).subscribe((response) => {
-
-            if (response) {
-                this.dsResultViewList1.data = response;
-                if (this.dsResultViewList1.data.length > 0)
-                    this.abnormal = true
-                console.log(this.dsResultViewList1.data)
-            }
-        });
-    }
-    
     OnipRequest() {
 
         Swal.fire({
@@ -2918,7 +2920,18 @@ export class NewCasepaperComponent implements OnInit {
             });
         }
     }
-
+getLabResultview(row: any): void {
+        // this._matDialog.open(LababnormalListComponent, {
+        //     maxWidth: "95vw",
+        //     height: '95%',
+        //     width: '90%',
+        //     data: {
+        //         row: row,
+        //         vOPIPId: this.vOPIPId,
+        //         opipType:0
+        //     }
+        // })
+    }
 }
 
 
@@ -3384,4 +3397,3 @@ export class labRadList {
         this.PathologyTestList = labRadList.PathologyTestList || '';
     }
 }
-

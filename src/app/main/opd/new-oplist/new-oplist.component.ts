@@ -96,7 +96,7 @@ export class NewOPListComponent implements OnInit {
     Vpcardtotbal: any = "0"
     Vponlinetot: any = "0"
     Vpnefttotl: any = "0"
-
+    Vpcheque: any = "0"
 
 
     Vrtotal: any = "0"
@@ -624,13 +624,13 @@ export class NewOPListComponent implements OnInit {
 
         this.onChangeOPBill();
     }
-   ListViewCashCounter(value) {
+    ListViewCashCounter(value) {
         console.log(value)
         if (value.value !== 0)
             this.CashCounterId = value.value
         else
             this.CashCounterId = 0
- 
+
         this.onChangeOPBill();
     }
 
@@ -1172,6 +1172,7 @@ export class NewOPListComponent implements OnInit {
         this.Vcashtot = 0
         this.Vcardtot = 0
         this.Vchequetot = 0
+        this.Vnefttotl = 0
 
         this.f_name = this.myFilterbillform.get('FirstName').value + "%"
         this.l_name = this.myFilterbillform.get('LastName').value + "%"
@@ -1184,14 +1185,6 @@ export class NewOPListComponent implements OnInit {
 
         const filters: any[] = [];
         debugger
-        // Handle date range
-        // if (fromDateControl && toDateControl) {
-        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
-        // } else {
-        //     this.fromDate = "1900-01-01";
-        //     this.toDate = "1900-01-01";
-        // }
 
         if (fromDateControl && toDateControl) {
             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
@@ -1260,30 +1253,54 @@ export class NewOPListComponent implements OnInit {
 
             if (this.dataSourceBill.data.length > 0) {
 
-                this.Vtotal = this.dataSourceBill.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
-                this.Vptotaldisc = this.dataSourceBill.data.reduce((sum, r) => sum + (r.concessionAmt || 0), 0);
-                this.Vtotalnet = this.dataSourceBill.data.reduce((sum, r) => sum + (r.netPayableAmt || 0), 0);
-                this.Vtotbal = this.dataSourceBill.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
-
-                this.Vcashtot = this.dataSourceBill.data.reduce((sum, r) => sum + (r.cashPay || 0), 0);
-                this.Vcardtot = this.dataSourceBill.data.reduce((sum, r) => sum + (r.cardPay || 0), 0);
-                this.Vchequetot = this.dataSourceBill.data.reduce((sum, r) => sum + (r.chequePay || 0), 0);
-
-                this.Vnefttotl = this.dataSourceBill.data.reduce(
-                    (sum, r) => sum + (r.onlinePay || 0),
-                    0
-                );
+                this.calculateTotals()
             }
+            else {
 
-            this.Vtotal = Math.round(this.Vtotal)
-            this.Vtotaldisc = Math.round(this.Vtotaldisc)
-            this.Vtotalnet = Math.round(this.Vtotalnet)
-            this.Vtotbal = Math.round(this.Vtotbal)
+                this.Vtotal = 0
+                this.Vtotaldisc = 0
+                this.Vtotalnet = 0
+                this.Vtotbal = 0
+
+                this.Vcashtot = 0
+                this.Vcardtot = 0
+                this.Vchequetot = 0
+                this.Vnefttotl = 0
+            }
 
         });
     }
 
+    calculateTotals() {
+        const data = this.dataSourceBill.filteredData?.length
+            ? this.dataSourceBill.filteredData
+            : this.dataSourceBill.data;
 
+        let totalAmt = 0, concessionAmt = 0, netPayableAmt = 0, balanceAmt = 0;
+        let cash = 0, cheque = 0, card = 0, paytm = 0;
+
+        for (const r of data) {
+            totalAmt += +r.totalAmt || 0;
+            concessionAmt += +r.concessionAmt || 0;
+            netPayableAmt += +r.netPayableAmt || 0;
+            balanceAmt += +r.balanceAmt || 0;
+            cash += +r.cashPay || 0;
+            cheque += +r.cardPay || 0;
+            card += +r.chequePay || 0;
+            paytm += +r.onlinePay || 0;
+        }
+
+
+        this.Vtotal = totalAmt
+        this.Vtotaldisc = concessionAmt
+        this.Vtotalnet = netPayableAmt
+        this.Vtotbal = balanceAmt
+
+        this.Vcashtot = cash
+        this.Vcardtot = card
+        this.Vchequetot = cheque
+        this.Vnefttotl = paytm
+    }
     GetOPpaybilldetail() {
 
         this.Vptotal = 0
@@ -1293,6 +1310,8 @@ export class NewOPListComponent implements OnInit {
 
         this.Vpcashtotbal = 0
         this.Vpcardtotbal = 0
+        this.Vponlinetot = 0
+
 
         this.pf_name = this.myFilterpayform.get('FirstName').value + "%"
         this.pl_name = this.myFilterpayform.get('LastName').value + "%"
@@ -1305,15 +1324,6 @@ export class NewOPListComponent implements OnInit {
         const toDateControl = this.datePipe.transform(this.myFilterpayform.get('enddate').value, "yyyy-MM-dd");
 
         const filters: any[] = [];
-        debugger
-        // Handle date range
-        // if (fromDateControl && toDateControl) {
-        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
-        // } else {
-        //     this.fromDate = "1900-01-01";
-        //     this.toDate = "1900-01-01";
-        // }
 
         if (fromDateControl && toDateControl) {
             this.pfromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
@@ -1381,17 +1391,7 @@ export class NewOPListComponent implements OnInit {
             debugger
             if (this.dataSourcepayBill.data.length > 0) {
 
-                this.Vptotal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.billAmount || 0), 0);
-                this.Vptotaldisc = this.dataSourceBill.data.reduce((sum, r) => sum + (r.discAmount || 0), 0);
-                this.Vptotalnet = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.netAmount || 0), 0);
-                this.Vptotbal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
-
-                this.Vpcashtotbal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.cashPayAmount || 0), 0);
-                this.Vpcardtotbal = this.dataSourcepayBill.data.reduce((sum, r) => sum + (r.cardPayAmount || 0), 0);
-                this.Vponlinetot = this.dataSourcepayBill.data.reduce(
-                    (sum, r) => sum + (r.onlinePay || 0),
-                    0
-                );
+                this.calculatePaymentTotals()
             } else {
                 this.Vptotal = 0
                 this.Vptotaldisc = 0
@@ -1400,14 +1400,42 @@ export class NewOPListComponent implements OnInit {
 
                 this.Vpcashtotbal = 0
                 this.Vpcardtotbal = 0
+                this.Vponlinetot = 0
             }
 
-            this.Vptotal = Math.round(this.Vptotal)
-            this.Vptotaldisc = Math.round(this.Vptotaldisc)
-            this.Vptotalnet = Math.round(this.Vptotalnet)
-            this.Vptotbal = Math.round(this.Vptotbal)
-
         });
+    }
+
+
+    calculatePaymentTotals() {
+        const data = this.dataSourcepayBill.filteredData?.length
+            ? this.dataSourcepayBill.filteredData
+            : this.dataSourcepayBill.data;
+
+        let totalAmt = 0, concessionAmt = 0, netPayableAmt = 0, balanceAmt = 0;
+        let cash = 0, cheque = 0, card = 0, paytm = 0;
+
+        for (const r of data) {
+            totalAmt += +r.billAmount || 0;
+            concessionAmt += +r.discAmount || 0;
+            netPayableAmt += +r.netAmount || 0;
+            balanceAmt += +r.balanceAmt || 0;
+            cash += +r.cashPayAmount || 0;
+            cheque += +r.chequePayAmount || 0;
+            card += +r.cardPayAmount || 0;
+            paytm += +r.onlinePay || 0;
+        }
+
+
+        this.Vptotal = totalAmt
+        this.Vptotaldisc = concessionAmt
+        this.Vptotalnet = netPayableAmt
+        this.Vptotbal = balanceAmt
+
+        this.Vpcashtotbal = cash
+        this.Vpcardtotbal = card
+        this.Vpcheque = cheque
+        this.Vponlinetot = paytm
     }
     GetOPbillrefunddetail() {
 
@@ -1415,7 +1443,7 @@ export class NewOPListComponent implements OnInit {
         this.Vrtotaldisc = 0
         this.Vrtotalnet = 0
         this.Vrtotbal = 0
-
+        this.Vrtotalref = 0
         this.Vrcashtot = 0
         this.Vrcardtot = 0
         this.Vrchequetot = 0
@@ -1428,15 +1456,7 @@ export class NewOPListComponent implements OnInit {
         const toDateControl = this.datePipe.transform(this.myFilterrefundform.get('enddate').value, "yyyy-MM-dd");
 
         const filters: any[] = [];
-        debugger
-        // Handle date range
-        // if (fromDateControl && toDateControl) {
-        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
-        // } else {
-        //     this.fromDate = "1900-01-01";
-        //     this.toDate = "1900-01-01";
-        // }
+
 
         if (fromDateControl && toDateControl) {
             this.rfromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
@@ -1488,39 +1508,61 @@ export class NewOPListComponent implements OnInit {
 
             if (this.dataSourceRef.data.length > 0) {
 
-                this.Vrtotal = this.dataSourceRef.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
-                this.Vptotaldisc = this.dataSourceBill.data.reduce((sum, r) => sum + (r.concessionAmt || 0), 0);
-                this.Vrtotalref = this.dataSourceRef.data.reduce((sum, r) => sum + (r.refundAmount || 0), 0);
-                this.Vrtotbal = this.dataSourceRef.data.reduce((sum, r) => sum + (r.balanceAmt || 0), 0);
+                this.calculateOprefundTotals()
 
-                this.Vrcashtot = this.dataSourceRef.data.reduce((sum, r) => sum + (r.cashPayAmount || 0), 0);
-                this.Vrcardtot = this.dataSourceRef.data.reduce((sum, r) => sum + (r.cardPayAmount || 0), 0);
-                this.Vrchequetot = this.dataSourceRef.data.reduce((sum, r) => sum + (r.chequePayAmount || 0), 0);
-
-                this.Vrnefttotl = this.dataSourceRef.data.reduce(
-                    (sum, r) => sum + (r.nEFTPayAmount || 0) + (r.payTmPayAmount || 0),
-                    0
-                );
             } else {
 
                 this.Vrtotal = 0
                 this.Vrtotaldisc = 0
                 this.Vrtotalnet = 0
                 this.Vrtotbal = 0
-
+                this.Vrtotalref = 0
                 this.Vrcashtot = 0
                 this.Vrcardtot = 0
                 this.Vrchequetot = 0
             }
 
-            this.Vrtotal = Math.round(this.Vrtotal)
-            this.Vrtotaldisc = Math.round(this.Vrtotaldisc)
-            this.Vrtotalnet = Math.round(this.Vrtotalnet)
-            this.Vrtotbal = Math.round(this.Vrtotbal)
-            this.Vrchequetot = Math.round(this.Vrchequetot)
         });
     }
 
+
+    calculateOprefundTotals() {
+        const data = this.dataSourceRef.filteredData?.length
+            ? this.dataSourceRef.filteredData
+            : this.dataSourceRef.data;
+
+        let totalAmt = 0, concessionAmt = 0, netPayableAmt = 0, balanceAmt = 0, refAmt = 0;
+        let cash = 0, cheque = 0, card = 0, paytm = 0;
+
+        for (const r of data) {
+            totalAmt += +r.totalAmt || 0;
+            concessionAmt += +r.concessionAmt || 0;
+            netPayableAmt += +r.netAmount || 0;
+            refAmt += +r.refundAmount || 0;
+
+            balanceAmt += +r.balanceAmt || 0;
+            cash += +r.cashPayAmount || 0;
+            cheque += +r.chequePayAmount || 0;
+            card += +r.cardPayAmount || 0;
+
+            paytm = this.dataSourceRef.data.reduce(
+                (sum, r) => sum + (+r.nEFTPayAmount || 0) + (+r.payTmPayAmount || 0),
+                0
+            );
+        }
+
+
+        this.Vrtotal = totalAmt
+        this.Vrtotaldisc = concessionAmt
+        this.Vrtotalnet = netPayableAmt
+        this.Vrtotbal = balanceAmt
+        this.Vrtotalref = refAmt
+        this.Vrcashtot = cash
+        this.Vrcardtot = card
+        this.Vrchequetot = cheque
+
+        this.Vponlinetot = paytm
+    }
 }
 
 export class BrowseOPDBill {

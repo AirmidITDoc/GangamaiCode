@@ -277,6 +277,7 @@ export class NewFormComponent {
         this.vwifedob = new Date(this.data.wifeDob)
 
         setTimeout(() => {
+          debugger
           this.registerObj1.wifeDob = new Date(this.data.wifeDob)
           this.onChangeDateofBirth1(this.registerObj1.wifeDob)
 
@@ -720,9 +721,13 @@ export class NewFormComponent {
           this.ageMonth += 12;
         }
       }
+       this.personalFormGroup.get('husbandAgeY').setValue(this.ageYear)
+      this.personalFormGroup.get('husbandAgeM').setValue(this.ageMonth)
+      this.personalFormGroup.get('husbandageD').setValue(this.ageDay)
     }
 
     if (this.Wifeform.get("DateOfBirth").value != '1900-01-01') {
+      debugger
       const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
       if (DateOfBirth2) {
         const todayDate = new Date();
@@ -744,7 +749,7 @@ export class NewFormComponent {
           this.ageMonth1 += 12;
         }
       }
-      this.personalFormGroup.get('wifeAgeY').setValue(this.ageDay1)
+      this.personalFormGroup.get('wifeAgeY').setValue(this.ageYear1)
       this.personalFormGroup.get('wifeAgeM').setValue(this.ageMonth1)
       this.personalFormGroup.get('wifeAgeD').setValue(this.ageDay1)
     }
@@ -1749,7 +1754,7 @@ export class NewFormComponent {
   }
 
   onChangeDateofBirth1(DateOfBirth: Date) {
-
+    debugger
     if (DateOfBirth > this.minDate) {
       this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',

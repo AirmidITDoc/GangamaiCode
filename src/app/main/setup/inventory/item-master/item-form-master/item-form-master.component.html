@@ -148,14 +148,19 @@
                   <airmid-dropdown label="Item Company Name" formControlName="itemCompnayId"
                     [value]="registerObj?.itemCompnayId" [formGroup]="itemForm"
                     [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeItemCompany"
-                    fxFlex="25%">
+                    fxFlex="20%">
                   </airmid-dropdown>
 
                   <airmid-textbox label="Content/Molecule" formControlName="content" [value]="registerObj?.content"
-                    [formGroup]="itemForm" fxFlex="50%">
+                    [formGroup]="itemForm" fxFlex="40%">
                   </airmid-textbox>
 
-                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                     <airmid-textbox label="Local Language Name" formControlName="localLanguageName"
+                    [value]="registerObj?.localLanguageName" [formGroup]="itemForm"
+                    [validations]="getValidationMessages().localLanguageName"  fxFlex="20%">
+                  </airmid-textbox>
+
+                  <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-checkbox formControlName="isValidContent" [(ngModel)]="VisValidContent">
                       IsVerifiedContent
                     </mat-checkbox>

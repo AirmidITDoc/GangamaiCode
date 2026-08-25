@@ -141,7 +141,7 @@ export class NewPcpndComponent {
       this.vprocedureDate = new Date(this.registerObj.procedureDate);
       this.vconsentDate = new Date(this.registerObj.consentDate);
       this.vprocessDate = new Date(this.registerObj.processDate);
-      
+
       this.vpatientaddress = this.registerObj?.patientAddress;
       this.vpatientMobileNo = this.registerObj?.patientMobileNo.trim()
 
@@ -267,12 +267,19 @@ export class NewPcpndComponent {
 
 
   tableElementChecked(event: any, element: any) {
+    debugger
+    if (event.checked) {
+      const index = this.DSIndicationList1.data.findIndex(item => item === element);
 
-    const index = this.DSIndicationList1.data.findIndex(item => item === element);
+      if (index !== -1) {
+        this.DSIndicationList1.data[index].IsActive = true
 
-    if (index !== -1) {
-      this.DSIndicationList1.data[index].IsActive = true
-
+      }
+    }
+    else {
+      const index = this.DSIndicationList1.data.findIndex(item => item === element);
+      if (index !== -1)
+        this.DSIndicationList1.data[index].IsActive = false
     }
   }
 
@@ -401,7 +408,7 @@ export class NewPcpndComponent {
 
       console.log(this.DSIndicationList1.data)
 
-
+      debugger
       this.DSIndicationList1.data.forEach(item => {
         this.IndicationsArray.push(this.CreateIndicaionform(item));
       });

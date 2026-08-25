@@ -13,27 +13,27 @@
                     class="px-12 py-4 border-bottom gap-8">
                     <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                         
+
                             <!-- <div class="dashboard-card admissions">
                                 <div class="card-label">Total Amount</div>
                                 <div class="card-value">{{Vtotal}}</div>
                                 <mat-icon class="card-icon">event</mat-icon>
                             </div> -->
-                             <div class="dashboard-card bills">
+                            <div class="dashboard-card bills">
                                 <div class="card-label">Total Net</div>
                                 <div class="card-value">{{Vtotalnet}}</div>
                                 <mat-icon class="card-icon">receipt_long</mat-icon>
                             </div>
-                            <div class="dashboard-card admissions-split">
+                            <div class="dashboard-card Disc-split">
                                 <div class="card-label">Total Disc</div>
                                 <div class="card-value">
                                     <div>Total {{Vtotaldisc}}</div>
-                                  
+
                                 </div>
                                 <mat-icon class="card-icon">group</mat-icon>
                             </div>
                             <!-- Bills -->
-                          
+
 
                             <div class="dashboard-card balamt">
                                 <div class="card-label">Balance Amt</div>
@@ -263,18 +263,18 @@
                 class="px-12 py-4 border-bottom gap-8">
                 <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                  
-                        <div class="dashboard-card admissions">
+
+                     <div class="dashboard-card bills">
                             <div class="card-label">Total Amount</div>
                             <div class="card-value">{{Vptotal}}</div>
                             <mat-icon class="card-icon">event</mat-icon>
                         </div>
-                      
-                        <div class="dashboard-card admissions-split">
+
+                        <div class="dashboard-card Disc-split">
                             <div class="card-label">Total Disc</div>
                             <div class="card-value">
                                 <div>Total {{Vptotaldisc}}</div>
-                               
+
                             </div>
                             <mat-icon class="card-icon">group</mat-icon>
                         </div>
@@ -432,18 +432,18 @@
         </mat-tab>
 
         <mat-tab label="IP Refund Of Bill List">
-     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
                 class="px-12 py-4 border-bottom gap-8">
                 <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                    
-                        <div class="dashboard-card bills">
+
+                      <div class="dashboard-card Refund-split">
                             <div class="card-label">Total Refund</div>
                             <div class="card-value">{{Vrtotalnet}}</div>
                             <mat-icon class="card-icon">receipt_long</mat-icon>
                         </div>
 
-                      
+
                         <div class="dashboard-card admissions-split">
                             <div class="card-label">Cash Amt</div>
                             <div class="card-value">
@@ -513,7 +513,8 @@
                                 <airmid-datepicker [formGroup]="myFilterFormIPBrowseRefund" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig2.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig2.filters[3].fieldValue" (dateChange)="GetIPRefundbilldetail()">
+                                    [(toValue)]="gridConfig2.filters[3].fieldValue"
+                                    (dateChange)="GetIPRefundbilldetail()">
                                 </airmid-datepicker>
 
                                 <mat-form-field appearance="outline">

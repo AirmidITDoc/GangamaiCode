@@ -82,6 +82,9 @@ export class ItemMasterComponent implements OnInit {
         { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Manufacture Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      { heading: "LocalLanguage Name", key: "localLanguageName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    
+    
         { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
 
@@ -304,7 +307,7 @@ export class ItemMaster {
     isActive: any;
     content: any;
     stockUomid: any;
-
+    localLanguageName: any;
 
     /**
      * Constructor
@@ -368,6 +371,8 @@ export class ItemMaster {
             this.content = ItemMaster.content || ''
             this.stockUomid = ItemMaster.stockUomid || 0
             this.mAssignItemToDrugs = ItemMaster.mAssignItemToDrugs || [];
+            this.localLanguageName = ItemMaster.localLanguageName || ''
+
         }
     }
 }

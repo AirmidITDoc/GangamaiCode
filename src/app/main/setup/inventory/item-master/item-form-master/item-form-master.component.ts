@@ -401,6 +401,7 @@ export class ItemFormMasterComponent implements OnInit {
             mAssignItemToStores: [
                 { name: "required", Message: "Store Name is required" }
             ],
+            localLanguageName:[]
         };
     }
 

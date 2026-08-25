@@ -114,7 +114,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
     allAdvanceColumns = [
         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-        { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA',width:100 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -124,6 +124,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Advance AmtUsed", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+      
         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -846,7 +848,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
         for (const r of data) {
             advance += +r.advanceAmount || 0;
-            used += +r.usedAmount || 0;
+            used += +r.advanceUsedAmount || 0;
             balance += +r.balanceAmount || 0;
             refund += +r.refundAmount || 0;
             cash += +r.cashPayAmount || 0;

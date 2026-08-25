@@ -183,10 +183,12 @@ export class ItemMasterService {
             doseName: "",
             doseDay: 0,
             instruction: "",
+            localLanguageName:"",
             mAssignItemToStores: [[], Validators.required], // empty array, not an object
             content: ['', [Validators.required]],
             isValidContent: [false],
             mAssignItemToDrugs: [[]], 
+            
         });
     }
 

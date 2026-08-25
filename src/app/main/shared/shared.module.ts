@@ -93,13 +93,14 @@ import { AirmidExcelImportButtonComponent } from './componets/airmid-excel-impor
 import { AirmidExcelImportDialogComponent } from './componets/airmid-excel-import/airmid-excel-import.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { AirmidCommonTableComponent } from './componets/airmid-common-table/airmid-common-table.component';
+import { AirmidDiagnosChipautocompleteComponent } from './componets/airmid-diagnos-chipautocomplete/airmid-diagnos-chipautocomplete.component';
 @NgModule({
     declarations: [
-        TrimPipe, CommonDateComponent, AirmidTableComponent,AirmidCommonTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, StoreUnitComponent, PaymentModeComponent, AirmidAuditComponent, AirmidAuditIconComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidCommonTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, StoreUnitComponent, PaymentModeComponent, AirmidAuditComponent, AirmidAuditIconComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
         AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent,
         AirmidFullDatepickerComponent, AirmidFileuploadComponent, AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
         AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent, SMSDetailsPopupOverComponent, WhatsappDetPopUpOverComponent, PatientInformationComponent,
-        AirmidExcelImportButtonComponent, AirmidExcelImportButtonComponent, AirmidExcelImportDialogComponent
+        AirmidExcelImportButtonComponent, AirmidExcelImportButtonComponent, AirmidExcelImportDialogComponent, AirmidDiagnosChipautocompleteComponent
     ],
     imports: [
         CommonModule,
@@ -190,8 +191,8 @@ import { AirmidCommonTableComponent } from './componets/airmid-common-table/airm
         AirmidImageviewComponent,
         AirmidImageIconComponent,
         PatientInformationComponent,
-        AirmidExcelImportButtonComponent, AirmidExcelImportButtonComponent, AirmidExcelImportDialogComponent
-    ],
+        AirmidExcelImportButtonComponent, AirmidExcelImportButtonComponent, AirmidExcelImportDialogComponent,
+        AirmidDiagnosChipautocompleteComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }
