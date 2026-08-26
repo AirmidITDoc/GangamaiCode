@@ -1,0 +1,332 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Lab Abnormal List - {{name}}
+                    </span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                                <mat-icon>close</mat-icon>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-body modal-body-light" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <div class="patient-search resize-form-fields">
+                            <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                    <button mat-raised-button color="primary" (click)="getAbnormalList('viewAll')">
+                                        View All
+                                    </button>
+
+                                    <button mat-raised-button color="warn" (click)="getAbnormalList('abnormal')">
+                                        Abnormal
+                                    </button>
+
+                                    <button mat-raised-button color="accent" (click)="getLabdata()">
+                                        View Specific
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+                        <mat-table matSort [dataSource]="dsResultViewList" [@animateStagger]="{value:'50'}"
+                            *ngIf="(currentType === 'viewAll' || currentType === 'abnormal') && dsResultViewList.data.length">
+
+                            <ng-container matColumnDef="sequence">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">Sr.No
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
+                                    {{ i + 1 }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="TestName" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
+                                    Test Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    {{contact.TestName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ParameterName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    Parameter Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.ParameterName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
+                                    Result
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.ResultValue}}
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="Flag">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-80 border-right">Flag
+                                </mat-header-cell>
+                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm
+                                    [style.font-weight]="contact.ParaBoldFlag?.toUpperCase() === 'B' ? 'bold' : 'normal'">
+                                    {{contact.ParaBoldFlag}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Arrow">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-80 border-right">Arrow
+                                </mat-header-cell>
+                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+
+                                    <!-- Low Value -->
+                                    <mat-icon *ngIf="+contact.ResultValue < +contact.MinValue" class="down-arrow">
+                                        arrow_downward
+                                    </mat-icon>
+
+                                    <!-- High Value -->
+                                    <mat-icon *ngIf="+contact.ResultValue > +contact.MaxValue" class="up-arrow">
+                                        arrow_upward
+                                    </mat-icon>
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NormalRange">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    NormalRange
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                    {{contact?.NormalRange}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedResultViewColumns; sticky: true">
+                            </mat-header-row>
+
+                            <mat-row *matRowDef="let contact; columns: displayedResultViewColumns;"
+                                [@animate]="{value:'*',params:{y:'100%'}}"
+                                [ngClass]="{ 'abnormal-row': contact.ParaBoldFlag === 'B' }"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsResultViewList!=null && dsResultViewList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                        <!-- </div>
+
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex> -->
+                        <mat-table matSort #labSort="matSort" [dataSource]="dsLab"
+                            *ngIf="currentType === 'viewSpecific' && dsLab.data.length">
+
+                            <ng-container matColumnDef="labDate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Date </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.pathDate}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ServiceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    ServiceName </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.serviceName}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="BillNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    BillNo </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.pBillNo}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PatientType">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Status </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+
+                                    <span [ngClass]="{
+                                                    'status-not-requested': !element.isCompleted,
+                                                    'status-received': element.isCompleted
+                                                }">
+                                        {{ element.isCompleted ? 'Completed' :
+                                        'Pending' }}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="labColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row; columns: labColumns;" class="element"
+                                [@animate]="{value:'*',params:{y:'100%'}}"
+                                (click)="getAbnormalSpecificList(row)"></mat-row>
+
+                        </mat-table>
+
+                        <mat-table matSort [dataSource]="dsList" [@animateStagger]="{value:'50'}" style="margin-top: 3%;"
+                            *ngIf="showSpecificResultTable  && dsList.data.length">
+
+                            <ng-container matColumnDef="sequence">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">Sr.No
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
+                                    {{ i + 1 }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="TestName" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
+                                    Test Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    {{contact.TestName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ParameterName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    Parameter Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.ParameterName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
+                                    Result
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.ResultValue}}
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="Flag">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-80 border-right">Flag
+                                </mat-header-cell>
+                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm
+                                    [style.font-weight]="contact.ParaBoldFlag?.toUpperCase() === 'B' ? 'bold' : 'normal'">
+                                    {{contact.ParaBoldFlag}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Arrow">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-80 border-right">Arrow
+                                </mat-header-cell>
+                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+
+                                    <mat-icon *ngIf="+contact.ResultValue < +contact.MinValue" class="down-arrow">
+                                        arrow_downward
+                                    </mat-icon>
+                                    <mat-icon *ngIf="+contact.ResultValue > +contact.MaxValue" class="up-arrow">
+                                        arrow_upward
+                                    </mat-icon>
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NormalRange">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    NormalRange
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                    {{contact?.NormalRange}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="dsColumn; sticky: true">
+                            </mat-header-row>
+
+                            <mat-row *matRowDef="let contact; columns: dsColumn;"
+                                [@animate]="{value:'*',params:{y:'100%'}}"
+                                [ngClass]="{ 'abnormal-row': contact.ParaBoldFlag === 'B' }"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsList!=null && dsList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div fxLayout="row" class="gap-8" fxLayoutAlign="end center">
+                <div class="footer-navigation-container">
+                    <div class="modal-footer-buttons" *ngIf="showExportButton">
+                        <button class="btn btn-primary" (click)="onExportClick()">Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

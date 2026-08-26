@@ -36,7 +36,7 @@ import { SampleList } from 'app/main/pathology/result-entry/result-entry.compone
 import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
 import { NewInstructionMasterComponent } from 'app/main/setup/prescription/instructionmaster/new-instruction-master/new-instruction-master.component';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
-// import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabtest/lababnormal-list/lababnormal-list.component';
+import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabtest/lababnormal-list/lababnormal-list.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -174,8 +174,8 @@ export class NewCasepaperComponent implements OnInit {
     doctorId: any = 0
     departmentName = ''
     vIcdcode = ''
-displayedColumns: string[] = ['CertificateDate', 'CertificateName', 'CertificateText', 'Action'];
- 
+    displayedColumns: string[] = ['CertificateDate', 'CertificateName', 'CertificateText', 'Action'];
+
     displayedColumns1: string[] = [
         'CertificateDate',
         'CertificateName',
@@ -405,7 +405,7 @@ displayedColumns: string[] = ['CertificateDate', 'CertificateName', 'Certificate
             this.caseFormGroup.get('historyOfIllness')?.setValue(updated);
         });
     }
-   
+
 
 
     onFileSelected(event: any) {
@@ -995,7 +995,7 @@ displayedColumns: string[] = ['CertificateDate', 'CertificateName', 'Certificate
                                 descriptionName: element.descriptionName,
                                 icdcode: element.icdcode || '',
                                 diagnosisName: element.diagnosisName || element.descriptionName,
-                                icdCodeWithDignosis:element.descriptionName
+                                icdCodeWithDignosis: element.descriptionName
 
                             }
                         )
@@ -1323,9 +1323,9 @@ displayedColumns: string[] = ['CertificateDate', 'CertificateName', 'Certificate
     selectChangeDoctorName(row) {
     }
 
-  
+
     selectChangeChiefComplaint(selectedChips: string[]) {
-debugger
+        debugger
         this.addCheiflist = selectedChips;
         this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
     }
@@ -2427,6 +2427,11 @@ debugger
                     fieldName: "OPIPId",
                     fieldValue: String(visitId),
                     opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: "0",
+                    opType: "Equals"
                 }
             ],
             exportType: "JSON",
@@ -2644,6 +2649,7 @@ debugger
         sortOrder: 0,
         filters: [
             { fieldName: "OPIPId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
+            { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
         row: 25,
         localData: []
@@ -2864,7 +2870,7 @@ debugger
     //     });
     // }
     abnormal: boolean = false
-  
+
 
     OnipRequest() {
 
@@ -2920,17 +2926,18 @@ debugger
             });
         }
     }
-getLabResultview(row: any): void {
-        // this._matDialog.open(LababnormalListComponent, {
-        //     maxWidth: "95vw",
-        //     height: '95%',
-        //     width: '90%',
-        //     data: {
-        //         row: row,
-        //         vOPIPId: this.vOPIPId,
-        //         opipType:0
-        //     }
-        // })
+    getLabResultview(row: any): void {
+        this._matDialog.open(LababnormalListComponent, {
+            maxWidth: "95vw",
+            height: '95%',
+            width: '90%',
+            data: {
+                row: row,
+                vOPIPId: this.vOPIPId,
+                opipType: 0,
+                patientName: this.PatientName
+            }
+        })
     }
 }
 

@@ -46,7 +46,7 @@
         <ng-template #iconisCompeleted let-element>
             <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
                 <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready" style="cursor: pointer;"
-                    (click)="getPrint(element)">
+                    (click)="getLabResultview(element)"> <!--(click)="getPrint(element)"-->
                     remove_red_eye
                 </mat-icon>
 

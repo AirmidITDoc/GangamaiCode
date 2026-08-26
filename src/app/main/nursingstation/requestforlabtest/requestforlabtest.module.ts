@@ -37,6 +37,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { RequestforlabtestComponent } from './requestforlabtest.component';
+import { LababnormalListComponent } from './lababnormal-list/lababnormal-list.component';
 
 const routes: Routes = [
     {
@@ -46,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [RequestforlabtestComponent, NewRequestforlabComponent, ],
+    declarations: [RequestforlabtestComponent, NewRequestforlabComponent,LababnormalListComponent ],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
