@@ -206,7 +206,9 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("VisitDetail/Update", Param);
     }
 
-
+     public getuserwisecashcounterlist(vUserID,Type) {
+        return this._httpClient1.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
+    }
 
     // RS
     public getserviceList(param) {

@@ -278,9 +278,10 @@
                         [mode]="autocompleteModeCashcounter">
                     </airmid-dropdown>
 
+                        <!--    [selectFirstByDefault]="true" -->
                     <airmid-dropdown *ngIf="UserWsieCashcounterId" class="w-300" label="Select Cash Counter" formControlName="CashCounterID"
                         [formGroup]="RefundOfAdvanceFormGroup" TextField="cashCounterName" ValueField="cashCounterId"
-                         [selectFirstByDefault]="true"
+                      
                         [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IP_REFUND_ADV_BILL'"></airmid-dropdown>
     
                     <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">

@@ -415,7 +415,8 @@
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
                             [value]="registerObj?.doctorId" [formGroup]="VisitFormGroup"
-                            [validations]="getValidationMessages().DoctorID" #ddlDoctor></airmid-dropdown>
+                            [validations]="getValidationMessages().DoctorID" #ddlDoctor
+                             (selectionChange)="selectChangeDoc($event)"></airmid-dropdown>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

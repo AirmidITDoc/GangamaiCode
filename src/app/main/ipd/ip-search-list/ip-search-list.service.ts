@@ -421,7 +421,9 @@ export class IPSearchListService {
         return this._httpClient.post("InPatient/InsertIPPrescription", employee);
     }
 
-
+     public getuserwisecashcounterlist(vUserID,Type) {
+        return this._httpClient1.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
+    }
     // Dashboard
 
     public getAccountDashboard() {

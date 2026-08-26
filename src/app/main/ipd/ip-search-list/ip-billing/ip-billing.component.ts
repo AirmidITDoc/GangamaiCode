@@ -930,9 +930,9 @@ netAmount.updateValueAndValidity();
         if (this.Serviceform.valid) {
             if (formValue.serviceName?.isPackage == 1) {
                 this.PackageDetArray.clear();
-                this.PackageDatasource.data.forEach(item => {
-                    this.PackageDetArray.push(this.createPacakgeForm(item));
-                });
+               const pacakgedetailslist =  this.PackageDatasource.data.filter((item)=> item.PackageServiceId == formValue.serviceName?.serviceId)
+                
+                pacakgedetailslist.forEach(item => {this.PackageDetArray.push(this.createPacakgeForm(item)); });
             }
             debugger
             console.log('valida service form', this.Serviceform.value)
@@ -1857,7 +1857,7 @@ netAmount.updateValueAndValidity();
             this.PackageDatasource.data = response.data as ChargesList[];
             console.log(this.PackageDatasource.data)
             this.PackageDatasource.data.forEach(element => {
-                const fitleredList = this.PacakgeList.filter(item => item.serviceId != element.packageServiceId)
+                const fitleredList = this.PacakgeList.filter(item => item.PackageServiceId != element.serviceId)
                 this.PacakgeList = fitleredList
             })
             this.PackageDatasource.data.forEach(element => {
@@ -2757,6 +2757,20 @@ netAmount.updateValueAndValidity();
     getStatementPrint() {
         this.commonService.Onprint("AdmissionID", this.selectedAdvanceObj.admissionId, "IpAdvanceStatement");
     }
+
+
+    getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='IPD_BILL';
+        this._IpSearchListService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.IpbillFooterform.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
 }
 
 export class Bill {

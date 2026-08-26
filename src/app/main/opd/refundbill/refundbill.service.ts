@@ -104,4 +104,7 @@ export class RefundbillService {
     public globlePatientdetUpdates(employee, Id) {
         return this._httpClient.PutData("OutPatient/UpdateReg" + Id, employee)
     }
+    public getuserwisecashcounterlist(vUserID,Type) {
+        return this._httpClient.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
+    }
 }

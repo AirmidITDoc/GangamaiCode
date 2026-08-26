@@ -247,9 +247,10 @@
 
                                     <airmid-dropdown *ngIf="UserWsieCashcounterId" fxFlex label="Select Cash Counter"
                                         formControlName="CashCounterID" [formGroup]="searchForm"
-                                        TextField="cashCounterName" ValueField="cashCounterId"  [selectFirstByDefault]="true"
-                                        [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"></airmid-dropdown>
-
+                                        TextField="cashCounterName" ValueField="cashCounterId"  
+                                        [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'">
+                                    </airmid-dropdown>
+                                    <!-- [selectFirstByDefault]="true" -->
                                     <airmid-dropdown label="Tariff Name" formControlName="TariffId"
                                         [formGroup]="searchForm" [validations]="getValidationMessages().tariffId"
                                         [mode]="autocompleteModetariff" (selectionChange)="getSelectedTariffObj($event)"

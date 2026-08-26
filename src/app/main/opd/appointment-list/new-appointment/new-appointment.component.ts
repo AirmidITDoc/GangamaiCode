@@ -553,6 +553,7 @@ export class NewAppointmentComponent implements OnInit {
                         this.vRegNo = response.regno
                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
+                        this.getLastVisitDoctorList(response?.regId || 0)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.setNationalIdValidation();
                         debugger
@@ -616,6 +617,7 @@ export class NewAppointmentComponent implements OnInit {
                         console.log(response)
                         this.value = response.dateofBirth
                         this.onChangeDateofBirth(response.dateofBirth)
+                        this.getLastVisitDoctorList(response?.regId || 0)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.setNationalIdValidation();
                         debugger
@@ -683,16 +685,63 @@ export class NewAppointmentComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
             this.PrevregisterObj = result
             if (this.PrevregisterObj) {
-                this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
-                this.selectChangedepartment(this.PrevregisterObj)
-                console.log(this.PrevregisterObj)
-            }
-
-
+                debugger
+                let isAvailable = false;
+                if(this.LastDepartmentDoclist.length){
+                 isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.PrevregisterObj.departmentId &&
+                    item.consultantDocId == this.PrevregisterObj.consultantDocId);
+                } 
+                if (isAvailable) {
+                         Swal.fire({
+                    icon: 'warning',
+                    title: 'Appointment Already Taken',
+                    html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
+        <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#f39c12',
+                    background: '#fff',
+                    timer: 4000,
+                    timerProgressBar: true,
+                    allowOutsideClick: false
+                });
+                } else{
+                    this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
+                    this.selectChangedepartment(this.PrevregisterObj)
+                    console.log(this.PrevregisterObj)  
+                }
+                // this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
+                // this.selectChangedepartment(this.PrevregisterObj)
+                // console.log(this.PrevregisterObj)
+            } 
         });
+    } 
+    LastDepartmentDoclist :any=[];
+    getLastVisitDoctorList(regId) {
+        const vdata = {
+            "first": 0,
+            "rows": 20,
+            "sortField": "RegId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "RegId",
+                    "fieldValue": String(regId),//"140306",
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+        this._AppointmentlistService.getLastVisitDoctorList(vdata).subscribe(data => {
+            this.LastDepartmentDoclist = data.data as RegInsert[]
+
+            const today = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+            this.LastDepartmentDoclist = this.LastDepartmentDoclist.filter((item) => {
+                return this.datePipe.transform(item.visitDate, 'dd/MM/yyyy') === today;
+            });
+            console.log(this.LastDepartmentDoclist);
+        })
     }
-
-
     getSelectedObjtrust(obj) {
         
         console.log(obj)
@@ -962,6 +1011,27 @@ debugger
     }
 
     onSave() {
+        let isAvailable = false;
+        if (this.LastDepartmentDoclist.length) {
+            isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
+                item.consultantDocId == this.VisitFormGroup.get('ConsultantDocId')?.value);
+        }
+        if (isAvailable) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Appointment Already Taken',
+                html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
+                                <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: '#fff',
+                timer: 4000,
+                timerProgressBar: true,
+                allowOutsideClick: false
+            });
+            return;
+        } 
+
         Swal.fire({
             title: 'Confirm Save',
             text: 'Are you sure you want to save this OPD Appointment?',
@@ -1305,22 +1375,66 @@ debugger
         } else {
             this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
                 console.log(data)
-                if (data) {
-
+                if (data) { 
                     this.ddlDoctor.options = data;
                     this.ddlDoctor.bindGridAutoComplete();
+                    let isAvailable = false; 
                     const incomingDoctorId = obj.consultantDocId || obj.doctorId;
                     if (incomingDoctorId) {
-                        const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-                        if (matchedDoctor) {
-                            this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                        if (this.LastDepartmentDoclist.length) {
+                            isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
+                                item.consultantDocId == incomingDoctorId);
                         }
+                        if (isAvailable) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Appointment Already Taken',
+                                html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
+                             <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#f39c12',
+                                background: '#fff',
+                                timer: 4000,
+                                timerProgressBar: true,
+                                allowOutsideClick: false
+                            });
+                            this.VisitFormGroup.get("ConsultantDocId")?.setValue(0)
+                        } else {
+                            const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                            if (matchedDoctor) {
+                                this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                            }
+                        } 
                     }
                 }
             });
         }
     }
-
+    selectChangeDoc(obj: any) {
+        // debugger
+        // if (obj) { 
+        //     let isAvailable = false;
+        //     if (this.LastDepartmentDoclist.length) {
+        //         isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
+        //             item.consultantDocId == obj.value);
+        //     } 
+        //     if (isAvailable) {
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Appointment Already Taken',
+        //             html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
+        // <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+        //             confirmButtonText: 'OK',
+        //             confirmButtonColor: '#f39c12',
+        //             background: '#fff',
+        //             timer: 4000,
+        //             timerProgressBar: true,
+        //             allowOutsideClick: false
+        //         });
+        //            this.VisitFormGroup.get("ConsultantDocId")?.setValue(0)
+        //     }  
+        // }
+    }
     getValidationMessages() {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
