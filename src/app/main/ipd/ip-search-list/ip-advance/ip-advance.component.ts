@@ -147,6 +147,8 @@ export class IPAdvanceComponent implements OnInit {
 
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._configService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+        this.getuserwisecashcounterlist();
     }
     createAdvform() {
         this.AdvFormGroup = this.formBuilder.group({
@@ -415,6 +417,18 @@ export class IPAdvanceComponent implements OnInit {
             ]
         };
     }
+            getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='IPD_ADVANCE';
+        this._IpSearchListService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.AdvFormGroup.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
 }
 export class AdvanceHeader {
     AdvanceId: number;

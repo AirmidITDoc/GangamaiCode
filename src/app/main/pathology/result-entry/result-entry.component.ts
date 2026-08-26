@@ -281,7 +281,7 @@ export class ResultEntryComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
-
+SelectedrowObj:any;
     getSelectedRow(row: any): void {
         // debugger
         console.log("Selected row : ", row);
@@ -290,6 +290,7 @@ export class ResultEntryComponent implements OnInit {
         this.selection.clear();
 
         this.reportPrintObj = row
+        this.SelectedrowObj = row;
         this.reportPrintObj["DOA"] = row.pathDate
 
         this.PatientName = row.patientName;
@@ -496,7 +497,7 @@ export class ResultEntryComponent implements OnInit {
                         });
                     dialogRef.afterClosed().subscribe(result => {
                         this.grid.bindGridData();
-                        this.getSelectedRow(event);
+                        this.getSelectedRow(this.SelectedrowObj);
                     });
                 }, 100);
                 return;
@@ -520,7 +521,10 @@ export class ResultEntryComponent implements OnInit {
             });
             return;
         }
-        this.searchRecords(contact)
+  const allCompleted =
+  this.dataSource1.data.length > 0 && this.dataSource1.data.every(element => element?.isCompleted === true);
+   if (allCompleted) { this.searchRecords(contact);}
+       // this.searchRecords(contact)
         // this.selection.clear(); // Clears all selected items
         // this.dataSource1.data = [];
     }

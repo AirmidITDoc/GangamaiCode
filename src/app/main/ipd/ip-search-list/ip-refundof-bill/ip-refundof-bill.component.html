@@ -297,9 +297,10 @@
                         [formGroup]="RefundOfBillFormFooter" [mode]="autocompleteModeCashCounter"  >
                         </airmid-dropdown>
 
+                            <!--     [selectFirstByDefault]="true" -->
                          <airmid-dropdown  *ngIf="UserWsieCashcounterId" fxFlex  label="Select Cash Counter" formControlName="CashCounterID"
                                        [formGroup]="RefundOfBillFormFooter"    TextField="cashCounterName" ValueField="cashCounterId"
-                                       [selectFirstByDefault]="true"
+                                   
                                     [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IP_REFUND_BILL'"
                                       ></airmid-dropdown>
                     </div>

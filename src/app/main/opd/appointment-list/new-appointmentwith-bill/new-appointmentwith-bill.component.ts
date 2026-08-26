@@ -295,6 +295,7 @@ export class NewAppointmentwithBillComponent {
                 this.getDocServicelist(this.VisitFormGroup.get('ConsultantDocId').value)
             }, 1000);
         }
+        this.getuserwisecashcounterlist();
     }
 
     // Load data by ID when opened as standalone page
@@ -1244,15 +1245,36 @@ export class NewAppointmentwithBillComponent {
                 // 
                 this.ddlDoctor.options = data;
                 const incomingDoctorId = obj.doctorId ?? obj.consultantDocId;
+                let isAvailable = false; 
                 console.log("Id:", incomingDoctorId)
                 setTimeout(() => {
                     this.ddlDoctor.bindGridAutoComplete();
-                    if (incomingDoctorId) {
-                        const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-                        if (matchedDoctor) {
+                    if (incomingDoctorId) {  
+                        if (this.LastDepartmentDoclist.length) {
+                            isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
+                                item.consultantDocId == incomingDoctorId);
+                        }
+                        if (isAvailable) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Appointment Already Taken',
+                                html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
+                             <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#f39c12',
+                                background: '#fff',
+                                timer: 4000,
+                                timerProgressBar: true,
+                                allowOutsideClick: false
+                            });
+                            this.VisitFormGroup.get("ConsultantDocId")?.setValue(0)
+                        } else {
+                           const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                             if (matchedDoctor) {
                             this.ddlDoctor.SetSelection(matchedDoctor.value);
                             this.getDocServicelist(matchedDoctor.value)
-                        }
+                           }
+                        }  
                     }
                 }, 300);
             });
@@ -1292,7 +1314,26 @@ export class NewAppointmentwithBillComponent {
 
 
     BillSave() {
-
+        let isAvailable = false;
+        if (this.LastDepartmentDoclist.length) {
+            isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
+                item.consultantDocId == this.VisitFormGroup.get('ConsultantDocId')?.value);
+        }
+        if (isAvailable) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Appointment Already Taken',
+                html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
+                        <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: '#fff',
+                timer: 4000,
+                timerProgressBar: true,
+                allowOutsideClick: false
+            });
+            return ;
+        } 
 
         Swal.fire({
             title: 'Confirm Save',
@@ -2356,6 +2397,7 @@ export class NewAppointmentwithBillComponent {
 
                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
+                        this.getLastVisitDoctorList(response?.regId || 0)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.myForm.patchValue({
                             firstName: this.registerObj.firstName.trim(),
@@ -2422,6 +2464,7 @@ export class NewAppointmentwithBillComponent {
                         this.countryId = this.registerObj?.countryId ?? 0;
                         this.pincode = this.registerObj?.pinNo || ''
                         this.onChangeDateofBirth(response.dateofBirth)
+                        this.getLastVisitDoctorList(response?.regId || 0)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.myForm.patchValue({
                             firstName: this.registerObj.firstName,
@@ -2491,18 +2534,40 @@ export class NewAppointmentwithBillComponent {
             console.log('The dialog was closed - Insert Action', result);
             if (result) {
                 this.PrevregisterObj = result
+                if (this.PrevregisterObj) {
+                    debugger
+                    let isAvailable = false;
+                    if (this.LastDepartmentDoclist.length) {
+                        isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.PrevregisterObj.departmentId &&
+                            item.consultantDocId == this.PrevregisterObj.consultantDocId);
+                    }
+                    if (isAvailable) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Appointment Already Taken',
+                            html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
+                        <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#f39c12',
+                            background: '#fff',
+                            timer: 4000,
+                            timerProgressBar: true,
+                            allowOutsideClick: false
+                        });
+                    } else {
+                        if (result.doctorName)
+                            this.doctorName1 = result?.doctorName
 
-                if (result.doctorName)
-                    this.doctorName1 = result?.doctorName
-
-                this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
-                this.selectChangedepartment(this.PrevregisterObj)
-                this.vOPIPId = this.PrevregisterObj.visitId
-                if (this.vOPIPId)
-                    this.getPrevBill()
-                console.log(this.PrevregisterObj)
-            }
-
+                        this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
+                        this.selectChangedepartment(this.PrevregisterObj)
+                        this.vOPIPId = this.PrevregisterObj.visitId
+                        if (this.vOPIPId)
+                            this.getPrevBill()
+                        
+                        console.log(this.PrevregisterObj)
+                    }
+                }
+            } 
         });
     }
 
@@ -2721,7 +2786,33 @@ export class NewAppointmentwithBillComponent {
             this.patienttype = 1;
         }
     }
+    LastDepartmentDoclist :any=[];
+    getLastVisitDoctorList(regId) {
+        const vdata = {
+            "first": 0,
+            "rows": 20,
+            "sortField": "RegId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "RegId",
+                    "fieldValue": String(regId),//"140306",
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+        this._AppointmentlistService.getLastVisitDoctorList(vdata).subscribe(data => {
+            this.LastDepartmentDoclist = data.data as RegInsert[]
 
+            const today = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+            this.LastDepartmentDoclist = this.LastDepartmentDoclist.filter((item) => {
+                return this.datePipe.transform(item.visitDate, 'dd/MM/yyyy') === today;
+            });
+            console.log(this.LastDepartmentDoclist);
+        })
+    }
     onChangeCompany(value) {
 
         this._AppointmentlistService.getCompanyById(value.value).subscribe((response) => {
@@ -3173,5 +3264,19 @@ export class NewAppointmentwithBillComponent {
             });
         });
     }
+
+
+        getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='OP_BILL';
+        this._AppointmentlistService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.searchFormGroup.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

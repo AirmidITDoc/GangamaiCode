@@ -991,7 +991,7 @@ export class ChargesList {
     classId: any
     tariffId: any
     IsPackage: any;
-
+PackageServiceId:any;
 
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
@@ -1022,6 +1022,7 @@ export class ChargesList {
         this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
         this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
         this.packageServiceId = ChargesList.packageServiceId || 0;
+         this.PackageServiceId = ChargesList.PackageServiceId || 0;
         this.price = ChargesList.price || 0;
         this.packageId = ChargesList.packageId || '';
         this.doctorName = ChargesList.doctorName || 0;

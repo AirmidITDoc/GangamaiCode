@@ -359,7 +359,7 @@
 
 
                                         <!-- Cash Counter dropdown -->
-                                        <div fxLayout="row">
+                                        <!-- <div fxLayout="row">
                                             <div fxFlex="35%">
                                                 <airmid-dropdown label="CashCounter Name"
                                                     formControlName="multipleCashCounterId"
@@ -379,7 +379,7 @@
                                                         (click)="removeCashcounter(item)">close</mat-icon>
                                                 </mat-chip>
                                             </mat-chip-listbox>
-                                        </div>
+                                        </div> -->
                                     </form>
                                 </mat-card>
                                 <!-- </form> -->
@@ -472,120 +472,144 @@
                             </div>
 
                         </mat-tab>
-                        <!-- <mat-tab label="User Wise CashCounter">
-                            <div fxLayout="column" class="gap-8 h-100-p"> 
-                                <mat-card  style="padding: 10px;">
-                                    <form [formGroup]="myuserApprovalform1">  
-                                      
-                                        <div fxLayout="row">
-                                            <div fxFlex="35%">
-                                                <airmid-dropdown label="CashCounter Name"
-                                                    formControlName="multipleCashCounterId"
-                                                    [formGroup]="myuserApprovalform1"
-                                                    [validations]="getValidationMessages().CashCounterId"
-                                                    [mode]="autocompleteModeCashcounter" [IsMultiPle]="true"
-                                                    ValueField="value" #ddlCashCounter TextField="text"
-                                                    [ReqFullObj]="true"
-                                                    (selectionChange)="selectChangeCashCounterName($event)">
-                                                </airmid-dropdown>
-                                                [ApiUrl]="'VisitDetail/AssignUserWiseCashCounterList'" 
-                                            </div>
-
-                                            <mat-chip-listbox #chipList>
-                                                <mat-chip
-                                                    *ngFor="let item of myuserApprovalform1.value.multipleCashCounterId">
-                                                    {{ item.text }} <mat-icon
-                                                        (click)="removeCashcounter(item)">close</mat-icon>
-                                                </mat-chip>
-                                            </mat-chip-listbox>
+                    <mat-tab label="User Wise CashCounter">
+                        <div fxLayout="column" class="gap-8 h-100-p">
+                            <mat-card style="padding: 10px;">
+                                <form [formGroup]="myuserApprovalform1">
+                    
+                                    <div fxLayout="row">
+                                        <div fxFlex="35%">
+                                            <airmid-dropdown label="CashCounter Name" formControlName="multipleCashCounterId"
+                                                [formGroup]="myuserApprovalform1" [validations]="getValidationMessages().CashCounterId"
+                                                [IsMultiPle]="true" ValueField="cashCounterId" #ddlCashCounter
+                                                TextField="cashCounterName" [ReqFullObj]="true"
+                                                 [ApiUrl]="'VisitDetail/AssignUserWiseCashCounterList'"
+                                                (selectionChange)="selectChangeCashCounterName($event)">
+                                            </airmid-dropdown>
+                                            <!-- [ApiUrl]="'VisitDetail/AssignUserWiseCashCounterList'" -->
                                         </div>
-                                    </form>
-                                </mat-card>
-                                
-                              <div class="airmid-table-container" fxFlex>
-                                    <div class="table-scroll" fxLayout="column">
-                                        <mat-table #table matSort [dataSource]="dsCashcounterList" class="airmid-table"
-                                            [@animateStagger]="{ value: '50' }">
-                                
-                                
-                                            <ng-container matColumnDef="sequence">
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">Sr.No
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-80">
-                                                    {{ i + 1 }}
-                                                </mat-cell>
-                                            </ng-container>
-                                
-                                            <ng-container matColumnDef="CashCounterName">
-                                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>CashCounter Name</mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                    {{element.text}}
-                                                </mat-cell>
-                                            </ng-container> 
-                                
-                                            <ng-container matColumnDef="IsBydefault">
-                                                <mat-header-cell *matHeaderCellDef fxHide class="w-120" fxShow.gt-sm>IsBydefault</mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-120">
-                                                    <mat-checkbox [(ngModel)]="element.isDefault">
-                                                    </mat-checkbox>
-                                                </mat-cell>
-                                            </ng-container>
-                                
-                                            <ng-container matColumnDef="ReceiptCashCounter">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Receipt
-                                                    CashCounter</mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                    <airmid-dropdown label="CashCounter Name" formControlName="drpCashcounterid"
-                                                        [formGroup]="myuserApprovalform" fxFlex="50%" [mode]="autocompleteModeCashcounter">
-                                                    </airmid-dropdown>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                <ng-container matColumnDef="groupHeader">
-
-    <mat-cell
-        *matCellDef="let element"
-        class="type-group-header">
-
-        {{ element.Type }}
-
-    </mat-cell>
-
-</ng-container>
-                                            <ng-container matColumnDef="loading">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">loading
-                                                    data...</mat-footer-cell>
-                                            </ng-container>
-                                
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">no data
-                                                    found...</mat-footer-cell>
-                                            </ng-container>
-                                
-                                            <mat-header-row class="accent" *matHeaderRowDef="CashCounterdisplayedColumn; "></mat-header-row>
-                                            <mat-row *matRowDef="let row; columns: CashCounterdisplayedColumn;   when: isDataRow" class="element"
-                                                [@animate]="{ value: '*', params: { y: '100%' } }"  ></mat-row>
-
-
-                                                <mat-row
-    *matRowDef="
-        let row;
-        columns: ['groupHeader'];
-        when: isGroupRow
-    "
-    class="type-group-row">
-</mat-row>
-   
-                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                [ngClass]="{ hide: dsCashcounterList != null }"></mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{ hide: !(dsCashcounterList != null && dsCashcounterList.data.length == 0) }"></mat-footer-row>
-                                        </mat-table>
+                    
+                                        <mat-chip-listbox #chipList>
+                                            <mat-chip *ngFor="let item of myuserApprovalform1.value.multipleCashCounterId">
+                                                {{ item.cashCounterName }} <mat-icon (click)="removeCashcounter(item)">close</mat-icon>
+                                            </mat-chip>
+                                        </mat-chip-listbox>
                                     </div>
-                                </div>  
+                                </form>
+                            </mat-card>
+                    
+                            <div class="airmid-table-container" fxFlex>
+                                <div class="table-scroll" fxLayout="column">
+                                    <mat-table #table matSort [dataSource]="dsCashcounterList" class="airmid-table"
+                                        [@animateStagger]="{ value: '50' }">
+                    
+                    
+                                        <ng-container matColumnDef="sequence">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-100">Sr.No
+                                            </mat-header-cell>
+                                            <!-- <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-80">
+                                                {{ i + 1 }}
+                                            </mat-cell> -->
+                                             <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-100"> 
+                                            {{ getGroupSequence(i) }} 
+                                             </mat-cell>
+                                        </ng-container>
+                                        
+                    
+                                        <ng-container matColumnDef="CashCounterName">
+                                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm  >CashCounter Name</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  >
+                                                {{element.cashCounterName}}
+                                            </mat-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="IsBydefault">
+                                            <mat-header-cell *matHeaderCellDef fxHide class="w-130"
+                                                fxShow.gt-sm>IsBydefault</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-130">
+                                                <mat-checkbox [(ngModel)]="element.isDefault"
+                                                 (change)="onDefaultCounterChange(element, $event.checked)">
+                                                </mat-checkbox>
+                                            </mat-cell>
+                                        </ng-container>
+          
+                    
+                                        <!-- <ng-container matColumnDef="ReceiptCashCounter">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm >Receipt
+                                                CashCounter</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  >
+                                                 <form [formGroup]="myuserApprovalform">
+                                                <airmid-dropdown appearance="fill" label="CashCounter Name" formControlName="receiptCashCounterId"
+                                                    [formGroup]="myuserApprovalform" [mode]="autocompleteModeCashcounter"  class="w-300"
+                                                      [value]="element.receiptCashCounterId"
+                                                     [disabled]=true>
+                                                </airmid-dropdown>     
+                                                </form>
+                                            </mat-cell>   
+                                        </ng-container> -->
+                     <ng-container matColumnDef="ReceiptCashCounter">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >Receipt
+                            CashCounter</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="gap-4">
+                            <span>{{ contact.ReceipCashCounterName}}</span>
+                            <div fxLayout="row" fxLayoutGap="2px">
+                              <ng-container *ngIf="!contact.EditCashCounterReceipt; else showInput">
+                                <button mat-icon-button (click)="RecepCashcounterenableEditing(contact)" class="clear-button">
+                                  <mat-icon>edit</mat-icon></button>
+                              </ng-container>
+                              <ng-template #showInput>
+                                <form [formGroup]="myuserApprovalform" fxLayout="row" fxLayoutGap="2px">
+                                  <airmid-dropdown formControlName="receiptCashCounterId" class="w-300" appearance="fill"
+                                    [formGroup]="myuserApprovalform" [mode]="autocompleteModeCashcounter" 
+                                    (selectionChange)="DropDownValue($event, contact)" [readonly]="true"></airmid-dropdown>
+                                </form>
+                                <mat-icon matTooltip="Close" (click)="ReceiptcashcounterdisableEditing(contact)">cancel</mat-icon>
+                              </ng-template>
                             </div>
-
-                        </mat-tab> -->
+                          </mat-cell>
+                        </ng-container>
+                    
+                                        <ng-container matColumnDef="groupHeader">
+                    
+                                            <mat-cell *matCellDef="let element" class="type-group-header">
+                    
+                                                {{ element.cashCounterType }}
+                    
+                                            </mat-cell>
+                    
+                                        </ng-container>
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                                data...</mat-footer-cell>
+                                        </ng-container>
+                    
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">no data
+                                                found...</mat-footer-cell>
+                                        </ng-container>
+                    
+                                        <mat-header-row class="accent" *matHeaderRowDef="CashCounterdisplayedColumn; "></mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: CashCounterdisplayedColumn;   when: isDataRow"
+                                            class="element" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                    
+                    
+                                        <mat-row *matRowDef="
+                            let row;
+                            columns: ['groupHeader'];
+                            when: isGroupRow
+                        " class="type-group-row">
+                                        </mat-row>
+                    
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{ hide: dsCashcounterList != null }"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{ hide: !(dsCashcounterList != null && dsCashcounterList.data.length == 0) }"></mat-footer-row>
+                                    </mat-table>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </mat-tab>
                     </mat-tab-group>
                 </div>
             </div>

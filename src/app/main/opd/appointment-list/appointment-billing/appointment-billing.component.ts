@@ -234,6 +234,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (discountData?.AccessValue) {
                 this.UserDicPerLimit = discountData?.AccessInputValue || 0
             }
+        
+            this.getuserwisecashcounterlist();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -519,8 +521,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
     }
     //Footer Form
-    CreateOPFooter() {
-        debugger
+    CreateOPFooter() { 
         //  const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay";
         const paymentType = this.SetCashbydefault == 1 ? "CashPay" : this.SetCashbydefault == 2 ? "PayOption" : "CreditPay";
         return this.formBuilder.group({
@@ -2494,7 +2495,19 @@ debugger
                 this.serviceSelct = false
             })
         }
-    }
+    } 
+    getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='OP_BILL';
+        this._AppointmentlistService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.searchForm.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
     //   "drbno": 40245,
     // "totalAmt": 200,
     // "concessionAmt": 200,
