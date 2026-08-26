@@ -974,8 +974,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (result) {
                 this.dsPackageList.data = result
                 console.log(this.dsPackageList.data)
+                debugger
                 this.dsPackageList.data.forEach(element => {
-                    this.PacakgeList = [];
+                    const packnewlist = this.PacakgeList.filter((item)=> item.PackageServiceId != element.PackageServiceId)
+                     this.PacakgeList = packnewlist;
                     if (element.BillwiseTotalAmt > 0) {
                         this.TotalPrice = element.BillwiseTotalAmt;
                         console.log(this.TotalPrice)
