@@ -361,7 +361,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 IsPathology: contact.isPathology,
                 IsRadiology: contact.isRadiology,
                 IsPackage: contact.isPackage,
-                isEditable :contact?.isEditable == 'True' ?  true : false
+                isEditable :contact?.isEditable
             };
 
 
