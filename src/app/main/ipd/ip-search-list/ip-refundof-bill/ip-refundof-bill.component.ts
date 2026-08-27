@@ -129,6 +129,8 @@ export class IPRefundofBillComponent implements OnInit {
 
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+        this.getuserwisecashcounterlist();
     }
 
     createSearchForm() {
@@ -464,6 +466,18 @@ export class IPRefundofBillComponent implements OnInit {
             ]
         }
     }
+        getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='IP_REFUND_BILL';
+        this._IpSearchListService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.RefundOfBillFormFooter.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
 }
 
 export class InsertRefund {

@@ -2204,6 +2204,11 @@ export class GastrologyEmrComponent {
                     fieldName: "OPIPId",
                     fieldValue: String(visitId),
                     opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: "0",
+                    opType: "Equals"
                 }
             ],
             exportType: "JSON",
@@ -2250,6 +2255,7 @@ export class GastrologyEmrComponent {
         sortOrder: 0,
         filters: [
             { fieldName: "OPIPId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
+            { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
         row: 25,
         localData: []

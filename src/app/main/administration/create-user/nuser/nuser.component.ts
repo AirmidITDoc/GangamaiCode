@@ -11,6 +11,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { CreateUserService } from '../create-user.service';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 @Component({
     selector: 'app-nuser',
@@ -66,7 +67,7 @@ export class NUserComponent implements OnInit {
         'InputField'
     ]
         CashCounterdisplayedColumn: string[] = [
-        'sequence',
+         'sequence',
         'CashCounterName',
         'IsBydefault',
         'ReceiptCashCounter',
@@ -91,7 +92,8 @@ export class NUserComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<NUserComponent>,
         private _FormvalidationserviceService: FormvalidationserviceService,
-        private zone: NgZone
+        private zone: NgZone,
+        private hospitalconfigservice: HospitalConfigService,
     ) {
         this.myuserApprovalform = this.createuserApprovalForm();
         this.myuserApprovalform.markAllAsTouched();
@@ -155,6 +157,7 @@ export class NUserComponent implements OnInit {
         this.LoginStoreDetailsArray.push(this.createLoginStoreDetails());
 
         this.myuserApprovalform1 = this.CreateMultidataform()
+        this.getuserAssigncashcounterlist();
     }
 
     getList() {
@@ -319,50 +322,21 @@ getCashcounterDetail(row) {
             "rows": 999,
             "sortField": "LoginCashCounterDetId",
             "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "LoginId",
-                    "fieldValue": String(row.userId), //"30091",
-                    "opType": "Equals"
-                }
-            ],
+            "filters": [ { "fieldName": "LoginId",  "fieldValue": String(row.userId), //"30091",
+                    "opType": "Equals" } ],
             "exportType": "JSON",
             "columns": []
         }
         setTimeout(() => {
             this._CreateUserService.getCashCounterDetailList(SelectQuery).subscribe(response => {
-                const rowData = response?.data || [];
-
-                console.log(rowData)
-                this.RtrvCashCounterList = rowData.map(item => ({
-                    value: String(item.cashCounterId),
-                    text: item.cashCounterName
-                }))
-
-
-                console.log("Cashcounter data:", this.RtrvCashCounterList)
-                const assignedCashcounter = this.RtrvCashCounterList.filter(Item => {
-                    const originalItem = rowData.find(r => r.cashCounterId == Item.value);
-                    return true;
-                });
-                //  this.ddlStore.SetSelection(assignedCashcounter);
+                const assignedCashcounter = response?.data || []; 
 
                 this.myuserApprovalform1.patchValue({
-                    multipleCashCounterId: assignedCashcounter
+                multipleCashCounterId: assignedCashcounter
                 });
-
-                const selectedCounters = assignedCashcounter
-                this.dsCashcounterList.data = selectedCounters.map((x: any) => ({
-                    value: x.value,
-                    text: x.text,
-                    isDefault:(x?.isDefault || false)
-                })); 
-            });
-
-            // setTimeout(() => {
-            //   this.myuserApprovalform1.get('multipleStoreId')?.setValue(this.RtrvCashCounterList);
-            // }, 0);
-
+                // this.dsCashcounterList.data = assignedCashcounter
+                 this.buildCashCounterList(assignedCashcounter) 
+            }); 
         }, 1000);
     }
     createuserApprovalForm(): FormGroup {
@@ -436,7 +410,8 @@ getCashcounterDetail(row) {
             // multipleStoreId: [[], [Validators.required]],
             IsPharmacyBalClearnace: false,
             employeId: [0],
-            isEmployee: false
+            isEmployee: false,
+            receiptCashCounterId:[0]
 
         });
     }
@@ -478,7 +453,7 @@ getCashcounterDetail(row) {
         return this._formBuilder.group({
             loginCashCounterDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            cashCounterId: [Number(item.value)],
+            cashCounterId: [Number(item.cashCounterId)],
             isDefault:[(item.isDefault) || false],
         });
     }
@@ -497,12 +472,21 @@ getCashcounterDetail(row) {
     get LoginCashCounterDetailsArray(): FormArray {
      return this.myuserApprovalform.get('tLoginCashCounterDetails') as FormArray;
     }
-   removeCashcounter(item) {
-        const removedIndex = this.myuserApprovalform1.value.multipleCashCounterId.findIndex(x => x.value == item.value);
+    removeCashcounter(item: any) {
+        debugger 
+        const removedIndex = this.myuserApprovalform1.value.multipleCashCounterId.findIndex(x => x.cashCounterId == item.cashCounterId);
         this.myuserApprovalform1.value.multipleCashCounterId.splice(removedIndex, 1);
-        this.ddlCashCounter.SetSelection(this.myuserApprovalform1.value.multipleCashCounterId.map(x => x.value));
-
-        this.dsCashcounterList.data = this.dsCashcounterList.data.filter( x => x.value != item.value );
+        const control = this.myuserApprovalform1.get('multipleCashCounterId'); 
+    
+        const selectedCounters = [...(control.value || [])]; 
+        // Remove selected counter
+        const updatedCounters = selectedCounters.filter(
+            x => x.cashCounterId !== item.cashCounterId
+        );  
+        this.ddlCashCounter.SetSelection(
+            updatedCounters.map(x => x.cashCounterId)
+        ); 
+        this.buildCashCounterList(updatedCounters);
     }
     removeUnit(item) {
         const removedIndex = this.myuserApprovalform1.value.multipleUnitId.findIndex(x => x.value == item.value);
@@ -634,11 +618,13 @@ getCashcounterDetail(row) {
                 })
             }
             this.LoginCashCounterDetailsArray.clear();
-            if (this.myuserApprovalform1.get('multipleCashCounterId').value) {
-                this.myuserApprovalform1.get('multipleCashCounterId').value.forEach((item) => {
-                    this.LoginCashCounterDetailsArray.push(this.createLoginCashCounterDetails(item))
-                })
+            if (this.myuserApprovalform1.get('multipleCashCounterId').value && this.dsCashcounterList.data.length) {
+             this.dsCashcounterList.data .filter((item: any) => !item.isGroup && item.cashCounterId)
+              .forEach((item: any) => {
+               this.LoginCashCounterDetailsArray.push(this.createLoginCashCounterDetails(item));
+           });
             }
+           
             this.myuserApprovalform1.removeControl('isEmployee')
             this.myuserApprovalform.removeControl('employeId')
             this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
@@ -700,188 +686,147 @@ getCashcounterDetail(row) {
         this.unitname = obj.value
         console.log("set:", this.myuserApprovalform1.get('multipleUnitId').value)
     }
-    selectChangeCashCounterName(obj: any) {
+    selectChangeCashCounterName1(obj: any) {
         console.log(obj)
         this.CashCounterName = obj.value
-        console.log("set:", this.myuserApprovalform1.get('multipleCashCounterId').value)
-  
-
-//     const selectedCounters =  this.myuserApprovalform1.get('multipleCashCounterId')?.value || []; 
-//     this.dsCashcounterList.data = selectedCounters.map((x: any) => ({
-     
-//         value: x.value,
-//         text: x.text,
-//         isDefault:false,
-//         Type: x.text === 'OP Billing Counter' ? 'OP_BILL' : 'IP_BILL'
- 
-//       Type: x.Type || x.type 
-//     .sort((a: any, b: any) =>
-//       (a.Type || '').localeCompare(b.Type || '')
-//     );
-
-//   console.log('Table Data:', this.dsCashcounterList.data
-//    }));
+        console.log("set:", this.myuserApprovalform1.get('multipleCashCounterId').value) 
     }
-//  selectChangeCashCounterName(obj: any) {
-
-//   const selectedCounters =
-//     this.myuserApprovalform1.get('multipleCashCounterId')?.value || [];
-
-//   const groupedData: any[] = [];
-
-//   // Type wise sort
-//   const sortedCounters = [...selectedCounters].sort((a: any, b: any) =>
-//     (a.Type || a.type || '').localeCompare(b.Type || b.type || '')
-//   );
-
-//   let previousType = null;
-
-//   sortedCounters.forEach((x: any) => {
-
-//     const currentType = x.Type || x.type;
-
-//     // Type पहिल्यांदा आला तर Group Header
-//     if (currentType !== previousType) {
-
-//       groupedData.push({
-//         isGroup: true,
-//         Type: currentType
-//       });
-
-//       previousType = currentType;
-//     }
-
-//     // Actual row
-//     groupedData.push({
-//       value: x.value,
-//       text: x.text,
-//       isDefault: false,
-//       Type: currentType,
-//       isGroup: false
-//     });
-
-//   });
-
-//   this.dsCashcounterList.data = groupedData;
-
-//   console.log('Grouped Data:', this.dsCashcounterList.data);
+//     {
+//     "cashCounterId": 1,
+//     "cashCounterName": "OP Billing Counter",
+//     "cashCounterType": "OP_BILL"
 // }
-selectChangeCashCounterName1(obj: any) {
-console.log(obj)
-  const selectedCounters =
-    this.myuserApprovalform1.get('multipleCashCounterId')?.value || [];
+    selectChangeCashCounterName(obj: any) {
+        console.log(obj)
+        this.CashCounterName = obj.cashCounterName
+        console.log("set:", this.myuserApprovalform1.get('multipleCashCounterId').value)
 
+        const selectedCounters =
+        this.myuserApprovalform1.get('multipleCashCounterId')?.value || [];
+        this.buildCashCounterList(selectedCounters);
+    }
+ buildCashCounterList(selectedCounters: any[]) { 
   const groupedData: any[] = [];
 
-  // Get Type from CashCounter Name
-  const getCashCounterType = (text: string): string => {
-
-    const name = (text || '').trim().toUpperCase();
-
-    // ---------------- OP LAB ----------------
-    if (name.startsWith('OP NEW LAB')) {
-      return 'OP_LAB';
-    }
-
-    // ---------------- PHARMACY ----------------
-    if (name.startsWith('PHARMACY')) {
-      return 'PHARMACY';
-    }
-
-    // ---------------- OP ----------------
-    if (
-      name.startsWith('OP ') ||
-      name.startsWith('OPD ')
-    ) {
-      return 'OP';
-    }
-
-    // ---------------- IP ----------------
-    if (name.startsWith('IP ')) {
-      return 'IP';
-    }
-
-    // ---------------- OTHER ----------------
-    return 'OTHER';
-  };
-
-
-  // Type wise sort
-  const typeOrder: any = {
-    OP: 1,
-    IP: 2,
-    PHARMACY: 3,
-    OP_LAB: 4,
-    OTHER: 5
-  };
-
-  const sortedCounters = [...selectedCounters].sort((a: any, b: any) => {
-
-    const typeA = getCashCounterType(a.text);
-    const typeB = getCashCounterType(b.text);
-
-    return typeOrder[typeA] - typeOrder[typeB];
-  });
-
+  const sortedCounters = [...selectedCounters].sort(
+    (a: any, b: any) =>
+      (a.cashCounterType || 'OTHER').localeCompare(
+        b.cashCounterType || 'OTHER'
+      ));
 
   let previousType: string | null = null;
 
+  sortedCounters.forEach((x: any) => { 
+    const currentType = x.cashCounterType || 'OTHER';
 
-  sortedCounters.forEach((x: any) => {
-
-    const currentType = getCashCounterType(x.text);
-
-
-    // Type first time आला तर Header तयार करा
-    if (currentType !== previousType) {
-
+    // Group header
+    if (currentType !== previousType) { 
       groupedData.push({
         isGroup: true,
-        Type: currentType
-      });
-
+        cashCounterType: currentType 
+      }); 
       previousType = currentType;
     }
+   const receiptCashCounterId = this.getReceiptCashCounterId(currentType); 
 
+    // ID वरून Receipt CashCounter शोध
+    const receiptCounter =
+      this.AssignCashCounter.find(
+        (c: any) => c.cashCounterId === receiptCashCounterId
+      );
 
-    // Actual CashCounter
+    // Actual row
     groupedData.push({
-      value: x.value,
-      text: x.text,
-      isDefault: false,
-      Type: currentType,
-      isGroup: false
+      cashCounterId: x.cashCounterId,
+      cashCounterName: x.cashCounterName,
+      isDefault: x.isDefault || false,
+      cashCounterType: currentType,
+      isGroup: false,
+      receiptCashCounterId:receiptCashCounterId ,
+      ReceipCashCounterName: receiptCounter?.cashCounterName || ''  
     });
+  }); 
+  this.dsCashcounterList.data = groupedData;  
+  console.log('Grouped Data:', groupedData);
+}
+getReceiptCashCounterId(type: string): number | null { 
+    const config = this.hospitalconfigservice.HospitalconfigParams; 
+    switch (type) { 
+        case 'OP_BILL':
+            return config?.OPD_Receipt_CounterId ?? null;
 
-  });
+        case 'OP_REFUND_BILL':
+            return config?.OPD_Refund_Bill_Receipt_CounterId ?? null;
 
+        case 'IPD_ADVANCE':
+            return config?.IPD_Advance_Receipt_CounterId ?? null;
 
-  this.dsCashcounterList.data = groupedData;
+        case 'IPD_BILL':
+            return config?.IPD_Receipt_CounterId ?? null;
 
-  console.log('Grouped Data:', this.dsCashcounterList.data);
+        case 'IP_REFUND_BILL':
+            return config?.IPD_Refund_of_Bill_Receipt_CounterId ?? null;
+
+        case 'IP_REFUND_ADV_BILL':
+            return config?.IPD_Refund_of_Advance_Receipt_CounterId ?? null;
+
+        default:
+            return null;
+    }
 }
 isGroupRow = (index: number, row: any): boolean => {
   return row.isGroup === true;
-};
-
+}; 
 isDataRow = (index: number, row: any): boolean => {
   return row.isGroup !== true;
 };
-isLastTypeRow(index: number): boolean {
-
-  const data = this.dsCashcounterList.data;
-
+isLastTypeRow(index: number): boolean { 
+  const data = this.dsCashcounterList.data; 
   if (!data || data.length === 0) {
     return false;
-  }
-
+  } 
   // Last row
   if (index === data.length - 1) {
     return true;
+  }  
+  return data[index].cashCounterType !== data[index + 1].cashCounterType;
+}
+getGroupSequence(index: number): number {
+
+  const data = this.dsCashcounterList.data;
+
+  if (!data[index] || data[index].isGroup) {
+    return 0;
   }
 
-  // पुढच्या row चा Type वेगळा असेल तर current row last आहे
-  return data[index].Type !== data[index + 1].Type;
+  const currentType = data[index].cashCounterType;
+
+  let sequence = 0;
+
+  for (let i = 0; i <= index; i++) {
+
+    if (!data[i].isGroup &&
+        data[i].cashCounterType === currentType) {
+
+      sequence++;
+    }
+  }
+
+  return sequence;
+}
+onDefaultCounterChange(element: any, checked: boolean) { 
+  const data = this.dsCashcounterList.data;
+ 
+  if (!checked) { return; } 
+  const currentType = element.cashCounterType; 
+  // Same group मधले बाकीचे counters uncheck करा
+  data.forEach((row: any) => { 
+    if ( !row.isGroup && row.cashCounterType === currentType && row.cashCounterId !== element.cashCounterId
+    ) {  row.isDefault = false;  } 
+  }); 
+  // Angular ला data change कळवण्यासाठी
+  this.dsCashcounterList.data = [...data]; 
+  console.log('Selected default counter:', element);
 }
     selectChangeRoleName(obj: any) {
         this.rolename = obj.value
@@ -987,7 +932,56 @@ isLastTypeRow(index: number): boolean {
 
             ]
         };
+    } 
+
+
+
+    EditCashCounterReceipt: boolean = false;
+    ReceipCashCounterNameExisting :any='';
+    RecepCashcounterenableEditing(row: UserDetail) {
+        this.ReceipCashCounterNameExisting = ''
+        row.EditCashCounterReceipt = true;
+        this.ReceipCashCounterNameExisting = row.ReceipCashCounterName 
+         row.ReceipCashCounterName = '';
+        //           this.myuserApprovalform
+        // .get('receiptCashCounterId')
+        // ?.setValue(row.receiptCashCounterId);
     }
+    ReceiptcashcounterdisableEditing(row: UserDetail) {
+        row.EditCashCounterReceipt = false;
+        row.ReceipCashCounterName = this.ReceipCashCounterNameExisting;
+        // this.myuserApprovalform.get('receiptCashCounterId').setValue('')
+        // Existing row value पुन्हा dropdown मध्ये set
+        this.myuserApprovalform.get('receiptCashCounterId')?.setValue(row.receiptCashCounterId);
+        // this.getChargesList()
+    }
+       
+DropDownValue(obj: any, row: any) {
+    debugger 
+  console.log('Selected:', obj);
+  console.log('Row:', row);
+
+  if (!obj || !row) {
+    return;
+  }
+
+  row.receiptCashCounterId = obj.cashCounterId;
+  row.ReceipCashCounterName = obj.cashCounterName;
+
+  console.log( 'Updated Row:', row );
+}
+
+AssignCashCounter:any =[];
+        getuserAssigncashcounterlist(){  
+        this.AssignCashCounter = []; 
+        this._CreateUserService.getuserAssigncashcounterlist().subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                this.AssignCashCounter = cashcounterlist; 
+            } 
+        });
+    } 
 }
 
 export class UserDetail {
@@ -1048,6 +1042,9 @@ export class UserDetail {
     loginId: any;
     isBillReview: any;
     isAdminMultiview: any;
+    EditCashCounterReceipt:any;
+    ReceipCashCounterName:any;
+    receiptCashCounterId:any;
     /**
      * Constructor
      *
@@ -1106,6 +1103,9 @@ export class UserDetail {
             this.loginId = UserDetail.loginId || 0
             this.isBillReview = UserDetail.isBillReview || false
             this.isAdminMultiview = UserDetail.isAdminMultiview || false
+            this.EditCashCounterReceipt = UserDetail.EditCashCounterReceipt || 0
+            this.receiptCashCounterId = UserDetail.receiptCashCounterId || 0
+                 this.ReceipCashCounterName = UserDetail.ReceipCashCounterName || ''
         }
 
     }

@@ -178,9 +178,9 @@ export class PackageDetailsComponent {
         });
     }
     //IPD package list 
-    getIPDpackagedetList(obj) {
-        debugger
+    getIPDpackagedetList(obj) { 
         this.PacakgeList = [];
+        this.dsPackageDet.data = [];
         const vdata =
         {
             "first": 0,
@@ -211,7 +211,10 @@ export class PackageDetailsComponent {
                         pacakgeServiceName: element.pacakgeServiceName,
                         doctorName: element.doctorName || '',
                         doctorId: element.doctorId || 0,
-                        chargesId: element.chargesId
+                        chargesId: element.chargesId,
+                        isPathTestCompleted:element?.isPathTestCompleted,
+                        isRadTestCompleted:element?.isRadTestCompleted
+ 
                     })
             })
             this.dsPackageDet.data = this.PacakgeList
@@ -319,6 +322,18 @@ export class PackageDetailsComponent {
     }
     // service delete
     deleteTableRowPackage(contact) {
+        if (contact.isPathTestCompleted == "True") {
+            this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return
+        }
+        if (contact.isRadTestCompleted == "True" ) {
+            this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return
+        }
         Swal.fire({
             title: 'Do you want to Delete Service',
             text: "You won't be able to revert this!",
@@ -579,6 +594,8 @@ export class ChargesList {
     price: any;
     packageId: any;
     chargesId: any;
+    isPathTestCompleted:any;
+    isRadTestCompleted:any;
 
     constructor(ChargesList) {
         this.ChargesId = ChargesList.ChargesId || '';
@@ -602,6 +619,8 @@ export class ChargesList {
         this.PackageServiceId = ChargesList.PackageServiceId || 0;
         this.IsPackage = ChargesList.IsPackage || 0;
         this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+        this.isPathTestCompleted = ChargesList.isPathTestCompleted || '';
+       this.isRadTestCompleted = ChargesList.isRadTestCompleted || '';
     }
 }
 

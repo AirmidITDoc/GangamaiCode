@@ -250,10 +250,10 @@
                             [formGroup]="InterimFooterForm" [mode]="autocompleteModeCashCounter"
                             [validations]="getValidationMessages().cashCounterId">
                         </airmid-dropdown>
-
+                        <!--  [selectFirstByDefault]="true" -->
                          <airmid-dropdown  *ngIf="UserWsieCashcounterId" fxFlex  label="Select Cash Counter" formControlName="CashCounterID"
                         [formGroup]="InterimFooterForm"    TextField="cashCounterName" ValueField="cashCounterId"
-                        [selectFirstByDefault]="true"
+                       
                                     [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IPD_BILL'"
                          ></airmid-dropdown>
                     </div>

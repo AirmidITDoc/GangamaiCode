@@ -122,7 +122,7 @@ export class InterimBillComponent implements OnInit {
             this.InterimFooterForm.get('discPer')?.disable();
             this.InterimFooterForm.get('concessionAmt')?.disable(); 
         }
-      
+      this.getuserwisecashcounterlist();
     }
     CreateFooterForm(): FormGroup {
         return this.formBuilder.group({
@@ -1037,6 +1037,18 @@ export class InterimBillComponent implements OnInit {
             ],
         }
     }
+        getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='IPD_BILL';
+        this._IpSearchListService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.InterimFooterForm.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
 }
 export class Bill {
     AdmissionID: any;

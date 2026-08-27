@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { RequestforlabtestService } from './requestforlabtest.service';
+import { LababnormalListComponent } from './lababnormal-list/lababnormal-list.component';
 
 @Component({
     selector: 'app-requestforlabtest',
@@ -294,5 +295,21 @@ export class RequestforlabtestComponent implements OnInit {
 
     viewgetPathologyTestReportwithheaderPdf(data) {
         this.commonService.Onprint("OP_IP_Type", data, "PathologyReportWithHeader");
+    }
+
+    getLabResultview(row: any): void {
+        console.log("List:",row)
+        const opipid=row.opipid
+        this._matDialog.open(LababnormalListComponent, {
+            maxWidth: "95vw",
+            height: '95%',
+            width: '90%',
+            data: {
+                row: row,
+                vOPIPId: opipid,
+                opipType: 1,
+                patientName: ''//this.PatientName
+            }
+        })
     }
 }

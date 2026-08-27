@@ -87,6 +87,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
         const [UserWsieCashcounterId, UserWsieCashcounterVal] = this._ConfigService.configParams.IsUserwiseCashCounterflow.split(":");
         this.UserWsieCashcounterId = UserWsieCashcounterId === "1";
+
+        this.getuserwisecashcounterlist();
     }
     createRefAdvForm() {
         debugger
@@ -403,6 +405,19 @@ export class IPRefundofAdvanceComponent implements OnInit {
         const [day, month, year] = dateStr.split('/');
         return `${year}-${month}-${day}`;
     }
+
+            getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='IP_REFUND_ADV_BILL';
+        this._IpSearchListService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.RefundOfAdvanceFormGroup.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
 }
 
 export class IPRefundofAdvance {

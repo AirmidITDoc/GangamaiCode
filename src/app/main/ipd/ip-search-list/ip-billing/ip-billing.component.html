@@ -1050,9 +1050,11 @@
                         [formGroup]="IpbillFooterform" [validations]="getValidationMessages().cashCounterId"
                         [mode]="autocompleteModeCashcounter"></airmid-dropdown>
 
+
+                        <!-- [selectFirstByDefault]="true" -->
                         <airmid-dropdown *ngIf="UserWsieCashcounterId" label="Select Cash Counter" formControlName="CashCounterID"
                           [formGroup]="IpbillFooterform" TextField="cashCounterName" ValueField="cashCounterId"
-                          [selectFirstByDefault]="true"
+                          
                           [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IPD_BILL'"></airmid-dropdown>
                     </div>
 

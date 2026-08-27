@@ -49,6 +49,9 @@ export class AppointmentBillService {
     public InsertIPAddCharges(param) {
         return this._httpClient1.PostData("IPBill/InsertIPDPackageBill", param);
     }
+     public getuserwisecashcounterlist(vUserID,Type) {
+        return this._httpClient1.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
+    }
     public AddchargesDelete(m_data, loader = true) {
         if (loader) {
             this._loaderService.show();

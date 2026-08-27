@@ -82,5 +82,7 @@ export class CreateUserService {
     public getEmpById(ID) {
         return this._httpClient.GetData("CompanyEmployeInfo/" + ID)
     }
-
+    public getuserAssigncashcounterlist() {
+        return this._httpClient.GetData("VisitDetail/AssignUserWiseCashCounterList");
+    }
 }

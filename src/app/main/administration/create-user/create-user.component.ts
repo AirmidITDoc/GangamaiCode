@@ -244,8 +244,8 @@ export class CreateUserComponent implements OnInit {
         const dialogRef = this._matDialog.open(NUserComponent,
             {
                 maxWidth: "95vw",
-                maxHeight: '95vh',
-                height: '95%',
+                maxHeight: '96vh',
+                height: '96%',
                 width: '90%',
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -267,8 +267,8 @@ export class CreateUserComponent implements OnInit {
         const dialogRef = this._matDialog.open(NUserComponent,
             {
                 maxWidth: "95vw",
-                maxHeight: '95vh',
-                height: '95%',
+                maxHeight: '96vh',
+                height: '96%',
                 width: '90%',
                 data: row
             });

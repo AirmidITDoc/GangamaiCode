@@ -118,7 +118,7 @@ export class RefundbillComponent implements OnInit {
         this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date) || '1900-01-01')
         this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
 
-
+    this.getuserwisecashcounterlist();
     }
 
     createSearchForm() {
@@ -524,6 +524,19 @@ export class RefundbillComponent implements OnInit {
             return false;
         }
     }
+    
+        getuserwisecashcounterlist(){ 
+        if(!this.UserWsieCashcounterId){ return};
+        const  Type ='OP_REFUND_BILL';
+        this._RefundbillService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+            const cashcounterlist = data
+            console.log('user wise cashcounter list: ', cashcounterlist) ;
+            if(cashcounterlist){
+                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+                this.searchFormGroup.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
+            } 
+        });
+    } 
 }
 
 export class InsertRefund {
