@@ -175,11 +175,11 @@
 
 
                             <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                                (click)="$event.stopPropagation();" *ngIf="element.interimOrFinal=='0'">
+                                (click)="$event.stopPropagation();" *ngIf="element.interimOrFinal=='0' && element.isCancelled !=1 ">
                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                             </button>
-                            <mat-menu #moreMenu="matMenu" *ngIf="element.balanceAmt !=0 && element.isCancelled !=1 ">
-                                <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                            <mat-menu #moreMenu="matMenu">
+                                <ng-container *ngFor="let m of menuActions">
                                     <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
                                         <span>{{m}}</span>
                                     </button>
