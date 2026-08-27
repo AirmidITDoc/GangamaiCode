@@ -122,7 +122,7 @@ export class AirmidEditorComponent {
                 'numberedList',
                 'outdent',
                 'indent',
-                'insertImage', 
+                'insertImage',
             ],
             shouldNotGroupWhenFull: false
         },
@@ -151,7 +151,7 @@ export class AirmidEditorComponent {
             HtmlComment,
             HtmlEmbed,
             Image,
-            
+
             ImageBlock,
             ImageCaption,
             ImageInline,
@@ -253,7 +253,7 @@ export class AirmidEditorComponent {
         },
         image: {
             toolbar: [
-                  'insertImage',
+                'insertImage',
                 'toggleImageCaption',
                 'imageTextAlternative',
                 '|',
@@ -286,13 +286,29 @@ export class AirmidEditorComponent {
                 reversed: true
             }
         },
+        // mention: {
+        //     feeds: [
+        //         {
+        //             marker: '@',
+        //             feed: [
+        //                 /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
+        //             ]
+        //         }
+        //     ]
+        // },
         mention: {
             feeds: [
                 {
                     marker: '@',
-                    feed: [
-                        /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
-                    ]
+                    feed: (queryText: string) => {
+                        return this.mentionItems
+                            .filter(item =>
+                                item.text
+                                    .toLowerCase()
+                                    .includes(queryText.toLowerCase())
+                            )
+                            .slice(0, 10);
+                    }
                 }
             ]
         },
@@ -348,6 +364,9 @@ export class AirmidEditorComponent {
     languages: LanguageOption[] = [];
     selectedLang = 'en-US';
     @Input() data: string = '';
+    ////////////////////////
+    @Input() mentionItems: any[] = [];
+    ///////////////////////
     private destroy: Subject<void> = new Subject();
     control = new FormControl();
     @Input() formGroup: FormGroup;
