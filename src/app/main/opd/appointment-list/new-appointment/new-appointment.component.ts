@@ -465,6 +465,7 @@ export class NewAppointmentComponent implements OnInit {
             this._AppointmentlistService.getMaster(mode, 1);
             this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
             this.VisitFormGroup.get('policyNumber').setValidators([Validators.required]);
+            this.VisitFormGroup.get('policyNumber').updateValueAndValidity();
             this.isCompanySelected = true;
             this.patienttype = 2;
         } else if (value.text == "Self") {
@@ -591,7 +592,8 @@ export class NewAppointmentComponent implements OnInit {
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                             RegDate: this.registerObj?.regDate ?? this.currentDate,
-                            RegTime: this.registerObj?.regTime ?? this.currentDate
+                            RegTime: this.registerObj?.regTime ?? this.currentDate,
+                            membershipId: 0
                         });
                         console.log(this.registerObj)
                     });
@@ -694,7 +696,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     getSelectedObjtrust(obj) {
-        
+
         console.log(obj)
         // if (this.data?.FormName == 'Registration-Page') {
         this.PatientName = obj.firstName + ' ' + obj.lastName;
@@ -703,7 +705,7 @@ export class NewAppointmentComponent implements OnInit {
 
         this._AppointmentlistService.getMemeberbyIdList(obj.membershipId).subscribe(response => {
             console.log(response)
-debugger
+            debugger
             if (response) {
 
                 this.registerObjtrust = response;
@@ -714,7 +716,7 @@ debugger
                 //set state
                 debugger
                 // if (this.registerObjtrust.husbandDob !== '1900-01-01T00:00:00') {
-                  if (this.registerObjtrust.hprefixId !==0) {
+                if (this.registerObjtrust.hprefixId !== 0) {
                     this.onChangeDateofBirth(new Date(this.registerObjtrust.husbandDob))
                     var Bdate = this.registerObjtrust.husbandDob
 
@@ -761,7 +763,7 @@ debugger
                     this.personalFormGroup.get("PrefixId").setValue(obj.prefixId)
                     this.personalFormGroup.get("GenderId").setValue(obj.genderId)
                 } else {
-debugger
+                    debugger
                     this.personalFormGroup.patchValue({
                         prefixId: this.registerObjtrust.wprefixId,
                         FirstName: this.registerObjtrust.wifeFirstName.trim(),
@@ -801,14 +803,14 @@ debugger
                         RegTime: this.currentDate
                     });
 
-                     this.personalFormGroup.get("PrefixId").setValue(obj.prefixId)
-                    this.personalFormGroup.get("GenderId").setValue(obj.genderId) 
-                     this.onChangeDateofBirth1(new Date(this.registerObjtrust.wifeDob))
+                    this.personalFormGroup.get("PrefixId").setValue(obj.prefixId)
+                    this.personalFormGroup.get("GenderId").setValue(obj.genderId)
+                    this.onChangeDateofBirth1(new Date(this.registerObjtrust.wifeDob))
                     var Bdate = this.registerObjtrust.wifeDob
                 }
-                           
-             
-             
+
+
+
                 if (this.registerObjtrust.husbandDob !== '1900-01-01T00:00:00') {
                     this.personalFormGroup.get("DateOfBirth").setValue(this.registerObjtrust.husbandDob)
                     this.registerObj.dateofBirth = this.registerObjtrust.husbandDob
@@ -1051,7 +1053,7 @@ debugger
                         return;
                     }
                     if (this.isCompanySelected && this.VisitFormGroup.get('policyNumber').value == 0) {
-                        this.toastr.warning('Please enter Membership No', 'Warning !', {
+                        this.toastr.warning('Please enter policyNumber /Document No', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
                         });
                         return;
