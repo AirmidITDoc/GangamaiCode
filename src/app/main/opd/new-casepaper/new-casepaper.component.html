@@ -397,12 +397,21 @@
                                                         </div>
 
                                                         <hr>
-                                                        <app-airmid-chipautocomplete fxFlex
+                                                        <app-airmid-chipautocomplete fxFlex #chiefComplaintInput
                                                             [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeChiefComplaint($event)">
                                                         </app-airmid-chipautocomplete>
+
+                                                        <button mat-icon-button type="button"
+                                                            (click)="onMicToggleChiefComplaint()"
+                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                            [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+                                                            aria-label="Toggle speech recognition for chief complaints">
+                                                            <mat-icon>{{speechService.isListening ? 'mic_off' :
+                                                                'mic'}}</mat-icon>
+                                                        </button>
 
                                                         <!-- <button mat-icon-button matSuffix (click)="onExmaniUpdate(caseFormGroup.get('mAssignChiefComplaint')?.value)"
                                                             [color]="speechService.isListening ? 'warn' : 'primary'"
@@ -448,12 +457,20 @@
                                                             (chipsChange)="selectChangeDiagnosis($event)">
                                                         </app-airmid-chipautocomplete> -->
 
-                                                        <app-airmid-diagnos-chipautocomplete fxFlex
+                                                        <app-airmid-diagnos-chipautocomplete fxFlex #AssignDiagnosis
                                                             [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
                                                             [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
                                                             [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeDiagnosis($event)">
                                                         </app-airmid-diagnos-chipautocomplete>
+                                                        <button mat-icon-button type="button"
+                                                            (click)="onMicToggleAssignDiagnosis()"
+                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                            [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+                                                            aria-label="Toggle speech recognition for chief complaints">
+                                                            <mat-icon>{{speechService.isListening ? 'mic_off' :
+                                                                'mic'}}</mat-icon>
+                                                        </button>
                                                     </div>
 
                                                     <div style="margin-bottom: 16px;" fxLayout="column">
@@ -478,14 +495,21 @@
 
                                                         </div>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete fxFlex
+                                                        <app-airmid-chipautocomplete fxFlex #AssignExamination
                                                             [chips]="caseFormGroup.get('mAssignExamination')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeExamination($event)">
 
                                                         </app-airmid-chipautocomplete>
-
+                                                        <button mat-icon-button type="button"
+                                                            (click)="onMicToggleAssignExamination()"
+                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                            [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+                                                            aria-label="Toggle speech recognition for chief complaints">
+                                                            <mat-icon>{{speechService.isListening ? 'mic_off' :
+                                                                'mic'}}</mat-icon>
+                                                        </button>
 
 
                                                     </div>
