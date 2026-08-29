@@ -4,7 +4,7 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Admission Task</span>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> 11Admission Task</span>
         </div>
         <div class="close-icon">
             <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
@@ -234,22 +234,18 @@
             <div class="center p-12 pb-56" style="border-radius: 4px;">
                 <!-- CONTENT -->
                 <div class="content-card">
-                    <!-- <form [formGroup]="VisitForm"> -->
-
+                
                     <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
 
-
                         <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
-
-
-                            <app-common-date [screenFrom]="screenFromString"
+                        <app-common-date [screenFrom]="screenFromString"
                                 (dateTimeEventEmitter)="getDateTime($event)" style="width: 200px;">
                             </app-common-date>
 
                         </div>
 
                     </div>
-                    <!-- </form> -->
+                   
                 </div>
             </div>
         </div>
@@ -1112,8 +1108,7 @@
                                         Refund Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                        {{contact.RefundDate | date:ShortDate
-}}
+                                        {{contact.RefundDate | date:ShortDate}}
                                     </mat-cell>
                                 </ng-container>
 

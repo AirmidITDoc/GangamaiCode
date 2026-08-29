@@ -20,6 +20,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dosemaster.component';
 import { InstructionmasterComponent } from 'app/main/setup/prescription/instructionmaster/instructionmaster.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { AirmidChipautocompleteComponent } from 'app/main/shared/componets/airmid-chipautocomplete/airmid-chipautocomplete.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
@@ -207,6 +208,9 @@ export class NewCasepaperComponent implements OnInit {
 
     @ViewChild('ddlDiagnosis') ddlDiagnosis: AirmidDropDownComponent;
     @ViewChild('ddlChiefComplaint') ddlChiefComplaint: AirmidDropDownComponent;
+    @ViewChild('chiefComplaintInput') chiefComplaintInput: AirmidChipautocompleteComponent;
+    @ViewChild('AssignDiagnosis') AssignDiagnosis: AirmidChipautocompleteComponent;
+    @ViewChild('AssignExamination') AssignExamination: AirmidChipautocompleteComponent;
     @ViewChild('ddlExamination') ddlExamination: AirmidDropDownComponent;
     @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
     @ViewChild('ddlService1') ddlService1: AirmidDropDownComponent;
@@ -403,6 +407,22 @@ export class NewCasepaperComponent implements OnInit {
             const currentText = this.caseFormGroup.get('historyOfIllness')?.value || '';
             const updated = currentText ? `${currentText} ${text}` : text;
             this.caseFormGroup.get('historyOfIllness')?.setValue(updated);
+        });
+    }
+
+    onMicToggleChiefComplaint() {
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+            this.chiefComplaintInput?.addChip(text);
+        });
+    }
+    onMicToggleAssignDiagnosis(){
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+            this.AssignDiagnosis?.addChip(text);
+        });
+    }
+    onMicToggleAssignExamination(){
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => { 
+            this.AssignExamination?.addChip(text);
         });
     }
 

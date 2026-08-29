@@ -74,6 +74,7 @@ export class AirmidChipautocompleteComponent extends BaseFormControlComponent im
         this.chipsChange.emit(this.chips);
         this.resetInput();
         this.filterOptions();
+        this.showDropdown = false;
     }
 
 
