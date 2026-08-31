@@ -518,14 +518,21 @@
 
                                                         </div>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete fxFlex
+                                                        <app-airmid-chipautocomplete fxFlex #AssignExamination
                                                             [chips]="caseFormGroup.get('mAssignExamination')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                                             (chipsChange)="selectChangeExamination($event)">
 
                                                         </app-airmid-chipautocomplete>
-
+                                                        <button mat-icon-button type="button"
+                                                            (click)="onMicToggleAssignExamination()"
+                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                            [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+                                                            aria-label="Toggle speech recognition for chief complaints">
+                                                            <mat-icon>{{speechService.isListening ? 'mic_off' :
+                                                                'mic'}}</mat-icon>
+                                                        </button>
 
 
                                                     </div>
