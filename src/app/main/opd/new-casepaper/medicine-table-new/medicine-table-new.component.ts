@@ -9,6 +9,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import { CasepaperService } from '../casepaper.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Router } from '@angular/router';
 
 export interface MedicineItem {
     DrugId?: number;
@@ -94,7 +95,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         private _formBuilder: UntypedFormBuilder,
         private toastr: ToastrService,
         private _casepaperService: CasepaperService,
-        private apiCaller: ApiCaller
+        private apiCaller: ApiCaller, private router: Router
     ) {
         this.initForm();
     }
@@ -143,17 +144,17 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.drugId = row.itemId;
         this.drugName = row.itemName;
         this.vdoseName = row.doseName;
-        this.vDay = row.doseDay;  
+        this.vDay = row.doseDay;
 
         this.medicineForm.get('DoseId').setValue(this.vdoseName);
-        this.medicineForm.get('Day').setValue(this.vDay);  
- 
+        this.medicineForm.get('Day').setValue(this.vDay);
+
         if (row?.instructionId && row?.instruction) {
             this.onInsetSelected({
                 value: row?.instructionId ?? 0,
                 text: row?.instruction ?? ''
             });
-        }  
+        }
 
         if (this.vdoseName) {
             const doseRow = { value: this.vdoseName, text: this.vdoseName };
@@ -183,7 +184,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.vItemGenericNameId = row.value;
         this.vItemGenericName = row.text;
     }
-Syrup:boolean = false;
+    Syrup: boolean = false;
     // Handle dose selection
     onDoseSelected(row: any): void {
         this.doseId = row.value;
@@ -193,8 +194,8 @@ Syrup:boolean = false;
                 this._casepaperService.getDoseMasterById(this.doseId).subscribe((response: any) => {
                     this.doseQtyPerDay = response?.doseQtyPerDay || 0;
                     this.doseName = response.doseName;
-                    if((response?.doseQtyPerDay || 0) == 0){
-                        this.Syrup =  true;
+                    if ((response?.doseQtyPerDay || 0) == 0) {
+                        this.Syrup = true;
                     }
                 });
             }, 300);
@@ -231,6 +232,14 @@ Syrup:boolean = false;
         this.insertPlaceholderRow();
     }
 
+    RefreshRow(): void {
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate([currentUrl]);
+        });
+        this.loadDropdownOptions();
+    }
+
     // Confirm row
 
     confirmRow(row: MedicineItem): boolean {
@@ -251,10 +260,10 @@ Syrup:boolean = false;
         const qty = this.doseQtyPerDay || 0;
         const days = this.medicineForm.get('Day').value || this.vDay;
         const Instruction = this.instruction || this.medicineForm.get('Instruction')?.value || ''
-        let totalqty= 0;
-        if(this.Syrup){
+        let totalqty = 0;
+        if (this.Syrup) {
             totalqty = 1;
-        }else{
+        } else {
             totalqty = Math.round(qty * days) || 0;
         }
 
@@ -291,8 +300,8 @@ Syrup:boolean = false;
         // if(row.instructionId > 0)
         //    Instruction = row.instructionId
         // else
-        Instruction = row.instruction 
-     
+        Instruction = row.instruction
+
         this.medicineForm.patchValue({
             ItemId: drugControlValue,
             Day: row.Days ?? row.days ?? '',
@@ -303,19 +312,19 @@ Syrup:boolean = false;
         }, { emitEvent: false });
 
         // Set local values for editing 
-        if((row?.QtyPerDay || 0) == 0){
-            this.Syrup =  true; 
-        }else{
-            this.Syrup =  false;
+        if ((row?.QtyPerDay || 0) == 0) {
+            this.Syrup = true;
+        } else {
+            this.Syrup = false;
         }
-        this.doseQtyPerDay = row?.QtyPerDay || row?.qtyPerDay || 0 ;
+        this.doseQtyPerDay = row?.QtyPerDay || row?.qtyPerDay || 0;
         this.drugId = row?.DrugId || row?.drugId || 0;
-        this.drugName = row.DrugName || row.drugName || ''; 
+        this.drugName = row.DrugName || row.drugName || '';
         this.instructionId = row.instructionId || 0
         this.doseName = row.DoseName || row.doseName || '';
         this.doseId = row.DoseId || row?.doseId || 0;
         this.vItemGenericNameId = row.GenericId || row.genericId || row.genericid || 0;
-        this.vItemGenericName = row.GenericName || row.genericName || ''; 
+        this.vItemGenericName = row.GenericName || row.genericName || '';
         this.focusFirstEditableField();
     }
 
@@ -436,7 +445,7 @@ Syrup:boolean = false;
         const confirmed = this.confirmRow(row);
         if (confirmed) {
             this.handlePostConfirmation(row, wasExistingRecord);
-            this.instructionId=0
+            this.instructionId = 0
         }
     }
 
@@ -621,19 +630,19 @@ Syrup:boolean = false;
             });
         }
     }
- 
-onInstSelectionChange(event: MatAutocompleteSelectedEvent): void {
-  const selectedValue = event.option.value;
 
-  const option = this.InstructionOptions.find(opt => opt.value === selectedValue || opt.Value === selectedValue );
+    onInstSelectionChange(event: MatAutocompleteSelectedEvent): void {
+        const selectedValue = event.option.value;
 
-  if (option) {
-    this.onInsetSelected({
-      value: option.value ?? option.Value,
-      text: option.text ?? option.Text
-    });
-  }
-}
+        const option = this.InstructionOptions.find(opt => opt.value === selectedValue || opt.Value === selectedValue);
+
+        if (option) {
+            this.onInsetSelected({
+                value: option.value ?? option.Value,
+                text: option.text ?? option.Text
+            });
+        }
+    }
 
     private loadDropdownOptions(): void {
         this.fetchDropdownOptions(this.autocompleteModeItemGeneric)
