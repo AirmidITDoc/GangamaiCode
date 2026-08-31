@@ -36,7 +36,8 @@ import { SampleList } from 'app/main/pathology/result-entry/result-entry.compone
 import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
 import { NewInstructionMasterComponent } from 'app/main/setup/prescription/instructionmaster/new-instruction-master/new-instruction-master.component';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
-import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabtest/lababnormal-list/lababnormal-list.component';
+import { AirmidChipautocompleteComponent } from 'app/main/shared/componets/airmid-chipautocomplete/airmid-chipautocomplete.component';
+// import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabtest/lababnormal-list/lababnormal-list.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -53,7 +54,9 @@ import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabt
     animations: fuseAnimations
 })
 export class NewCasepaperComponent implements OnInit {
-
+    mycertificateForm: FormGroup;
+    private recognition: any = null;
+    isListening = false;
     selectedLang = 'en-US';
     languages: LanguageOption[] = [];
 
@@ -183,7 +186,7 @@ export class NewCasepaperComponent implements OnInit {
         'doctorName',
         'Action',
     ]
-    mycertificateForm: FormGroup;
+
     onBlur(e: any) {
         this.vcertificateText = e.target.innerHTML;
         throw new Error('Method not implemented.');
@@ -210,8 +213,14 @@ export class NewCasepaperComponent implements OnInit {
     @ViewChild('ddlExamination') ddlExamination: AirmidDropDownComponent;
     @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
     @ViewChild('ddlService1') ddlService1: AirmidDropDownComponent;
+    @ViewChild('ddlService2') ddlService2: AirmidDropDownComponent;
     @ViewChild('medicineTableRef') medicineTableRef: MedicineTableNewComponent;
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+
+    @ViewChild('chiefComplaintInput') chiefComplaintInput: AirmidChipautocompleteComponent;
+    @ViewChild('AssignDiagnosis') AssignDiagnosis: AirmidChipautocompleteComponent;
+    @ViewChild('AssignExamination') AssignExamination: AirmidChipautocompleteComponent;
+
 
     BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -237,7 +246,6 @@ export class NewCasepaperComponent implements OnInit {
             this.vDayInput = FollowUpdateSet
             this.vDays = FollowUpdateSet
         }
-
 
         if (this.vDays == 0) {
             const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'FollowUpDateSet');
@@ -332,6 +340,72 @@ export class NewCasepaperComponent implements OnInit {
         //     this.MedicineItemForm.get('DoctorID')?.setValue(this.regObj.doctorId);
         // }
 
+        const SpeechRecognition =
+            (window as any).SpeechRecognition ||
+            (window as any).webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            console.error('Speech recognition is not supported in this browser.');
+            return;
+        }
+
+        this.recognition = new SpeechRecognition();
+
+        this.recognition.continuous = true;
+        this.recognition.interimResults = false;
+        this.recognition.lang = this.selectedLang || 'en-US';
+
+        // Microphone started
+        this.recognition.onstart = () => {
+            console.log('MIC ON');
+            this.isListening = true;
+        };
+
+        // Speech result
+        this.recognition.onresult = (event: any) => {
+
+            let text = '';
+
+            for (
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
+            ) {
+                if (event.results[i].isFinal) {
+                    text += event.results[i][0].transcript;
+                }
+            }
+
+            if (text.trim()) {
+
+                const control = this.caseFormGroup.get('historyOfIllness');
+
+                if (control) {
+                    const currentText = control.value || '';
+
+                    const updatedText = currentText
+                        ? currentText + ' ' + text.trim()
+                        : text.trim();
+
+                    control.setValue(updatedText);
+                }
+
+                console.log('Recognized:', text);
+            }
+        };
+
+        // Microphone stopped
+        this.recognition.onend = () => {
+            console.log('MIC OFF');
+            this.isListening = false;
+        };
+
+        // Error
+        this.recognition.onerror = (event: any) => {
+            console.error('Speech recognition error:', event.error);
+            this.isListening = false;
+        };
+
         this.loadGridDataForVisit(this.VisitId);
     }
     calculateDays(regObj) {
@@ -397,15 +471,75 @@ export class NewCasepaperComponent implements OnInit {
             this.MedicineItemForm.get('Remark')?.setValue(updated);
         });
     }
+
+    private initSpeechRecognition() {
+
+        this.recognition.onstart = () => {
+            this.isListening = true;
+        };
+
+        this.recognition.onerror = (event: any) => {
+            console.error('Speech recognition error:', event.error);
+            this.isListening = false;
+        };
+
+        this.recognition.onend = () => {
+            this.isListening = false;
+        };
+    }
+
     onMicToggle1() {
-        // console.log(this.selectedLang);
+
+        if (!this.recognition) {
+            console.error('Speech recognition not initialized');
+            return;
+        }
+
+        if (this.isListening) {
+            // OFF
+            console.log('Stopping microphone...');
+            this.recognition.stop();
+        } else {
+            // ON
+            console.log('Starting microphone...');
+
+            this.recognition.lang = this.selectedLang || 'en-US';
+
+            try {
+                this.recognition.start();
+            } catch (error) {
+                console.error('Could not start microphone:', error);
+            }
+        }
+
         this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
             const currentText = this.caseFormGroup.get('historyOfIllness')?.value || '';
             const updated = currentText ? `${currentText} ${text}` : text;
             this.caseFormGroup.get('historyOfIllness')?.setValue(updated);
         });
+
+        // if (this.isListening) {
+        //     this.stopListening();
+        // } else {
+        //     this.startListening();
+        // }
     }
 
+    private startListening(): void {
+        try {
+            this.recognition.start();
+            this.isListening = true;
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+
+    private stopListening(): void {
+        if (this.recognition && this.isListening) {
+            this.recognition.stop();
+        }
+        this.isListening = false;
+    }
 
 
     onFileSelected(event: any) {
@@ -444,6 +578,17 @@ export class NewCasepaperComponent implements OnInit {
             this.ddlService1.SetSelection(this.caseFormGroup.value.mAssignService1.map(x => x.serviceId));
 
             this.selectedItems1 = this.caseFormGroup.value.mAssignService1.map(x => ({ serviceId: x.serviceId }));
+        }
+    }
+
+    removeService2(item) {
+        const removedIndex = this.caseFormGroup.value.mAssignService2.findIndex(x => x.serviceId === item.serviceId);
+        if (removedIndex !== -1) {
+            this.caseFormGroup.value.mAssignService2.splice(removedIndex, 1);
+
+            this.ddlService2.SetSelection(this.caseFormGroup.value.mAssignService2.map(x => x.serviceId));
+
+            this.selectedItems2 = this.caseFormGroup.value.mAssignService2.map(x => ({ serviceId: x.serviceId }));
         }
     }
 
@@ -514,6 +659,7 @@ export class NewCasepaperComponent implements OnInit {
             mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+            mAssignService2: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             historyOfIllness: ['']
         });
     }
@@ -712,8 +858,8 @@ export class NewCasepaperComponent implements OnInit {
 
             // 2nd detail
             this.topRequestListArray.clear();
-
-            const combinedItems = [...this.selectedItems, ...this.selectedItems1];
+            debugger
+            const combinedItems = [...this.selectedItems, ...this.selectedItems1, ...this.selectedItems2];
 
             if (combinedItems.length === 0) {
                 this.topRequestListArray.push(
@@ -1252,22 +1398,30 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     selectedItems = [];
-    // @ViewChild('ddlDoctor', { read: ElementRef }) ddlDoctor!: ElementRef;
+
     selectChangeServiceName(row) {
         const selectedData = Array.isArray(row) ? row : [row];
         this.selectedItems = selectedData.map(item => ({ serviceId: item.serviceId }));
 
-        // to stop popup
         this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
     }
 
     selectedItems1 = [];
-    // @ViewChild('ddlDoctor', { read: ElementRef }) ddlDoctor!: ElementRef;
+
     selectChangeServiceName1(row) {
         const selectedData = Array.isArray(row) ? row : [row];
         this.selectedItems1 = selectedData.map(item => ({ serviceId: item.serviceId }));
 
-        // to stop popup
+        this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
+    }
+
+
+    selectedItems2 = [];
+
+    selectChangeServiceName2(row) {
+        const selectedData = Array.isArray(row) ? row : [row];
+        this.selectedItems2 = selectedData.map(item => ({ serviceId: item.serviceId }));
+
         this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
     }
 
@@ -1312,10 +1466,18 @@ export class NewCasepaperComponent implements OnInit {
                     if (element.isRadiology === 1) {
                         this.selectedItems1.push(item);
                     }
+
+                    // Other
+                    if (element.isPathology !== 1 && element.isRadiology !== 1) {
+                        this.selectedItems2.push(item);
+                    }
                 });
                 console.log('Radio & Path:', this.RtrvTestServiceList)
                 this.caseFormGroup.get('mAssignService').setValue(this.selectedItems);
                 this.caseFormGroup.get('mAssignService1').setValue(this.selectedItems1);
+
+                this.caseFormGroup.get('mAssignService2').setValue(this.selectedItems2);
+
             }
         })
     }
@@ -2062,6 +2224,11 @@ export class NewCasepaperComponent implements OnInit {
                 // height: "65%" 
             });
         dialogRef.afterClosed().subscribe(result => {
+            // this.showDoseDropdownRefresh = false;
+            // setTimeout(() => {
+            //     this.showDoseDropdownRefresh = true;
+            // }, 100);
+            this.onRefrshClick()
         });
     }
 
@@ -2079,13 +2246,14 @@ export class NewCasepaperComponent implements OnInit {
             });
         // dialogRef.componentInstance.openedFromOPD = true;
         dialogRef.afterClosed().subscribe(result => {
-            this.showDoseDropdownRefresh = false;
-            setTimeout(() => {
-                this.showDoseDropdownRefresh = true;
-            }, 100);
+            // this.showDoseDropdownRefresh = false;
+            // setTimeout(() => {
+            //     this.showDoseDropdownRefresh = true;
+            // }, 100);
+            this.onRefrshClick()
         });
     }
-
+    showDoseDropdownRefresh1 = true;
     getInstrMaster() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -2099,11 +2267,12 @@ export class NewCasepaperComponent implements OnInit {
             });
         // dialogRef.componentInstance.openedFromOPD = true;
         dialogRef.afterClosed().subscribe(result => {
-            //  Force re-render of dropdown to reload internal data
             // this.showDoseDropdownRefresh = false;
             // setTimeout(() => {
             //     this.showDoseDropdownRefresh = true;
             // }, 100);
+
+            this.onRefrshClick()
         });
     }
 
@@ -2113,6 +2282,13 @@ export class NewCasepaperComponent implements OnInit {
         }
     }
 
+    onRefrshClick(): void {
+
+        if (this.medicineTableRef) {
+            this.medicineTableRef.RefreshRow();
+        }
+
+    }
     //Diagnosis
     addDiagnos(event: any): void {
         const input = event.input;
@@ -2427,11 +2603,6 @@ export class NewCasepaperComponent implements OnInit {
                     fieldName: "OPIPId",
                     fieldValue: String(visitId),
                     opType: "Equals"
-                },
-                {
-                    fieldName: "OPIPType",
-                    fieldValue: "0",
-                    opType: "Equals"
                 }
             ],
             exportType: "JSON",
@@ -2649,7 +2820,6 @@ export class NewCasepaperComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "OPIPId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
-            { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
         row: 25,
         localData: []
@@ -2927,17 +3097,32 @@ export class NewCasepaperComponent implements OnInit {
         }
     }
     getLabResultview(row: any): void {
-        this._matDialog.open(LababnormalListComponent, {
-            maxWidth: "95vw",
-            height: '95%',
-            width: '90%',
-            data: {
-                row: row,
-                vOPIPId: this.vOPIPId,
-                opipType: 0,
-                patientName: this.PatientName
-            }
-        })
+        // this._matDialog.open(LababnormalListComponent, {
+        //     maxWidth: "95vw",
+        //     height: '95%',
+        //     width: '90%',
+        //     data: {
+        //         row: row,
+        //         vOPIPId: this.vOPIPId,
+        //         opipType:0
+        //     }
+        // })
+    }
+
+    onMicToggleChiefComplaint() {
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+            this.chiefComplaintInput?.addChip(text);
+        });
+    }
+    onMicToggleAssignDiagnosis() {
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+            this.AssignDiagnosis?.addChip(text);
+        });
+    }
+    onMicToggleAssignExamination() {
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+            this.AssignExamination?.addChip(text);
+        });
     }
 }
 
@@ -3127,6 +3312,7 @@ export class CasepaperVisitDetails {
 
     }
 
+    //Mike
 
 }
 

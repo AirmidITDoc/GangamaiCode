@@ -1,32 +1,71 @@
-
 <div class="relative-container">
+
   <div class="chip-wrapper">
+
     <div class="chip" *ngFor="let chip of chips">
       {{ chip[displayKey] }}
-      <button type="button" (click)="removeChip(chip)">×</button>
+
+      <button
+        type="button"
+        (click)="removeChip(chip)"
+        class="remove-btn">
+        ×
+      </button>
     </div>
 
-    <!-- Input field -->
-    <input
-      [(ngModel)]="inputValue"
-      (keydown)="onKeyDown($event)"
-      (input)="filterOptions()"
-      (focus)="onInputFocus()"
-      (blur)="hideDropdownWithDelay()"
-      [placeholder]="placeholder" 
-    />
+    <div class="input-with-mic">
+
+      <input
+        [(ngModel)]="inputValue"
+        (keydown)="onKeyDown($event)"
+        (input)="filterOptions()"
+        (focus)="onInputFocus()"
+        (blur)="hideDropdownWithDelay()"
+        [placeholder]="placeholder"
+      />
+
+      <button
+        type="button"
+        class="mic-button"
+        [class.listening]="isListening"
+        (click)="startSpeechRecognition()">
+
+        <span *ngIf="!isListening">🎤</span>
+        <span *ngIf="isListening" class="pulse">🔴</span>
+
+      </button>
+
+    </div>
+
   </div>
 
-  <!-- Scrollable suggestions -->
-  <div class="autocomplete-list" *ngIf="showDropdown && filteredOptions.length > 0">
+  <div class="autocomplete-list" *ngIf="showDropdown">
+
     <div
       class="autocomplete-item"
       *ngFor="let option of filteredOptions; let i = index"
       [class.active]="i === focusedIndex"
-      (mousedown)="selectOption(option)" #autocompleteItem>
+      (mousedown)="selectOption(option)">
+
       {{ option[displayKey] }}
+
     </div>
-    <div *ngIf="filteredOptions.length === 0" class="no-results">No results found</div>
+
+    <div
+      *ngIf="filteredOptions.length === 0"
+      class="no-results">
+      No results found
+    </div>
+
   </div>
+
 </div>
 
+
+
+<!-- Microphone button -->
+<!-- <button *ngIf="speechSupported" type="button" class="mic-btn" [class.listening]="isListening"
+        (click)="toggleListening()" [title]="isListening ? 'Stop listening' : 'Speak diagnosis'">
+        <span *ngIf="!isListening">🎤</span>
+        <span *ngIf="isListening" class="pulse">🔴</span>
+      </button> -->

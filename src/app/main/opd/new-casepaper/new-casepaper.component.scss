@@ -555,3 +555,13 @@
   font-weight: 600;
 }
      
+.mic-button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0;
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

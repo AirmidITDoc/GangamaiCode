@@ -73,3 +73,145 @@
 }
 
 
+//
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+.relative-container {
+  position: relative;
+  width: 100%;
+}
+
+.chip-wrapper {
+  width: 100%;
+  min-height: 60px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #aaa;
+  border-radius: 5px;
+
+  padding: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  background: #fff;
+}
+
+/* Chips */
+.chip {
+  display: flex;
+  align-items: center;
+
+  background: #d9ecff;
+  border-radius: 18px;
+
+  padding: 7px 10px;
+
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.remove-btn {
+  border: none;
+  background: transparent;
+
+  margin-left: 7px;
+  padding: 0;
+
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Input + microphone */
+.input-with-mic {
+  flex: 1;
+  min-width: 150px;
+
+  display: flex;
+  align-items: center;
+
+  height: 38px;
+}
+
+/* Input */
+.input-with-mic input {
+  flex: 1;
+
+  width: 100%;
+  height: 38px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  padding: 5px;
+
+  box-sizing: border-box;
+}
+
+/* MIC BUTTON */
+.mic-button {
+  position: static !important;
+
+  flex: 0 0 36px;
+
+  width: 36px;
+  height: 36px;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  border-radius: 5px;
+
+  background: #2196f3;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 18px;
+}
+
+.mic-button:hover {
+  background: #1976d2;
+}
+
+.mic-button.listening {
+  background: #f44336;
+}
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
