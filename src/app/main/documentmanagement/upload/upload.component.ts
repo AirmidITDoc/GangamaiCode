@@ -27,7 +27,9 @@ export class UploadComponent {
     /* Step 1 — patient */
     patientQuery = '';
     patientResults: Patient[] = [];
+    registrations: any[] = [];
     selectedPatient: Patient | null = null;
+    selectedRegistration: any | null = null;
     showNewPatientForm = false;
     newPatient: Partial<Patient> = { gender: 'Female' };
 
@@ -53,19 +55,32 @@ export class UploadComponent {
 
     /* ---------------- Step 1 ---------------- */
     searchPatients(): void {
-        this._service.seachPatient(this.patientQuery).subscribe((res) => {
+        this._service.searchPatient(this.patientQuery).subscribe((res) => {
             this.patientResults = res;
         });
+    }
+    getAdmissions(): void {
+        if (this.selectedPatient) {
+            this._service.getAdmissions(this.selectedPatient.id).subscribe((res) => {
+                debugger;
+                this.registrations = res;
+            });
+        }
+    }
+    pickRegistration(r: any): void {
+        this.selectedRegistration = r;
     }
 
     pickPatient(p: Patient): void {
         this.selectedPatient = p;
         this.patientResults = [];
         this.patientQuery = '';
+        this.getAdmissions();
     }
 
     clearPatient(): void {
         this.selectedPatient = null;
+        this.selectedRegistration = null;
     }
 
     /* ---------------- Step 2 ---------------- */

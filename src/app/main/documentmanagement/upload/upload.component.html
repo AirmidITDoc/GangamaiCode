@@ -56,10 +56,49 @@
                                 </div>
                                 <button mat-button (click)="clearPatient()">Change</button>
                             </div>
+                            <div class="step-body" *ngIf="selectedPatient">
+                                <p class="step-hint">Choose the visit / registration this document belongs to.</p>
 
+                                <div class="patient-results" *ngIf="registrations.length">
+                                    <button class="patient-row" *ngFor="let r of registrations"
+                                        (click)="pickRegistration(r)">
+                                        <mat-icon *ngIf="r.patientTypeID =='1'"
+                                            matTooltip="Patient Category Self">account_box
+                                        </mat-icon>
+                                        <mat-icon *ngIf="r.patientTypeID != '1'"
+                                            matTooltip="Patient Category Company">business
+                                        </mat-icon>
+                                        <span class="patient-main">
+                                            <span class="patient-name">{{ r.ipdno }}</span>
+                                            <span class="patient-sub mono">{{ r.admissionDate | date:'d/MM/y' }}
+                                                &middot; {{
+                                                r.regId }}</span>
+                                        </span>
+                                        <mat-icon>chevron_right</mat-icon>
+                                    </button>
+                                </div>
+
+                                <p class="muted small" *ngIf="!registrations.length && selectedPatient">
+                                    No registrations found for this patient.
+                                </p>
+                            </div>
+
+                            <div class="selected-summary" *ngIf="selectedRegistration">
+                                <mat-icon *ngIf="selectedRegistration.patientTypeID =='1'" matTooltip="Patient Category Self">account_box
+                                </mat-icon>
+                                <mat-icon *ngIf="selectedRegistration.patientTypeID != '1'" matTooltip="Patient Category Company">business
+                                </mat-icon>
+                                <div class="summary-main">
+                                    <span class="summary-title">{{ selectedRegistration.ipdno }}</span>
+                                    <span class="summary-sub mono">
+                                        {{ selectedRegistration.admissionDate | date:'d/MM/y' }}
+                                        &middot; {{ selectedRegistration.regId }}</span>
+                                </div>
+                                <button mat-button (click)="clearRegistration()">Change</button>
+                            </div>
                             <div class="step-actions">
                                 <button mat-flat-button color="primary" matStepperNext
-                                    [disabled]="!selectedPatient">Continue</button>
+                                    [disabled]="!selectedPatient && !selectedRegistration">Continue</button>
                             </div>
                         </mat-step>
 

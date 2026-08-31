@@ -41,8 +41,11 @@ export class DocumentmanagementService {
 
 
 
-    public seachPatient(keyword) {
+    public searchPatient(keyword) {
         return this._httpClient.GetData("DocumentUpload/search-patient?Keyword=" + keyword);
+    }
+    public getAdmissions(PatientId) {
+        return this._httpClient.GetData("DocumentUpload/patient-admissions?PatientId=" + PatientId);
     }
 
 
