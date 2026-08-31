@@ -84,9 +84,11 @@
                             </div>
 
                             <div class="selected-summary" *ngIf="selectedRegistration">
-                                <mat-icon *ngIf="selectedRegistration.patientTypeID =='1'" matTooltip="Patient Category Self">account_box
+                                <mat-icon *ngIf="selectedRegistration.patientTypeID =='1'"
+                                    matTooltip="Patient Category Self">account_box
                                 </mat-icon>
-                                <mat-icon *ngIf="selectedRegistration.patientTypeID != '1'" matTooltip="Patient Category Company">business
+                                <mat-icon *ngIf="selectedRegistration.patientTypeID != '1'"
+                                    matTooltip="Patient Category Company">business
                                 </mat-icon>
                                 <div class="summary-main">
                                     <span class="summary-title">{{ selectedRegistration.ipdno }}</span>
@@ -189,11 +191,24 @@
                                         </span>
                                     </div>
                                     <div class="review-block">
+                                        <span class="review-label">Admission</span>
+                                        <mat-icon *ngIf="selectedRegistration?.patientTypeID =='1'"
+                                            matTooltip="Patient Category Self">account_box
+                                        </mat-icon>
+                                        <mat-icon *ngIf="selectedRegistration?.patientTypeID != '1'"
+                                            matTooltip="Patient Category Company">business
+                                        </mat-icon>
+                                        <strong>Ipd No : {{ selectedRegistration?.ipdno }}</strong>
+                                        <span class="mono muted small">Admission Date : {{
+                                            selectedRegistration?.admissionDate | date:'d/MM/y' }}</span>
+                                        <span class="summary-sub mono">
+                                            RegId : {{ selectedRegistration?.regId }}</span>
+                                    </div>
+                                    <div class="review-block">
                                         <span class="review-label">Category</span>
                                         <strong>{{ selectedCategoryPath[selectedCategoryPath.length - 1] }}</strong>
                                         <span class="muted small">{{ selectedCategoryPath.join(' / ') }}</span>
-                                    </div>
-                                    <div class="review-block">
+                                        <hr>
                                         <span class="review-label">Files</span>
                                         <strong>{{ staged.length }} document(s)</strong>
                                         <span class="muted small">ready to save</span>
