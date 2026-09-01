@@ -3,8 +3,8 @@
     <div class="doc-meta">
       <mat-icon [ngClass]="'kind-' + doc.fileKind">{{ doc.fileKind | fileKindIcon }}</mat-icon>
       <div>
-        <div class="doc-title">{{ doc.title }}</div>
-        <div class="doc-sub">{{ doc.fileName }} &middot; {{ doc.fileSizeKb | fileSize }}</div>
+        <div class="doc-title">{{ doc.orgFileName }}</div>
+        <div class="doc-sub">{{ doc.savedFileName }} &middot; {{ doc.fileSize | fileSize }}</div>
       </div>
     </div>
     <div class="toolbar-actions">
@@ -20,7 +20,7 @@
     <div class="pane image-pane" *ngIf="doc.fileKind === 'image'">
       <div class="mock-photo" [style.background]="'linear-gradient(135deg,' + (doc.thumbnailColor || '#0E7C7B') + ' 0%, #12283F 100%)'">
         <mat-icon>image</mat-icon>
-        <span>{{ doc.title }}</span>
+        <span>{{ doc.orgFileName }}</span>
       </div>
       <p class="pane-note">Image preview — demo placeholder rendered client-side. Connect a file store to show the real scan/photo.</p>
     </div>
@@ -32,7 +32,7 @@
           <span class="pdf-brand">{{ doc.categoryPath[0] }}</span>
           <span class="pdf-page-no">Page 1 of 1</span>
         </div>
-        <h3>{{ doc.title }}</h3>
+        <h3>{{ doc.orgFileName }}</h3>
         <div class="pdf-line" *ngFor="let w of mockLines" [style.width.%]="w"></div>
       </div>
       <p class="pane-note">PDF preview — mock rendering of document layout for the prototype.</p>
@@ -49,10 +49,10 @@
     </div>
 
     <div class="meta-strip">
-      <div><span>Patient</span><strong>{{ doc.patientName }} ({{ doc.patientId }})</strong></div>
-      <div><span>Category</span><strong>{{ doc.categoryPath.join(' / ') }}</strong></div>
-      <div><span>Uploaded</span><strong>{{ doc.uploadedOn | date:'mediumDate' }} by {{ doc.uploadedBy }}</strong></div>
-      <div *ngIf="doc.tags.length"><span>Tags</span><strong>{{ doc.tags.join(', ') }}</strong></div>
+      <div><span>Patient</span><strong>{{ doc.admissionId }} ({{ doc.admissionId }})</strong></div>
+      <div><span>Category</span><strong>{{ doc.docCatId }}</strong></div>
+      <div><span>Uploaded</span><strong>{{ doc.createdDate | date:'mediumDate' }} by {{ doc.createdBy }}</strong></div>
+      <div *ngIf="doc.fileTags"><span>Tags</span><strong>{{ doc.fileTags }}</strong></div>
     </div>
   </div>
 </div>

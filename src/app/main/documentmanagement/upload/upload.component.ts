@@ -1,9 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FileKind, HospitalDocument } from 'app/core/models/documentmanagement/document.model';
+import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
 import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
-import { MockDataService } from '../mock-data.service';
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
 import { DocumentmanagementService } from '../documentmanagement.service';
 
@@ -44,7 +43,7 @@ export class UploadComponent {
     submitted = false;
     lastSubmittedCount = 0;
 
-    constructor(private data: MockDataService, private snackBar: MatSnackBar, private _service: DocumentmanagementService) {
+    constructor(private snackBar: MatSnackBar, private _service: DocumentmanagementService) {
         this.bindCategories();
     }
     bindCategories() {
@@ -156,28 +155,29 @@ export class UploadComponent {
 
     /* ---------------- Step 4 ---------------- */
     submit(): void {
+        debugger;
+        const data:DocumentFileModel[]=[];
         if (!this.selectedPatient || !this.selectedCategoryId || !this.staged.length) return;
         const path = this.selectedCategoryPath;
         this.staged.forEach((s) => {
-            const doc: HospitalDocument = {
-                id: '0',
-                title: s.title || s.file.name,
-                fileName: s.file.name,
-                fileKind: s.kind,
-                fileSizeKb: Math.max(1, Math.round(s.file.size / 1024)),
-                categoryPath: path,
-                categoryId: this.selectedCategoryId!.toString(),
-                patientName: this.selectedPatient!.firstName,
-                uploadedBy: 'Front Desk — S. Kulkarni',
-                uploadedOn: new Date().toISOString(),
-                tags: s.tagsInput
-                    .split(',')
-                    .map((t) => t.trim())
-                    .filter(Boolean),
-                thumbnailColor: '#0E7C7B',
-                patientId: 0
+            const doc: DocumentFileModel = {
+                id: 0,
+                admissionId: this.selectedRegistration?.admissionId || 0,
+                docCatId: this.selectedCategoryId!,
+                document: s.file,
+                orgFileName: s.title || s.file.name,
+                savedFileName: s.file.name,
+                fileTags: s.tagsInput,
+                createdBy: 0,
+                createdDate: undefined,
+                docNo: '',
+                fileKind: this.detectKind(s.file.name),
+                fileSize: s.file.size
             };
-            this.data.addDocument(doc);
+            data.push(doc);
+        });
+        this._service.saveDocument(data).subscribe((res) => {
+            debugger;
         });
         this.lastSubmittedCount = this.staged.length;
         this.submitted = true;

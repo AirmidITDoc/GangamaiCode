@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FileKind, HospitalDocument } from 'app/core/models/documentmanagement/document.model';
+import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
 import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
 import { MockDataService } from '../mock-data.service';
 import { ZipService } from '../zip.service';
@@ -14,7 +14,7 @@ import { PreviewDialogComponent } from '../shared/components/preview-dialog/prev
   styleUrls: ['./documents.component.scss'],
 })
 export class DocumentsComponent implements OnInit {
-  allDocuments: HospitalDocument[] = [];
+  allDocuments: DocumentFileModel[] = [];
   categories: DocumentCategory[] = [];
 
   searchTerm = '';
@@ -50,23 +50,19 @@ export class DocumentsComponent implements OnInit {
     });
   }
 
-  get filtered(): HospitalDocument[] {
+  get filtered(): DocumentFileModel[] {
     const term = this.searchTerm.trim().toLowerCase();
     return this.allDocuments.filter((d) => {
       const matchesTerm =
         !term ||
-        d.title.toLowerCase().includes(term) ||
-        d.patientName.toLowerCase().includes(term) ||
-        d.patientId.toString().toLowerCase().includes(term) ||
-        d.tags.some((t) => t.toLowerCase().includes(term)) ||
-        d.categoryPath.join(' ').toLowerCase().includes(term);
-      const matchesKind = this.activeKind === 'all' || d.fileKind === this.activeKind;
-      const matchesCategory = !this.activeCategoryId || d.categoryId === this.activeCategoryId;
-      return matchesTerm && matchesKind && matchesCategory;
+        d.savedFileName.toLowerCase().includes(term) ||
+        d.admissionId.toString().toLowerCase().includes(term) ||
+        d.fileTags.split(',').some((t) => t.toLowerCase().includes(term));
+      return matchesTerm;
     });
   }
 
-  get paged(): HospitalDocument[] {
+  get paged(): DocumentFileModel[] {
     const start = this.pageIndex * this.pageSize;
     return this.filtered.slice(start, start + this.pageSize);
   }
@@ -94,18 +90,18 @@ export class DocumentsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  preview(doc: HospitalDocument): void {
+  preview(doc: DocumentFileModel): void {
     this.dialog.open(PreviewDialogComponent, { data: doc, maxWidth: '95vw' });
   }
 
-  download(doc: HospitalDocument): void {
+  download(doc: DocumentFileModel): void {
     this.zipService.downloadSingleDocument(doc);
-    this.snackBar.open(`Downloading ${doc.fileName}`, 'Dismiss', { duration: 2000 });
+    this.snackBar.open(`Downloading ${doc.savedFileName}`, 'Dismiss', { duration: 2000 });
   }
 
-  remove(doc: HospitalDocument): void {
-    if (!confirm(`Delete "${doc.title}"? This cannot be undone.`)) return;
-    this.data.deleteDocument(doc.id);
+  remove(doc: DocumentFileModel): void {
+    if (!confirm(`Delete "${doc.orgFileName}"? This cannot be undone.`)) return;
+    this.data.deleteDocument(doc.id.toString());
     this.snackBar.open('Document deleted', 'Dismiss', { duration: 2000 });
   }
 

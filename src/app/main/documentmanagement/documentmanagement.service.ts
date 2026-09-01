@@ -47,6 +47,9 @@ export class DocumentmanagementService {
     public getAdmissions(PatientId) {
         return this._httpClient.GetData("DocumentUpload/patient-admissions?PatientId=" + PatientId);
     }
+    public saveDocument(Param) {
+        return this._httpClient.PostFromData("DocumentUpload/upload-files", { model: Param });
+    }
 
 
 }

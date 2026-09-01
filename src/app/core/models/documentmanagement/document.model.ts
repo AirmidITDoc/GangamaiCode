@@ -1,18 +1,15 @@
 export type FileKind = 'pdf' | 'image' | 'doc' | 'xls' | 'text' | 'other';
-
-export interface HospitalDocument {
-  id: string;
-  title: string;
-  fileName: string;
+export interface DocumentFileModel {
+  id: number;
+  admissionId: number;
+  docCatId: number;
+  document?: File | null;
+  orgFileName: string;
+  savedFileName: string;
+  fileTags?: string | null;
+  createdBy: number;
+  createdDate: Date;
+  docNo: string;
   fileKind: FileKind;
-  fileSizeKb: number;
-  categoryPath: string[];   // e.g. ['Clinical Records', 'Radiology', 'CT Scan', 'Head']
-  categoryId: string;       // id of the leaf category
-  patientId: number;
-  patientName: string;
-  uploadedBy: string;
-  uploadedOn: string;       // ISO date
-  tags: string[];
-  notes?: string;
-  thumbnailColor?: string;  // used to render a mock thumbnail
+  fileSize: number;
 }

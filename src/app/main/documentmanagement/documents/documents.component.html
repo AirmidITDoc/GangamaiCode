@@ -75,7 +75,7 @@
                                     <span class="doc-sub">{{ d.patientName }} &middot; {{ d.patientId }}</span>
                                     <span class="doc-path">{{ d.categoryPath.join(' / ') }}</span>
                                     <div class="doc-meta-row">
-                                        <span class="mono">{{ d.fileSizeKb | fileSize }}</span>
+                                        <span class="mono">{{ d.fileSize | fileSize }}</span>
                                         <span class="mono">{{ d.uploadedOn | date:'d MMM y' }}</span>
                                     </div>
                                 </div>
@@ -99,7 +99,7 @@
                                         d.categoryPath.join('
                                         / ') }}</span>
                                 </div>
-                                <span class="mono size-col">{{ d.fileSizeKb | fileSize }}</span>
+                                <span class="mono size-col">{{ d.fileSize | fileSize }}</span>
                                 <span class="mono date-col">{{ d.uploadedOn | date:'d MMM y' }}</span>
                                 <div class="doc-actions">
                                     <button mat-icon-button matTooltip="Preview"
