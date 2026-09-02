@@ -247,7 +247,7 @@
 
                 <div fxLayout="row">
                     <button mat-raised-button (click)="onFiles()" *ngIf="showAddBtn"
-                    style="position: absolute; top: 55%; right: 16px;">New Consent
+                        style="position: absolute; top: 55%; right: 16px;">New Consent
                     </button>
                 </div>
 
@@ -272,7 +272,7 @@
                                 <div class="modal-body-container">
                                     <div fxFlexFill fxLayout="row" class="gap-8">
 
-                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <!-- <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
                                                 [formGroup]="preOperationFinalForm"
                                                 [value]="registerObj1?.surgeryCategoryId"
@@ -289,6 +289,22 @@
                                                 (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
                                                 TextField="surgeryName"
                                                 ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
+                                            </airmid-dropdown>
+                                        </div> -->
+
+                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
+                                                [formGroup]="preOperationFinalForm" [value]="registerObj1?.surgeryCategoryId"
+                                                [mode]="autocompleteModeSiteDescription"
+                                                (selectionChange)="selectChangeSurgeryCategory($event)">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                                [formGroup]="preOperationFinalForm" #ddlSurgeryName
+                                                (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                                TextField="surgeryName">
                                             </airmid-dropdown>
                                         </div>
 

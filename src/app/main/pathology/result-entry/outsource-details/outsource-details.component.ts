@@ -79,10 +79,12 @@ export class OutsourceDetailsComponent {
         now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
         // this.date = now.toISOString().slice(0, 16);
 
+        const formatted = this.formatDateTime(this.data.outSourceSampleSentDateTime);
         debugger
-        if (this.data.outSourceSampleSentDateTime) {
+        if (formatted) {
             this.date = this.getLocalDateTimeForInput(
-                this.data.outSourceSampleSentDateTime
+                // this.data.outSourceSampleSentDateTime
+                formatted
             );
             // this.date = new Date(this.data.outSourceSampleSentDateTime).toISOString().slice(0, 16)
             this.isDateReadonly = true;
@@ -96,6 +98,23 @@ export class OutsourceDetailsComponent {
             this.isDateReadonlyUpdate = false;
             this.combineDateAndTimeOnSave();
         }
+    }
+
+    formatDateTime(dateStr: string | undefined): string | undefined {
+        if (!dateStr) return dateStr;
+
+        const date = new Date(dateStr);
+
+        const pad = (n: number) => n.toString().padStart(2, '0');
+
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        const seconds = pad(date.getSeconds());
+
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     }
 
     getLocalDateTime(): string {

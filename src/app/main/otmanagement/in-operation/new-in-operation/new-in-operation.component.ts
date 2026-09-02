@@ -97,6 +97,8 @@ export class NewInOperationComponent {
     @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
     @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+    @ViewChild('ddlSurgeryName') ddlSurgeryName: AirmidDropDownComponent;
+
     vreservationId: any;
     registerObj3 = new OtReserInsert({});
     registerObj2 = new OtReserInsert({});
@@ -489,16 +491,22 @@ export class NewInOperationComponent {
 
     selectChangeSurgeryCategory(obj: any) {
         this.surgCategoryName = obj.text
+
+        this._inOpearionService.getSurgerynameBySurgeryType(obj.value).subscribe((data: any) => {
+            debugger
+            this.ddlSurgeryName.options = data;
+            this.ddlSurgeryName.bindGridAutoComplete();
+        });
     }
     selectChangeSurgery(obj: any) {
         this.surgName = obj.surgeryName
-        this.ddlSurgerytype.SetSelection(obj.siteDescId);
-        setTimeout(() => {
-            this._inOpearionService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
-                this.surgCategoryName = response.siteDescriptionName;
-                console.log("Get siteDisc Data:", this.surgCategoryName)
-            });
-        }, 100);
+        // this.ddlSurgerytype.SetSelection(obj.siteDescId);
+        // setTimeout(() => {
+        //     this._inOpearionService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
+        //         this.surgCategoryName = response.siteDescriptionName;
+        //         console.log("Get siteDisc Data:", this.surgCategoryName)
+        //     });
+        // }, 100);
     }
 
     selectChangeSurgeon(obj: any) {
@@ -968,6 +976,14 @@ export class NewInOperationComponent {
             surgeonId: contact.surgeonId ?? '',
             anesthetistId: contact.anestheticsId ?? ''
         });
+
+        setTimeout(() => {
+            this._inOpearionService.getSurgerynameBySurgeryType(contact.surgeryCategoryId).subscribe((data: any) => {
+                this.ddlSurgeryName.options = data;
+                this.ddlSurgeryName.bindGridAutoComplete();
+            });
+        }, 500);
+        this.inOperFinalForm.get("surgeryId")?.setValue(contact.surgeryId)
 
         this.surgName = contact.surgeryName ?? '';
         this.surgCategoryName = contact.surgeryCategoryName ?? '';

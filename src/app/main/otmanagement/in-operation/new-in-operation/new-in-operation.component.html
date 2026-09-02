@@ -182,7 +182,7 @@
                                 <div class="modal-body-container">
                                     <div fxFlexFill fxLayout="row" class="gap-8">
 
-                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <!-- <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
                                                 [formGroup]="inOperFinalForm" [value]="registerObj1?.surgeryCategoryId"
                                                 [mode]="autocompleteModeSiteDescription" #ddlSurgerytype
@@ -197,6 +197,22 @@
                                                 (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
                                                 TextField="surgeryName"
                                                 ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
+                                            </airmid-dropdown>
+                                        </div> -->
+
+                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
+                                                [formGroup]="inOperFinalForm" [value]="registerObj1?.surgeryCategoryId"
+                                                [mode]="autocompleteModeSiteDescription"
+                                                (selectionChange)="selectChangeSurgeryCategory($event)">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                                [formGroup]="inOperFinalForm" #ddlSurgeryName
+                                                (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                                TextField="surgeryName">
                                             </airmid-dropdown>
                                         </div>
 

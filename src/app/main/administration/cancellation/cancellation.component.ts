@@ -154,7 +154,8 @@ export class CancellationComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
+        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
+        { fieldName: "CashCounterId", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
 
     // 1st table
@@ -189,7 +190,8 @@ export class CancellationComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-            { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
+            { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
+        { fieldName: "CashCounterId", fieldValue: "0", opType: OperatorComparer.Equals }
 
             ]
         }

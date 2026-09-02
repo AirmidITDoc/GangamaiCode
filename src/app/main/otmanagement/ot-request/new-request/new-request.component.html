@@ -247,7 +247,7 @@
                                         <input matInput type="time" formControlName="estimateTime"
                                             (change)="onChangeTime($event)" (keydown.enter)="surgeryDateInput.focus()">
                                     </mat-form-field> -->
-                                     <mat-form-field appearance="outline" fxFlex>
+                                    <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Estimate (hrs or min)</mat-label>
                                         <input matInput type="text" formControlName="estimateTime"
                                             pattern="^[0-9]+(\.[0-9]{1,2})?$" placeholder="e.g. 00.15 (hr.min)">
@@ -347,7 +347,7 @@
 
                             <div fxFlexFill fxLayout="row" class="gap-8">
 
-                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
                                         [formGroup]="requestForm" [value]="registerObj1?.surgeryCategoryId"
                                         [mode]="autocompleteModeSiteDescription" #ddlSurgerytype [readonly]="true"
@@ -360,6 +360,22 @@
                                         [formGroup]="requestForm" [mode]="autocompleteModeSurgeryMaster"
                                         (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
                                         TextField="surgeryName" ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
+                                    </airmid-dropdown>
+                                </div> -->
+
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
+                                        [formGroup]="requestForm" [value]="registerObj1?.surgeryCategoryId"
+                                        [mode]="autocompleteModeSiteDescription"
+                                        (selectionChange)="selectChangeSurgeryCategory($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                        [formGroup]="requestForm" #ddlSurgeryName
+                                        (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                        TextField="surgeryName">
                                     </airmid-dropdown>
                                 </div>
 
