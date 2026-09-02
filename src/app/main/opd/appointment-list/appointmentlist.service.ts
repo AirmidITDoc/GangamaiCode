@@ -381,9 +381,6 @@ export class AppointmentlistService {
     }
 
 
-
-
-
     public InsertOPBillingpayment(employee) {
         return this._httpClient1.PostData("Payment/PaymentInsert", employee)
     }
@@ -492,5 +489,9 @@ export class AppointmentlistService {
 
      public getDocServicelist(Param) {
         return this._httpClient1.PostData("Common", Param)
+    }
+
+    getDiagnosisList(descriptionType: string) {
+    return this._httpClient1.GetData('OPDPrescriptionMedical/GetDiagnosisList?descriptionType=' + descriptionType);
     }
 }

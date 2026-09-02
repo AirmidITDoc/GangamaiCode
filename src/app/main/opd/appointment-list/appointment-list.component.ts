@@ -50,6 +50,7 @@ import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 import { FollowupListComponent } from './followup-list/followup-list.component';
 import { AppointmentCancleListComponent } from './appointment-cancle-list/appointment-cancle-list.component';
+import { InitialAccessmentComponent } from '../../ipd/Admission/admission/initial-accessment/initial-accessment.component';
 
 // const moment = _rollupMoment || _moment;
 
@@ -853,6 +854,27 @@ export class AppointmentListComponent implements OnInit {
 
         const that = this;
         const dialogRef = this._matDialog.open(GastrologyEmrComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+                this.GetAppointdetail();
+            }
+        });
+    }
+
+    getassessment(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        const that = this;
+        const dialogRef = this._matDialog.open(InitialAccessmentComponent,
             {
                 maxWidth: "95vw",
                 maxHeight: '95vh',

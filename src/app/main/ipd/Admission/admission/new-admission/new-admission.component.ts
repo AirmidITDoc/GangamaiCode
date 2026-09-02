@@ -52,6 +52,10 @@ export class NewAdmissionComponent implements OnInit {
     ageMonth = 0
     ageDay = 0
     CityName = ""
+
+    pincode = '';
+    area = ''
+
     noOptionFound: boolean = false;
     isRegSearchDisabled: boolean = true;
     registredflag: boolean = true;
@@ -313,7 +317,7 @@ export class NewAdmissionComponent implements OnInit {
                             LastName: this.registerObj.lastName.trim(),
                             MobileNo: this.registerObj.mobileNo.trim(),
                             Address: this.registerObj.address.trim(),
-                            // MaritalStatusId: this.registerObj.maritalStatusId,
+                            AreaId: this.registerObj?.areaId ?? '',
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
                             emgMobileNo: this.registerObj?.emgMobileNo ?? '',
@@ -331,7 +335,10 @@ export class NewAdmissionComponent implements OnInit {
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
-
+                        this.CityName = this.registerObj?.city ?? '';
+                        // this.stateId = this.registerObj?.stateId ?? 0;
+                        // this.counryId = this.registerObj?.countryId ?? 0;
+                        this.pincode = this.registerObj?.pinNo || ''
                     });
 
                 }, 500);
@@ -384,13 +391,13 @@ export class NewAdmissionComponent implements OnInit {
 
     // }
 
-  PatientName: any = '';
+    PatientName: any = '';
     getSelectedObjtrust(obj) {
 
         console.log(obj)
-         this.PatientName = obj.firstName + ' ' + obj.lastName;
+        this.PatientName = obj.firstName + ' ' + obj.lastName;
         this.MembershipId = obj.membershipId;
-       
+
         this._AdmissionService.getMemeberbyIdList(obj.membershipId).subscribe(response => {
             console.log(response)
 
@@ -1281,6 +1288,7 @@ export class NewAdmissionComponent implements OnInit {
             EmailId: [
                 { name: "pattern", Message: "Enter valid Email Address" }
             ],
+            PinNo: []
         };
     }
     onClear() { }
@@ -1520,6 +1528,51 @@ export class NewAdmissionComponent implements OnInit {
         this.getSelectedObj(row);
         this.resetFilteredOptions();
     }
+    //pincode
+    onChangePincode(obj: string) {
+        // Call API only when exactly 6 digits are entered
+        if (obj && obj.length === 6) {
+            this._AdmissionService.getbypincode(obj).subscribe((data: any) => {
+                if (data && data.length > 0) {
+                    console.log(data);
+
+                    this.CityName = data[0].cityName;
+                    this.area = data[0].area;
+
+                    this.personalFormGroup.get('AreaId').setValue(data[0].areaId);
+                    this.onChangepincityDD(data[0].cityId);
+                    this.registerObj.cityId = data[0].cityId;
+                } else {
+                    Swal.fire("Pincode does not exist.")
+                }
+            });
+        }
+    }
+    onChangepincityDD(obj) {
+        debugger
+        this._AdmissionService.getstatebypincode(obj).subscribe((data: any) => {
+            console.log(data)
+
+            this.registerObj.stateId = data.stateId
+            this._AdmissionService.getstateId(data.stateId).subscribe((Response) => {
+                this.ddlCountry.SetSelection(Response.countryId);
+            });
+        });
+    }
+
+    onChangeArea(event) {
+        debugger
+        console.log(event)
+        if (event.cityId) {
+            this.pincode = event.pincode
+            this.CityName = event.cityName
+            this.area = event.area
+            this.personalFormGroup.get('CityId').setValue(event.cityId)
+
+            this.onChangepincityDD(event.cityId)
+        }
+    }
+
 }
 
 export class OpList {

@@ -58,7 +58,7 @@
                                         <airmid-dropdown *ngIf="UserWsieCashcounterId" class="w-250"
                                             label="Select Cash Counter" formControlName="CashCounterID"
                                             [formGroup]="searchFormGroup" TextField="cashCounterName"
-                                            ValueField="cashCounterId" 
+                                            ValueField="cashCounterId"
                                             [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=OP_BILL'"></airmid-dropdown>
 
 
@@ -141,7 +141,8 @@
                                     <div fxFlex="13%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                         <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
-                                           [value]="registerObj?.doctorId ?? vDefaaultDoctorId" [formGroup]="VisitFormGroup"
+                                            [value]="registerObj?.doctorId ?? vDefaaultDoctorId"
+                                            [formGroup]="VisitFormGroup"
                                             [validations]="getValidationMessages().DoctorID"
                                             (selectionChange)="onChangeCondoc($event)" #ddlDoctor></airmid-dropdown>
                                     </div>
@@ -256,7 +257,7 @@
                                                                 </div>
 
                                                                 <div fxLayout="row" fxLayoutGap="4px">
-                                                                    <div fxFlex="33%">
+                                                                    <div fxFlex="66%">
                                                                         <airmid-textbox label="Address"
                                                                             formControlName="address" [maxLength]="200"
                                                                             [value]="registerObj.address"
@@ -264,11 +265,44 @@
                                                                             [validations]="getValidationMessages().address"></airmid-textbox>
                                                                     </div>
 
+
+                                                                    <div fxFlex="33%">
+                                                                        <airmid-textbox label="National ID"
+                                                                            formControlName="aadharCardNo"
+                                                                            [value]="registerObj.aadharCardNo ?? ''"
+                                                                            [formGroup]="myForm" [maxLength]="12"
+                                                                            [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
+                                                                    </div>
                                                                     <input type="hidden" name="StateId"
                                                                         formControlName="stateId">
 
                                                                     <input type="hidden" name="countryId"
                                                                         formControlName="countryId">
+                                                                </div>
+                                                                <div fxLayout="row" fxLayoutGap="4px">
+                                                                    <div fxFlex="33%">
+
+                                                                        <airmid-dropdown label="Area"
+                                                                            formControlName="areaId"
+                                                                            [formGroup]="myForm"
+                                                                            [value]="registerObj?.areaId"
+                                                                            [validations]="getValidationMessages().areaId"
+                                                                            ValueField="areaId" TextField="area"
+                                                                            (selectionChange)="onChangeArea($event)"
+                                                                            ApiUrl="AreaMaster/search_AreaMaster?Keyword=%">
+                                                                        </airmid-dropdown>
+                                                                    </div>
+                                                                    <div fxFlex="33%">
+                                                                        <airmid-textbox label="Pin Code"
+                                                                            formControlName="PinNo" [value]="pincode"
+                                                                            [formGroup]="myForm"
+                                                                            [validations]="getValidationMessages().PinNo"
+                                                                            [maxLength]="6"
+                                                                            (keypress)="keyPressAlphanumeric($event)"
+                                                                            (keyup)="onChangePincode($event.target.value)">
+                                                                        </airmid-textbox>
+                                                                    </div>
+
 
                                                                     <div fxFlex="33%">
                                                                         <airmid-dropdown label="City"
@@ -280,13 +314,7 @@
                                                                             (selectionChange)="onChangecity($event)"
                                                                             ApiUrl="CityMaster/get-cities"></airmid-dropdown>
                                                                     </div>
-                                                                    <div fxFlex="33%">
-                                                                        <airmid-textbox label="National ID"
-                                                                            formControlName="aadharCardNo"
-                                                                            [value]="registerObj.aadharCardNo ?? ''"
-                                                                            [formGroup]="myForm" [maxLength]="12"
-                                                                            [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
-                                                                    </div>
+
                                                                 </div>
 
 
@@ -372,31 +400,7 @@
                                                                     [validations]="getValidationMessages().religionId"
                                                                     [mode]="autocompleteModereligion"></airmid-dropdown>
                                                             </div>
-                                                            <div fxFlex="25%">
-                                                                <!-- <airmid-dropdown label="Area" formControlName="areaId"
-                                                                    [value]="registerObj?.areaId ?? 0"
-                                                                    [formGroup]="myForm"
-                                                                    [validations]="getValidationMessages().areaId"
-                                                                    [mode]="autocompleteModearea"></airmid-dropdown> -->
 
-                                                                <airmid-dropdown label="Area" formControlName="areaId"
-                                                                    [formGroup]="myForm"
-                                                                    [value]="registerObj?.areaId"
-                                                                    [validations]="getValidationMessages().areaId"
-                                                                    ValueField="areaId" TextField="area"
-                                                                    (selectionChange)="onChangeArea($event)"
-                                                                    ApiUrl="AreaMaster/search_AreaMaster?Keyword=%">
-                                                                </airmid-dropdown>
-                                                            </div>
-                                                            <div fxFlex="25%">
-                                                                <airmid-textbox label="Pin Code" formControlName="PinNo"
-                                                                    [value]="pincode" [formGroup]="myForm"
-                                                                    [validations]="getValidationMessages().PinNo"
-                                                                    [maxLength]="6"
-                                                                    (keypress)="keyPressAlphanumeric($event)"
-                                                                    (keyup)="onChangePincode($event.target.value)">
-                                                                </airmid-textbox>
-                                                            </div>
                                                             <div fxFlex="25%">
                                                                 <airmid-dropdown label="MaritalStatus"
                                                                     formControlName="maritalStatusId"

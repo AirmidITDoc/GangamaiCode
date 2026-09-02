@@ -101,7 +101,7 @@ const routes: Routes = [
         NewAppointmentwihBillComponent,
         PaAppoCancleComponent,
         FollowupListComponent,
-        AppointmentCancleListComponent,
+        AppointmentCancleListComponent
 
     ],
     imports: [

@@ -60,6 +60,12 @@ export class NewMembershipComponent {
         { heading: "Registration Date", key: "membershipTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
         { heading: "Membership No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Husband Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+
+        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Address", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PAN No", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Aadhaar ", key: "husbandAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
         { heading: " DOB ", key: "husbandDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
 
         { heading: "Age ", key: "husbandAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
@@ -67,8 +73,6 @@ export class NewMembershipComponent {
         { heading: "Email", key: "husbandEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
 
-        { heading: "Aadhaar ", key: "husbandAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "PAN No", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Education ", key: "husbandEducation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Occupation", key: "hOcccupation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
@@ -78,20 +82,21 @@ export class NewMembershipComponent {
         { heading: " Body CheckupDate", key: "husbandFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
         { heading: "Wife Name ", key: "wifeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Address ", key: "wresidenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Wife PAN", key: "wifePAN", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Wife Aadhaar ", key: "wifeAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
         { heading: " DOB ", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
 
         { heading: "Age ", key: "wifeAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Mobile No", key: "wifeMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Wife Email", key: "wifeEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        { heading: "Wife Aadhaar ", key: "wifeAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Wife PAN", key: "wifePAN", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Wife Education ", key: "wifeEducation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Wife Occupation", key: "wifeOccupation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Wife Medications ", key: "wifeMedications", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Body CheckupDate", key: "wifeFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
-        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Monthly IncomeRange", key: "hIncome", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Family Doctor", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Family Doctor No", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -515,7 +520,7 @@ export class trustRegInsert {
             this.wifePan = trustRegInsert.wifePan || 0;
             this.cityId = trustRegInsert.cityId || 0;
             this.cityName = trustRegInsert.cityName || '';
-            this.residenceAddress= trustRegInsert.residenceAddress|| '';
+            this.residenceAddress = trustRegInsert.residenceAddress || '';
         }
     }
 }

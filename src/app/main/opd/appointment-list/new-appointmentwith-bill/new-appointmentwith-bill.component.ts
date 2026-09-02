@@ -1245,11 +1245,11 @@ export class NewAppointmentwithBillComponent {
                 // 
                 this.ddlDoctor.options = data;
                 const incomingDoctorId = obj.doctorId ?? obj.consultantDocId;
-                let isAvailable = false; 
+                let isAvailable = false;
                 console.log("Id:", incomingDoctorId)
                 setTimeout(() => {
                     this.ddlDoctor.bindGridAutoComplete();
-                    if (incomingDoctorId) {  
+                    if (incomingDoctorId) {
                         if (this.LastDepartmentDoclist.length) {
                             isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
                                 item.consultantDocId == incomingDoctorId);
@@ -1269,12 +1269,12 @@ export class NewAppointmentwithBillComponent {
                             });
                             this.VisitFormGroup.get("ConsultantDocId")?.setValue(0)
                         } else {
-                           const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-                             if (matchedDoctor) {
-                            this.ddlDoctor.SetSelection(matchedDoctor.value);
-                            this.getDocServicelist(matchedDoctor.value)
-                           }
-                        }  
+                            const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                            if (matchedDoctor) {
+                                this.ddlDoctor.SetSelection(matchedDoctor.value);
+                                this.getDocServicelist(matchedDoctor.value)
+                            }
+                        }
                     }
                 }, 300);
             });
@@ -1332,8 +1332,8 @@ export class NewAppointmentwithBillComponent {
                 timerProgressBar: true,
                 allowOutsideClick: false
             });
-            return ;
-        } 
+            return;
+        }
 
         Swal.fire({
             title: 'Confirm Save',
@@ -2443,7 +2443,7 @@ export class NewAppointmentwithBillComponent {
 
                 }, 100);
             }
-
+            this.pincode = this.registerObj?.pinNo || ''
         } else {
             this.PatientName = obj.patientName;
             this.RegId = obj.value;
@@ -2501,13 +2501,14 @@ export class NewAppointmentwithBillComponent {
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                             RegDate: this.registerObj?.regDate ?? this.currentDate,
-                            RegTime: this.registerObj?.regTime ?? this.currentDate
+                            RegTime: this.registerObj?.regTime ?? this.currentDate,
                         });
 
                     });
 
                 }, 100);
             }
+            this.pincode = this.registerObj?.pinNo || ''
         }
 
         this.onChangeDateofBirth(this.registerObj.dateofBirth)
@@ -2563,11 +2564,11 @@ export class NewAppointmentwithBillComponent {
                         this.vOPIPId = this.PrevregisterObj.visitId
                         if (this.vOPIPId)
                             this.getPrevBill()
-                        
+
                         console.log(this.PrevregisterObj)
                     }
                 }
-            } 
+            }
         });
     }
 
@@ -2786,7 +2787,7 @@ export class NewAppointmentwithBillComponent {
             this.patienttype = 1;
         }
     }
-    LastDepartmentDoclist :any=[];
+    LastDepartmentDoclist: any = [];
     getLastVisitDoctorList(regId) {
         const vdata = {
             "first": 0,
@@ -3266,17 +3267,17 @@ export class NewAppointmentwithBillComponent {
     }
 
 
-        getuserwisecashcounterlist(){ 
-        if(!this.UserWsieCashcounterId){ return};
-        const  Type ='OP_BILL';
-        this._AppointmentlistService.getuserwisecashcounterlist(this.vUserID,Type).subscribe((data)=>{
+    getuserwisecashcounterlist() {
+        if (!this.UserWsieCashcounterId) { return };
+        const Type = 'OP_BILL';
+        this._AppointmentlistService.getuserwisecashcounterlist(this.vUserID, Type).subscribe((data) => {
             const cashcounterlist = data
-            console.log('user wise cashcounter list: ', cashcounterlist) ;
-            if(cashcounterlist){
-                const dvalue = cashcounterlist.filter((item)=> item.isDefault == true)
+            console.log('user wise cashcounter list: ', cashcounterlist);
+            if (cashcounterlist) {
+                const dvalue = cashcounterlist.filter((item) => item.isDefault == true)
                 this.searchFormGroup.get('CashCounterID').setValue(dvalue[0]?.cashCounterId);
-            } 
+            }
         });
-    } 
+    }
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

@@ -199,25 +199,12 @@ export class AppointmentCancleListComponent {
 
   WardId = 0
   getAppCancelListview() {
+
+    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+
+
     setTimeout(() => {
-
-
-      // const param = {
-      //   "searchFields": [
-      //     {
-      //       "fieldName": "FromDate",
-      //       "fieldValue": this.fromDate,
-      //       "opType": "Equals"
-      //     },
-      //     {
-      //       "fieldName": "ToDate",
-      //       "fieldValue":this.toDate,
-      //       "opType": "Equals"
-      //     }
-      //   ],
-      //   "reportId": 40347
-
-      // }
 
       const param = {
         "searchFields": [
@@ -234,42 +221,42 @@ export class AppointmentCancleListComponent {
         ],
         "mode": "AppointmentCancelReport"
       }
-   
 
+      debugger
       console.log(param)
       this._AppointmentlistService.getReportView(param).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Appointment Cancel List  Viewer"
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Appointment Cancel List  Viewer"
 
-          }
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+
         });
-
-      matDialog.afterClosed().subscribe(result => {
-
       });
-    });
 
-  }, 100);
+    }, 100);
 
-}
-Clearfilter(event) {
-  console.log(event)
-  if (event == 'FirstName')
-    this.myformSearch.get('FirstName').setValue("")
-  else
-    if (event == 'LastName')
-      this.myformSearch.get('LastName').setValue("")
+  }
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+      this.myformSearch.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myformSearch.get('LastName').setValue("")
 
-  this.onChangeFirst();
-}
+    this.onChangeFirst();
+  }
 
-onClose() {
-  this._matDialog.closeAll()
-}
+  onClose() {
+    this._matDialog.closeAll()
+  }
 }

@@ -74,5 +74,8 @@ export class ICDEMasterService {
         return this._httpClient.DeleteData("MIcdDiagnosisMaster?Id=" + m_data.toString());
     }
 
+      public getbyICDEId(obj) {
+        return this._httpClient.PostData("MIcdDiagnosisMaster/List", obj)
+    }
 }
 

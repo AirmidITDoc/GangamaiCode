@@ -232,6 +232,11 @@ export class AdmissionService {
     public AdmissionNewInsert(employee) {
         return this._httpClient1.PostData("Admission/AdmissionRegInsertSP", employee);
     }
+    public AccessmentInsert(employee) {
+        return this._httpClient1.PostData("Admission/AdmissionRegInsertSP", employee);
+    }
+
+
 
     public AdmissionRegisteredInsert(employee) {
         return this._httpClient1.PostData("Admission/AdmissionInsertSP", employee);
@@ -382,6 +387,23 @@ export class AdmissionService {
 
         return this._httpClient1.GetData("TrustMemershipReg/" + param)
     }
+
+
+    public getbypincode(pin) {
+        return this._httpClient1.GetData("AreaMaster/search_AreaMaster?Keyword=" + pin)
+    }
+    public getstatebypincode(obj) {
+        return this._httpClient1.GetData("CityMaster/" + obj)
+    }
+
+    public getDocServicelist(Param) {
+        return this._httpClient1.PostData("Common", Param)
+    }
+    public getIcdelist(employee) {
+
+        return this._httpClient1.PostData("MIcdDiagnosisMaster/List", employee)
+    }
+
 }
 
 

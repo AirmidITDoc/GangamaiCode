@@ -83,7 +83,7 @@
                     <!-- </button> -->
                 </div>
                 <div class="dashboard-card app-Cancel">
-                    <div class="card-label"> Cancle Count</div>
+                    <div class="card-label"> Cancel Count</div>
                     <div class="card-value">{{VCancleTodayCount}}</div>
                     <mat-icon (click)="openAppointmentcancelDetails($event)"
                         class="card-icon">notifications_none</mat-icon>
@@ -258,7 +258,7 @@
                     </mat-icon>
                 </button>
 
-
+         
                 <button mat-icon-button matTooltip="Bill" *ngIf="!element.isCancelled"
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                     (click)="OnBillPayment(element)">

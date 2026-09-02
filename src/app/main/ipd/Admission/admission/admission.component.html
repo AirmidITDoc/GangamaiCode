@@ -151,8 +151,7 @@
 
     <ng-template #bornBabyIcon let-element>
         <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
-            <button mat-icon-button matTooltip="Born Baby Linked to Parent"  
-                *ngIf="element.parentOpipid > 0">
+            <button mat-icon-button matTooltip="Born Baby Linked to Parent" *ngIf="element.parentOpipid > 0">
                 <img width="60" height="60" src="assets/images/logos/BornBaby.png">
             </button>
         </div>
@@ -195,10 +194,14 @@
             <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
                 <mat-icon>edit</mat-icon>
             </button>
+
+        
             <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
                 (click)="getMLCdetailview(element)">
                 <mat-icon>print</mat-icon>
             </button>
+
+          
             <!-- <ng-template #noMLC>
                 <span>--</span>
             </ng-template> -->
@@ -213,9 +216,10 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
-            <!-- <button mat-icon-button matTooltip="Print IP Case papaer" (click)="getAdmittedPatientCasepaperview(element,true)">
-                <mat-icon> print</mat-icon>
-            </button> -->
+             <button mat-icon-button matTooltip="Iniial Accessment" (click)="getinitialAccessment(element)"
+                *ngIf="!element.isCancelled">
+                <mat-icon>list_alt</mat-icon>
+            </button>
 
             <button mat-icon-button matTooltip="Template Print"
                 (click)="getAdmittedPatientCasepaperTempview(element,m)">

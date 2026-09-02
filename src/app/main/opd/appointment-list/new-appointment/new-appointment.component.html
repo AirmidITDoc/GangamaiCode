@@ -186,6 +186,26 @@
                                   [validations]="getValidationMessages().address"></airmid-textbox>
                               </div>
 
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                <airmid-dropdown label="Area" formControlName="AreaId" [formGroup]="personalFormGroup"
+                                  [value]="registerObj?.areaId" [validations]="getValidationMessages().areaId"
+                                  ValueField="areaId" TextField="area" (selectionChange)="onChangeArea($event)"
+                                  ApiUrl="AreaMaster/search_AreaMaster?Keyword=%">
+                                </airmid-dropdown>
+
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                <airmid-textbox label="Pin Code" formControlName="PinNo" [value]="pincode"
+                                  [formGroup]="personalFormGroup" [validations]="getValidationMessages().PinNo"
+                                  [maxLength]="6" (keypress)="keyPressAlphanumeric($event)"
+                                  (keyup)="onChangePincode($event.target.value)">
+                                </airmid-textbox>
+
+                              </div>
+
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Is9_Digit_National_Id == false">
                                 <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup"
                                   [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId"
@@ -416,7 +436,7 @@
                           <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
                             [value]="registerObj?.doctorId" [formGroup]="VisitFormGroup"
                             [validations]="getValidationMessages().DoctorID" #ddlDoctor
-                             (selectionChange)="selectChangeDoc($event)"></airmid-dropdown>
+                            (selectionChange)="selectChangeDoc($event)"></airmid-dropdown>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -483,29 +503,7 @@
                     <form [formGroup]="personalFormGroup" class="mat-form-field-100">
 
                       <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <!-- <div fxLayout="row" class="gap-8"> -->
-                          <!-- <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.areaId ?? 0"
-                            [formGroup]="personalFormGroup" [validations]="getValidationMessages().areaId"
-                            [mode]="autocompleteModearea"></airmid-dropdown> -->
 
-                          <airmid-dropdown label="Area" formControlName="AreaId" [formGroup]="personalFormGroup"
-                            [value]="registerObj?.areaId" [validations]="getValidationMessages().areaId"
-                            ValueField="areaId" TextField="area" (selectionChange)="onChangeArea($event)"
-                            ApiUrl="AreaMaster/search_AreaMaster?Keyword=%">
-                          </airmid-dropdown>
-                          <!-- </div> -->
-                        </div>
-
-                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <!-- ApiUrl="CityMaster/get-cities" -->
-                          <airmid-textbox label="Pin Code" formControlName="PinNo" [value]="pincode"
-                            [formGroup]="personalFormGroup" [validations]="getValidationMessages().PinNo"
-                            [maxLength]="6" (keypress)="keyPressAlphanumeric($event)"
-                            (keyup)="onChangePincode($event.target.value)">
-                          </airmid-textbox>
-
-                        </div>
 
                         <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-dropdown label="MaritalStatus" formControlName="MaritalStatusId"

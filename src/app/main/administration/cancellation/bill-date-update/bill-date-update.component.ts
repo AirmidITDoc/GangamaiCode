@@ -97,12 +97,12 @@ export class BillDateUpdateComponent implements OnInit {
                     });
 
                 } else if (this.RefundId) {
-                    const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
-                    const d2 = new Date(this.refundDate);
-                    if (d1 < d2) {
-                        Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
-                        return;
-                    } else {
+                    // const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+                    // const d2 = new Date(this.refundDate);
+                    // if (d1 < d2) {
+                    //     Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
+                    //     return;
+                    // } else {
                         const data2 = {
                             "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
                             "refundTime": formattedDate + this.dateTimeObj.time,
@@ -112,7 +112,7 @@ export class BillDateUpdateComponent implements OnInit {
                         this._CancellationService.getDateTimeChangeRefundId(data2).subscribe(response => {
                             this._matDialog.closeAll();
                         });
-                    }
+                    // }
                 } else if (this.SalesId && this.data.Id == 1) {
                     var data3 = {
                         "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),

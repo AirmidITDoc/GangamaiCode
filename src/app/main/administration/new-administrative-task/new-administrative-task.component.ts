@@ -602,23 +602,23 @@ export class NewAdministrativeTaskComponent {
             return;
         }
         if (this.RefundId) {
-            const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
-            const d2 = new Date(this.AdvDate);
-            if (d1 < d2) {
-                Swal.fire("Enter Refund Date after Payment Date :" + this.datePipe.transform(this.AdvDate, "yyyy-MM-dd"))
-                return;
-            } else {
-                const data2 = {
-                    "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-                    "refundTime": this.formattedDate + this.dateTimeObj.time,
-                    "refundId": this.RefundId
-                }
-                console.log(data2);
-                this._AdministrativetaskService.getDateTimeChangeRefundId(data2).subscribe(response => {
-                    this._matDialog.closeAll();
-                    this.GetAdvanceRefundData()
-                });
+            // const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+            // const d2 = new Date(this.AdvDate);
+            // if (d1 < d2) {
+            //     Swal.fire("Enter Refund Date after Payment Date :" + this.datePipe.transform(this.AdvDate, "yyyy-MM-dd"))
+            //     return;
+            // } else {
+            const data2 = {
+                "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+                "refundTime": this.formattedDate + this.dateTimeObj.time,
+                "refundId": this.RefundId
             }
+            console.log(data2);
+            this._AdministrativetaskService.getDateTimeChangeAdvRefundId(data2).subscribe(response => {
+                this._matDialog.closeAll();
+                this.GetAdvanceRefundData()
+            });
+            // }
         }
 
     }
@@ -1077,23 +1077,27 @@ export class NewAdministrativeTaskComponent {
                     });
 
                 } else if (this.RefundId) {
-                    const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
-                    const d2 = new Date(this.refundDate);
-                    if (d1 < d2) {
-                        Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
-                        return;
-                    } else {
-                        const data2 = {
-                            "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-                            "refundTime": this.formattedDate + this.dateTimeObj.time,
-                            "refundId": this.RefundId
-                        }
-                        console.log(data2);
-                        this._AdministrativetaskService.getDateTimeChangeRefundId(data2).subscribe(response => {
-                            this._matDialog.closeAll();
-                            this.GetRefundData()
-                        });
+                    // const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+                    // const d2 = new Date(this.refundDate);
+                    // if (d1 < d2) {
+                    //     Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
+                    //     return;
+                    // } else {
+                    const data2 = {
+                        "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+                        "refundTime": this.formattedDate + this.dateTimeObj.time,
+                        "refundId": this.RefundId,
+
+                        //   "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+                        //     "paymentTime": this.formattedDate + this.dateTimeObj.time,
+                        //     "paymentId": this.PaymentId
                     }
+                    console.log(data2);
+                    this._AdministrativetaskService.getDateTimeChangeRefundId(data2).subscribe(response => {
+                        this._matDialog.closeAll();
+                        this.GetRefundData()
+                    });
+                    // }
                 }
                 // else if (this.SalesId && this.data.Id == 1) {
                 //   var data3 = {
