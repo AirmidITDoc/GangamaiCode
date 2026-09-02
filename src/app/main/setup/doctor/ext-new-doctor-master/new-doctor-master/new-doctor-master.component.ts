@@ -1,16 +1,11 @@
 import { DatePipe } from "@angular/common";
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
+import { ChangeDetectorRef, Component, EventEmitter, Inject, ViewEncapsulation } from "@angular/core";
+import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatTabChangeEvent } from "@angular/material/tabs";
 import { fuseAnimations } from "@fuse/animations";
 import { ApiCaller } from "app/core/services/apiCaller";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { ConfigService } from "app/core/services/config.service";
-import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
-import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
-import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 import { ToastrService } from "ngx-toastr";
 import { ExtDoctorMasterService } from "../ext-doctor-master.service";

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
-import { FileKind, HospitalDocument } from 'app/core/models/documentmanagement/document.model';
+import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
 import { BehaviorSubject } from 'rxjs';
 
@@ -190,7 +190,7 @@ export class MockDataService {
         daysAgo: number,
         tags: string[] = [],
         thumbnailColor = '#0E7C7B'
-    ): HospitalDocument {
+    ): DocumentFileModel {
         const patient = this.seedPatients.find((p) => p.id.toString() === patientId)!;
         const paths = this.getAllPaths();
         const match = paths.find((p) => p.path.join('>') === categoryPath.join('>'));
@@ -200,23 +200,21 @@ export class MockDataService {
         const d = new Date();
         d.setDate(d.getDate() - daysAgo);
         return {
-            id: '0',
-            categoryId: '0',
-            title,
-            fileName: `${title.replace(/\s+/g, '_')}.${ext[fileKind]}`,
+            id: 0,
+            docCatId: 0,
+            orgFileName: title,
+            savedFileName: `${title.replace(/\s+/g, '_')}.${ext[fileKind]}`,
             fileKind,
-            fileSizeKb: sizeKb,
-            categoryPath,
-            patientName: patient?.firstName ?? 'Unknown',
-            uploadedBy: 'Front Desk — S. Kulkarni',
-            uploadedOn: d.toISOString(),
-            tags,
-            thumbnailColor,
-            patientId: 0,
+            fileSize: sizeKb,
+            createdDate: d,
+            fileTags: tags.join(','),
+            admissionId: 0,
+            createdBy: 0,
+            docNo: ''
         };
     }
 
-    private readonly seedDocuments: HospitalDocument[] = [
+    private readonly seedDocuments: DocumentFileModel[] = [
         this.buildDoc('Aadhaar Card Copy', 'image', ['Administrative', 'Registration Forms'], 'PMR-10231', 812, 40, ['identity']),
         this.buildDoc('Insurance Policy Card', 'image', ['Administrative', 'Insurance & Billing', 'Claim Forms'], 'PMR-10231', 640, 39, ['insurance']),
         this.buildDoc('OPD Consultation Note', 'pdf', ['Clinical Records', 'OPD Notes'], 'PMR-10231', 210, 38, ['consult']),
@@ -257,22 +255,22 @@ export class MockDataService {
         this.buildDoc('Sputum Culture Report', 'pdf', ['Clinical Records', 'Lab Reports', 'Microbiology'], 'PMR-10477', 175, 5, ['micro'], '#7A3A3A'),
     ];
 
-    private documentsSubject = new BehaviorSubject<HospitalDocument[]>(this.seedDocuments);
+    private documentsSubject = new BehaviorSubject<DocumentFileModel[]>(this.seedDocuments);
     documents$ = this.documentsSubject.asObservable();
 
-    get documents(): HospitalDocument[] {
+    get documents(): DocumentFileModel[] {
         return this.documentsSubject.value;
     }
 
-    addDocument(doc: HospitalDocument): void {
+    addDocument(doc: DocumentFileModel): void {
         this.documentsSubject.next([doc, ...this.documents]);
     }
 
     deleteDocument(id: string): void {
-        this.documentsSubject.next(this.documents.filter((d) => d.id !== id));
+        this.documentsSubject.next(this.documents.filter((d) => d.id.toString() !== id));
     }
 
-    getDocumentsForPatient(patientId: string): HospitalDocument[] {
-        return this.documents.filter((d) => d.patientId.toString() === patientId);
+    getDocumentsForPatient(patientId: string): DocumentFileModel[] {
+        return this.documents.filter((d) => d.admissionId.toString() === patientId);
     }
 }

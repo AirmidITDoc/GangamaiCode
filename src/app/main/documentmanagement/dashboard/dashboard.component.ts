@@ -29,7 +29,7 @@ export class DashboardComponent {
     this.totalPatients = this.data.patients.length;
     this.totalCategories = this.data.getAllPaths().length;
     this.recentDocs = [...this.data.documents]
-      .sort((a, b) => +new Date(b.uploadedOn) - +new Date(a.uploadedOn))
+      .sort((a, b) => +new Date(b.createdDate) - +new Date(a.createdDate))
       .slice(0, 6);
 
     this.tiles = [

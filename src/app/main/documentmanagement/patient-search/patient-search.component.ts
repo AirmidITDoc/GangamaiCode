@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HospitalDocument } from 'app/core/models/documentmanagement/document.model';
+import { DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
 import { MockDataService } from '../mock-data.service';
 import { ZipService } from '../zip.service';
 import { PreviewDialogComponent } from '../shared/components/preview-dialog/preview-dialog.component';
@@ -17,7 +17,7 @@ export class PatientSearchComponent implements OnInit {
   query = '';
   results: Patient[] = [];
   selectedPatient: Patient | null = null;
-  patientDocs: HospitalDocument[] = [];
+  patientDocs: DocumentFileModel[] = [];
   zipping = false;
 
   constructor(
@@ -54,11 +54,11 @@ export class PatientSearchComponent implements OnInit {
     this.patientDocs = [];
   }
 
-  preview(doc: HospitalDocument): void {
+  preview(doc: DocumentFileModel): void {
     this.dialog.open(PreviewDialogComponent, { data: doc, maxWidth: '95vw' });
   }
 
-  downloadOne(doc: HospitalDocument): void {
+  downloadOne(doc: DocumentFileModel): void {
     this.zipService.downloadSingleDocument(doc);
   }
 
@@ -73,10 +73,10 @@ export class PatientSearchComponent implements OnInit {
     }
   }
 
-  get groupedByCategory(): { path: string; docs: HospitalDocument[] }[] {
-    const map = new Map<string, HospitalDocument[]>();
+  get groupedByCategory(): { path: string; docs: DocumentFileModel[] }[] {
+    const map = new Map<string, DocumentFileModel[]>();
     for (const d of this.patientDocs) {
-      const key = d.categoryPath.join(' / ');
+      const key = d.docCatId.toString();
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(d);
     }

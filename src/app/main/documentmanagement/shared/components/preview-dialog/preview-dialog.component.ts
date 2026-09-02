@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { HospitalDocument } from 'app/core/models/documentmanagement/document.model';
+import { DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
 import { ZipService } from 'app/main/documentmanagement/zip.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class PreviewDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<PreviewDialogComponent>,
     private zipService: ZipService,
-    @Inject(MAT_DIALOG_DATA) public doc: HospitalDocument
+    @Inject(MAT_DIALOG_DATA) public doc: DocumentFileModel
   ) {}
 
   get previewText(): string {

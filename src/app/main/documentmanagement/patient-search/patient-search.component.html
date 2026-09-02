@@ -86,7 +86,7 @@
                                     <mat-icon [ngClass]="'kind-' + d.fileKind">{{ d.fileKind | fileKindIcon
                                         }}</mat-icon>
                                     <span class="doc-chip-title">{{ d.title }}</span>
-                                    <span class="doc-chip-meta mono">{{ d.fileSizeKb | fileSize }}</span>
+                                    <span class="doc-chip-meta mono">{{ d.fileSize | fileSize }}</span>
                                     <button mat-icon-button matTooltip="Preview"
                                         (click)="preview(d)"><mat-icon>visibility</mat-icon></button>
                                     <button mat-icon-button matTooltip="Download"
