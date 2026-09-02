@@ -38,7 +38,7 @@ import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/ou
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfigService } from 'app/core/services/config.service';
@@ -120,6 +120,7 @@ export class ResultEntryComponent implements OnInit {
     isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
     IsEdit: boolean = true; ///this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
+    IsDelete: boolean = this.permissionService.getPermission(permissionCodes.PathologyResultlist, permissionType.Delete);
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;

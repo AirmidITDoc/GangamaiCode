@@ -137,7 +137,7 @@
                                         <mat-checkbox (click)="$event.stopPropagation()"
                                             (change)="tableElementChecked($event,contact)"
                                             (change)="$event ? selection.toggle(contact) : null"
-                                            *ngIf="!contact.sampleNo  else noMLC"
+                                            *ngIf="!contact.sampleNo || contact.isSampleReceviedCancel ; else noMLC"
                                             [checked]="selection.isSelected(contact)"
                                             [disabled]="isCheckboxDisabled(contact)">
                                         </mat-checkbox>

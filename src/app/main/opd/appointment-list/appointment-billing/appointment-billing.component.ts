@@ -450,10 +450,26 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             return;
         }
         // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
-        // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
+        // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);  
 
         const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-        const netAmount = Number((totalAmount - discountAmount).toFixed(2));
+
+        const DiscountPer = +percent || 0;
+          if (this.UserDicPerLimit > 0) {
+            if (DiscountPer > this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                    confirmButtonColor: '#d33'
+                }).then(()=>{
+                this.chargeForm.get("discountPer").setValue(this.UserDicPerLimit);  
+                this.isUpdating = false; 
+                this.updateDiscountAmount();
+                }) 
+            }
+        } 
+        const netAmount = Number((totalAmount - discountAmount).toFixed(2)); 
         this.chargeForm.patchValue({
             discountPer: percent,
             netAmount: netAmount
@@ -1152,9 +1168,23 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.Consessionres = false
             this.OPFooterForm.get("concessionReasonId").setValue(0)
         }
-        row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+        let tablediscper = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+            if (this.UserDicPerLimit > 0) {
+            if (tablediscper > this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                    confirmButtonColor: '#d33'
+                }) 
+                row.DiscPer = this.UserDicPerLimit; 
+                discountAmt = parseFloat(((totalAmount *  row.DiscPer) / 100).toFixed(2));
+                row.DiscAmt = discountAmt 
+            }
+        } 
+        row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0; 
         row.TotalAmt = totalAmount;
-        row.NetAmount = totalAmount - discountAmt;
+        row.NetAmount = totalAmount - discountAmt; 
 
         this.calculateTotalAmount();
     }
@@ -1225,7 +1255,24 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             // const disountPer = Number(totalChargeAmount ? ((totalDiscountAmount / totalChargeAmount) * 100).toFixed(2) : "0.00");
 
             const disountPer = Math.ceil(Number(totalChargeAmount ? ((totalDiscountAmount / totalChargeAmount) * 100).toFixed(2) : "0.00"));
-            const netAmount = totalChargeAmount - totalDiscountAmount;
+            
+            const DiscountPer = +disountPer|| 0;
+          if (this.UserDicPerLimit > 0) {
+            if (DiscountPer > this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                    confirmButtonColor: '#d33'
+                });
+                this.OPFooterForm.get("totalDiscountPer").setValue(this.UserDicPerLimit);  
+                this.isUpdating = false; 
+                this.updateTotalDiscountAmt();
+            }
+        }
+            
+            
+            const netAmount = totalChargeAmount - (+this.OPFooterForm.get("concessionAmt")?.value || 0);
             this.OPFooterForm.patchValue({
                 totalDiscountPer: disountPer,
                 netPayableAmt: netAmount.toFixed(2)

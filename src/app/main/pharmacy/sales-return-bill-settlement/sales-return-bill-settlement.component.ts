@@ -209,7 +209,11 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             FinalBalanceAmt: 0,
             globledisc: [false],
             globlediscPer: [0],
-            ConcessionId: [0]
+            globlediscAmt:[0],
+            ConcessionId: [0],
+            FinalDiscAmt:[0],
+            GlobleDiscType:['1'],
+            FinalTotalAmt:[0]
         });
     }
 
@@ -724,30 +728,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     vBalanceAmount: any = 0;
     vPaidAmount: any = 0;
     SelectedList: any = [];
-    // tableElementChecked(event, element) {
-    //   debugger
-    //   if (event.checked) {
-    //     this.SelectedList.push(element)
-    //     this.vNetAmount += Math.round(+element.netAmount)
-    //     this.vPaidAmount += Math.round(+element.paidAmount)
-    //     this.vBalanceAmount += Math.round(+element.balanceAmount)
-    //   }
-    //   else {
-    //     let index = this.SelectedList.indexOf(element);
-    //     if (index >= 0) {
-    //       this.SelectedList.splice(index, 1);
-    //     }
-    //     this.vNetAmount -= Math.round(+element.netAmount)
-    //     this.vPaidAmount -= Math.round(+element.paidAmount)
-    //     this.vBalanceAmount -= Math.round(+element.balanceAmount)
-    //   }
-    //   console.log(this.SelectedList)
-    //   this.MutliSettlemForm.patchValue({
-    //     FinalNetAmt: this.vNetAmount,
-    //     FinalPaidAmt: this.vPaidAmount,
-    //     FinalBalanceAmt: this.vBalanceAmount,
-    //   })
-    // } 
+ 
     tableElementChecked(event, element) {
         if (event.checked) {
             this.selection.select(element);
@@ -802,20 +783,26 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.vNetAmount = 0;
         this.vPaidAmount = 0;
         this.vBalanceAmount = 0;
+        this.vDiscountAmt = 0;
+        this.vTotalAmt =0;
 
         selectedRows.forEach(element => {
             this.vNetAmount += Math.round(+element.netAmount);
+             this.vTotalAmt  += Math.round(+element.totalAmount);
             this.vPaidAmount += Math.round(+element.paidAmount);
             this.vBalanceAmount += Math.round(+element.balanceAmount);
+            this.vDiscountAmt += Math.round(+element.discAmount);
         });
 
         this.MutliSettlemForm.patchValue({
+            FinalDiscAmt : this.vDiscountAmt,
+            FinalTotalAmt: this.vTotalAmt,
             FinalNetAmt: this.vNetAmount,
             FinalPaidAmt: this.vPaidAmount,
             FinalBalanceAmt: this.vBalanceAmount,
         });
     }
-
+    vDiscountAmt:any=0;
     BalanceAm1: any = 0;
     UsedAmt1: any = 0;
     MultiplePaySave() {
@@ -1026,29 +1013,73 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             ],
             ConcessionId: [
                 // { name: "required", Message: "ConcessionId is required" }
+            ],
+              FinalDiscAmt: [
+                // { name: "required", Message: "ConcessionId is required" }
+            ],
+              globlediscAmt: [
+                // { name: "required", Message: "ConcessionId is required" }
+            ],
+                FinalTotalAmt: [
+                // { name: "required", Message: "ConcessionId is required" }
             ]
         };
     }
-    onChangeglobledisc(event) {
+    onChangeglobadiscTypeMultiple(event) {
+        if (event.value == '1') {   
+            this.MutliSettlemForm.get('globlediscAmt').reset(); 
+        } else {
+             this.MutliSettlemForm.get('globlediscPer').reset();    
+        } 
+        this.vNetAmount = 0;
+        this.vPaidAmount = 0;
+        this.vBalanceAmount = 0;
+        this.vTotalAmt = 0;
+        this.vDiscountAmt = 0;
+        this.MutliSettlemForm.patchValue({
+            FinalDiscAmt : this.vDiscountAmt,
+            FinalTotalAmt: this.vTotalAmt,
+            FinalNetAmt: this.vNetAmount,
+            FinalPaidAmt: this.vPaidAmount,
+            FinalBalanceAmt: this.vBalanceAmount,
+        }) 
+        this.selection.clear();
+        this.SelectedList = []; 
+        this.getdataMultiple(); 
+    }
+    vTotalAmt:any=0;
+    onChangeglobledisc(event) { 
+         if (!this.dssalesbillListMultiple.data.length) {
+            this.toastr.warning('Please check table is empty', 'Warning') 
+            this.vglobledisc = false;
+            this.MutliSettlemForm.get('globledisc').setValue(this.vglobledisc);
+            return
+        }
         if (event.checked == true) {
             this.vglobledisc = true;
         } else {
             this.vglobledisc = false;
             this.MutliSettlemForm.get('globlediscPer').reset();
+            this.MutliSettlemForm.get('globlediscAmt').reset();
             this.MutliSettlemForm.get('ConcessionId').reset();
         }
         this.vNetAmount = 0;
         this.vPaidAmount = 0;
-        this.vBalanceAmount = 0;
+        this.vBalanceAmount = 0
+        this.vDiscountAmt = 0;;
+        this.vTotalAmt = 0;
         this.MutliSettlemForm.patchValue({
+            FinalDiscAmt : this.vDiscountAmt,
+            FinalTotalAmt: this.vTotalAmt,
             FinalNetAmt: this.vNetAmount,
             FinalPaidAmt: this.vPaidAmount,
             FinalBalanceAmt: this.vBalanceAmount,
         })
         
+        this.selection.clear();
+        this.SelectedList = []; 
         this.getdataMultiple();
-          this.selection.clear();
-         this.SelectedList = []; 
+
     }
     keyPressCharater(event) {
         const inp = String.fromCharCode(event.keyCode);
@@ -1130,59 +1161,87 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         debugger
         const formvalue = this.MutliSettlemForm.value
         if (!this.dssalesbillListMultiple.data.length) {
-            this.toastr.warning('Please check table is blank', 'Warning')
+            this.toastr.warning('Please check table is empty', 'Warning')
             return
         }
          this.templist = this.dssalesbillListMultiple.data; 
-        const globlediscPer = formvalue?.globlediscPer || 0;
-        if (globlediscPer > 0 && globlediscPer <= 100) {
-            this.templist = this.templist.map(element=> {
-              if(element.refundAmt != 0) return element
-                const discamt1 = 0;
-                let discountAmt = '0';
-                let netAmt = '0';
+         const globalDiscAmt = Number(formvalue?.globlediscAmt || 0);
+         const globalDiscPer = Number(formvalue?.globlediscPer || 0);
 
-                const globlediscPer = formvalue?.globlediscPer || 0;
-                // if ((element?.discAmount || 0) > 0) {
-                //   discamt1 = Math.round(((element?.balanceAmount) * globlediscPer) / 100);
-                //   discountAmt = Math.round(parseFloat(element?.discAmount) + discamt1).toFixed(2);
-                //   netAmt = Math.round(parseFloat(element?.balanceAmount) - discamt1).toFixed(2);
-                // } else {
-                discountAmt = Math.round(((element?.totalAmount) * globlediscPer) / 100).toFixed(2);
-                netAmt = Math.round((element?.totalAmount) - parseFloat(discountAmt)).toFixed(2);
-                //}
+         const totalAmount = this.templist.filter(element => element.refundAmt == 0)
+        .reduce((sum, element) => sum + Number(element?.totalAmount || 0), 0);
+
+        if (globalDiscPer > 0 && globalDiscPer <= 100) {
+            this.templist = this.templist.map(element=> {
+              if(element.refundAmt != 0) return element  
+               
+                const totalAmt = Number(element?.totalAmount || 0); 
+                const discountAmt = (totalAmt * globalDiscPer) / 100;
+                const netAmt = totalAmt - discountAmt;
+ 
                 // Return updated element to rebuild the list
                 return {
                     ...element,
-                    discAmount: discountAmt,
-                    netAmount: netAmt,
-                    balanceAmount: netAmt,
-                    discper: globlediscPer
+                    discAmount: discountAmt.toFixed(2),
+                    netAmount: netAmt.toFixed(2),
+                    balanceAmount: netAmt.toFixed(2),
+                    discper: globalDiscPer
                 };
             });
-        } else {
-            this.templist = this.chargelist
-            this.vNetAmount = 0;
-            this.vPaidAmount = 0;
-            this.vBalanceAmount = 0;
-            this.MutliSettlemForm.patchValue({
-                FinalNetAmt: this.vNetAmount,
-                FinalPaidAmt: this.vPaidAmount,
-                FinalBalanceAmt: this.vBalanceAmount,
-            })
-        }
-        // Assign updated list back
-        this.dssalesbillListMultiple.data = this.templist;
-         this.selection.clear();
-         this.SelectedList = []; 
+        }else if (globalDiscAmt > 0 &&  totalAmount > 0 && globalDiscAmt <= totalAmount) {
+ 
+        this.templist = this.templist.map(element => {
+
+            if (element.refundAmt != 0) return element;
+        
+            const totalAmt = Number(element?.totalAmount || 0);
+
+            // Proportionate discount
+            const discountAmt = (totalAmt / totalAmount) * globalDiscAmt;
+            const netAmt = totalAmt - discountAmt;
+
+            return {
+                ...element,
+                discAmount: discountAmt.toFixed(2),
+                netAmount: netAmt.toFixed(2),
+                balanceAmount: netAmt.toFixed(2),
+                discper: ((discountAmt / totalAmt) * 100).toFixed(2)
+            };
+        });
+
+    } else {
+             this.toastr.warning(  'Please enter a valid discount percentage or discount amount.', 'Warning' );
          this.vNetAmount = 0;
          this.vPaidAmount = 0;
          this.vBalanceAmount = 0;
+         this.vDiscountAmt = 0;
+         this.vTotalAmt = 0;
          this.MutliSettlemForm.patchValue({
+                FinalDiscAmt : this.vDiscountAmt,
+                FinalTotalAmt: this.vTotalAmt,
                 FinalNetAmt: this.vNetAmount,
                 FinalPaidAmt: this.vPaidAmount,
                 FinalBalanceAmt: this.vBalanceAmount,
+                globlediscPer:'',
+                globlediscAmt:''
             })
+
+        this.selection.clear();
+        this.SelectedList = []; 
+        this.getdataMultiple();
+        return; 
+        }
+        // Assign updated list back 
+        this.dssalesbillListMultiple.data = this.templist;
+         this.selection.clear();
+         this.SelectedList = []; 
+         this.templist.forEach(element => { 
+         if (element.refundAmt == 0) {
+          this.selection.select(element);
+          this.SelectedList.push(element);
+         } 
+      }); 
+       this.calculateTotals(this.selection.selected); 
     }
 
     OnSaveGlobelDisc() {
@@ -1192,8 +1251,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             this.toastr.warning('Please check table is blank', 'Warning')
             return
         }
-        if (!(formvalue?.globlediscPer || 0)) {
-            this.toastr.warning('Please add discount %', 'Warning')
+        if (!formvalue?.globlediscPer && !formvalue?.globlediscAmt) {
+            this.toastr.warning('Please add discount % or discount amount', 'Warning')
             return
         }
         if (!(formvalue?.ConcessionId || 0)) {
