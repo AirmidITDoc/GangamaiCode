@@ -457,12 +457,12 @@ export class NewFormComponent {
       "membershipvalidDate": this.todayPlus5Years,// [(new Date()).toISOString()],
       "receiptDate": [(new Date()).toISOString()],
       "feeReceived": [false],
-      "feeAmount": ['1000', [Validators.required]],
+      "feeAmount": ['1000'],
 
       "wmembershipvalidDate": this.wtodayPlus5Years,// [(new Date()).toISOString()],
       "wreceiptDate": [(new Date()).toISOString()],
       "wfeeReceived": [false],
-      "wfeeAmount": ['1000', [Validators.required]],
+      "wfeeAmount": ['1000'],
 
 
       "hdeathDate": '1900-01-01',
@@ -639,7 +639,22 @@ export class NewFormComponent {
       });
       return;
     }
-
+    if (this.personalFormGroup.get("ayushmanEnrolled").value) {
+      if (this.personalFormGroup.get('haayushmanId').value == 0 || this.personalFormGroup.get('haayushmanId').value == '') {
+        this.toastr.warning('Please select valid  aayushmanId ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if (this.personalFormGroup.get("maleFemaleEnrolled").value) {
+      if (this.personalFormGroup.get('waayushmanId').value == 0 || this.personalFormGroup.get('waayushmanId').value == '') {
+        this.toastr.warning('Please select valid wife aayushmanId', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
 
     if (this.personalFormGroup.get("hasmediclaim").value) {
       debugger
@@ -699,6 +714,25 @@ export class NewFormComponent {
       }
     }
 
+
+    if (this.personalFormGroup.get("feeReceived").value) {
+      if (this.personalFormGroup.get('feeAmount').value == 0 || this.personalFormGroup.get('feeAmount').value == '') {
+        this.toastr.warning('Please select valid husband feeAmount ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    if (this.personalFormGroup.get("wfeeReceived").value) {
+      if (this.personalFormGroup.get('wfeeAmount').value == 0 || this.personalFormGroup.get('wfeeAmount').value == '') {
+        this.toastr.warning('Please select valid Wife feeAmount ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
     if (this.personalFormGroup.get("DateOfBirth").value != '1900-01-01') {
       const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
       if (DateOfBirth1) {
@@ -721,7 +755,7 @@ export class NewFormComponent {
           this.ageMonth += 12;
         }
       }
-       this.personalFormGroup.get('husbandAgeY').setValue(this.ageYear)
+      this.personalFormGroup.get('husbandAgeY').setValue(this.ageYear)
       this.personalFormGroup.get('husbandAgeM').setValue(this.ageMonth)
       this.personalFormGroup.get('husbandageD').setValue(this.ageDay)
     }
@@ -1813,6 +1847,10 @@ export class NewFormComponent {
       this.hasmediclaimstatus = true
     } else {
       this.hasmediclaimstatus = false
+      this.personalFormGroup.get('mediclaimpolicynumber').setValue('')
+      this.personalFormGroup.get('mediclaimIssuanceAmt').setValue(0)
+      this.personalFormGroup.get('mediclaimcompany').setValue(0)
+
     }
   }
 
@@ -1821,21 +1859,37 @@ export class NewFormComponent {
       this.whasmediclaimstatus = true
     } else {
       this.whasmediclaimstatus = false
+      this.personalFormGroup.get('wmediclaimpolicynumber').setValue('')
+      this.personalFormGroup.get('wmediclaimIssuanceAmt').setValue(0)
+      this.personalFormGroup.get('wmediclaimcompany').setValue(0)
+
     }
   }
   onHfeesChange(event: any) {
     if (event.checked) {
       this.hFeesstatus = true
+      this.personalFormGroup.get('feeAmount').setValidators([Validators.required]);
+      this.personalFormGroup.get('feeAmount').enable();
     } else {
       this.hFeesstatus = false
+      this.personalFormGroup.get('feeAmount').clearValidators();
+      this.personalFormGroup.get('feeAmount').updateValueAndValidity();
+      this.personalFormGroup.get('feeAmount').setValue('0')
+
     }
   }
 
   onWfeesChange(event: any) {
     if (event.checked) {
       this.WFeesstatus = true
+      this.personalFormGroup.get('wfeeAmount').setValidators([Validators.required]);
+      this.personalFormGroup.get('wfeeAmount').enable();
     } else {
       this.WFeesstatus = false
+
+      this.personalFormGroup.get('wfeeAmount').clearValidators();
+      this.personalFormGroup.get('wfeeAmount').updateValueAndValidity();
+      this.personalFormGroup.get('wfeeAmount').setValue('0')
     }
   }
 
@@ -1844,6 +1898,7 @@ export class NewFormComponent {
       this.HAyushman = true
     } else {
       this.HAyushman = false
+      this.personalFormGroup.get('haayushmanId').setValue("")
     }
   }
   onwayushhange(event: any) {
@@ -1851,6 +1906,7 @@ export class NewFormComponent {
       this.wAyushman = true
     } else {
       this.wAyushman = false
+      this.personalFormGroup.get('waayushmanId').setValue("")
     }
   }
   onResidenceAddressEnter() {
