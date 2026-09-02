@@ -132,6 +132,10 @@ export class AdministrationService {
         return this._httpClient.PutData("Billing/UpdateRefund", m_data);
     }
 
+ public getDateTimeChangeAdvRefundId(m_data) {
+        return this._httpClient.PutData("Billing/UpdateRefund", m_data);
+    }
+    
     public geVisittDateTimeChange(m_data) {
         return this._httpClient.PutData("VisitDetail/UpdateVisitdatetime" + m_data.visitId, m_data)
     }

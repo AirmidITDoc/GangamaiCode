@@ -37,6 +37,7 @@ import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
+import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
 
 @Component({
     selector: 'app-admission',
@@ -911,6 +912,24 @@ export class AdmissionComponent implements OnInit {
 
     }
 
+    //   getinitialAccessment(row) {
+    //     const dialogRef = this._matDialog.open(InitialAccessmentComponent,
+    //         {
+    //             maxHeight: "95vh",
+    //             maxWidth: '95wh',
+    //             data: row
+    //         });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         console.log('The dialog was closed - Insert Action', result);
+
+    //         this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+    //         this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+
+    //         this.onChangeFirst()
+
+    //     });
+
+    // }
     //
     dataSource = new MatTableDataSource<AdmissionPersonlModel>();
     GetAdmissiondetail() {
@@ -1832,6 +1851,7 @@ export class RegInsert {
     medTourismDateOfEntry: Date;
     emgId: any;
     traiffId: any;
+    pinNo: any;
     // updatedBy:any;
 
 
@@ -1924,7 +1944,7 @@ export class RegInsert {
             this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
             this.emgId = RegInsert.emgId || 0
             this.traiffId = RegInsert.traiffId || 0;
-            // this.updatedBy = RegInsert.updatedBy || 0 ;
+            this.pinNo = RegInsert.pinNo || 0 ;
 
         }
     }
