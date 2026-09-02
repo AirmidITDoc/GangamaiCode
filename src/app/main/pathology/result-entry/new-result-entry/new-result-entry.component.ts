@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
@@ -221,13 +221,13 @@ export class NewResultEntryComponent {
             this.doclist = res
             if (this.doclist.length) {
                 const doctor = this.doclist.find(x => x.doctorId == IsPathDoctorId);
-                if (doctor) { 
-                    setTimeout(() => { 
-                    this.otherForm.get('PathResultDoctorId')?.setValue(doctor.doctorId.toString());
+                if (doctor) {
+                    setTimeout(() => {
+                        this.otherForm.get('PathResultDoctorId')?.setValue(doctor.doctorId.toString());
 
-                    this.vPathResultDoctorId = doctor?.doctorId || 0
+                        this.vPathResultDoctorId = doctor?.doctorId || 0
                     }, 300);
-                
+
                 }
             }
         });
@@ -277,7 +277,7 @@ export class NewResultEntryComponent {
         }
     }
     onResultUp(data) {
-       // debugger
+        // debugger
         //Changes done by Ambadas 07-03-2026
         const items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
@@ -767,6 +767,42 @@ export class NewResultEntryComponent {
 
     // }
 
+    // checkMultipleRunDates(data: Pthologyresult[]): { hasMultiple: boolean, distinctRunDates: string[] } {
+    //     // Ignore rows that have no result yet (RUNDATE comes back as {} / null when empty)
+    //     const withRunDate = data.filter(d => d.RUNDATE && Object.keys(d.RUNDATE as any).length !== 0);
+
+    //     // Group by TestDetId+ParameterId, collect distinct RUNDATEs per parameter
+    //     const paramMap = new Map<string, Set<string>>();
+    //     withRunDate.forEach(d => {
+    //         const key = `${d.TestDetId}_${d.ParameterId}`;
+    //         if (!paramMap.has(key)) paramMap.set(key, new Set<string>());
+    //         paramMap.get(key)!.add(d.RUNDATE as unknown as string);
+    //     });
+
+    //     let hasMultiple = false;
+    //     paramMap.forEach(set => {
+    //         if (set.size > 1) hasMultiple = true;
+    //     });
+
+    //     // All distinct rundates across the whole dataset, sorted latest-first
+    //     const distinctRunDates = Array.from(new Set(withRunDate.map(d => d.RUNDATE as unknown as string)))
+    //         .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+
+    //     return { hasMultiple, distinctRunDates };
+    // }
+
+    checkMultipleRunDates(data: Pthologyresult[]) {
+        const withRunDate = data.filter(d => d.RUNDATE && Object.keys(d.RUNDATE as any).length !== 0);
+
+        const distinctRunDates = Array.from(new Set(withRunDate.map(d => d.RUNDATE as unknown as string)))
+            .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+
+        // hasMultiple is purely: are there 2+ distinct non-empty RUNDATE values overall?
+        const hasMultiple = distinctRunDates.length > 1;
+
+        return { hasMultiple, distinctRunDates };
+    }
+
     SampleNo = 0;
     onUpload() {
 
@@ -825,18 +861,34 @@ export class NewResultEntryComponent {
             this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
                 this.dataSource.data = Visit as Pthologyresult[];
                 console.log("OP DATA:", this.dataSource.data)
-                // this.Pthologyresult = Visit as Pthologyresult[];
-                this.dataSource.sort = this.sort;
-                this.dataSource.paginator = this.paginator;
-                this.sIsLoading = '';
-                // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
-                if((this.dataSource.data[0]?.adm_Visit_docId || 0 ) > 0){
-                this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)  
-                this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+
+                ////////////// check double data //////////////////
+
+                const { hasMultiple, distinctRunDates } = this.checkMultipleRunDates(this.dataSource.data);
+
+                if (hasMultiple) {
+                    // ✅ Only reaches here if 2+ distinct RUNDATEs exist among result rows
+                    this.pendingUploadData = this.dataSource.data;
+                    this.openRunDatePopup(distinctRunDates);
+                } else {
+                    // ✅ Single (or zero) RUNDATE — load directly, no popup
+                    this.applyUploadData(this.dataSource.data);
                 }
-                this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-                this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-                console.log(this.PathResultDr1);
+
+                ////////////// end ///////////////
+                
+                // this.Pthologyresult = Visit as Pthologyresult[];
+                // this.dataSource.sort = this.sort;
+                // this.dataSource.paginator = this.paginator;
+                // this.sIsLoading = '';
+                // // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
+                // if ((this.dataSource.data[0]?.adm_Visit_docId || 0) > 0) {
+                //     this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
+                //     this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+                // }
+                // this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+                // this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+                // console.log(this.PathResultDr1);
                 // this.getPathresultDoctorList();
             });
 
@@ -893,15 +945,31 @@ export class NewResultEntryComponent {
                 this.dataSource.data = Visit as Pthologyresult[];
                 //  this.Pthologyresult = Visit as Pthologyresult[];
                 console.log("IP DATA:", this.dataSource.data)
-                  if((this.dataSource.data[0]?.adm_Visit_docId || 0 ) > 0){
-                this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-                this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-                  }
-                this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-                this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-                this.dataSource.sort = this.sort;
-                this.dataSource.paginator = this.paginator;
-                this.sIsLoading = '';
+
+                ////////////// check double data //////////////////
+
+                const { hasMultiple, distinctRunDates } = this.checkMultipleRunDates(this.dataSource.data);
+
+                if (hasMultiple) {
+                    // ✅ Only reaches here if 2+ distinct RUNDATEs exist among result rows
+                    this.pendingUploadData = this.dataSource.data;
+                    this.openRunDatePopup(distinctRunDates);
+                } else {
+                    // ✅ Single (or zero) RUNDATE — load directly, no popup
+                    this.applyUploadData(this.dataSource.data);
+                }
+
+                ////////////// end ///////////////
+
+                // if ((this.dataSource.data[0]?.adm_Visit_docId || 0) > 0) {
+                //     this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
+                //     this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+                // }
+                // this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+                // this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+                // this.dataSource.sort = this.sort;
+                // this.dataSource.paginator = this.paginator;
+                // this.sIsLoading = '';
             });
 
         } else if (this.OP_IPType == 4) {
@@ -969,6 +1037,45 @@ export class NewResultEntryComponent {
 
         }
         this.getValidatetabledata()
+    }
+
+    @ViewChild('dateForm') dateForm!: TemplateRef<any>;
+    pendingUploadData: Pthologyresult[] = [];
+    openRunDatePopup(runDates: string[]) {
+        const dialogRef = this._matDialog.open(this.dateForm, {
+            width: '400px',
+            data: { runDates }
+        });
+
+        dialogRef.afterClosed().subscribe((selectedRunDate: string) => {
+            if (selectedRunDate) {
+                const filtered = this.filterByRunDate(this.pendingUploadData, selectedRunDate);
+                this.applyUploadData(filtered);
+            } else {
+                this.sIsLoading = '';
+            }
+        });
+    }
+
+    filterByRunDate(data: Pthologyresult[], selectedRunDate: string): Pthologyresult[] {
+        return data.filter(d => {
+            // keep parameters that have no result yet (RUNDATE empty) untouched
+            if (!d.RUNDATE || Object.keys(d.RUNDATE as any).length === 0) return true;
+            return d.RUNDATE === selectedRunDate;
+        });
+    }
+
+    applyUploadData(data: Pthologyresult[]) {
+        this.dataSource.data = data;
+        if ((data[0]?.adm_Visit_docId || 0) > 0) {
+            this.otherForm.get('PathResultDoctorId').setValue(data[0].adm_Visit_docId);
+            this.vPathResultDoctorId = data[0].adm_Visit_docId;
+        }
+        this.PathResultDr1 = data[0]?.["PathResultDr1"];
+        this.vsuggation = data[0]?.["SuggestionNote"];
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.sIsLoading = '';
     }
 
     onVerify() {
@@ -1283,6 +1390,7 @@ export class Pthologyresult {
     MaxValue: any;
     SampleID: any;
     adm_Visit_docId: any;
+    RUNDATE: any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
@@ -1310,6 +1418,7 @@ export class Pthologyresult {
         this.MinValue = Pthologyresult.MinValue || '';
         this.MaxValue = Pthologyresult.MaxValue || 0;
         this.SampleID = Pthologyresult.SampleID || 0;
+        this.RUNDATE = Pthologyresult.RUNDATE || ''
     }
 
 }

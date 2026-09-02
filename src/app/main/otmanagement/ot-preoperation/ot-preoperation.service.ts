@@ -173,5 +173,8 @@ export class OtPreoperationService {
     public getReportView(Param) {
         return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
+    public getSurgerynameBySurgeryType(Id) {
+        return this._httpClient.GetData("SurgeryMaster/GetSurgeryNameBySurgeryType/" + Id)
+    }
 
 }

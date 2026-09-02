@@ -121,4 +121,8 @@ export class OtReservationService {
         return this._httpClient.PostData("OTReservation/UpdateOTReservationHeader/", Param);
         // }
     }
+
+     public getSurgerynameBySurgeryType(Id) {
+        return this._httpClient.GetData("SurgeryMaster/GetSurgeryNameBySurgeryType/" + Id)
+    }
 }

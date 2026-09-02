@@ -5,6 +5,7 @@ import { AadhaarGenerateOtpResponse, AbhaOtpVerify, AbhaProfile, VerifyResponse 
 import { OtpSystem } from '../../abha-verify.model';
 import { AbhaService } from '../../abha.service';
 import { AbhaValidators } from '../../abha.validators';
+import Swal from 'sweetalert2';
 
 /**
  * Two-step flow:
@@ -118,8 +119,17 @@ export class VerifyByAbhaAddressComponent implements OnInit {
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 console.log("Search DATA:", r)
                 this.searchData = r
-                if (r.healthIdNumber) {
+                if (r.authMethods) {
                     this.authMethods = r.authMethods || [];
+
+                    if (this.authMethods.length === 1 && this.authMethods[0] === 'MOBILE_OTP') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Non-KYC ABHA Address',
+                            text: 'This is a non-KYC ABHA address. Please link your ABHA address to your ABHA number to enable download.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
 
                     this.step = 2;
                     this.snack.open('', 'OK', { duration: 2500 });
@@ -140,14 +150,14 @@ export class VerifyByAbhaAddressComponent implements OnInit {
         // this.otpType = this.authMethods.indexOf(selectedAuthMethod);
         // console.log(this.otpType);
         if (this.abhaForm.get('otpType').value === 'AADHAAR_OTP') {
-            this.otpType = 1;
+            this.otpType = "AADHAAR_OTP";
         } else if (this.abhaForm.get('otpType').value === 'MOBILE_OTP') {
-            this.otpType = 0;
+            this.otpType = "MOBILE_OTP";
         }
 
         this.loading = true;
         // if (this.otpSystem === 'aadhaar')
-        this.abhaService.requestAbhaOtp({ AadhaarNumber: this.searchData.abhaAddress, OtpType: 0 })
+        this.abhaService.requestAbhaOtp({ AadhaarNumber: this.searchData.abhaAddress, OtpType: this.otpType })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.channelLabel = this.abhaForm.value.otpType === 1 ? 'Aadhaar-linked mobile' : 'ABHA-linked mobile';

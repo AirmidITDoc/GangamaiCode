@@ -167,8 +167,8 @@
                                                         : ''">
 
                         <button mat-icon-button *ngIf="element.isPathOutSource == '1'"
-                            [disabled]="element.isSampleCollection == false"
-                            (click)="element.isSampleCollection !== false && Editoutsoucedata(element)">
+                            [disabled]="element.isSampleCollection == false">
+                            <!-- (click)="element.isSampleCollection !== false && Editoutsoucedata(element)" -->
 
                             <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
                         </button>
