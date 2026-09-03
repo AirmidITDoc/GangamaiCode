@@ -37,7 +37,7 @@ import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/n
 import { NewInstructionMasterComponent } from 'app/main/setup/prescription/instructionmaster/new-instruction-master/new-instruction-master.component';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { AirmidChipautocompleteComponent } from 'app/main/shared/componets/airmid-chipautocomplete/airmid-chipautocomplete.component';
-// import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabtest/lababnormal-list/lababnormal-list.component';
+import { LababnormalListComponent } from 'app/main/nursingstation/requestforlabtest/lababnormal-list/lababnormal-list.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -220,7 +220,7 @@ export class NewCasepaperComponent implements OnInit {
     @ViewChild('medicineTableRef') medicineTableRef: MedicineTableNewComponent;
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
-   
+
 
     BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -2603,6 +2603,11 @@ export class NewCasepaperComponent implements OnInit {
                     fieldName: "OPIPId",
                     fieldValue: String(visitId),
                     opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: "0",
+                    opType: "Equals"
                 }
             ],
             exportType: "JSON",
@@ -2820,6 +2825,7 @@ export class NewCasepaperComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "OPIPId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
+            { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals}
         ],
         row: 25,
         localData: []
@@ -3097,16 +3103,16 @@ export class NewCasepaperComponent implements OnInit {
         }
     }
     getLabResultview(row: any): void {
-        // this._matDialog.open(LababnormalListComponent, {
-        //     maxWidth: "95vw",
-        //     height: '95%',
-        //     width: '90%',
-        //     data: {
-        //         row: row,
-        //         vOPIPId: this.vOPIPId,
-        //         opipType:0
-        //     }
-        // })
+        this._matDialog.open(LababnormalListComponent, {
+            maxWidth: "95vw",
+            height: '95%',
+            width: '90%',
+            data: {
+                row: row,
+                vOPIPId: this.vOPIPId,
+                opipType:0
+            }
+        })
     }
 
     onMicToggleChiefComplaint() {
