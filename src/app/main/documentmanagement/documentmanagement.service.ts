@@ -50,6 +50,8 @@ export class DocumentmanagementService {
     public saveDocument(Param) {
         return this._httpClient.PostFromData("DocumentUpload/upload-files", { model: Param });
     }
-
+    public getDocuments() {
+        return this._httpClient.GetData("DocumentUpload/get-files");
+    }
 
 }

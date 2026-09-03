@@ -71,12 +71,12 @@
                                     <mat-icon>{{ d.fileKind | fileKindIcon }}</mat-icon>
                                 </div>
                                 <div class="doc-info">
-                                    <span class="doc-title" [matTooltip]="d.title">{{ d.title }}</span>
-                                    <span class="doc-sub">{{ d.patientName }} &middot; {{ d.patientId }}</span>
-                                    <span class="doc-path">{{ d.categoryPath.join(' / ') }}</span>
+                                    <span class="doc-title" [matTooltip]="d.title">{{ d.categoryName }}</span>
+                                    <span class="doc-sub">{{ d.orgFileName }}</span>
+                                    <span class="doc-path">{{ d.docNo }}</span>
                                     <div class="doc-meta-row">
                                         <span class="mono">{{ d.fileSize | fileSize }}</span>
-                                        <span class="mono">{{ d.uploadedOn | date:'d MMM y' }}</span>
+                                        <span class="mono">{{ d.createdDate | date:'d MMM y' }}</span>
                                     </div>
                                 </div>
                                 <div class="doc-actions">
@@ -94,13 +94,12 @@
                             <div class="doc-list-row" *ngFor="let d of paged">
                                 <mat-icon [ngClass]="'kind-' + d.fileKind">{{ d.fileKind | fileKindIcon }}</mat-icon>
                                 <div class="list-main">
-                                    <span class="doc-title">{{ d.title }}</span>
-                                    <span class="doc-sub">{{ d.patientName }} ({{ d.patientId }}) &middot; {{
-                                        d.categoryPath.join('
-                                        / ') }}</span>
+                                    <span class="doc-title">{{ d.categoryName }}</span>
+                                    <span class="doc-sub">{{ d.orgFileName }}  &middot; {{
+                                        d.docNo }}</span>
                                 </div>
                                 <span class="mono size-col">{{ d.fileSize | fileSize }}</span>
-                                <span class="mono date-col">{{ d.uploadedOn | date:'d MMM y' }}</span>
+                                <span class="mono date-col">{{ d.createdDate | date:'d MMM y' }}</span>
                                 <div class="doc-actions">
                                     <button mat-icon-button matTooltip="Preview"
                                         (click)="preview(d)"><mat-icon>visibility</mat-icon></button>
