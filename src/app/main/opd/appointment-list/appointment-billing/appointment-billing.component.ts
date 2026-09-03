@@ -1130,6 +1130,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     confirmButtonColor: '#d33'
                 });
                 discountPer = this.UserDicPerLimit;
+                row.DiscPer = +discountPer
                 //   return; 
             }
         } 
