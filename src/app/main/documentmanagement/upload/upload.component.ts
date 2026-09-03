@@ -155,10 +155,8 @@ export class UploadComponent {
 
     /* ---------------- Step 4 ---------------- */
     submit(): void {
-        debugger;
-        const data:DocumentFileModel[]=[];
+        const data: DocumentFileModel[] = [];
         if (!this.selectedPatient || !this.selectedCategoryId || !this.staged.length) return;
-        const path = this.selectedCategoryPath;
         this.staged.forEach((s) => {
             const doc: DocumentFileModel = {
                 id: 0,
@@ -177,15 +175,15 @@ export class UploadComponent {
             data.push(doc);
         });
         this._service.saveDocument(data).subscribe((res) => {
-            debugger;
+            this.lastSubmittedCount = this.staged.length;
+            this.submitted = true;
+            this.snackBar.open(`${this.lastSubmittedCount} document(s) uploaded successfully`, 'Dismiss', { duration: 3000 });
         });
-        this.lastSubmittedCount = this.staged.length;
-        this.submitted = true;
-        this.snackBar.open(`${this.lastSubmittedCount} document(s) uploaded successfully`, 'Dismiss', { duration: 3000 });
     }
 
     startOver(): void {
         this.selectedPatient = null;
+        this.selectedRegistration = null;
         this.selectedCategoryId = null;
         this.staged = [];
         this.submitted = false;

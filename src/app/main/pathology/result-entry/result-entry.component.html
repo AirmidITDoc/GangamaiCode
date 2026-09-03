@@ -524,10 +524,21 @@
                                                         [refType]="pathFiles" [multiple]="true"
                                                         [title]="contact.patientName + ' Report'"></airmid-fileupload-icon>
 
-                                                    <button mat-icon-button (click)="Cancleresult(contact)"
-                                                        matTooltip="Cancel Result" *ngIf="contact.isVerifySign==false">
+                                                    <!-- <button mat-icon-button (click)="Cancleresult(contact)"
+                                                        matTooltip="Cancel Result" *ngIf="contact.isVerifySign==false"
+                                                         [disabled]="IsDelete" 
+                                                        [matTooltip]="IsDelete == true ? 'You do not have permission to cancel this result.' : 'Cancelult'">
                                                         <mat-icon color="warn">cancel</mat-icon>
-                                                    </button>
+                                                    </button> -->
+                                                    
+                                                    <span class="tooltip-wrapper"
+                                                        [matTooltip]="!IsDelete ? 'You do not have permission to cancel this result.' : 'Cancel Result'"
+                                                        matTooltipPosition="above">
+                                                        <button mat-icon-button (click)="Cancleresult(contact)" 
+                                                            *ngIf="contact.isVerifySign==false" [disabled]="!IsDelete">
+                                                            <mat-icon color="warn">cancel</mat-icon>
+                                                        </button>
+                                                    </span>
 
                                                     <button mat-icon-button (click)="getPrint(contact)"
                                                         matTooltip="Print" *ngIf="contact.isCompleted">

@@ -11,12 +11,13 @@ import { gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
 import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class SampleCollectionComponent implements OnInit {
     autocompleteModeunit: string = "Hospital";
 
     IsEdit: boolean = true; //this.permissionService.getPermission(permissionCodes.PathologyResultlist, permissionType.Edit);
+    IsDelete: boolean = this.permissionService.getPermission(permissionCodes.SamplecollectionList, permissionType.Delete);
 
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
     @ViewChild('iconPatientType') iconPatientType!: TemplateRef<any>;
@@ -89,7 +91,7 @@ export class SampleCollectionComponent implements OnInit {
         }
     ];
     gridConfig: gridModel = {
-        permissionCode: permissionCodes.PathologyResultlist,
+        permissionCode: permissionCodes.Pathology,
         apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
         columnsList: this.allcolumns,
         sortField: "RegNo",
@@ -150,13 +152,16 @@ export class SampleCollectionComponent implements OnInit {
             columnsList: [
                 {
                     heading: "Status", key: "isCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
-                    template: this.iconisCompeleted, width: 50
+                    template: this.iconisCompeleted, width: 130
                 },
                 { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
                 { heading: "Sample No | Collected By", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
                 { heading: "Collection Date/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "Cancelled By", key: "sampleReceviedCanceledBy", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "Cancelled Date & Time", key: "sampleReceivedCancelDate", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+                { heading: "Cancellation Reason", key: "sampleReceviedCancelReason", sort: true, align: 'left', emptySign: 'NA', width: 250 },
                 {
-                    heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                    heading: "Action", key: "action", align: "right", width: 70, sticky: true, type: gridColumnTypes.template,
                     template: this.actionButtonTemplate1
                 }
             ],
@@ -369,5 +374,57 @@ export class SampleCollectionComponent implements OnInit {
         });
 
     }
+    VReason:any='';
+    canclerecorddata:any;
+    @ViewChild('CancelReasone') CancelReasone!: TemplateRef<any>;
+ 
+    OnSaveCancelSample(row) {
+        debugger
+        if (this.VReason == '' || this.VReason == null || this.VReason == undefined) {
+            this.toastr.warning('Please Enter a Reason', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
+        const submitData = {
+            "pathReportId": this.canclerecorddata?.pathReportID,
+            "isSampleCollection": this.canclerecorddata?.isSampleCollection === 'True' ? true :false,
+            "sampleReceivedCancelDate": new Date(),
+            "isSampleReceviedCancel": 1,
+            "sampleReceviedCanceledBy": this._loggedService.currentUserValue.userId,
+            "sampleReceviedCancelReason": this.VReason || ''
+        };
+        console.log(submitData);
+        this._SampleCollectionService.getSamplecollCancel(submitData).subscribe(response => {
+            if (response) { 
+                    this._matDialog.closeAll();
+                    this.grid1.bindGridData();
+                    // this.dataSource1.data = []; 
+            }  
+        });
+    }
+  CancleSampleColl(row) {
+      Swal.fire({
+          title: 'Confirm Sample cancellation ',
+          text: 'Are you sure you want to Cancel the sample collection?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, Cancel!'
+
+      }).then((flag) => {
+          if (flag.isConfirmed) {
+              this.VReason = '';
+              this.canclerecorddata = '';
+              this.canclerecorddata = row;
+              this._matDialog.open(this.CancelReasone, {
+                  width: '45%',
+                  height: '40%'
+              })
+          }
+      });
+        // this.onEdit(row);
+    }
 }

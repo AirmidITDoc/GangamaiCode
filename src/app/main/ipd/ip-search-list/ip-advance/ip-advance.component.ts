@@ -16,6 +16,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { IPSearchListService } from '../ip-search-list.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -394,10 +395,35 @@ export class IPAdvanceComponent implements OnInit {
     getStatementPrint() {
         this.commonService.Onprint("AdmissionID", this.registerObj.admissionId, "IpAdvanceStatement");
     }
-    viewgetAdvanceReceiptReportPdf(data) {
+    viewgetAdvanceReceiptReportPdfold(data) {
         console.log(data)
         this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID || data, "IpAdvanceReceipt");
     }
+        viewgetAdvanceReceiptReportPdf(element) {
+            setTimeout(() => {
+                const param = {
+                    "searchFields": [
+                        { "fieldName": "AdvanceDetailID", "fieldValue": String(element.advanceDetailID), "opType": "13" },
+                        { "fieldName": "UserId", "fieldValue": String(this.accountService.currentUserValue.userId), "opType": "13" }
+                    ],
+                    "mode": "IpAdvanceReceipt"
+                }
+                this._IpSearchListService.getReportView(param).subscribe(res => {
+                    const matDialog = this._matDialog.open(PdfviewerComponent,
+                        {
+                            maxWidth: "85vw",
+                            height: '750px',
+                            width: '100%',
+                            data: {
+                                base64: res["base64"] as string,
+                                title: "IP Advance Receipt" + " " + "Viewer"
+                            }
+                        });
+                    matDialog.afterClosed().subscribe(result => {
+                    });
+                });
+            }, 100);
+        }
     keyPressCharater(event) {
         const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {

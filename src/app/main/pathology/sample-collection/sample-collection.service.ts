@@ -173,5 +173,8 @@ export class SampleCollectionService {
     public getReportHtml(Param) {
         return this._httpClient1.PostData("Report/get-report-html", Param);
     }
+        public getSamplecollCancel(Param) {
+        return this._httpClient1.PostData("PathlogySampleCollection/PathSampleCollectionCancel", Param);
+    }
 }
 

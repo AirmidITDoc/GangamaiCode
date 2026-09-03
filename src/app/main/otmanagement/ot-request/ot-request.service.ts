@@ -62,4 +62,7 @@ export class OtRequestService {
     public getRtrvRequestAttendentList(employee) {
         return this._httpClient.PostData("OTRequest/OtRequestAttendingDetailList", employee);
     }
+    public getSurgerynameBySurgeryType(Id) {
+        return this._httpClient.GetData("SurgeryMaster/GetSurgeryNameBySurgeryType/" + Id)
+    }
 }

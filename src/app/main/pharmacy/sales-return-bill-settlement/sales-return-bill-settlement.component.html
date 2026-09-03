@@ -25,7 +25,7 @@
                                     <mat-card-content>
                                         <form [formGroup]="userFormGroup" class="pt-0">
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                fxLayoutAlign="space-between" class="gap-8">
+                                                fxLayoutAlign="space-between" class="gap-8 resize-form-fields padding-fix">
                                                 <div class="radio-group-left gap-8" fxLayout="row"
                                                     fxLayoutAlign="start center" fxFlex>
                                                     <mat-radio-group aria-label="Select an option"
@@ -235,7 +235,7 @@
 
 
         <mat-tab label=" IP Multiple Settlement">
-            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto resize-form-fields padding-fix" >
 
 
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -624,19 +624,41 @@
                         <mat-card>
                             <mat-card-content>
                                 <div class="net-amt-form input-error-hidden">
-                                    <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
+                                    <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center" fxFlex>
 
-                                        <mat-slide-toggle name="globledisc" (change)="onChangeglobledisc($event)"
-                                            formControlName="globledisc" [(ngModel)]="vglobledisc">
-                                            Apply Global Discount
-                                        </mat-slide-toggle>
+                                        <div fxLayout="column" fxLayoutGap="4px">
+                                            <mat-slide-toggle name="globledisc" (change)="onChangeglobledisc($event)" formControlName="globledisc"
+                                                [(ngModel)]="vglobledisc">
+                                                Apply Global Discount
+                                            </mat-slide-toggle>
+                                            <mat-radio-group *ngIf="vglobledisc" aria-label="Select an option" formControlName="GlobleDiscType" 
+                                            [formGroup]="MutliSettlemForm" (change)="onChangeglobadiscTypeMultiple($event)" 
+                                            (blur)="onChangeglobadiscTypeMultiple($event)" fxLayout="row" fxLayoutGap="6px">
+                                                <mat-radio-button value="1">Disc %</mat-radio-button>
+                                                <mat-radio-button value="2">Disc Amt</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div> 
+
                                         <div *ngIf="vglobledisc">
-                                            <airmid-textbox fxFlex label="Globle Disc %" formControlName="globlediscPer"
-                                                [formGroup]="MutliSettlemForm" (input)="onApplyDiscount()"
+                                            <airmid-textbox *ngIf="MutliSettlemForm.get('GlobleDiscType')?.value == '1'" fxFlex="200px" label="Globle Disc %"
+                                                formControlName="globlediscPer" [formGroup]="MutliSettlemForm" (input)="onApplyDiscount()"
                                                 [validations]="getValidationMessages().globlediscPer"></airmid-textbox>
+                                        
+                                            <airmid-textbox *ngIf="MutliSettlemForm.get('GlobleDiscType')?.value == '2'" fxFlex="200px" label="Globle Disc Amt"
+                                                formControlName="globlediscAmt" [formGroup]="MutliSettlemForm" (input)="onApplyDiscount()"
+                                                [validations]="getValidationMessages().globlediscAmt"></airmid-textbox>
                                         </div>
 
-                                        <div *ngIf="vglobledisc">
+                                       
+                                         <airmid-textbox  fxFlex  label="Final Total Amt" formControlName="FinalTotalAmt"
+                                            [formGroup]="MutliSettlemForm" [readonly]="true"
+                                            [validations]="getValidationMessages().FinalTotalAmt"></airmid-textbox>
+
+                                         <airmid-textbox  fxFlex="220px"  label="Final Disc Amt" formControlName="FinalDiscAmt"
+                                            [formGroup]="MutliSettlemForm" [readonly]="true"
+                                            [validations]="getValidationMessages().FinalDiscAmt"></airmid-textbox>
+
+                                             <div *ngIf="vglobledisc">
                                             <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"
                                                 [formGroup]="MutliSettlemForm"
                                                 [validations]="getValidationMessages().ConcessionId"

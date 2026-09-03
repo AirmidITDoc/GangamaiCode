@@ -87,7 +87,7 @@ export class IPUpdatesComponent implements OnInit {
             });
             return
         }
-        if (this.data?.FormName == 'Update ClassName') {
+        if (this.data?.FormName == 'Update_Class') {
             Swal.fire({
                 title: 'Do you want to change Class Name',
                 text: "Do you want to change the all the rate or not!",
@@ -109,7 +109,7 @@ export class IPUpdatesComponent implements OnInit {
                     })
                 }
             })
-        } else if (this.data?.FormName == 'Update TariffName') {
+        } else if (this.data?.FormName == 'Update_Tariff') {
             if (!FormValue.NewTariffId) {
                 this.toastr.warning('Selecte New Tariff Name !', 'warning', {
                     toastClass: 'tostr-tost custom-toast-warning',

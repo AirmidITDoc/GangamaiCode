@@ -138,6 +138,7 @@ export class ConfigSettingParams {
     FollowUpdateSet: any;
     IsOPCasePaperPrtWithoutPreview:any;
     IsOPDDiscountApprovalReq:any;
+    IsIPDBillAfterSavePrint:any;
     /**
         * Constructor
         *
@@ -281,8 +282,8 @@ export class ConfigSettingParams {
         this.IsChargeDateWithGroupWise = ConfigSettingParams.IsChargeDateWithGroupWise;
         this.IsChargeDateWithGroupWiseWithoutAdvance = ConfigSettingParams.IsChargeDateWithGroupWiseWithoutAdvance;
         this.FollowUpdateSet = ConfigSettingParams.FollowUpdateSet;
-        this.IsOPDDiscountApprovalReq = this.IsOPDDiscountApprovalReq;
-
+        this.IsOPDDiscountApprovalReq = ConfigSettingParams.IsOPDDiscountApprovalReq;
+         this.IsIPDBillAfterSavePrint = ConfigSettingParams.IsIPDBillAfterSavePrint;
 
     }
 

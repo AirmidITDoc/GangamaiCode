@@ -9,7 +9,7 @@
 
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                     style="color: white;">
-                    {{FormName}}
+                    {{FormName}} Details
                 </span>
             </div>
             <div class="modal-header-right">
@@ -33,9 +33,9 @@
 
                         <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">  
 
-                                <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+                                <!-- <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
                                 
-                                    <div *ngIf="data?.FormName == 'Update TariffName'" fxFlex>
+                                    <div *ngIf="data?.FormName == 'Update_Tariff'" fxFlex>
                                         <mat-form-field appearance="outline">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
@@ -47,7 +47,7 @@
                                         </mat-form-field>
                                     </div>
                                 
-                                </div>
+                                </div> -->
 
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px"> 
 
@@ -65,7 +65,7 @@
                             </div>
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px"> 
 
-                                <div *ngIf="data?.FormName == 'Update TariffName'" fxFlex>
+                                <div *ngIf="data?.FormName == 'Update_Tariff'" fxFlex>
                                     <airmid-dropdown label="New Tariff Name" formControlName="NewTariffId"
                                         [formGroup]="IpUpdateForm" aria-placeholder="Select New Tariff Name"
                                         [validations]="getValidationMessages().NewTariffId"

@@ -384,13 +384,26 @@
                                                             </textarea>
 
                                                             <button mat-icon-button matSuffix type="button"
-                                                                class="mic-button" [class.listening]="isListening"
+                                                                [class.listening]="isListening"
+                                                                [color]="speechService.isListening ? 'warn' : 'primary'"
                                                                 (click)="onMicToggle1()">
 
-                                                                <span *ngIf="!isListening">🎤</span>
-                                                                <span *ngIf="isListening" class="pulse">🔴</span>
-
+                                                                <!-- <span *ngIf="!isListening">🎤</span>
+                                                                <span *ngIf="isListening" class="pulse">🔴</span> -->
+                                                                <mat-icon>{{isListening ? 'mic_off' :
+                                                                    'mic'}}</mat-icon>
                                                             </button>
+
+
+                                                            <!-- <button mat-icon-button type="button"
+                                                                (click)="onMicToggle1()"
+                                                                [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                                [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+                                                                aria-label="Toggle speech recognition for chief complaints">
+                                                                <mat-icon>{{speechService.isListening ? 'mic_off' :
+                                                                    'mic'}}</mat-icon>
+                                                            </button> -->
+
                                                         </mat-form-field>
 
                                                     </div>

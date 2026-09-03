@@ -193,7 +193,7 @@ export class IPBillingComponent implements OnInit {
     TariffId: any;
     WardId: any;
     BedId: any;
-
+    IsIPDBillAfterSavePrintVal:any='';
     Is9_Digit_National_Id: boolean = false;
     autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModedeptdoc: string = "ConDoctor";
@@ -344,6 +344,10 @@ export class IPBillingComponent implements OnInit {
                 this.UserDicPerLimit = discountData?.AccessInputValue || 0
             }
               this.setupFormListener();
+
+        const IsIPDBillAfterSavePrint = this?._ConfigService?.configParams?.IsIPDBillAfterSavePrint || "";
+        const [IsIPDBillAfterSavePrintId, IsIPDBillAfterSavePrintVal] = IsIPDBillAfterSavePrint.includes(":") ? IsIPDBillAfterSavePrint.split(":") : [null, null];
+        this.IsIPDBillAfterSavePrintVal = IsIPDBillAfterSavePrintId === "1"  ? IsIPDBillAfterSavePrintVal  : ""; 
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -426,6 +430,23 @@ export class IPBillingComponent implements OnInit {
         }
 
         const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+        
+                const DiscountPer = +percent || 0;
+                  if (this.UserDicPerLimit > 0) {
+                    if (DiscountPer > this.UserDicPerLimit) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Discount Limit Exceeded',
+                            text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                            confirmButtonColor: '#d33'
+                        }).then(()=>{
+                        this.Serviceform.get("concessionPercentage").setValue(this.UserDicPerLimit);  
+                        this.isUpdating = false; 
+                        this.updateDiscountAmount();
+                        }) 
+                    }
+                } 
+
         const netAmount = Number((totalAmount - discountAmount).toFixed(2));
         this.Serviceform.patchValue({
             concessionPercentage: percent,
@@ -1365,11 +1386,41 @@ netAmount.updateValueAndValidity();
             this.ConcessionShow = true
             FinalTotalAmt = (parseFloat(totalAmount + AdminAmt)).toFixed(2);
             discper = ((discAmt / FinalTotalAmt) * 100).toFixed(2);
+
+            const DiscountPer = +discper|| 0;
+            if (this.UserDicPerLimit > 0) {
+                if (DiscountPer > this.UserDicPerLimit) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Discount Limit Exceeded',
+                        text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                        confirmButtonColor: '#d33'
+                    }).then(()=>{
+                    this.IpbillFooterform.get("totaldiscPer").setValue(this.UserDicPerLimit);
+                    this.isUpdating = false;
+                    this.CalFinalDiscper();
+                    }) 
+                }
+            } 
             finalNetAmt = parseFloat((FinalTotalAmt - discAmt).toFixed(2));
         }
         else {
             this.ConcessionShow = true
             discper = ((discAmt / totalAmount) * 100).toFixed(2);
+            const DiscountPer = +discper|| 0;
+            if (this.UserDicPerLimit > 0) {
+                if (DiscountPer > this.UserDicPerLimit) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Discount Limit Exceeded',
+                        text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                        confirmButtonColor: '#d33'
+                    });
+                    this.IpbillFooterform.get("totaldiscPer").setValue(this.UserDicPerLimit);
+                    this.isUpdating = false;
+                    this.CalFinalDiscper();
+                }
+            } 
             finalNetAmt = parseFloat((totalAmount - discAmt).toFixed(2));
         }
 
@@ -1477,7 +1528,8 @@ netAmount.updateValueAndValidity();
                         this.viewgetBillReportPdf(response);
                     }
                     else {
-                        this.viewgetBillBillGroupWiseReportPdf(response);
+                        this.IPDFinalPrintcall(response)
+                       // this.viewgetBillBillGroupWiseReportPdf(response);
                     }
                     this._matDialog.closeAll();
                 });
@@ -1559,7 +1611,8 @@ netAmount.updateValueAndValidity();
                                 this.viewgetBillReportPdf(response);
                             }
                             else {
-                                this.viewgetBillBillGroupWiseReportPdf(response);
+                                this.IPDFinalPrintcall(response)
+                               // this.viewgetBillBillGroupWiseReportPdf(response);
                             }
                             this._matDialog.closeAll();
                             // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
@@ -2117,9 +2170,51 @@ netAmount.updateValueAndValidity();
                 }, 100);  
     }
 
-    viewgetAdvanceReceiptReportPdf(data) {
+    viewgetAdvanceReceiptReportPdfold(data) {
         this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IpAdvanceReceipt");
     }
+            viewgetAdvanceReceiptReportPdf(element) {
+                setTimeout(() => {
+                    const param = {
+                        "searchFields": [
+                            { "fieldName": "AdvanceDetailID", "fieldValue": String(element.advanceDetailID), "opType": "13" },
+                            { "fieldName": "UserId", "fieldValue": String(this.accountService.currentUserValue.userId), "opType": "13" }
+                        ],
+                        "mode": "IpAdvanceReceipt"
+                    }
+                    this._IpSearchListService.getReportView(param).subscribe(res => {
+                        const matDialog = this._matDialog.open(PdfviewerComponent,
+                            {
+                                maxWidth: "85vw",
+                                height: '750px',
+                                width: '100%',
+                                data: {
+                                    base64: res["base64"] as string,
+                                    title: "IP Advance Receipt" + " " + "Viewer"
+                                }
+                            });
+                        matDialog.afterClosed().subscribe(result => {
+                        });
+                    });
+                }, 100);
+            }
+        IPDFinalPrintcall(billNo){
+        if(!this.IsIPDBillAfterSavePrintVal){ return };
+
+        if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillGroupwise') {
+            this.viewgetBillBillGroupWiseReportPdf(billNo)
+        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillChargesDateWise') {
+            this.viewgetBillReportPdf(billNo)  
+        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillChargesDateWisegroupwise') {
+            this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwise");
+        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillClassWise') {
+            this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassWise");
+        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillClassServiceWise') {
+            this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassServiceWise");
+        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillGroupwise') {
+            this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+        }
+    } 
     showAllFilter(event) {
         if (event.checked == true)
             this.isFilteredDateDisabled = true;
@@ -2278,6 +2373,23 @@ netAmount.updateValueAndValidity();
             element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
             element.concessionAmount = element.DiscAmt; // Sync lowercase property
 
+
+             const DiscountPer = +discountPercent|| 0;
+            if (this.UserDicPerLimit > 0) {
+                if (DiscountPer > this.UserDicPerLimit) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Discount Limit Exceeded',
+                        text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                        confirmButtonColor: '#d33'
+                    }).then(()=>{ 
+                     const  discountPercent1 = this.UserDicPerLimit
+                     element.concessionPercentage = discountPercent1
+                     element.DiscAmt = (discountPercent1 * element.totalAmt) / 100 || 0;
+                     element.concessionAmount = element.DiscAmt; // Sync lowercase property 
+                    }) 
+                }
+            }   
             element.netAmount = element.totalAmt - element.DiscAmt;
             element.NetAmount = element.netAmount; // Sync uppercase property
         }
@@ -2392,7 +2504,7 @@ netAmount.updateValueAndValidity();
                 height: "40%",
                 data: {
                     PatientHeaderObj: this.selectedAdvanceObj,
-                    FormName: 'Update Tariff Name'
+                    FormName: 'Update_Tariff'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -2407,7 +2519,7 @@ netAmount.updateValueAndValidity();
                 height: "40%",
                 data: {
                     PatientHeaderObj: this.selectedAdvanceObj,
-                    FormName: 'Update Class Name'
+                    FormName: 'Update_Class'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

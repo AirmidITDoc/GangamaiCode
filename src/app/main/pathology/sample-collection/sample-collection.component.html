@@ -1,3 +1,51 @@
+<ng-template #CancelReasone> 
+  <div class="modal-page page-layout inner-scroll" #CancelReasone>
+    <div class="modal-wrapper grid-container">
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                        style="color: white;">account_box
+                    </mat-icon>
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                        Sample Cancel
+                    </span>
+                </div> 
+                <div class="close-icon">
+                    <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div> 
+        <div class="modal-body">
+            <div fxLayout="column" class="gap-8 h-100-p">
+                <div class="modal-body-container">
+                    <div class="modal-card-container"> 
+                            <div fxLayout="column" fxLayoutGap="6px"> 
+                                <span>Please Enter Sample Cancel Reason</span>  
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Reason</mat-label>
+                                    <textarea rows="5" matInput name="Body" placeholder="Write here......" id="Body"
+                                        type="text" required [(ngModel)]="VReason"></textarea>
+                                </mat-form-field>
+                            </div> 
+                    </div> 
+                </div>
+            </div>
+        </div> 
+        <div class="modal-footer">
+            <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                   <!-- <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button> -->
+                <button class="btn btn-primary" (click)="OnSaveCancelSample()">Save</button> 
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+</ng-template>
+
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
     <mat-toolbar class="top-header accent">
@@ -121,6 +169,17 @@
                     <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
                         <mat-icon>pages</mat-icon>
                     </button>
+
+                    <span class="tooltip-wrapper"
+                        [matTooltip]="!IsDelete ? 'You do not have permission to cancel this sample collection.' 
+                    : element.isCompleted === 'True' ? 'Test already completed, so we cannot cancel the sample.' : 'Cancel Sample Collection'"
+                        matTooltipPosition="above">
+                        <button mat-icon-button (click)="CancleSampleColl(element)" *ngIf="element.isSampleCollection == 'True'"
+                           [disabled]="!IsDelete || element.isCompleted === 'True'">
+                    
+                            <mat-icon color="warn">cancel</mat-icon>
+                        </button>
+                    </span>
                 </div>
             </ng-template>
 

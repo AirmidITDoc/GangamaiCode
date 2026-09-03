@@ -7,6 +7,7 @@ import { DocumentCategory } from 'app/core/models/documentmanagement/category.mo
 import { MockDataService } from '../mock-data.service';
 import { ZipService } from '../zip.service';
 import { PreviewDialogComponent } from '../shared/components/preview-dialog/preview-dialog.component';
+import { DocumentmanagementService } from '../documentmanagement.service';
 
 @Component({
   selector: 'app-documents',
@@ -38,16 +39,27 @@ export class DocumentsComponent implements OnInit {
     private zipService: ZipService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private _service: DocumentmanagementService
+  ) { }
 
   ngOnInit(): void {
-    this.data.documents$.subscribe((docs) => (this.allDocuments = docs));
-    this.data.categories$.subscribe((cats) => (this.categories = cats));
+    this.bindDocuments();
+    this.bindCategories();
     this.route.queryParamMap.subscribe((params) => {
       const q = params.get('q');
       if (q) this.searchTerm = q;
     });
+  }
+  bindCategories() {
+    this._service.getCategoryTree().subscribe((res) => {
+      this.categories = res;
+    })
+  }
+  bindDocuments() {
+    this._service.getDocuments().subscribe((res) => {
+      this.allDocuments = res;
+    })
   }
 
   get filtered(): DocumentFileModel[] {

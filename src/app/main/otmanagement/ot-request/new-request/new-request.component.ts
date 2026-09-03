@@ -106,6 +106,7 @@ export class NewRequestComponent implements OnInit {
     RtrvDescriptionList: any = [];
     @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
     @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
+    @ViewChild('ddlSurgeryName') ddlSurgeryName: AirmidDropDownComponent;
 
     constructor(public _OtRequestService: OtRequestService,
         public dialogRef: MatDialogRef<NewRequestComponent>,
@@ -421,16 +422,23 @@ export class NewRequestComponent implements OnInit {
 
     selectChangeSurgeryCategory(obj: any) {
         this.surgCategoryName = obj.text
+
+        this._OtRequestService.getSurgerynameBySurgeryType(obj.value).subscribe((data: any) => {
+            debugger
+            this.ddlSurgeryName.options = data;
+            this.ddlSurgeryName.bindGridAutoComplete();
+        });
     }
+
     selectChangeSurgery(obj: any) {
         this.surgName = obj.surgeryName
-        this.ddlSurgerytype.SetSelection(obj.siteDescId);
-        setTimeout(() => {
-            this._OtRequestService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
-                this.surgCategoryName = response.siteDescriptionName;
-                console.log("Get siteDisc Data:", this.surgCategoryName)
-            });
-        }, 100);
+        // this.ddlSurgerytype.SetSelection(obj.siteDescId);
+        // setTimeout(() => {
+        //     this._OtRequestService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
+        //         this.surgCategoryName = response.siteDescriptionName;
+        //         console.log("Get siteDisc Data:", this.surgCategoryName)
+        //     });
+        // }, 100);
     }
     selectChangeSurgeon(obj: any) {
         this.surgeonName = obj.text
@@ -871,6 +879,14 @@ export class NewRequestComponent implements OnInit {
             surgeonId: contact.surgeonId ?? '',
             anesthetistId: contact.anestheticsId ?? ''
         });
+// debugger
+        setTimeout(() => {
+            this._OtRequestService.getSurgerynameBySurgeryType(contact.surgeryCategoryId).subscribe((data: any) => {
+                this.ddlSurgeryName.options = data;
+                this.ddlSurgeryName.bindGridAutoComplete();
+            });
+        }, 500);
+        this.requestForm.get("surgeryId")?.setValue(contact.surgeryId)
 
         // Set display names if you have them separately
         this.surgCategoryName = contact.surgeryCategoryName ?? '';

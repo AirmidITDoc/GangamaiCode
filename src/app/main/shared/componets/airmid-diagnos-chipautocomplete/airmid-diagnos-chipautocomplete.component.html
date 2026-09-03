@@ -5,35 +5,33 @@
     <div class="chip" *ngFor="let chip of chips">
       {{ chip[displayKey] }}
 
-      <button
-        type="button"
-        (click)="removeChip(chip)"
-        class="remove-btn">
+      <button type="button" (click)="removeChip(chip)" class="remove-btn">
         ×
       </button>
     </div>
 
     <div class="input-with-mic">
 
-      <input
-        [(ngModel)]="inputValue"
-        (keydown)="onKeyDown($event)"
-        (input)="filterOptions()"
-        (focus)="onInputFocus()"
-        (blur)="hideDropdownWithDelay()"
-        [placeholder]="placeholder"
-      />
+      <input [(ngModel)]="inputValue" (keydown)="onKeyDown($event)" (input)="filterOptions()" (focus)="onInputFocus()"
+        (blur)="hideDropdownWithDelay()" [placeholder]="placeholder" />
 
-      <button
-        type="button"
-        class="mic-button"
-        [class.listening]="isListening"
-        (click)="startSpeechRecognition()">
+      <!-- <button type="button" class="mic-button" [class.listening]="isListening" (click)="startSpeechRecognition()">
 
         <span *ngIf="!isListening">🎤</span>
         <span *ngIf="isListening" class="pulse">🔴</span>
+        <mat-icon>{{isListening ? 'mic_off' :
+          'mic'}}</mat-icon>
+      </button> -->
 
+      <button mat-icon-button matSuffix type="button" [class.listening]="isListening"
+        [color]="isListening ? 'warn' : 'primary'" (click)="startSpeechRecognition()">
+
+        <!-- <span *ngIf="!isListening">🎤</span>
+           <span *ngIf="isListening" class="pulse">🔴</span> -->
+        <mat-icon>{{isListening ? 'mic_off' :
+          'mic'}}</mat-icon>
       </button>
+
 
     </div>
 
@@ -41,19 +39,14 @@
 
   <div class="autocomplete-list" *ngIf="showDropdown">
 
-    <div
-      class="autocomplete-item"
-      *ngFor="let option of filteredOptions; let i = index"
-      [class.active]="i === focusedIndex"
-      (mousedown)="selectOption(option)">
+    <div class="autocomplete-item" *ngFor="let option of filteredOptions; let i = index"
+      [class.active]="i === focusedIndex" (mousedown)="selectOption(option)">
 
       {{ option[displayKey] }}
 
     </div>
 
-    <div
-      *ngIf="filteredOptions.length === 0"
-      class="no-results">
+    <div *ngIf="filteredOptions.length === 0" class="no-results">
       No results found
     </div>
 

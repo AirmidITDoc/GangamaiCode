@@ -102,6 +102,7 @@ export class NewReservationComponent implements OnInit {
     partTypes: string[] = ["Left", "Middle", "Right"];
     @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
     @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
+    @ViewChild('ddlSurgeryName') ddlSurgeryName: AirmidDropDownComponent;
 
     dssurgeryDetailList = new MatTableDataSource<OtReserInsert>();
     dsattendentDetailList = new MatTableDataSource<OtReserInsert>();
@@ -658,17 +659,23 @@ export class NewReservationComponent implements OnInit {
 
     selectChangeSurgeryCategory(obj: any) {
         this.surgCategoryName = obj.text
+
+        this._OtReservationService.getSurgerynameBySurgeryType(obj.value).subscribe((data: any) => {
+            debugger
+            this.ddlSurgeryName.options = data;
+            this.ddlSurgeryName.bindGridAutoComplete();
+        });
     }
     selectChangeSurgery(obj: any) {
         this.surgName = obj.surgeryName
-        this.reservationForm.get('surgeryDuration')?.setValue(obj.totalDuration);
-        this.ddlSurgerytype.SetSelection(obj.siteDescId);
-        setTimeout(() => {
-            this._OtReservationService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
-                this.surgCategoryName = response.siteDescriptionName;
-                console.log("Get siteDisc Data:", this.surgCategoryName)
-            });
-        }, 100);
+        // this.reservationForm.get('surgeryDuration')?.setValue(obj.totalDuration);
+        // this.ddlSurgerytype.SetSelection(obj.siteDescId);
+        // setTimeout(() => {
+        //     this._OtReservationService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
+        //         this.surgCategoryName = response.siteDescriptionName;
+        //         console.log("Get siteDisc Data:", this.surgCategoryName)
+        //     });
+        // }, 100);
     }
     selectChangeSurgeon(obj: any) {
         this.surgeonName = obj.text
@@ -991,7 +998,7 @@ export class NewReservationComponent implements OnInit {
         // Recalculate remaining time = estimateTime - sum of all durations
         this.updateRemainingTime();
 
-            this.reservationForm.patchValue({
+        this.reservationForm.patchValue({
             surgeryCategoryId: '',
             surgeryId: '',
             surgeryPart: '',
@@ -1199,6 +1206,14 @@ export class NewReservationComponent implements OnInit {
             surgeonId: contact.surgeonId ?? '',
             anesthetistId: contact.anestheticsId ?? ''
         });
+
+        setTimeout(() => {
+            this._OtReservationService.getSurgerynameBySurgeryType(contact.surgeryCategoryId).subscribe((data: any) => {
+                this.ddlSurgeryName.options = data;
+                this.ddlSurgeryName.bindGridAutoComplete();
+            });
+        }, 500);
+        this.reservationForm.get("surgeryId")?.setValue(contact.surgeryId)
 
         this.surgName = contact.surgeryName ?? '';
         this.surgCategoryName = contact.surgeryCategoryName ?? '';
