@@ -392,6 +392,22 @@ export class InterimBillComponent implements OnInit {
         }
 
         const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+
+  
+          const DiscountPer = +percent || 0;
+            if (this.UserDicPerLimit > 0) {
+              if (DiscountPer > this.UserDicPerLimit) {
+                  Swal.fire({
+                      icon: 'warning',
+                      title: 'Discount Limit Exceeded',
+                      text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                      confirmButtonColor: '#d33'
+                  }).then(()=>{
+                  this.InterimFooterForm.get("discPer").setValue(this.UserDicPerLimit);  
+                  this.calculateDiscPer();
+                  }) 
+              }
+          } 
         const netAmount = Number((totalAmount - discountAmount).toFixed(2));
         this.ConShow = true;
         this.InterimFooterForm.patchValue({
