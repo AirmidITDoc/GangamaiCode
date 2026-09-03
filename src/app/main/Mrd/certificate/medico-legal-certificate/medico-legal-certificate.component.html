@@ -1,0 +1,294 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Medico Legal Certificate</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12"></div>
+            <form [formGroup]="certificateForm">
+
+                <!-- op/ip radio / search textbox -->
+                <div class="modal-card-container">
+                    <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
+                        <div class="radio-container">
+                            <mat-radio-group aria-label="Select an option" formControlName="opIpType" name="opIpType"
+                                [formGroup]="certificateForm" (change)="onChangeType($event)"
+                                (blur)="onChangeType($event)" [(ngModel)]="vSelectedOption">
+                                <mat-radio-button value="OP" [disabled]="vCheckBox == true">OP</mat-radio-button>
+                                <mat-radio-button value="IP">IP</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div class="input-container gap-8" fxFlex="50%">
+
+                            <airmid-autocomplete lbl="RgId" *ngIf="certificateForm.get('opIpType').value == 'OP'"
+                                [formGroup]="certificateForm" formControlName="opIpId"
+                                placeholderText="OP-RegNo/Patient Name/Mobile No"
+                                label="Search OP-Reg No / Patient Name / Mobile No" TextField="formattedText"
+                                ValueField="opIpId" ApiUrl="VisitDetail/search-patient?Keyword="
+                                (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
+                                ValueField="opIpId">
+                            </airmid-autocomplete>
+
+                            <airmid-autocomplete lbl="RgId" *ngIf="certificateForm.get('opIpType').value == 'IP'"
+                                [formGroup]="certificateForm" formControlName="opIpId"
+                                placeholderText="IP-RegNo/Patient Name/Mobile No"
+                                label="Search IP-Reg No / Patient Name / Mobile No" ValueField="admissionID"
+                                TextField="formattedText" ApiUrl="Admission/search-patient?Keyword="
+                                (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                TextField="formattedText">
+                            </airmid-autocomplete>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- patient info 1 -->
+                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                    <app-patient-information [uhidNo]="opipPatientDetailsObj?.regNo" [patientName]=" (opipPatientDetailsObj?.firstName || '') +
+                                        (opipPatientDetailsObj?.middleName ? ' ' + opipPatientDetailsObj.middleName : '') +
+                                        (opipPatientDetailsObj?.lastName ? ' ' + opipPatientDetailsObj.lastName : '')
+                                        || opipPatientDetailsObj?.patientName
+                                        " [doctorName]="opipPatientDetailsObj?.doctorName"
+                                        [departmentName]="opipPatientDetailsObj?.departmentName"
+                                        [doa]="opipPatientDetailsObj?.admissionDate"
+                                        [ipdNo]="opipPatientDetailsObj?.ipdNo || opipPatientDetailsObj?.ipdNo"
+                                        [ageString]="(opipPatientDetailsObj?.age !== undefined ? opipPatientDetailsObj?.age + 'Y|' + opipPatientDetailsObj?.ageMonth + 'M|' + opipPatientDetailsObj?.ageDay + 'D | ' + opipPatientDetailsObj?.genderName : '')"
+                                        [refDocName]="opipPatientDetailsObj?.refDocName"></app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+
+
+                <div fxFlexFill fxLayout="column">
+
+                    <!-- accident/assault info card -->
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ; gap: 4px;">
+                        <div class="modal-header accent">
+                            <div class="modal-header-content">
+                                <div class="modal-header-title">
+                                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Accident /
+                                        Assault Details
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlexFill fxLayout="row" class="gap-4">
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Accident Date</mat-label>
+                                <input name="accidentDate" matInput [matDatepicker]="picker1" [max]="today"
+                                    formControlName="accidentDate" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Accident Time</mat-label>
+                                <input matInput type="time" formControlName="accidentTime">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Certificate No</mat-label>
+                                <input matInput type="text" [formGroup]="certificateForm"
+                                    formControlName="certificateNo">
+                            </mat-form-field>
+                        </div>
+                    </mat-card>
+
+                    <!-- treating doctor detail card -->
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ; gap: 4px;">
+                        <div class="modal-header accent">
+                            <div class="modal-header-content">
+                                <div class="modal-header-title">
+                                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Treating Doctor
+                                        Name
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div fxFlexFill fxLayout="row" class="gap-4">
+                            <div style="width: 25%;">
+                                <airmid-dropdown label="Department Name" formControlName="departmentId"
+                                    [formGroup]="certificateForm"
+                                    [value]="opipPatientDetailsObj?.departmentId ?? opipPatientDetailsObj?.departmentId"
+                                    [mode]="autocompleteModeDepartment"
+                                    (selectionChange)="selectChangedepartment($event)">
+                                </airmid-dropdown>
+                            </div>
+
+                            <div style=" width: 25%;">
+                                <airmid-dropdown label="Admitted Doctor" formControlName="treatingDoctorId"
+                                    [formGroup]="certificateForm"
+                                    [value]="opipPatientDetailsObj?.docNameId ?? opipPatientDetailsObj?.doctorId"
+                                    #ddlDoctor>
+                                </airmid-dropdown>
+                            </div>
+
+                            <div style="width: 25%;">
+                                <airmid-dropdown label="Doctor Name 1" formControlName="treatingDoctorId1"
+                                    [formGroup]="certificateForm" [value]="opipPatientDetailsObj?.admittedDoctor1"
+                                    [mode]="autocompleteModeDoctor">
+                                </airmid-dropdown>
+                            </div>
+
+                            <div style="width: 25%;">
+                                <airmid-dropdown label="Doctor Name 2" formControlName="treatingDoctorId2"
+                                    [formGroup]="certificateForm" [value]="opipPatientDetailsObj?.admittedDoctor2"
+                                    [mode]="autocompleteModeDoctor">
+                                </airmid-dropdown>
+                            </div>
+
+                        </div>
+                    </mat-card>
+
+                    <!-- details of injury card -->
+                    <mat-card fxLayout="column" style="padding: 5px;">
+                        <div class="modal-header accent">
+                            <div class="modal-header-content">
+                                <div class="modal-header-title">
+                                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Details of
+                                        Injuries
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <airmid-editor formControlName="detailsInjuries" [formGroup]="certificateForm"
+                            (valueChange)="onEditorValueChange($event)">
+                        </airmid-editor>
+
+                    </mat-card>
+
+                    <!-- age of injury card -->
+                    <mat-card fxLayout="column" style="padding: 5px;">
+                        <div class="modal-header accent">
+                            <div class="modal-header-content">
+                                <div class="modal-header-title">
+                                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Age Of
+                                        Injury
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
+
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+
+
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>Age Of Injury</mat-label>
+                                <textarea rows="1" formControlName="ageofInjuries" placeholder="Age Of Injury"
+                                    matInput></textarea>
+
+                                <button mat-icon-button matSuffix (click)="onAgeMicToggle()"
+                                    [color]="activeMic === 'age' ? 'warn' : 'primary'" type="button">
+                                    <i
+                                        [class]="activeMic === 'age'? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                </button>
+                            </mat-form-field>
+
+
+
+                            <mat-form-field appearance="outline" style="min-width: 180px;">
+                                <mat-label>Language</mat-label>
+                                <mat-select [(ngModel)]="selectedAgeLang" (selectionChange)="onAgeLangChange()"
+                                    name="ageLanguageSelect">
+                                    <mat-option *ngFor="let lang of languages" [value]="lang.code">
+                                        {{ lang.label }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-card>
+
+                    <!-- cause of injury card -->
+                    <mat-card fxLayout="column" style="padding: 5px;">
+                        <div class="modal-header accent">
+                            <div class="modal-header-content">
+                                <div class="modal-header-title">
+                                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cause Of
+                                        Injury
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+
+                         
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>Cause Of Injury</mat-label>
+                                <textarea rows="1" formControlName="causeofInjuries" placeholder="Cause Of
+                                            Injury" matInput></textarea>
+
+                                <button mat-icon-button matSuffix (click)="onCauseMicToggle()"
+                                    [color]="activeMic === 'cause' ? 'warn' : 'primary'" type="button">
+
+                                    <i
+                                        [class]="activeMic === 'cause'? 'fas fa-microphone-slash': 'fas fa-microphone'"></i>
+                                </button>
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline" style="min-width: 180px;">
+                                <mat-label>Language</mat-label>
+                                <mat-select [(ngModel)]="selectedCauseLang" (selectionChange)="onCauseLangChange()"
+                                    name="causeLanguageSelect">
+                                    <mat-option *ngFor="let lang of languages" [value]="lang.code">
+                                        {{ lang.label }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-card>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div class="modal-footer" style="margin-top: 10px;">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose(false)">Close</button>
+                <button class="btn btn-primary" color="accent" (click)="onSubmit()">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
