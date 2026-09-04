@@ -192,7 +192,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="30">
                                 <mat-label>Language</mat-label>
-                                <mat-select [(ngModel)]="selectedAgeLang" (selectionChange)="onAgeLangChange()"
+                                <mat-select [(ngModel)]="selectedAgeLang" [ngModelOptions]="{ standalone: true }"(selectionChange)="onAgeLangChange()"
                                     name="ageLanguageSelect">
                                     <mat-option *ngFor="let lang of languages" [value]="lang.code">
                                         {{ lang.label }}
@@ -217,7 +217,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="30">
                                 <mat-label>Language</mat-label>
-                                <mat-select [(ngModel)]="selectedCauseLang" (selectionChange)="onLangChange()"
+                                <mat-select [(ngModel)]="selectedCauseLang" [ngModelOptions]="{ standalone: true }" (selectionChange)="onLangChange()"
                                     name="causeLanguageSelect">
                                     <mat-option *ngFor="let lang of languages" [value]="lang.code">
                                         {{ lang.label }}

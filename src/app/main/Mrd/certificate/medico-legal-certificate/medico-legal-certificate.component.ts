@@ -22,7 +22,7 @@ export class MedicoLegalCertificateComponent {
   showOpIpControls = true;
 
   Language: ['1'];
-  opIpType:any;
+  opIpType: any;
   opIpId: any;
   vRegNo: any;
   vPatientName: any;
@@ -44,7 +44,7 @@ export class MedicoLegalCertificateComponent {
   selectedCauseLang = 'en-US';
   private recognition: any = null;
   isListening = false;
-  vDoctorId:any;
+  vDoctorId: any;
 
   autocompleteModeDepartment: string = "Department";
   autocompleteModeDoctor: string = "ConDoctor";
@@ -66,7 +66,7 @@ export class MedicoLegalCertificateComponent {
 
     this.languages = this.speechService.supportedLanguages;
 
-    console.log("Medico data info", this.data, this.data.opIpId);
+    console.log("Medico data info", this.data);
 
     if (this.data?.opIpId) { // used to hide OPIPControls search textbox
       this.showOpIpControls = false;
@@ -100,8 +100,8 @@ export class MedicoLegalCertificateComponent {
           });
 
           this.selectChangedepartment(response)
-          this.vDoctorId=response.treatingDoctorId
-          this.opIpId=response.opIpId
+          this.vDoctorId = response.treatingDoctorId
+          this.opIpId = response.opIpId
           this.opIpType = response.opIpType === 1 ? 'IP' : 'OP'
         })
 
@@ -196,7 +196,7 @@ export class MedicoLegalCertificateComponent {
       treatingDoctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       treatingDoctorId1: 0,
       treatingDoctorId2: 0,
-      departmentId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 
@@ -417,41 +417,41 @@ export class MedicoLegalCertificateComponent {
   }
 
   OnMedicoPrint(obj) {
-          // debugger
-          const param = {
-              "searchFields": [
-                  {
-                      "fieldName": "DocId",
-                      "fieldValue": String(obj.docId),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "OP_IP_Type",
-                      "fieldValue": String(obj.opIpType),
-                      "opType": "Equals"
-                  }
-  
-              ],
-              "mode": "MedicolegalCertificateReport"
-          }
-  
-          console.log(param);
-  
-          this._mrdService.getReportView(param).subscribe(res => {
-              const matDialog = this._matDialog.open(PdfviewerComponent, {
-                  maxWidth: "85vw",
-                  height: '750px',
-                  width: '100%',
-                  data: {
-                      base64: res["base64"] as string,
-                      title: "Medico Legal Certificate",
-                  }
-              });
-  
-              matDialog.afterClosed().subscribe(result => {
-  
-              });
-          });
-      }
-  
+    // debugger
+    const param = {
+      "searchFields": [
+        {
+          "fieldName": "DocId",
+          "fieldValue": String(obj.docId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OP_IP_Type",
+          "fieldValue": String(obj.opIpType),
+          "opType": "Equals"
+        }
+
+      ],
+      "mode": "MedicolegalCertificateReport"
+    }
+
+    console.log(param);
+
+    this._mrdService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Medico Legal Certificate",
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
+  }
+
 }
