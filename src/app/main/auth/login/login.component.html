@@ -31,8 +31,14 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput type="password" formControlName="Password" />
-                <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                <!-- <input matInput type="password" formControlName="Password" /> -->
+                <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="Password" />
+                <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                    <mat-icon>
+                        {{ hidePassword ? 'visibility_off' : 'visibility' }}
+                    </mat-icon>
+                </button>
+                <!-- <mat-icon matSuffix class="secondary-text">visibility</mat-icon> -->
                 <mat-error>
                     Password is required
                 </mat-error>
@@ -85,10 +91,10 @@
                 <div class="logo-sectiondm">
                     <img src="assets/images/logos/TransparentLogobottom.png" alt="Airmid Logo" />
                 </div>
-                    <hr style="border: none; height: 1px; background-color: blue; margin: 10px 0;" />
+                <hr style="border: none; height: 1px; background-color: blue; margin: 10px 0;" />
                 <span style="font-size: 16px;">{{LoginPageFooter || ''}}</span>
                 <span>All rights are reserved. Developed and powered by Airmid</span>
-                
+
             </div>
 
             <div class="footer-rightdm">

@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
     licenseExpiryDate: Date;
     isExpired: boolean = false;
     autocompleteModeUnitName: string = "Hospital";
+    hidePassword = true;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild('statusForm') statusForm!: TemplateRef<any>;
     constructor(
