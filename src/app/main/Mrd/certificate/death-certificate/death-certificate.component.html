@@ -1,4 +1,4 @@
-<div class="dialog-content-wrapper modal-wrapper grid-container">
+<div class="dialog-content-wrapper modal-wrapper grid-container resize-form-fields">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -48,10 +48,10 @@
                                 </div>
                                 <div class="Ipd-patient-info w-100-p">
                                     <app-patient-information [uhidNo]="patientDetailsObj?.regNo"
-                                        [patientName]="vPatientName"
+                                        [patientName]="vPatientName || patientDetailsObj?.patientName"
                                         [ageString]="(patientDetailsObj?.age !== undefined ? patientDetailsObj?.age + 'Y|' + patientDetailsObj?.ageMonth + 'M|' + patientDetailsObj?.ageDay + 'D | ' + patientDetailsObj?.genderName : '')"
                                         [ipdNo]="patientDetailsObj?.ipdNo || patientDetailsObj?.ipdno"
-                                        [doctorName]="patientDetailsObj?.doctorName"
+                                        [doctorName]="patientDetailsObj?.doctorName || patientDetailsObj?.admittedDoctorName"
                                         [departmentName]="patientDetailsObj?.departmentName" [doa]="vDOA">
                                     </app-patient-information>
                                 </div>
@@ -81,7 +81,7 @@
 
                             <mat-form-field appearance="outline" style="width: 100%;">
                                 <mat-label>Cause Of Death</mat-label>
-                                <textarea rows="3" formControlName="causeofDeath" placeholder="Cause Of Death"
+                                <textarea rows="1" formControlName="causeofDeath" placeholder="Cause Of Death"
                                     [formGroup]="deathCertificateForm" matInput></textarea>
                             </mat-form-field>
 

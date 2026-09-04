@@ -6,6 +6,7 @@ import { MrdService } from '../../mrd.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-death-certificate',
@@ -44,6 +45,7 @@ export class DeathCertificateComponent {
 
   constructor(private _formBuilder: FormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService,
+    private commonService: PrintserviceService,
     public dialogRef: MatDialogRef<DeathCertificateComponent>,
     public _mrdService: MrdService, public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -54,6 +56,7 @@ export class DeathCertificateComponent {
     this.deathCertificateForm.markAllAsTouched();
 
     console.log("death data info", this.data);
+    this.patientDetailsObj = this.data ?? {};
 
     if (this.data?.opIpId) { // used to hide OPIPControls search textbox
       this.showOpIpControls = false;
@@ -63,25 +66,6 @@ export class DeathCertificateComponent {
       this.vCertificateID = this.data.docId;
 
       setTimeout(() => {
-
-        // this._mrdService.getAdmissionById(this.data.opIpId).subscribe((response) => {
-        //   this.registerObj = response;
-        //   console.log("getAdmissionById", response)
-
-        //   this._mrdService.getRegistraionById(response.regId).subscribe((response) => {
-        //     console.log("getRegistraionById", response)
-        //     this.vPatientName =
-        //       (response.firstName || '') + ' ' +
-        //       (response.middleName || '') + ' ' +
-        //       (response.lastName || '');
-
-        //     this.vRegNo = response.regNo
-        //     this.vgender = response.genderId;
-        //     this.vDOA = response.regDate;
-        //     this.vTariffName = response.tariffId;
-        //     this.vCompanyName = response.companyId;
-        //     this.vopIpId = response.admissionID;
-        //   })
 
         //All form deatils
         this._mrdService.getDeathDetailsById(this.data.docId).subscribe((response) => {
@@ -115,8 +99,6 @@ export class DeathCertificateComponent {
 
     }
   }
-
-
 
   createDeathCertificateForm(): FormGroup {
     return this._formBuilder.group({
@@ -223,6 +205,7 @@ export class DeathCertificateComponent {
       this._mrdService.deathCertificateSave(this.deathCertificateForm.value).subscribe({
         next: (response) => {
           // console.log('API Response:', response);
+          this.OnPrint(response);
           this.onClose(true);
         },
         error: (err) => {
@@ -251,5 +234,9 @@ export class DeathCertificateComponent {
 
     }
 
+  }
+
+  OnPrint(Param) {
+    this.commonService.Onprint("CertificateId", Param.certificateId, "DeathCertificateReport");
   }
 }

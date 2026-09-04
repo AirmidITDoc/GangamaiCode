@@ -51,9 +51,9 @@ export class MrdService {
         return this._httpClient.GetData("DeathCertificate/GetById/" + Id);
     }
 
-    //  public getMedicalDetailsById(Id) {
-    //     return this._httpClient.GetData("DeathCertificate/GetById/" + Id);
-    // }
+     public getMedicalDetailsById(Id) {
+        return this._httpClient.GetData("MedicolegalCertificate/" + Id);
+    }
 
     public getAdmissionById(Id) {
         return this._httpClient.GetData("Admission/" + Id);
@@ -65,8 +65,8 @@ export class MrdService {
 
     public medicoCertificateSave(Param: any) {
         debugger
-        if (Param.certificateId) {
-            return this._httpClient.PutData("MedicolegalCertificate/" + Param.certificateId, Param);
+        if (Param.docId) {
+            return this._httpClient.PutData("MedicolegalCertificate/" + Param.docId, Param);
         } else return this._httpClient.PostData('MedicolegalCertificate', Param);
     }
 
@@ -75,6 +75,10 @@ export class MrdService {
         if (Param.certificateId) {
             return this._httpClient.PutData("DeathCertificate/Update/" + Param.certificateId, Param);
         } else return this._httpClient.PostData('DeathCertificate/Insert', Param);
+    }
+
+    public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
 
 }

@@ -14,6 +14,7 @@ import { MrdService } from '../mrd.service';
 import { NewCertificateComponent } from './new-certificate/new-certificate.component';
 import { MedicoLegalCertificateComponent } from './medico-legal-certificate/medico-legal-certificate.component';
 import { DeathCertificateComponent } from './death-certificate/death-certificate.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-certificate',
@@ -161,7 +162,53 @@ export class CertificateComponent implements OnInit {
     }
 
     OnPrint(Param) {
-        // this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
+        if (Param.label == 'Medico') {
+            this.OnMedicoPrint(Param)
+        } else {
+            this.OnDeathPrint(Param)
+        }
+    }
+
+    OnMedicoPrint(obj) {
+        // debugger
+        const param = {
+            "searchFields": [
+                {
+                    "fieldName": "DocId",
+                    "fieldValue": String(obj.docId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "OP_IP_Type",
+                    "fieldValue": String(obj.opIpType),
+                    "opType": "Equals"
+                }
+
+            ],
+            "mode": "MedicolegalCertificateReport"
+        }
+
+        console.log(param);
+
+        this._MrdService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "Medico Legal Certificate",
+                }
+            });
+
+            matDialog.afterClosed().subscribe(result => {
+
+            });
+        });
+    }
+
+    OnDeathPrint(Param) {
+        this.commonService.Onprint("CertificateId", Param.docId, "DeathCertificateReport");
     }
 
     OnEdit(row: any = null) {
