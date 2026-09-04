@@ -16,26 +16,17 @@ export class MedicoLegalCertificateComponent {
 
   screenFromString = 'Common-form';
   dateTimeObj: any;
-  certificateForm: FormGroup;
   today = new Date();
+  showOpIpControls = true;
 
-  activeMic: 'age' | 'cause' | null = null;
-  // selectedLang = 'en-US';
-
-  selectedAgeLang = 'en-US';
-  selectedCauseLang = 'en-US';
-
-  autocompleteModeDepartment: string = "Department";
-  autocompleteModeDoctor: string = "ConDoctor";
-
-  @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-
-  languages: LanguageOption[] = [];
   Language: ['1'];
   opIpType: boolean = false;
   opIpId: any;
   vRegNo: any;
   vPatientName: any;
+  vDepartmentName: any;
+  vDoctorName: any;
+  vRefDocName: any;
   vIPDNo: any;
   vOPDNo: any;
   vCheckBox: boolean = false;
@@ -43,6 +34,17 @@ export class MedicoLegalCertificateComponent {
   vCertificateID: any;
 
   opipPatientDetailsObj: any = {};
+  languages: LanguageOption[] = [];
+  certificateForm: FormGroup;
+
+  activeMic: 'age' | 'cause' | null = null;
+  selectedAgeLang = 'en-US';
+  selectedCauseLang = 'en-US';
+
+  autocompleteModeDepartment: string = "Department";
+  autocompleteModeDoctor: string = "ConDoctor";
+
+  @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
   constructor(private _formBuilder: FormBuilder,
     public speechService: SpeechRecognitionService,
@@ -56,12 +58,27 @@ export class MedicoLegalCertificateComponent {
   ngOnInit(): void {
     this.certificateForm = this.createCertificateForm();
     this.certificateForm.markAllAsTouched();
-
     this.languages = this.speechService.supportedLanguages;
-    if (this.data) {
-      console.log(this.data)
+
+    console.log("Medico data info", this.data, this.data.opIpId);
+
+    console.log("opipPatientDetailsObj", this.opipPatientDetailsObj);
+    if (this.data?.opIpId) { // used to hide OPIPControls search textbox
+      this.showOpIpControls = false;
+    }
+
+
+    if (this.data.docId > 0) {
+      setTimeout(() => {
+
+      })
+      this.opipPatientDetailsObj = this.data
+      this.vDoctorName = this.data.admittedDoctorName
+      this.vRefDocName = this.data.refDocName
       this.certificateForm.patchValue(this.data);
     }
+
+
   }
 
 
@@ -268,17 +285,35 @@ export class MedicoLegalCertificateComponent {
 
     console.log("opIpType", opIpType)
 
-    this._mrdService.medicoCertificateSave(formdata).subscribe({
-      next: (response) => {
-        console.log('API Response:', response);
-        this.onClose(true);
-      },
-      error: (err) => {
-        console.error('Error:', err);
-      },
-      complete: () => {
-        console.log('Request complete');
-      }
-    });
+    if (this.certificateForm.valid) {
+      console.log("After Submit", this.certificateForm.value)
+
+      this._mrdService.medicoCertificateSave(formdata).subscribe({
+        next: (response) => {
+          // console.log('API Response:', response);
+          this.onClose(true);
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        },
+        complete: () => {
+          console.log('Request complete');
+        }
+      });
+    }
+
+
+    // this._mrdService.medicoCertificateSave(formdata).subscribe({
+    //   next: (response) => {
+    //     console.log('API Response:', response);
+    //     this.onClose(true);
+    //   },
+    //   error: (err) => {
+    //     console.error('Error:', err);
+    //   },
+    //   complete: () => {
+    //     console.log('Request complete');
+    //   }
+    // });
   }
 }

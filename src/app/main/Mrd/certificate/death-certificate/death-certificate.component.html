@@ -24,7 +24,7 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="deathCertificateForm">
-                <mat-card style="padding: 10px;">
+                <mat-card style="padding: 10px;" *ngIf="showOpIpControls" style="padding: 10px;">
                     <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
                         <mat-radio-group formControlName="opIpType">
                             <mat-radio-button [value]="true">IP</mat-radio-button>
@@ -47,7 +47,8 @@
                                     <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
                                 </div>
                                 <div class="Ipd-patient-info w-100-p">
-                                    <app-patient-information [uhidNo]="patientDetailsObj?.regNo" [patientName]="vPatientName"
+                                    <app-patient-information [uhidNo]="patientDetailsObj?.regNo"
+                                        [patientName]="vPatientName"
                                         [ageString]="(patientDetailsObj?.age !== undefined ? patientDetailsObj?.age + 'Y|' + patientDetailsObj?.ageMonth + 'M|' + patientDetailsObj?.ageDay + 'D | ' + patientDetailsObj?.genderName : '')"
                                         [ipdNo]="patientDetailsObj?.ipdNo || patientDetailsObj?.ipdno"
                                         [doctorName]="patientDetailsObj?.doctorName"
@@ -67,7 +68,7 @@
                                 <mat-form-field appearance="outline" style="width: 50%;">
                                     <mat-label>Death Date</mat-label>
                                     <input name="dateofDeath" matInput [matDatepicker]="picker1" [max]="today"
-                                        formControlName="dateofDeath"/>
+                                        formControlName="dateofDeath" />
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>

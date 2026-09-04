@@ -27,7 +27,7 @@
             <form [formGroup]="certificateForm">
 
                 <!-- op/ip radio / search textbox -->
-                <div class="modal-card-container">
+                <div class="modal-card-container" *ngIf="showOpIpControls">
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
                         <div class="radio-container">
                             <mat-radio-group aria-label="Select an option" formControlName="opIpType" name="opIpType"
@@ -75,12 +75,12 @@
                                         (opipPatientDetailsObj?.middleName ? ' ' + opipPatientDetailsObj.middleName : '') +
                                         (opipPatientDetailsObj?.lastName ? ' ' + opipPatientDetailsObj.lastName : '')
                                         || opipPatientDetailsObj?.patientName
-                                        " [doctorName]="opipPatientDetailsObj?.doctorName"
+                                        " [doctorName]="opipPatientDetailsObj?.doctorName || vDoctorName"
                                         [departmentName]="opipPatientDetailsObj?.departmentName"
                                         [doa]="opipPatientDetailsObj?.admissionDate"
-                                        [ipdNo]="opipPatientDetailsObj?.ipdNo || opipPatientDetailsObj?.ipdNo"
+                                        [ipdNo]="opipPatientDetailsObj?.ipdNo"
                                         [ageString]="(opipPatientDetailsObj?.age !== undefined ? opipPatientDetailsObj?.age + 'Y|' + opipPatientDetailsObj?.ageMonth + 'M|' + opipPatientDetailsObj?.ageDay + 'D | ' + opipPatientDetailsObj?.genderName : '')"
-                                        [refDocName]="opipPatientDetailsObj?.refDocName"></app-patient-information>
+                                        [refDocName]="opipPatientDetailsObj?.refDoctorName || vRefDocName"></app-patient-information>
                                 </div>
                             </div>
                         </mat-card>

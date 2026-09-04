@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MrdService } from '../../mrd.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-death-certificate',
@@ -17,6 +18,9 @@ export class DeathCertificateComponent {
   dateTimeObj: any;
   today = new Date();
   deathCertificateForm: FormGroup;
+  vCertificateID: any;
+  showOpIpControls = true;
+  registerObj = new AdmissionPersonlModel({});
 
   ////////////// search variables /////////////
   patientDetailsObj: any = {};
@@ -36,7 +40,7 @@ export class DeathCertificateComponent {
   IpFilterDisable = false;
   ////////////// search variables /////////////
 
-  vCertificateID: any;
+
 
   constructor(private _formBuilder: FormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService,
@@ -50,53 +54,65 @@ export class DeathCertificateComponent {
     this.deathCertificateForm.markAllAsTouched();
 
     console.log("death data info", this.data);
-    console.log("certificateId", this.data.docId);
+
+    if (this.data?.opIpId) { // used to hide OPIPControls search textbox
+      this.showOpIpControls = false;
+    }
 
     if (this.data.docId > 0) {
       this.vCertificateID = this.data.docId;
-      console.log("edit ID", this.vCertificateID)
 
       setTimeout(() => {
 
-        this._mrdService.getAdmissionById(this.data.opIpId).subscribe((response) => {
+        // this._mrdService.getAdmissionById(this.data.opIpId).subscribe((response) => {
+        //   this.registerObj = response;
+        //   console.log("getAdmissionById", response)
 
-          console.log("djgfdfsh", response)
+        //   this._mrdService.getRegistraionById(response.regId).subscribe((response) => {
+        //     console.log("getRegistraionById", response)
+        //     this.vPatientName =
+        //       (response.firstName || '') + ' ' +
+        //       (response.middleName || '') + ' ' +
+        //       (response.lastName || '');
 
-          this._mrdService.getRegistraionById(response.regId).subscribe((response) => {
-            this.vPatientName =
-              (response.firstName || '') + ' ' +
-              (response.middleName || '') + ' ' +
-              (response.lastName || '');
+        //     this.vRegNo = response.regNo
+        //     this.vgender = response.genderId;
+        //     this.vDOA = response.regDate;
+        //     this.vTariffName = response.tariffId;
+        //     this.vCompanyName = response.companyId;
+        //     this.vopIpId = response.admissionID;
+        //   })
 
-            this.vRegNo = response.regNo
-            this.vgender = response.genderName;
-            this.vDOA = response.admissionDate;
-            this.vRefDocName = response.refDocName;
-            this.vPatientType = response.patientType;
-            this.vTariffName = response.tariffName;
-            this.vCompanyName = response.companyName;
-            this.vRoomName = response.roomName;
-            this.vBedName = response.bedName;
-            this.vopIpId = response.admissionID;
+        //All form deatils
+        this._mrdService.getDeathDetailsById(this.data.docId).subscribe((response) => {
+          console.log("Infooooooooooooooooooo", response)
+
+          // Convert API time to HH:mm for the time field
+          let formattedTimeOfDeath = '';
+
+          if (response.timeOfDeath) {
+            const date = new Date(response.timeOfDeath);
+            formattedTimeOfDeath =
+              this.datePipe.transform(date, 'HH:mm') || '';
+          }
+          this.vopIpId = this.data.opIpId;
+          this.deathCertificateForm.patchValue({
+            opIpId: this.data.opIpId,
+            dateofDeath: response.dateofDeath,
+            timeOfDeath: formattedTimeOfDeath,
+            causeofDeath: response.causeofDeath,
+            placeOfDeath: response.placeOfDeath,
+            responsiblePersonName: response.responsiblePersonName,
+            smcno: response.smcno,
+            diagnsis: response.diagnsis
           });
+        })
 
-        });
+        // });
+
+
       }, 100);
 
-      // Convert API time to HH:mm for the time field
-      let formattedTimeOfDeath = '';
-
-      if (this.data.timeOfDeath) {
-        const date = new Date(this.data.timeOfDeath);
-        formattedTimeOfDeath =
-          this.datePipe.transform(date, 'HH:mm') || '';
-      }
-
-      this.deathCertificateForm.patchValue({
-        ...this.data,
-        timeOfDeath: formattedTimeOfDeath,
-        // certificateId: this.data.docId
-      });
     }
   }
 
@@ -155,8 +171,6 @@ export class DeathCertificateComponent {
 
 
   onSubmit(): void {
-
-    const opIpId = this.deathCertificateForm.get('opIpId')?.value;
 
     if (this.deathCertificateForm.get('dateofDeath')?.value > this.today) {
       this.toastr.warning('Enter Proper Death Date', 'warning !', {

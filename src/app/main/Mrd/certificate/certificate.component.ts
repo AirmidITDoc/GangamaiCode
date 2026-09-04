@@ -86,7 +86,7 @@ export class CertificateComponent implements OnInit {
         { heading: "Age of Injury", key: "ageofInjuries", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "Doctor Name ", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "departmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "Accident Date", key: "accident_Date", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Accident Date", key: "accident_Date", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Certificate DateTime", key: "mlcTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -104,7 +104,7 @@ export class CertificateComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DeathCertificate/CertificateList",
         columnsList: this.allcolumns,
-        sortField: "DocId",
+        sortField: "docId",
         sortOrder: 0,
         filters: [
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
@@ -168,10 +168,8 @@ export class CertificateComponent implements OnInit {
         if (row) {
             console.log(row)
             if (row.label == 'Medico') {
-                console.log("Medico row", row)
                 this.OnEditMedico(row)
             } else {
-                console.log("Death row", row)
                 this.OnEditCertificate(row)
             }
         }
