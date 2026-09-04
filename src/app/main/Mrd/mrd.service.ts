@@ -19,8 +19,9 @@ export class MrdService {
             FirstName: '',
             LastName: '',
             fromDate: [(new Date()).toISOString()],
-            enddate: [(new Date()).toISOString()]
-
+            enddate: [(new Date()).toISOString()],
+            labelType: '2',
+            RegNo: 0
         });
     }
 
@@ -40,6 +41,40 @@ export class MrdService {
 
     public getDoctorsByDepartment(deptId) {
         return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
+    }
+
+    public updateDeathCertificate(data) {
+        return this._httpClient.PostData("DeathCertificate/Update", data)
+    }
+
+    public getDeathDetailsById(Id) {
+        return this._httpClient.GetData("DeathCertificate/GetById/" + Id);
+    }
+
+    //  public getMedicalDetailsById(Id) {
+    //     return this._httpClient.GetData("DeathCertificate/GetById/" + Id);
+    // }
+
+    public getAdmissionById(Id) {
+        return this._httpClient.GetData("Admission/" + Id);
+    }
+
+    public getRegistraionById(Id) {
+        return this._httpClient.GetData("OutPatient/" + Id);
+    }
+
+    public medicoCertificateSave(Param: any) {
+        debugger
+        if (Param.certificateId) {
+            return this._httpClient.PutData("MedicolegalCertificate/" + Param.certificateId, Param);
+        } else return this._httpClient.PostData('MedicolegalCertificate', Param);
+    }
+
+    public deathCertificateSave(Param: any) {
+        debugger
+        if (Param.certificateId) {
+            return this._httpClient.PutData("DeathCertificate/Update/" + Param.certificateId, Param);
+        } else return this._httpClient.PostData('DeathCertificate/Insert', Param);
     }
 
 }

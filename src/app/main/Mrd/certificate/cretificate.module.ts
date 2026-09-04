@@ -40,6 +40,8 @@ import { MrdDetailsService } from "../mrd-detail-list/mrd-details.service";
 import { NewCertificateVersionComponent } from "../new-certificate-version/new-certificate-version.component";
 import { CertificateComponent } from "./certificate.component";
 import { NewCertificateComponent } from "./new-certificate/new-certificate.component";
+import { MedicoLegalCertificateComponent } from './medico-legal-certificate/medico-legal-certificate.component';
+import { DeathCertificateComponent } from './death-certificate/death-certificate.component';
 
 const routes: Routes = [
     {
@@ -51,7 +53,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        NewCertificateVersionComponent, NewCertificateComponent, CertificateComponent
+        NewCertificateVersionComponent, NewCertificateComponent, CertificateComponent, MedicoLegalCertificateComponent, DeathCertificateComponent
     ],
     imports: [
         RouterModule.forChild(routes),

@@ -403,7 +403,7 @@ export class IPAdvanceComponent implements OnInit {
             setTimeout(() => {
                 const param = {
                     "searchFields": [
-                        { "fieldName": "AdvanceDetailID", "fieldValue": String(element.advanceDetailID), "opType": "13" },
+                        { "fieldName": "AdvanceDetailID", "fieldValue": String(element.advanceDetailID || element) , "opType": "13" },
                         { "fieldName": "UserId", "fieldValue": String(this.accountService.currentUserValue.userId), "opType": "13" }
                     ],
                     "mode": "IpAdvanceReceipt"

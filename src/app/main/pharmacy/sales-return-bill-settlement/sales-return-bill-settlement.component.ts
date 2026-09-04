@@ -78,6 +78,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     Is9_Digit_National_Id: boolean = false;
     mWardName: any = ''
     mRegId: any = ''
+    vFinalRefundAmt:any=0;
     autocompleteModeConcession: string = "Concession";
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -213,7 +214,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             ConcessionId: [0],
             FinalDiscAmt:[0],
             GlobleDiscType:['1'],
-            FinalTotalAmt:[0]
+            FinalTotalAmt:[0],
+            FinalRefundAmt:[0]
         });
     }
 
@@ -785,6 +787,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.vBalanceAmount = 0;
         this.vDiscountAmt = 0;
         this.vTotalAmt =0;
+        this.vFinalRefundAmt = 0;
 
         selectedRows.forEach(element => {
             this.vNetAmount += Math.round(+element.netAmount);
@@ -792,6 +795,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             this.vPaidAmount += Math.round(+element.paidAmount);
             this.vBalanceAmount += Math.round(+element.balanceAmount);
             this.vDiscountAmt += Math.round(+element.discAmount);
+              this.vFinalRefundAmt += Math.round(+element.refundAmt);
         });
 
         this.MutliSettlemForm.patchValue({
@@ -800,6 +804,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             FinalNetAmt: this.vNetAmount,
             FinalPaidAmt: this.vPaidAmount,
             FinalBalanceAmt: this.vBalanceAmount,
+            FinalRefundAmt: this.vFinalRefundAmt,
         });
     }
     vDiscountAmt:any=0;
@@ -909,9 +914,25 @@ export class SalesReturnBillSettlementComponent implements OnInit {
 
                 console.log(this.PharmaSettlementfrom.value);
                 this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => {
-                    this.onclearNormaldata();
-                    // this.OP_IP_Id = '';
+                    this.onclearNormaldata();  
                     this.getdataMultiple()
+         this.vNetAmount = 0;
+         this.vPaidAmount = 0;
+         this.vBalanceAmount = 0;
+         this.vDiscountAmt = 0;
+         this.vTotalAmt = 0;
+         this.vFinalRefundAmt = 0;
+         this.MutliSettlemForm.patchValue({
+                FinalDiscAmt : this.vDiscountAmt,
+                FinalTotalAmt: this.vTotalAmt,
+                FinalNetAmt: this.vNetAmount,
+                FinalPaidAmt: this.vPaidAmount,
+                FinalBalanceAmt: this.vBalanceAmount,
+                FinalRefundAmt : this.vFinalRefundAmt,
+                globlediscPer:'',
+                globlediscAmt:''
+            })
+
                 });
             }
         });
@@ -1022,6 +1043,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             ],
                 FinalTotalAmt: [
                 // { name: "required", Message: "ConcessionId is required" }
+            ],
+             FinalRefundAmt: [
+                // { name: "required", Message: "ConcessionId is required" }
             ]
         };
     }
@@ -1036,11 +1060,13 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.vBalanceAmount = 0;
         this.vTotalAmt = 0;
         this.vDiscountAmt = 0;
+        this.vFinalRefundAmt = 0;
         this.MutliSettlemForm.patchValue({
             FinalDiscAmt : this.vDiscountAmt,
             FinalTotalAmt: this.vTotalAmt,
             FinalNetAmt: this.vNetAmount,
             FinalPaidAmt: this.vPaidAmount,
+            FinalRefundAmt: this.vFinalRefundAmt,
             FinalBalanceAmt: this.vBalanceAmount,
         }) 
         this.selection.clear();
@@ -1068,11 +1094,13 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.vBalanceAmount = 0
         this.vDiscountAmt = 0;;
         this.vTotalAmt = 0;
+        this.vFinalRefundAmt = 0;
         this.MutliSettlemForm.patchValue({
             FinalDiscAmt : this.vDiscountAmt,
             FinalTotalAmt: this.vTotalAmt,
             FinalNetAmt: this.vNetAmount,
             FinalPaidAmt: this.vPaidAmount,
+             FinalRefundAmt: this.vFinalRefundAmt,
             FinalBalanceAmt: this.vBalanceAmount,
         })
         
@@ -1216,9 +1244,11 @@ export class SalesReturnBillSettlementComponent implements OnInit {
          this.vBalanceAmount = 0;
          this.vDiscountAmt = 0;
          this.vTotalAmt = 0;
+        this.vFinalRefundAmt =0;
          this.MutliSettlemForm.patchValue({
                 FinalDiscAmt : this.vDiscountAmt,
                 FinalTotalAmt: this.vTotalAmt,
+                FinalRefundAmt: this.vFinalRefundAmt,
                 FinalNetAmt: this.vNetAmount,
                 FinalPaidAmt: this.vPaidAmount,
                 FinalBalanceAmt: this.vBalanceAmount,
@@ -1278,6 +1308,23 @@ export class SalesReturnBillSettlementComponent implements OnInit {
                 this.MutliSettlemForm.get('ConcessionId').reset();
                   this.selection.clear();
                   this.SelectedList = []; 
+         this.vNetAmount = 0;
+         this.vPaidAmount = 0;
+         this.vBalanceAmount = 0;
+         this.vDiscountAmt = 0;
+         this.vTotalAmt = 0;
+        this.vFinalRefundAmt =0;
+         this.MutliSettlemForm.patchValue({
+                FinalDiscAmt : this.vDiscountAmt,
+                FinalTotalAmt: this.vTotalAmt,
+                FinalRefundAmt: this.vFinalRefundAmt,
+                FinalNetAmt: this.vNetAmount,
+                FinalPaidAmt: this.vPaidAmount,
+                FinalBalanceAmt: this.vBalanceAmount,
+                globlediscPer:'',
+                globlediscAmt:''
+            })
+
             })
         } else {
             const invalidFields = [];

@@ -6,25 +6,26 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                  Certificate List
+                    Certificate List
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="OnNew()">New Certificate
+            <button mat-raised-button (click)="OnNew()">Medico Legal Certificate
             </button>
-
+            <button mat-raised-button (click)="OnNewDeathCertificate()">Death Certificate
+            </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-          <ng-template #actionButtonTemplate let-element>
+        <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
+                <button mat-icon-button matTooltip="Edit Certificate" (click)="OnEdit(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
 
-                
+
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
                     <mat-icon> print</mat-icon>
                 </button>
@@ -33,19 +34,48 @@
         </ng-template>
 
 
+        <ng-template #RequestColorCode let-element>
+            <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                <span [ngClass]="{
+                        'status-completed':element.label === 'Medico' ,
+                        'status-pending': element.label === 'Death'
+                        }">
+                    {{ element.label }}
+                </span>
+            </div>
+        </ng-template>
+
+
+        <ng-template #actionsTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <!-- <mat-icon *ngIf="element.opIpType=== true" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+
+                <mat-icon *ngIf="element.opIpType!== true" matTooltip="OP"
+                    class="pill orange-600 s-16">circle</mat-icon> -->
+                <mat-icon *ngIf="element.opIpType === 1" matTooltip="IP" class="pill green-600 s-16">
+                    circle
+                </mat-icon>
+
+                <mat-icon *ngIf="element.opIpType === 0" matTooltip="OP" class="pill orange-600 s-16">
+                    circle
+                </mat-icon>
+            </div>
+        </ng-template>
+
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">
-                    
+
                     <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                    [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
-                  
-                 
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"
-                        (input)="onChangeFirst()"/>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="FirstName" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -55,14 +85,40 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName" (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('LastName')">
+                            formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
 
-                 
+                    <mat-form-field appearance="outline">
+                        <mat-label>Reg No</mat-label>
+                        <input matInput placeholder="Search Reg NO" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="RegNo" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-radio-group formControlName="labelType" name="labelType" fxLayout="row"
+                        (change)="onChangeFirst()">
+
+                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                            <mat-icon class="pill">circle</mat-icon>
+                            <mat-radio-button value="2">ALL</mat-radio-button>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <mat-radio-button value="1">Medico</mat-radio-button>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                            <mat-radio-button value="0">Death</mat-radio-button>
+                        </div>
+                    </mat-radio-group>
+
                 </form>
             </ng-container>
         </airmid-table>

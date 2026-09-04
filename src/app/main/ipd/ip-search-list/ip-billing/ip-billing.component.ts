@@ -809,23 +809,23 @@ export class IPBillingComponent implements OnInit {
             price: obj.price
         })
 
-           // Price validation based on selected service 
-const price = this.Serviceform.get('price');
-const totalAmt = this.Serviceform.get('totalAmt');
-const netAmount = this.Serviceform.get('netAmount');
+        // Price validation based on selected service 
+        const price = this.Serviceform.get('price');
+        const totalAmt = this.Serviceform.get('totalAmt');
+        const netAmount = this.Serviceform.get('netAmount');
 
-if (obj?.isAllowZeroPrice === true) { 
-    price.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
-    totalAmt.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
-    netAmount.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]); 
-} else { 
-    price.setValidators([ this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator() ]);
-    totalAmt.setValidators([ this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator() ]);
-    netAmount.setValidators([ this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator() ]);
-} 
-price.updateValueAndValidity();
-totalAmt.updateValueAndValidity();
-netAmount.updateValueAndValidity();
+        if (obj?.isAllowZeroPrice === true) {
+            price.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+            totalAmt.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+            netAmount.setValidators([this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+        } else {
+            price.setValidators([this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+            totalAmt.setValidators([this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+            netAmount.setValidators([this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]);
+        }
+        price.updateValueAndValidity();
+        totalAmt.updateValueAndValidity();
+        netAmount.updateValueAndValidity();
 
         if (obj.creditedtoDoctor == true) {
             this.Serviceform.get('doctorId').reset();
@@ -1387,7 +1387,7 @@ netAmount.updateValueAndValidity();
             FinalTotalAmt = (parseFloat(totalAmount + AdminAmt)).toFixed(2);
             discper = ((discAmt / FinalTotalAmt) * 100).toFixed(2);
 
-            const DiscountPer = +discper|| 0;
+            const DiscountPer = +discper || 0;
             if (this.UserDicPerLimit > 0) {
                 if (DiscountPer > this.UserDicPerLimit) {
                     Swal.fire({
@@ -2173,48 +2173,51 @@ netAmount.updateValueAndValidity();
     viewgetAdvanceReceiptReportPdfold(data) {
         this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IpAdvanceReceipt");
     }
-            viewgetAdvanceReceiptReportPdf(element) {
-                setTimeout(() => {
-                    const param = {
-                        "searchFields": [
-                            { "fieldName": "AdvanceDetailID", "fieldValue": String(element.advanceDetailID), "opType": "13" },
-                            { "fieldName": "UserId", "fieldValue": String(this.accountService.currentUserValue.userId), "opType": "13" }
-                        ],
-                        "mode": "IpAdvanceReceipt"
-                    }
-                    this._IpSearchListService.getReportView(param).subscribe(res => {
-                        const matDialog = this._matDialog.open(PdfviewerComponent,
-                            {
-                                maxWidth: "85vw",
-                                height: '750px',
-                                width: '100%',
-                                data: {
-                                    base64: res["base64"] as string,
-                                    title: "IP Advance Receipt" + " " + "Viewer"
-                                }
-                            });
-                        matDialog.afterClosed().subscribe(result => {
-                        });
-                    });
-                }, 100);
+    viewgetAdvanceReceiptReportPdf(element) {
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    { "fieldName": "AdvanceDetailID", "fieldValue": String(element.advanceDetailID), "opType": "13" },
+                    { "fieldName": "UserId", "fieldValue": String(this.accountService.currentUserValue.userId), "opType": "13" }
+                ],
+                "mode": "IpAdvanceReceipt"
             }
-        IPDFinalPrintcall(billNo){
-        if(!this.IsIPDBillAfterSavePrintVal){ return };
-
-        if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillGroupwise') {
-            this.viewgetBillBillGroupWiseReportPdf(billNo)
-        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillChargesDateWise') {
-            this.viewgetBillReportPdf(billNo)  
-        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillChargesDateWisegroupwise') {
-            this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwise");
-        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillClassWise') {
-            this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassWise");
-        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillClassServiceWise') {
-            this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassServiceWise");
-        } else if (this.IsIPDBillAfterSavePrintVal == 'IPFinalBillGroupwise') {
-            this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
-        }
+            this._IpSearchListService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "IP Advance Receipt" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
     } 
+    IPDFinalPrintcall(billNo) {
+        const printType = this.IsIPDBillAfterSavePrintVal;
+
+        if (!printType || printType.trim() === '') {
+            this.viewgetBillBillGroupWiseReportPdf(billNo);
+            return;
+        } 
+        if (printType === 'IPFinalBillGroupwise') {
+            this.viewgetBillBillGroupWiseReportPdf(billNo);
+        } else if (printType === 'IPFinalBillChargesDateWise') {
+            this.viewgetBillReportPdf(billNo);
+        } else if (printType === 'IPFinalBillChargesDateWisegroupwise') {
+           this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwise");
+        } else if (printType === 'IPFinalBillClassWise') {
+             this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassWise");
+        } else if (printType === 'IPFinalBillClassServiceWise') {
+            this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassServiceWise");
+        }  
+    }
+
     showAllFilter(event) {
         if (event.checked == true)
             this.isFilteredDateDisabled = true;
@@ -2354,7 +2357,8 @@ netAmount.updateValueAndValidity();
         console.log(Obj)
     }
     //Table calculation
-    gettablecalculation(element) {
+    gettablecalculation(element, changedField = '') {
+        debugger
         // Checking if old value is same as new value (skip for new rows)
         if (!element.isNewRow) {
             const oldElement = this.copiedData.find(i => i.chargesId === element.chargesId);
@@ -2368,13 +2372,23 @@ netAmount.updateValueAndValidity();
             element.TotalAmt = element.totalAmt; // Sync uppercase property
 
             // Use concessionPercentage or ConcessionPercentage
-            const discountPercent = element.concessionPercentage || element.ConcessionPercentage || 0;
-            
-            element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
-            element.concessionAmount = element.DiscAmt; // Sync lowercase property
+            let discountPercent = element.concessionPercentage || element.ConcessionPercentage || 0;
 
+            if (changedField === 'DiscPer') { 
+                element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
+                element.concessionAmount = element.DiscAmt;
 
-             const DiscountPer = +discountPercent|| 0;
+            } else if (changedField === 'DiscAmt') { 
+                const discountAmount = +element.concessionAmount || 0; 
+                element.DiscAmt = discountAmount; 
+                element.concessionPercentage = element.totalAmt > 0 ? (discountAmount * 100) / element.totalAmt  : 0; 
+                discountPercent = element.concessionPercentage
+            } else { 
+                // Qty / Price change
+                element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
+                element.concessionAmount = element.DiscAmt;
+            }
+            const DiscountPer = +discountPercent || 0;
             if (this.UserDicPerLimit > 0) {
                 if (DiscountPer > this.UserDicPerLimit) {
                     Swal.fire({
@@ -2382,14 +2396,14 @@ netAmount.updateValueAndValidity();
                         title: 'Discount Limit Exceeded',
                         text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
                         confirmButtonColor: '#d33'
-                    }).then(()=>{ 
-                     const  discountPercent1 = this.UserDicPerLimit
-                     element.concessionPercentage = discountPercent1
-                     element.DiscAmt = (discountPercent1 * element.totalAmt) / 100 || 0;
-                     element.concessionAmount = element.DiscAmt; // Sync lowercase property 
                     }) 
+                        const discountPercent1 = this.UserDicPerLimit
+                        element.concessionPercentage = discountPercent1
+                        element.DiscAmt = (discountPercent1 * element.totalAmt) / 100 || 0;
+                        element.concessionAmount = element.DiscAmt; // Sync lowercase property 
+                    
                 }
-            }   
+            }
             element.netAmount = element.totalAmt - element.DiscAmt;
             element.NetAmount = element.netAmount; // Sync uppercase property
         }

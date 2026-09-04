@@ -628,7 +628,7 @@
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDiscPer">
                               <mat-form-field floatLabel="never" class="compact-field">
                                 <input matInput [(ngModel)]="contact.concessionPercentage" type="text"
-                                  placeholder="Disc %" (keyup)="gettablecalculation(contact)"
+                                  placeholder="Disc %" (keyup)="gettablecalculation(contact,'DiscPer')"
                                   (keypress)="keyPressCharater($event)" min="0" max="100"
                                       [disabled]="UserDiscApplyPer !== true"
                                                 [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'" >
@@ -646,7 +646,7 @@
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDiscAmt">
                               <mat-form-field floatLabel="never" class="compact-field">
                                 <input matInput [(ngModel)]="contact.concessionAmount" type="text"
-                                  placeholder="Disc Amt" (keyup)="gettablecalculation(contact)"
+                                  placeholder="Disc Amt" (keyup)="gettablecalculation(contact ,'DiscAmt')"
                                   (keypress)="keyPressCharater($event)" min="0"
                                       [disabled]="UserDiscApplyPer !== true"
                                                 [matTooltip]="UserDiscApplyPer === true ? '' : 'You do not have permission to apply a discount.'" >

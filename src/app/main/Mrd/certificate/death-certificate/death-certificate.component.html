@@ -1,0 +1,134 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Death Certificate</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="deathCertificateForm">
+                <mat-card style="padding: 10px;" *ngIf="showOpIpControls" style="padding: 10px;">
+                    <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
+                        <mat-radio-group formControlName="opIpType">
+                            <mat-radio-button [value]="true">IP</mat-radio-button>
+                        </mat-radio-group>
+
+                        <airmid-autocomplete lbl="RgId" [formGroup]="deathCertificateForm" formControlName="opIpId"
+                            placeholderText="IP-RegNo/FirstName/LastName" fxFlex="50%" [disabled]="IpFilterDisable"
+                            label="Search Reg No / Patient Name / Mobile No" ApiUrl="Admission/search-patient?Keyword="
+                            (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                            TextField="formattedText">
+                        </airmid-autocomplete>
+                    </div>
+                </mat-card>
+
+                <div class="modal-card-container mt-8">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                    <app-patient-information [uhidNo]="patientDetailsObj?.regNo"
+                                        [patientName]="vPatientName"
+                                        [ageString]="(patientDetailsObj?.age !== undefined ? patientDetailsObj?.age + 'Y|' + patientDetailsObj?.ageMonth + 'M|' + patientDetailsObj?.ageDay + 'D | ' + patientDetailsObj?.genderName : '')"
+                                        [ipdNo]="patientDetailsObj?.ipdNo || patientDetailsObj?.ipdno"
+                                        [doctorName]="patientDetailsObj?.doctorName"
+                                        [departmentName]="patientDetailsObj?.departmentName" [doa]="vDOA">
+                                    </app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- Details tab -->
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                    <mat-tab label="Details" class="gap-4">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ; gap: 4px;">
+                            <div fxFlexFill fxLayout="row" class="gap-4">
+                                <mat-form-field appearance="outline" style="width: 50%;">
+                                    <mat-label>Death Date</mat-label>
+                                    <input name="dateofDeath" matInput [matDatepicker]="picker1" [max]="today"
+                                        formControlName="dateofDeath" />
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" style="width: 50%;">
+                                    <mat-label>Death Time</mat-label>
+                                    <input matInput type="time" formControlName="timeOfDeath">
+                                </mat-form-field>
+                            </div>
+
+
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>Cause Of Death</mat-label>
+                                <textarea rows="3" formControlName="causeofDeath" placeholder="Cause Of Death"
+                                    [formGroup]="deathCertificateForm" matInput></textarea>
+                            </mat-form-field>
+
+                            <div fxFlexFill fxLayout="row" class="gap-4">
+                                <mat-form-field appearance="outline" style="width: 50%;">
+                                    <mat-label>Place Of Death</mat-label>
+                                    <textarea rows="1" formControlName="placeOfDeath" placeholder="Place Of Death"
+                                        [formGroup]="deathCertificateForm" matInput></textarea>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" style="width: 50%;">
+                                    <mat-label>Responsible Person Name/Address</mat-label>
+                                    <textarea rows="1" formControlName="responsiblePersonName"
+                                        placeholder="Responsible Person Name/Address" [formGroup]="deathCertificateForm"
+                                        matInput></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxFlexFill fxLayout="row" class="gap-4">
+                                <mat-form-field appearance="outline" style="width: 50%;">
+                                    <mat-label>SMC No</mat-label>
+                                    <input matInput type="text" [formGroup]="deathCertificateForm"
+                                        formControlName="smcno" pattern="">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" style="width: 50%;">
+                                    <mat-label>Diagnosis</mat-label>
+                                    <textarea rows="1" formControlName="diagnsis" placeholder="Diagnosis"
+                                        [formGroup]="deathCertificateForm" matInput></textarea>
+                                </mat-form-field>
+                            </div>
+                        </mat-card>
+                    </mat-tab>
+                </mat-tab-group>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose(false)">Close</button>
+                <button class="btn btn-primary" color="accent" (click)="onSubmit()">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

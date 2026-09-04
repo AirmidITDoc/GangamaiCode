@@ -1,17 +1,19 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridColumnTypes } from 'app/core/models/tableActions';
+import { gridColumnTypes, gridActions } from 'app/core/models/tableActions';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { MrdService } from '../mrd.service';
 import { NewCertificateComponent } from './new-certificate/new-certificate.component';
+import { MedicoLegalCertificateComponent } from './medico-legal-certificate/medico-legal-certificate.component';
+import { DeathCertificateComponent } from './death-certificate/death-certificate.component';
 
 @Component({
     selector: 'app-certificate',
@@ -29,10 +31,21 @@ export class CertificateComponent implements OnInit {
     regNo: any = "0"
     l_name: any = ""
     mobileno: any = "%"
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    label: any = "2"
+
+    labelName: any;
+
+
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('RequestColorCode') RequestColorCode!: TemplateRef<any>;
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     photo: PageNames = PageNames.PATIENT_PHOTO;
     signature: PageNames = PageNames.PATIENT_SIGNATURE;
+
 
     constructor(
         public _MrdService: MrdService,
@@ -53,60 +66,64 @@ export class CertificateComponent implements OnInit {
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'label')!.template = this.RequestColorCode;
+        this.gridConfig.columnsList.find(col => col.key === 'opIpType')!.template = this.actionsTemplate;
     }
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allcolumns = [
-        { heading: "AdmissionDate", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
-        { heading: "DischargeDate", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        {
+            heading: "-", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40,
+            template: this.actionsTemplate
+        },
+        {
+            heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
+            template: this.RequestColorCode
+        },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "ConcessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "NetPayableAmt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', },
-        // { heading: "Created Date", key: "createdDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 ,width:170},
-        // { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
-        // { heading: "Modify Date", key: "modifiedDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 ,width:170},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Cause Of Injury", key: "causeofInjuries", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Details of Injury", key: "details_Injuries", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Age of Injury", key: "ageofInjuries", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Doctor Name ", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "departmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Accident Date", key: "accident_Date", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Certificate DateTime", key: "mlcTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            // actions: [
+            //     {
+            //         action: gridActions.edit, callback: (data: any) => {
+            //             this.OnNewDeathCertificate(data);
+            //         }
+            //     }
+            // ],
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-
-        // {
-        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
-        //         {action: gridActions.edit, callback: (data: any) => {
-        //                 this.onEdit(data);
-        //                 this.grid.bindGridData();
-        //             }},]
-        // }
     ];
 
     gridConfig: gridModel = {
-        apiUrl: "MRD/MRDList",
+        apiUrl: "DeathCertificate/CertificateList",
         columnsList: this.allcolumns,
-        sortField: "RegId",
+        sortField: "docId",
         sortOrder: 0,
         filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-
-        ]
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
+            { fieldName: "Death", fieldValue: this.label, opType: OperatorComparer.Equals },
+        ],
+        row: 25
     }
+
+
 
     OnNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button 
-        const that = this;
-        const dialogRef = this._matDialog.open(NewCertificateComponent,
+
+        const dialogRef = this._matDialog.open(MedicoLegalCertificateComponent,
             {
                 maxWidth: "95vw",
                 height: '95%',
@@ -115,7 +132,23 @@ export class CertificateComponent implements OnInit {
 
             });
         dialogRef.afterClosed().subscribe(result => {
-            that.grid.bindGridData();
+            this.grid.bindGridData();
+        });
+    }
+
+    OnNewDeathCertificate(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
+        const dialogRef = this._matDialog.open(DeathCertificateComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
         });
     }
 
@@ -130,11 +163,60 @@ export class CertificateComponent implements OnInit {
     OnPrint(Param) {
         // this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
     }
+
+    OnEdit(row: any = null) {
+        if (row) {
+            console.log(row)
+            if (row.label == 'Medico') {
+                this.OnEditMedico(row)
+            } else {
+                this.OnEditCertificate(row)
+            }
+        }
+    }
+
+    OnEditMedico(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
+        const that = this;
+        const dialogRef = this._matDialog.open(MedicoLegalCertificateComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+        });
+    }
+
+
+
+    OnEditCertificate(row: any = null) {
+        // console.log(row)
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
+        const that = this;
+        const dialogRef = this._matDialog.open(DeathCertificateComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+        });
+    }
+
     onNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         const that = this;
-        const dialogRef = this._matDialog.open(NewCertificateComponent,
+        const dialogRef = this._matDialog.open(MedicoLegalCertificateComponent,
             {
                 maxWidth: "95vw",
                 maxHeight: '90%',
@@ -155,21 +237,24 @@ export class CertificateComponent implements OnInit {
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        this.label = this.myFilterform.get('labelType').value
         this.getfilterdata();
     }
 
     getfilterdata() {
         this.gridConfig = {
-            apiUrl: "OutPatient/RegistrationList",
+            apiUrl: "DeathCertificate/CertificateList",
             columnsList: this.allcolumns,
-            sortField: "RegId",
+            sortField: "DocId",
             sortOrder: 0,
             filters: [
-                { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.StartsWith },
+                { fieldName: "Death", fieldValue: this.label, opType: OperatorComparer.Equals },
             ],
             row: 25
         }
@@ -183,6 +268,8 @@ export class CertificateComponent implements OnInit {
         else
             if (event == 'LastName')
                 this.myFilterform.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myFilterform.get('RegNo').setValue("")
 
         this.onChangeFirst();
     }
@@ -211,10 +298,6 @@ export class CertificateComponent implements OnInit {
     }
 
 }
-
-
-
-
 
 export class CharityPatientdetail {
     RegNo: any;
