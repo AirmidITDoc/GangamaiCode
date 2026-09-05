@@ -114,6 +114,13 @@ export class AirmidDiagnosChipautocompleteComponent
       if (transcript) {
         this.inputValue = transcript;
         this.filterOptions();          // trigger API search
+
+          // Add voice text as chip
+    setTimeout(() => {
+      this.addChip(transcript);
+      this.showDropdown = false;
+    }, 350);
+    
         // Optional: auto-add the spoken value as a chip
         // this.addChip(transcript);
       }

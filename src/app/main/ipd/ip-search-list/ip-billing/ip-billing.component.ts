@@ -2375,13 +2375,15 @@ export class IPBillingComponent implements OnInit {
             let discountPercent = element.concessionPercentage || element.ConcessionPercentage || 0;
 
             if (changedField === 'DiscPer') { 
-                element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
+                 const concessionAmt = (discountPercent * element.totalAmt) / 100 || 0;
+                element.DiscAmt = concessionAmt.toFixed(2);
                 element.concessionAmount = element.DiscAmt;
 
             } else if (changedField === 'DiscAmt') { 
                 const discountAmount = +element.concessionAmount || 0; 
                 element.DiscAmt = discountAmount; 
-                element.concessionPercentage = element.totalAmt > 0 ? (discountAmount * 100) / element.totalAmt  : 0; 
+                const concessionPercentage = element.totalAmt > 0 ? (discountAmount * 100) / element.totalAmt  : 0; 
+                element.concessionPercentage = concessionPercentage.toFixed(2);
                 discountPercent = element.concessionPercentage
             } else { 
                 // Qty / Price change

@@ -471,10 +471,10 @@
 
                                             <ng-container matColumnDef="date">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                    class="w-100">
+                                                    class="w-140">
                                                     Sales Date
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                                                     {{contact.date}}
                                                 </mat-cell>
                                             </ng-container>
@@ -523,10 +523,10 @@
 
 
                                             <ng-container matColumnDef="discPer">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm    class="w-120">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm    class="w-140">
                                                     Discount %
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-120">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-140">
                                                     <span *ngIf="!vglobledisc"> {{contact.discper || '-'}}</span>
                                                     <mat-form-field appearance="fill" *ngIf="vglobledisc">
                                                         <input matInput [(ngModel)]="contact.discper" type="text "
@@ -541,38 +541,38 @@
 
 
                                             <ng-container matColumnDef="discAmount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm  class="w-130">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm  class="w-140">
                                                     Discount Amt
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-130">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-140">
                                                     {{contact.discAmount | currency:'INR' }}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="netAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                    class="w-130">
+                                                    class="w-140">
                                                     Net Amt
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                                                     {{contact.netAmount | currency:'INR' }}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="paidAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                    class="w-130">
+                                                    class="w-140">
                                                     Paid Amt
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                                                     {{contact.paidAmount | currency:'INR' }}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="refundAmt">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">
                                                     Refund Amt</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140"
                                                   [ngClass]="{'refund-bg': contact.refundAmt > 0}">
                                                     {{contact.refundAmt | currency:'INR' }}
                                                 </mat-cell>
@@ -580,10 +580,10 @@
 
                                             <ng-container matColumnDef="balanceAmount" StickyEnd>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                    class="w-130">
+                                                    class="w-140">
                                                     Balance Amt
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140"
                                                     [ngClass]="{'red-bg': contact.balanceAmount > 0}">
                                                     {{contact.balanceAmount | currency:'INR' }}
                                                 </mat-cell>

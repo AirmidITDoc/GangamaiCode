@@ -242,8 +242,13 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         }
 
         let BalAmt = this.selectedAdvanceObj?.balanceAmt
-        if (formvalues?.DiscAmount2 > 0 || formvalues?.CompanyDiscAmt > 0) {
-            BalAmt = formvalues?.NetAmount
+        const  paidamt = this.selectedAdvanceObj?.paidAmount
+        if (formvalues?.DiscAmount2 > 0 || formvalues?.CompanyDiscAmt > 0) { 
+            if(paidamt) {
+                BalAmt = formvalues?.NetAmount - paidamt
+            }else{
+                BalAmt = formvalues?.NetAmount
+            } 
         }
 
         this.saveform.get('billNo').setValue(this.selectedAdvanceObj?.billNo)

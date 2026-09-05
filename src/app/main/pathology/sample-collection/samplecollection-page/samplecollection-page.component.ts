@@ -230,15 +230,17 @@ export class SamplecollectionPageComponent {
     }
 
     isCheckboxDisabled(contact: any): boolean { 
+        debugger
+   if (contact.isSampleCollection == 'True' || contact.isSampleCollection == true) {
+    return true;
+  }
       if (contact.isRefunded == 1) {
             return   true
         }
         if (contact.patientTypeId > 1) {
             return !contact.isApprovedByCamp;
-        }
-if (contact.sampleNo && !contact.isSampleReceviedCancel) {
-    return true;
-}
+        } 
+   
         return false; // Self patient → always enabled
     }
 
