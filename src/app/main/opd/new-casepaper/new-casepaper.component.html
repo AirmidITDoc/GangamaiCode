@@ -376,36 +376,23 @@
 
                                                     <div style="margin-bottom: 10px;" fxLayout="column">
                                                         <span style="font-weight: 700;">History Of Illness :</span>
-                                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                                            <mat-label>History Of Illness</mat-label>
+                                                        <div fxLayout="row">
+                                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                                <mat-label>History Of Illness</mat-label>
 
-                                                            <textarea matInput formControlName="historyOfIllness"
-                                                                placeholder="History of illness" rows="1">
+                                                                <textarea matInput formControlName="historyOfIllness"
+                                                                    placeholder="History of illness" rows="1">
                                                             </textarea>
+
+                                                            </mat-form-field>
 
                                                             <button mat-icon-button matSuffix type="button"
                                                                 [class.listening]="isListening"
-                                                                [color]="speechService.isListening ? 'warn' : 'primary'"
                                                                 (click)="onMicToggle1()">
-
-                                                                <!-- <span *ngIf="!isListening">🎤</span>
-                                                                <span *ngIf="isListening" class="pulse">🔴</span> -->
                                                                 <mat-icon>{{isListening ? 'mic_off' :
                                                                     'mic'}}</mat-icon>
                                                             </button>
-
-
-                                                            <!-- <button mat-icon-button type="button"
-                                                                (click)="onMicToggle1()"
-                                                                [color]="speechService.isListening ? 'warn' : 'primary'"
-                                                                [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
-                                                                aria-label="Toggle speech recognition for chief complaints">
-                                                                <mat-icon>{{speechService.isListening ? 'mic_off' :
-                                                                    'mic'}}</mat-icon>
-                                                            </button> -->
-
-                                                        </mat-form-field>
-
+                                                        </div>
                                                     </div>
 
                                                     <div style="margin-bottom: 10px;" fxLayout="column">
@@ -413,7 +400,6 @@
                                                             Chief Complaints :
                                                         </span>
                                                         <div *ngFor="let visit of getVisitDataById(VisitId)">
-                                                            <!-- <div class="patient-col" fxLayout="row" fxLayoutGap="6px"> -->
 
                                                             <span class="patient-col-value">
                                                                 <ng-container
@@ -425,48 +411,43 @@
                                                                 </ng-container>
                                                                 <ng-template #noComplaints>N/A</ng-template>
                                                             </span>
-                                                            <!-- </div> -->
+
 
                                                         </div>
 
                                                         <hr>
-                                                        <!-- <app-airmid-chipautocomplete fxFlex
-                                                            [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
-                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
-                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeChiefComplaint($event)">
-                                                        </app-airmid-chipautocomplete> -->
-                                                        <app-airmid-chipautocomplete fxFlex #chiefComplaintInput
-                                                            [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
-                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
-                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeChiefComplaint($event)">
-                                                        </app-airmid-chipautocomplete>
+                                                        <div class="chief-complaint-wrapper">
 
-                                                        <button mat-icon-button type="button"
-                                                            (click)="onMicToggleChiefComplaint()"
-                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
-                                                            [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
-                                                            aria-label="Toggle speech recognition for chief complaints">
-                                                            <mat-icon>{{speechService.isListening ? 'mic_off' :
-                                                                'mic'}}</mat-icon>
-                                                        </button>
+                                                            <app-airmid-chipautocomplete fxFlex #chiefComplaintInput
+                                                                [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
+                                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
+                                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                                (chipsChange)="selectChangeChiefComplaint($event)">
+                                                            </app-airmid-chipautocomplete>
+
+                                                            <button mat-icon-button type="button"
+                                                                (click)="onMicToggleChiefComplaint()" [matTooltip]="speechService.isListening
+            ? 'Stop Speech Recognition'
+            : 'Start Speech Recognition'" aria-label="Toggle speech recognition">
+
+
+                                                                <mat-icon>{{isListening ? 'mic_off' :
+                                                                    'mic'}}</mat-icon>
+
+                                                            </button>
+
+
+
+                                                        </div>
+
 
                                                     </div>
-
-                                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>History of Presenting Illness</mat-label>
-                                                        <textarea matInput rows="2" formControlName="HistoryIllness" id="HistoryIllness"
-                                                            placeholder="History of Presenting Illness"> </textarea>
-                                                    </mat-form-field> -->
 
 
                                                     <div style="margin-bottom: 10px;" fxLayout="column">
                                                         <span style="font-weight: 700;">Diagnosis :</span>
 
                                                         <div *ngFor="let visit of getVisitDataById(VisitId)">
-
-                                                            <!-- <div class="patient-col" fxLayout="row" fxLayoutGap="6px"> -->
 
                                                             <span class="patient-col-value">
                                                                 <ng-container
@@ -478,8 +459,6 @@
                                                                 </ng-container>
                                                                 <ng-template #noDiagnosis>N/A</ng-template>
                                                             </span>
-                                                            <!-- </div> -->
-
 
                                                         </div>
                                                         <hr>
@@ -491,22 +470,6 @@
                                                             (chipsChange)="selectChangeDiagnosis($event)">
                                                         </app-airmid-diagnos-chipautocomplete>
 
-                                                        <!-- <app-airmid-chipautocomplete fxFlex #AssignExamination
-                                                            [chips]="caseFormGroup.get('mAssignExamination')?.value"
-                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
-                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeExamination($event)">
-
-                                                        </app-airmid-chipautocomplete> -->
-
-                                                        <!-- <button mat-icon-button type="button"
-                                                            (click)="onMicToggleAssignExamination()"
-                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
-                                                            [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
-                                                            aria-label="Toggle speech recognition for chief complaints">
-                                                            <mat-icon>{{speechService.isListening ? 'mic_off' :
-                                                                'mic'}}</mat-icon>
-                                                        </button> -->
                                                     </div>
 
                                                     <div style="margin-bottom: 16px;" fxLayout="column">
@@ -531,22 +494,33 @@
 
                                                         </div>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete fxFlex #AssignExamination
-                                                            [chips]="caseFormGroup.get('mAssignExamination')?.value"
-                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
-                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeExamination($event)">
+                                                        <div class="chief-complaint-wrapper">
+                                                            <app-airmid-chipautocomplete fxFlex #AssignExamination
+                                                                [chips]="caseFormGroup.get('mAssignExamination')?.value"
+                                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
+                                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                                (chipsChange)="selectChangeExamination($event)">
 
-                                                        </app-airmid-chipautocomplete>
-                                                        <button mat-icon-button type="button"
-                                                            (click)="onMicToggleAssignExamination()"
-                                                            [color]="speechService.isListening ? 'warn' : 'primary'"
-                                                            [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
-                                                            aria-label="Toggle speech recognition for chief complaints">
-                                                            <mat-icon>{{speechService.isListening ? 'mic_off' :
-                                                                'mic'}}</mat-icon>
-                                                        </button>
+                                                            </app-airmid-chipautocomplete>
+                                                            <!-- <button mat-icon-button type="button"
+                                                                (click)="onMicToggleAssignExamination()"
+                                                                [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                                [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+                                                                aria-label="Toggle speech recognition for chief complaints">
 
+                                                                <mat-icon>{{isListening ? 'mic_off' :
+                                                                    'mic'}}</mat-icon>
+                                                            </button> -->
+
+                                                            <button mat-icon-button type="button"
+                                                                (click)="onMicToggleAssignExamination()" [matTooltip]="speechService.isListening
+                                                                ? 'Stop Speech Recognition'
+                                                            : 'Start Speech Recognition'"
+                                                                aria-label="Toggle speech recognition">
+                                                                <mat-icon>{{isListening ? 'mic_off' :
+                                                                    'mic'}}</mat-icon>
+                                                            </button>
+                                                        </div>
 
                                                     </div>
 

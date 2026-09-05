@@ -1,42 +1,55 @@
 <div class="relative-container">
 
-  <div class="chip-wrapper">
+  <!-- INPUT BOX + MIC OUTSIDE -->
+  <div class="input-mic-row">
 
-    <div class="chip" *ngFor="let chip of chips">
-      {{ chip[displayKey] }}
+    <!-- Main Chip / Input Box -->
+    <div class="chip-wrapper">
 
-      <button type="button" (click)="removeChip(chip)" class="remove-btn">
-        ×
-      </button>
-    </div>
+      <!-- Selected Chips -->
+      <div class="chip" *ngFor="let chip of chips">
 
-    <div class="input-with-mic">
+        <span>
+          {{ chip[displayKey] }}
+        </span>
 
-      <input [(ngModel)]="inputValue" (keydown)="onKeyDown($event)" (input)="filterOptions()" (focus)="onInputFocus()"
-        (blur)="hideDropdownWithDelay()" [placeholder]="placeholder" />
+        <button type="button" class="remove-btn" (click)="removeChip(chip)">
+          ×
+        </button>
 
-      <!-- <button type="button" class="mic-button" [class.listening]="isListening" (click)="startSpeechRecognition()">
+      </div>
 
-        <span *ngIf="!isListening">🎤</span>
-        <span *ngIf="isListening" class="pulse">🔴</span>
-        <mat-icon>{{isListening ? 'mic_off' :
-          'mic'}}</mat-icon>
-      </button> -->
+      <!-- Input -->
+      <div class="input-container">
 
-      <button mat-icon-button matSuffix type="button" [class.listening]="isListening"
-        [color]="isListening ? 'warn' : 'primary'" (click)="startSpeechRecognition()">
+        <input [(ngModel)]="inputValue" (keydown)="onKeyDown($event)" (input)="filterOptions()" (focus)="onInputFocus()"
+          (blur)="hideDropdownWithDelay()" [placeholder]="placeholder" autocomplete="off" />
 
-        <!-- <span *ngIf="!isListening">🎤</span>
-           <span *ngIf="isListening" class="pulse">🔴</span> -->
-        <mat-icon>{{isListening ? 'mic_off' :
-          'mic'}}</mat-icon>
-      </button>
-
+      </div>
 
     </div>
+
+    <!-- MIC BUTTON - OUTSIDE INPUT BOX -->
+    <!-- <button type="button" [class.listening]="isListening" (click)="startSpeechRecognition()">
+
+      <mat-icon>
+        {{ isListening ? 'mic_off' : 'mic' }}
+      </mat-icon>
+
+    </button> -->
+
+    <button mat-icon-button type="button" (click)="startSpeechRecognition()" aria-label="Toggle speech recognition">
+
+      <mat-icon>{{isListening ? 'mic_off' :
+        'mic'}}</mat-icon>
+
+    </button>
+
 
   </div>
 
+
+  <!-- AUTOCOMPLETE DROPDOWN -->
   <div class="autocomplete-list" *ngIf="showDropdown">
 
     <div class="autocomplete-item" *ngFor="let option of filteredOptions; let i = index"
@@ -47,18 +60,11 @@
     </div>
 
     <div *ngIf="filteredOptions.length === 0" class="no-results">
+
       No results found
+
     </div>
 
   </div>
 
 </div>
-
-
-
-<!-- Microphone button -->
-<!-- <button *ngIf="speechSupported" type="button" class="mic-btn" [class.listening]="isListening"
-        (click)="toggleListening()" [title]="isListening ? 'Stop listening' : 'Speak diagnosis'">
-        <span *ngIf="!isListening">🎤</span>
-        <span *ngIf="isListening" class="pulse">🔴</span>
-      </button> -->
