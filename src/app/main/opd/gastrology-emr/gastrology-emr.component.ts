@@ -155,6 +155,8 @@ export class GastrologyEmrComponent {
     attachments: any[] = [];
     selectedFile: File | null = null;
     previewUrl: string | null = null;
+    departmentId: any = 0;
+    vTariffId: any;
     displayedColumns1: string[] = [
         'CertificateDate',
         'CertificateName',
@@ -185,6 +187,8 @@ export class GastrologyEmrComponent {
     @ViewChild('ddlChiefComplaint') ddlChiefComplaint: AirmidDropDownComponent;
     @ViewChild('ddlExamination') ddlExamination: AirmidDropDownComponent;
     @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
+    @ViewChild('ddlService1') ddlService1: AirmidDropDownComponent;
+    @ViewChild('ddlService2') ddlService2: AirmidDropDownComponent;
     @ViewChild('medicineTableRef') medicineTableRef: MedicineTableNewComponent;
 
     BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -197,6 +201,8 @@ export class GastrologyEmrComponent {
         private _loggedService: AuthenticationService,
         public datePipe: DatePipe,
         public dialogRef: MatDialogRef<GastrologyEmrComponent>,
+        // public dialogRef1: MatDialogRef<QAEntryPopupComponent>,
+        private qaPopupRef: MatDialogRef<QAEntryPopupComponent>,
         public _WhatsAppEmailService: WhatsAppEmailService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private commonService: PrintserviceService,
@@ -252,6 +258,7 @@ export class GastrologyEmrComponent {
             this.CompanyName = this.regObj.companyName
             this.RefDocName = this.regObj.refDocName
             this.vClassId = this.regObj.classId
+            this.vTariffId = this.regObj.tariffId
             this.getPrescription(this.regObj);
             this.getnewVisistListDemo(this.regObj);
             this.getCertificateHistoryTab(this.regObj);
@@ -307,14 +314,26 @@ export class GastrologyEmrComponent {
             this.speechService.stopRecognition();
         }
     }
+    isListeningHistory = false;   // History of Illness
+    isListeningRemark = false;   // Remark
     onMicToggle() {
-        // console.log(this.selectedLang);
         this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-            const currentText = this.MedicineItemForm.get('Remark')?.value || '';
-            const updated = currentText ? `${currentText} ${text}` : text;
+            const current = this.MedicineItemForm.get('Remark')?.value || '';
+            const updated = current ? `${current} ${text}` : text;
             this.MedicineItemForm.get('Remark')?.setValue(updated);
         });
+
+        // sync button colour
+        this.isListeningRemark = this.speechService.isListening;
     }
+    // onMicToggle() {
+    //     // console.log(this.selectedLang);
+    //     this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+    //         const currentText = this.MedicineItemForm.get('Remark')?.value || '';
+    //         const updated = currentText ? `${currentText} ${text}` : text;
+    //         this.MedicineItemForm.get('Remark')?.setValue(updated);
+    //     });
+    // }
 
     onFileSelected(event: any) {
         this.selectedFile = event.target.files[0];
@@ -341,6 +360,28 @@ export class GastrologyEmrComponent {
             this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
 
             this.selectedItems = this.caseFormGroup.value.mAssignService.map(x => ({ serviceId: x.serviceId }));
+        }
+    }
+
+    removeService1(item) {
+        const removedIndex = this.caseFormGroup.value.mAssignService1.findIndex(x => x.serviceId === item.serviceId);
+        if (removedIndex !== -1) {
+            this.caseFormGroup.value.mAssignService1.splice(removedIndex, 1);
+
+            this.ddlService1.SetSelection(this.caseFormGroup.value.mAssignService1.map(x => x.serviceId));
+
+            this.selectedItems1 = this.caseFormGroup.value.mAssignService1.map(x => ({ serviceId: x.serviceId }));
+        }
+    }
+
+    removeService2(item) {
+        const removedIndex = this.caseFormGroup.value.mAssignService2.findIndex(x => x.serviceId === item.serviceId);
+        if (removedIndex !== -1) {
+            this.caseFormGroup.value.mAssignService2.splice(removedIndex, 1);
+
+            this.ddlService2.SetSelection(this.caseFormGroup.value.mAssignService2.map(x => x.serviceId));
+
+            this.selectedItems2 = this.caseFormGroup.value.mAssignService2.map(x => ({ serviceId: x.serviceId }));
         }
     }
 
@@ -410,6 +451,9 @@ export class GastrologyEmrComponent {
             mAssignDiagnosis: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+            mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+            mAssignService2: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+            historyOfIllness: ['']
         });
     }
 
@@ -422,7 +466,7 @@ export class GastrologyEmrComponent {
             ItemGenericNameId: '',
             Instruction: ['', [Validators.maxLength(200)]],
             DoctorID: '',
-            Departmentid: '',
+            departmentId: '',
             FollowupDays: '',
             start: [new Date()],
             Remark: ['', [Validators.maxLength(200)]],
@@ -464,7 +508,7 @@ export class GastrologyEmrComponent {
             daysOption2: [0],
             doseOption3: [0],
             daysOption3: [0],
-            instructionId: [0],
+            instructionId: [element.instructionId || element.InstructionId || 0],
             qtyPerDay: [element.QtyPerDay ?? element.qtyPerDay ?? 0],
             totalQty: [(element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -483,10 +527,12 @@ export class GastrologyEmrComponent {
             bp: [element.bp ?? ''],
             storeId: [this._loggedService.currentUserValue.user.storeId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             patientReferDocId: [element.patientReferDocId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId: [element.departmentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             advice: [element.advice ?? ''],
             isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             allergy: [element.allergy ?? ''],
             bloodGroup: [element.bloodGroup ?? ''],
+            historyOfIllness: [element.historyOfIllness ?? '']
         });
     }
 
@@ -500,7 +546,9 @@ export class GastrologyEmrComponent {
         return this._formBuilder.group({
             visitId: [this.VisitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]]
+            descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            icdcode: [element.icdcode ?? ''],
+            diagnosisName: [element.diagnosisName ?? '']
         });
     }
     // 5.FormArray Getters
@@ -538,8 +586,10 @@ export class GastrologyEmrComponent {
         if (this.addDiagnolist.length > 0) {
             this.addDiagnolist.forEach(element => {
                 this.AllTypeDescription.push({
-                    descriptionName: element.descriptionName,
-                    descriptionType: "Diagnosis"
+                    descriptionName: element.descriptionName || element.icdCodeWithDignosis,
+                    descriptionType: "Diagnosis",
+                    icdcode: element.icdcode || '',
+                    diagnosisName: element.diagnosisName,
                 });
             });
         }
@@ -583,7 +633,9 @@ export class GastrologyEmrComponent {
                 examination: this.caseFormGroup.get('Examination')?.value,
                 advice: this.MedicineItemForm.get('Remark')?.value,
                 isEnglishOrIsMarathi: JSON.parse(this.caseFormGroup.get('LangaugeRadio')?.value),
-                patientReferDocId: Number(ReferDocNameID)
+                patientReferDocId: Number(ReferDocNameID),
+                departmentId: this.departmentId,//this.MedicineItemForm.get('departmentId')?.value,
+                historyOfIllness: this.caseFormGroup.get('historyOfIllness')?.value,
             };
 
             if (this.dsItemList.data.length === 0) {
@@ -597,15 +649,30 @@ export class GastrologyEmrComponent {
 
             // 2nd detail
             this.topRequestListArray.clear();
-            if (this.selectedItems.length === 0) {
-                const opRequestListFormGroup: FormGroup = this.createtopRequestList({ serviceId: 0 });
-                this.topRequestListArray.push(opRequestListFormGroup);
+            debugger
+            const combinedItems = [...this.selectedItems, ...this.selectedItems1, ...this.selectedItems2];
+
+            if (combinedItems.length === 0) {
+                this.topRequestListArray.push(
+                    this.createtopRequestList({ serviceId: 0 })
+                );
             } else {
-                this.selectedItems.forEach(element => {
-                    const opRequestListFormGroup: FormGroup = this.createtopRequestList(element);
-                    this.topRequestListArray.push(opRequestListFormGroup);
+                combinedItems.forEach(item => {
+                    this.topRequestListArray.push(
+                        this.createtopRequestList(item)
+                    );
                 });
             }
+            // this.topRequestListArray.clear();
+            // if (this.selectedItems.length === 0) {
+            //     const opRequestListFormGroup: FormGroup = this.createtopRequestList({ serviceId: 0 });
+            //     this.topRequestListArray.push(opRequestListFormGroup);
+            // } else {
+            //     this.selectedItems.forEach(element => {
+            //         const opRequestListFormGroup: FormGroup = this.createtopRequestList(element);
+            //         this.topRequestListArray.push(opRequestListFormGroup);
+            //     });
+            // }
 
             // 3rd detail array
             this.mopCasepaperDignosisArray.clear();
@@ -820,7 +887,10 @@ export class GastrologyEmrComponent {
                         this.addDiagnolist.push(
                             {
                                 id: element.id,
-                                descriptionName: element.descriptionName
+                                descriptionName: element.descriptionName,
+                                icdcode: element.icdcode || '',
+                                diagnosisName: element.diagnosisName || element.descriptionName,
+                                icdCodeWithDignosis: element.descriptionName
                             }
                         )
                     })
@@ -1083,13 +1153,25 @@ export class GastrologyEmrComponent {
 
         // to stop popup
         this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
+    }
 
-        // setTimeout(() => {
-        //   const panel = this.ddlDoctor.nativeElement.querySelector('.mat-autocomplete-panel') as HTMLElement;
-        //   if (panel) {
-        //     panel.style.display = 'none'; // hides it
-        //   }
-        // }, 0);
+    selectedItems1 = [];
+
+    selectChangeServiceName1(row) {
+        const selectedData = Array.isArray(row) ? row : [row];
+        this.selectedItems1 = selectedData.map(item => ({ serviceId: item.serviceId }));
+
+        this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
+    }
+
+
+    selectedItems2 = [];
+
+    selectChangeServiceName2(row) {
+        const selectedData = Array.isArray(row) ? row : [row];
+        this.selectedItems2 = selectedData.map(item => ({ serviceId: item.serviceId }));
+
+        this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
     }
 
     RtrvTestServiceList: any = [];
@@ -1114,12 +1196,33 @@ export class GastrologyEmrComponent {
             this.RtrvTestServiceList = response.data
             if (Array.isArray(this.RtrvTestServiceList) && this.RtrvTestServiceList.length > 0) {
                 this.RtrvTestServiceList.forEach(element => {
-                    this.selectedItems.push({
+                    // this.selectedItems.push({
+                    //     serviceId: element.serviceId || 0,
+                    //     serviceName: element.serviceName || ''
+                    // });
+                    const item = {
                         serviceId: element.serviceId || 0,
                         serviceName: element.serviceName || ''
-                    });
+                    };
+
+                    // Pathology
+                    if (element.isPathology === 1) {
+                        this.selectedItems.push(item);
+                    }
+
+                    // Radiology
+                    if (element.isRadiology === 1) {
+                        this.selectedItems1.push(item);
+                    }
+
+                    // Other
+                    if (element.isPathology !== 1 && element.isRadiology !== 1) {
+                        this.selectedItems2.push(item);
+                    }
                 });
                 this.caseFormGroup.get('mAssignService').setValue(this.selectedItems);
+                this.caseFormGroup.get('mAssignService1').setValue(this.selectedItems1);
+                this.caseFormGroup.get('mAssignService2').setValue(this.selectedItems2);
             }
         })
     }
@@ -2360,7 +2463,7 @@ export class GastrologyEmrComponent {
                 };
                 console.log(submitData);
                 this._CasepaperService.clinicalQue(submitData).subscribe(response => {
-                    this._matDialog.closeAll();
+                    this.qaPopupRef.close(response);
                 });
             }
         });

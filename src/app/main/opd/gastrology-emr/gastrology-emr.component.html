@@ -248,56 +248,58 @@
                                                     </mat-form-field>
                                                 </div>
 
-                                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row"
-                                                    fxLayoutGap="6px">
-
-                                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
-                                                        style="margin-bottom: 5px;">
-                                                        <span style="font-weight: 700;">
-                                                            Chief Complaints
-                                                        </span>
-                                                        <hr>
-                                                        <app-airmid-chipautocomplete fxFlex
-                                                            [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
-                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
-                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeChiefComplaint($event)">
-                                                        </app-airmid-chipautocomplete>
-                                                    </div>
-
-                                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
-                                                        style="margin-bottom: 5px;">
-                                                        <span style="font-weight: 700;">
-                                                            Diagnosis
-                                                        </span>
-                                                        <hr>
-                                                        <app-airmid-chipautocomplete fxFlex
-                                                            [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
-                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
-                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeDiagnosis($event)">
-                                                        </app-airmid-chipautocomplete>
-                                                    </div>
-
-                                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
-                                                        style="margin-bottom: 5px;">
-                                                        <span style="font-weight: 700;">
-                                                            Examination
-                                                        </span>
-                                                        <hr>
-                                                        <app-airmid-chipautocomplete fxFlex
-                                                            [chips]="caseFormGroup.get('mAssignExamination')?.value"
-                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
-                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                            (chipsChange)="selectChangeExamination($event)">
-                                                        </app-airmid-chipautocomplete>
-                                                    </div>
-
-                                                </div>
                                             </div>
                                         </form>
                                     </mat-card>
 
+                                    <div fxLayout="column" class="input-mic-row">
+
+                                        <div fxLayout="column" style="margin-bottom: 5px;">
+                                            <span style="font-weight: 700;">
+                                                Chief Complaints
+                                            </span>
+                                            <hr>
+                                            <app-airmid-chipautocomplete fxFlex
+                                                [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
+                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
+                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                (chipsChange)="selectChangeChiefComplaint($event)">
+                                            </app-airmid-chipautocomplete>
+                                        </div>
+
+                                        <div fxLayout="column" style="margin-bottom: 5px;">
+                                            <span style="font-weight: 700;">
+                                                Diagnosis
+                                            </span>
+                                            <hr>
+                                            <!-- <app-airmid-chipautocomplete fxFlex
+                                                [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
+                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                (chipsChange)="selectChangeDiagnosis($event)">
+                                            </app-airmid-chipautocomplete> -->
+                                            <app-airmid-diagnos-chipautocomplete fxFlex
+                                                [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
+                                                [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
+                                                [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
+                                                (chipsChange)="selectChangeDiagnosis($event)">
+                                            </app-airmid-diagnos-chipautocomplete>
+                                        </div>
+
+                                        <div fxLayout="column" style="margin-bottom: 5px;">
+                                            <span style="font-weight: 700;">
+                                                Examination
+                                            </span>
+                                            <hr>
+                                            <app-airmid-chipautocomplete fxFlex
+                                                [chips]="caseFormGroup.get('mAssignExamination')?.value"
+                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
+                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                (chipsChange)="selectChangeExamination($event)">
+                                            </app-airmid-chipautocomplete>
+                                        </div>
+
+                                    </div>
                                     <!-- QA part -->
                                     <div fxLayout="row" fxLayoutGap="16px">
 
@@ -365,10 +367,12 @@
                                                             class="w-550">Questions Values</mat-header-cell>
 
                                                         <mat-cell *matCellDef="let element" fxShow.gt-sm
-                                                            class="w-550 text-ellipsis" [matTooltip]="element.questionName"
+                                                            class="w-550 text-ellipsis"
+                                                            [matTooltip]="element.questionName"
                                                             matTooltipPosition="above"
                                                             [matTooltipDisabled]="element.questionName?.length <= 100">
-                                                            <strong>{{ element.questionName }}</strong> - {{ element.subQuesName }}
+                                                            <strong>{{ element.questionName }}</strong> - {{
+                                                            element.subQuesName }}
                                                         </mat-cell>
 
                                                         <!-- <mat-cell *matCellDef="let contact"
@@ -488,11 +492,19 @@
                                             <div fxLayout="row">
                                                 <div fxFlex="35%">
 
-                                                    <airmid-dropdown label="Service" formControlName="mAssignService"
+                                                    <!-- <airmid-dropdown label="Service" formControlName="mAssignService"
                                                         [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
                                                         ValueField="serviceId" TextField="serviceName"
                                                         ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=2&ServiceName=%"
                                                         [ReqFullObj]="true"
+                                                        (selectionChange)="selectChangeServiceName($event)">
+                                                    </airmid-dropdown> -->
+                                                    <airmid-dropdown label="Pathology Service"
+                                                        formControlName="mAssignService" [formGroup]="caseFormGroup"
+                                                        #ddlService [IsMultiPle]="true" ValueField="serviceId"
+                                                        TextField="serviceName"
+                                                        [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=1&ServiceName=%'"
+                                                        [ReqFullObj]="true" [disableAutoNext]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
 
@@ -502,6 +514,48 @@
                                                     <mat-chip *ngFor="let item of caseFormGroup.value.mAssignService">
                                                         {{ item.serviceName }} <mat-icon
                                                             (click)="removeService(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-listbox>
+                                            </div>
+
+                                            <div fxLayout="row">
+                                                <div fxFlex="35%">
+
+                                                    <airmid-dropdown label="Radiology Service"
+                                                        formControlName="mAssignService1" [formGroup]="caseFormGroup"
+                                                        #ddlService1 [IsMultiPle]="true" ValueField="serviceId"
+                                                        TextField="serviceName"
+                                                        [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=2&ServiceName=%'"
+                                                        [ReqFullObj]="true" [disableAutoNext]="true"
+                                                        (selectionChange)="selectChangeServiceName1($event)">
+                                                    </airmid-dropdown>
+                                                </div>
+
+                                                <mat-chip-listbox #chipList>
+                                                    <mat-chip *ngFor="let item of caseFormGroup.value.mAssignService1">
+                                                        {{ item.serviceName }} <mat-icon
+                                                            (click)="removeService1(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-listbox>
+                                            </div>
+
+                                            <div fxLayout="row">
+                                                <div fxFlex="35%">
+
+                                                    <airmid-dropdown label="Other Service"
+                                                        formControlName="mAssignService2" [formGroup]="caseFormGroup"
+                                                        #ddlService1 [IsMultiPle]="true" ValueField="serviceId"
+                                                        TextField="serviceName"
+                                                        [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=3&ServiceName=%'"
+                                                        [ReqFullObj]="true" [disableAutoNext]="true"
+                                                        (selectionChange)="selectChangeServiceName2($event)">
+                                                    </airmid-dropdown>
+                                                </div>
+
+                                                <mat-chip-listbox #chipList>
+                                                    <mat-chip *ngFor="let item of caseFormGroup.value.mAssignService2">
+                                                        {{ item.serviceName }} <mat-icon
+                                                            (click)="removeService2(item)">close</mat-icon>
                                                     </mat-chip>
                                                 </mat-chip-listbox>
                                             </div>
@@ -581,7 +635,8 @@
                                         <hr>
 
                                         <!-- 🎯 Row: Remark + Mic (inside form) + Language (outside form) -->
-                                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center"
+                                            class="input-mic-row">
 
                                             <!-- ✅ Form starts here -->
                                             <form [formGroup]="MedicineItemForm" fxFlex>
@@ -591,11 +646,16 @@
                                                         matInput></textarea>
 
                                                     <!-- 🎤 Mic button -->
-                                                    <button mat-icon-button matSuffix (click)="onMicToggle()"
+                                                    <!-- <button mat-icon-button matSuffix (click)="onMicToggle()"
                                                         [color]="speechService.isListening ? 'warn' : 'primary'"
                                                         type="button">
                                                         <i
                                                             [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                    </button> -->
+                                                    <button mat-icon-button matSuffix type="button"
+                                                        (click)="onMicToggle()" [class.listening]="isListeningRemark"
+                                                        aria-label="Speech recognition">
+                                                        <mat-icon>{{ isListeningRemark ? 'mic_off' : 'mic' }}</mat-icon>
                                                     </button>
                                                 </mat-form-field>
                                             </form>
