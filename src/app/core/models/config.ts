@@ -139,6 +139,7 @@ export class ConfigSettingParams {
     IsOPCasePaperPrtWithoutPreview:any;
     IsOPDDiscountApprovalReq:any;
     IsIPDBillAfterSavePrint:any;
+    IsGeneralCasePaper:any;
     /**
         * Constructor
         *
@@ -284,7 +285,7 @@ export class ConfigSettingParams {
         this.FollowUpdateSet = ConfigSettingParams.FollowUpdateSet;
         this.IsOPDDiscountApprovalReq = ConfigSettingParams.IsOPDDiscountApprovalReq;
          this.IsIPDBillAfterSavePrint = ConfigSettingParams.IsIPDBillAfterSavePrint;
-
+        this.IsGeneralCasePaper = ConfigSettingParams.IsGeneralCasePaper;
     }
 
 }
