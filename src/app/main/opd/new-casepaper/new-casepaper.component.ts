@@ -57,7 +57,9 @@ export class NewCasepaperComponent implements OnInit {
     mycertificateForm: FormGroup;
     private recognition: any = null;
     isListening = false;
+    isListeningadv = false;
     selectedLang = 'en-US';
+    selectedLang1= 'en-US';
     languages: LanguageOption[] = [];
 
     displayedItemColumn: string[] = [
@@ -463,13 +465,29 @@ export class NewCasepaperComponent implements OnInit {
             this.speechService.stopRecognition();
         }
     }
+    isListeningHistory = false;   // History of Illness
+    isListeningRemark = false;   // Remark
     onMicToggle() {
-        // console.log(this.selectedLang);
         this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-            const currentText = this.MedicineItemForm.get('Remark')?.value || '';
-            const updated = currentText ? `${currentText} ${text}` : text;
+            const current = this.MedicineItemForm.get('Remark')?.value || '';
+            const updated = current ? `${current} ${text}` : text;
             this.MedicineItemForm.get('Remark')?.setValue(updated);
         });
+
+        // sync button colour
+        this.isListeningRemark = this.speechService.isListening;
+    }
+
+    // ===================== HISTORY OF ILLNESS =====================
+    onMicToggle1() {
+        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
+            const current = this.caseFormGroup.get('historyOfIllness')?.value || '';
+            const updated = current ? `${current} ${text}` : text;
+            this.caseFormGroup.get('historyOfIllness')?.setValue(updated);
+        });
+
+        // sync button colour
+        this.isListeningHistory = this.speechService.isListening;
     }
 
     private initSpeechRecognition() {
@@ -488,42 +506,6 @@ export class NewCasepaperComponent implements OnInit {
         };
     }
 
-    onMicToggle1() {
-
-        if (!this.recognition) {
-            console.error('Speech recognition not initialized');
-            return;
-        }
-
-        if (this.isListening) {
-            // OFF
-            console.log('Stopping microphone...');
-            this.recognition.stop();
-        } else {
-            // ON
-            console.log('Starting microphone...');
-
-            this.recognition.lang = this.selectedLang || 'en-US';
-
-            try {
-                this.recognition.start();
-            } catch (error) {
-                console.error('Could not start microphone:', error);
-            }
-        }
-
-        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-            const currentText = this.caseFormGroup.get('historyOfIllness')?.value || '';
-            const updated = currentText ? `${currentText} ${text}` : text;
-            this.caseFormGroup.get('historyOfIllness')?.setValue(updated);
-        });
-
-        // if (this.isListening) {
-        //     this.stopListening();
-        // } else {
-        //     this.startListening();
-        // }
-    }
 
     private startListening(): void {
         try {
@@ -2825,7 +2807,7 @@ export class NewCasepaperComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "OPIPId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
-            { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals}
+            { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
         row: 25,
         localData: []
@@ -3110,23 +3092,23 @@ export class NewCasepaperComponent implements OnInit {
             data: {
                 row: row,
                 vOPIPId: this.vOPIPId,
-                opipType:0
+                opipType: 0
             }
         })
     }
 
     onMicToggleChiefComplaint() {
-        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
             this.chiefComplaintInput?.addChip(text);
         });
     }
     onMicToggleAssignDiagnosis() {
-        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
             this.AssignDiagnosis?.addChip(text);
         });
     }
     onMicToggleAssignExamination() {
-        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
             this.AssignExamination?.addChip(text);
         });
     }

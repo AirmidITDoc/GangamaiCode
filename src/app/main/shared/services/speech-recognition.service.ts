@@ -73,4 +73,75 @@ export class SpeechRecognitionService {
       this.startRecognition(lang, onResult);
     }
   }
+
+
+  private resultCallback: ((text: string) => void) | null = null;
+
+  startListening(
+    callback: (text: string) => void
+  ): void {
+
+    if (!this.recognition) {
+
+      console.error(
+        'Speech Recognition is not supported.'
+      );
+
+      return;
+
+    }
+
+    this.resultCallback = callback;
+
+    if (this.isListening) {
+
+      return;
+
+    }
+
+    try {
+
+      this.recognition.start();
+
+    } catch (error) {
+
+      console.error(
+        'Unable to start speech recognition:',
+        error
+      );
+
+    }
+
+  }
+
+
+  stopListening(): void {
+
+    if (!this.recognition) {
+
+      return;
+
+    }
+
+    try {
+
+      this.recognition.stop();
+
+    } catch (error) {
+
+      console.error(
+        'Unable to stop speech recognition:',
+        error
+      );
+
+    }
+
+    this.isListening = false;
+
+    this.resultCallback = null;
+
+  }
+
 }
+
+

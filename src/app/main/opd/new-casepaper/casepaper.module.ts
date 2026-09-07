@@ -49,6 +49,7 @@ import { PrescriptionTemplateComponent } from './prescription-template/prescript
 // import { FocusNextDirective } from './directives/focus-next/focus-next.directive';
 import { FocusNextDirective } from 'app/main/shared/directives/focus-next/focus-next.directive';
 import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 const routes: Routes = [
     {
@@ -110,7 +111,7 @@ const routes: Routes = [
         MatSliderModule,
         MatButtonToggleModule,
         MatDialogModule,
-        CommonModule,
+        CommonModule,TextFieldModule
     ],
     providers: [
         CasepaperService,
