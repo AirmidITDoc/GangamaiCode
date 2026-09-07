@@ -60,7 +60,7 @@
                                 [value]="data?.diagnosisName"
                                 [formGroup]="ICDEForm"
                                 [validations]="getValidationMessages().diagnosisName"
-                                [maxLength]="500">
+                                [maxLength]="500" (keyup)="chkduplicate()">
                             </airmid-textbox>
                         </div>
                     

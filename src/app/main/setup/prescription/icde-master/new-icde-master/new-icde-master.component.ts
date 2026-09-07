@@ -47,49 +47,87 @@ export class NewICDEMasterComponent {
         { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
     ]
+    isDuplicate: boolean = false
+    chkduplicate() {
+        const filters: any[] = [];
+
+        this.DiagnosisName = this.ICDEForm.get("diagnosisName").value
+
+        const data = {
+            "first": 0,
+            "rows": 100,
+            "sortField": "Icdid",
+            "sortOrder": 0,
+            "filters": [{ fieldName: "DiagnosisName", fieldValue: this.DiagnosisName, opType: OperatorComparer.StartsWith }],
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._ICDEMasterService.getbyICDEId(data).subscribe((response) => {
+            this.ICdeDatasource.data = response.data;
+            console.log(this.ICdeDatasource.data)
+
+        });
+
+
+        if (this.ICdeDatasource.data.length > 0) {
+            debugger
+            let Icdecode = this.ICDEForm.get("icdcode").value;
+            this.isDuplicate = this.ICdeDatasource.data.some(item => item.icdcode == Icdecode);
+
+        } else
+            this.isDuplicate = false
+
+        if (this.isDuplicate) {
+            this.chkSatus = true
+            Swal.fire("Duplicate ICDE ...");
+            return;
+        } else
+            this.chkSatus = false
+    }
+
+
     onSubmit() {
 
         if (!this.ICDEForm.invalid) {
             console.log(this.ICDEForm.value)
-            const filters: any[] = [];
+            // const filters: any[] = [];
 
-            this.DiagnosisName = this.ICDEForm.get("diagnosisName").value
+            // this.DiagnosisName = this.ICDEForm.get("diagnosisName").value
 
-            const data = {
-                "first": 0,
-                "rows": 100,
-                "sortField": "Icdid",
-                "sortOrder": 0,
-                "filters": [{ fieldName: "DiagnosisName", fieldValue: this.DiagnosisName, opType: OperatorComparer.StartsWith }],
-                "exportType": "JSON",
-                "columns": []
-            };
+            // const data = {
+            //     "first": 0,
+            //     "rows": 100,
+            //     "sortField": "Icdid",
+            //     "sortOrder": 0,
+            //     "filters": [{ fieldName: "DiagnosisName", fieldValue: this.DiagnosisName, opType: OperatorComparer.StartsWith }],
+            //     "exportType": "JSON",
+            //     "columns": []
+            // };
 
-            this._ICDEMasterService.getbyICDEId(data).subscribe((response) => {
-                this.ICdeDatasource.data = response.data;
+            // this._ICDEMasterService.getbyICDEId(data).subscribe((response) => {
+            //     this.ICdeDatasource.data = response.data;
 
-                console.log(this.ICdeDatasource.data)
-                this.chkSatus = true
-            });
+            //     console.log(this.ICdeDatasource.data)
+            //     this.chkSatus = true
+            // });
 
-
-            if (this.ICdeDatasource.data.length > 0) {
-                debugger
-                let Icdecode = this.ICDEForm.get("icdcode").value;
-                let isDuplicate = this.ICdeDatasource.data.some(item => item.icdcode == Icdecode);
+            debugger
+            // let Icdecode = this.ICDEForm.get("icdcode").value;
+            // let isDuplicate = this.ICdeDatasource.data.some(item => item.icdcode == Icdecode);
 
 
-                if (this.chkSatus) {
+            if (!this.isDuplicate) {
 
-                    if (isDuplicate) {
-                        Swal.fire("Duplicate ICDE ...");
-                    } else {
-                        this._ICDEMasterService.IcdeMasterInsert(this.ICDEForm.value).subscribe((response) => {
-                            this.onClear(true);
-                        });
-                    }
-                }
+                // if (this.isDuplicate) {
+                //     Swal.fire("Duplicate ICDE ...");
+                // } else {
+                this._ICDEMasterService.IcdeMasterInsert(this.ICDEForm.value).subscribe((response) => {
+                    this.onClear(true);
+                });
+                // }
             }
+
         } {
             const invalidFields = [];
             if (this.ICDEForm.invalid) {
