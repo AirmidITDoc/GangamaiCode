@@ -1,58 +1,39 @@
-<!-- <div class="relative-container">
-  <div class="chip-wrapper">
-    
-    <div class="chip" *ngFor="let chip of chips">
-      {{ chip[displayKey] }}
-      <button type="button" (click)="removeChip(chip)">×</button>
-    </div>
-
-    <input
-      [(ngModel)]="inputValue"
-      (keydown.enter)="handleEnter()"
-      (input)="filterOptions()"
-      (focus)="showDropdown = true"
-      (blur)="hideDropdownWithDelay()"
-      placeholder="Type or select an item"
-    />
-  </div>
-
-  <div class="autocomplete-list" *ngIf="showDropdown && filteredOptions.length > 0">
-    <div class="autocomplete-item"
-         *ngFor="let option of filteredOptions"
-         (mousedown)="selectOption(option)">
-      {{ option[displayKey] }}
-    </div>
-  </div>
-</div> -->
-
 <div class="relative-container">
-  <div class="chip-wrapper">
-    <div class="chip" *ngFor="let chip of chips">
-      {{ chip[displayKey] }}
-      <button type="button" (click)="removeChip(chip)">×</button>
+
+  <div class="input-mic-row">
+
+    <!-- Chip + Input -->
+    <div class="chip-wrapper">
+      <div class="chip" *ngFor="let chip of chips">
+        {{ chip[displayKey] }}
+        <button type="button" (click)="removeChip(chip); $event.stopPropagation()"
+          (mousedown)="$event.preventDefault()">
+          ×
+        </button>
+      </div>
+
+      <input [(ngModel)]="inputValue" (keydown)="onKeyDown($event)" (input)="filterOptions()" (focus)="onInputFocus()"
+        (blur)="hideDropdownWithDelay()" [placeholder]="placeholder" autocomplete="off" />
     </div>
 
-    <!-- Input field -->
-    <input
-      [(ngModel)]="inputValue"
-      (keydown)="onKeyDown($event)"
-      (input)="filterOptions()"
-      (focus)="onInputFocus()"
-      (blur)="hideDropdownWithDelay()"
-      [placeholder]="placeholder" 
-    />
+    <!-- Microphone Button -->
+    <button mat-icon-button type="button" (click)="startSpeechRecognition()" [class.listening]="isListening"
+      [disabled]="!speechSupported" aria-label="Speech recognition">
+      <mat-icon>{{ isListening ? 'mic_off' : 'mic' }}</mat-icon>
+    </button>
+
   </div>
 
-  <!-- Scrollable suggestions -->
-  <div class="autocomplete-list" *ngIf="showDropdown && filteredOptions.length > 0">
-    <div
-      class="autocomplete-item"
-      *ngFor="let option of filteredOptions; let i = index"
-      [class.active]="i === focusedIndex"
-      (mousedown)="selectOption(option)" #autocompleteItem>
+  <!-- Dropdown -->
+  <div class="autocomplete-list" *ngIf="showDropdown">
+    <div class="autocomplete-item" *ngFor="let option of filteredOptions; let i = index"
+      [class.active]="i === focusedIndex" (mousedown)="selectOption(option)" #autocompleteItem>
       {{ option[displayKey] }}
     </div>
-    <div *ngIf="filteredOptions.length === 0" class="no-results">No results found</div>
-  </div>
-</div>
 
+    <div *ngIf="filteredOptions.length === 0" class="no-results">
+      No results found
+    </div>
+  </div>
+
+</div>

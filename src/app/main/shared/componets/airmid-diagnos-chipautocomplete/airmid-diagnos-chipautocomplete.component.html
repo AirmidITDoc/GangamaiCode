@@ -29,19 +29,10 @@
 
     </div>
 
-    <!-- MIC BUTTON - OUTSIDE INPUT BOX -->
-    <!-- <button type="button" [class.listening]="isListening" (click)="startSpeechRecognition()">
+    <button mat-icon-button type="button" (click)="startSpeechRecognition()" aria-label="Toggle speech recognition"  [class.listening]="isListening"
+        [disabled]="!speechSupported" aria-label="Speech recognition">
 
-      <mat-icon>
-        {{ isListening ? 'mic_off' : 'mic' }}
-      </mat-icon>
-
-    </button> -->
-
-    <button mat-icon-button type="button" (click)="startSpeechRecognition()" aria-label="Toggle speech recognition">
-
-      <mat-icon>{{isListening ? 'mic_off' :
-        'mic'}}</mat-icon>
+     <mat-icon>{{ isListening ? 'mic_off' : 'mic' }}</mat-icon>
 
     </button>
 
@@ -49,7 +40,6 @@
   </div>
 
 
-  <!-- AUTOCOMPLETE DROPDOWN -->
   <div class="autocomplete-list" *ngIf="showDropdown">
 
     <div class="autocomplete-item" *ngFor="let option of filteredOptions; let i = index"
