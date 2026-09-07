@@ -31,6 +31,8 @@ import { CasepaperVisitDetails, gridModel, labRadList, MedicineItemList } from '
 import { PrePresciptionListComponent } from '../new-casepaper/pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from '../new-casepaper/prescription-template/prescription-template.component';
 import { QAEntryPopupComponent } from './qa-entry-popup/qa-entry-popup.component';
+import { NewInstructionMasterComponent } from 'app/main/setup/prescription/instructionmaster/new-instruction-master/new-instruction-master.component';
+import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
 
 @Component({
     selector: 'app-gastrology-emr',
@@ -1953,6 +1955,13 @@ export class GastrologyEmrComponent {
     }
 
     filteredHistory: Observable<string[]>;
+    onRefrshClick(): void {
+
+        if (this.medicineTableRef) {
+            this.medicineTableRef.RefreshRow();
+        }
+
+    }
 
     getItemMaster() {
         const dialogRef = this._matDialog.open(AddItemComponent,
@@ -1963,6 +1972,7 @@ export class GastrologyEmrComponent {
                 // height: "65%" 
             });
         dialogRef.afterClosed().subscribe(result => {
+            this.onRefrshClick()
         });
     }
 
@@ -1972,19 +1982,39 @@ export class GastrologyEmrComponent {
         buttonElement.blur(); // Remove focus from the button
 
         const that = this;
-        const dialogRef = this._matDialog.open(DosemasterComponent,
+        const dialogRef = this._matDialog.open(NewDoseMasterComponent,
             {
-                maxWidth: "85vw",
-                height: '85%',
+                maxWidth: "50vw",
+                maxHeight: '50%',
                 width: '70%',
             });
-        dialogRef.componentInstance.openedFromOPD = true;
+        // dialogRef.componentInstance.openedFromOPD = true;
         dialogRef.afterClosed().subscribe(result => {
             //  Force re-render of dropdown to reload internal data
-            this.showDoseDropdownRefresh = false;
-            setTimeout(() => {
-                this.showDoseDropdownRefresh = true;
-            }, 100);
+            this.onRefrshClick()
+        });
+    }
+
+    showDoseDropdownRefresh1 = true;
+    getInstrMaster() {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        const that = this;
+        const dialogRef = this._matDialog.open(NewInstructionMasterComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '70%',
+            });
+        // dialogRef.componentInstance.openedFromOPD = true;
+        dialogRef.afterClosed().subscribe(result => {
+            // this.showDoseDropdownRefresh = false;
+            // setTimeout(() => {
+            //     this.showDoseDropdownRefresh = true;
+            // }, 100);
+
+            this.onRefrshClick()
         });
     }
 

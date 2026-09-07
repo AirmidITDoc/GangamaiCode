@@ -121,6 +121,7 @@ export class AppointmentListComponent implements OnInit {
     CompanyId = "0"
     Is9_Digit_National_Id: boolean = false;
     IsGastrologyEMR: boolean = false;
+    IsGeneralCasePaper: boolean = false;
     // Notitifcation Veriable
     IsShowGrid: boolean = false;
     IsPrevApp: boolean = false;
@@ -159,6 +160,10 @@ export class AppointmentListComponent implements OnInit {
         const rawValue1 = this?._configue?.configParams?.IsGastrologyEMR || "";
         const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
         this.IsGastrologyEMR = id1 === "1";
+
+        const rawValue2 = this?._configue?.configParams?.IsGeneralCasePaper || "";
+        const [id2, val2] = rawValue2.includes(":") ? rawValue2.split(":") : [null, null];
+        this.IsGeneralCasePaper = id2 === "1";
 
 
 

@@ -236,7 +236,7 @@
                     <mat-icon> print</mat-icon>
                 </button>
                 <!-- *ngIf="IsOpdEmr" -->
-                <button *ngIf="!element.isCancelled" mat-icon-button
+                <button *ngIf="!element.isCancelled && IsGeneralCasePaper" mat-icon-button
                     [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady > 0  ? 'circle-icon' : ''">
