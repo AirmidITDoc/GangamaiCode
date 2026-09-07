@@ -425,7 +425,7 @@
                                                                 (chipsChange)="selectChangeChiefComplaint($event)">
                                                             </app-airmid-chipautocomplete>
 
-                                                            <button mat-icon-button type="button"
+                                                            <!-- <button mat-icon-button type="button"
                                                                 (click)="onMicToggleChiefComplaint()" [matTooltip]="speechService.isListening
             ? 'Stop Speech Recognition'
             : 'Start Speech Recognition'" aria-label="Toggle speech recognition">
@@ -434,7 +434,7 @@
                                                                 <mat-icon>{{isListening ? 'mic_off' :
                                                                     'mic'}}</mat-icon>
 
-                                                            </button>
+                                                            </button> -->
 
 
 
@@ -502,24 +502,15 @@
                                                                 (chipsChange)="selectChangeExamination($event)">
 
                                                             </app-airmid-chipautocomplete>
+
                                                             <!-- <button mat-icon-button type="button"
-                                                                (click)="onMicToggleAssignExamination()"
-                                                                [color]="speechService.isListening ? 'warn' : 'primary'"
-                                                                [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
-                                                                aria-label="Toggle speech recognition for chief complaints">
-
-                                                                <mat-icon>{{isListening ? 'mic_off' :
-                                                                    'mic'}}</mat-icon>
-                                                            </button> -->
-
-                                                            <button mat-icon-button type="button"
                                                                 (click)="onMicToggleAssignExamination()" [matTooltip]="speechService.isListening
                                                                 ? 'Stop Speech Recognition'
                                                             : 'Start Speech Recognition'"
                                                                 aria-label="Toggle speech recognition">
                                                                 <mat-icon>{{isListening ? 'mic_off' :
                                                                     'mic'}}</mat-icon>
-                                                            </button>
+                                                            </button> -->
                                                         </div>
 
                                                     </div>
