@@ -18,12 +18,13 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes,permissionType } from 'app/main/shared/model/permission.model';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { NewMemberService } from '../new-member.service';
 import { NewFormComponent } from '../new-form/new-form.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 @Component({
     selector: 'app-new-membership',
     templateUrl: './new-membership.component.html',
@@ -35,7 +36,7 @@ export class NewMembershipComponent {
     myFilterform: FormGroup;
     f_name: any = "%"
     l_name: any = "%"
-    RegNo = "0"
+    RegNo = "%"
 
 
     mobileno = "%"
@@ -49,6 +50,7 @@ export class NewMembershipComponent {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
     todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Membership, permissionType.Edit);
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -58,51 +60,48 @@ export class NewMembershipComponent {
     allColumns = [
 
         { heading: "Registration Date", key: "membershipTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-        { heading: "Membership No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "M-Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "F-Mem No", key: "femaleMembershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Husband Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-
         { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Address", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "PAN No", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Aadhaar ", key: "husbandAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        { heading: " DOB ", key: "husbandDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-
+        { heading: "DOB", key: "husbandDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
         { heading: "Age ", key: "husbandAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Mobile No", key: "husbandMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BloodGroup", key: "husbandBloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Male PAN", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Male Aadhaar ", key: "husbandAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Mediclaim PolicyNo", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+        { heading: "Wife Name ", key: "wifeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "DOB", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Age", key: "wifeAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+        { heading: "Mobile No", key: "wifeMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BloodGroup", key: "wifeBloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Wife PAN", key: "wifePAN", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Wife Aadhaar ", key: "wifeAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+
+        // male other records 
+        { heading: "Address", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Email", key: "husbandEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
-
         { heading: "Education ", key: "husbandEducation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Occupation", key: "hOcccupation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-
-        { heading: " BloodGroup", key: "husbandBloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: " Medications ", key: "husbandMedications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: " Body CheckupDate", key: "husbandFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
-        { heading: "Wife Name ", key: "wifeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        // wife other records
         { heading: "Address ", key: "wresidenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Wife PAN", key: "wifePAN", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Wife Aadhaar ", key: "wifeAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        { heading: " DOB ", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-
-        { heading: "Age ", key: "wifeAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-        { heading: "Mobile No", key: "wifeMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Wife Email", key: "wifeEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
         { heading: "Wife Education ", key: "wifeEducation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Wife Occupation", key: "wifeOccupation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Wife Medications ", key: "wifeMedications", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Body CheckupDate", key: "wifeFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
+
         { heading: "Monthly IncomeRange", key: "hIncome", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Family Doctor", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Family Doctor No", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
         { heading: "Mediclaim Company", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Mediclaim PolicyNo", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Mediclaim Issuance", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         // { heading: "Membership validDate", key: "membershipvalidDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -140,6 +139,7 @@ export class NewMembershipComponent {
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
         private overlay: Overlay,
+        public permissionService: PagePermissionService,
         public _whatsppService: WhatsAppEmailService,
     ) { }
 
@@ -153,7 +153,7 @@ export class NewMembershipComponent {
         this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
-        this.RegNo = this.myFilterform.get('RegNo').value || ''
+        this.RegNo = this.myFilterform.get('RegNo').value || '%'
         this.mobileno = this.myFilterform.get('MobileNo').value + "%"
         this.CityId = this.myFilterform.get('CityId').value || '0'
         this.getfilterdata();
@@ -190,8 +190,10 @@ export class NewMembershipComponent {
         else
             if (event == 'LastName')
                 this.myFilterform.get('LastName').setValue("")
-        if (event == 'RegNo')
+        if (event == 'RegNo') {
             this.myFilterform.get('RegNo').setValue("")
+            this.RegNo = "%"
+        }
         if (event == 'MobileNo')
             this.myFilterform.get('MobileNo').setValue("")
 
@@ -241,7 +243,7 @@ export class NewMembershipComponent {
     }
 
     resetFormPatient() {
-        this.RegNo = "0"
+        this.RegNo = ""
         this.onChangeFirst();
     }
 

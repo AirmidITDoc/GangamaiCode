@@ -253,12 +253,13 @@
 
                 <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="!element.isCancelled && IsGastrologyEMR"
                     (click)="getgastrologyCasePaper(element)">
-                    <mat-icon style="color: rgb(48, 55, 243);">
+                    <mat-icon style="color: rgb(48, 55, 243);"
+                        [ngClass]="element.emrReady > 0 ? 'circle-icon-gastrology' : ''">
                         list_alt
                     </mat-icon>
                 </button>
 
-         
+
                 <button mat-icon-button matTooltip="Bill" *ngIf="!element.isCancelled"
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                     (click)="OnBillPayment(element)">

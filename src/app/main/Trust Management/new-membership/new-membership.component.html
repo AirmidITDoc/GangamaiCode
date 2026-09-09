@@ -21,7 +21,7 @@
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button mat-icon-button matTooltip="Edit Registration" (click)="onSave(element)">
+                <button mat-icon-button matTooltip="Edit Registration" (click)="onSave(element)" *ngIf="IsEdit">
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Print" (click)="getMembershipview(element)">
@@ -70,8 +70,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Membership No</mat-label>
                         <input matInput placeholder="Search Membership No" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" [maxLength]="10" (input)="onChangeFirst()"
-                            (keypress)="keyPressAlphanumeric($event)" />
+                            formControlName="RegNo" [maxLength]="10" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>

@@ -455,7 +455,8 @@ export class GastrologyEmrComponent {
             mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService2: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
-            historyOfIllness: ['']
+            historyOfIllness: [''],
+            prescDoctorId: 0
         });
     }
 
@@ -534,7 +535,8 @@ export class GastrologyEmrComponent {
             isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             allergy: [element.allergy ?? ''],
             bloodGroup: [element.bloodGroup ?? ''],
-            historyOfIllness: [element.historyOfIllness ?? '']
+            historyOfIllness: [element.historyOfIllness ?? ''],
+            prescDoctorId: 0
         });
     }
 
@@ -638,6 +640,7 @@ export class GastrologyEmrComponent {
                 patientReferDocId: Number(ReferDocNameID),
                 departmentId: this.departmentId,//this.MedicineItemForm.get('departmentId')?.value,
                 historyOfIllness: this.caseFormGroup.get('historyOfIllness')?.value,
+                prescDoctorId: 0
             };
 
             if (this.dsItemList.data.length === 0) {

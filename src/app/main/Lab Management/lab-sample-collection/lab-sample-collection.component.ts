@@ -93,7 +93,7 @@ export class LabSampleCollectionComponent {
         },
         {
             heading: "OutSource Name", key: "outSourceLabName", sort: true, align: "left", emptySign: 'NA', width: 200, type: gridColumnTypes.template,
-            template: this.serviceNames
+            template: this.outSourceLabName
         },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,

@@ -122,7 +122,7 @@
                     </mat-icon>
                 </button> -->
                 <!-- *nfIf="IsOpdEmr" -->
-                <button mat-icon-button
+                <button mat-icon-button *ngIf="!element.isCancelled && IsGeneralCasePaper"
                     [matTooltip]="element.emrReady ? 'General CasePaper Ready' : 'General CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady > 0 ? 'circle-icon' : ''">
@@ -138,7 +138,8 @@
 
                 <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="!element.isCancelled && IsGastrologyEMR"
                     (click)="getgastrologyCasePaper(element)">
-                    <mat-icon style="color: rgb(48, 55, 243);">
+                    <mat-icon style="color: rgb(48, 55, 243);"
+                        [ngClass]="element.emrReady > 0 ? 'circle-icon-gastrology' : ''">
                         list_alt
                     </mat-icon>
                 </button>

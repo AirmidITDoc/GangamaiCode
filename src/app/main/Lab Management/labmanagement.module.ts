@@ -76,6 +76,10 @@ const appRoutes: Routes = [
         loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
     },
     {
+        path: "lab-samcoll-testwise",
+        loadChildren: () => import("./lab-sam-coll-testwise/lab-sam-coll-testwise.module").then((m) => m.LabSamCollTestwiseModule),
+    },
+    {
         path: "lab-sample-collection",
         loadChildren: () => import("./lab-sample-collection/lab-sample-collection.module").then((m) => m.LabSampleCollectionModule),
     },

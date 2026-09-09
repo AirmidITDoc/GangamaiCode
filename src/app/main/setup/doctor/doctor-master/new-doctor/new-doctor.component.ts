@@ -247,7 +247,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 }
                 this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
                 this.myForm.controls["RegDate"].setValue(this.registerObj.regDate);
-                this.myForm.controls["DateOfBirth"].setValue(this.registerObj.dateofBirth);
+
+                this.calculateBirthdate(this.registerObj);
+                // this.myForm.controls["DateOfBirth"].setValue(this.registerObj.dateofBirth);
 
                 this.onChangeDateofBirth(this.registerObj.dateofBirth);
             }, (error) => {
@@ -1603,27 +1605,104 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             this.myForm.get("ageYear").setValue(this.ageYear)
             if (this.ageYear > 110)
                 Swal.fire("Please Enter Valid BirthDate..")
+
+            this.calculateBirthdate(this.ageYear)
         }
     }
 
     birthdate: Date | null = null;
 
 
-    calculateBirthdate(): void {
+    // calculateBirthdate(row:any): void {
 
-        const age = this.myForm.get("ageYear").value// this.myForm.get("ageYear")?.value;
+    //     const age = row?.ageYear ?? this.myForm.get("ageYear").value// this.myForm.get("ageYear")?.value;
 
+    //     if (age && age > 0) {
+    //         const today = new Date();
+    //         const birthYear = today.getFullYear() - age;
+    //         this.birthdate = new Date(birthYear, today.getMonth(), today.getDate());
+    //         this.value = this.datePipe.transform(new Date(birthYear, today.getMonth(), today.getDate()), "yyyy-MM-dd");
+    //         this.myForm.get("DateOfBirth").setValue(this.value)
+    //         // Swal.fire("Date",String(this.birthdate))
+    //     } else {
+    //         // this.birthdate = null;
+    //     }
+    // }
+
+    calculateBirthdate(row:any): void {
+        const age = row?.ageYear ?? this.myForm.get('ageYear')?.value;
         if (age && age > 0) {
             const today = new Date();
             const birthYear = today.getFullYear() - age;
-            this.birthdate = new Date(birthYear, today.getMonth(), today.getDate());
-            this.value = this.datePipe.transform(new Date(birthYear, today.getMonth(), today.getDate()), "yyyy-MM-dd");
-            this.myForm.get("DateOfBirth").setValue(this.value)
-            // Swal.fire("Date",String(this.birthdate))
-        } else {
-            // this.birthdate = null;
+
+            // Check if a birthdate already exists (user previously set a specific month/day)
+            const existingValue = row?.dateofBirth ?? this.myForm.get('DateOfBirth')?.value;
+            const existingDate = existingValue ? new Date(existingValue) : null;
+
+            let month: number;
+            let day: number;
+
+            if (existingDate && !isNaN(existingDate.getTime())) {
+                // Preserve the manually-set month/day, only change the year
+                month = existingDate.getMonth();
+                day = existingDate.getDate();
+            } else {
+                // No existing date yet — default to today's month/day
+                month = today.getMonth();
+                day = today.getDate();
+            }
+
+            const newDate = new Date(birthYear, month, day);
+            this.value = this.datePipe.transform(newDate, 'yyyy-MM-dd');
+            this.myForm.get('DateOfBirth').setValue(this.value, { emitEvent: false });
         }
     }
+
+    // calculateBirthdate(row: any): void {
+    //     const age = row?.ageYear ?? this.myForm.get('ageYear')?.value;
+    //     if (age && age > 0) {
+    //         const today = new Date();
+    //         const birthYear = today.getFullYear() - age;
+    //         const newDate = new Date(birthYear, today.getMonth(), today.getDate());
+    //         this.value = this.datePipe.transform(newDate, 'yyyy-MM-dd');
+    //         this.myForm.get('DateOfBirth').setValue(this.value, { emitEvent: false });
+    //     }
+    // }
+
+    // onChangeDateofBirth(dateValue: string): void {
+    //     debugger
+    //     if (!dateValue) return;
+    //     const dob = new Date(dateValue);
+    //     if (isNaN(dob.getTime())) return;
+
+    //     if (dob > this.minDate) {
+    //         Swal.fire('Enter Proper Birth Date..');
+    //         return;
+    //     }
+
+    //     const today = new Date();
+    //     this.ageYear = today.getFullYear() - dob.getFullYear();
+    //     this.ageMonth = today.getMonth() - dob.getMonth();
+    //     this.ageDay = today.getDate() - dob.getDate();
+
+    //     if (this.ageDay < 0) {
+    //         this.ageMonth--;
+    //         const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    //         this.ageDay += prevMonth.getDate();
+    //     }
+    //     if (this.ageMonth < 0) {
+    //         this.ageYear--;
+    //         this.ageMonth += 12;
+    //     }
+
+    //     if (this.ageYear > 110) {
+    //         Swal.fire('Please Enter Valid BirthDate..');
+    //     }
+
+    //     // update age WITHOUT re-triggering calculateBirthdate()
+    //     this.myForm.get('ageYear').setValue(this.ageYear, { emitEvent: false });
+    //     // this.value = dateValue;
+    // }
 
     Ondeletequalification(index: number) {
         this.chargeeduList.splice(index, 1);
