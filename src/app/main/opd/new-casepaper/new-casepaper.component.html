@@ -545,6 +545,7 @@
                                                         style="font-weight: 700;margin: 10px 10px 8px 5px; font-size: 15px; display: block;">
                                                         Prescription List
                                                     </span>
+
                                                     <div fxLayout="row" fxLayoutAlign="space-between center"
                                                         fxLayoutGap="6px" style="flex-wrap: wrap; align-items: center;">
                                                         <div style="display: flex; align-items: center;">
@@ -818,12 +819,6 @@
                                                     #ddlDoctor></airmid-dropdown>
 
 
-                                                <airmid-dropdown label="Doctor Name" formControlName="prescDoctorId"
-                                                    fxFlex="35%" [formGroup]="MedicineItemForm"
-                                                    [validations]="getValidationMessages().prescDoctorId"
-                                                    [mode]="autocompleteModeDoctor"
-                                                    (selectionChange)="selectChangePrscDoctorName($event)">
-                                                </airmid-dropdown>
 
                                             </div>
                                         </form>
@@ -869,6 +864,12 @@
                                                     <mat-datepicker #picker1></mat-datepicker>
                                                 </mat-form-field>
 
+                                                <airmid-dropdown label="Prescription Doctor Name" formControlName="prescDoctorId"
+                                                    fxFlex="35%" [formGroup]="MedicineItemForm"
+                                                    [validations]="getValidationMessages().prescDoctorId"
+                                                    [mode]="autocompleteModeDoctor"
+                                                    (selectionChange)="selectChangePrscDoctorName($event)">
+                                                </airmid-dropdown>
                                             </div>
                                         </form>
                                     </mat-card>
