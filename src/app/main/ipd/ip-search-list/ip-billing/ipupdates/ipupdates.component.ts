@@ -102,7 +102,7 @@ export class IPUpdatesComponent implements OnInit {
                     this.IpClassChangeForm.get('ClassChangeForm.classId').setValue(this.registerObj?.classId)
                     this.IpClassChangeForm.get('ClassChangeForm.tariffId').setValue(this.registerObj?.tariffId)
                     this.IpClassChangeForm.get('ClassChangeForm.opdIpdId').setValue(this.registerObj?.admissionId)
-                    this.IpClassChangeForm.get('ClassChangeForm.newClassId').setValue(FormValue?.NewclassId)
+                    this.IpClassChangeForm.get('ClassChangeForm.newClassId').setValue(Number(FormValue?.NewclassId))
                     console.log(this.IpClassChangeForm.value.ClassChangeForm)
                     this._IpSearchListService.UpdateIpClassName(this.IpClassChangeForm.value.ClassChangeForm).subscribe(response => {
                         this.onClose();
@@ -129,8 +129,8 @@ export class IPUpdatesComponent implements OnInit {
                     this.IpClassChangeForm.get('TariffChangeForm.classId').setValue(this.registerObj?.classId)
                     this.IpClassChangeForm.get('TariffChangeForm.tariffId').setValue(this.registerObj?.tariffId)
                     this.IpClassChangeForm.get('TariffChangeForm.opdIpdId').setValue(this.registerObj?.admissionId)
-                    this.IpClassChangeForm.get('TariffChangeForm.newClassId').setValue(FormValue?.NewclassId)
-                    this.IpClassChangeForm.get('TariffChangeForm.newTariffId').setValue(FormValue?.NewTariffId)
+                    this.IpClassChangeForm.get('TariffChangeForm.newClassId').setValue(Number(FormValue?.NewclassId))
+                    this.IpClassChangeForm.get('TariffChangeForm.newTariffId').setValue(Number(FormValue?.NewTariffId))
                     console.log(this.IpClassChangeForm.value.TariffChangeForm)
                     this._IpSearchListService.UpdateIpTariffName(this.IpClassChangeForm.value.TariffChangeForm).subscribe(response => {
                         this.onClose();
