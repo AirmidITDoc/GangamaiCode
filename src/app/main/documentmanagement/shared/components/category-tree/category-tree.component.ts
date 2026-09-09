@@ -14,9 +14,12 @@ export class CategoryTreeComponent implements OnChanges {
     @Input() selectable = true;
     @Input() selectedId: string | null = null;
     @Input() expandAll = false;
+    @Input() showDocumentActions = false;
 
     @Output() select = new EventEmitter<number>();
     @Output() addChild = new EventEmitter<any>();
+    @Output() uploadDocument = new EventEmitter<number>();
+    @Output() viewDocuments = new EventEmitter<number>();
 
     treeControl = new NestedTreeControl<DocumentCategory>((node) => node.children);
     dataSource = new MatTreeNestedDataSource<DocumentCategory>();
