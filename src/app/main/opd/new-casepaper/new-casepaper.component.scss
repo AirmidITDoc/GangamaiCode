@@ -159,3 +159,23 @@
   70%  { box-shadow: 0 0 0 8px rgba(229, 57, 53, 0); }
   100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
 }
+.lang-select-box {
+  border: 1px solid #a6a3a3;
+  border-radius: 5px;
+  padding: 0 8px;
+  background: #fff;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 12px !important;
+  /* ← change this value */
+}
+
+/* Make sure the mat-select text also respects the size */
+.lang-select-box mat-select,
+.lang-select-box .mat-mdc-select-value,
+.lang-select-box .mat-mdc-select-min-line {
+  font-size: inherit;
+  /* inherits from .lang-select-box */
+}

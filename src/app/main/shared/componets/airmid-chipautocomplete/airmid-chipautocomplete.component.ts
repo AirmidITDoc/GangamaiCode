@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { BaseFormControlComponent } from '../base-form-control-component';
+import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 
 @Component({
   selector: 'app-airmid-chipautocomplete',
@@ -24,7 +25,7 @@ export class AirmidChipautocompleteComponent
 
   @Input() chips: any[] = [];
   @Input() apiUrl = '';
-  @Input() displayKey = '';
+  @Input() displayKey = 'name';
   @Input() allowCustom = true;
   @Input() placeholder = 'Select';
   @Input() label = '';
@@ -37,9 +38,11 @@ export class AirmidChipautocompleteComponent
   showDropdown = false;
   focusedIndex = -1;
 
-  // Speech recognition
+  // ===== Speech + Language =====
   isListening = false;
   speechSupported = false;
+  selectedLang = 'en-IN';                 // ← Default language
+  languages: LanguageOption[] = [];
   private recognition: any = null;
 
   @ViewChildren('autocompleteItem') autocompleteItems!: QueryList<ElementRef>;
@@ -47,12 +50,21 @@ export class AirmidChipautocompleteComponent
   constructor(
     private http: ApiCaller,
     private cdr: ChangeDetectorRef,
+    private speechService: SpeechRecognitionService,
     el: ElementRef
   ) {
     super(el);
   }
 
   ngOnInit(): void {
+    // Load languages
+    this.languages = this.speechService?.supportedLanguages || [
+      { code: 'en-IN', label: 'English (India)' },
+      { code: 'en-US', label: 'English (US)' },
+      { code: 'hi-IN', label: 'Hindi' },
+      { code: 'mr-IN', label: 'Marathi' }
+    ];
+
     this.initSpeechRecognition();
 
     if (this.apiUrl) {
@@ -65,14 +77,29 @@ export class AirmidChipautocompleteComponent
         error: (err) => console.error('Error fetching options:', err)
       });
     }
+
+    this.languages = this.speechService.supportedLanguages;
+
+    if (this.languages?.length > 0) {
+      this.selectedLang = this.languages[0].code;
+    }
   }
 
   ngOnDestroy(): void {
     this.stopListening();
   }
 
-  // ───────────────────── Speech Recognition ─────────────────────
+  // ───────────────────── Language Change ─────────────────────
+  onLangChange(): void {
+    if (this.isListening) {
+      this.stopListening();
+    }
+    if (this.recognition) {
+      this.recognition.lang = this.selectedLang || 'en-IN';
+    }
+  }
 
+  // ───────────────────── Speech Recognition ─────────────────────
   private initSpeechRecognition(): void {
     const SpeechRecognition =
       (window as any).SpeechRecognition ||
@@ -87,7 +114,7 @@ export class AirmidChipautocompleteComponent
     this.recognition = new SpeechRecognition();
     this.recognition.continuous = false;
     this.recognition.interimResults = false;
-    this.recognition.lang = 'en-IN';          // change if needed
+    this.recognition.lang = this.selectedLang || 'en-IN';
 
     this.recognition.onstart = () => {
       this.isListening = true;
@@ -100,7 +127,7 @@ export class AirmidChipautocompleteComponent
         this.inputValue = transcript;
         this.filterOptions();
 
-        // Auto-add the spoken text as a chip (same as working Diagnosis)
+        // Auto add as chip
         setTimeout(() => {
           this.addChip(transcript);
           this.showDropdown = false;
@@ -136,6 +163,9 @@ export class AirmidChipautocompleteComponent
       return;
     }
 
+    // Always use selected language
+    this.recognition.lang = this.selectedLang || 'en-IN';
+
     try {
       this.recognition.start();
     } catch (e) {
@@ -151,7 +181,6 @@ export class AirmidChipautocompleteComponent
   }
 
   // ───────────────────── Chip Logic ─────────────────────
-
   addChip(value: string): void {
     value = (value || '').trim();
     if (!value) return;
@@ -192,7 +221,6 @@ export class AirmidChipautocompleteComponent
   }
 
   // ───────────────────── Keyboard & Focus ─────────────────────
-
   onKeyDown(event: KeyboardEvent): void {
     const total = this.filteredOptions.length;
 
@@ -223,7 +251,7 @@ export class AirmidChipautocompleteComponent
     }
   }
 
-  scrollToFocusedItem(): void {
+  private scrollToFocusedItem(): void {
     const items = this.autocompleteItems?.toArray() || [];
     if (this.focusedIndex >= 0 && this.focusedIndex < items.length) {
       items[this.focusedIndex].nativeElement.scrollIntoView({
@@ -246,7 +274,6 @@ export class AirmidChipautocompleteComponent
   }
 
   // ───────────────────── Filtering ─────────────────────
-
   filterOptions(): void {
     const filter = (this.inputValue || '').toLowerCase();
 

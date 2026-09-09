@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { Console } from 'console';
+import { Icdedetails } from 'app/main/setup/prescription/icde-master/new-icde-master/new-icde-master.component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-discharge-summary-template',
@@ -26,25 +28,23 @@ import { Console } from 'console';
 })
 export class DischargeSummaryTemplateComponent {
 
-
     DischargesumForm: FormGroup;
     MedicineItemForm: FormGroup;
     vAdmissionId: any = 0;
+    viPDiagnosisId: any = 0;
     vDischargeId: any = 0;
     IsNormalDeath: any = 1;
     doseId = 0;
     doseName1 = "";
     vIsNormalDeath = '1';
     TemplateId = 0;
-
-
     TotQty = 1
     TotQty1 = 1
     DoseQtyperday = 0
     Perdayqty = 0
     doseName = ""
     days = 1
-
+    addDiagnolist: any = [];
     autocompleteModetemplate: string = "DischargeTemplate";
     DischargeSummaryId: any = 0;
     // Chargeslist: any = [];
@@ -70,6 +70,8 @@ export class DischargeSummaryTemplateComponent {
     isItemIdSelected: boolean = false;
     vTemplateDesc = '';
     Tempdesc: any;
+    AllTypeDescription: any = []
+
     @ViewChild('itemid') itemid: ElementRef;
     vstoreId = this.accountService.currentUserValue.user.storeId
 
@@ -81,6 +83,7 @@ export class DischargeSummaryTemplateComponent {
     autocompleteModeTemplate: string = "PrescriptionTemplateMaster";
 
     dsItemList = new MatTableDataSource<MedicineItemList>();
+    diagnosisData: []
 
     constructor(public _IpSearchListService: IPSearchListService,
         public _matDialog: MatDialog,
@@ -101,7 +104,9 @@ export class DischargeSummaryTemplateComponent {
         this.MedicineItemForm = this.MedicineItemform();
         this.DischargesumForm.markAllAsTouched();
 
-        this.prescriptionTemplateArray.push(this.createprescriptionTemplate());
+        // this.prescriptionTemplateArray.push(this.createprescriptionTemplate());
+        // this.dignosisarray.push(this.createfinaldignosis());
+
 
         console.log(this.data)
         if (this.data) {
@@ -111,15 +116,17 @@ export class DischargeSummaryTemplateComponent {
             this.DischargesumForm.get("discharge.admissionId")?.setValue(this.data.admissionId)
             this.getDischargeSummaryData(this.vAdmissionId)
             this.getPrescription(this.vAdmissionId)
+
         }
 
-        debugger
         setTimeout(() => {
             this.DischargesumForm.get("discharge.dischargeDoctor1").setValue(this.data.docNameId)
             this.DischargesumForm.get("discharge.dischargeDoctor2").setValue(this.data.refDocNameId || 0)
             this.DischargesumForm.get("discharge.dischargeDoctor3").setValue(this.data.admittedDoctor1ID || 0)
 
         }, 1000);
+
+
 
         if ((this.data?.regId ?? 0) > 0) {
 
@@ -138,8 +145,28 @@ export class DischargeSummaryTemplateComponent {
                 });
             }, 500);
         }
-    }
 
+        // this.DischargesumForm = this.showDischargeSummaryForm();
+
+        // this.getDiagnosisList();
+
+    }
+    mentionItems: any[] = [];
+    getDiagnosisList() {
+
+        this._IpSearchListService
+            .getDiagnosisListbyId('Diagnosis')
+            .subscribe((response: any[]) => {
+                console.log('Diagnosis API Response:', response);
+
+                this.mentionItems = response.map(item => ({
+                    id: '@' + item.descriptionName,
+                    text: item.descriptionName
+                }));
+
+                console.log('Mention Items:', this.mentionItems);
+            });
+    }
     MedicineItemform(): FormGroup {
         return this._formBuilder.group({
             ItemId: '',
@@ -167,14 +194,15 @@ export class DischargeSummaryTemplateComponent {
                 followupdate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
                 isNormalOrDeath: '1',
                 templateDescriptionHtml: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                addedBy: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+                addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
                 updatedBy: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             }),
             prescriptionTemplate: this._formBuilder.array([]),
+            admissionDiagnosisInformation: this._formBuilder.array([]),//[[]]
         });
     }
 
-    // 2. FormArray Group for Refund Detail
+    // this.diagnosisData//
     createprescriptionTemplate(item: any = {}): FormGroup {
         return this._formBuilder.group({
             opdIpdId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -202,6 +230,29 @@ export class DischargeSummaryTemplateComponent {
     get prescriptionTemplateArray(): FormArray {
         return this.DischargesumForm.get('prescriptionTemplate') as FormArray;
     }
+    created = 0//this.accountService.currentUserValue.userId
+    modified = 0//this.accountService.currentUserValue.userId
+
+
+    createfinaldignosis(item: any = {}): FormGroup {
+        debugger
+        return this._formBuilder.group({
+            ipdiagnosisId: 0,
+            admId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            diagnosis: [item.diagnosis || ''],
+            icdcode: [item.icdcode || ''],
+            diagnosisinformation: [item.diagnosisinformation || ''],
+
+            flagCode: ['Final'],
+            createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            // modifiedBy: [this.modified, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+
+    get dignosisarray(): FormArray {
+        return this.DischargesumForm.get('admissionDiagnosisInformation') as FormArray;
+    }
 
     parseValue(val: string): number {
         val = val.trim();
@@ -212,6 +263,41 @@ export class DischargeSummaryTemplateComponent {
         // }
 
         return Number(val);
+    }
+
+    //Diagnosis
+
+
+    selectChangeDiagnosis(selectedChips: string[]) {
+        debugger
+
+        this.addDiagnolist = selectedChips;
+        this.DischargesumForm.get('admissionDiagnosisInformation')?.setValue(this.addDiagnolist);
+    }
+
+    addDiagnos(event: any): void {
+        const input = event.input;
+        const value = event.value;
+
+        if ((value || '').trim()) {
+            this.addDiagnolist.push(value.trim());
+        }
+        // Reset the input value
+        if (input) {
+            input.value = '';
+        }
+    }
+    removeDiagno(Diagno: string): void {
+        const index = this.addDiagnolist.indexOf(Diagno);
+        if (index >= 0) {
+            this.addDiagnolist.splice(index, 1);
+        }
+    }
+    selectedobjDiagno(obj): void {
+        const value = obj.Diagnosis;
+        if ((value || '').trim()) {
+            this.addDiagnolist.push(value.trim());
+        }
     }
 
 
@@ -261,8 +347,6 @@ export class DischargeSummaryTemplateComponent {
 
             console.log("Sum =", total);           // 1.5
             this.Perdayqty = Math.round(total)
-            debugger
-
             this.TotQty = days * (qty)
             this.TotQty = Math.round(this.TotQty)
 
@@ -273,92 +357,6 @@ export class DischargeSummaryTemplateComponent {
 
 
     }
-    // OnSave() {
-
-    //    this.DischargesumForm.get('templateDescriptionHtml')?.valueChanges.subscribe(val => {
-    //   console.log('Editor output:', val);
-    // });
-
-
-
-    //   if (!this.DischargesumForm.invalid) {
-    //     Swal.fire({
-    //       title: 'Do you want to Save the Discharge Summary Template',
-    //       text: "You won't be able to revert this!",
-    //       icon: "warning",
-    //       showCancelButton: true,
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Yes, Save!"
-
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         this.saveflag = true
-    //         if (this.DischargesumForm.get("isNormalOrDeath").value == false)
-    //           this.vIsNormalDeath = "0"
-    //         if (this.DischargesumForm.get("isNormalOrDeath").value == true)
-    //           this.vIsNormalDeath = "1"
-
-    //         this.DischargesumForm.get("discharge.isNormalOrDeath")?.setValue(Number(this.vIsNormalDeath))
-    //         this.DischargesumForm.get("discharge.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
-
-    //         
-    //         this.prescriptionTemplateArray.clear();
-    //         this.dsItemList.data.forEach(item => {
-    //           this.prescriptionTemplateArray.push(this.createprescriptionTemplate(item));
-    //         });
-
-    //         // update
-    //         if (this.DischargesumForm.get('discharge.dischargeSummaryId')?.value) {
-
-    //           this.DischargesumForm.get('discharge.updatedBy').setValue(this.accountService.currentUserValue.userId)
-
-    //           let updateData = {
-    //             "discharge": this.DischargesumForm.value.discharge,
-    //             "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
-    //           };
-    //           console.log(updateData)
-
-    //           this._IpSearchListService.UpdateIPDDischargSummaryTemplate(updateData).subscribe(response => {
-    //             this.viewgetDischargesummaryPdf(this.vAdmissionId)
-    //             this._matDialog.closeAll();
-    //           });
-
-    //         } else {       //insert     
-    //           this.DischargesumForm.get('discharge.addedBy').setValue(this.accountService.currentUserValue.userId)
-
-    //           let insertData = {
-    //             "discharge": this.DischargesumForm.value.discharge,
-    //             "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
-    //           };
-    //           console.log(insertData)
-
-    //           this._IpSearchListService.insertIPDDischargSummaryTemplate(insertData).subscribe(response => {
-    //             this.getPrint(response)
-    //             this._matDialog.closeAll();
-    //           });
-    //         }
-    //       }
-    //     })
-    //   } else {
-    //     let invalidFields = [];
-
-    //     if (this.DischargesumForm.invalid) {
-    //       for (const controlName in this.DischargesumForm.controls) {
-    //         if (this.DischargesumForm.controls[controlName].invalid) {
-    //           invalidFields.push(`Discharge Form: ${controlName}`);
-    //         }
-    //       }
-    //     }
-    //     if (invalidFields.length > 0) {
-    //       invalidFields.forEach(field => {
-    //         this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-    //         );
-    //       });
-    //     }
-    //   }
-    // }
-
 
     OnSave() {
 
@@ -380,7 +378,49 @@ export class DischargeSummaryTemplateComponent {
             console.log('Editor output:', val);
         });
 
+        if (this.DischargeSummaryId == 0) {
+            this.created = this.accountService.currentUserValue.userId
+            if (this.addDiagnolist.length > 0) {
+                this.addDiagnolist.forEach(element => {
 
+                    this.AllTypeDescription.push({
+
+                        ipdiagnosisId: 0,
+                        admId: this.vAdmissionId,
+                        diagnosis: element.diagnosisName,
+                        icdcode: element.icdcode || '',
+                        diagnosisinformation: element.descriptionName || element.icdCodeWithDignosis,
+                        flagCode: "Final",
+                        createdBy: this.accountService.currentUserValue.userId
+                    });
+                });
+            }
+        }
+
+        if (this.DischargeSummaryId !== 0) {
+            this.modified = this.accountService.currentUserValue.userId
+            if (this.addDiagnolist.length > 0) {
+                this.addDiagnolist.forEach(element => {
+
+                    this.AllTypeDescription.push({
+
+                        ipdiagnosisId: 0,
+                        admId: this.vAdmissionId,
+                        diagnosis: element.diagnosisName || element.icdCodeWithDignosis,
+                        icdcode: element.icdcode || '',
+                        diagnosisinformation: element.descriptionName || element.icdCodeWithDignosis,
+                        flagCode: "Final",
+                        modifiedBy: this.accountService.currentUserValue.userId
+                    });
+                });
+            }
+        }
+
+
+        if (this.AllTypeDescription.length === 0) {
+            const mopCasePaperFormGroup: FormGroup = this.createfinaldignosis({ visitId: 0 });
+            this.dignosisarray.push(mopCasePaperFormGroup);
+        }
 
         if (!this.DischargesumForm.invalid) {
             Swal.fire({
@@ -409,10 +449,14 @@ export class DischargeSummaryTemplateComponent {
                         this.prescriptionTemplateArray.push(this.createprescriptionTemplate(item));
                     });
 
-                    // const form=this.DischargesumForm
-                    // form.TemplateId.re
+                    this.dignosisarray.clear();
+                    if (this.AllTypeDescription.length > 0) {
+                        this.AllTypeDescription.forEach(item => {
+                            this.dignosisarray.push(this.createfinaldignosis(item));
+                        });
 
-                    // this.DischargesumForm.removeControl('TemplateId')
+                    }
+
                     this.DischargesumForm.removeControl('isNormalOrDeath')
 
                     if (this.DischargesumForm.get('discharge.dischargeSummaryId')?.value)
@@ -423,17 +467,19 @@ export class DischargeSummaryTemplateComponent {
 
                     const insertData = {
                         "discharge": this.DischargesumForm.value.discharge,
-                        "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
+                        "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate,
+                        "admissionDiagnosisInformation": this.DischargesumForm.value.admissionDiagnosisInformation
                     };
                     console.log(insertData)
                     console.log(this.DischargesumForm.value)
 
-                    // 
                     this._IpSearchListService.insertIPDDischargSummaryTemplate(this.DischargesumForm.value).subscribe(response => {
                         console.log(response)
                         if (response)
-                            this.getPrint(this.vAdmissionId)
+                            // this.getPrint(this.vAdmissionId)
+                            this.printBothReports(this.vAdmissionId);
                         this._matDialog.closeAll();
+                        this.DischargesumForm.reset()
                     });
                 }
 
@@ -459,6 +505,24 @@ export class DischargeSummaryTemplateComponent {
     }
 
 
+    async printBothReports(response: any): Promise<void> {
+        debugger
+        try {
+            await this.getPrint(response);
+            // await this.viewgetInvesigationPdf(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    viewgetInvesigationPdf(element) {
+        this.commonService.OnprintDirect("AdmissionID", element, "PathologyTestDetailForDischargeSummary");
+    }
+
+
+    private delay(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
     @ViewChild('dosename') dosename: ElementRef;
     @ViewChild('Day') Day: ElementRef;
     @ViewChild('Instruction') Instruction: ElementRef;
@@ -653,7 +717,7 @@ export class DischargeSummaryTemplateComponent {
 
                 this.Chargelist1 = data.data.map((x: any) => {
                     console.log(x)
-                    debugger
+
 
                     if (x.qtyPerDay == 0) {
                         this.Perdayqty = 1
@@ -681,7 +745,7 @@ export class DischargeSummaryTemplateComponent {
 
                         console.log("Sum =", total);           // 1.5
                         this.Perdayqty = Math.round(total)
-                        debugger
+
 
                         this.Perdayqty = this.Perdayqty ?? 1;
                         this.days = x.days ?? 1;
@@ -689,7 +753,7 @@ export class DischargeSummaryTemplateComponent {
                         this.Syrup = 0
                     }
 
-                    debugger
+
                     const newEntry = {
 
                         itemID: x.itemID ?? x.drugId,
@@ -807,7 +871,7 @@ export class DischargeSummaryTemplateComponent {
             return;
         }
 
-        debugger
+
 
         if (item.Syrup == 1) {
             this.Perdayqty = 1
@@ -834,14 +898,14 @@ export class DischargeSummaryTemplateComponent {
 
             console.log("Sum =", total);           // 1.5
             this.Perdayqty = Math.round(total)
-            debugger
+
 
             this.Perdayqty = this.Perdayqty ?? 1;
             this.days = item.days ?? 1;
             this.TotQty1 = (this.Perdayqty * this.days);
         }
 
-        debugger
+
         const newEntry = {
 
             itemID: item.itemID ?? item.drugId,
@@ -916,7 +980,7 @@ export class DischargeSummaryTemplateComponent {
 
                 this.dsItemList.data.forEach(element => {
                     console.log(element)
-                    debugger
+
                     if (element.days > 1 && element.totalQty == 1)
                         this.Syrup = 1
                     else
@@ -977,8 +1041,12 @@ export class DischargeSummaryTemplateComponent {
                 if (this.RetrDischargeSumryList[0].templateDescriptionHtml !== "")
                     this.DischargesumForm.get('TemplateId').disable();
                 console.log(this.vTemplateDesc);
-
                 debugger
+                // if (this.DischargeSummaryId > 0) {
+                this.getRtrvdiagnosisList(this.vAdmissionId)
+                // } else
+                //     this.diagnosisData = []
+
                 this.DischargesumForm.get("discharge.dischargeDoctor1").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor1))
                 this.DischargesumForm.get("discharge.dischargeDoctor2").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor2))
                 this.DischargesumForm.get("discharge.dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3 || this.data.admittedDoctor1ID || 0)
@@ -1058,6 +1126,7 @@ export class DischargeSummaryTemplateComponent {
     }
 
     viewgetDischargesummaryPdf(AdmId) {
+        debugger
         console.log(AdmId)
         this.commonService.OnprintOld("AdmissionID", AdmId, "IpDischargeSummaryTemplatewithPatientHeader");
         // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplate");
@@ -1169,7 +1238,8 @@ export class DischargeSummaryTemplateComponent {
                 { name: "required", Message: "wardId Name is required" }
             ],
             DoseId: [],
-
+            AdmittedDoctor2: [],
+            AdmittedDoctor3: [],
 
         };
     }
@@ -1207,6 +1277,125 @@ export class DischargeSummaryTemplateComponent {
     onClose() {
         this.DischargesumForm.reset();
         this._matDialog.closeAll();
+    }
+    //diagnosis
+    // createmopCasepaperDignosis(element: any = {}): FormGroup {
+    //     return this._formBuilder.group({
+    //         visitId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    //         descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+    //         descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+    //         icdcode: [element.icdcode ?? ''],
+    //         diagnosisName: [element.diagnosisName ?? '']
+    //     });
+    // }
+
+
+    get mopCasepaperDignosisArray(): FormArray {
+        return this.DischargesumForm.get('finaldignosis') as FormArray;
+    }
+    //
+    RtrvDescriptionList: any[] = [];
+    DiagnosislistObj = new Icdedetails({});
+
+    getRtrvdiagnosisList(obj?: any): void {
+        this.addDiagnolist = [];
+        this.AllTypeDescription = [];
+
+        console.log('vAdmissionId →', this.vAdmissionId);
+
+        this._IpSearchListService
+            .getDiagnosisListbyId(this.vAdmissionId)
+            .subscribe({
+                next: (response: any) => {
+
+                    // console.log('Full response →', response);
+
+                    // debugger
+                    // const Diagnosislist = Array.isArray(response)
+                    //     ? response
+                    //     : response?.data || [];
+
+                    // console.log('Diagnosislist →', Diagnosislist);
+
+                    // if (Diagnosislist.length > 0) {
+
+                    //     this.addDiagnolist = Diagnosislist.map((element: any) => ({
+                    //         id: element.ipdiagnosisId,
+                    //         descriptionName: element.descriptionName,
+                    //         icdcode: element.icdcode || '',
+                    //         diagnosisName:
+                    //             element.diagnosis || element.descriptionName,
+                    //         icdCodeWithDignosis: element.diagnosisinformation
+
+                    //     }));
+
+                    //     console.log(
+                    //         'Final addDiagnolist →',
+                    //         this.addDiagnolist
+                    //     );
+                    //     debugger
+
+                    //     this.diagnosisData = response || [];
+                    //     console.log(this.DischargesumForm.get('admissionDiagnosisInformation')?.value)
+
+                    //     this.DischargesumForm.get('admissionDiagnosisInformation')?.setValue(this.addDiagnolist);
+                    // } else {
+
+                    //     console.warn('No diagnosis data found in response');
+
+                    //     this.DischargesumForm
+                    //         .get('admissionDiagnosisInformation')
+                    //         ?.setValue([]);
+                    // }
+
+                    debugger
+                    const Diagnosis = response;
+
+                    this.addDiagnolist = [];
+
+                    const diagnosisArray = this.DischargesumForm.get(
+                        'admissionDiagnosisInformation'
+                    ) as FormArray;
+
+                    diagnosisArray.clear();
+
+                    if (Diagnosis && Diagnosis.length > 0) {
+
+                        Diagnosis.forEach((element: any) => {
+
+                            const diagnosisObj = {
+                                id: element.ipdiagnosisId,
+                                descriptionName: element.descriptionName || '',
+                                icdcode: element.icdcode || '',
+                                diagnosisName:
+                                    element.diagnosis || element.descriptionName || '',
+                                icdCodeWithDignosis:
+                                    element.diagnosisinformation ||
+                                    `${element.icdcode || ''} - ${element.diagnosis || element.descriptionName || ''
+                                    }`
+                            };
+
+                            // For displaying chips
+                            this.addDiagnolist.push(diagnosisObj);
+
+                            // For FormArray
+                            diagnosisArray.push(
+                                this._formBuilder.control(diagnosisObj)
+                            );
+                        });
+                    }
+
+                    console.log('CHIP DATA:', this.addDiagnolist);
+                    console.log('FORM DATA:', diagnosisArray.value);
+                },
+
+                error: (err) => {
+                    console.error(
+                        'Error fetching diagnosis list',
+                        err
+                    );
+                }
+            });
     }
 }
 

@@ -16,6 +16,15 @@
         (blur)="hideDropdownWithDelay()" [placeholder]="placeholder" autocomplete="off" />
     </div>
 
+    <div class="lang-select-box" fxFlex="10%" >
+      <mat-select [(ngModel)]="selectedLang" (selectionChange)="onLangChange()" name="languageSelect"
+        [ngModelOptions]="{ standalone: true }">
+        <mat-option *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.label }}
+        </mat-option>
+      </mat-select>
+    
+    </div>
     <!-- Microphone Button -->
     <button mat-icon-button type="button" (click)="startSpeechRecognition()" [class.listening]="isListening"
       [disabled]="!speechSupported" aria-label="Speech recognition">

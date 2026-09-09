@@ -80,7 +80,7 @@ export class NewICDEMasterComponent {
 
         if (this.isDuplicate) {
             this.chkSatus = true
-            Swal.fire("Duplicate ICDE ...");
+            Swal.fire(" ICDE Already Exist ...");
             return;
         } else
             this.chkSatus = false

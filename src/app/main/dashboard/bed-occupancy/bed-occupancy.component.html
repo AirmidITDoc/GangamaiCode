@@ -39,21 +39,22 @@
                             </div>
                         </mat-card-content>
                     </mat-card> -->
-                    <mat-card >
+                    <mat-card>
                         <mat-card-content>
                             <div class="chart-container">
-                                <div  style="font-size: large;color: rgb(2, 70, 101);font-weight: bold;">
+                                <div style="font-size: large;color: rgb(2, 70, 101);font-weight: bold;">
                                     <div style="text-align: center !important;">
-                                        <span >Total Beds -{{ totalBed }} |  Free Beds -{{ freeBeds }} </span>
+                                        <span>Total Beds -{{ totalBed }} | Free Beds -{{ freeBeds }} </span>
                                     </div>
-                                  
+
                                     <div style="text-align: center !important;">
-                                       <span style="color: brown;font-size: large;">Occupacy:-{{ occupancyPercentage }}%</span>
+                                        <span style="color: brown;font-size: large;">Occupacy:-{{ occupancyPercentage
+                                            }}%</span>
                                     </div>
                                 </div>
 
-                                
-                                <div >
+
+                                <div>
                                     <canvas baseChart [data]="barChartData" [options]="barChartOptions"
                                         [type]="barChartType">
                                     </canvas>
@@ -76,7 +77,7 @@
 
                                     </div>
                                     <!-- <div style="height:280px"> -->
-                                        <canvas id="BedAdmissionsLine"></canvas>
+                                    <canvas id="BedAdmissionsLine"></canvas>
                                     <!-- </div> -->
 
                                 </div>
@@ -87,14 +88,14 @@
                     <div fxFlex="50%" fxFlex.sm="66%" fxFlex.xs="100%">
                         <mat-card>
                             <mat-card-content>
-                               <div class="chart-container">
+                                <div class="chart-container">
 
                                     <div class="chart-header">
                                         <span class="chart-title">Patient Discharge Trend</span>
 
                                     </div>
                                     <!-- <div style="height:280px"> -->
-                                        <canvas id="BedDischargeLine"></canvas>
+                                    <canvas id="BedDischargeLine"></canvas>
                                     <!-- </div> -->
 
                                 </div>
@@ -240,6 +241,3 @@
     </div>
     <!-- CENTER -->
 </div>
-<!-- / CONTENT-->
-<!-- </div> -->
-<!-- RegNo PatientName DoctorName Bed Status  -->

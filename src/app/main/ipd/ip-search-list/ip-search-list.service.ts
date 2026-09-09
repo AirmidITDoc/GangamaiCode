@@ -1123,6 +1123,20 @@ export class IPSearchListService {
         public getIPFInalGroupWiseReportView(Param) {
            return this._httpClient1.PostData("Report/ViewReport", Param);
     }
+
+    
+   getDiagnosisListbyId(Id) {
+    return this._httpClient1.GetData('DischargeSummary/IpAdmissionDiagnosisInformation/' + Id);
+    }
+
+     public getRtrvCheifComplaintList1(employee) {
+        return this._httpClient1.PostData("OPDPrescriptionMedical/GetDignosisList", employee);
+    }
+  public getRtrvdiagnosisList(employee) {
+        return this._httpClient1.PostData("OPDPrescriptionMedical/GetDignosisList", employee);
+    }
+
+    
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

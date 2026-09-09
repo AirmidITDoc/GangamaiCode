@@ -10,9 +10,10 @@ import {
   ViewChildren
 } from '@angular/core';
 import { Subject, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { BaseFormControlComponent } from '../base-form-control-component';
+import { LanguageOption, SpeechRecognitionService } from '../../services/speech-recognition.service';
 
 @Component({
   selector: 'app-airmid-diagnos-chipautocomplete',
@@ -22,6 +23,7 @@ import { BaseFormControlComponent } from '../base-form-control-component';
 export class AirmidDiagnosChipautocompleteComponent
   extends BaseFormControlComponent
   implements OnInit, OnDestroy {
+
   @Input() chips: any[] = [];
   @Input() apiUrl = '';
   @Input() displayKey = '';
@@ -30,7 +32,8 @@ export class AirmidDiagnosChipautocompleteComponent
   @Input() label = '';
 
   @Output() chipsChange = new EventEmitter<any[]>();
-
+  languages: LanguageOption[] = [];
+  // UI state
   inputValue = '';
   allOptions: any[] = [];
   filteredOptions: any[] = [];
@@ -41,13 +44,14 @@ export class AirmidDiagnosChipautocompleteComponent
   isListening = false;
   speechSupported = false;
   private recognition: any = null;
-
+  selectedLang = 'en-IN';
   @ViewChildren('autocompleteItem') autocompleteItems!: QueryList<ElementRef>;
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
-  constructor(private http: ApiCaller, el: ElementRef) {
+  constructor(private http: ApiCaller, el: ElementRef,
+    public speechService: SpeechRecognitionService,) {
     super(el);
   }
 
@@ -79,6 +83,12 @@ export class AirmidDiagnosChipautocompleteComponent
           this.filteredOptions = [];
         }
       });
+    debugger
+    this.languages = this.speechService.supportedLanguages;
+
+    if (this.languages?.length > 0) {
+      this.selectedLang = this.languages[0].code;
+    }
   }
 
   ngOnDestroy(): void {
@@ -101,9 +111,9 @@ export class AirmidDiagnosChipautocompleteComponent
 
     this.speechSupported = true;
     this.recognition = new SpeechRecognition();
-    this.recognition.continuous = false;          // stop after one phrase
-    this.recognition.interimResults = false;      // only final result
-    this.recognition.lang = 'en-IN';               // change if needed (en-US, hi-IN…)
+    this.recognition.continuous = false;
+    this.recognition.interimResults = false;
+    this.recognition.lang = this.selectedLang || 'en-IN';   // ← force en-IN
 
     this.recognition.onstart = () => {
       this.isListening = true;
@@ -113,16 +123,13 @@ export class AirmidDiagnosChipautocompleteComponent
       const transcript = event.results[0][0].transcript.trim();
       if (transcript) {
         this.inputValue = transcript;
-        this.filterOptions();          // trigger API search
+        this.filterOptions();
 
-          // Add voice text as chip
-    setTimeout(() => {
-      this.addChip(transcript);
-      this.showDropdown = false;
-    }, 350);
-    
-        // Optional: auto-add the spoken value as a chip
-        // this.addChip(transcript);
+        // Auto-add spoken text as chip after a short delay
+        setTimeout(() => {
+          this.addChip(transcript);
+          this.showDropdown = false;
+        }, 350);
       }
     };
 
@@ -136,45 +143,28 @@ export class AirmidDiagnosChipautocompleteComponent
     };
   }
 
-  startSpeechRecognition() {
+  startSpeechRecognition(): void {
     if (!this.recognition) {
-        this.initSpeechRecognition();
+      this.initSpeechRecognition();
     }
 
     if (!this.recognition) {
-        alert('Speech recognition is not supported in this browser.');
-        return;
-    }
-
-    if (this.isListening) {
-        this.recognition.stop();
-        return;
-    }
-
-    this.recognition.start();
-}
-
-
-
- toggleListening(): void {
-    if (!this.speechSupported) {
       alert('Speech recognition is not supported in this browser.');
       return;
     }
 
     if (this.isListening) {
-      this.stopListening();
-    } else {
-      this.startListening();
+      this.recognition.stop();
+      return;
     }
-  }
 
-  private startListening(): void {
+    // Always apply the currently selected language before starting
+    this.recognition.lang = this.selectedLang || 'en-US';
+
     try {
       this.recognition.start();
     } catch (e) {
-      // already started
-      console.warn(e);
+      console.warn('Speech recognition start error:', e);
     }
   }
 
@@ -183,6 +173,20 @@ export class AirmidDiagnosChipautocompleteComponent
       this.recognition.stop();
     }
     this.isListening = false;
+  }
+
+  onLangChange(): void {
+    // Update recognition language immediately
+    if (this.recognition) {
+      this.recognition.lang = this.selectedLang || 'en-US';
+    }
+
+    // If currently listening, restart with new language
+    if (this.isListening) {
+      this.stopListening();
+      // Small delay so the previous session fully ends
+      setTimeout(() => this.startSpeechRecognition(), 150);
+    }
   }
 
   // ─── Chip management ────────────────────────────────────────────────
@@ -251,6 +255,13 @@ export class AirmidDiagnosChipautocompleteComponent
           this.selectOption(this.filteredOptions[this.focusedIndex]);
         } else {
           this.handleEnter();
+        }
+        break;
+
+      case 'Backspace':
+        if (!this.inputValue && this.chips.length > 0) {
+          event.preventDefault();
+          this.removeChip(this.chips[this.chips.length - 1]);
         }
         break;
 

@@ -154,24 +154,17 @@
   transition: all 0.2s ease;
 }
 
-// .mic-button mat-icon {
-//   width: 22px;
-//   height: 22px;
-
-//   font-size: 22px;
-
-//   line-height: 22px;
-// }
-
 
 /* ===== ON / Listening state ===== */
 .input-mic-row button[mat-icon-button].listening {
-  background-color: #ffebee;      /* light red background */
+  background-color: #ffebee;
+  /* light red background */
   border-color: #e53935;
 }
 
 .input-mic-row button[mat-icon-button].listening mat-icon {
-  color: #e53935;                 /* red when listening */
+  color: #e53935;
+  /* red when listening */
 }
 
 /* Optional pulse effect while listening */
@@ -268,4 +261,25 @@
   color: #888;
 
   font-size: 13px;
+}
+
+.lang-select-box {
+  border: 1px solid #a6a3a3;
+  border-radius: 5px;
+  padding: 0 8px;
+  background: #fff;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 12px !important;
+  /* ← change this value */
+}
+
+/* Make sure the mat-select text also respects the size */
+.lang-select-box mat-select,
+.lang-select-box .mat-mdc-select-value,
+.lang-select-box .mat-mdc-select-min-line {
+  font-size: inherit;
+  /* inherits from .lang-select-box */
 }

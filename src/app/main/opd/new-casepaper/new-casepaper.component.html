@@ -386,6 +386,20 @@
 </textarea>
                                                             </mat-form-field>
 
+
+                                                            <mat-form-field appearance="outline"
+                                                                style="padding-left: 10px !important;">
+                                                                <mat-label>Language</mat-label>
+                                                                <mat-select [(ngModel)]="selectedLang"
+                                                                    (selectionChange)="onLangChange()"
+                                                                    name="languageSelect"
+                                                                    [ngModelOptions]="{ standalone: true }">
+                                                                    <mat-option *ngFor="let lang of languages"
+                                                                        [value]="lang.code">
+                                                                        {{ lang.label }}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
                                                             <button mat-icon-button type="button"
                                                                 (click)="onMicToggle1()"
                                                                 [class.listening]="isListeningHistory"
@@ -803,6 +817,14 @@
                                                     [validations]="getValidationMessages().DoctorID"
                                                     #ddlDoctor></airmid-dropdown>
 
+
+                                                <airmid-dropdown label="Doctor Name" formControlName="prescDoctorId"
+                                                    fxFlex="35%" [formGroup]="MedicineItemForm"
+                                                    [validations]="getValidationMessages().prescDoctorId"
+                                                    [mode]="autocompleteModeDoctor"
+                                                    (selectionChange)="selectChangePrscDoctorName($event)">
+                                                </airmid-dropdown>
+
                                             </div>
                                         </form>
                                     </mat-card>
@@ -906,16 +928,7 @@
                                             </form>
 
                                             <!-- ✅ Language dropdown outside form -->
-                                            <mat-form-field appearance="outline" style="min-width: 180px;">
-                                                <mat-label>Language</mat-label>
-                                                <mat-select [(ngModel)]="selectedLang"
-                                                    (selectionChange)="onLangChange()" name="languageSelect"
-                                                    [ngModelOptions]="{ standalone: true }">
-                                                    <mat-option *ngFor="let lang of languages" [value]="lang.code">
-                                                        {{ lang.label }}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+
                                         </div>
                                     </mat-card>
 

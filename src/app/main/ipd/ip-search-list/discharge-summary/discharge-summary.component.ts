@@ -282,7 +282,8 @@ export class DischargeSummaryComponent implements OnInit {
                         console.log(updateData)
 
                         this._IpSearchListService.updateIPDDischargSummary(updateData).subscribe(response => {
-                            this.getPrint(this.vAdmissionId)
+                            // this.getPrint(this.vAdmissionId)
+                            this.printBothReports(this.vAdmissionId);
                             this._matDialog.closeAll();
                         });
                     }
@@ -295,7 +296,9 @@ export class DischargeSummaryComponent implements OnInit {
                         };
                         console.log(insertData)
                         this._IpSearchListService.insertIPDDischargSummary(insertData).subscribe(response => {
-                            this.getPrint(response)
+                            // this.getPrint(response)
+
+                            this.printBothReports(this.vAdmissionId);
                             this._matDialog.closeAll();
                         });
                     }
@@ -327,7 +330,22 @@ export class DischargeSummaryComponent implements OnInit {
             }
         })
     }
+    async printBothReports(response) {
+        this.getPrint(response);
 
+        await this.delay(1000);
+
+        this.viewgetInvesigationPdf(this.vAdmissionId);
+    }
+
+    viewgetInvesigationPdf(element) {
+        this.commonService.OnprintDirect("AdmissionID", element, "PathologyTestDetailForDischargeSummary", true);
+    }
+
+
+    private delay(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
     calculateQty() {
         debugger
         if (this.MedicineItemForm.get('Day').value > 0) {
@@ -494,7 +512,7 @@ export class DischargeSummaryComponent implements OnInit {
 
 
     getSelectedserviceObj(obj) {
-       // this.doseId = 0
+        // this.doseId = 0
         this.ItemId = obj.itemId
         this.ItemName = obj.itemName
         console.log(obj)
@@ -522,7 +540,7 @@ export class DischargeSummaryComponent implements OnInit {
         }
 
 
-        if ((this.MedicineItemForm.get('Day')?.value == "" ||  this.MedicineItemForm.get('Day')?.value == 0 || this.vDay == "NAN")) {
+        if ((this.MedicineItemForm.get('Day')?.value == "" || this.MedicineItemForm.get('Day')?.value == 0 || this.vDay == "NAN")) {
             this.toastr.warning('Please select Days..', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });

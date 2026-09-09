@@ -23,20 +23,38 @@
       <div class="input-container">
 
         <input [(ngModel)]="inputValue" (keydown)="onKeyDown($event)" (input)="filterOptions()" (focus)="onInputFocus()"
-          (blur)="hideDropdownWithDelay()" [placeholder]="placeholder" autocomplete="off" />
+          (blur)="hideDropdownWithDelay()" [placeholder]="placeholder" autocomplete="off" fxFlex />
 
       </div>
 
     </div>
 
-    <button mat-icon-button type="button" (click)="startSpeechRecognition()" aria-label="Toggle speech recognition"  [class.listening]="isListening"
-        [disabled]="!speechSupported" aria-label="Speech recognition">
 
-     <mat-icon>{{ isListening ? 'mic_off' : 'mic' }}</mat-icon>
+    <!-- <div class="lang-select-box" fxFlex="10%"  >
+      <mat-select [(ngModel)]="selectedLang" (selectionChange)="onLangChange()" name="languageSelect"
+        [ngModelOptions]="{ standalone: true }">
+        <mat-option *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.label }}
+        </mat-option>
+      </mat-select>
+    </div> -->
+
+      <div class="lang-select-box" fxFlex="10%" >
+      <mat-select [(ngModel)]="selectedLang" (selectionChange)="onLangChange()" name="languageSelect"
+        [ngModelOptions]="{ standalone: true }">
+        <mat-option *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.label }}
+        </mat-option>
+      </mat-select>
+    
+    </div>
+
+    <button mat-icon-button type="button" (click)="startSpeechRecognition()" aria-label="Toggle speech recognition"
+      [class.listening]="isListening" [disabled]="!speechSupported" aria-label="Speech recognition">
+
+      <mat-icon>{{ isListening ? 'mic_off' : 'mic' }}</mat-icon>
 
     </button>
-
-
   </div>
 
 

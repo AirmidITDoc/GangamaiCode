@@ -59,7 +59,8 @@ export class NewCasepaperComponent implements OnInit {
     isListening = false;
     isListeningadv = false;
     selectedLang = 'en-US';
-    selectedLang1= 'en-US';
+    selectedLang1 = 'en-US';
+    selectedLangHis = 'en-US';
     languages: LanguageOption[] = [];
 
     displayedItemColumn: string[] = [
@@ -179,6 +180,7 @@ export class NewCasepaperComponent implements OnInit {
     doctorId: any = 0
     departmentName = ''
     vIcdcode = ''
+    vPrscDoctorId = 0
     displayedColumns: string[] = ['CertificateDate', 'CertificateName', 'CertificateText', 'Action'];
 
     displayedColumns1: string[] = [
@@ -465,6 +467,8 @@ export class NewCasepaperComponent implements OnInit {
             this.speechService.stopRecognition();
         }
     }
+
+
     isListeningHistory = false;   // History of Illness
     isListeningRemark = false;   // Remark
     onMicToggle() {
@@ -478,15 +482,14 @@ export class NewCasepaperComponent implements OnInit {
         this.isListeningRemark = this.speechService.isListening;
     }
 
-    // ===================== HISTORY OF ILLNESS =====================
+
     onMicToggle1() {
-        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
+        this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
             const current = this.caseFormGroup.get('historyOfIllness')?.value || '';
             const updated = current ? `${current} ${text}` : text;
             this.caseFormGroup.get('historyOfIllness')?.setValue(updated);
         });
 
-        // sync button colour
         this.isListeningHistory = this.speechService.isListening;
     }
 
@@ -507,21 +510,21 @@ export class NewCasepaperComponent implements OnInit {
     }
 
 
-    private startListening(): void {
-        try {
-            this.recognition.start();
-            this.isListening = true;
-        } catch (e) {
-            console.warn(e);
-        }
-    }
+    // private startListening(): void {
+    //     try {
+    //         this.recognition.start();
+    //         this.isListening = true;
+    //     } catch (e) {
+    //         console.warn(e);
+    //     }
+    // }
 
-    private stopListening(): void {
-        if (this.recognition && this.isListening) {
-            this.recognition.stop();
-        }
-        this.isListening = false;
-    }
+    // private stopListening(): void {
+    //     if (this.recognition && this.isListening) {
+    //         this.recognition.stop();
+    //     }
+    //     this.isListening = false;
+    // }
 
 
     onFileSelected(event: any) {
@@ -642,7 +645,8 @@ export class NewCasepaperComponent implements OnInit {
             mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService2: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
-            historyOfIllness: ['']
+            historyOfIllness: [''],
+            prescDoctorId: this.vPrscDoctorId
         });
     }
 
@@ -664,7 +668,9 @@ export class NewCasepaperComponent implements OnInit {
             FollowupMonths: '',
             FollowupYears: '',
             dateStylebtn: ['Day'],
-            TemplateId: ['']
+            TemplateId: [''],
+
+            prescDoctorId: [this.vPrscDoctorId || 0],
         });
     }
 
@@ -721,7 +727,8 @@ export class NewCasepaperComponent implements OnInit {
             isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             allergy: [element.allergy ?? ''],
             bloodGroup: [element.bloodGroup ?? ''],
-            historyOfIllness: [element.historyOfIllness ?? '']
+            historyOfIllness: [element.historyOfIllness ?? ''],
+            prescDoctorId: [this.vPrscDoctorId || 0],
         });
     }
 
@@ -827,6 +834,7 @@ export class NewCasepaperComponent implements OnInit {
                 patientReferDocId: Number(ReferDocNameID),
                 departmentId: this.departmentId,//this.MedicineItemForm.get('departmentId')?.value,
                 historyOfIllness: this.caseFormGroup.get('historyOfIllness')?.value,
+                prescDoctorId: this.vPrscDoctorId,
             };
 
             if (this.dsItemList.data.length === 0) {
@@ -1019,7 +1027,8 @@ export class NewCasepaperComponent implements OnInit {
                     Temp: current.Temp || firstItem.temp,
                     Allergies: current.Allergies || firstItem.allergy,
                     BloodGroup: current.BloodGroup || firstItem.bloodGroup,
-                    historyOfIllness: current.historyOfIllness || firstItem.historyOfIllness
+                    historyOfIllness: current.historyOfIllness || firstItem.historyOfIllness,
+                    prescDoctorId: current.prescDoctorId || firstItem.prescDoctorId
                 });
                 this.vhistoryofillness = firstItem.historyOfIllness
                 this.vChiefComplaint = firstItem.chiefComplaint;
@@ -1032,6 +1041,7 @@ export class NewCasepaperComponent implements OnInit {
                 this.departmentId = firstItem.departmentId
                 this.doctorId = firstItem.patientReferDocId
                 this.MedicineItemForm.get('departmentId').setValue(firstItem.departmentId)
+                this.MedicineItemForm.get('prescDoctorId').setValue(firstItem.prescDoctorId)
                 if (firstItem.departmentId) {
 
                     setTimeout(() => {
@@ -1468,6 +1478,10 @@ export class NewCasepaperComponent implements OnInit {
     }
 
 
+    selectChangePrscDoctorName(row) {
+        this.vPrscDoctorId = row.value
+    }
+
     selectChangeChiefComplaint(selectedChips: string[]) {
         debugger
         this.addCheiflist = selectedChips;
@@ -1496,7 +1510,8 @@ export class NewCasepaperComponent implements OnInit {
             Diagnosis: [],
             ChiefComplaint: [],
             Examination: [],
-            departmentId: []
+            departmentId: [],
+            prescDoctorId: []
         }
     }
 
@@ -3097,21 +3112,21 @@ export class NewCasepaperComponent implements OnInit {
         })
     }
 
-    onMicToggleChiefComplaint() {
-        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
-            this.chiefComplaintInput?.addChip(text);
-        });
-    }
-    onMicToggleAssignDiagnosis() {
-        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
-            this.AssignDiagnosis?.addChip(text);
-        });
-    }
-    onMicToggleAssignExamination() {
-        this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
-            this.AssignExamination?.addChip(text);
-        });
-    }
+    // onMicToggleChiefComplaint() {
+    //     this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
+    //         this.chiefComplaintInput?.addChip(text);
+    //     });
+    // }
+    // onMicToggleAssignDiagnosis() {
+    //     this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
+    //         this.AssignDiagnosis?.addChip(text);
+    //     });
+    // }
+    // onMicToggleAssignExamination() {
+    //     this.speechService.toggleRecognition(this.selectedLang1, (text: string) => {
+    //         this.AssignExamination?.addChip(text);
+    //     });
+    // }
 }
 
 
@@ -3409,6 +3424,7 @@ export class MedicineItemList {
     editable: any;
     departmentId: any
     historyOfIllness: any
+    prescDoctorId: any
     /**
     * Constructor
     *
@@ -3496,6 +3512,7 @@ export class MedicineItemList {
             this.editable = MedicineItemList.editable || ''
             this.departmentId = MedicineItemList.departmentId || 0
             this.historyOfIllness = MedicineItemList.historyOfIllness || ''
+            this.prescDoctorId = MedicineItemList.prescDoctorId || 0
 
 
         }
