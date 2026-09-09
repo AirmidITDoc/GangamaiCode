@@ -212,5 +212,8 @@ export enum permissionCodes {
 
 
     //ICDE
-    MICDE_Master = 'MICDE_Master'
+    MICDE_Master = 'MICDE_Master',
+
+    //membership
+    Membership = 'Membership'
 }

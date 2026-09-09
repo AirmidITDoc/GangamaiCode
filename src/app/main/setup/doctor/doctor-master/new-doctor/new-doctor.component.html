@@ -118,14 +118,14 @@
                                                     </div>
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Birthdate" appearance="outline"
-                                                            formControllName="DateOfBirth" [(value)]="value"
+                                                            formControlName="DateOfBirth" [(value)]="value"
                                                             [formGroup]="myForm" placeholder="yyyy/mm/dd"
-                                                            (input)="onChangeDateofBirth()"></airmid-textbox>
+                                                            (valueChange)="onChangeDateofBirth($event)"></airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Pan Card No" formControlName="Pancardno"
-                                                            [value]="registerObj.panCardNo" [formGroup]="myForm"
+                                                            [value]="registerObj.panCardNo ?? ''" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().Pancardno"
                                                             [maxLength]="10"></airmid-textbox>
                                                     </div>
@@ -134,7 +134,7 @@
                                                         <airmid-textbox label="Aadhar Card No \ National ID"
                                                             formControlName="AadharCardNo"
                                                             (keypress)="keyPressAlphanumeric($event)"
-                                                            [value]="registerObj.aadharCardNo" [formGroup]="myForm"
+                                                            [value]="registerObj.aadharCardNo ?? ''" [formGroup]="myForm"
                                                             [maxLength]="Is9_Digit_National_Id ? 9 : 12"
                                                             [minLength]="Is9_Digit_National_Id ? 7 : 12"
                                                             [validations]="getValidationMessages().AadharCardNo"></airmid-textbox>
@@ -213,7 +213,7 @@
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="ESINO" formControlName="esino"
-                                                        [value]="registerObj.esino" [formGroup]="myForm"
+                                                        [value]="registerObj.esino ?? ''" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().esino"
                                                         [maxLength]="100"></airmid-textbox>
                                                 </div>
@@ -221,7 +221,7 @@
                                                 <div fxFlex="37%" fxFlex.xs="100%" fxFlex.sm="98%"
                                                     fxLayoutGap="12px 0px grid">
                                                     <airmid-textbox label="RegNo" formControlName="RegNo"
-                                                        [value]="registerObj.regNo" [formGroup]="myForm"
+                                                        [value]="registerObj.regNo ?? ''" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().RegNo"
                                                         [maxLength]="100"></airmid-textbox>
                                                     <!-- </div> -->
@@ -240,7 +240,7 @@
                                                 <div fxFlex="37%" fxFlex.xs="100%" fxFlex.sm="98%"
                                                     fxLayoutGap="12px 0px grid">
                                                     <airmid-textbox label="MahRegNo" formControlName="MahRegNo"
-                                                        [value]="registerObj.mahRegNo" [formGroup]="myForm"
+                                                        [value]="registerObj.mahRegNo ?? ''" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().mahRegNo"
                                                         [maxLength]="100"></airmid-textbox>
                                                     <mat-form-field appearance="outline" fxFlex>

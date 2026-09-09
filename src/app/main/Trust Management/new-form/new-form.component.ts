@@ -309,7 +309,8 @@ export class NewFormComponent {
       "membershipId": this.vmembershipId,
       "membershipDate": [(new Date()).toISOString()],
       "membershipTime": [(new Date()).toISOString()],
-      "membershipNo": ["1"],
+      "membershipNo": ["0"],
+      "femalemembershipNo": ["0"],
       "hprefixId": 0,
       "hgenderId": 0,
       "husbandFirstName": ['', [

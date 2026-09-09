@@ -71,8 +71,9 @@ export class MedicalrecordComponent implements OnInit {
     l_name: any = "%"
     CompanyId = "0"
     page: PageNames = PageNames.PATIENT;
- IsGastrologyEMR: boolean = false;
- 
+    IsGastrologyEMR: boolean = false;
+    IsGeneralCasePaper: boolean = false;
+
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
@@ -93,10 +94,13 @@ export class MedicalrecordComponent implements OnInit {
         this.GetAppointdetail()
 
 
-          const rawValue1 = this?._configue?.configParams?.IsGastrologyEMR || "";
+        const rawValue1 = this?._configue?.configParams?.IsGastrologyEMR || "";
         const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
         this.IsGastrologyEMR = id1 === "1";
 
+        const rawValue2 = this?._configue?.configParams?.IsGeneralCasePaper || "";
+        const [id2, val2] = rawValue2.includes(":") ? rawValue2.split(":") : [null, null];
+        this.IsGeneralCasePaper = id2 === "1";
 
     }
 
@@ -185,7 +189,7 @@ export class MedicalrecordComponent implements OnInit {
     }
 
     getfilterdata() {
-debugger
+        debugger
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -259,8 +263,8 @@ debugger
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-        
-             if (result) {
+
+            if (result) {
                 this.GetAppointdetail();
             }
 

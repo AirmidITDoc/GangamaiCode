@@ -266,7 +266,13 @@ export class OutsourceDetailsComponent {
             this.LabFormGroup.get('outSourceStatus').setValue(0)
 
         debugger
-        this.LabFormGroup.get('outSourceReportCollectedDateTime').setValue(this.isoDateTime1)
+        // this.LabFormGroup.get('outSourceReportCollectedDateTime').setValue(this.isoDateTime1)
+
+        if (this.data.outSourceReportCollectedDateTime != undefined) {
+            this.LabFormGroup.get('outSourceReportCollectedDateTime')?.setValue(this.isoDateTime1);
+        } else {
+            this.LabFormGroup.get('outSourceReportCollectedDateTime')?.setValue('1900-01-01T00:00:00');
+        }
 
         if (this.data.outSourceSampleSentDateTime != undefined) {
             this.LabFormGroup.get('outSourceSampleSentDateTime')?.setValue(this.date);
