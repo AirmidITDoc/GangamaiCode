@@ -1077,6 +1077,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     // Calculation of total amount.
     calculateTotalAmount(): void {
+        debugger
         const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
         const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
         const totalNet = totalSum - totalDiscount;
@@ -1096,7 +1097,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.isDiscountApplied = true;
             this.Consessionres = true
         }
-
+        else {
+    const concessionAmt = Number(this.OPFooterForm.get('concessionAmt')?.value || 0 ); 
+    this.isDiscountApplied = concessionAmt > 0;           
+      if (!this.isDiscountApplied) {
+        this.OPFooterForm.patchValue({
+            totalDiscountPer: 0,
+            concessionAmt: 0
+        }, { emitEvent: false });
+    }
+        }   
     }
     onPriceOrQtyChange(row: ChargesList = null): void {
         if (!row) return;

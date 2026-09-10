@@ -7,19 +7,29 @@
                 {{ node.icon || 'label' }}</mat-icon>
             <span class="node-label">{{ node.docCategory }}</span>
             <span class="doc-count" *ngIf="node.documentCount">{{ node.documentCount }}</span>
-            <span class="node-actions" *ngIf="manageable">
-                <button mat-icon-button title="Add sub-category"
-                    (click)="addChild.emit({id:node.id,mode:'add'}); $event.stopPropagation()">
-                    <mat-icon>create_new_folder</mat-icon>
+            <span class="node-actions" *ngIf="manageable || showDocumentActions">
+                <button *ngIf="showDocumentActions" mat-icon-button title="Upload file"
+                    (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
+                    <mat-icon>cloud_upload</mat-icon>
                 </button>
-                <button mat-icon-button title="Rename"
-                    (click)="addChild.emit({id:node.id,mode:'edit'}); $event.stopPropagation()">
-                    <mat-icon>edit</mat-icon>
+                <button *ngIf="showDocumentActions" mat-icon-button title="View files"
+                    (click)="viewDocuments.emit(node.id); $event.stopPropagation()">
+                    <mat-icon>visibility</mat-icon>
                 </button>
-                <button mat-icon-button title="Delete"
-                    (click)="addChild.emit({id:node.id,mode:'delete'}); $event.stopPropagation()">
-                    <mat-icon>delete_outline</mat-icon>
-                </button>
+                <ng-container *ngIf="manageable">
+                    <button mat-icon-button title="Add sub-category"
+                        (click)="addChild.emit({id:node.id,mode:'add'}); $event.stopPropagation()">
+                        <mat-icon>create_new_folder</mat-icon>
+                    </button>
+                    <button mat-icon-button title="Rename"
+                        (click)="addChild.emit({id:node.id,mode:'edit'}); $event.stopPropagation()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button title="Delete"
+                        (click)="addChild.emit({id:node.id,mode:'delete'}); $event.stopPropagation()">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </ng-container>
             </span>
         </div>
     </mat-tree-node>
@@ -37,19 +47,29 @@
                 {{ node.icon || 'folder' }}</mat-icon>
             <span class="node-label">{{ node.docCategory }}</span>
             <span class="child-count">{{ node.children.length }} sub</span>
-            <span class="node-actions" *ngIf="manageable">
-                <button mat-icon-button title="Add sub-category"
-                    (click)="addChild.emit({id:node.id,mode:'add'}); $event.stopPropagation()">
-                    <mat-icon>create_new_folder</mat-icon>
+            <span class="node-actions" *ngIf="manageable || showDocumentActions">
+                <button *ngIf="showDocumentActions" mat-icon-button title="Upload file"
+                    (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
+                    <mat-icon>cloud_upload</mat-icon>
                 </button>
-                <button mat-icon-button title="Rename"
-                    (click)="addChild.emit({id:node.id,mode:'edit'}); $event.stopPropagation()">
-                    <mat-icon>edit</mat-icon>
+                <button *ngIf="showDocumentActions" mat-icon-button title="View files"
+                    (click)="viewDocuments.emit(node.id); $event.stopPropagation()">
+                    <mat-icon>visibility</mat-icon>
                 </button>
-                <button mat-icon-button title="Delete"
-                    (click)="addChild.emit({id:node.id,mode:'delete'}); $event.stopPropagation()">
-                    <mat-icon>delete_outline</mat-icon>
-                </button>
+                <ng-container *ngIf="manageable">
+                    <button mat-icon-button title="Add sub-category"
+                        (click)="addChild.emit({id:node.id,mode:'add'}); $event.stopPropagation()">
+                        <mat-icon>create_new_folder</mat-icon>
+                    </button>
+                    <button mat-icon-button title="Rename"
+                        (click)="addChild.emit({id:node.id,mode:'edit'}); $event.stopPropagation()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button title="Delete"
+                        (click)="addChild.emit({id:node.id,mode:'delete'}); $event.stopPropagation()">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </ng-container>
             </span>
         </div>
 

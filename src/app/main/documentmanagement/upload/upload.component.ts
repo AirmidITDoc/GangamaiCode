@@ -1,4 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
@@ -20,8 +21,13 @@ interface StagedFile {
 })
 export class UploadComponent {
     @ViewChild('stepper') stepper?: MatStepper;
+    @ViewChild('categoryUploadInput') categoryUploadInput?: ElementRef<HTMLInputElement>;
+    @ViewChild('categoryFilesDialog') categoryFilesDialog?: TemplateRef<any>;
 
     categories: DocumentCategory[] = [];
+    allDocuments: DocumentFileModel[] = [];
+    categoryDocuments: DocumentFileModel[] = [];
+    categoryPopupTitle = 'Category files';
 
     /* Step 1 — patient */
     patientQuery = '';
@@ -43,13 +49,24 @@ export class UploadComponent {
     submitted = false;
     lastSubmittedCount = 0;
 
-    constructor(private snackBar: MatSnackBar, private _service: DocumentmanagementService) {
+    constructor(
+        private snackBar: MatSnackBar,
+        private dialog: MatDialog,
+        private _service: DocumentmanagementService,
+    ) {
         this.bindCategories();
+        this.bindDocuments();
     }
     bindCategories() {
         this._service.getCategoryTree().subscribe((res) => {
             this.categories = res;
-        })
+        });
+    }
+
+    bindDocuments() {
+        this._service.getDocuments().subscribe((res) => {
+            this.allDocuments = res || [];
+        });
     }
 
     /* ---------------- Step 1 ---------------- */
@@ -82,9 +99,67 @@ export class UploadComponent {
         this.selectedRegistration = null;
     }
 
+    clearRegistration(): void {
+        this.selectedRegistration = null;
+    }
+
     /* ---------------- Step 2 ---------------- */
     onCategorySelect(id: number): void {
         this.selectedCategoryId = id;
+    }
+
+    openCategoryUploadPicker(categoryId: number): void {
+        this.selectedCategoryId = categoryId;
+        if (this.categoryUploadInput) {
+            setTimeout(() => this.categoryUploadInput?.nativeElement.click());
+        }
+    }
+
+    onCategoryFileInput(e: Event): void {
+        const input = e.target as HTMLInputElement;
+        if (!this.selectedCategoryId || !input.files || !input.files.length) {
+            input.value = '';
+            return;
+        }
+
+        const files = Array.from(input.files);
+        const payload: DocumentFileModel[] = files.map((file) => ({
+            id: 0,
+            admissionId: this.selectedRegistration?.admissionId || 0,
+            docCatId: this.selectedCategoryId!,
+            document: file,
+            orgFileName: file.name,
+            savedFileName: file.name,
+            fileTags: '',
+            createdBy: 0,
+            createdDate: new Date(),
+            docNo: '',
+            fileKind: this.detectKind(file.name),
+            fileSize: file.size,
+        }));
+
+        this._service.saveDocument(payload).subscribe(() => {
+            this.snackBar.open(`${payload.length} document(s) uploaded successfully`, 'Dismiss', { duration: 3000 });
+            this.bindDocuments();
+            this.openCategoryDocuments(this.selectedCategoryId!);
+        });
+
+        input.value = '';
+    }
+
+    openCategoryDocuments(categoryId: number): void {
+        this.selectedCategoryId = categoryId;
+        this.categoryPopupTitle = this.selectedCategoryPath.length ? this.selectedCategoryPath.join(' / ') : 'Category files';
+        this._service.getDocuments().subscribe((res) => {
+            this.categoryDocuments = (res || []).filter((doc) => doc.docCatId === categoryId);
+            if (this.categoryFilesDialog) {
+                this.dialog.open(this.categoryFilesDialog, {
+                    width: '460px',
+                    maxWidth: '90vw',
+                    disableClose: false,
+                });
+            }
+        });
     }
 
     get selectedCategoryPath(): string[] {

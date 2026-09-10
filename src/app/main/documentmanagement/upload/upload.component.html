@@ -100,7 +100,7 @@
                             </div>
                             <div class="step-actions">
                                 <button mat-flat-button color="primary" matStepperNext
-                                    [disabled]="!selectedPatient && !selectedRegistration">Continue</button>
+                                    [disabled]="!selectedPatient || !selectedRegistration">Continue</button>
                             </div>
                         </mat-step>
 
@@ -108,13 +108,13 @@
                         <mat-step [completed]="!!selectedCategoryId">
                             <ng-template matStepLabel>Category</ng-template>
 
-                            <p class="step-hint">Drill into the filing structure below to choose exactly where this
-                                document
-                                belongs.</p>
+                            <p class="step-hint">Select a category, then use the upload icon to add files or the view icon to inspect the current files in that category.</p>
                             <div class="category-picker">
                                 <app-category-tree [nodes]="categories" [manageable]="false" [selectable]="true"
-                                    [selectedId]="selectedCategoryId"
-                                    (select)="onCategorySelect($event)"></app-category-tree>
+                                    [selectedId]="selectedCategoryId" [showDocumentActions]="true"
+                                    (select)="onCategorySelect($event)"
+                                    (uploadDocument)="openCategoryUploadPicker($event)"
+                                    (viewDocuments)="openCategoryDocuments($event)"></app-category-tree>
                             </div>
 
                             <div class="path-banner" *ngIf="selectedCategoryPath.length">
@@ -124,126 +124,37 @@
                                 </span>
                             </div>
 
-                            <div class="step-actions">
-                                <button mat-button matStepperPrevious>Back</button>
-                                <button mat-flat-button color="primary" matStepperNext
-                                    [disabled]="!selectedCategoryId">Continue</button>
-                            </div>
-                        </mat-step>
-
-                        <!-- STEP 3: FILES -->
-                        <mat-step [completed]="staged.length > 0">
-                            <ng-template matStepLabel>Files</ng-template>
-
-                            <div class="dropzone" [class.dragging]="isDragging" (dragover)="onDragOver($event)"
-                                (dragleave)="onDragLeave()" (drop)="onDrop($event)">
-                                <mat-icon>cloud_upload</mat-icon>
-                                <p>Drag &amp; drop files here</p>
-                                <span class="muted small">or</span>
-                                <label class="browse-btn">
-                                    Browse files
-                                    <input type="file" multiple hidden (change)="onFileInput($event)" />
-                                </label>
-                            </div>
-
-                            <div class="staged-list" *ngIf="staged.length">
-                                <div class="staged-row" *ngFor="let s of staged; let i = index">
-                                    <mat-icon [ngClass]="'kind-' + s.kind">{{ s.kind | fileKindIcon }}</mat-icon>
-                                    <mat-form-field appearance="outline" class="title-field">
-                                        <mat-label>Document title</mat-label>
-                                        <input matInput [(ngModel)]="s.title" />
-                                    </mat-form-field>
-                                    <mat-form-field appearance="outline" class="tags-field">
-                                        <mat-label>Tags (comma separated)</mat-label>
-                                        <input matInput [(ngModel)]="s.tagsInput" placeholder="lab, urgent…" />
-                                    </mat-form-field>
-                                    <span class="file-size mono">{{ (s.file.size / 1024) | number:'1.0-0' }} KB</span>
-                                    <button mat-icon-button
-                                        (click)="removeStaged(i)"><mat-icon>close</mat-icon></button>
-                                </div>
-                            </div>
+                            <input #categoryUploadInput type="file" multiple hidden (change)="onCategoryFileInput($event)" />
 
                             <div class="step-actions">
                                 <button mat-button matStepperPrevious>Back</button>
                                 <button mat-flat-button color="primary" matStepperNext
-                                    [disabled]="!staged.length">Continue</button>
-                            </div>
-                        </mat-step>
-
-                        <!-- STEP 4: REVIEW -->
-                        <mat-step>
-                            <ng-template matStepLabel>Review &amp; Submit</ng-template>
-
-                            <div *ngIf="!submitted">
-                                <p class="step-hint">Confirm the details below before saving to the patient's record.
-                                </p>
-
-                                <div class="review-grid">
-                                    <div class="review-block">
-                                        <span class="review-label">Patient</span>
-                                        <strong>{{ selectedPatient?.firstName+' '+selectedPatient?.middleName+'
-                                            '+selectedPatient?.lastName }}</strong>
-                                        <span class="mono muted small">Reg No : {{ selectedPatient?.regNo }}</span>
-                                        <span class="summary-sub mono">
-                                            Gender : {{ selectedPatient?.gender
-                                            }}, Year : {{ selectedPatient?.ageYear }} &middot; Mobile : {{
-                                            selectedPatient?.mobileNo }}
-                                        </span>
-                                    </div>
-                                    <div class="review-block">
-                                        <span class="review-label">Admission</span>
-                                        <mat-icon *ngIf="selectedRegistration?.patientTypeID =='1'"
-                                            matTooltip="Patient Category Self">account_box
-                                        </mat-icon>
-                                        <mat-icon *ngIf="selectedRegistration?.patientTypeID != '1'"
-                                            matTooltip="Patient Category Company">business
-                                        </mat-icon>
-                                        <strong>Ipd No : {{ selectedRegistration?.ipdno }}</strong>
-                                        <span class="mono muted small">Admission Date : {{
-                                            selectedRegistration?.admissionDate | date:'d/MM/y' }}</span>
-                                        <span class="summary-sub mono">
-                                            RegId : {{ selectedRegistration?.regId }}</span>
-                                    </div>
-                                    <div class="review-block">
-                                        <span class="review-label">Category</span>
-                                        <strong>{{ selectedCategoryPath[selectedCategoryPath.length - 1] }}</strong>
-                                        <span class="muted small">{{ selectedCategoryPath.join(' / ') }}</span>
-                                        <hr>
-                                        <span class="review-label">Files</span>
-                                        <strong>{{ staged.length }} document(s)</strong>
-                                        <span class="muted small">ready to save</span>
-                                    </div>
-                                </div>
-
-                                <ul class="review-file-list">
-                                    <li *ngFor="let s of staged">
-                                        <mat-icon [ngClass]="'kind-' + s.kind">{{ s.kind | fileKindIcon }}</mat-icon> {{
-                                        s.title }}
-                                    </li>
-                                </ul>
-
-                                <div class="step-actions">
-                                    <button mat-button matStepperPrevious>Back</button>
-                                    <button mat-flat-button color="primary" (click)="submit()">
-                                        <mat-icon>check_circle</mat-icon> Save to patient record
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="success-panel" *ngIf="submitted">
-                                <mat-icon>task_alt</mat-icon>
-                                <h3>{{ lastSubmittedCount }} document(s) saved</h3>
-                                <p>They're now attached to {{ selectedPatient?.name }}'s file under {{
-                                    selectedCategoryPath.join(' /
-                                    ') }}.</p>
-                                <div class="success-actions">
-                                    <a mat-flat-button color="primary" routerLink="/documents">View in library</a>
-                                    <button mat-stroked-button (click)="startOver()">Upload another</button>
-                                </div>
+                                    [disabled]="!selectedCategoryId">Finish</button>
                             </div>
                         </mat-step>
                     </mat-stepper>
                 </mat-card>
+
+                <ng-template #categoryFilesDialog>
+                    <h2 mat-dialog-title>{{ categoryPopupTitle }}</h2>
+                    <mat-dialog-content>
+                        <div class="popup-doc-list" *ngIf="categoryDocuments.length; else noCategoryDocs">
+                            <div class="popup-doc-row" *ngFor="let doc of categoryDocuments">
+                                <mat-icon [ngClass]="'kind-' + doc.fileKind">{{ doc.fileKind | fileKindIcon }}</mat-icon>
+                                <div class="popup-doc-main">
+                                    <span class="popup-doc-name">{{ doc.orgFileName }}</span>
+                                    <span class="popup-doc-sub mono">{{ doc.savedFileName }} &middot; {{ doc.fileSize | fileSize }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #noCategoryDocs>
+                            <p class="muted small no-docs">No uploaded files for this category yet.</p>
+                        </ng-template>
+                    </mat-dialog-content>
+                    <mat-dialog-actions align="end">
+                        <button mat-button mat-dialog-close>Close</button>
+                    </mat-dialog-actions>
+                </ng-template>
             </div>
         </div>
     </div>

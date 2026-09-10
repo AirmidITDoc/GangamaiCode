@@ -1,4 +1,4 @@
-<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar dynamicTableHeight>
+<div class="page-layout modal-wrapper grid-container resize-form-fields padding-fix" fusePerfectScrollbar dynamicTableHeight>
 
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -163,8 +163,9 @@
                                     class="w-100">Qty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber
-                                         (ngModelChange)="getCellCalculation(contact,contact.Qty)" [min]="0" />
+                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
+                                         (ngModelChange)="getCellCalculation(contact,contact.Qty)" [min]="0" 
+                                          (keypress)="keyPressDigitsOnly($event)"/>
                                     </mat-form-field>
 
                                 </mat-cell>
@@ -327,7 +328,7 @@
             </form>
         </div>
         <div class="modal-footer-buttons">
-            <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button>
+            <button type="button" class="btn btn-primary" [disabled]="isSaving" (click)="OnSave()">Save</button>
             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
 
 
