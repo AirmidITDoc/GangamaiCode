@@ -1,5 +1,5 @@
 
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -25,10 +25,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { set } from 'lodash';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { NewDoctorComponent } from 'app/main/setup/doctor/doctor-master/new-doctor/new-doctor.component';
-import { CompanyMasterListComponent } from 'app/main/setup/billing/company-master-list/company-master-list.component';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { MatSelectChange } from '@angular/material/select';
+import { NewCompanyMasterComponent } from 'app/main/setup/billing/company-master-list/new-company-master/new-company-master.component';
 
 @Component({
   selector: 'app-new-form',
@@ -186,6 +186,7 @@ export class NewFormComponent {
 
   ConstDoctor: any[] = [];
   RefDocOptions: any[] = [];
+  regObj: any = {};
 
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
@@ -198,6 +199,7 @@ export class NewFormComponent {
   autocompleteModeOccupation: string = "TrustOccupation";
   autocompleteModeRefDoctor: string = "RefDoctor";
   screenFromString = 'Common-form';
+
   constructor(
     public _NewMemberService: NewMemberService,
     private _formBuilder: UntypedFormBuilder,
@@ -219,105 +221,129 @@ export class NewFormComponent {
   ngOnInit(): void {
     this.today = new Date();
 
-    if ((this.data?.membershipId ?? 0) > 0) {
-
-      this.vmembershipDate = this.data?.membershipDate
-      this.vmembershipTime = this.data?.membershipTime
-
-
-      this.todayPlus5Years = this.data?.membershipvalidDate
-      this.wtodayPlus5Years = this.data?.wmembershipvalidDate
-
-    } else {
-      this.todayPlus5Years = new Date(this.today);
-      this.wtodayPlus5Years = new Date(this.today);
-
-      this.todayPlus5Years = new Date(
-        this.today.getFullYear() + 5, 2, 31);
-
-
-      this.wtodayPlus5Years = new Date(
-        this.today.getFullYear() + 5, 2, 31);
-
-      console.log(this.todayPlus5Years)
-      console.log(this.wtodayPlus5Years)
-    }
-
-
+    // Things that DON'T depend on regObj can stay outside, run immediately
     this.personalFormGroup = this.createFinalProcessForm();
-    this.personalFormGroup.patchValue(this.data)
-    this.personalFormGroup.markAllAsTouched();
-
-    this.Wifeform = this.Createwifeform()
+    this.Wifeform = this.Createwifeform();
     this.Childrensform = this.CreateChildrenform();
     this.Relativeform = this.Createrelativeform();
     this.Emrgencyform = this.CreateEmrgencyform();
-    this.Relform = this.createeditForm()
+    this.Relform = this.createeditForm();
+
+    this.setMembershipEndDate();
+    // this convert small letter into capital
+    ['membershipNo', 'femaleMembershipNo'].forEach(field => {
+      this.setupUppercaseTransform(field);
+    });
 
     if ((this.data?.membershipId ?? 0) > 0) {
-      console.log(this.data)
+      this._NewMemberService.getMemeberbyIdList(this.data?.membershipId).subscribe(res => {
+        this.regObj = res;
+        console.log("Membership Data:", this.regObj);
 
-      this.vmembershipId = this.data.membershipId
-      this.CityName = this.data.cityName
-      this.vAddress = this.data.residenceAddress || this.data.wresidenceAddress || ''
-      this.getOtherdetailsList(this.vmembershipId)
+        // Everything depending on regObj now goes HERE
 
-      console.log(this.data.husbandDob)
-      console.log(this.data.wifeDob)
+        // if ((this.regObj?.membershipId ?? 0) > 0) {
+        this.vmembershipDate = this.regObj?.membershipDate;
+        this.vmembershipTime = this.regObj?.membershipTime;
 
+        this.todayPlus5Years = this.regObj?.membershipvalidDate;
+        this.personalFormGroup.get('membershipvalidDate')?.setValue(this.todayPlus5Years);
+        this.wtodayPlus5Years = this.regObj?.wmembershipvalidDate;
+        this.personalFormGroup.get('wmembershipvalidDate')?.setValue(this.wtodayPlus5Years);
 
-      if (this.data?.hasMediclaim)
-        this.hasmediclaimstatus = true
-      if (this.data?.whasmediclaim)
-        this.whasmediclaimstatus = true
-      if (this.data?.feeReceived)
-        this.hFeesstatus = true
-      if (this.data?.wfeeReceived)
-        this.WFeesstatus = true
-      debugger
-      if (this.data?.ayushmanEnrolled)
-        this.HAyushman = true
-      if (this.data?.maleFemaleEnrolled)
-        this.wAyushman = true
-
-      if (this.data.husbandDob != '1900-01-01T00:00:00') {
-        this.vhusbanddob = new Date(this.data.husbandDob)
-
-        setTimeout(() => {
-          this.registerObj1.husbandDob = new Date(this.data.husbandDob)
-          this.onChangeDateofBirth(this.registerObj1.husbandDob)
-
-        }, 500);
-
-      }
-      if (this.data.wifeDob != '1900-01-01T00:00:00') {
-        this.vwifedob = new Date(this.data.wifeDob)
-
-        setTimeout(() => {
-          debugger
-          this.registerObj1.wifeDob = new Date(this.data.wifeDob)
-          this.onChangeDateofBirth1(this.registerObj1.wifeDob)
-
-        }, 500);
-
-      }
+        // the fields which are not directly mapped to the form group can be set individually
+        this.personalFormGroup.get('residencetype')?.setValue(this.regObj?.residenceType);
+        this.personalFormGroup.get('femalemembershipNo')?.setValue(this.regObj?.femaleMembershipNo);
+        this.personalFormGroup.get('membershipDate')?.setValue(this.regObj?.membershipDate);
 
 
-      this.vmediclaimenddate = this.data.mediclaimenddate
-      this.vhusbandFullBodyCheckupDate = this.data.husbandFullBodyCheckupDate
-      this.vmediclaimstartdate = this.data.mediclaimstartdate
-      this.vwifeFullBodyCheckupDate = this.data.wifeFullBodyCheckupDate
+        // patchValue needs regObj to actually have data
+        this.personalFormGroup.patchValue(this.regObj);
+        this.personalFormGroup.markAllAsTouched();
 
-      this.personalFormGroup.get("hasmediclaim").setValue(this.data.hasMediclaim)
+        if ((this.regObj?.membershipId ?? 0) > 0) {
 
-      this.personalFormGroup.get("wifeparentsnativeplace").setValue(this.data.wifeParentsNativePlace)
-      this.personalFormGroup.get("mediclaimpolicynumber").setValue(this.data.mediclaimPolicyNumber)
-      this.personalFormGroup.get("mediclaimcompany").setValue(this.data.mediclaimCompany)
-      this.personalFormGroup.get("wifemedications").setValue(this.data.wifeMedications)
-      this.personalFormGroup.get("husbandmedications").setValue(this.data.husbandMedications)
-      this.personalFormGroup.get("wifeparentaldetails").setValue(this.data.wifeParentalDetails)
+          this.vmembershipId = this.regObj.membershipId;
+          this.CityName = this.regObj.cityName;
+          this.vAddress = this.regObj.residenceAddress || this.regObj.wresidenceAddress || '';
+          this.getOtherdetailsList(this.vmembershipId);
 
+          console.log(this.regObj.husbandDob);
+          console.log(this.regObj.wifeDob);
+
+          if (this.regObj?.hasMediclaim) this.hasmediclaimstatus = true;
+          if (this.regObj?.whasmediclaim) this.whasmediclaimstatus = true;
+          if (this.regObj?.feeReceived) this.hFeesstatus = true;
+          if (this.regObj?.wfeeReceived) this.WFeesstatus = true;
+
+          if (this.regObj?.ayushmanEnrolled) this.HAyushman = true;
+          if (this.regObj?.maleFemaleEnrolled) this.wAyushman = true;
+
+          if (this.regObj.husbandDob != '1900-01-01T00:00:00') {
+            this.vhusbanddob = new Date(this.regObj.husbandDob);
+
+            setTimeout(() => {
+              this.registerObj1.husbandDob = new Date(this.regObj.husbandDob);
+              this.onChangeDateofBirth(this.registerObj1.husbandDob);
+            }, 500);
+          }
+
+          if (this.regObj.wifeDob != '1900-01-01T00:00:00') {
+            this.vwifedob = new Date(this.regObj.wifeDob);
+
+            setTimeout(() => {
+              this.registerObj1.wifeDob = new Date(this.regObj.wifeDob);
+              this.onChangeDateofBirth1(this.registerObj1.wifeDob);
+            }, 500);
+          }
+
+          this.vmediclaimenddate = this.regObj.mediclaimenddate;
+          this.vhusbandFullBodyCheckupDate = this.regObj.husbandFullBodyCheckupDate;
+          this.vmediclaimstartdate = this.regObj.mediclaimstartdate;
+          this.vwifeFullBodyCheckupDate = this.regObj.wifeFullBodyCheckupDate;
+
+          this.personalFormGroup.get("hasmediclaim").setValue(this.regObj.hasMediclaim);
+          this.personalFormGroup.get("wifeparentsnativeplace").setValue(this.regObj.wifeParentsNativePlace);
+          this.personalFormGroup.get("mediclaimpolicynumber").setValue(this.regObj.mediclaimPolicyNumber);
+          this.personalFormGroup.get("mediclaimcompany").setValue(this.regObj.mediclaimCompany);
+          this.personalFormGroup.get("wifemedications").setValue(this.regObj.wifeMedications);
+          this.personalFormGroup.get("husbandmedications").setValue(this.regObj.husbandMedications);
+          this.personalFormGroup.get("wifeparentaldetails").setValue(this.regObj.wifeParentalDetails);
+        }
+      });
+    } else {
+      this.todayPlus5Years = new Date(
+        this.today.getFullYear() + 5, 2, 31);
+      this.personalFormGroup.get('membershipvalidDate')?.setValue(this.todayPlus5Years);
+
+      this.wtodayPlus5Years = new Date(
+        this.today.getFullYear() + 5, 2, 31);
+      this.personalFormGroup.get('wmembershipvalidDate')?.setValue(this.wtodayPlus5Years);
+      // this.todayPlus5Years = new Date(Date.UTC(this.today.getFullYear() + 5, 2, 31));
+      // this.personalFormGroup.get('membershipvalidDate')?.setValue(this.todayPlus5Years);
+
+      // this.wtodayPlus5Years = new Date(Date.UTC(this.today.getFullYear() + 5, 2, 31));
+      // this.personalFormGroup.get('wmembershipvalidDate')?.setValue(this.wtodayPlus5Years);
+
+      console.log(this.todayPlus5Years);
+      console.log(this.wtodayPlus5Years);
     }
+  }
+
+  setMembershipEndDate(): void {
+    const fixedDate = new Date(2031, 2, 31); // year, month(0-indexed → 2=March), day → March 31, 2031, local time
+    const safeDateStr = formatDate(fixedDate, 'yyyy-MM-dd', 'en-US'); // local-safe, no UTC shift
+
+    this.personalFormGroup.get('membershipvalidDate')?.setValue(safeDateStr);
+    this.personalFormGroup.get('wmembershipvalidDate')?.setValue(safeDateStr);
+  }
+
+  private setupUppercaseTransform(controlName: string) {
+    this.personalFormGroup.get(controlName)?.valueChanges.subscribe(value => {
+      if (value && value !== value.toUpperCase()) {
+        this.personalFormGroup.get(controlName)?.setValue(value.toUpperCase(), { emitEvent: false });
+      }
+    });
   }
 
   createFinalProcessForm() {
@@ -427,7 +453,7 @@ export class NewFormComponent {
 
       "wPhoto": [''],
 
-      "cityId": [0,[Validators.required]],
+      "cityId": [0, [Validators.required]],
       "cityName": [''],
       "residenceAddress": [''],
       "residencetype": [false],
@@ -633,21 +659,30 @@ export class NewFormComponent {
   autocompleteModeprefix: string = "Prefix";
 
   onSave() {
+    debugger
 
-    if (this.dateTimeObj.date != new Date()) {
+    const isEdit = (this.regObj?.membershipId ?? 0) > 0;
 
-      const formattedDate1 = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
-      const formattedTime1 = this.datePipe.transform(new Date(), "HH:mm:ss");
+    if (!isEdit) {
+      // NEW RECORD: always use current date/time
+      const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+      const formattedTime = this.dateTimeObj.time;
 
-      this.personalFormGroup.get('membershipDate').setValue(formattedDate1);
-      this.personalFormGroup.get('membershipTime').setValue(formattedDate1 + ' ' + formattedTime1);
+      this.personalFormGroup.get('membershipDate').setValue(formattedDate);
+      this.personalFormGroup.get('membershipTime').setValue(formattedDate + ' ' + formattedTime);
+
     } else {
+      // EDIT, unchanged: keep the originally retrieved date/time
+      // const formattedDate = this.datePipe.transform(this.vmembershipDate, "yyyy-MM-dd");
+      // const formattedTime = this.datePipe.transform(this.vmembershipTime, "HH:mm:ss");
+      const formattedDate = this.datePipe.transform(this.personalFormGroup.get('membershipDate').value, "yyyy-MM-dd");
+      const formattedTime = this.dateTimeObj.time;
 
-      const formattedDate1 = this.datePipe.transform(this.vmembershipDate, "yyyy-MM-dd");
-      const formattedTime1 = this.datePipe.transform(this.vmembershipTime, "HH:mm:ss");
+      this.personalFormGroup.get('membershipDate').setValue(formattedDate);
+      this.personalFormGroup.get('membershipTime').setValue(formattedDate + ' ' + formattedTime);
 
-      this.personalFormGroup.get('membershipDate').setValue(formattedDate1);
-      this.personalFormGroup.get('membershipTime').setValue(formattedDate1 + ' ' + formattedTime1);
+      // this.personalFormGroup.get('membershipDate').setValue(formattedDate);
+      // this.personalFormGroup.get('membershipTime').setValue(formattedDate + ' ' + formattedTime);
     }
 
     if (this.personalFormGroup.get("husbandFirstName").value == '' && this.personalFormGroup.get("wifeFirstName").value == '') {
@@ -675,19 +710,19 @@ export class NewFormComponent {
       }
     }
 
-    // if (this.personalFormGroup.get('cityId').value == 0 || this.personalFormGroup.get('cityId').value == '') {
-    //   this.toastr.warning('Please select valid City Name ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if (this.personalFormGroup.get('cityId').value == 0 || this.personalFormGroup.get('cityId').value == '') {
+      this.toastr.warning('Please select valid City Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
-    // if (this.CityName == '') {
-    //   this.toastr.warning('Please select valid City Name ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if (this.CityName == '') {
+      this.toastr.warning('Please select valid City Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.personalFormGroup.get("ayushmanEnrolled").value) {
       if (this.personalFormGroup.get('haayushmanId').value == 0 || this.personalFormGroup.get('haayushmanId').value == '') {
         this.toastr.warning('Please select valid  aayushmanId ', 'Warning !', {
@@ -706,7 +741,7 @@ export class NewFormComponent {
     }
 
     if (this.personalFormGroup.get("hasmediclaim").value) {
-      debugger
+      // debugger
       if (this.personalFormGroup.get('mediclaimpolicynumber').value == 0 || this.personalFormGroup.get('mediclaimpolicynumber').value == '') {
         this.toastr.warning('Please select valid mediclaim policynumber ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -810,7 +845,7 @@ export class NewFormComponent {
     }
 
     if (this.Wifeform.get("DateOfBirth").value != '1900-01-01') {
-      debugger
+      // debugger
       const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
       if (DateOfBirth2) {
         const todayDate = new Date();
@@ -884,13 +919,13 @@ export class NewFormComponent {
     this.personalFormGroup.get("husbandOccupationId").setValue(parseInt(this.personalFormGroup.get("husbandOccupationId").value || 0))
     this.personalFormGroup.get("wifeOccupationId").setValue(parseInt(this.personalFormGroup.get("wifeOccupationId").value || 0))
 
-    this.personalFormGroup.get("membershipDate").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || this.data.membershipDate || '1900-01-01')
-    this.personalFormGroup.get("membershipTime").setValue(this.datePipe.transform(this.dateTimeObj.date) || this.data.membershipDate || '1900-01-01')
+    // this.personalFormGroup.get("membershipDate").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || this.regObj.membershipDate || '1900-01-01')
+    // this.personalFormGroup.get("membershipTime").setValue(this.datePipe.transform(this.dateTimeObj.date) || this.regObj.membershipDate || '1900-01-01')
 
-    this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.data.husbandFullBodyCheckupDate || '1900-01-01')
-    this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.data.wifeFullBodyCheckupDate || '1900-01-01')
-    this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.data.mediclaimStartDate || '1900-01-01')
-    this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.data.wifeFullBodyCheckupDate || '1900-01-01')
+    this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.husbandFullBodyCheckupDate || '1900-01-01')
+    this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || '1900-01-01')
+    this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.regObj.mediclaimStartDate || '1900-01-01')
+    this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || '1900-01-01')
     this.personalFormGroup.get("declarationDate").setValue(this.datePipe.transform(this.personalFormGroup.get("declarationDate").value, "yyyy-MM-dd"))
     this.personalFormGroup.get("receiptDate").setValue(this.datePipe.transform(this.personalFormGroup.get("receiptDate").value, "yyyy-MM-dd"))
 
@@ -1301,7 +1336,7 @@ export class NewFormComponent {
   }
 
   CenableEditing(contact: any): void {
-    debugger
+    // debugger
     this.editingContactId = contact.Prefix;
     this.Relform.patchValue({
       CEditPrefixId: contact.Prefix
@@ -1309,12 +1344,12 @@ export class NewFormComponent {
   }
 
   CDropDownValue(event: any): void {
-    debugger
+    // debugger
     if (!this.editingContactId) return;
     const contact = this.DSChildrenList.data.find(c => c.Prefix === this.editingContactId);
 
     if (contact) {
-      debugger
+      // debugger
       contact.Prefix = event?.value ?? event?.Prefix ?? event;
       contact.PrefixName = event?.name ?? event?.text ?? event?.PrefixName;
     }
@@ -1845,7 +1880,7 @@ export class NewFormComponent {
   }
 
   onChangeDateofBirth1(DateOfBirth: Date) {
-    debugger
+    // debugger
     if (DateOfBirth > this.minDate) {
       this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
@@ -1971,11 +2006,11 @@ export class NewFormComponent {
 
   }
 
-
+  showCompanyDropdownRefresh = true;
   getCompanyMaster() {
 
     const dialogRef = this._matDialog.open(
-      CompanyMasterListComponent,
+      NewCompanyMasterComponent,
       {
         maxWidth: "95vw",
         maxHeight: "94vh",
@@ -1985,10 +2020,14 @@ export class NewFormComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log("The dialog was closed - Insert Action", result);
-
+      this.showCompanyDropdownRefresh = false;
+      setTimeout(() => {
+        this.showCompanyDropdownRefresh = true;
+      }, 100);
     });
   }
 
+  showDoctorDropdownRefresh = true;
   getDoctorMaster() {
 
     const dialogRef = this._matDialog.open(
@@ -2002,36 +2041,32 @@ export class NewFormComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log("The dialog was closed - Insert Action", result);
-      if (result) {
-
-        this.loadDropdownOptions();
-        this.showDoseDropdownRefresh = false;
-        setTimeout(() => {
-          this.showDoseDropdownRefresh = true;
-        }, 100);
-      }
+      // this.loadDropdownOptions();
+      this.showDoctorDropdownRefresh = false;
+      setTimeout(() => {
+        this.showDoctorDropdownRefresh = true;
+      }, 100);
     });
 
 
   }
 
-  showDoseDropdownRefresh = true;
   private destroy$ = new Subject<void>();
-  private loadDropdownOptions(): void {
-    this.fetchDropdownOptions(this.autocompleteModeDoctor)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(options => {
-        this.ConstDoctor = [...options];
-        console.log(this.ConstDoctor)
-      });
-    this.fetchDropdownOptions(this.autocompleteModeRefDoctor)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(options => {
-        this.RefDocOptions = [...options];
-        console.log(this.ConstDoctor)
-      });
+  // private loadDropdownOptions(): void {
+  //   this.fetchDropdownOptions(this.autocompleteModeDoctor)
+  //     .pipe(takeUntil(this.destroy$))
+  //     .subscribe(options => {
+  //       this.ConstDoctor = [...options];
+  //       console.log(this.ConstDoctor)
+  //     });
+  //   this.fetchDropdownOptions(this.autocompleteModeRefDoctor)
+  //     .pipe(takeUntil(this.destroy$))
+  //     .subscribe(options => {
+  //       this.RefDocOptions = [...options];
+  //       console.log(this.ConstDoctor)
+  //     });
 
-  }
+  // }
 
 
   private fetchDropdownOptions(mode: string): Observable<any[]> {

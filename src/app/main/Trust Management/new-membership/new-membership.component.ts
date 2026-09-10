@@ -59,53 +59,75 @@ export class NewMembershipComponent {
 
     allColumns = [
 
-        { heading: "Registration Date", key: "membershipTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-        { heading: "M-Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "F-Mem No", key: "femaleMembershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Husband Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "DOB", key: "husbandDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "Age ", key: "husbandAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-        { heading: "Mobile No", key: "husbandMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "BloodGroup", key: "husbandBloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Male PAN", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Male Aadhaar ", key: "husbandAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        // { heading: "Registration Date", key: "membershipTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        // { heading: "M-Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "F-Mem No", key: "femaleMembershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Husband Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        // { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "DOB", key: "husbandDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        // { heading: "Age ", key: "husbandAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+        // { heading: "Mobile No", key: "husbandMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "BloodGroup", key: "husbandBloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Male PAN", key: "husbandPan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Male Aadhaar ", key: "husbandAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        // { heading: "Mediclaim PolicyNo", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+        // { heading: "Wife Name ", key: "wifeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        // { heading: "DOB", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        // { heading: "Age", key: "wifeAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+        // { heading: "Mobile No", key: "wifeMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "BloodGroup", key: "wifeBloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Wife PAN", key: "wifePAN", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Wife Aadhaar ", key: "wifeAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+
+        // // male other records 
+        // { heading: "Address", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Email", key: "husbandEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Education ", key: "husbandEducation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Occupation", key: "hOcccupation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: " Medications ", key: "husbandMedications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: " Body CheckupDate", key: "husbandFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+
+        // // wife other records
+        // { heading: "Address ", key: "wresidenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Wife Email", key: "wifeEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Wife Education ", key: "wifeEducation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        // { heading: "Wife Occupation", key: "wifeOccupation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        // { heading: "Wife Medications ", key: "wifeMedications", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Body CheckupDate", key: "wifeFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+
+
+        // { heading: "Monthly IncomeRange", key: "hIncome", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Family Doctor", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Family Doctor No", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Mediclaim Company", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        // { heading: "Mediclaim Issuance", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+        { heading: "Date", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Village", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Age", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120},        
+        { heading: "Mobile No", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BloodGroup", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PAN", key: "pan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Aadhaar No. ", key: "aadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Mediclaim PolicyNo", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
-        { heading: "Wife Name ", key: "wifeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "DOB", key: "wifeDob", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "Age", key: "wifeAgeY", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-        { heading: "Mobile No", key: "wifeMobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "BloodGroup", key: "wifeBloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Wife PAN", key: "wifePAN", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Wife Aadhaar ", key: "wifeAadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-
-
-        // male other records 
         { heading: "Address", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Email", key: "husbandEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Education ", key: "husbandEducation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Occupation", key: "hOcccupation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: " Medications ", key: "husbandMedications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: " Body CheckupDate", key: "husbandFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-
-        // wife other records
-        { heading: "Address ", key: "wresidenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Wife Email", key: "wifeEmail", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Wife Education ", key: "wifeEducation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Wife Occupation", key: "wifeOccupation", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Wife Medications ", key: "wifeMedications", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Body CheckupDate", key: "wifeFullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-
-
-        { heading: "Monthly IncomeRange", key: "hIncome", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Family Doctor", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Family Doctor No", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Mediclaim Company", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Mediclaim Issuance", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
-        // { heading: "Membership validDate", key: "membershipvalidDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "WifePreviousMember", key: "wifePreviousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Education ", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Occupation", key: "occupationName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Medications", key: "medications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: " MediclaimIssuanceAmt ", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "CompanyName ", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Mediclaim StartDate", key: "mediclaimStartDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "Mediclaim EndDate", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "Aayushman Id ", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PreviousMemberId ", key: "previousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: " FamilyDoctorName ", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: " FamilyDoctorContact ", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: " Body CheckupDate", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
