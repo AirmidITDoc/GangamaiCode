@@ -23,8 +23,8 @@ export class DocumentmanagementService {
             sortOrder: null
         })
     }
-    public getCategoryTree() {
-        return this._httpClient.GetData("DocumentCategory/List");
+    public getCategoryTree(id) {
+        return this._httpClient.GetData("DocumentCategory/List?Id=" + id);
     }
     public saveCategory(Param) {
         if (Param.id > 0)

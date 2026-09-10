@@ -17,6 +17,7 @@ export class QrcodegeneratorComponent implements OnInit {
     QrData = {};
     Title = "QR Code Print";
     ngOnInit(): void {
+        debugger
         if (this.data) {
             this.QrData = this.data.QrData;
             this.Title = this.data.title;

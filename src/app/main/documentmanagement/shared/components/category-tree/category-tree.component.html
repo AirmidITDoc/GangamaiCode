@@ -16,6 +16,10 @@
                     (click)="viewDocuments.emit(node.id); $event.stopPropagation()">
                     <mat-icon>visibility</mat-icon>
                 </button>
+                <button *ngIf="showDocumentActions" mat-icon-button title="Print QR Code"
+                    (click)="generateQrCode.emit(node.id); $event.stopPropagation()">
+                    <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
+                </button>
                 <ng-container *ngIf="manageable">
                     <button mat-icon-button title="Add sub-category"
                         (click)="addChild.emit({id:node.id,mode:'add'}); $event.stopPropagation()">
@@ -46,7 +50,8 @@
             <mat-icon class="node-icon" [style.color]="node.color || 'var(--accent-teal)'">
                 {{ node.icon || 'folder' }}</mat-icon>
             <span class="node-label">{{ node.docCategory }}</span>
-            <span class="child-count">{{ node.children.length }} sub</span>
+            <span class="doc-count" *ngIf="node.documentCount">{{ node.documentCount }}</span>
+            <!-- <span class="child-count">{{ node.children.length }} sub</span> -->
             <span class="node-actions" *ngIf="manageable || showDocumentActions">
                 <button *ngIf="showDocumentActions" mat-icon-button title="Upload file"
                     (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
@@ -55,6 +60,10 @@
                 <button *ngIf="showDocumentActions" mat-icon-button title="View files"
                     (click)="viewDocuments.emit(node.id); $event.stopPropagation()">
                     <mat-icon>visibility</mat-icon>
+                </button>
+                <button *ngIf="showDocumentActions" mat-icon-button title="Print QR Code"
+                    (click)="generateQrCode.emit(node.id); $event.stopPropagation()">
+                    <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
                 </button>
                 <ng-container *ngIf="manageable">
                     <button mat-icon-button title="Add sub-category"

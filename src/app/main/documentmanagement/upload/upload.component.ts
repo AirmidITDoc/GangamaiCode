@@ -6,6 +6,7 @@ import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/
 import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
 import { DocumentmanagementService } from '../documentmanagement.service';
+import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
 
 interface StagedFile {
     file: File;
@@ -54,18 +55,10 @@ export class UploadComponent {
         private dialog: MatDialog,
         private _service: DocumentmanagementService,
     ) {
-        this.bindCategories();
-        this.bindDocuments();
     }
-    bindCategories() {
-        this._service.getCategoryTree().subscribe((res) => {
+    bindCategories(id: number) {
+        this._service.getCategoryTree(id).subscribe((res) => {
             this.categories = res;
-        });
-    }
-
-    bindDocuments() {
-        this._service.getDocuments().subscribe((res) => {
-            this.allDocuments = res || [];
         });
     }
 
@@ -78,13 +71,13 @@ export class UploadComponent {
     getAdmissions(): void {
         if (this.selectedPatient) {
             this._service.getAdmissions(this.selectedPatient.id).subscribe((res) => {
-                debugger;
                 this.registrations = res;
             });
         }
     }
     pickRegistration(r: any): void {
         this.selectedRegistration = r;
+        this.bindCategories(this.selectedRegistration?.admissionId || 0);
     }
 
     pickPatient(p: Patient): void {
@@ -140,8 +133,8 @@ export class UploadComponent {
 
         this._service.saveDocument(payload).subscribe(() => {
             this.snackBar.open(`${payload.length} document(s) uploaded successfully`, 'Dismiss', { duration: 3000 });
-            this.bindDocuments();
-            this.openCategoryDocuments(this.selectedCategoryId!);
+            this.bindCategories(this.selectedRegistration?.admissionId || 0);
+            // this.openCategoryDocuments(this.selectedCategoryId!);
         });
 
         input.value = '';
@@ -160,6 +153,27 @@ export class UploadComponent {
                 });
             }
         });
+    }
+    printQrCode(categoryId: number): void {
+        if (categoryId > 0) {
+            const match = this.getAllPaths().find((p) => p.id === categoryId);
+            var category = match ? match.path : [];
+            const dialogRef = this.dialog.open(QrcodegeneratorComponent,
+                {
+                    data: {
+                        QrData: [{
+                            QrCodeData: categoryId,
+                            Qty: 1,
+                            Width: 15, Margin: 2, Between: 3,
+                        }],
+                        title: category || 'Category files',
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+            });
+            dialogRef.afterClosed().subscribe(result => {
+            });
+        }
     }
 
     get selectedCategoryPath(): string[] {
