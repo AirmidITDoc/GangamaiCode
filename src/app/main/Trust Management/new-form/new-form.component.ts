@@ -24,6 +24,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { set } from 'lodash';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { NewDoctorComponent } from 'app/main/setup/doctor/doctor-master/new-doctor/new-doctor.component';
+import { CompanyMasterListComponent } from 'app/main/setup/billing/company-master-list/company-master-list.component';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-new-form',
@@ -116,6 +121,9 @@ export class NewFormComponent {
   value = new Date()
   value1 = new Date()
   minDate = new Date();
+  vmembershipDate: any
+  vmembershipTime: any
+
 
   DSChildrenList = new MatTableDataSource<Childdetail>();
   DSRelativeList = new MatTableDataSource<Relativedetail>();
@@ -176,6 +184,9 @@ export class NewFormComponent {
   vwdeathDate = new Date();
   vhdeathDate = new Date();
 
+  ConstDoctor: any[] = [];
+  RefDocOptions: any[] = [];
+
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
   autocompleteModegender: string = "Gender";
@@ -185,6 +196,7 @@ export class NewFormComponent {
   autocompleteModeAnyOther: string = "PCPNDTAnyother";
   autocompleteTrustIncomerange: string = "TrustIncomerange";
   autocompleteModeOccupation: string = "TrustOccupation";
+  autocompleteModeRefDoctor: string = "RefDoctor";
   screenFromString = 'Common-form';
   constructor(
     public _NewMemberService: NewMemberService,
@@ -196,6 +208,7 @@ export class NewFormComponent {
     public datePipe: DatePipe,
     private formBuilder: UntypedFormBuilder,
     public matDialog: MatDialog,
+    private apiCaller: ApiCaller, private router: Router,
     private commonService: PrintserviceService, private advanceDataStored: AdvanceDataStored,
     private _configue: ConfigService, private accountService: AuthenticationService,
     public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
@@ -207,6 +220,10 @@ export class NewFormComponent {
     this.today = new Date();
 
     if ((this.data?.membershipId ?? 0) > 0) {
+
+      this.vmembershipDate = this.data?.membershipDate
+      this.vmembershipTime = this.data?.membershipTime
+
 
       this.todayPlus5Years = this.data?.membershipvalidDate
       this.wtodayPlus5Years = this.data?.wmembershipvalidDate
@@ -339,6 +356,11 @@ export class NewFormComponent {
         Validators.maxLength(10),
         Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
+      "husbandMobileNo": ['', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
       "husbandEmail": ['', [Validators.email]],
       "husbandBloodGroupId": [''],// ['', [Validators.required]],
       "husbandAadhaar": ['', [
@@ -382,6 +404,12 @@ export class NewFormComponent {
         Validators.maxLength(10),
         Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
+
+      "wifeMobileNo": ['', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
       "wifeEmail": ['', [Validators.email]],
       "wifeAadhaar": ['', [
         Validators.minLength(12),
@@ -399,7 +427,7 @@ export class NewFormComponent {
 
       "wPhoto": [''],
 
-      "cityId": ['', [Validators.required]],
+      "cityId": [0,[Validators.required]],
       "cityName": [''],
       "residenceAddress": [''],
       "residencetype": [false],
@@ -436,6 +464,9 @@ export class NewFormComponent {
       "wmediclaimEndDate": '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "wmonthlyIncomeRange": [0],
 
+      "hconsultDoctorId": [0],
+
+      "familyDoctorId": [0],
       "familyDoctorName": ['',],
       "familyDoctorContact": ['', [
         Validators.minLength(10),
@@ -443,7 +474,8 @@ export class NewFormComponent {
         Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
 
-
+      "wconsultDoctorId": [0],
+      "wfamilyDoctorId": [0],
       "wfamilyDoctorName": ['',],
       "wfamilyDoctorContact": ['', [
         Validators.minLength(10),
@@ -593,7 +625,7 @@ export class NewFormComponent {
     return this.personalFormGroup.get('tMembershipEmrgencies') as FormArray;
   }
   onChangecity(e) {
-    this.CityName = e.cityName
+    this.CityName = e.cityName || ''
 
   }
 
@@ -601,6 +633,22 @@ export class NewFormComponent {
   autocompleteModeprefix: string = "Prefix";
 
   onSave() {
+
+    if (this.dateTimeObj.date != new Date()) {
+
+      const formattedDate1 = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+      const formattedTime1 = this.datePipe.transform(new Date(), "HH:mm:ss");
+
+      this.personalFormGroup.get('membershipDate').setValue(formattedDate1);
+      this.personalFormGroup.get('membershipTime').setValue(formattedDate1 + ' ' + formattedTime1);
+    } else {
+
+      const formattedDate1 = this.datePipe.transform(this.vmembershipDate, "yyyy-MM-dd");
+      const formattedTime1 = this.datePipe.transform(this.vmembershipTime, "HH:mm:ss");
+
+      this.personalFormGroup.get('membershipDate').setValue(formattedDate1);
+      this.personalFormGroup.get('membershipTime').setValue(formattedDate1 + ' ' + formattedTime1);
+    }
 
     if (this.personalFormGroup.get("husbandFirstName").value == '' && this.personalFormGroup.get("wifeFirstName").value == '') {
       this.toastr.warning('Please Enter Patient Details', 'Warning !', {
@@ -627,19 +675,19 @@ export class NewFormComponent {
       }
     }
 
-    if (this.personalFormGroup.get('cityId').value == 0 || this.personalFormGroup.get('cityId').value == '') {
-      this.toastr.warning('Please select valid City Name ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this.personalFormGroup.get('cityId').value == 0 || this.personalFormGroup.get('cityId').value == '') {
+    //   this.toastr.warning('Please select valid City Name ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
 
-    if (this.CityName == '') {
-      this.toastr.warning('Please select valid City Name ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this.CityName == '') {
+    //   this.toastr.warning('Please select valid City Name ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if (this.personalFormGroup.get("ayushmanEnrolled").value) {
       if (this.personalFormGroup.get('haayushmanId').value == 0 || this.personalFormGroup.get('haayushmanId').value == '') {
         this.toastr.warning('Please select valid  aayushmanId ', 'Warning !', {
@@ -716,23 +764,23 @@ export class NewFormComponent {
     }
 
 
-    if (this.personalFormGroup.get("feeReceived").value) {
-      if (this.personalFormGroup.get('feeAmount').value == 0 || this.personalFormGroup.get('feeAmount').value == '') {
-        this.toastr.warning('Please select valid husband feeAmount ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    // if (this.personalFormGroup.get("feeReceived").value) {
+    //   if (this.personalFormGroup.get('feeAmount').value == 0 || this.personalFormGroup.get('feeAmount').value == '') {
+    //     this.toastr.warning('Please select valid husband feeAmount ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
 
-    if (this.personalFormGroup.get("wfeeReceived").value) {
-      if (this.personalFormGroup.get('wfeeAmount').value == 0 || this.personalFormGroup.get('wfeeAmount').value == '') {
-        this.toastr.warning('Please select valid Wife feeAmount ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    // if (this.personalFormGroup.get("wfeeReceived").value) {
+    //   if (this.personalFormGroup.get('wfeeAmount').value == 0 || this.personalFormGroup.get('wfeeAmount').value == '') {
+    //     this.toastr.warning('Please select valid Wife feeAmount ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
 
     if (this.personalFormGroup.get("DateOfBirth").value != '1900-01-01') {
       const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
@@ -1157,8 +1205,10 @@ export class NewFormComponent {
 
 
       husbandmobile: [],
+      husbandMobileNo: [],
       husbandemail: [],
       wifemobile: [],
+      WifeMobileNo: [],
       wifeemail: [],
 
       residenceaddress: [],
@@ -1230,7 +1280,13 @@ export class NewFormComponent {
       REditPrefixId: [],
       CEditPrefixId: [],
       EEditPrefixId: [],
-      RelationEdit: []
+      RelationEdit: [],
+      refDocNameId: [],
+      familyDoctorId: [],
+      hconsultDoctorId: [],
+      wconsultDoctorId: [],
+      wfamilyDoctorId: [],
+
     };
   }
   // Edit Prefix
@@ -1641,28 +1697,28 @@ export class NewFormComponent {
     if (this.personalFormGroup.get("husbandFirstName").value !== '') {
 
 
-      // this.personalFormGroup.get('hprefixId').reset();
+
       this.personalFormGroup.get('hprefixId').setValidators([Validators.required]);
       this.personalFormGroup.get('hprefixId').enable();
-      // this.personalFormGroup.get('husbandMobile').reset();
-      this.personalFormGroup.get('husbandMobile').setValidators([Validators.required]);
-      this.personalFormGroup.get('husbandMobile').enable();
 
-      // this.personalFormGroup.get('husbandAadhaar').reset();
-      this.personalFormGroup.get('husbandAadhaar').setValidators([Validators.required]);
-      this.personalFormGroup.get('husbandAadhaar').enable();
-      // this.personalFormGroup.get('husbandOccupationId').reset();
-      this.personalFormGroup.get('husbandOccupationId').setValidators([Validators.required]);
-      this.personalFormGroup.get('husbandOccupationId').enable();
-      // this.personalFormGroup.get('nativePlace').reset();
-      this.personalFormGroup.get('nativePlace').setValidators([Validators.required]);
-      this.personalFormGroup.get('nativePlace').enable();
-      // this.personalFormGroup.get('DateOfBirth').reset();
+      // this.personalFormGroup.get('husbandMobile').setValidators([Validators.required]);
+      // this.personalFormGroup.get('husbandMobile').enable();
+
+
+      // this.personalFormGroup.get('husbandAadhaar').setValidators([Validators.required]);
+      // this.personalFormGroup.get('husbandAadhaar').enable();
+
+      // this.personalFormGroup.get('husbandOccupationId').setValidators([Validators.required]);
+      // this.personalFormGroup.get('husbandOccupationId').enable();
+      // ;
+      // this.personalFormGroup.get('nativePlace').setValidators([Validators.required]);
+      // this.personalFormGroup.get('nativePlace').enable();
+
       this.personalFormGroup.get('DateOfBirth').setValidators([Validators.required]);
       this.personalFormGroup.get('DateOfBirth').enable();
 
-      this.personalFormGroup.get('residenceAddress').setValidators([Validators.required]);
-      this.personalFormGroup.get('residenceAddress').enable();
+      // this.personalFormGroup.get('residenceAddress').setValidators([Validators.required]);
+      // this.personalFormGroup.get('residenceAddress').enable();
 
     }
   }
@@ -1672,20 +1728,20 @@ export class NewFormComponent {
     if (this.personalFormGroup.get("wifeFirstName").value !== '') {
 
       this.personalFormGroup.get('wprefixId').setValidators([Validators.required]);
-      this.personalFormGroup.get('wprefixId').enable();
-      this.personalFormGroup.get('wifeMobile').setValidators([Validators.required]);
-      this.personalFormGroup.get('wifeMobile').enable();
-      this.personalFormGroup.get('wifeAadhaar').setValidators([Validators.required]);
-      this.personalFormGroup.get('wifeAadhaar').enable();
-      this.personalFormGroup.get('wifeOccupationId').setValidators([Validators.required]);
-      this.personalFormGroup.get('wifeOccupationId').enable();
-      this.personalFormGroup.get('wifeparentsnativeplace').setValidators([Validators.required]);
-      this.personalFormGroup.get('wifeparentsnativeplace').enable();
+      // this.personalFormGroup.get('wprefixId').enable();
+      // this.personalFormGroup.get('wifeMobile').setValidators([Validators.required]);
+      // this.personalFormGroup.get('wifeMobile').enable();
+      // this.personalFormGroup.get('wifeAadhaar').setValidators([Validators.required]);
+      // this.personalFormGroup.get('wifeAadhaar').enable();
+      // this.personalFormGroup.get('wifeOccupationId').setValidators([Validators.required]);
+      // this.personalFormGroup.get('wifeOccupationId').enable();
+      // this.personalFormGroup.get('wifeparentsnativeplace').setValidators([Validators.required]);
+      // this.personalFormGroup.get('wifeparentsnativeplace').enable();
       this.Wifeform.get('DateOfBirth').setValidators([Validators.required]);
       this.Wifeform.get('DateOfBirth').enable();
 
-      this.personalFormGroup.get('wresidenceAddress').setValidators([Validators.required]);
-      this.personalFormGroup.get('wresidenceAddress').enable();
+      // this.personalFormGroup.get('wresidenceAddress').setValidators([Validators.required]);
+      // this.personalFormGroup.get('wresidenceAddress').enable();
     }
   }
 
@@ -1914,6 +1970,82 @@ export class NewFormComponent {
     this.vAddress = this.personalFormGroup.get('residenceAddress').value || this.personalFormGroup.get('wresidenceAddress').value
 
   }
+
+
+  getCompanyMaster() {
+
+    const dialogRef = this._matDialog.open(
+      CompanyMasterListComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: "94vh",
+        width: "100%"
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed - Insert Action", result);
+
+    });
+  }
+
+  getDoctorMaster() {
+
+    const dialogRef = this._matDialog.open(
+      NewDoctorComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: "94vh",
+        width: "100%",
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed - Insert Action", result);
+      if (result) {
+
+        this.loadDropdownOptions();
+        this.showDoseDropdownRefresh = false;
+        setTimeout(() => {
+          this.showDoseDropdownRefresh = true;
+        }, 100);
+      }
+    });
+
+
+  }
+
+  showDoseDropdownRefresh = true;
+  private destroy$ = new Subject<void>();
+  private loadDropdownOptions(): void {
+    this.fetchDropdownOptions(this.autocompleteModeDoctor)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(options => {
+        this.ConstDoctor = [...options];
+        console.log(this.ConstDoctor)
+      });
+    this.fetchDropdownOptions(this.autocompleteModeRefDoctor)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(options => {
+        this.RefDocOptions = [...options];
+        console.log(this.ConstDoctor)
+      });
+
+  }
+
+
+  private fetchDropdownOptions(mode: string): Observable<any[]> {
+    if (!mode) {
+      return of([]);
+    }
+    return this.apiCaller.GetData(`Dropdown/GetBindDropDown?mode=${mode}`);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 }
 
 

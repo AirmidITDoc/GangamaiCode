@@ -106,6 +106,16 @@
                                                                 </div>
 
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <airmid-textbox label="Mobile No1"
+                                                                        formControlName="husbandMobileNo"
+                                                                        [value]="data?.husbandMobileNo"
+                                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().husbandMobileNo"
+                                                                        [maxLength]="10"></airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label=" Email"
                                                                         formControlName="husbandEmail"
                                                                         [value]="data?.husbandemail"
@@ -297,6 +307,18 @@
                                                                         [maxLength]="10"></airmid-textbox>
 
                                                                 </div>
+
+                                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                                    <airmid-textbox label="Mobile No1"
+                                                                        formControlName="wifeMobileNo"
+                                                                        [value]="data?.wifeMobileNo"
+                                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                                        [formGroup]="personalFormGroup"
+                                                                        [validations]="getValidationMessages().WifeMobileNo"
+                                                                        [maxLength]="10"></airmid-textbox>
+
+                                                                </div>
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Email"
                                                                         formControlName="wifeEmail"
@@ -459,26 +481,26 @@
                                                     </airmid-dropdown>
                                                 </div>
 
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="residencetype"
-                                                        style="margin-left:20px;" [value]="data?.residencetype">
+                                                        style="margin-left:10px;" [value]="data?.residencetype">
                                                         Residence Own </mat-checkbox>
 
                                                 </div>
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Residence Address"
                                                         formControlName="residenceAddress"
                                                         [value]="data?.residenceAddress" [formGroup]="personalFormGroup"
                                                         (keydown)="onResidenceAddressEnter()"
                                                         [validations]="getValidationMessages().residenceaddress"></airmid-textbox>
                                                 </div>
-                                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="wresidencetype"
                                                         style="margin-left:20px;" [value]="data?.wresidencetype">
-                                                        WifeResidence Own </mat-checkbox>
+                                                        Wife Residence Own </mat-checkbox>
 
                                                 </div>
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="26%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Residence Address"
                                                         formControlName="wresidenceAddress"
                                                         [value]="data?.wresidenceAddress"
@@ -496,17 +518,19 @@
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <airmid-textbox label="Husband Family Doctor Name"
-                                                        (keypress)="allowOnlyAlphabets($event)"
-                                                        formControlName="familyDoctorName"
-                                                        [value]="data?.familydoctorname" [formGroup]="personalFormGroup"
-                                                        [validations]="getValidationMessages().familydoctorname"></airmid-textbox>
-
+                                                    <airmid-dropdown label="Husband Family Doctor Name"
+                                                        formControlName="familyDoctorId"
+                                                        [value]="data?.familyDoctorId ?? 0"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().familyDoctorId"
+                                                        [mode]="autocompleteModeRefDoctor">
+                                                    </airmid-dropdown>
                                                 </div>
 
-                                                <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+
 
                                                     <airmid-textbox label="Husband Doctor contactNo"
                                                         (keypress)="keyPressAlphanumeric($event)"
@@ -517,19 +541,29 @@
                                                         [maxLength]="10"></airmid-textbox>
 
                                                 </div>
-
-                                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                    <airmid-textbox label="Wife Family Doctor Name"
-                                                        (keypress)="allowOnlyAlphabets($event)"
-                                                        formControlName="wfamilyDoctorName"
-                                                        [value]="data?.wfamilyDoctorName"
+                                                <!-- [options]="ConstDoctor" -->
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Consultant Doctor Name"
+                                                        formControlName="hconsultDoctorId"
+                                                        [value]="data?.hconsultDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
-                                                        [validations]="getValidationMessages().wfamilyDoctorName"></airmid-textbox>
+                                                        [validations]="getValidationMessages().hconsultDoctorId"
+                                                        [mode]="autocompleteModeDoctor">
+                                                    </airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
 
+
+                                                    <airmid-dropdown label="Wife Family Doctor Name"
+                                                        formControlName="wfamilyDoctorId"
+                                                        [value]="data?.wfamilyDoctorId ?? 0"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().wfamilyDoctorId"
+                                                        [mode]="autocompleteModeRefDoctor">
+                                                    </airmid-dropdown>
                                                 </div>
 
-                                                <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-textbox label="Wife Doctor contactNo"
                                                         (keypress)="keyPressAlphanumeric($event)"
@@ -540,7 +574,15 @@
                                                         [maxLength]="10"></airmid-textbox>
 
                                                 </div>
-
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <!-- [value]="data.wconsultDoctorId ?? 0" -->
+                                                    <airmid-dropdown label="Consultant Doctor Name"
+                                                        formControlName="wconsultDoctorId"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().wconsultDoctorId"
+                                                        [mode]="autocompleteModeDoctor">
+                                                    </airmid-dropdown>
+                                                </div>
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
                                                         [value]="data?.ayushmanEnrolled"
@@ -929,7 +971,8 @@
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                         *ngIf="WFeesstatus">
                                                         <airmid-textbox label="FemaleMembership No"
-                                                            formControlName="femalemembershipNo" [value]="data?.femalemembershipNo"
+                                                            formControlName="femalemembershipNo"
+                                                            [value]="data?.femalemembershipNo"
                                                             [formGroup]="personalFormGroup"></airmid-textbox>
                                                     </div>
 
@@ -1593,6 +1636,13 @@
 
     <div class="modal-footer">
         <div class="modal-footer-buttons">
+            <button mat-raised-button style="height: 36px;" (click)="getDoctorMaster()">
+                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
+                Doctor</button>
+
+            <button mat-raised-button style="height: 36px;" (click)="getCompanyMaster()">
+                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
+                Company</button>
 
             <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
             <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
