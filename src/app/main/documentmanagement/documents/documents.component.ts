@@ -52,7 +52,7 @@ export class DocumentsComponent implements OnInit {
     });
   }
   bindCategories() {
-    this._service.getCategoryTree().subscribe((res) => {
+    this._service.getCategoryTree(0).subscribe((res) => {
       this.categories = res;
     })
   }

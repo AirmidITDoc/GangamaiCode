@@ -64,7 +64,7 @@
                                                                     <airmid-textbox label="Husband FName"
                                                                         (keypress)="allowOnlyAlphabets($event)"
                                                                         formControlName="husbandFirstName"
-                                                                        [value]="data?.husbandfname"
+                                                                        [value]="regObj?.husbandfname"
                                                                         (keyup)="HFNameAdd()"
                                                                         [formGroup]="personalFormGroup"></airmid-textbox>
                                                                 </div>
@@ -72,14 +72,14 @@
                                                                     <airmid-textbox label="Middle Name"
                                                                         (keypress)="allowOnlyAlphabets($event)"
                                                                         formControlName="husbandMiddleName"
-                                                                        [value]="data?.husbandmname"
+                                                                        [value]="regObj?.husbandmname"
                                                                         [formGroup]="personalFormGroup"></airmid-textbox>
                                                                 </div>
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Last Name"
                                                                         (keypress)="allowOnlyAlphabets($event)"
                                                                         formControlName="husbandLastName"
-                                                                        [value]="data?.husbandlname"
+                                                                        [value]="regObj?.husbandlname"
                                                                         [formGroup]="personalFormGroup"></airmid-textbox>
                                                                 </div>
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -98,7 +98,7 @@
 
                                                                     <airmid-textbox label="Mobile No"
                                                                         formControlName="husbandMobile"
-                                                                        [value]="data?.husbandmobile"
+                                                                        [value]="regObj?.husbandmobile"
                                                                         (keypress)="keyPressAlphanumeric($event)"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandmobile"
@@ -109,7 +109,7 @@
 
                                                                     <airmid-textbox label="Mobile No1"
                                                                         formControlName="husbandMobileNo"
-                                                                        [value]="data?.husbandMobileNo"
+                                                                        [value]="regObj?.husbandMobileNo"
                                                                         (keypress)="keyPressAlphanumeric($event)"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandMobileNo"
@@ -118,7 +118,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label=" Email"
                                                                         formControlName="husbandEmail"
-                                                                        [value]="data?.husbandemail"
+                                                                        [value]="regObj?.husbandemail"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandemail"></airmid-textbox>
                                                                 </div>
@@ -128,14 +128,14 @@
                                                                     <airmid-textbox label="Aadhaar"
                                                                         formControlName="husbandAadhaar"
                                                                         (keypress)="keyPressAlphanumeric($event)"
-                                                                        [value]="data?.husbandAadhaar"
+                                                                        [value]="regObj?.husbandAadhaar"
                                                                         [formGroup]="personalFormGroup" [maxLength]="12"
                                                                         [validations]="getValidationMessages().husbandaadhaar"></airmid-textbox>
                                                                 </div>
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label=" Pan No"
                                                                         formControlName="husbandPan"
-                                                                        [value]="data?.husbandpan"
+                                                                        [value]="regObj?.husbandpan"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandpan"></airmid-textbox>
                                                                 </div>
@@ -143,7 +143,7 @@
 
                                                                     <airmid-dropdown label="Occupation"
                                                                         formControlName="husbandOccupationId"
-                                                                        [value]="data?.husbandOccupationId"
+                                                                        [value]="regObj?.husbandOccupationId"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandoccupation"
                                                                         [mode]="autocompleteModeOccupation">
@@ -155,7 +155,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label=" Education"
                                                                         formControlName="husbandEducation"
-                                                                        [value]="data?.husbandeducation"
+                                                                        [value]="regObj?.husbandeducation"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandeducation"></airmid-textbox>
                                                                 </div>
@@ -179,7 +179,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Native place"
                                                                         formControlName="nativePlace"
-                                                                        [value]="data?.nativePlace"
+                                                                        [value]="regObj?.nativePlace"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().nativeplace"></airmid-textbox>
                                                                 </div>
@@ -188,7 +188,7 @@
                                                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Husband Hobbies"
                                                                         formControlName="husbandHobbies"
-                                                                        [value]="data?.husbandhobbies"
+                                                                        [value]="regObj?.husbandhobbies"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().husbandhobbies"></airmid-textbox>
                                                                 </div>
@@ -267,7 +267,7 @@
                                                                     <airmid-textbox label="Wife Name"
                                                                         (keypress)="allowOnlyAlphabets($event)"
                                                                         formControlName="wifeFirstName"
-                                                                        (keyup)="WNameAdd()" [value]="data?.wifename"
+                                                                        (keyup)="WNameAdd()" [value]="regObj?.wifename"
                                                                         [formGroup]="personalFormGroup"></airmid-textbox>
                                                                 </div>
 
@@ -300,7 +300,7 @@
 
                                                                     <airmid-textbox label="Mobile No"
                                                                         formControlName="wifeMobile"
-                                                                        [value]="data?.wifemobile"
+                                                                        [value]="regObj?.wifemobile"
                                                                         (keypress)="keyPressAlphanumeric($event)"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifemobile"
@@ -312,7 +312,7 @@
 
                                                                     <airmid-textbox label="Mobile No1"
                                                                         formControlName="wifeMobileNo"
-                                                                        [value]="data?.wifeMobileNo"
+                                                                        [value]="regObj?.wifeMobileNo"
                                                                         (keypress)="keyPressAlphanumeric($event)"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().WifeMobileNo"
@@ -322,7 +322,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Email"
                                                                         formControlName="wifeEmail"
-                                                                        [value]="data?.wifeemail"
+                                                                        [value]="regObj?.wifeemail"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifeemail"></airmid-textbox>
                                                                 </div>
@@ -330,7 +330,7 @@
                                                                     <airmid-textbox label="Aadhaar"
                                                                         (keypress)="keyPressAlphanumeric($event)"
                                                                         formControlName="wifeAadhaar"
-                                                                        [value]="data?.wifeaadhaar"
+                                                                        [value]="regObj?.wifeaadhaar"
                                                                         [formGroup]="personalFormGroup" [maxLength]="12"
                                                                         [validations]="getValidationMessages().wifeaadhaar"></airmid-textbox>
                                                                 </div>
@@ -338,7 +338,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Pan No"
                                                                         formControlName="wifePan"
-                                                                        [value]="data?.wifepan"
+                                                                        [value]="regObj?.wifepan"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifepan"></airmid-textbox>
                                                                 </div>
@@ -347,7 +347,7 @@
 
                                                                     <airmid-dropdown label="Occupation"
                                                                         formControlName="wifeOccupationId"
-                                                                        [value]="data?.wifeoccupation"
+                                                                        [value]="regObj?.wifeoccupation"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifeoccupation"
                                                                         [mode]="autocompleteModeOccupation">
@@ -357,7 +357,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label=" Education"
                                                                         formControlName="wifeEducation"
-                                                                        [value]="data?.wifeeducation"
+                                                                        [value]="regObj?.wifeeducation"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifeeducation"></airmid-textbox>
                                                                 </div>
@@ -382,7 +382,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Wife Hobbies"
                                                                         formControlName="wifehobbies"
-                                                                        [value]="data?.wifehobbies"
+                                                                        [value]="regObj?.wifehobbies"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifehobbies"></airmid-textbox>
                                                                 </div>
@@ -391,7 +391,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="parents Native place"
                                                                         formControlName="wifeparentsnativeplace"
-                                                                        [value]="data?.wifeParentsNativePlace"
+                                                                        [value]="regObj?.wifeParentsNativePlace"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifeparentsnativeplace"></airmid-textbox>
                                                                 </div>
@@ -399,7 +399,7 @@
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <airmid-textbox label="Wife parental details"
                                                                         formControlName="wifeparentaldetails"
-                                                                        [value]="data?.wifeparentaldetails"
+                                                                        [value]="regObj?.wifeparentaldetails"
                                                                         [formGroup]="personalFormGroup"
                                                                         [validations]="getValidationMessages().wifeparentaldetails"></airmid-textbox>
                                                                 </div>
@@ -473,7 +473,7 @@
 
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-dropdown label="City" formControlName="cityId"
-                                                        [formGroup]="personalFormGroup" [value]="data?.cityId"
+                                                        [formGroup]="personalFormGroup" [value]="regObj?.cityId"
                                                         [validations]="getValidationMessages().cityId"
                                                         ValueField="cityId" TextField="cityName"
                                                         ApiUrl="CityMaster/get-cities"
@@ -483,27 +483,28 @@
 
                                                 <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="residencetype"
-                                                        style="margin-left:10px;" [value]="data?.residencetype">
+                                                        style="margin-left:10px;">
                                                         Residence Own </mat-checkbox>
 
                                                 </div>
                                                 <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Residence Address"
                                                         formControlName="residenceAddress"
-                                                        [value]="data?.residenceAddress" [formGroup]="personalFormGroup"
+                                                        [value]="regObj?.residenceAddress"
+                                                        [formGroup]="personalFormGroup"
                                                         (keydown)="onResidenceAddressEnter()"
                                                         [validations]="getValidationMessages().residenceaddress"></airmid-textbox>
                                                 </div>
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="wresidencetype"
-                                                        style="margin-left:20px;" [value]="data?.wresidencetype">
+                                                        style="margin-left:20px;" [value]="regObj?.wresidencetype">
                                                         Wife Residence Own </mat-checkbox>
 
                                                 </div>
                                                 <div fxFlex="26%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-textbox label="Residence Address"
                                                         formControlName="wresidenceAddress"
-                                                        [value]="data?.wresidenceAddress"
+                                                        [value]="regObj?.wresidenceAddress"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().residenceaddress"></airmid-textbox>
                                                 </div>
@@ -518,11 +519,12 @@
                                         <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="showDoctorDropdownRefresh">
 
                                                     <airmid-dropdown label="Husband Family Doctor Name"
                                                         formControlName="familyDoctorId"
-                                                        [value]="data?.familyDoctorId ?? 0"
+                                                        [value]="regObj?.familyDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().familyDoctorId"
                                                         [mode]="autocompleteModeRefDoctor">
@@ -535,28 +537,30 @@
                                                     <airmid-textbox label="Husband Doctor contactNo"
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         formControlName="familyDoctorContact"
-                                                        [value]="data?.familydoctorcontact"
+                                                        [value]="regObj?.familydoctorcontact"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().familydoctorcontact"
                                                         [maxLength]="10"></airmid-textbox>
 
                                                 </div>
                                                 <!-- [options]="ConstDoctor" -->
-                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="showDoctorDropdownRefresh">
                                                     <airmid-dropdown label="Consultant Doctor Name"
                                                         formControlName="hconsultDoctorId"
-                                                        [value]="data?.hconsultDoctorId ?? 0"
+                                                        [value]="regObj?.hconsultDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().hconsultDoctorId"
                                                         [mode]="autocompleteModeDoctor">
                                                     </airmid-dropdown>
                                                 </div>
-                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="showDoctorDropdownRefresh">
 
 
                                                     <airmid-dropdown label="Wife Family Doctor Name"
                                                         formControlName="wfamilyDoctorId"
-                                                        [value]="data?.wfamilyDoctorId ?? 0"
+                                                        [value]="regObj?.wfamilyDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().wfamilyDoctorId"
                                                         [mode]="autocompleteModeRefDoctor">
@@ -568,14 +572,15 @@
                                                     <airmid-textbox label="Wife Doctor contactNo"
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         formControlName="wfamilyDoctorContact"
-                                                        [value]="data?.wfamilyDoctorContact"
+                                                        [value]="regObj?.wfamilyDoctorContact"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().wfamilyDoctorContact"
                                                         [maxLength]="10"></airmid-textbox>
 
                                                 </div>
-                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- [value]="data.wconsultDoctorId ?? 0" -->
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                    *ngIf="showDoctorDropdownRefresh">
+                                                    <!-- [value]="regObj.wconsultDoctorId ?? 0" -->
                                                     <airmid-dropdown label="Consultant Doctor Name"
                                                         formControlName="wconsultDoctorId"
                                                         [formGroup]="personalFormGroup"
@@ -585,7 +590,7 @@
                                                 </div>
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
-                                                        [value]="data?.ayushmanEnrolled"
+                                                        [value]="regObj?.ayushmanEnrolled"
                                                         (change)="onhayushhange($event)">
                                                         Husband Ayushman Enrolled </mat-checkbox>
                                                 </div>
@@ -602,7 +607,7 @@
 
                                                     <mat-checkbox aria-label="Male / Female"
                                                         formControlName="maleFemaleEnrolled"
-                                                        [value]="data?.maleFemaleEnrolled"
+                                                        [value]="regObj?.maleFemaleEnrolled"
                                                         (change)="onwayushhange($event)">
                                                         Wife Enrolled </mat-checkbox>
                                                 </div>
@@ -635,7 +640,7 @@
 
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="hasmediclaim"
-                                                        style="margin-left:20px;" [value]="data?.hasMediclaim"
+                                                        style="margin-left:20px;" [value]="regObj?.hasMediclaim"
                                                         (change)="onMediclaimChange($event)">
                                                         Has Mediclaim</mat-checkbox>
                                                 </div>
@@ -645,7 +650,7 @@
 
                                                     <airmid-textbox label="Mediclaim policy number"
                                                         formControlName="mediclaimpolicynumber"
-                                                        [value]="data?.mediclaimPolicyNumber"
+                                                        [value]="regObj?.mediclaimPolicyNumber"
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                 </div>
@@ -656,16 +661,17 @@
 
                                                     <airmid-textbox label="Mediclaim Issuance"
                                                         formControlName="mediclaimIssuanceAmt"
-                                                        [value]="data?.mediclaimIssuanceAmt" maxlength="20"
+                                                        [value]="regObj?.mediclaimIssuanceAmt" maxlength="20"
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                 </div>
 
                                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                                    *ngIf="hasmediclaimstatus">
+                                                    *ngIf="hasmediclaimstatus && showCompanyDropdownRefresh">
                                                     <airmid-dropdown label="Company Name"
                                                         formControlName="mediclaimcompany"
-                                                        [value]="data?.mediclaimCompany" [formGroup]="personalFormGroup"
+                                                        [value]="regObj?.mediclaimCompany"
+                                                        [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().mediclaimcompany"
                                                         [mode]="autocompleteModeCompany">
                                                     </airmid-dropdown>
@@ -706,7 +712,7 @@
 
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="whasmediclaim"
-                                                        style="margin-left:20px;" [value]="data?.whasmediclaim"
+                                                        style="margin-left:20px;" [value]="regObj?.whasmediclaim"
                                                         (change)="onwifeMediclaimChange($event)">
                                                         Wife Has Mediclaim</mat-checkbox>
                                                 </div>
@@ -716,7 +722,7 @@
 
                                                     <airmid-textbox label="WifeMediclaim policy number"
                                                         formControlName="wmediclaimpolicynumber"
-                                                        [value]="data?.wmediclaimpolicynumber"
+                                                        [value]="regObj?.wmediclaimpolicynumber"
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                 </div>
@@ -727,16 +733,16 @@
 
                                                     <airmid-textbox label="Mediclaim Issuance"
                                                         formControlName="wmediclaimIssuanceAmt"
-                                                        [value]="data?.wmediclaimIssuanceAmt" maxlength="20"
+                                                        [value]="regObj?.wmediclaimIssuanceAmt" maxlength="20"
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                 </div>
 
                                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                                    *ngIf="whasmediclaimstatus">
+                                                    *ngIf="whasmediclaimstatus && showCompanyDropdownRefresh">
                                                     <airmid-dropdown label="Company Name"
                                                         formControlName="wmediclaimcompany"
-                                                        [value]="data?.wmediclaimCompany"
+                                                        [value]="regObj?.wmediclaimCompany"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().wmediclaimcompany"
                                                         [mode]="autocompleteModeCompany">
@@ -798,7 +804,7 @@
                                                                 Treatment</mat-label>
                                                             <textarea matInput formControlName="husbandmedications"
                                                                 placeholder="husband medications"
-                                                                [value]="data?.husbandMedications"
+                                                                [value]="regObj?.husbandMedications"
                                                                 style="height: 100%; resize: none;"></textarea>
                                                         </mat-form-field>
                                                     </div>
@@ -812,7 +818,7 @@
                                                                 Treatment</mat-label>
                                                             <textarea matInput formControlName="wifemedications"
                                                                 placeholder="wife medications"
-                                                                [value]="data?.wifeMedications"
+                                                                [value]="regObj?.wifeMedications"
                                                                 style="height: 100%; resize: none;"></textarea>
                                                         </mat-form-field>
                                                     </div>
@@ -833,7 +839,7 @@
                                                     <airmid-textbox
                                                         label="Man/Husband Shree Thana Sangh Member Id Number"
                                                         formControlName="husbandPreviousMemberId"
-                                                        [value]="data?.husbandPreviousMemberId "
+                                                        [value]="regObj?.husbandPreviousMemberId "
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                 </div>
@@ -842,7 +848,7 @@
                                                     <airmid-textbox
                                                         label="Female/Wife Shree Thana Sangh Member Id Number:"
                                                         formControlName="wifePreviousMemberId"
-                                                        [value]="data?.wifePreviousMemberId"
+                                                        [value]="regObj?.wifePreviousMemberId"
                                                         [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                 </div>
@@ -850,7 +856,7 @@
                                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-dropdown label="Income Details"
                                                         formControlName="monthlyIncomeRange"
-                                                        [value]="data?.monthlyincomerange ?? 0"
+                                                        [value]="regObj?.monthlyincomerange ?? 0"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().monthlyincomerange"
                                                         [mode]="autocompleteTrustIncomerange">
@@ -897,11 +903,28 @@
                                             </mat-expansion-panel-header>
                                             <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                                    <!-- other fields here, left-aligned as normal -->
+
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                        fxFlexOffset="auto">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Membership Date</mat-label>
+                                                            <input matInput [matDatepicker]="membershipvalidDate1"
+                                                                formControlName="membershipDate" />
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="membershipvalidDate1"></mat-datepicker-toggle>
+                                                            <mat-datepicker #membershipvalidDate1></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                </div>
+                                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
                                                     <!-- <span style="font-weight: bold;">Male office Information</span> -->
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <mat-checkbox formControlName="feeReceived"
                                                             style="font-weight: bold;padding-left: 20px;"
-                                                            [value]="data?.feereceived"
+                                                            [value]="regObj?.feereceived"
                                                             (change)="onHfeesChange($event)">
                                                             Male Amount Received
                                                         </mat-checkbox>
@@ -911,7 +934,8 @@
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                         *ngIf="hFeesstatus">
                                                         <airmid-textbox label="Male Membership No"
-                                                            formControlName="membershipNo" [value]="data?.membershipNo"
+                                                            formControlName="membershipNo"
+                                                            [value]="regObj?.membershipNo"
                                                             [formGroup]="personalFormGroup"></airmid-textbox>
 
                                                     </div>
@@ -921,7 +945,7 @@
                                                         <airmid-textbox label="Fee Amount" formControlName="feeAmount"
                                                             [formGroup]="personalFormGroup"
                                                             (keypress)="keyPressAlphanumeric($event)"
-                                                            [value]="data?.feeAmount"
+                                                            [value]="regObj?.feeAmount"
                                                             [validations]="getValidationMessages().feeamount"
                                                             [maxLength]="5"></airmid-textbox>
 
@@ -948,11 +972,11 @@
                                                             <mat-label>Membership ended Date</mat-label>
                                                             <input matInput [matDatepicker]="membershipvalidDate"
                                                                 placeholder="membershipvalidDate"
-                                                                formControlName="membershipvalidDate"
-                                                                [value]="todayPlus5Years" />
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="membershipvalidDate"></mat-datepicker-toggle>
-                                                            <mat-datepicker #membershipvalidDate></mat-datepicker>
+                                                                formControlName="membershipvalidDate" readonly />
+                                                            <mat-datepicker-toggle matSuffix [for]="membershipvalidDate"
+                                                                [disabled]="true"></mat-datepicker-toggle>
+                                                            <mat-datepicker #membershipvalidDate
+                                                                disabled></mat-datepicker>
                                                         </mat-form-field>
                                                     </div>
 
@@ -963,7 +987,7 @@
                                                         <mat-checkbox formControlName="wfeeReceived"
                                                             (change)="onWfeesChange($event)"
                                                             style="font-weight: bold;padding-left: 20px;"
-                                                            [value]="data?.wfeeReceived">
+                                                            [value]="regObj?.wfeeReceived">
                                                             Female Amount Received
                                                         </mat-checkbox>
 
@@ -972,7 +996,6 @@
                                                         *ngIf="WFeesstatus">
                                                         <airmid-textbox label="FemaleMembership No"
                                                             formControlName="femalemembershipNo"
-                                                            [value]="data?.femalemembershipNo"
                                                             [formGroup]="personalFormGroup"></airmid-textbox>
                                                     </div>
 
@@ -981,7 +1004,7 @@
                                                         <airmid-textbox label="Fee Amount" formControlName="wfeeAmount"
                                                             [formGroup]="personalFormGroup"
                                                             (keypress)="keyPressAlphanumeric($event)"
-                                                            [value]="data?.wfeeAmount"
+                                                            [value]="regObj?.wfeeAmount"
                                                             [validations]="getValidationMessages().feeamount"
                                                             [maxLength]="5"></airmid-textbox>
 
@@ -1005,15 +1028,25 @@
 
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                         *ngIf="WFeesstatus">
-                                                        <mat-form-field appearance="outline" fxFlex>
+                                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Membership ended Date</mat-label>
                                                             <input matInput [matDatepicker]="wmembershipvalidDate"
                                                                 placeholder="wmembershipvalidDate"
-                                                                formControlName="wmembershipvalidDate"
-                                                                [value]="todayPlus5Years" />
+                                                                formControlName="wmembershipvalidDate" />
                                                             <mat-datepicker-toggle matSuffix
                                                                 [for]="wmembershipvalidDate"></mat-datepicker-toggle>
                                                             <mat-datepicker #wmembershipvalidDate></mat-datepicker>
+                                                        </mat-form-field> -->
+
+                                                         <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Membership ended Date</mat-label>
+                                                            <input matInput [matDatepicker]="wmembershipvalidDate"
+                                                                placeholder="wmembershipvalidDate"
+                                                                formControlName="wmembershipvalidDate" readonly />
+                                                            <mat-datepicker-toggle matSuffix [for]="wmembershipvalidDate"
+                                                                [disabled]="true"></mat-datepicker-toggle>
+                                                            <mat-datepicker #wmembershipvalidDate
+                                                                disabled></mat-datepicker>
                                                         </mat-form-field>
                                                     </div>
 

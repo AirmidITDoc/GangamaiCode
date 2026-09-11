@@ -114,7 +114,9 @@
                                     [selectedId]="selectedCategoryId" [showDocumentActions]="true"
                                     (select)="onCategorySelect($event)"
                                     (uploadDocument)="openCategoryUploadPicker($event)"
-                                    (viewDocuments)="openCategoryDocuments($event)"></app-category-tree>
+                                    (viewDocuments)="openCategoryDocuments($event)"
+                                    (generateQrCode)="printQrCode($event)"
+                                    ></app-category-tree>
                             </div>
 
                             <div class="path-banner" *ngIf="selectedCategoryPath.length">

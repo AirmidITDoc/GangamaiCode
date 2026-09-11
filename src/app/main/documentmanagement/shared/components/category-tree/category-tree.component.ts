@@ -20,6 +20,7 @@ export class CategoryTreeComponent implements OnChanges {
     @Output() addChild = new EventEmitter<any>();
     @Output() uploadDocument = new EventEmitter<number>();
     @Output() viewDocuments = new EventEmitter<number>();
+    @Output() generateQrCode = new EventEmitter<number>();
 
     treeControl = new NestedTreeControl<DocumentCategory>((node) => node.children);
     dataSource = new MatTreeNestedDataSource<DocumentCategory>();

@@ -19,7 +19,7 @@ export class CategoriesComponent {
         this.bindCategories();
     }
     bindCategories() {
-        this._service.getCategoryTree().subscribe((res) => {
+        this._service.getCategoryTree(0).subscribe((res) => {
             this.categories = res;
         })
     }
