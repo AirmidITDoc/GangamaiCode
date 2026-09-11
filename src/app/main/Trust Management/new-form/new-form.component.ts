@@ -166,7 +166,7 @@ export class NewFormComponent {
     'Action'
   ]
 
-  BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-","Not Available"];
 
   ClinicName: any
   vresultDate = new Date();
