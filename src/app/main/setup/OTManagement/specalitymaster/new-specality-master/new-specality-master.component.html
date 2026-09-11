@@ -1,0 +1,43 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Speciality</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="myForm">
+                <input type="hidden" name="specialtyId" formControlName="specialtyId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Speciality Name" formControlName="specialtyName" [formGroup]="myForm"
+                            [validations]="getValidationMessages().specialityName" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                </div>
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                    <div></div>
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
