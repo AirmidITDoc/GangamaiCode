@@ -108,15 +108,15 @@
                         <mat-step [completed]="!!selectedCategoryId">
                             <ng-template matStepLabel>Category</ng-template>
 
-                            <p class="step-hint">Select a category, then use the upload icon to add files or the view icon to inspect the current files in that category.</p>
+                            <p class="step-hint">Select a category, then use the upload icon to add files or the view
+                                icon to inspect the current files in that category.</p>
                             <div class="category-picker">
                                 <app-category-tree [nodes]="categories" [manageable]="false" [selectable]="true"
                                     [selectedId]="selectedCategoryId" [showDocumentActions]="true"
                                     (select)="onCategorySelect($event)"
                                     (uploadDocument)="openCategoryUploadPicker($event)"
                                     (viewDocuments)="openCategoryDocuments($event)"
-                                    (generateQrCode)="printQrCode($event)"
-                                    ></app-category-tree>
+                                    (generateQrCode)="printQrCode($event)"></app-category-tree>
                             </div>
 
                             <div class="path-banner" *ngIf="selectedCategoryPath.length">
@@ -126,7 +126,8 @@
                                 </span>
                             </div>
 
-                            <input #categoryUploadInput type="file" multiple hidden (change)="onCategoryFileInput($event)" />
+                            <input #categoryUploadInput type="file" multiple hidden
+                                (change)="onCategoryFileInput($event)" />
 
                             <div class="step-actions">
                                 <button mat-button matStepperPrevious>Back</button>
@@ -138,24 +139,60 @@
                 </mat-card>
 
                 <ng-template #categoryFilesDialog>
-                    <h2 mat-dialog-title>{{ categoryPopupTitle }}</h2>
-                    <mat-dialog-content>
-                        <div class="popup-doc-list" *ngIf="categoryDocuments.length; else noCategoryDocs">
-                            <div class="popup-doc-row" *ngFor="let doc of categoryDocuments">
-                                <mat-icon [ngClass]="'kind-' + doc.fileKind">{{ doc.fileKind | fileKindIcon }}</mat-icon>
-                                <div class="popup-doc-main">
-                                    <span class="popup-doc-name">{{ doc.orgFileName }}</span>
-                                    <span class="popup-doc-sub mono">{{ doc.savedFileName }} &middot; {{ doc.fileSize | fileSize }}</span>
+                    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                        fxLayoutAlign.gt-xs="space-between center ">
+                        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                style="font-size: 20px;width: 70%; font-weight: 400;">
+                                Document list - {{ categoryPopupTitle }}
+                            </span>
+                        </div>
+                    </div>
+                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                        <div class="content">
+                            <div class="center p-12 pb-56" fxFlexAlign="start center">
+                                <div class="content-card" style="border-radius:4px;">
+                                    <div class="nav material2">
+                                        <div fxLayout="row" fxLayoutAlign="start none">
+                                            <div class="popup-doc-list"
+                                                *ngIf="categoryDocuments.length; else noCategoryDocs">
+                                                <div class="popup-doc-row" *ngFor="let doc of categoryDocuments">
+                                                    <div class="doc-icon-wrap">
+                                                        <mat-icon [ngClass]="'kind-' + doc.fileKind">{{ doc.fileKind |
+                                                            fileKindIcon
+                                                            }}</mat-icon>
+                                                    </div>
+
+                                                    <div class="popup-doc-main">
+                                                        <span class="popup-doc-name" [matTooltip]="doc.orgFileName">{{
+                                                            doc.orgFileName
+                                                            }}</span>
+                                                        <span class="popup-doc-sub mono">{{ doc.fileSize | fileSize
+                                                            }}</span>
+                                                    </div>
+
+                                                    <button mat-icon-button color="primary" class="download-btn"
+                                                        matTooltip="Download document"
+                                                        (click)="downloadCategoryDocument(doc)">
+                                                        <mat-icon>cloud_download</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <ng-template #noCategoryDocs>
+                                                <div class="empty-doc-state">
+                                                    <mat-icon>folder_open</mat-icon>
+                                                    <p class="muted small no-docs">No uploaded files for this category
+                                                        yet.</p>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <ng-template #noCategoryDocs>
-                            <p class="muted small no-docs">No uploaded files for this category yet.</p>
-                        </ng-template>
-                    </mat-dialog-content>
-                    <mat-dialog-actions align="end">
-                        <button mat-button mat-dialog-close>Close</button>
-                    </mat-dialog-actions>
+                    </div>
+
                 </ng-template>
             </div>
         </div>

@@ -212,6 +212,138 @@
         border-top: 1px solid var(--divider-line);
     }
 
+    .category-doc-dialog {
+        min-width: 320px;
+
+        .dialog-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0 0;
+        }
+
+        .dialog-kicker {
+            margin: 0 0 4px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        h2[mat-dialog-title] {
+            margin: 0;
+            font-size: 22px;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        mat-dialog-content {
+            padding-top: 10px;
+            padding-bottom: 0;
+            margin: 0 -8px;
+        }
+
+        .popup-doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 4px 0;
+        }
+
+        .popup-doc-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border: 1px solid var(--divider-line);
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 250, 0.98));
+            transition: all 0.2s ease;
+
+            &:hover {
+                border-color: rgba(24, 92, 140, 0.28);
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+                transform: translateY(-1px);
+            }
+        }
+
+        .doc-icon-wrap {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--surface-selected);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+
+            mat-icon {
+                font-size: 22px;
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        .popup-doc-main {
+            display: flex;
+            flex: 1;
+            min-width: 0;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .popup-doc-name {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .popup-doc-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .download-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .empty-doc-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            padding: 24px 16px 12px;
+            text-align: center;
+            color: var(--text-muted);
+
+            mat-icon {
+                font-size: 30px;
+                width: 30px;
+                height: 30px;
+                opacity: 0.7;
+            }
+        }
+
+        .no-docs {
+            margin: 0;
+        }
+
+        mat-dialog-actions {
+            padding: 12px 0 0;
+            margin-bottom: 0;
+        }
+    }
+
     /* Dropzone */
     .dropzone {
         border: 2px dashed var(--divider-line);
