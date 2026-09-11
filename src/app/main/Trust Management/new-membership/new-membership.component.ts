@@ -107,7 +107,7 @@ export class NewMembershipComponent {
         { heading: "Date", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
         { heading: "Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Village", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Native Place", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Age", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120},        
         { heading: "Mobile No", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "BloodGroup", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },

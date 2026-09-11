@@ -193,8 +193,6 @@
                                                                         [validations]="getValidationMessages().husbandhobbies"></airmid-textbox>
                                                                 </div>
 
-
-
                                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                     <mat-form-field appearance="outline" fxFlex>
                                                                         <mat-label>Husband Death Date</mat-label>
@@ -554,6 +552,19 @@
                                                         [mode]="autocompleteModeDoctor">
                                                     </airmid-dropdown>
                                                 </div>
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+
+                                                    <airmid-textbox label="Husband Con.Doctor contactNo"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        formControlName="hConsultDoctorContact"
+                                                        [value]="regObj?.hConsultDoctorContact"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().hConsultDoctorContact"
+                                                        [maxLength]="10"></airmid-textbox>
+
+                                                </div>
+
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                     *ngIf="showDoctorDropdownRefresh">
 
@@ -587,6 +598,17 @@
                                                         [validations]="getValidationMessages().wconsultDoctorId"
                                                         [mode]="autocompleteModeDoctor">
                                                     </airmid-dropdown>
+                                                </div>
+
+                                                <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Wife Con.Doctor contactNo"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        formControlName="wConsultDoctorContact"
+                                                        [value]="regObj?.wConsultDoctorContact"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().wConsultDoctorContact"
+                                                        [maxLength]="10"></airmid-textbox>
+
                                                 </div>
                                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-checkbox aria-label="" formControlName="ayushmanEnrolled"
@@ -1038,12 +1060,13 @@
                                                             <mat-datepicker #wmembershipvalidDate></mat-datepicker>
                                                         </mat-form-field> -->
 
-                                                         <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Membership ended Date</mat-label>
                                                             <input matInput [matDatepicker]="wmembershipvalidDate"
                                                                 placeholder="wmembershipvalidDate"
                                                                 formControlName="wmembershipvalidDate" readonly />
-                                                            <mat-datepicker-toggle matSuffix [for]="wmembershipvalidDate"
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="wmembershipvalidDate"
                                                                 [disabled]="true"></mat-datepicker-toggle>
                                                             <mat-datepicker #wmembershipvalidDate
                                                                 disabled></mat-datepicker>
