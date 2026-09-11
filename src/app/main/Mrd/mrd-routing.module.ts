@@ -19,6 +19,11 @@ const appRoutes: Routes = [
         loadChildren: () => import("./certificate/cretificate.module").then((m) => m.CretificateModule),
 
     },
+    {
+        path: "icdupdate",
+        loadChildren: () => import("./icd-update/icd-update.module").then((m) => m.IcdUpdateModule),
+
+    },
 ];
 
 
