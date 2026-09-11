@@ -90,6 +90,59 @@
 
                 <div fxFlexFill fxLayout="column">
 
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ; gap: 4px; margin-top: 10px;">
+                        <div>
+                            <span style="font-weight: 700;">
+                                Medico Legal Case Info
+                            </span>
+                        </div>
+                        <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 8px 0;">
+
+                        <div fxFlexFill fxLayout="row" class="gap-4">
+
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>MLC No</mat-label>
+                                <input matInput type="text" [formGroup]="certificateForm"
+                                    formControlName="mlcNo">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Reporting Date</mat-label>
+                                <input name="reportingDate" matInput [matDatepicker]="picker1" [max]="today"
+                                    formControlName="reportingDate" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Reporting Time</mat-label>
+                                <input matInput type="time" formControlName="reportingTime">
+                            </mat-form-field>                          
+                        </div>
+
+                        <div fxFlexFill fxLayout="row" class="gap-4">
+                             <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Name of Authority</mat-label>
+                                <input matInput type="text" [formGroup]="certificateForm"
+                                    formControlName="authorityName">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Authority Buckle No</mat-label>
+                                <input matInput type="text" [formGroup]="certificateForm"
+                                    formControlName="authorityName">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" style="width: 33%;">
+                                <mat-label>Police Station</mat-label>
+                                <input matInput type="text" [formGroup]="certificateForm"
+                                    formControlName="policeStation">
+                            </mat-form-field>
+
+                            
+                        </div>
+                    </mat-card>
+
                     <!-- accident/assault info card -->
                     <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ; gap: 4px; margin-top: 10px;">
                         <div>
@@ -192,8 +245,8 @@
 
                             <mat-form-field appearance="outline" fxFlex="30">
                                 <mat-label>Language</mat-label>
-                                <mat-select [(ngModel)]="selectedAgeLang" [ngModelOptions]="{ standalone: true }"(selectionChange)="onAgeLangChange()"
-                                    name="ageLanguageSelect">
+                                <mat-select [(ngModel)]="selectedAgeLang" [ngModelOptions]="{ standalone: true }"(selectionChange)="onAgeLangChange()" 
+                                name="ageLanguageSelect">
                                     <mat-option *ngFor="let lang of languages" [value]="lang.code">
                                         {{ lang.label }}
                                     </mat-option>
@@ -218,7 +271,7 @@
                             <mat-form-field appearance="outline" fxFlex="30">
                                 <mat-label>Language</mat-label>
                                 <mat-select [(ngModel)]="selectedCauseLang" [ngModelOptions]="{ standalone: true }" (selectionChange)="onLangChange()"
-                                    name="causeLanguageSelect">
+                                name="causeLanguageSelect">
                                     <mat-option *ngFor="let lang of languages" [value]="lang.code">
                                         {{ lang.label }}
                                     </mat-option>
