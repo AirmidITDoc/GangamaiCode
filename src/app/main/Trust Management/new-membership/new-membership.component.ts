@@ -107,7 +107,7 @@ export class NewMembershipComponent {
         { heading: "Date", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
         { heading: "Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Native Place", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Native Place", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Age", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120},        
         { heading: "Mobile No", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "BloodGroup", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -125,9 +125,9 @@ export class NewMembershipComponent {
         { heading: "Mediclaim EndDate", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
         { heading: "Aayushman Id ", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "PreviousMemberId ", key: "previousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: " FamilyDoctorName ", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: " FamilyDoctorContact ", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: " Body CheckupDate", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "FamilyDoctorName ", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "FamilyDoctorContact ", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Body CheckupDate", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
