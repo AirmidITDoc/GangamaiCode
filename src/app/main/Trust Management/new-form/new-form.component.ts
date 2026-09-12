@@ -256,6 +256,9 @@ export class NewFormComponent {
         this.personalFormGroup.get('femalemembershipNo')?.setValue(this.regObj?.femaleMembershipNo);
         this.personalFormGroup.get('membershipDate')?.setValue(this.regObj?.membershipDate);
 
+        this.personalFormGroup.get('hdeathDate')?.setValue(this.regObj?.hdeathDate);
+        this.personalFormGroup.get('wdeathDate')?.setValue(this.regObj?.wdeathDate);
+
 
         // patchValue needs regObj to actually have data
         this.personalFormGroup.patchValue(this.regObj);
