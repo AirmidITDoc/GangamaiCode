@@ -479,16 +479,16 @@ export class NewFormComponent {
       "mediclaimcompany": [0],
       "mediclaimpolicynumber": [''],
       "mediclaimIssuanceAmt": 0,
-      "mediclaimStartDate": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      "mediclaimEndDate": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "mediclaimStartDate": '',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "mediclaimEndDate": '',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "monthlyIncomeRange": [0],
 
       "whasmediclaim": [false],
       "wmediclaimcompany": [0],
       "wmediclaimpolicynumber": [''],
       "wmediclaimIssuanceAmt": 0,
-      "wmediclaimStartDate": '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      "wmediclaimEndDate": '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wmediclaimStartDate": '',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wmediclaimEndDate": '',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "wmonthlyIncomeRange": [0],
 
       "hconsultDoctorId": [0],
@@ -536,8 +536,8 @@ export class NewFormComponent {
       "wfeeAmount": ['1000'],
 
 
-      "hdeathDate": '',
-      "wdeathDate": '',
+      "hdeathDate": null,
+      "wdeathDate": null,
 
 
       tMembershipChildren: this.formBuilder.array([]),
@@ -828,17 +828,17 @@ export class NewFormComponent {
     //   }
     // }
     debugger
-    if (this.personalFormGroup.get("hdeathDate").value == "")
-      this.personalFormGroup.get("hdeathDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+    // if (this.personalFormGroup.get("hdeathDate").value == "")
+    //   this.personalFormGroup.get("hdeathDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
 
-    if (this.personalFormGroup.get("wdeathDate").value == "")
-      this.personalFormGroup.get("wdeathDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+    // if (this.personalFormGroup.get("wdeathDate").value == "")
+    //   this.personalFormGroup.get("wdeathDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
 
-    if (this.personalFormGroup.get("husbandFullBodyCheckupDate").value == "")
-      this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+    // if (this.personalFormGroup.get("husbandFullBodyCheckupDate").value == "")
+    //   this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
 
-    if (this.personalFormGroup.get("wifeFullBodyCheckupDate").value == "")
-      this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+    // if (this.personalFormGroup.get("wifeFullBodyCheckupDate").value == "")
+    //   this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
 
 
 
@@ -946,13 +946,12 @@ export class NewFormComponent {
     this.personalFormGroup.get("husbandOccupationId").setValue(parseInt(this.personalFormGroup.get("husbandOccupationId").value || 0))
     this.personalFormGroup.get("wifeOccupationId").setValue(parseInt(this.personalFormGroup.get("wifeOccupationId").value || 0))
 
-    // this.personalFormGroup.get("membershipDate").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || this.regObj.membershipDate || '1900-01-01')
-    // this.personalFormGroup.get("membershipTime").setValue(this.datePipe.transform(this.dateTimeObj.date) || this.regObj.membershipDate || '1900-01-01')
-
-    this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.husbandFullBodyCheckupDate || '1900-01-01')
-    this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || '1900-01-01')
-    this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.regObj.mediclaimStartDate || '1900-01-01')
-    this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || '1900-01-01')
+    this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.husbandFullBodyCheckupDate || null)
+    this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || null)
+    this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.regObj.mediclaimStartDate || null)
+    this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.mediclaimEndDate || null)
+    this.personalFormGroup.get("wmediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wmediclaimStartDate").value, "yyyy-MM-dd") || this.regObj.wmediclaimStartDate || null)
+    this.personalFormGroup.get("wmediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wmediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.wmediclaimEndDate || null)
     this.personalFormGroup.get("declarationDate").setValue(this.datePipe.transform(this.personalFormGroup.get("declarationDate").value, "yyyy-MM-dd"))
     this.personalFormGroup.get("receiptDate").setValue(this.datePipe.transform(this.personalFormGroup.get("receiptDate").value, "yyyy-MM-dd"))
 

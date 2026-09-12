@@ -128,6 +128,8 @@ export class NewMembershipComponent {
         { heading: "FamilyDoctorName ", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "FamilyDoctorContact ", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Body CheckupDate", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "Mediclaim", key: "hasMediclaim", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Ayushman", key: "ayushmanEnrolled", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
