@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 
-
 const approtes: Routes = [
 
     {
@@ -60,7 +59,7 @@ const approtes: Routes = [
     {
         path: "inpatientreturn",
         loadChildren: () => import("./in-patient-return/in-patient-return.module").then((m) => m.InPatientReturnModule),
-    },{
+    }, {
         path: "inpatientreturn1",
         loadChildren: () => import("./nursingnote/medication-dashboard/medication-dashboard.module").then((m) => m.MedicationDashboardModule),
     },
@@ -73,11 +72,16 @@ const approtes: Routes = [
         loadChildren: () => import("../ipd/Feedback/opip-feedback/feedback.module").then((m) => m.FeedbackModule),
     },
 
-
+    {
+        path: "dietrequest",
+        loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
+    },
 
 ];
 @NgModule({
-    declarations: [],
+    declarations: [
+       
+    ],
     imports: [
         RouterModule.forChild(approtes),
     ]
