@@ -180,6 +180,8 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     public getDeptData(index: number) {
         // Use API data if available, otherwise fall back to static data
         const dept = this.departments[index];
+        console.log(dept)
+
         if (!dept) {
             return {
                 name: 'Department ' + (index + 1),
@@ -200,7 +202,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         const percent = total ? Math.round((inUse / total) * 100) : 0;
 
         return {
-            name: this.extractStringValue(dept.WardName) || this.extractStringValue(dept.DepartmentName) || 'Department ' + (index + 1),
+            name: dept.BedName,// this.extractStringValue(dept.WardName) || this.extractStringValue(dept.DepartmentName) || 'Department ' + (index + 1),
             image: this.departmentImages[index % this.departmentImages.length],
             total,
             inUse,
@@ -622,10 +624,12 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     }
 
     transformApiDataToBedFormat(apiData: any[]): any[] {
+        debugger
         return apiData.map((item, index) => ({
             id: item.BedId || (index + 1),
             status: this.getBedStatus(item),
             patient: this.extractStringValue(item.PatientName),
+            bedName: this.extractStringValue(item.BedName),
             admissionDate: this.extractStringValue(item.AdmissionDate),
             age: this.extractStringValue(item.Age),
             sex: this.extractStringValue(item.GenderName),
