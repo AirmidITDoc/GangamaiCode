@@ -7,6 +7,7 @@ import { MockDataService } from '../mock-data.service';
 import { ZipService } from '../zip.service';
 import { PreviewDialogComponent } from '../shared/components/preview-dialog/preview-dialog.component';
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
+import { DocumentmanagementService } from '../documentmanagement.service';
 
 @Component({
   selector: 'app-patient-search',
@@ -19,14 +20,33 @@ export class PatientSearchComponent implements OnInit {
   selectedPatient: Patient | null = null;
   patientDocs: DocumentFileModel[] = [];
   zipping = false;
+  searchPatients(): void {
+    this._service.searchPatient(this.patientQuery).subscribe((res) => {
+      this.patientResults = res;
+    });
+  }
+  pickPatient(p: Patient): void {
+    this.selectedPatient = p;
+    this.patientResults = [];
+    this.patientQuery = '';
+    this.fillDocs();
+  }
+  fillDocs(): void {
+    this._service.getPatientFiles(this.selectedPatient.id).subscribe((res) => {
+      this.patientDocs = res;
+    });
+  }
 
-  constructor(
+  patientQuery = '';
+  patientResults: Patient[] = [];
+
+  constructor(private _service: DocumentmanagementService,
     private data: MockDataService,
     private zipService: ZipService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
@@ -76,7 +96,7 @@ export class PatientSearchComponent implements OnInit {
   get groupedByCategory(): { path: string; docs: DocumentFileModel[] }[] {
     const map = new Map<string, DocumentFileModel[]>();
     for (const d of this.patientDocs) {
-      const key = d.docCatId.toString();
+      const key = d.categoryName || 'Uncategorized';
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(d);
     }

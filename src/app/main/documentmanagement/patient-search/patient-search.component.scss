@@ -4,15 +4,14 @@
         margin: 20px auto 0;
     }
 
-    .search-box {
+    .search-row {
         display: flex;
         align-items: center;
         gap: 10px;
-        background: #fff;
-        border: 1px solid var(--divider-line);
-        border-radius: 12px;
-        padding: 14px 18px;
-        box-shadow: var(--shadow-soft);
+        background: var(--surface-hover);
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin-bottom: 14px;
 
         mat-icon {
             color: var(--text-muted);
@@ -22,7 +21,7 @@
             border: none;
             outline: none;
             background: transparent;
-            font-size: 14.5px;
+            font-size: 13.5px;
             width: 100%;
             font-family: var(--font-body);
         }
