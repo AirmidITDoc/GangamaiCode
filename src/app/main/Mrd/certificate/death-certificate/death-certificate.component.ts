@@ -237,6 +237,6 @@ export class DeathCertificateComponent {
   }
 
   OnPrint(Param) {
-    this.commonService.Onprint("CertificateId", Param.certificateId, "DeathCertificateReport");
+    this.commonService.Onprint("CertificateId", Param, "DeathCertificateReport");
   }
 }

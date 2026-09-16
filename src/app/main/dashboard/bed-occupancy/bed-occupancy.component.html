@@ -207,7 +207,7 @@
                 <!-- Bed cards -->
                 <mat-card *ngFor="let bed of filteredBeds" class="bed-card" (click)="openBedDetails(bed)">
                     <div class="bed-header">
-                        <div class="bed-id">BED {{ bed.id }}</div>
+                        <div class="bed-id">{{ bed.bedName }}</div>
                         <div class="bed-id">{{ bed.status }}</div>
                     </div>
 

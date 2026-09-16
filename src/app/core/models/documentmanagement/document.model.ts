@@ -12,4 +12,5 @@ export interface DocumentFileModel {
   docNo: string;
   fileKind: FileKind;
   fileSize: number;
+  categoryName?: string;
 }

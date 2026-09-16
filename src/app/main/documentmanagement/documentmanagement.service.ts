@@ -53,5 +53,11 @@ export class DocumentmanagementService {
     public getDocuments() {
         return this._httpClient.GetData("DocumentUpload/get-files");
     }
+    public getAdmissionDocuments(admissionId: number, categoryId: number) {
+        return this._httpClient.GetData("DocumentUpload/get-admission-files?AdmissionId=" + admissionId + "&CategoryId=" + categoryId);
+    }
+    public getPatientFiles(patientId: number) {
+        return this._httpClient.GetData("DocumentUpload/get-patient-files?PatientId=" + patientId);
+    }
 
 }

@@ -166,19 +166,19 @@ export class NewFormComponent {
     'Action'
   ]
 
-  BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-","Not Available"];
+  BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "Not Available"];
 
   ClinicName: any
   vresultDate = new Date();
   vreceiptdate = new Date();
   vwreceiptdate = new Date();
   vmediclaimenddate = new Date();
-  vhusbandFullBodyCheckupDate = "1900-01-01"//new Date();
+  vhusbandFullBodyCheckupDate = ""//new Date();
   vmediclaimstartdate = new Date();
   vwmediclaimstartdate = new Date();
   vwmediclaimenddate = new Date();
   wreceiptDate = new Date();
-  vwifeFullBodyCheckupDate = "1900-01-01"// new Date();
+  vwifeFullBodyCheckupDate = ""// new Date();
   vwifedob = new Date();
   vhusbanddob = new Date();
   vwdeathDate = new Date();
@@ -256,6 +256,9 @@ export class NewFormComponent {
         this.personalFormGroup.get('femalemembershipNo')?.setValue(this.regObj?.femaleMembershipNo);
         this.personalFormGroup.get('membershipDate')?.setValue(this.regObj?.membershipDate);
 
+        this.personalFormGroup.get('hdeathDate')?.setValue(this.regObj?.hdeathDate);
+        this.personalFormGroup.get('wdeathDate')?.setValue(this.regObj?.wdeathDate);
+
 
         // patchValue needs regObj to actually have data
         this.personalFormGroup.patchValue(this.regObj);
@@ -312,21 +315,22 @@ export class NewFormComponent {
         }
       });
     } else {
-      this.todayPlus5Years = new Date(
-        this.today.getFullYear() + 5, 2, 31);
-      this.personalFormGroup.get('membershipvalidDate')?.setValue(this.todayPlus5Years);
+     
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      const formatDate = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
-      this.wtodayPlus5Years = new Date(
-        this.today.getFullYear() + 5, 2, 31);
-      this.personalFormGroup.get('wmembershipvalidDate')?.setValue(this.wtodayPlus5Years);
-      // this.todayPlus5Years = new Date(Date.UTC(this.today.getFullYear() + 5, 2, 31));
-      // this.personalFormGroup.get('membershipvalidDate')?.setValue(this.todayPlus5Years);
+      this.todayPlus5Years = new Date(this.today.getFullYear() + 5, 2, 31);
+      this.personalFormGroup.get('membershipvalidDate')?.setValue(formatDate(this.todayPlus5Years));
 
-      // this.wtodayPlus5Years = new Date(Date.UTC(this.today.getFullYear() + 5, 2, 31));
-      // this.personalFormGroup.get('wmembershipvalidDate')?.setValue(this.wtodayPlus5Years);
+      this.wtodayPlus5Years = new Date(this.today.getFullYear() + 5, 2, 31);
+      this.personalFormGroup.get('wmembershipvalidDate')?.setValue(formatDate(this.wtodayPlus5Years));
 
-      console.log(this.todayPlus5Years);
-      console.log(this.wtodayPlus5Years);
+
+      // console.log(this.todayPlus5Years);
+      // console.log(this.wtodayPlus5Years);
+
+      // console.log(this.personalFormGroup.get('membershipvalidDate').value);
+      // console.log(this.personalFormGroup.get('wmembershipvalidDate').value);
     }
   }
 
@@ -465,8 +469,8 @@ export class NewFormComponent {
       "wifeparentsnativeplace": [''],
       "husbandmedications": [''],
       "wifemedications": [''],
-      "husbandFullBodyCheckupDate": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      "wifeFullBodyCheckupDate": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "husbandFullBodyCheckupDate": '',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wifeFullBodyCheckupDate": '',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
 
       "ayushmanEnrolled": [false],
       "maleFemaleEnrolled": [false],
@@ -478,16 +482,16 @@ export class NewFormComponent {
       "mediclaimcompany": [0],
       "mediclaimpolicynumber": [''],
       "mediclaimIssuanceAmt": 0,
-      "mediclaimStartDate": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      "mediclaimEndDate": '1900-01-01',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "mediclaimStartDate": '',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "mediclaimEndDate": '',// [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "monthlyIncomeRange": [0],
 
       "whasmediclaim": [false],
       "wmediclaimcompany": [0],
       "wmediclaimpolicynumber": [''],
       "wmediclaimIssuanceAmt": 0,
-      "wmediclaimStartDate": '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      "wmediclaimEndDate": '1900-01-01',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wmediclaimStartDate": '',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      "wmediclaimEndDate": '',//[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       "wmonthlyIncomeRange": [0],
 
       "hconsultDoctorId": [0],
@@ -509,6 +513,17 @@ export class NewFormComponent {
         Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
 
+      "hConsultDoctorContact": ['', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
+      "wConsultDoctorContact": ['', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
+
       "husbandPreviousMemberId": [''],
       "wifePreviousMemberId": [''],
       "declarationDate": [(new Date()).toISOString()],
@@ -524,8 +539,8 @@ export class NewFormComponent {
       "wfeeAmount": ['1000'],
 
 
-      "hdeathDate": '1900-01-01',
-      "wdeathDate": '1900-01-01',
+      "hdeathDate": null,
+      "wdeathDate": null,
 
 
       tMembershipChildren: this.formBuilder.array([]),
@@ -659,31 +674,30 @@ export class NewFormComponent {
   autocompleteModeprefix: string = "Prefix";
 
   onSave() {
-    debugger
+
 
     const isEdit = (this.regObj?.membershipId ?? 0) > 0;
 
     if (!isEdit) {
-      // NEW RECORD: always use current date/time
-      const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
-      const formattedTime = this.dateTimeObj.time;
 
-      this.personalFormGroup.get('membershipDate').setValue(formattedDate);
-      this.personalFormGroup.get('membershipTime').setValue(formattedDate + ' ' + formattedTime);
-
-    } else {
-      // EDIT, unchanged: keep the originally retrieved date/time
-      // const formattedDate = this.datePipe.transform(this.vmembershipDate, "yyyy-MM-dd");
-      // const formattedTime = this.datePipe.transform(this.vmembershipTime, "HH:mm:ss");
       const formattedDate = this.datePipe.transform(this.personalFormGroup.get('membershipDate').value, "yyyy-MM-dd");
       const formattedTime = this.dateTimeObj.time;
 
       this.personalFormGroup.get('membershipDate').setValue(formattedDate);
       this.personalFormGroup.get('membershipTime').setValue(formattedDate + ' ' + formattedTime);
 
-      // this.personalFormGroup.get('membershipDate').setValue(formattedDate);
-      // this.personalFormGroup.get('membershipTime').setValue(formattedDate + ' ' + formattedTime);
+    } else {
+      const formattedDate = this.datePipe.transform(this.personalFormGroup.get('membershipDate').value, "yyyy-MM-dd");
+      const formattedTime = this.dateTimeObj.time;
+
+      this.personalFormGroup.get('membershipDate').setValue(formattedDate);
+      this.personalFormGroup.get('membershipTime').setValue(formattedDate + ' ' + formattedTime);
+
     }
+    debugger
+    this.personalFormGroup.get('membershipvalidDate').setValue(this.personalFormGroup.get('membershipvalidDate').value, "yyyy-MM-dd");
+    this.personalFormGroup.get('wmembershipvalidDate').setValue(this.personalFormGroup.get('wmembershipvalidDate').value, "yyyy-MM-dd");
+
 
     if (this.personalFormGroup.get("husbandFirstName").value == '' && this.personalFormGroup.get("wifeFirstName").value == '') {
       this.toastr.warning('Please Enter Patient Details', 'Warning !', {
@@ -710,93 +724,93 @@ export class NewFormComponent {
       }
     }
 
-    if (this.personalFormGroup.get('cityId').value == 0 || this.personalFormGroup.get('cityId').value == '') {
-      this.toastr.warning('Please select valid City Name ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this.personalFormGroup.get('cityId').value == 0 || this.personalFormGroup.get('cityId').value == '') {
+    //   this.toastr.warning('Please select valid City Name ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
 
-    if (this.CityName == '') {
-      this.toastr.warning('Please select valid City Name ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this.personalFormGroup.get("ayushmanEnrolled").value) {
-      if (this.personalFormGroup.get('haayushmanId').value == 0 || this.personalFormGroup.get('haayushmanId').value == '') {
-        this.toastr.warning('Please select valid  aayushmanId ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    if (this.personalFormGroup.get("maleFemaleEnrolled").value) {
-      if (this.personalFormGroup.get('waayushmanId').value == 0 || this.personalFormGroup.get('waayushmanId').value == '') {
-        this.toastr.warning('Please select valid wife aayushmanId', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    // if (this.CityName == '') {
+    //   this.toastr.warning('Please select valid City Name ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this.personalFormGroup.get("ayushmanEnrolled").value) {
+    //   if (this.personalFormGroup.get('haayushmanId').value == 0 || this.personalFormGroup.get('haayushmanId').value == '') {
+    //     this.toastr.warning('Please select valid  aayushmanId ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
+    // if (this.personalFormGroup.get("maleFemaleEnrolled").value) {
+    //   if (this.personalFormGroup.get('waayushmanId').value == 0 || this.personalFormGroup.get('waayushmanId').value == '') {
+    //     this.toastr.warning('Please select valid wife aayushmanId', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
 
-    if (this.personalFormGroup.get("hasmediclaim").value) {
-      // debugger
-      if (this.personalFormGroup.get('mediclaimpolicynumber').value == 0 || this.personalFormGroup.get('mediclaimpolicynumber').value == '') {
-        this.toastr.warning('Please select valid mediclaim policynumber ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else if (this.personalFormGroup.get('mediclaimIssuanceAmt').value == 0 || this.personalFormGroup.get('mediclaimIssuanceAmt').value == '') {
-        this.toastr.warning('Please select valid  mediclaim IssuanceAmt ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else if (this.personalFormGroup.get('mediclaimcompany').value == 0 || this.personalFormGroup.get('mediclaimcompany').value == '') {
-        this.toastr.warning('Please select valid mediclaim company', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); return;
-      }
-      else if (this.personalFormGroup.get('mediclaimStartDate').value == '1900-01-01' || this.personalFormGroup.get('mediclaimStartDate').value == '1900-01-01T00:00:00') {
-        this.toastr.warning('Please select valid mediclaim Start Date', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); return;
-      }
-      else if (this.personalFormGroup.get('mediclaimEndDate').value == '1900-01-01' || this.personalFormGroup.get('mediclaimEndDate').value == '1900-01-01T00:00:00') {
-        this.toastr.warning('Please select valid End Date', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); return;
-      }
+    // if (this.personalFormGroup.get("hasmediclaim").value) {
 
-    }
+    //   if (this.personalFormGroup.get('mediclaimpolicynumber').value == 0 || this.personalFormGroup.get('mediclaimpolicynumber').value == '') {
+    //     this.toastr.warning('Please select valid mediclaim policynumber ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('mediclaimIssuanceAmt').value == 0 || this.personalFormGroup.get('mediclaimIssuanceAmt').value == '') {
+    //     this.toastr.warning('Please select valid  mediclaim IssuanceAmt ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('mediclaimcompany').value == 0 || this.personalFormGroup.get('mediclaimcompany').value == '') {
+    //     this.toastr.warning('Please select valid mediclaim company', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
+    //   else if (this.personalFormGroup.get('mediclaimStartDate').value == '1900-01-01' || this.personalFormGroup.get('mediclaimStartDate').value == '1900-01-01T00:00:00') {
+    //     this.toastr.warning('Please select valid mediclaim Start Date', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
+    //   else if (this.personalFormGroup.get('mediclaimEndDate').value == '1900-01-01' || this.personalFormGroup.get('mediclaimEndDate').value == '1900-01-01T00:00:00') {
+    //     this.toastr.warning('Please select valid End Date', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
 
-    if (this.personalFormGroup.get("whasmediclaim").value) {
-      if (this.personalFormGroup.get('wmediclaimpolicynumber').value == 0 || this.personalFormGroup.get('wmediclaimpolicynumber').value == '') {
-        this.toastr.warning('Please select valid mediclaim policynumber for Wife ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else if (this.personalFormGroup.get('wmediclaimIssuanceAmt').value == 0 || this.personalFormGroup.get('wmediclaimIssuanceAmt').value == '') {
-        this.toastr.warning('Please select valid  mediclaim IssuanceAmt for Wife ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else if (this.personalFormGroup.get('wmediclaimcompany').value == 0 || this.personalFormGroup.get('wmediclaimcompany').value == '') {
-        this.toastr.warning('Please select valid mediclaim company for Wife ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); return;
-      }
-      else if (this.personalFormGroup.get('wmediclaimStartDate').value == '1900-01-01' || this.personalFormGroup.get('wmediclaimStartDate').value == '1900-01-01T00:00:00') {
-        this.toastr.warning('Please select valid mediclaim Start Date', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); return;
-      }
-      else if (this.personalFormGroup.get('wmediclaimEndDate').value == '1900-01-01' || this.personalFormGroup.get('wmediclaimEndDate').value == '1900-01-01T00:00:00') {
-        this.toastr.warning('Please select valid End Date', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); return;
-      }
-    }
+    // }
+
+    // if (this.personalFormGroup.get("whasmediclaim").value) {
+    //   if (this.personalFormGroup.get('wmediclaimpolicynumber').value == 0 || this.personalFormGroup.get('wmediclaimpolicynumber').value == '') {
+    //     this.toastr.warning('Please select valid mediclaim policynumber for Wife ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('wmediclaimIssuanceAmt').value == 0 || this.personalFormGroup.get('wmediclaimIssuanceAmt').value == '') {
+    //     this.toastr.warning('Please select valid  mediclaim IssuanceAmt for Wife ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   } else if (this.personalFormGroup.get('wmediclaimcompany').value == 0 || this.personalFormGroup.get('wmediclaimcompany').value == '') {
+    //     this.toastr.warning('Please select valid mediclaim company for Wife ', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
+    //   else if (this.personalFormGroup.get('wmediclaimStartDate').value == '1900-01-01' || this.personalFormGroup.get('wmediclaimStartDate').value == '1900-01-01T00:00:00') {
+    //     this.toastr.warning('Please select valid mediclaim Start Date', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
+    //   else if (this.personalFormGroup.get('wmediclaimEndDate').value == '1900-01-01' || this.personalFormGroup.get('wmediclaimEndDate').value == '1900-01-01T00:00:00') {
+    //     this.toastr.warning('Please select valid End Date', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     }); return;
+    //   }
+    // }
 
 
     // if (this.personalFormGroup.get("feeReceived").value) {
@@ -816,6 +830,22 @@ export class NewFormComponent {
     //     return;
     //   }
     // }
+    debugger
+    // if (this.personalFormGroup.get("hdeathDate").value == "")
+    //   this.personalFormGroup.get("hdeathDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+
+    // if (this.personalFormGroup.get("wdeathDate").value == "")
+    //   this.personalFormGroup.get("wdeathDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+
+    // if (this.personalFormGroup.get("husbandFullBodyCheckupDate").value == "")
+    //   this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+
+    // if (this.personalFormGroup.get("wifeFullBodyCheckupDate").value == "")
+    //   this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform('1900-01-01', "yyyy-MM-dd"))
+
+
+
+
 
     if (this.personalFormGroup.get("DateOfBirth").value != '1900-01-01') {
       const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
@@ -845,7 +875,7 @@ export class NewFormComponent {
     }
 
     if (this.Wifeform.get("DateOfBirth").value != '1900-01-01') {
-      // debugger
+
       const DateOfBirth2 = this.Wifeform.get("DateOfBirth").value
       if (DateOfBirth2) {
         const todayDate = new Date();
@@ -919,13 +949,12 @@ export class NewFormComponent {
     this.personalFormGroup.get("husbandOccupationId").setValue(parseInt(this.personalFormGroup.get("husbandOccupationId").value || 0))
     this.personalFormGroup.get("wifeOccupationId").setValue(parseInt(this.personalFormGroup.get("wifeOccupationId").value || 0))
 
-    // this.personalFormGroup.get("membershipDate").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || this.regObj.membershipDate || '1900-01-01')
-    // this.personalFormGroup.get("membershipTime").setValue(this.datePipe.transform(this.dateTimeObj.date) || this.regObj.membershipDate || '1900-01-01')
-
-    this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.husbandFullBodyCheckupDate || '1900-01-01')
-    this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || '1900-01-01')
-    this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.regObj.mediclaimStartDate || '1900-01-01')
-    this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || '1900-01-01')
+    this.personalFormGroup.get("husbandFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("husbandFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.husbandFullBodyCheckupDate || null)
+    this.personalFormGroup.get("wifeFullBodyCheckupDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wifeFullBodyCheckupDate").value, "yyyy-MM-dd") || this.regObj.wifeFullBodyCheckupDate || null)
+    this.personalFormGroup.get("mediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimStartDate").value, "yyyy-MM-dd") || this.regObj.mediclaimStartDate || null)
+    this.personalFormGroup.get("mediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("mediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.mediclaimEndDate || null)
+    this.personalFormGroup.get("wmediclaimStartDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wmediclaimStartDate").value, "yyyy-MM-dd") || this.regObj.wmediclaimStartDate || null)
+    this.personalFormGroup.get("wmediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wmediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.wmediclaimEndDate || null)
     this.personalFormGroup.get("declarationDate").setValue(this.datePipe.transform(this.personalFormGroup.get("declarationDate").value, "yyyy-MM-dd"))
     this.personalFormGroup.get("receiptDate").setValue(this.datePipe.transform(this.personalFormGroup.get("receiptDate").value, "yyyy-MM-dd"))
 
@@ -1321,7 +1350,8 @@ export class NewFormComponent {
       hconsultDoctorId: [],
       wconsultDoctorId: [],
       wfamilyDoctorId: [],
-
+      hConsultDoctorContact: [],
+      wConsultDoctorContact: []
     };
   }
   // Edit Prefix

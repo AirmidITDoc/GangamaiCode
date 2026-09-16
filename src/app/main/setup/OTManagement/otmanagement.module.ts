@@ -40,11 +40,23 @@ const appRoutes: Routes = [
             import("./consent-master/consent-master.module").then((m) => m.ConsentMasterModule
             ),
     },
+    {
+        path: "specalitymaster",
+        loadChildren: () =>
+            import("./specalitymaster/specalitymaster.module").then((m) => m.SpecalitymasterModule
+            ),
+    },
+     {
+        path: "subspecialitymaster",
+        loadChildren: () =>
+            import("./subspeciality-master/subspeciality-master.module").then((m) => m.SubspecialityMasterModule
+            ),
+    },
 ];
 
 @NgModule({
     declarations: [
-    ],
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class OTManagementModule { }

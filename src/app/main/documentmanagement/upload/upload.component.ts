@@ -7,6 +7,7 @@ import { DocumentCategory } from 'app/core/models/documentmanagement/category.mo
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
 import { DocumentmanagementService } from '../documentmanagement.service';
 import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
+import { ZipService } from '../zip.service';
 
 interface StagedFile {
     file: File;
@@ -54,6 +55,7 @@ export class UploadComponent {
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
         private _service: DocumentmanagementService,
+        private zipService: ZipService,
     ) {
     }
     bindCategories(id: number) {
@@ -143,8 +145,8 @@ export class UploadComponent {
     openCategoryDocuments(categoryId: number): void {
         this.selectedCategoryId = categoryId;
         this.categoryPopupTitle = this.selectedCategoryPath.length ? this.selectedCategoryPath.join(' / ') : 'Category files';
-        this._service.getDocuments().subscribe((res) => {
-            this.categoryDocuments = (res || []).filter((doc) => doc.docCatId === categoryId);
+        this._service.getAdmissionDocuments(this.selectedRegistration?.admissionId || 0, categoryId).subscribe((res) => {
+            this.categoryDocuments = (res || []);
             if (this.categoryFilesDialog) {
                 this.dialog.open(this.categoryFilesDialog, {
                     width: '460px',
@@ -154,6 +156,11 @@ export class UploadComponent {
             }
         });
     }
+
+    downloadCategoryDocument(doc: DocumentFileModel): void {
+        this.zipService.downloadSingleDocument(doc);
+    }
+
     printQrCode(categoryId: number): void {
         if (categoryId > 0) {
             const match = this.getAllPaths().find((p) => p.id === categoryId);
