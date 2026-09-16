@@ -68,4 +68,8 @@ public getRelativebyIdList(param) {
     public getEmergencbyIdList(param) {
         return this._httpClient.PostData("Pcpndprocess/IndicationtList",param);
     }
+      public getDoctorById(Id) {
+        return this._httpClient.GetData("Doctor/" + Id);
+    }
+
 }

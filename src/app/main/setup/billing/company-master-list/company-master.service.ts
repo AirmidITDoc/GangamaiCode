@@ -40,42 +40,42 @@ export class CompanyMasterService {
                 // Validators.pattern('^[a-zA-Z0-9 ]*$')
             ]],
 
-            address: ['', [Validators.required, Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            address: [''],// [Validators.required, Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
-            cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            cityId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
-            stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            stateId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
-            countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            countryId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
             contactPerson: ['', [Validators.maxLength(50),
                 //  Validators.pattern('^[a-zA-Z0-9 ]*$')
             ]],
 
-            phoneNo: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"), Validators.minLength(10),
+            phoneNo: ["", [Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"), Validators.minLength(10),
             Validators.maxLength(10)]],
 
-            contactNumber: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+            contactNumber: ["", [ Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
             Validators.maxLength(10), Validators.minLength(10),]],
 
             emailId: ['', [Validators.email]],
             website: [''],
 
-            compTypeId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            compTypeId: [0],// [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isSubCompany: [false],
-            paymodeOfPayId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            paymodeOfPayId: [0],// [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
             tanno: ['', Validators.maxLength(13)],
             gstin: ['', Validators.maxLength(10)],
             panNo: ['', Validators.maxLength(10)],
             adminCharges: [0, Validators.maxLength(5)],
             // isActive: [true],
-            pinNo: ['', [Validators.required,
+            pinNo: ['', [
             Validators.minLength(maxLen),
             Validators.maxLength(maxLen)  //, Validators.pattern("^[0-9]*$")
             ]],
             faxNo: ["0"],
-            traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            traiffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             creditDays: [0],
 
             loginWebsiteUser: "",

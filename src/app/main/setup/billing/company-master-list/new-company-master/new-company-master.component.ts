@@ -50,6 +50,8 @@ export class NewCompanyMasterComponent {
         this.companyFormDemo = this._CompanyMasterService.createCompanymasterFormDemo();
         this.companyFormDemo.markAllAsTouched();
 
+        
+
         if ((this.data?.companyId ?? 0) > 0) {
 
             this.isActive = this.data.isActive

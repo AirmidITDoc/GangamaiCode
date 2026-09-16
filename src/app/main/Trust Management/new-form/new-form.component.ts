@@ -315,7 +315,7 @@ export class NewFormComponent {
         }
       });
     } else {
-     
+
       const pad = (n: number) => n.toString().padStart(2, '0');
       const formatDate = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
@@ -2110,7 +2110,86 @@ export class NewFormComponent {
     this.destroy$.next();
     this.destroy$.complete();
   }
+  doctorId = 0
+  hfDoctor = 0
+  selectChangehFDoc(obj: any) {
+    console.log(obj)
+    debugger
+    if (obj) {
+      this.doctorId = obj?.value
+      this._NewMemberService.getDoctorById(this.doctorId).subscribe((response) => {
+        this.registerObj = response;
+        console.log(this.registerObj)
+        this.hfDoctor = this.registerObj.phone
+        this.personalFormGroup.get("familyDoctorContact").setValue(this.hfDoctor);
 
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+
+
+    }
+
+  }
+  doctorId1 = 0
+  hcDoctor = 0
+  selectChangehCDoc(obj: any) {
+    console.log(obj)
+    if (obj) {
+      this.doctorId1 = obj?.value
+      this._NewMemberService.getDoctorById(this.doctorId1).subscribe((response) => {
+        this.registerObj = response;
+        console.log(this.registerObj)
+        this.hcDoctor = this.registerObj.phone
+        this.personalFormGroup.get("hConsultDoctorContact").setValue(this.hcDoctor);
+
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+
+
+    }
+
+  }
+
+  doctorId2 = 0
+  wfDoctor = 0
+  selectChangewFDoc(obj: any) {
+    if (obj) {
+      this.doctorId2 = obj?.value
+      this._NewMemberService.getDoctorById(this.doctorId2).subscribe((response) => {
+        this.registerObj = response;
+        console.log(this.registerObj)
+        this.wfDoctor = this.registerObj.phone
+        this.personalFormGroup.get("wfamilyDoctorContact").setValue(this.wfDoctor);
+
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+
+
+    }
+
+  }
+  doctorId3 = 0
+  wcDoctor = 0
+  selectChangewCDoc(obj: any) {
+    if (obj) {
+      this.doctorId3 = obj?.value
+      this._NewMemberService.getDoctorById(this.doctorId3).subscribe((response) => {
+        this.registerObj = response;
+        console.log(this.registerObj)
+        this.wcDoctor = this.registerObj.phone
+        this.personalFormGroup.get("wConsultDoctorContact").setValue(this.wcDoctor);
+
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+
+
+    }
+
+  }
 }
 
 

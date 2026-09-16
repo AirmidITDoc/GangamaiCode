@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                   Registered Membership List
+                    Registered Membership List
                 </span>
             </div>
         </div>
@@ -16,7 +16,24 @@
 
         </div>
     </div>
+    <ng-template #hasMediclaim let-element>
+        <span [ngClass]="{
+                'status-not-requested': element.hasMediclaim == 0,
+                'status-received': element.hasMediclaim > 0
+              }">
+            {{ element.hasMediclaim == 0 ? 'No' : 'Yes' }}
+        </span>
+    </ng-template>
 
+
+    <ng-template #ayushmanEnrolled let-element>
+        <span [ngClass]="{
+                'status-not-requested': element.ayushmanEnrolled == 0,
+                'status-received': element.ayushmanEnrolled > 0
+              }">
+            {{ element.ayushmanEnrolled == 0 ? 'No' : 'Yes' }}
+        </span>
+    </ng-template>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -27,7 +44,7 @@
                 <button mat-icon-button matTooltip="Print" (click)="getMembershipview(element)">
                     <mat-icon> print</mat-icon>
                 </button>
-                 <!-- <button mat-icon-button
+                <!-- <button mat-icon-button
                                 [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
                                 matTooltipPosition="right" (click)="getWhatsappshareForm(element)"
                                 (mouseenter)="openWhatsappDetailsPopover($event, element)"
@@ -70,7 +87,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Membership No</mat-label>
                         <input matInput placeholder="Search Membership No" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" [maxLength]="10" (input)="onChangeFirst()"/>
+                            formControlName="RegNo" [maxLength]="10" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>

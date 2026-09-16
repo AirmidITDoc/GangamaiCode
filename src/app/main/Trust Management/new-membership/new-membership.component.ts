@@ -18,7 +18,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { permissionCodes,permissionType } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
@@ -45,6 +45,9 @@ export class NewMembershipComponent {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('hasMediclaim') hasMediclaim!: TemplateRef<any>;
+    @ViewChild('ayushmanEnrolled') ayushmanEnrolled!: TemplateRef<any>;
+
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -54,6 +57,8 @@ export class NewMembershipComponent {
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'hasMediclaim')!.template = this.hasMediclaim;
+        this.gridConfig.columnsList.find(col => col.key === 'ayushmanEnrolled')!.template = this.hasMediclaim;
 
     }
 
@@ -108,7 +113,7 @@ export class NewMembershipComponent {
         { heading: "Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Native Place", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Age", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120},        
+        { heading: "Age", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Mobile No", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "BloodGroup", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "PAN", key: "pan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -128,8 +133,8 @@ export class NewMembershipComponent {
         { heading: "FamilyDoctorName ", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "FamilyDoctorContact ", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Body CheckupDate", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-        { heading: "Mediclaim", key: "hasMediclaim", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Ayushman", key: "ayushmanEnrolled", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Mediclaim", key: "hasMediclaim", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        { heading: "Ayushman", key: "ayushmanEnrolled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
