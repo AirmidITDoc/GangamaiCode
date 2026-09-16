@@ -10,13 +10,17 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <!-- <button mat-raised-button color="primary" (click)="create2()"> 
+                Create 
+            </button>  -->
             <button mat-raised-button (click)="NewMatrialCon()" *ngIf="IsAdd">+ ADD Consumption
             </button>
-
-        </div>
-
-
+            <!-- <button mat-raised-button color="primary" (click)="create()"> 
+                Create 
+            </button>  -->
+        </div> 
     </div>
+
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
@@ -63,6 +67,18 @@
                             (selectionChange)="ListView($event)" [formGroup]="myFilterform" [mode]="autocompletestore">
                         </airmid-dropdown>
 
+
+                     <div fxLayout="column" fxLayoutAlign="start" class="gap-8"  > 
+                        <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                            <span class="orange-600-fg">PatientWise</span>
+                        </div>
+                        <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <span class="green-600-fg">DepartmentWise</span>
+                        </div> 
+                    </div>
+
                     </form>
                 </ng-container>
             </airmid-table>
@@ -74,4 +90,4 @@
             </airmid-table>
         </div>
     </div>
-</div>
+</div>   

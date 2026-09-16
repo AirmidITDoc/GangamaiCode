@@ -169,6 +169,8 @@ export class ItemMovemnentComponent implements OnInit {
         //     }
         // });
     }
-
+   ngOnDestroy() { 
+    this._ItemMovemnentService.ItemSearchGroup.reset();
+    }
 }
 

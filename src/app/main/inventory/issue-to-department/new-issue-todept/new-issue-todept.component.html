@@ -305,14 +305,14 @@
                     </airmid-textbox>
 
                     <airmid-textbox label="GST Amount" formControlName="GSTAmount" [value]="vFinalGSTAmount" #GSTAmount
-                        [formGroup]="IssueFinalForm">
+                        [formGroup]="IssueFinalForm"     [readonly]="true">
                     </airmid-textbox>
                     <airmid-textbox label="Total Amount" formControlName="FinalTotalAmount" [value]="vFinalTotalAmount"  #FinalTotalAmount
-                        [formGroup]="IssueFinalForm">
+                        [formGroup]="IssueFinalForm" [readonly]="true">
                     </airmid-textbox>
 
                     <airmid-textbox label="Net Amount" formControlName="FinalNetAmount" [value]="vFinalNetAmount" #FinalTotalAmount 
-                        [formGroup]="IssueFinalForm">
+                        [formGroup]="IssueFinalForm" [readonly]="true">
                     </airmid-textbox>
                     <div style="padding: 10px;" [hidden]="true">
 

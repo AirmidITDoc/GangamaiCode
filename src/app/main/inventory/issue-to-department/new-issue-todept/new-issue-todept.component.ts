@@ -237,9 +237,9 @@ export class NewIssueTodeptComponent {
         issueTime: this.datePipe.transform(new Date(), 'shortTime'),
         fromStoreId: [this.accountService.currentUserValue.user.storeId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         toStoreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalVatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        totalVatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         remark: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
         addedby: [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         createdBy: [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -261,9 +261,9 @@ export class NewIssueTodeptComponent {
         issueTime: this.datePipe.transform(new Date(), 'shortTime'),
         fromStoreId: [this.accountService.currentUserValue.user.storeId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         toStoreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalVatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        totalVatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         remark: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
         addedby: [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         createdBy: [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -283,52 +283,7 @@ export class NewIssueTodeptComponent {
         issueId: 0,
       },
     });
-  }
-
-  // IssueItemdetailform(element: any = {}): FormGroup {
-
-  //   console.log(element)
-  //   return this._formBuilder.group({
-  //     issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     batchNo: [element.BatchNo],
-  //     batchExpDate: [(new Date()).toISOString().split('T')[0]],
-  //     issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     status: ["0"]
-  //   });
-  // }
-  // currentstockform(element: any = {}): FormGroup {
-
-  //   console.log(element)
-  //   return this._formBuilder.group({
-  //     itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     istkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
-  //   });
-  // }
-
-  // indentdetailform(element: any = {}): FormGroup {
-
-  //   console.log(element)
-  //   return this._formBuilder.group({
-  //     indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     isClosed: [element.IsClosed],
-  //     indQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]]
-  //   });
-  // }
-
+  } 
   materialAcceptIssueDetailsform(element: any = {}): FormGroup {
     console.log(element);
     return this._formBuilder.group({
@@ -336,8 +291,7 @@ export class NewIssueTodeptComponent {
       issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       status: ['1'],
     });
-  }
-
+  } 
   IssueaganistFrom() {
     return this._formBuilder.group({
       updateIndent: this._formBuilder.group({
@@ -367,8 +321,7 @@ export class NewIssueTodeptComponent {
   }
 
   //Indent against Issue Accept ................
-  IssueIndentaganistAcceptFrom() {
-    debugger;
+  IssueIndentaganistAcceptFrom() { 
     return this._formBuilder.group({
       issuetoDeptWihMaterialAccept: this._formBuilder.group({
         issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -437,14 +390,14 @@ export class NewIssueTodeptComponent {
       batchNo: [element.BatchNo],
       batchExpDate: [element.BatchExpDate],
       issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatPercentage: [element.VatPer, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatAmount: [element.VatAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       status: ['0'],
     });

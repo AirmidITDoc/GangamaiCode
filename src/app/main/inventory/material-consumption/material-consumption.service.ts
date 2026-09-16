@@ -109,5 +109,8 @@ export class MaterialConsumptionService {
     public deactivateTheStatus(m_data) {
         return this._httpClient1.PostData("BedMaster", m_data);
     }
+  public getAbhaURL(Param) {
+        return this._httpClient1.PostData("AbhaConnects/InitiateClient",Param);
+    }
 
 }

@@ -667,6 +667,11 @@ export class CurrentStockComponent implements OnInit {
 
         }, 100);
     }
+
+
+   ngOnDestroy() { 
+    this.onClear();
+    }
 }
 
 export class CurrentStockList {

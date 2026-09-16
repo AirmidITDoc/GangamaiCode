@@ -31,11 +31,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { FuseSharedModule } from '@fuse/shared.module';
-import { SharedModule } from 'app/main/shared/shared.module';
+import { FuseSharedModule } from '@fuse/shared.module'; 
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MaterialConsumptionComponent } from './material-consumption.component';
 import { NewMaterialConsumptionComponent } from './new-material-consumption/new-material-consumption.component';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { ApplicationdialogComponent } from './applicationdialog/applicationdialog.component';
 
 
 const routes: Routes = [
@@ -49,6 +50,7 @@ const routes: Routes = [
     declarations: [
         MaterialConsumptionComponent,
         NewMaterialConsumptionComponent,
+        ApplicationdialogComponent,
     ],
     imports: [
         CommonModule,
