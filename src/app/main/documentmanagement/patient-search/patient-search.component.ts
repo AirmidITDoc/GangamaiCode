@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
-import { MockDataService } from '../mock-data.service';
-import { ZipService } from '../zip.service';
-import { PreviewDialogComponent } from '../shared/components/preview-dialog/preview-dialog.component';
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
 import { DocumentmanagementService } from '../documentmanagement.service';
+import { PreviewDialogComponent } from '../shared/components/preview-dialog/preview-dialog.component';
+import { ZipService } from '../zip.service';
 
 @Component({
   selector: 'app-patient-search',
@@ -15,8 +14,6 @@ import { DocumentmanagementService } from '../documentmanagement.service';
   styleUrls: ['./patient-search.component.scss'],
 })
 export class PatientSearchComponent implements OnInit {
-  query = '';
-  results: Patient[] = [];
   selectedPatient: Patient | null = null;
   patientDocs: DocumentFileModel[] = [];
   zipping = false;
@@ -41,7 +38,6 @@ export class PatientSearchComponent implements OnInit {
   patientResults: Patient[] = [];
 
   constructor(private _service: DocumentmanagementService,
-    private data: MockDataService,
     private zipService: ZipService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -52,21 +48,8 @@ export class PatientSearchComponent implements OnInit {
     this.route.queryParamMap.subscribe((params) => {
       const pid = params.get('patientId');
       if (pid) {
-        const p = this.data.getPatient(pid);
-        if (p) this.selectPatient(p);
       }
     });
-  }
-
-  search(): void {
-    this.results = this.data.searchPatients(this.query);
-  }
-
-  selectPatient(p: Patient): void {
-    this.selectedPatient = p;
-    this.patientDocs = this.data.getDocumentsForPatient(p.id.toString());
-    this.results = [];
-    this.query = '';
   }
 
   clearSelection(): void {

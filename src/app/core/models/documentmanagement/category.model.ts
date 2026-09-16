@@ -2,6 +2,7 @@ export interface DocumentCategory {
     id: number;
     parentId: number;
     docCategory: string;
+    sortOrder?: number;
     icon?: string;
     children: DocumentCategory[];
     documentCount?: number;

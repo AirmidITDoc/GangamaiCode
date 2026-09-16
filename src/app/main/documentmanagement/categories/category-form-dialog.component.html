@@ -15,6 +15,9 @@
                 <airmid-textbox label="Category" formControlName="docCategory" [formGroup]="categoryForm"
                     maxLength="250" value="obj?.docCategory">
                 </airmid-textbox>
+                <airmid-textbox label="Sort Order" formControlName="sortOrder" [formGroup]="categoryForm"
+                    maxLength="250" value="obj?.sortOrder" type="number">
+                </airmid-textbox>
                 <label class="icon-label">Choose an icon</label>
                 <div class="icon-grid">
                     <button type="button" class="icon-option" *ngFor="let ic of iconChoices"
