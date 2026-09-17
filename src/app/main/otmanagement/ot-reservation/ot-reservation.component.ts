@@ -395,9 +395,10 @@ export class OTReservationComponent implements OnInit {
     }
     openmaerialConsumpion() {
         const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
-            {
-                maxHeight: '98vh',
-                width: '95%',
+            { 
+               maxWidth: '95vw',
+               height: '95%',
+               width: '90%',
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);

@@ -81,7 +81,8 @@
 
               <div class="slide-toggle mb-2" style="padding: 10px 0px 0px 20px">
                 <mat-slide-toggle name="IsPatientWiseConsumption" formControlName="IsPatientWiseConsumption"
-                 [(ngModel)]="vIsPatientWiseConsumption">IsPatientWiseConsumption</mat-slide-toggle>
+                 [(ngModel)]="vIsPatientWiseConsumption"
+                 (change)="onchangepatietniwse($event)">IsPatientWiseConsumption</mat-slide-toggle>
               </div>
             </div>
           </form>

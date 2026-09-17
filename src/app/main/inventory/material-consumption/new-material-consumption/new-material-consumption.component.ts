@@ -229,6 +229,14 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.registerObjOP = obj;
     this.vAdmissionId = this.registerObjIP.this.VisitId;
   }
+  onchangepatietniwse(event) {
+    if (!this.vIsPatientWiseConsumption) {
+      this.vAdmissionId = 0;
+      this.registerObjOP = null;
+      this.vRegNo = 0;
+      this.userFormGroup.get('RegID').setValue('');
+    }  
+  }
   selectChangeStore(obj: any) {
     this.vStoreId = obj.value;
     // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
@@ -394,13 +402,14 @@ export class NewMaterialConsumptionComponent implements OnInit {
       this.isSaving = false;
       return;
     }
-    if (this.vAdmissionId == 0) {
-      this.toastr.warning('Please Selct Patient ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      this.isSaving = false;
-      return;
-    }
+ if (this.vIsPatientWiseConsumption && !this.vAdmissionId) {
+  this.toastr.warning('Please Select Patient', 'Warning !', {
+    toastClass: 'tostr-tost custom-toast-warning',
+  }); 
+  this.isSaving = false;
+  return;
+}
+
     Swal.fire({
       title: 'Confirm Save',
       text: 'Are you sure you want to save this Material Consumption ?',
@@ -423,7 +432,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.MaterialConDetailsArray.clear();
     this.dsNewmaterialList.data.forEach((item) => {
       const formObj = this.creatematerialconsDetail(item);
-      formObj.patchValue({ admId: this.vAdmissionId || 0 });
+      formObj.patchValue({ admId: this.vIsPatientWiseConsumption === true ? this.vAdmissionId || 0 : 0});
       this.MaterialConDetailsArray.push(formObj);
     });
     this.currentstockArray.clear();
@@ -438,7 +447,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.MaterialInsertForm.get('materialConsumption.purTotalAmount').setValue(this.vPurTotalAmount || 0);
     this.MaterialInsertForm.get('materialConsumption.mrpTotalAmount').setValue(this.vMRPTotalAmount || 0);
     this.MaterialInsertForm.get('materialConsumption.fromStoreId').setValue(this._loggedService.currentUserValue.user.storeId || 0);
-    this.MaterialInsertForm.get('materialConsumption.admId').setValue(this.vAdmissionId || 0);
+    this.MaterialInsertForm.get('materialConsumption.admId').setValue(this.vIsPatientWiseConsumption === true ? this.vAdmissionId || 0 : 0);
     this.MaterialInsertForm.get('materialConsumption.remark').setValue(this._MaterialConsumptionService.FinalMaterialForm.get('Remark')?.value);
 
     console.log(this.MaterialInsertForm.value);
