@@ -9,7 +9,8 @@ import { ItemGenericMasterComponent } from "../../item-generic-master/item-gener
 import { NewManufactureComponent } from "../../manufacture-master/new-manufacture/new-manufacture.component";
 import { ItemMaster, ItemMasterComponent } from "../item-master.component";
 import { ItemMasterService } from "../item-master.service";
-import { ItemWiseSupplierRateComponent } from "../item-wise-supplier-rate/item-wise-supplier-rate.component";
+import { NewItemWiseSupplierRateComponent } from "../item-wise-supplier-rate/new-item-wise-supplier-rate/new-item-wise-supplier-rate.component";
+import { NewGenericComponent } from "../../item-generic-master/new-generic/new-generic.component";
 
 @Component({
     selector: "app-item-form-master",
@@ -120,10 +121,11 @@ export class ItemFormMasterComponent implements OnInit {
     onNewItemWiseSupprate(row: any = null) {
         const that = this;
 
-        const dialogRef = this._matDialog.open(ItemWiseSupplierRateComponent,
+        const dialogRef = this._matDialog.open(NewItemWiseSupplierRateComponent,
             {
-                height: '85%',
-                width: '80%',
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -147,9 +149,11 @@ export class ItemFormMasterComponent implements OnInit {
     onSave(row: any = null) {
         const that = this;
 
-        const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
+        const dialogRef = this._matDialog.open(NewGenericComponent,
             {
-                width: '80%',
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -401,7 +405,7 @@ export class ItemFormMasterComponent implements OnInit {
             mAssignItemToStores: [
                 { name: "required", Message: "Store Name is required" }
             ],
-            localLanguageName:[]
+            localLanguageName: []
         };
     }
 
