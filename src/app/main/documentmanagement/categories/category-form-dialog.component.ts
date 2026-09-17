@@ -17,9 +17,10 @@ export interface CategoryFormResult {
 export class CategoryFormDialogComponent {
     name = '';
     icon = 'folder';
+    sortOrder?: number;
     iconChoices = ['folder', 'folder_special', 'description', 'assignment_ind', 'account_balance', 'fact_check', 'edit_document', 'radiology', 'checklist', 'healing', 'gavel', 'accessibility_new', 'note', 'library_books', 'menu_book', 'book', 'receipt_long', 'verified_user', 'medical_information', 'work', 'business', 'school', 'home'];
     categoryForm: FormGroup;
-    obj: DocumentCategory = { id: 0, parentId: null, docCategory: '', children: [], documentCount: 0, icon: null };
+    obj: DocumentCategory = { id: 0, parentId: null, docCategory: '', sortOrder: null, children: [], documentCount: 0, icon: null };
     constructor(
         public dialogRef: MatDialogRef<CategoryFormDialogComponent>, public _service: DocumentmanagementService,
         @Inject(MAT_DIALOG_DATA) public data: { parentName: string | null, parentId: number | null, mode: string }
@@ -33,12 +34,15 @@ export class CategoryFormDialogComponent {
                 this.categoryForm.controls["docCategory"].setValue(res.docCategory);
                 this.categoryForm.controls["parentId"].setValue(res.parentId);
                 this.categoryForm.controls["id"].setValue(res.id);
+                this.categoryForm.controls["sortOrder"].setValue(res.sortOrder);
                 this.icon=res.icon;
             });;
         }
     }
     submit(): void {
         if (!this.categoryForm.invalid) {
+            if(!this.categoryForm.value.sortOrder)
+                this.categoryForm.controls["sortOrder"].setValue(null);
             this.categoryForm.controls["icon"].setValue(this.icon);
             if (this.data.parentId > 0 && this.data.mode == 'add')
                 this.categoryForm.controls["parentId"].setValue(this.data.parentId);

@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
 import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
-import { MockDataService } from '../mock-data.service';
 import { ZipService } from '../zip.service';
 import { PreviewDialogComponent } from '../shared/components/preview-dialog/preview-dialog.component';
 import { DocumentmanagementService } from '../documentmanagement.service';
@@ -35,7 +34,6 @@ export class DocumentsComponent implements OnInit {
   ];
 
   constructor(
-    private data: MockDataService,
     private zipService: ZipService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -113,13 +111,24 @@ export class DocumentsComponent implements OnInit {
 
   remove(doc: DocumentFileModel): void {
     if (!confirm(`Delete "${doc.orgFileName}"? This cannot be undone.`)) return;
-    this.data.deleteDocument(doc.id.toString());
     this.snackBar.open('Document deleted', 'Dismiss', { duration: 2000 });
   }
 
   categoryLabel(id: number | null): string {
     if (!id) return '';
-    const match = this.data.getAllPaths().find((p) => p.id === id);
+    const match = this.getAllPaths().find((p) => p.id === id);
     return match ? match.path.join(' / ') : '';
+  }
+  getAllPaths(): { id: number; path: string[]; icon?: string }[] {
+    const out: { id: number; path: string[]; icon?: string }[] = [];
+    const walk = (nodes: DocumentCategory[], trail: string[]) => {
+      for (const n of nodes) {
+        const newTrail = [...trail, n.docCategory];
+        out.push({ id: n.id, path: newTrail, icon: n.icon });
+        if (n.children.length) walk(n.children, newTrail);
+      }
+    };
+    walk(this.categories, []);
+    return out;
   }
 }

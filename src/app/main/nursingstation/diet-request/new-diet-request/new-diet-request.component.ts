@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -20,6 +20,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ClinicalCareChartService } from '../../clinical-care-chart/clinical-care-chart.service';
+import { DietRequestService } from '../diet-request.service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-diet-request',
@@ -29,107 +32,16 @@ import { ClinicalCareChartService } from '../../clinical-care-chart/clinical-car
   animations: fuseAnimations
 })
 export class NewDietRequestComponent {
-  displayedColumns: string[] = [
-    'patientId',
-    'PatientName'
-  ]
-  displayedPainAsse: string[] = [
-    'givendate',
-    'PainAssess',
-    'Employeename',
-    'IsActive',
-    'Action'
-  ]
-  displayedPainAsse2: string[] = [
-    'givendate',
-    'PainAssess',
-    'IsActive',
-    'Action'
-  ]
 
-  displayedVitals: string[] = [
-    'date',
-    'Temperature',
-    'Pulse',
-    'Respiration',
-    'BP',
-    'ArterialBP',
-    'Peep',
-    'Brady',
-    'CVP',
-    'PAPressureReading',
-    'Apnea',
-    'AbdominalGrith',
-    'Desaturation',
-    'SaturationWithO2',
-    'SaturationWithoutO2',
-    'PO2',
-    'FIO2',
-    'PFRation',
-    'AddedBy',
-    'IsActive',
-    'Action'
-  ]
-  displayedInOutput: string[] = [
-    'Date',
-    'Time',
-    'IV',
-    'Infusions',
-    'Boluses',
-    'Peroral',
-    'Perrt',
-    'Perjt',
-    'IntakeOther',
-    'Urine',
-    'Drange',
-    'Action'
-  ]
-  displayedOxygen: string[] = [
-    'Date',
-    'TidolV',
-    'SetRange',
-    'IPAP',
-    'MinuteV',
-    'RateTotal',
-    'EPAP',
-    'Peep',
-    'PC',
-    'MVPercentage',
-    'PrSup',
-    'FIO2',
-    'IE',
-    'OxygenRate',
-    'SaturationWithO2',
-    'FlowTrigger',
-    'CreatedBy',
-    'IsActive',
-    'Action'
-  ]
-  displayedSugar: string[] = [
-    'Date',
-    'BSL',
-    'UrineSugar',
-    'ETTpressure',
-    'UrineKetone',
-    'Bodies',
-    'IntakeMode',
-    'ReportedToRMO',
-    'AddedBy',
-    'IsActive',
-    'Action'
-  ]
-  isLoading: string = '';
-  sIsLoading: string = "";
-  WardList: any = [];
-  isRegIdSelected: boolean = false;
-  //screenFromString:'fromdate-form';
-  screenFromString1 = 'admission-form';
-  screenFromString = 'admission-form';
-  dateTimeObj: any;
-  isWardNameSelected: boolean = false;
-  wardListfilteredOptions: Observable<string[]>;
-  vWardId: any;
-  checkDailyWeight: boolean = false;
+  displayedColumns = [
+    'CheckBox',
+    'regno',
+    'patientName',
+    'roomName',
+  ];
+
+  autocompleteward: string = "Room";
+  currentDate = new Date();
   vDepartmentName: any;
   vpatientName: any;
   vDoctorname: any;
@@ -137,102 +49,93 @@ export class NewDietRequestComponent {
   vAgeDay: any;
   vAgeMonth: any;
   vRegNo: any;
-  vDailyWeight: any;
-  painLevel: any;
-  additionalNotes: any;
-  painLocation: any;
+  sIsLoading: string = "";
+  dataSource = new MatTableDataSource<any>();
 
-  autocompleteward: string = "Room";
-  currentDate = new Date();
+  DietForm: FormGroup;
+  dietmenuForm: FormGroup;
 
-  dsClinicalcarePatient = new MatTableDataSource<PatientList>();
-  dsPainsAssessment = new MatTableDataSource<PainAssesList>();
-  dsPainsAssessment2 = new MatTableDataSource<PainAssesList>();
-  dsvitalsList = new MatTableDataSource<VitalsList>();
-  dsInputOutTable = new MatTableDataSource<INputOutputList>();
-  dsOxygenTable = new MatTableDataSource<OxygenVentilatorlist>();
-  dsSugarTable = new MatTableDataSource<SugarlevelList>();
-  PainAssessForm: FormGroup;
-  PainAssessWeightForm: FormGroup;
-  VitalsForm: FormGroup;
-  SugarForm: FormGroup;
-  OxygenForm: FormGroup;
-  // ApacheScoreForm: FormGroup;
-  // InPutOutputForm: FormGroup;
-
-  @ViewChild(MatSort) sort: MatSort;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
   @ViewChild('Outputpaginator', { static: true }) public Outputpaginator: MatPaginator;
 
+  autocompleteModedietMenu: string = "DietMenu";
+  autocompleteModemealType: string = "MealType";
+  autocompleteModedietType: string = "DietType";
+  autocompleteModedietReisc: string = "DietRestiction";
+  autocompleteModeallergy: string = "Allergy";
+
   constructor(
-    public _ClinicalcareService: ClinicalCareChartService,
-    private _loggedService: AuthenticationService,
+    public _ClinicalcareService: DietRequestService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    private commonService: PrintserviceService,
-    private advanceDataStored: AdvanceDataStored
+    private accountService: AuthenticationService,
+    public _formbuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
-    this.getPatientListwardWise();
+    this.GetPatientdetail();
+    this.DietForm = this.CreatedietForm();
+    this.DietForm.markAllAsTouched();
 
-    // only for calling
-    this.getpainAssesmentList();
-    this.getpainAssesmentWeightList();
-    this.getReporttestList();
-    this.getPrescriptionList();
-    this.getLabRequesttList();
-    this.getRtrvVitallist();
-    this.getRtrvSugarlevellist();
-    this.getRtrvOxygenlist();
-
-    this.PainAssessForm = this._ClinicalcareService.createPainAssesForm()
-
-    this.PainAssessWeightForm = this._ClinicalcareService.createPainAssesweightForm()
-
-    this.VitalsForm = this._ClinicalcareService.createVitalsForm()
-    this.VitalsForm.markAllAsTouched();
-
-    this.SugarForm = this._ClinicalcareService.createSugarForm();
-    this.SugarForm.markAllAsTouched();
-
-    this.OxygenForm = this._ClinicalcareService.CreateOxygenForm();
+    this.dietmenuForm = this.createDietReqForm()
   }
 
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
+  CreatedietForm() {
+    return this._formbuilder.group({
+      dietMenuId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mealTypeId: [1],
+      dietTypeId: [1],
+      dietRestrictionId: [0],
+      allergyId: [0],
+      nutritionistId: [1],
+      // comments: [''],
+    })
   }
-  getSelectedObjReg() {
 
+  createDietReqForm() {
+    return this._formbuilder.group({
+      dietReqId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      date: [this.datePipe.transform(new Date, 'yyyy-MM-dd')],
+      time: [new Date()],
+      unitId: [this.accountService.currentUserValue.user.unitId],
+      dietReqNo: "12", //--> auto increment
+      dietMenuId: [0],
+
+      tDietPatReqDetails: this._formbuilder.array([]),
+    })
   }
 
-  //////////////////////////////////////// smile slider start ////////////////////////////////////////
-  selectedPainLevel: number;
-  onSliderChange(value: number) {
-    this.selectedPainLevel = value;
-    console.log(this.selectedPainLevel);
+  createDietDetReqDetails(item: any, dietFormValue: any): FormGroup {
+    return this._formbuilder.group({
+      dietReqDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      dietReqId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      orderDate: [this.datePipe.transform(new Date, 'yyyy-MM-dd')],
+      orderTime: [new Date()],
+      opipid: [item.admissionID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opiptype: 1,
+      dietMenuId: [dietFormValue.dietMenuId],
+      mealTypeId: [dietFormValue.mealTypeId],
+      dietTypeId: [dietFormValue.dietTypeId],
+      dietRestrictionId: [dietFormValue.dietRestrictionId],
+      allergyId: [dietFormValue.allergyId],
+      nutritionistId: [dietFormValue.nutritionistId],
+      isPriority: true,
+      comments: [item.comments ?? ''],
+      status: 0,
+      isAccept: false,
+      isAcceptedBy: 0,
+      isAcceptedDateTime: ['1900-01-01'],
+      isDelived: false,
+      isDelivedBy: 0,
+      isDelivedDateTime: ['1900-01-01'],
+    });
   }
-  getEmoji(painLevel: number): string {
-    const emojiMap = {
-      0: '&#x1F600;', // 😀 Grinning face (no pain / happy)
-      1: '&#x1F642;', // 🙂 Slightly smiling (very mild discomfort)
-      2: '&#x1F610;', // 😐 Neutral face
-      3: '&#x1F610;', // 😐 Neutral face
-      4: '&#x1F641;', // 🙁 Slightly frowning
-      5: '&#x1F641;', // 🙁 Slightly frowning
-      6: '&#x1F612;', // 😒 Unamused face
-      7: '&#x1F61F;', // 😟 Worried face
-      8: '&#x1F620;', // 😠 Angry face
-      9: '&#x1F621;', // 😡 Pouting face
-      10: '&#x1F629;' // 😩 Weary face (severe pain)
-    };
-    return emojiMap[painLevel];
+
+  get dietDetailsArray(): FormArray {
+    return this.dietmenuForm.get('tDietPatReqDetails') as FormArray;
   }
-  public setFocus(nextElementId): void {
-    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
-  }
-  //////////////////////////////////////// smile slider end ////////////////////////////////////////
 
   //////////////////////////////////////// main patient list ////////////////////////////////////////
   @ViewChild('grid5') grid5: AirmidTableComponent;
@@ -265,6 +168,79 @@ export class NewDietRequestComponent {
     });
   }
 
+  selection = new SelectionModel<any>(true, []); // true = multi-select
+
+  // Whether the number of selected elements matches the total number of (enabled) rows
+  isAllSelected(): boolean {
+    const numSelected = this.selection.selected.length;
+    const enabledRows = this.dataSource.data.filter(row => !row.disabled);
+    return numSelected === enabledRows.length && enabledRows.length > 0;
+  }
+
+  // Whether some but not all rows are selected (for indeterminate state)
+  isSomeSelected(): boolean {
+    return this.selection.hasValue() && !this.isAllSelected();
+  }
+
+  // Selects all rows if not all selected; otherwise clears selection
+  masterToggle(): void {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.dataSource.data
+        .filter(row => !row.disabled)
+        .forEach(row => this.selection.select(row));
+    }
+  }
+
+  areAllRowsDisabled(): boolean {
+    return this.dataSource.data.every(row => row.disabled);
+  }
+
+  removeChip(contact: any): void {
+    this.selection.toggle(contact); // deselect — this also unchecks the row's mat-checkbox automatically
+  }
+
+  GetPatientdetail() {
+
+    // debugger
+    const filters: any[] = [];
+
+    filters.push(
+
+      {
+        "fieldName": "PatientName",
+        "fieldValue": this.pname,
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "WardId",
+        "fieldValue": String(this.wardid),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "DoctorId",
+        "fieldValue": String(this.doctorid),
+        "opType": "Equals"
+      }
+    );
+
+    const data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "RegNo",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    console.log(data)
+    this._ClinicalcareService.getSampleRecivedlist(data).subscribe((response) => {
+      this.dataSource.data = response.data;
+      console.log(this.dataSource.data)
+    });
+  }
+
   onChangeFirst() {
     debugger
     this.pname = this._ClinicalcareService.MyForm.get('PatientName').value + '%'
@@ -273,7 +249,7 @@ export class NewDietRequestComponent {
     if (!this.wardid) {
       this.wardid = "0";
     }
-    this.getPatientListwardWise();
+    this.GetPatientdetail();
   }
 
   getSelectedObjward(value) {
@@ -298,7 +274,6 @@ export class NewDietRequestComponent {
     console.log(obj)
 
     this.isShowPrintButtons = true
-    this.painLevel = 0
 
     this.registerObj = obj;
     this.vpatientName = obj.patientName;
@@ -310,1044 +285,37 @@ export class NewDietRequestComponent {
     this.vRegNo = obj.regNo;
     this.vAdmission = this.registerObj.admissionID
     this.vipdNo = this.registerObj.ipdNo
-
-    this.getReporttestList();
-    this.isShowDetailTable = false;
-    this.getPrescriptionList();
-    this.isShowDetailTable2 = false;
-    this.getLabRequesttList();
-    this.getpainAssesmentList();
-    this.getpainAssesmentWeightList();
-    this.getRtrvVitallist();
-    this.getRtrvSugarlevellist();
-    this.getRtrvOxygenlist();
   }
   //////////////////////////////////////// main patient list end ////////////////////////////////////////
 
-  //////////////////////////////////////// Pain Asissgment list ////////////////////////////////////////
-  @ViewChild('grid6') grid6: AirmidTableComponent;
-  gridConfig6: gridModel = new gridModel();
-  PainsAssessmentlist: any = [];
-
-  getpainAssesmentList() { //required from deleting
-    const admid = this.vAdmission ?? 19000101
-    const vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "AdmissionId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue": String(admid),
-          "opType": "Contains"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    this._ClinicalcareService.getpainAssesmentList(vdata).subscribe(data => {
-      this.dsPainsAssessment.data = data.data as PainAssesList[];
-      this.PainsAssessmentlist = data.data as PainAssesList[];
-      console.log(this.dsPainsAssessment.data);
-    })
-  }
-
-  PaindeleteTableRow(data) {
-    Swal.fire({
-      title: 'Do you want to delete  Pain Assessment?',
-      text: "Please provide a reason for delete ",
-      icon: "warning",
-      input: 'text',
-      inputPlaceholder: 'Enter delete  reason...',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete",
-      preConfirm: (reason) => {
-        if (!reason || reason.trim() === '') {
-          Swal.showValidationMessage('Reason is required');
-        }
-        return reason;
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const submitData = {
-          painAssessmentId: data.painAssessmentId,
-          isActive: true,
-          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
-        };
-        console.log(submitData);
-        this._ClinicalcareService.OnDeleteAssessment(submitData).subscribe((res) => {
-          this.getpainAssesmentList();
-        });
-      }
-    });
-  }
-
-  OnSavePainAsses() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      })
-      return;
-    }
-    this.PainAssessForm.get('admissionId').setValue(this.vAdmission)
-    this.PainAssessForm.get('painAssessementValue').setValue(this.selectedPainLevel)
-    this.PainAssessForm.get('painAssessmentDate').setValue(formattedDate)
-    if (!this.PainAssessForm.invalid) {
-      console.log(this.PainAssessForm.value)
-      this._ClinicalcareService.SavePainAssesment(this.PainAssessForm.value).subscribe((response) => {
-        this.getpainAssesmentList();
-      });
-    } else {
-      const invalidFields = [];
-      if (this.PainAssessForm.invalid) {
-        for (const controlName in this.PainAssessForm.controls) {
-          if (this.PainAssessForm.controls[controlName].invalid) {
-            invalidFields.push(`PainAssessment Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
-    }
-  }
-
-  //////////////////////////////////////// Pain Asissgment list end////////////////////////////////////////
-
-  //////////////////////////////////////// Pain Asissgment weight list ////////////////////////////////////////
-  PainList: any = [];
-
-  getpainAssesmentWeightList() {
-    const admid = this.vAdmission ?? 19001010
-    const vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "AdmissionId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue": String(admid),
-          "opType": "Contains"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    this._ClinicalcareService.getpainAssesmentWeightList(vdata).subscribe(data => {
-      if (data) {
-        this.dsPainsAssessment2.data = data.data as PainAssesList[];
-        this.checkDailyWeight = true;
-        console.log(this.dsPainsAssessment2.data);
-      } else {
-        this.checkDailyWeight = false;
-      }
-    })
-  }
-
-  OnAddSave() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      })
-      return;
-    }
-    this.vDailyWeight = this.PainAssessWeightForm.get('patWeightValue').value
-    if (this.vDailyWeight == 0 || this.vDailyWeight == '' || this.vDailyWeight == null || this.vDailyWeight == undefined) {
-      this.toastr.warning('Please enter weight', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      })
+  onSave() {
+    if (this.selection.selected.length === 0) {
+      Swal.fire('Error!', 'Please select Patient', 'error');
       return;
     }
 
-    if (this.vDailyWeight > 200) {
-      this.toastr.warning('Weight cannot be greater than 200 kg', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return
-    }
+    const dietFormValue = this.DietForm.value;
 
-    this.checkDailyWeight = true;
-    this.PainAssessWeightForm.get('admissionId').setValue(this.vAdmission)
-    this.PainAssessWeightForm.get('patWeightDate').setValue(formattedDate)
-    if (!this.PainAssessWeightForm.invalid) {
-      console.log(this.PainAssessWeightForm.value)
-      this._ClinicalcareService.SavePainAssesmentWeight(this.PainAssessWeightForm.value).subscribe((response) => {
-        this.getpainAssesmentWeightList();
-        this.vDailyWeight = '';
-      });
-    } else {
-      const invalidFields = [];
-      if (this.PainAssessWeightForm.invalid) {
-        for (const controlName in this.PainAssessWeightForm.controls) {
-          if (this.PainAssessWeightForm.controls[controlName].invalid) {
-            invalidFields.push(`PainAssessmentWeight Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
+    this.dietDetailsArray.clear();
+    this.selection.selected.forEach(item => {
+      this.dietDetailsArray.push(this.createDietDetReqDetails(item, dietFormValue));
+    });
+
+    console.log('Final array value:', this.dietDetailsArray.value);
+
+    this.dietmenuForm.patchValue({
+      dietReqId:0,
+      dietMenuId: dietFormValue.dietMenuId
+    });
+
+    const payload = this.dietmenuForm.value;
+    console.log('Final payload:', payload);
+
+    this._ClinicalcareService.SaveDietReq(payload).subscribe(() => {
+            this._matDialog.closeAll();
         });
-      }
-    }
-
   }
 
-  deleteTableRow(element) {
-    Swal.fire({
-      title: 'Do you want to delete  Pain Assessment Weight?',
-      text: "Please provide a reason for delete ",
-      icon: "warning",
-      input: 'text',
-      inputPlaceholder: 'Enter delete  reason...',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete",
-      preConfirm: (reason) => {
-        if (!reason || reason.trim() === '') {
-          Swal.showValidationMessage('Reason is required');
-        }
-        return reason;
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const submitData = {
-          patWeightId: element.patWeightId,
-          isActive: true,
-          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
-        };
-        console.log(submitData);
-        this._ClinicalcareService.OnDeleteAssessmentWeight(submitData).subscribe((res) => {
-          this.getpainAssesmentWeightList();
-        });
-      }
-    });
-  }
-
-  keyPressAlphanumeric(event) {
-    const inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-
-  //////////////////////////////////////// Pain Asissgment weight list end ////////////////////////////////////////
-
-  //////////////////////////////////////// Lab Report code ////////////////////////////////////////
-  @ViewChild('grid7') grid7: AirmidTableComponent;
-  gridConfig7: gridModel = new gridModel();
-  @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
-  ngAfterViewInit() {
-    this.gridConfig7.columnsList.find(col => col.key === 'action')!.template = this.isTestCompletedIcon;
-  }
-
-  columns7 = [
-    { heading: "Date&Time", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-    { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "IsCompleted", key: "isCompleted", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
-    {
-      heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
-      template: this.isTestCompletedIcon  // Assign ng-template to the column
-    }
-  ]
-  getReporttestList() {
-    const admid = this.vAdmission ?? 0
-    const opip = this.vipdNo ? 1 : 0
-    this.gridConfig7 = {
-      apiUrl: "ClinicalCare/IPPathologyList",
-      columnsList: this.columns7,
-      sortField: "RegNo",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "AdmissionId", fieldValue: String(admid), opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_Type", fieldValue: String(opip), opType: OperatorComparer.Equals }
-      ]
-    }
-    setTimeout(() => {
-      this.grid7.gridConfig = this.gridConfig7;
-      this.grid7.bindGridData();
-    });
-  }
-
-  getPrint(contact) {
-
-    console.log(contact)
-
-    Swal.fire({
-      title: 'Select Report Format',
-      text: "Choose how you want to view the report:",
-      icon: "warning",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      denyButtonColor: "#6c757d",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "With Header",
-      denyButtonText: "Without Header",
-    }).then((result) => {
-
-      if (result.isConfirmed) {
-        this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
-      } else if (result.isDenied) {
-        this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
-      }
-    });
-  }
-
-  viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
-
-    setTimeout(() => {
-      const param = {
-        searchFields: [
-          {
-            fieldName: "PathReportId",
-            fieldValue: String(contact.pathReportID),
-            opType: "Equals"
-          },
-          {
-            fieldName: "OP_IP_Type",
-            fieldValue: String(contact.opdipdtype),
-            opType: "Equals"
-          }
-        ],
-        mode: mode  // dynamic
-      };
-      console.log(param)
-      this._ClinicalcareService.getReportView(param).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent, {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Template Report Viewer"
-          }
-        });
-        matDialog.afterClosed().subscribe(result => { });
-      });
-    }, 100);
-  }
-
-
-  gridConfig: gridModel = new gridModel();
-  gridConfig1: gridModel = new gridModel();
-  @ViewChild('grid') grid: AirmidTableComponent;
-  @ViewChild('grid1') grid1: AirmidTableComponent;
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  isShowDetailTable: boolean = false;
-
-  getPriscription() {
-    // if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-    //     this.toastr.warning('Please select Patient', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     })
-    //     return;
-    // }
-    // this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
-    // const dialogRef = this._matDialog.open(NewPrescriptionComponent,
-    //     {
-    //         maxHeight: '95vh',
-    //         width: '90%',
-    //         data: this.registerObj
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-    //     this.getPrescriptionList();
-    // });
-  }
-
-  allColumns1 = [
-    { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Prescription Date", key: "ptime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    {
-      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
-      actions: [
-        {
-          action: gridActions.print, callback: (data: any) => {
-            this.viewgetIpprescriptionReportPdf(data);
-          }
-        }]
-    }
-  ]
-
-  getPrescriptionList() {
-    const regNo1 = this.vRegNo ?? 19000101 //this is default value because if i provide 0 then bydefault list will come
-    this.gridConfig = {
-      apiUrl: "IPPrescription/PrescriptionPatientList",
-      columnsList: this.allColumns1,
-      sortField: "RegNo",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: String(regNo1), opType: OperatorComparer.Equals },
-        { fieldName: "F_Name", fieldValue: '%', opType: OperatorComparer.Equals },
-        { fieldName: "L_Name", fieldValue: '%', opType: OperatorComparer.Equals }
-      ]
-    }
-    setTimeout(() => {
-      this.grid.gridConfig = this.gridConfig;
-      this.grid.bindGridData();
-    });
-  }
-
-  GetDetails1(data: any): void {
-    console.log("detailList:", data)
-    const ipMedID = data.ippreId;
-    this.gridConfig1 = {
-      apiUrl: "IPPrescription/PrescriptionDetailList",
-      columnsList: [
-        { heading: "Status", key: "isClosed", type: gridColumnTypes.status, align: "center" },
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-      ],
-      sortField: "ipMedID",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "ipMedID", fieldValue: String(ipMedID), opType: OperatorComparer.Equals },
-      ]
-    };
-    this.isShowDetailTable = true;
-    setTimeout(() => {
-      this.grid1.gridConfig = this.gridConfig1;
-      this.grid1.bindGridData();
-    }, 500);
-  }
-
-  viewgetIpprescriptionReportPdf(response) {
-    console.log(response)
-    setTimeout(() => {
-      const param = {
-        "searchFields": [
-          {
-            "fieldName": "OP_IP_ID",
-            "fieldValue": String(response.ippreId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "PatientType",
-            "fieldValue": "1",
-            "opType": "Equals"
-          }
-        ],
-        "mode": "NurIPprescriptionReport"
-      }
-      this._ClinicalcareService.getReportView(param).subscribe(res => {
-
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Nursing Prescription" + " " + "Viewer"
-            }
-          });
-        matDialog.afterClosed().subscribe(result => {
-        });
-      });
-    }, 100);
-  }
-
-  //////////////////////////////////////// Ip Prescription end ////////////////////////////////////////
-
-  //////////////////////////////////////// Lab Request start ////////////////////////////////////////
-  gridConfig2: gridModel = new gridModel();
-  gridConfig3: gridModel = new gridModel();
-  @ViewChild('grid2') grid2: AirmidTableComponent;
-  @ViewChild('grid3') grid3: AirmidTableComponent;
-  fromDate2 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate2 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  isShowDetailTable2: boolean = false;
-
-  allColumns2 = [
-    { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-    { heading: "Admission Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
-  ]
-
-  getLabRequesttList() {
-    const regNo1 = this.vRegNo ?? 19000101 //this is default value because if i provide 0 then bydefault list will come
-    this.gridConfig2 = {
-      apiUrl: "IPPrescription/LabRadRequestList",
-      columnsList: this.allColumns2,
-      sortField: "RegNo",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: String(regNo1), opType: OperatorComparer.Equals },
-        { fieldName: "F_Name", fieldValue: '%', opType: OperatorComparer.Equals },
-        { fieldName: "L_Name", fieldValue: '%', opType: OperatorComparer.Equals }
-      ]
-    }
-    setTimeout(() => {
-      this.grid2.gridConfig = this.gridConfig2;
-      this.grid2.bindGridData();
-    });
-  }
-
-  getSelectedRow(row: any): void {
-    console.log("Selected row : ", row);
-    const vRequestId = row.requestId
-    this.gridConfig3 = {
-      apiUrl: "IPPrescription/LabRadRequestDetailList",
-      columnsList: [
-        { heading: "IsBillingStatus", key: "isStatus", type: gridColumnTypes.status, align: "center" },
-        { heading: "IsTestStatus", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" },
-        { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BillDateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-      ],
-      sortField: "RequestId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "RequestId", fieldValue: String(vRequestId), opType: OperatorComparer.Equals }
-      ]
-    }
-    this.isShowDetailTable2 = true;
-    setTimeout(() => {
-      this.grid3.gridConfig = this.gridConfig3;
-      this.grid3.bindGridData();
-    });
-  }
-
-  viewLabRequestPdf(data) {
-    this.commonService.Onprint("RequestId", data.requestId, "NurLabRequestTest");
-  }
-
-  getLabRequest() {
-    // if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-    //     this.toastr.warning('Please select Patient', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     })
-    //     return;
-    // }
-    // this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
-    // const dialogRef = this._matDialog.open(NewRequestforlabComponent,
-    //     {
-    //         maxHeight: '95vh',
-    //         width: '90%',
-    //         data: this.registerObj
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     this.getLabRequesttList();
-    // });
-  }
-  //////////////////////////////////////// Lab Request end ////////////////////////////////////////
-
-  //////////////////////////////////////// vital info list end ////////////////////////////////////////  
-  vitallist: any;
-  vsuctionType: any = "0";
-  getRtrvVitallist() {
-    const admid = this.vAdmission ?? 19001010
-    const vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "AdmissionId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue": String(admid),
-          "opType": "Contains"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    console.log(vdata)
-    this._ClinicalcareService.getRtrvVitallist(vdata).subscribe((data) => {
-      this.dsvitalsList.data = data.data as VitalsList[];
-      this.vitallist = data.data as VitalsList[];
-      console.log(this.dsvitalsList.data);
-    });
-  }
-
-  deleteVitalTableRow(element) {
-    Swal.fire({
-      title: 'Do you want to delete  Vitals?',
-      text: "Please provide a reason for delete ",
-      icon: "warning",
-      input: 'text',
-      inputPlaceholder: 'Enter delete  reason...',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete",
-      preConfirm: (reason) => {
-        if (!reason || reason.trim() === '') {
-          Swal.showValidationMessage('Reason is required');
-        }
-        return reason;
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const submitData = {
-          vitalId: element.vitalId,
-          isActive: true,
-          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
-        };
-        console.log(submitData);
-        this._ClinicalcareService.OnDeleteVital(submitData).subscribe((res) => {
-          this.getRtrvVitallist();
-        });
-      }
-    });
-  }
-
-  OnSaveVital() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-
-    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      })
-      return;
-    }
-    this.VitalsForm.get('vitalId').setValue(this.vVitalId ?? 0)
-    this.VitalsForm.get('admissionId').setValue(this.vAdmission)
-    this.VitalsForm.get('vitalDate').setValue(formattedDate)
-    this.VitalsForm.get('vitalTime').setValue(`${formattedDate} ${formattedTime}`)
-    if (!this.VitalsForm.invalid) {
-      console.log(this.VitalsForm.value)
-      this._ClinicalcareService.SaveVitalInfo(this.VitalsForm.value).subscribe((response) => {
-        this.getRtrvVitallist();
-        this.OnClosevital()
-      });
-    } else {
-      const invalidFields = [];
-      if (this.VitalsForm.invalid) {
-        for (const controlName in this.VitalsForm.controls) {
-          if (this.VitalsForm.controls[controlName].invalid) {
-            invalidFields.push(`Vital Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
-
-    }
-  }
-
-  OnClosevital() {
-    this.VitalsForm.reset();
-    this.VitalsForm.get('suctionType').setValue('0')
-  }
-  vVitalId: any;
-  onEditVital(row: any) {
-    console.log('Row:', row, typeof row.suctionType);
-    this.vVitalId = row.vitalId
-    const updated = {
-      ...row,
-      suctionType: String(row.suctionType)
-    };
-    this.VitalsForm.patchValue(updated);
-  }
-
-
-  //////////////////////////////////////// vital info list end ////////////////////////////////////////
-
-  //////////////////////////////////////// Sugar Level list code ////////////////////////////////////////
-  Sugarlevellist: any;
-  getRtrvSugarlevellist() {
-    const admid = this.vAdmission ?? 19001010
-    const vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "AdmissionId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue": String(admid),
-          "opType": "Contains"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    console.log(vdata)
-    this._ClinicalcareService.getRtrvSugarlevellist(vdata).subscribe((data) => {
-      this.dsSugarTable.data = data.data as SugarlevelList[];
-      this.Sugarlevellist = data.data as SugarlevelList[];
-      console.log(this.dsSugarTable.data);
-    });
-  }
-
-  deleteSugarTableRow(element) {
-    Swal.fire({
-      title: 'Do you want to delete  Sugar Level?',
-      text: "Please provide a reason for delete ",
-      icon: "warning",
-      input: 'text',
-      inputPlaceholder: 'Enter delete  reason...',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete",
-      preConfirm: (reason) => {
-        if (!reason || reason.trim() === '') {
-          Swal.showValidationMessage('Reason is required');
-        }
-        return reason;
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const submitData = {
-          id: element.id,
-          isActive: true,
-          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
-        };
-        console.log(submitData);
-        this._ClinicalcareService.OnDeleteSugar(submitData).subscribe((res) => {
-          this.getRtrvSugarlevellist();
-        });
-      }
-    });
-  }
-
-  OnsaveSugarlevel() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-
-    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      })
-      return;
-    }
-    this.SugarForm.get('id').setValue(this.vid ?? 0)
-    this.SugarForm.get('admissionId').setValue(this.vAdmission)
-    this.SugarForm.get('entryDate').setValue(formattedDate)
-    this.SugarForm.get('entryTime').setValue(`${formattedDate} ${formattedTime}`)
-    if (!this.SugarForm.invalid) {
-      const controlsToRemove = ['InformedTo', 'InformedBy', 'Injection', 'InjectionDose', 'Tablet', 'TabletDose'];
-      controlsToRemove.forEach(controlName => {
-        this.SugarForm.removeControl(controlName);
-      });
-      console.log(this.SugarForm.value)
-      this._ClinicalcareService.SaveSugarlevel(this.SugarForm.value).subscribe((response) => {
-        this.getRtrvSugarlevellist();
-        this.OnCloseSugar()
-      });
-    } else {
-      const invalidFields = [];
-      if (this.SugarForm.invalid) {
-        for (const controlName in this.SugarForm.controls) {
-          if (this.SugarForm.controls[controlName].invalid) {
-            invalidFields.push(`Sugar Level Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
-
-    }
-  }
-
-  OnCloseSugar() {
-    this.SugarForm.reset();
-  }
-
-  vid: any;
-  onEditSuugarlevel(row) {
-    console.log(row)
-    this.vid = row.id
-    const m_data = row
-    this.SugarForm.patchValue(m_data);
-  }
-
-  //////////////////////////////////////// Sugar Level list code end ////////////////////////////////////////
-
-  //////////////////////////////////////// Oxygen/Venti code end ////////////////////////////////////////
-  OxygenventiList: any;
-  getRtrvOxygenlist() {
-    const admid = this.vAdmission ?? 19001010
-    const vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "AdmissionId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue": String(admid),
-          "opType": "Contains"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    console.log(vdata)
-    this._ClinicalcareService.getRtrvOxygenlist(vdata).subscribe((data) => {
-      this.dsOxygenTable.data = data.data as OxygenVentilatorlist[];
-      this.OxygenventiList = data.data as OxygenVentilatorlist[];
-      console.log(this.dsOxygenTable.data);
-    });
-  }
-
-  OnsaveOxygenVenti() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-
-    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      })
-      return;
-    }
-    this.OxygenForm.get('id').setValue(this.vOxyid ?? 0)
-    this.OxygenForm.get('admissionId').setValue(this.vAdmission)
-    this.OxygenForm.get('entryDate').setValue(formattedDate)
-    this.OxygenForm.get('entryTime').setValue(`${formattedDate} ${formattedTime}`)
-    if (!this.OxygenForm.invalid) {
-      console.log(this.OxygenForm.value)
-      this._ClinicalcareService.SaveOxygenVentilator(this.OxygenForm.value).subscribe((response) => {
-        this.getRtrvOxygenlist();
-        this.OnCloseOxygen()
-      });
-    } else {
-      const invalidFields = [];
-      if (this.OxygenForm.invalid) {
-        for (const controlName in this.OxygenForm.controls) {
-          if (this.OxygenForm.controls[controlName].invalid) {
-            invalidFields.push(`Oxygen Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
-
-    }
-  }
-
-  OnCloseOxygen() {
-    this.OxygenForm.reset();
-  }
-
-  deleteOxygenTableRow(element) {
-    Swal.fire({
-      title: 'Do you want to delete oxygen/ventilation?',
-      text: "Please provide a reason for delete ",
-      icon: "warning",
-      input: 'text',
-      inputPlaceholder: 'Enter delete  reason...',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete",
-      preConfirm: (reason) => {
-        if (!reason || reason.trim() === '') {
-          Swal.showValidationMessage('Reason is required');
-        }
-        return reason;
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const submitData = {
-          id: element.id,
-          isActive: true,
-          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
-        };
-        console.log(submitData);
-        this._ClinicalcareService.OnDeleteOxygenVen(submitData).subscribe((res) => {
-          this.getRtrvOxygenlist();
-        });
-      }
-    });
-  }
-
-  vOxyid: any;
-  onEditOxygen(row) {
-    console.log(row)
-    this.vOxyid = row.id
-    const m_data = row
-    this.OxygenForm.patchValue(m_data);
-  }
-  //////////////////////////////////////// Oxygen/Venti code end ////////////////////////////////////////
-
-  getPhlebitis() {
-    // if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-    //     this.toastr.warning('Please select Patient', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     })
-    //     return;
-    // }
-    // this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
-    // const dialogRef = this._matDialog.open(PhlebitisScoreComponent,
-    //     {
-    //         maxWidth: "100%",
-    //         height: '95%',
-    //         width: '90%',
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-    // });
-  }
-  getMedicationReport() {
-    // if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-    //     this.toastr.warning('Please select Patient', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     })
-    //     return;
-    // }
-    // this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
-    // const dialogRef = this._matDialog.open(MedicationErrorComponent,
-    //     {
-    //         maxWidth: "100%",
-    //         height: '95%',
-    //         width: '90%',
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-    // });
-  }
-
-  /// added by ambadas result view option
-  public dsResultViewList = new MatTableDataSource<any>();
-  public displayedResultViewColumns =
-    ['sequence', 'TestName', 'ParameterName', 'ResultValue', 'Flag', 'NormalRange'];
-  @ViewChild('ResultViewTab') ResultViewTab!: TemplateRef<any>;
-
-  getLabResultview(row: any): void {
-    // console.log("List:", row)
-    // const opipid = row.opD_IPD_ID
-    // this._matDialog.open(LababnormalListComponent, {
-    //     maxWidth: "95vw",
-    //     height: '95%',
-    //     width: '90%',
-    //     data: {
-    //         row: row,
-    //         vOPIPId: opipid,
-    //         opipType: 1,
-    //         patientName: row.patientName
-    //     }
-    // })
-  }
-
-  //  getLabResultview(row: any): void {
-  //     this._matDialog.open(this.ResultViewTab, {
-  //         width: '65%',
-  //         height: '75%',
-  //     })
-  //     var param = {
-  //         "searchFields": [
-  //             {
-  //                 "fieldName": "PathReportId",
-  //                 "fieldValue": String(row.pathReportID), //"150598",  
-  //                 "opType": "Equals"
-  //             }
-  //         ],
-  //         "mode": "PathologyResultEntryIPCompleted"
-  //     }
-  //     //         {
-  //     //     "TestId": 2,
-  //     //     "TestName": "CBC",
-  //     //     "PrintTestName": "COMPLETE BLOOD COUNT",
-  //     //     "SubTestId": 0,
-  //     //     "SubTestName": "CBC",
-  //     //     "SubTestNamePrint": "COMPLETE BLOOD COUNT",
-  //     //     "ParameterName": "HCT",
-  //     //     "ParameterShortName": "HCT",
-  //     //     "ParameterId": 19,
-  //     //     "PrintParameterName": "HCT",
-  //     //     "ResultValue": " 2323",
-  //     //     "NormalRange": "33 - 50 %",
-  //     //     "PrintOrder": 1,
-  //     //     "PIsNumeric": 1,
-  //     //     "PathReportId": 571684,
-  //     //     "CategoryId": 20029,
-  //     //     "CategoryName": "HEMATOLOGY",
-  //     //     "PatientName": "Miss Raksha Rajesh Netalkar",
-  //     //     "VisitDate": "2026-07-28T00:00:00",
-  //     //     "VisitTime": "2026-07-28T11:48:41",
-  //     //     "OPDNo": "OP/07/2026/140",
-  //     //     "ConsultantDocName": "DEMO demo",
-  //     //     "AgeYear": "25        ",
-  //     //     "RegNo": "3242",
-  //     //     "CompanyName": "",
-  //     //     "PathResultDrName": "Kavita j",
-  //     //     "PathResultDr1": 70403,
-  //     //     "SuggestionNote": "askjal adsjlkjasd dsaaskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa\naskjal adsjlkjasd dsa",
-  //     //     "FootNote": "",
-  //     //     "MachineName": "",
-  //     //     "TechniqueName": "",
-  //     //     "UnitId": 5,
-  //     //     "MinValue": 33,
-  //     //     "MaxValue": 50,
-  //     //     "PathReportdetid": 255768,
-  //     //     "Formula": "",
-  //     //     "ParaBoldFlag": "B",
-  //     //     "OPD_IPD_ID": 535955,
-  //     //     "OPD_IPD_Type": 0
-  //     // }
-  //     this._ClinicalcareService.getLabResultView(param).subscribe((response) => {
-
-  //         if (response) {
-  //             this.dsResultViewList.data = response;
-  //             console.log(this.dsResultViewList.data)
-  //         }
-  //     });
-  // }
 }
 export class PatientList {
   DoctorName: any;

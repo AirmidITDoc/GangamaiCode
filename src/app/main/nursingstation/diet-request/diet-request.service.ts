@@ -5,11 +5,11 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class DietRequestService {
 
- 
+
     MyForm: FormGroup;
     PainAssessForm: FormGroup;
     VitalsForm: FormGroup;
@@ -26,10 +26,10 @@ export class DietRequestService {
     ) {
         this.MyForm = this.createMyForm()
         this.VitalsForm = this.createVitalsForm(),
-        this.SugarForm = this.createSugarForm(),
-        this.OxygenForm = this.CreateOxygenForm(),
-        this.ApacheScoreForm = this.CreateApachescoreForm(),
-        this.InPutOutputForm = this.CreateInputoutForm()
+            this.SugarForm = this.createSugarForm(),
+            this.OxygenForm = this.CreateOxygenForm(),
+            this.ApacheScoreForm = this.CreateApachescoreForm(),
+            this.InPutOutputForm = this.CreateInputoutForm()
     }
 
     createMyForm() {
@@ -284,7 +284,15 @@ export class DietRequestService {
     public OnDeleteOxygenVen(param) {
         return this._httpClient1.PostData('ClinicalCare/TNursingOrygenVentilatorCancel', param)
     }
-        public getLabResultView(Param) {
+    public getLabResultView(Param) {
         return this._httpClient1.PostData("Common", Param)
+    }
+    public getSampleRecivedlist(employee) {
+        return this._httpClient1.PostData("ClinicalCare/AdmisionListNursingList", employee)
+    }
+    public SaveDietReq(Param: any) {
+        if (Param.dietReqId) {
+            return this._httpClient1.PutData("DietPatientRequest/Edit/" + Param.dietReqId, Param);
+        } else return this._httpClient1.PostData("DietPatientRequest/Insert", Param);
     }
 }

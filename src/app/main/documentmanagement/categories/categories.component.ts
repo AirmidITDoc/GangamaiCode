@@ -34,7 +34,7 @@ export class CategoriesComponent {
             ref.afterClosed().subscribe((result: CategoryFormResult | undefined) => {
                 if (!result) return;
                 this.bindCategories();
-                this.snackBar.open(`Added "${result.name}"`, 'Dismiss', { duration: 2500 });
+                this.snackBar.open(`Document Category updated successfully`, 'Dismiss', { duration: 2500 });
             });
         }
     }

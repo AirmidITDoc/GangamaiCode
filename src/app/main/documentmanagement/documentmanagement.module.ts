@@ -11,11 +11,6 @@ const appRoutes: Routes = [
             import("./categories/categories.module").then((m) => m.CategoriesModule),
     },
     {
-        path: "dashboard",
-        loadChildren: () =>
-            import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
-    },
-    {
         path: "documents",
         loadChildren: () =>
             import("./documents/documents.module").then((m) => m.DocumentsModule),
@@ -24,11 +19,6 @@ const appRoutes: Routes = [
         path: "patient-search",
         loadChildren: () =>
             import("./patient-search/patient-search.module").then((m) => m.PatientSearchModule),
-    },
-    {
-        path: "qr-scan",
-        loadChildren: () =>
-            import("./qr-scan/qr-scan.module").then((m) => m.QrScanModule),
     },
     {
         path: "upload",
