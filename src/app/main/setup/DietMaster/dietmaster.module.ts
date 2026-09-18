@@ -8,30 +8,30 @@ const appRoutes: Routes = [
       import("./dietcategory-master/dietcategory-master.module").then((m) => m.DietcategoryMasterModule
       ),
   },
-  {
-    path: "diettypeMaster",
-    loadChildren: () =>
-      import("./diettype-master/diettype-master.module").then((m) => m.DiettypeMasterModule
-      ),
-  },
+  // {
+  //   path: "diettypeMaster",
+  //   loadChildren: () =>
+  //     import("./diettype-master/diettype-master.module").then((m) => m.DiettypeMasterModule
+  //     ),
+  // },
   {
     path: "fooditemMaster",
     loadChildren: () =>
       import("./food-itemmaster/food-itemmaster.module").then((m) => m.FoodItemmasterModule
       ),
   },
-  {
-    path: "menuMaster",
-    loadChildren: () =>
-      import("./menu-master/menu-master.module").then((m) => m.MenuMasterModule
-      ),
-  },
-  {
-    path: "dietrestrictionMaster",
-    loadChildren: () =>
-      import("./dietrestriction-master/dietrestriction-master.module").then((m) => m.DietrestrictionMasterModule
-      ),
-  },
+  // {
+  //   path: "menuMaster",
+  //   loadChildren: () =>
+  //     import("./menu-master/menu-master.module").then((m) => m.MenuMasterModule
+  //     ),
+  // },
+  // {
+  //   path: "dietrestrictionMaster",
+  //   loadChildren: () =>
+  //     import("./dietrestriction-master/dietrestriction-master.module").then((m) => m.DietrestrictionMasterModule
+  //     ),
+  // },
   {
     path: "feedingrouteMaster",
     loadChildren: () =>
@@ -44,24 +44,24 @@ const appRoutes: Routes = [
       import("./foodpreference-master/foodpreference-master.module").then((m) => m.FoodpreferenceMasterModule
       ),
   },
-  {
-    path: "allergyMaster",
-    loadChildren: () =>
-      import("./allergy-master/allergy-master.module").then((m) => m.AllergyMasterModule
-      ),
-  },
+  // {
+  //   path: "allergyMaster",
+  //   loadChildren: () =>
+  //     import("./allergy-master/allergy-master.module").then((m) => m.AllergyMasterModule
+  //     ),
+  // },
   {
     path: "foodcategoryMaster",
     loadChildren: () =>
       import("./foodcategory-master/foodcategory-master.module").then((m) => m.FoodcategoryMasterModule
       ),
   },
-  {
-    path: "mealtypeMaster",
-    loadChildren: () =>
-      import("./mealtype-master/mealtype-master.module").then((m) => m.MealtypeMasterModule
-      ),
-  },
+  // {
+  //   path: "mealtypeMaster",
+  //   loadChildren: () =>
+  //     import("./mealtype-master/mealtype-master.module").then((m) => m.MealtypeMasterModule
+  //     ),
+  // },
 ];
 
 @NgModule({
