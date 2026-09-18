@@ -5,3 +5,66 @@
   text-overflow: ellipsis;
   max-width: 150px; /* match your w-150 width */
 }
+
+.right-panel {
+  width: 75%;
+  height: calc(100vh - 50px);
+  margin-top: 5px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+  min-height: 0;
+}
+
+.diet-form-section {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.selected-patients {
+  flex: 0 1 auto;
+
+  width: 100%;
+
+  border: 1px solid red;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  min-height: 0;
+  max-height: 100%;
+
+  padding: 4px;
+}
+
+.selected-patient {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.selected-patient mat-form-field {
+  width: 100%;
+}
+
+.modal-footer {
+  flex: 0 0 auto;
+  width: 100%;
+  margin-top: auto;
+  background: white;
+}
+
+.footer-navigation-container {
+  padding: 5px;
+}
+
+.content-area {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
