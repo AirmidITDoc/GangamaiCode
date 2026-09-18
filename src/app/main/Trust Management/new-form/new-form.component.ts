@@ -2075,7 +2075,7 @@ export class NewFormComponent {
       this.showDoctorDropdownRefresh = false;
       setTimeout(() => {
         this.showDoctorDropdownRefresh = true;
-      }, 100);
+      }, 200);
     });
 
 
@@ -2118,9 +2118,9 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId).subscribe((response) => {
-        this.registerObj = response;
-        console.log(this.registerObj)
-        this.hfDoctor = this.registerObj.phone
+        // this.docregisterObj = response;
+        // console.log(this.registerObj)
+        this.hfDoctor =response.phone
         this.personalFormGroup.get("familyDoctorContact").setValue(this.hfDoctor);
 
       }, (error) => {
@@ -2138,9 +2138,9 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId1 = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId1).subscribe((response) => {
-        this.registerObj = response;
-        console.log(this.registerObj)
-        this.hcDoctor = this.registerObj.phone
+        // this.registerObj = response;
+        // console.log(this.registerObj)
+        this.hcDoctor = response.phone
         this.personalFormGroup.get("hConsultDoctorContact").setValue(this.hcDoctor);
 
       }, (error) => {
@@ -2158,9 +2158,9 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId2 = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId2).subscribe((response) => {
-        this.registerObj = response;
-        console.log(this.registerObj)
-        this.wfDoctor = this.registerObj.phone
+        // this.registerObj = response;
+        // console.log(this.registerObj)
+        this.wfDoctor = response.phone
         this.personalFormGroup.get("wfamilyDoctorContact").setValue(this.wfDoctor);
 
       }, (error) => {
@@ -2177,9 +2177,9 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId3 = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId3).subscribe((response) => {
-        this.registerObj = response;
-        console.log(this.registerObj)
-        this.wcDoctor = this.registerObj.phone
+        // this.registerObj = response;
+        // console.log(this.registerObj)
+        this.wcDoctor = response.phone
         this.personalFormGroup.get("wConsultDoctorContact").setValue(this.wcDoctor);
 
       }, (error) => {

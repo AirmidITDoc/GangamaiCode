@@ -525,7 +525,8 @@
                                                         [value]="regObj?.familyDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().familyDoctorId"
-                                                        [mode]="autocompleteModeRefDoctor" (selectionChange)="selectChangehFDoc($event)">
+                                                        [mode]="autocompleteModeRefDoctor"
+                                                        (selectionChange)="selectChangehFDoc($event)">
                                                     </airmid-dropdown>
                                                 </div>
 
@@ -549,7 +550,8 @@
                                                         [value]="regObj?.hconsultDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().hconsultDoctorId"
-                                                        [mode]="autocompleteModeDoctor"  (selectionChange)="selectChangehCDoc($event)">
+                                                        [mode]="autocompleteModeDoctor"
+                                                        (selectionChange)="selectChangehCDoc($event)">
                                                     </airmid-dropdown>
                                                 </div>
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -574,7 +576,8 @@
                                                         [value]="regObj?.wfamilyDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().wfamilyDoctorId"
-                                                        [mode]="autocompleteModeRefDoctor"  (selectionChange)="selectChangewFDoc($event)">
+                                                        [mode]="autocompleteModeRefDoctor"
+                                                        (selectionChange)="selectChangewFDoc($event)">
                                                     </airmid-dropdown>
                                                 </div>
 
@@ -596,7 +599,8 @@
                                                         formControlName="wconsultDoctorId"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().wconsultDoctorId"
-                                                        [mode]="autocompleteModeDoctor" (selectionChange)="selectChangewCDoc($event)">
+                                                        [mode]="autocompleteModeDoctor"
+                                                        (selectionChange)="selectChangewCDoc($event)">
                                                     </airmid-dropdown>
                                                 </div>
 
