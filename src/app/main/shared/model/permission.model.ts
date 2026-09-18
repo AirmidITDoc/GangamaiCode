@@ -217,5 +217,17 @@ export enum permissionCodes {
     MICDE_Master = 'MICDE_Master',
 
     //membership
-    Membership = 'Membership'
+    Membership = 'Membership',
+
+    //Diet master
+    DietCategoryMaster = 'DietCategoryMaster',
+    DietTypeMaster = 'DietTypeMaster',
+    DietRestrictionMaster = 'DietRestrictionMaster',
+    FeedingRouteMaster = 'FeedingRouteMaster',
+    FoodPreferenceMaster = 'FoodPreferenceMaster',
+    AllergyMaster = 'AllergyMaster',
+    FoodCategoryMaster = 'FoodCategoryMaster',
+    MealTypeMaster = 'MealTypeMaster',
+    FoodItemMaster = 'FoodItemMaster',
+    DietMenuMaster = 'DietMenuMaster'
 }

@@ -1,0 +1,50 @@
+import { Injectable } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FoodcategoryMasterService {
+
+  myForm: FormGroup;
+    myformSearch: FormGroup;
+    constructor(
+      private _httpClient: ApiCaller,
+      private _formBuilder: UntypedFormBuilder,
+      private _FormvalidationserviceService: FormvalidationserviceService
+    ) {
+      this.myForm = this.createFoodCategoryForm();
+      this.myformSearch = this.createSearchForm();
+    }
+  
+    createFoodCategoryForm(): FormGroup {
+      return this._formBuilder.group({
+        foodCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        foodCategoryCode: [0, [Validators.required]],
+        foodCategoryName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        active: [[Validators.required]]
+      });
+    }
+  
+    createSearchForm(): FormGroup {
+      return this._formBuilder.group({
+        foodCategoryName: [""],
+        IsDeletedSearch: ["2"],
+      });
+    }
+  
+    initializeFormGroup() {
+      this.createFoodCategoryForm();
+    }
+  
+    public foodCategorySave(Param: any) {
+      if (Param.foodCategoryId) {
+        return this._httpClient.PutData("FoodCategoryMaster/" + Param.foodCategoryId, Param);
+      } else return this._httpClient.PostData("FoodCategoryMaster", Param);
+    }
+    public deactivateTheStatus(m_data) {
+      return this._httpClient.DeleteData("FoodCategoryMaster?Id=" + m_data.toString());
+    }
+}
