@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-
-
 const appRoutes: Routes = [
     {
         path: "ottablemaster",
@@ -46,17 +44,22 @@ const appRoutes: Routes = [
             import("./specalitymaster/specalitymaster.module").then((m) => m.SpecalitymasterModule
             ),
     },
-     {
+    {
         path: "subspecialitymaster",
         loadChildren: () =>
             import("./subspeciality-master/subspeciality-master.module").then((m) => m.SubspecialityMasterModule
             ),
     },
+    {
+        path: "anaesthesiamaster",
+        loadChildren: () =>
+            import("./anaesthesia-master/anaesthesia-master.module").then((m) => m.AnaesthesiaMasterModule
+            ),
+    },
 ];
 
 @NgModule({
-    declarations: [
-  ],
+    declarations: [],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class OTManagementModule { }
