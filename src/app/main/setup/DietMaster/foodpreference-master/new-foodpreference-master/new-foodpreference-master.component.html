@@ -1,0 +1,53 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Food Preference</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="myForm">
+                <input type="hidden" name="foodPreferenceId" formControlName="foodPreferenceId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Food Preference Name" formControlName="foodPreferenceName" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().FoodPreferenceName">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Food Preference Code" formControlName="foodPreferenceCode" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().FoodPreferenceCode">
+                        </airmid-textbox>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <form [formGroup]="myForm">
+
+                <div class="modal-footer-container">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="active" [formGroup]="myForm"
+                        [(ngModel)]="isActive"></app-airmid-slider>
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Food Item</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="myForm">
+                <input type="hidden" name="foodItemId" formControlName="foodItemId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Food Name" formControlName="foodName" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().FoodName">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Food Code" formControlName="foodCode" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().FoodCode">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Food Category" formControlName="foodCategoryId" [formGroup]="myForm"
+                            [validations]="getValidationMessages().FoodCategory" [mode]="autocompleteModeFoodItem">
+                        </airmid-dropdown>
+                        <!-- <airmid-textbox label="Food Category" formControlName="foodCategoryId" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().FoodCategory">
+                        </airmid-textbox> -->
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Local Name" formControlName="localName" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().LocalName">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Unit" formControlName="unit" [formGroup]="myForm" [maxLength]="50"
+                            [validations]="getValidationMessages().Unit">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-checkbox label="IsVegeterian" formControlName="isVegetarian" [formGroup]="myForm">
+                            IsVegeterian
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <form [formGroup]="myForm">
+
+                <div class="modal-footer-container">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="active" [formGroup]="myForm"
+                        [(ngModel)]="isActive"></app-airmid-slider>
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

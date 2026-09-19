@@ -88,6 +88,16 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./employee/employee.module").then((m) => m.EmployeeModule),
     },
+    {
+        path: "Constants",
+        loadChildren: () =>
+            import("./constant-masters/constant-masters.module").then((m) => m.ConstantMastersModule),
+    },
+     {
+        path: "dietmaster",
+        loadChildren: () =>
+            import("./DietMaster/dietmaster.module").then((m) => m.DietmasterModule),
+    },
 ];
 
 @NgModule({
