@@ -185,13 +185,56 @@ export class NewRegistrationComponent implements OnInit {
             }, 500);
         }
 
-        // this data will be common every time when reg form will open from abha
+        // this data will be common every time when reg form will open from abha dont delete
+        // if (this.data?.profile) {
+        //     this.isProfileData = true;
+        //     console.log('Profile data from ABHA', this.data.profile)
+        //     this.abhaGender = this.data.profile.gender
+        //     this.tryMapGenderAndPrefix();
+        //     this.onChangePincode(this.data.profile.pincode)
+
+        //     this.personalFormGroup.patchValue({
+        //         FirstName: this.data.profile.firstName,
+        //         MiddleName: this.data.profile.middleName,
+        //         LastName: this.data.profile.lastName,
+        //         MobileNo: this.data.profile.mobile,
+        //         Address: this.data.profile.address,
+        //         PinNo: this.data.profile.pincode
+        //     });
+
+        //     this.abhaForm.patchValue({
+        //         abhaAddress: this.data.profile.preferredAbhaAddress,
+        //         abhaNumber: this.data.profile.abhaNumber,
+        //         abhaFullName: this.data.profile.name,
+        //         gender: this.data.profile.gender,
+        //         yearOfBirth: `${this.data.profile.dayOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.yearOfBirth}`
+        //     });
+
+        //     const now = new Date();
+
+        //     const dobString =
+        //         `${this.data.profile.yearOfBirth}-${String(this.data.profile.monthOfBirth).padStart(2, '0')}-${String(this.data.profile.dayOfBirth).padStart(2, '0')}` +
+        //         `T${String(now.getHours()).padStart(2, '0')}:` +
+        //         `${String(now.getMinutes()).padStart(2, '0')}:` +
+        //         `${String(now.getSeconds()).padStart(2, '0')}`;
+
+        //     if (dobString) {
+        //         setTimeout(() => {
+        //             this.registerObj.dateofBirth = new Date(dobString)
+        //             this.onChangeDateofBirth(this.registerObj.dateofBirth);
+        //         }, 1000);
+        //     }
+        // }
+
+        // new abha integration
         if (this.data?.profile) {
             this.isProfileData = true;
             console.log('Profile data from ABHA', this.data.profile)
             this.abhaGender = this.data.profile.gender
             this.tryMapGenderAndPrefix();
-            this.onChangePincode(this.data.profile.pincode)
+            this.onChangePincode(this.data.profile.pinCode)
+
+            const fullName = (this.data?.profile?.name || '').trim();
 
             this.personalFormGroup.patchValue({
                 FirstName: this.data.profile.firstName,
@@ -199,28 +242,40 @@ export class NewRegistrationComponent implements OnInit {
                 LastName: this.data.profile.lastName,
                 MobileNo: this.data.profile.mobile,
                 Address: this.data.profile.address,
-                PinNo: this.data.profile.pincode
+                PinNo: this.data.profile.pinCode
             });
 
             this.abhaForm.patchValue({
-                abhaAddress: this.data.profile.preferredAbhaAddress,
+                abhaAddress: this.data.profile.abhaAddress,
                 abhaNumber: this.data.profile.abhaNumber,
                 abhaFullName: this.data.profile.name,
                 gender: this.data.profile.gender,
-                yearOfBirth: `${this.data.profile.dayOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.yearOfBirth}`
+                yearOfBirth: this.data.profile.dob
             });
 
-            const now = new Date();
+            if (this.data.profile.abhaNumber) {
+                this._registerService.getAbhaByNumber(this.data.profile.abhaNumber).subscribe((response) => {
+                    this.abhaList = response
+                    console.log("ABHA List:", this.abhaList)
+                });
+            }
 
-            const dobString =
-                `${this.data.profile.yearOfBirth}-${String(this.data.profile.monthOfBirth).padStart(2, '0')}-${String(this.data.profile.dayOfBirth).padStart(2, '0')}` +
-                `T${String(now.getHours()).padStart(2, '0')}:` +
-                `${String(now.getMinutes()).padStart(2, '0')}:` +
-                `${String(now.getSeconds()).padStart(2, '0')}`;
+            // const now = new Date();
+
+            // const dobString = this.data.profile.dob
+            // const [day, month, year] = this.data.profile.dob.split('-');
+
+            // const dobString =
+            //     `${year}-${month}-${day}` +
+            //     `T${String(now.getHours()).padStart(2, '0')}:` +
+            //     `${String(now.getMinutes()).padStart(2, '0')}:` +
+            //     `${String(now.getSeconds()).padStart(2, '0')}`;
+            const dob = new Date(this.data.profile.dob);
+            const dobString = this.formatDateToIsoMidnight(dob);
 
             if (dobString) {
                 setTimeout(() => {
-                    this.registerObj.dateofBirth = new Date(dobString)
+                    this.registerObj.dateofBirth = dob;
                     this.onChangeDateofBirth(this.registerObj.dateofBirth);
                 }, 1000);
             }
@@ -276,6 +331,15 @@ export class NewRegistrationComponent implements OnInit {
             this.fetchGenderlist();
             this.fetchPrefixlist();
         }, 500);
+    }
+
+    // new abha wise dob change
+    formatDateToIsoMidnight(date: Date): string {
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+
+        return `${yyyy}-${mm}-${dd}T00:00:00`;
     }
 
     get getAbhaInfo(): FormArray {
@@ -385,7 +449,8 @@ export class NewRegistrationComponent implements OnInit {
                 abhaNumber: [this.abhaForm.get('abhaNumber')?.value],
                 abhaFullName: [this.abhaForm.get('abhaFullName')?.value],
                 gender: [this.abhaForm.get('gender')?.value],
-                yearOfBirth: [hasAbha ? formattedDob : '1900-01-01'],
+                yearOfBirth: [hasAbha ? dob : '1900-01-01'],
+                // yearOfBirth: [hasAbha ? formattedDob : '1900-01-01'],
                 verified: [hasAbha],
                 isActive: [hasAbha],
                 verifiedDateTime: [hasAbha ? new Date() : "1900-01-01"],

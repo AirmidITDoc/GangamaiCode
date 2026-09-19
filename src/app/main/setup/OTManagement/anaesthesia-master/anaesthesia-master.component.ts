@@ -16,14 +16,15 @@ import { ConstantMastersService } from '../../constant-masters/constant-masters.
   selector: 'app-anaesthesia-master',
   templateUrl: './anaesthesia-master.component.html',
   styleUrls: ['./anaesthesia-master.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class AnaesthesiaMasterComponent {
-@ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   searchForm: FormGroup;
   constantTypeList: any[] = [];
   type = ''
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.AnaesthesiaMaster, permissionType.Add);
 
   allColumns = [
     { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -33,8 +34,14 @@ export class AnaesthesiaMasterComponent {
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
-          action: gridActions.edit, callback: (data: any) => {
+          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.AnaesthesiaMaster, permissionType.Edit), callback: (data: any) => {
             this.onSave(data);
+          }
+        }, {
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.AnaesthesiaMaster, permissionType.Delete), callback: (data: any) => {
+            this._ConstantService.deactivateTheStatus(data.constantId).subscribe((response: any) => {
+              this.grid.bindGridData();
+            });
           }
         }]
     }
@@ -45,6 +52,7 @@ export class AnaesthesiaMasterComponent {
   ]
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.AnaesthesiaMaster,
     apiUrl: "Constants/ConstantsList",
     columnsList: this.allColumns,
     sortField: "ConstantId",
@@ -89,7 +97,7 @@ export class AnaesthesiaMasterComponent {
   clearType(): void {
     this.type = '';
     this.searchForm.get('constantType')?.setValue('');
-  
+
     this.getfilterdata();
   }
 

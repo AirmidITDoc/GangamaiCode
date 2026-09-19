@@ -1,0 +1,281 @@
+.modal-wrapper {
+  align-items: stretch; // makes both columns equal height
+   display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+////////////// to close btn//////////////////
+// .abha-dialog-header {
+//   position: relative;   // was sticky
+//   z-index: auto;        // was 10
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   width: 100%;
+//   min-height: 48px;
+//   padding: 4px 8px 4px 16px;
+//   background: #fff;
+//   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+//   box-sizing: border-box;
+//   flex: 0 0 auto;
+// }
+
+// .abha-dialog-body {
+//   padding-top: 16px;
+//   position: relative;
+// }
+
+.abha-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 90vh;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  overflow: hidden;
+}
+
+.abha-dialog-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 4px 8px 4px 16px;
+  background: #3949AB;
+  color: white;        // explicit, so a light theme color can't make it invisible
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  &__close {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.abha-dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;                       // body scrolls, header stays on top
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;                 // both columns equal height
+  gap: 16px;
+  padding: 16px;
+}
+
+///////////////// abha info css //////////////
+.abha-col {
+  display: flex;
+  flex-direction: column;
+
+  .abha-form {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .abha-card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .abha-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .action-row {
+    margin-top: auto; // pushes the button row to the bottom
+    display: flex;
+    justify-content: flex-end; // button goes to the bottom-right corner
+    padding-top: 16px;
+  }
+}
+
+///////////////// patient info css //////////////
+.patient-col {
+  display: flex;
+  flex-direction: column;
+
+  .airmid-table-container {
+    flex: 0 0 auto; // keep the table at its fixed 250px
+  }
+
+  .personal-form {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .personal-card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .personal-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .action-row {
+    margin-top: auto; // pushes the button to the bottom
+    display: flex;
+    justify-content: flex-end; // bottom-right corner
+    padding-top: 16px;
+  }
+}
+
+// Table empty state
+.table-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+  color: rgba(0, 0, 0, 0.45);
+  gap: 8px;
+
+  mat-icon {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
+}
+
+.selected-row {
+  background-color: rgba(63, 81, 181, 0.08);
+  cursor: pointer;
+}
+
+mat-row {
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+}
+
+// Personal info card
+.detail-card {
+  border-radius: 8px;
+  height: 100%;
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+}
+
+.kv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kv-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .k {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .v {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
+    word-break: break-word;
+
+    &.mono {
+      font-family: 'Roboto Mono', monospace;
+    }
+  }
+}
+
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.already-registered-badge {
+  font-weight: 600;
+  color: #d32f2f;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: rgba(211, 47, 47, 0.08);
+}
+
+.abha-col .abha-action-row {
+  margin-top: auto;                 // keeps the row at the bottom of the card
+  display: flex;
+  align-items: center;              // note and button share the same vertical centre
+  justify-content: space-between;   // note on the left, button on the right
+  gap: 12px;
+  padding-top: 16px;
+  flex-wrap: wrap;                  // on narrow screens the button drops below the note
+
+  .abha-note {
+    flex: 1 1 220px;                // takes the free space and wraps its text if needed
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;                      // removes the default <p> margin
+    font-size: 13px;
+    line-height: 1.4;
+    color: rgba(0, 0, 0, 0.6);
+
+    &__icon {
+      flex: 0 0 auto;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: #f57c00;               // optional accent colour for the icon
+    }
+  }
+
+  button {
+    flex: 0 0 auto;                 // the button never shrinks
+    margin-left: auto;              // stays at the right even when it wraps
+  }
+}

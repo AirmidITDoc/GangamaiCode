@@ -37,7 +37,7 @@ export interface AbhaVerifyOtp {
     txnId: string;
     otp: string;
     OtpType: number;
-    mobile:string
+    mobile: string
 }
 
 export interface VerifyUser {
@@ -221,6 +221,10 @@ export interface AbhaProfile {
     verificationType: string;
     localizedDetails: LocalizedDetails;
     createdDate: string;
+    dob: any;
+    photo: any;
+    pinCode: any;
+    abhaAddress:any;
 }
 
 export interface CreateAbhaResult {

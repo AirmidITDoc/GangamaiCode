@@ -1,0 +1,559 @@
+import { DatePipe, Time } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { fuseAnimations } from '@fuse/animations';
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
+import { NewAbhaIntegrationService } from './new-abha-integration.service';
+import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.component';
+import { PopupComponent } from './popup/popup.component';
+import { AbhaDialogpageComponent } from './abha-dialogpage/abha-dialogpage.component';
+import { AbhaPatientCardComponent } from './abha-patient-card/abha-patient-card.component';
+
+
+@Component({
+  selector: 'app-new-abha-integration',
+  templateUrl: './new-abha-integration.component.html',
+  styleUrls: ['./new-abha-integration.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
+})
+export class NewAbhaIntegrationComponent {
+  myFilterform: FormGroup;
+
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  f_name: any = ""
+  regNo: any = "0"
+  l_name: any = ""
+  mobileno: any = "%"
+  CityId: any = "0"
+  AreaId: any = "0"
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  autocompleteModearea: string = "Area";
+
+  constructor(
+    public _RegistrationService: NewAbhaIntegrationService, public permissionService: PagePermissionService,
+    public _matDialog: MatDialog,
+    private commonService: PrintserviceService,
+    public toastr: ToastrService, public datePipe: DatePipe) { }
+
+  ngOnInit(): void {
+    this.myFilterform = this._RegistrationService.filterForm();
+  }
+
+  onChangeStartDate(value) {
+    this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+  }
+  onChangeEndDate(value) {
+    this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+  }
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'abhaTranId')!.template = this.abhaIcon;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  }
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('abhaIcon') abhaIcon!: TemplateRef<any>;
+
+  allcolumns = [
+    { heading: "-", key: "abhaTranId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+    { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 100 },
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    //  { heading: "Age", key: "displayAge", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
+    { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
+    { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Modify Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
+    {
+      heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ];
+
+  gridConfig: gridModel = {
+    permissionCode: permissionCodes.Registration,
+    apiUrl: "OutPatient/RegistrationList",
+    columnsList: this.allcolumns,
+    sortField: "RegId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "AreaId", fieldValue: String(this.AreaId), opType: OperatorComparer.Equals }
+    ]
+  }
+
+  onChangeFirst() {
+    debugger
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this.myFilterform.get('FirstName').value + "%"
+    this.l_name = this.myFilterform.get('LastName').value + "%"
+    this.regNo = this.myFilterform.get('RegNo').value || "0"
+    this.mobileno = this.myFilterform.get('MobileNo').value + "%" || "%"
+    this.CityId = this.myFilterform.get('CityId').value || "0"
+    this.AreaId = this.myFilterform.get('AreaId').value || "0"
+
+    this.getfilterdata();
+  }
+
+  getfilterdata() {
+    this.gridConfig = {
+      apiUrl: "OutPatient/RegistrationList",
+      columnsList: this.allcolumns,
+      sortField: "RegId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains },
+        { fieldName: "CityId", fieldValue: String(this.CityId), opType: OperatorComparer.Equals },
+        { fieldName: "AreaId", fieldValue: String(this.AreaId), opType: OperatorComparer.Equals }
+      ],
+      row: 500
+
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+      this.myFilterform.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myFilterform.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this.myFilterform.get('RegNo').setValue("")
+    if (event == 'MobileNo')
+      this.myFilterform.get('MobileNo').setValue("")
+
+    this.onChangeFirst();
+  }
+
+  OnPrint(Param) {
+    this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
+  }
+
+  OnabhaLink(row) {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    const dialogRef = this._matDialog.open(AbhaLinkComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '95%',
+        width: '40%',
+        data: row
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.grid.bindGridData();
+      }
+    });
+  }
+
+  getValidationMessages() {
+    return {
+      FirstName: [
+        { name: "required", Message: "First Name is required" },
+        { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      LastName: [
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      RegNo: [],
+      MobileNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+      cityId: [],
+      areaId: []
+    }
+  }
+
+  OnEdit(row: any) {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    const dialogRef = this._matDialog.open(PopupComponent,
+      {
+        maxWidth: "99vw",
+        height: "98vh",
+        width: "100%",
+        data: row
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.grid.bindGridData();
+      }
+    });
+  }
+
+  getOpCasePaper(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    const that = this;
+    const dialogRef = this._matDialog.open(NewCasepaperComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '95vh',
+        height: '95%',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      setTimeout(() => {
+        that.grid.bindGridData();
+
+      }, 500);
+
+    });
+  }
+
+  keyPressAlphanumeric(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  selectedRow: any = null;
+  clearSelection() {
+    this.selectedRow = null;
+  }
+  getSelectedRow(row: any): void {
+    this.selectedRow = row;
+    console.log("Selected row : ", row);
+  }
+
+  create2() {
+    let url: string | undefined;
+    let transactionId: string | undefined;
+    const getData = {
+      clientId: 1,
+      hospitalId: 6,
+      userName: 'atom',
+      password: 'atom',
+      requestBy: 'atom',
+      requestType: 'Create',
+      callbackUrl: '',
+    };
+
+    this._RegistrationService.getAbhaURL(getData).subscribe({
+      next: (response: any) => {
+        console.log('ABHA API Response:', response);
+        url = response?.callbackUrl;
+        transactionId = response?.transactionId;
+      },
+      error: (error) => {
+        console.error('ABHA URL API Error:', error);
+      },
+      complete: () => {
+        if (!url) {
+          return;
+        }
+        setTimeout(() => {
+          this.openExternalApplication(url, transactionId);
+        }, 1000);
+      }
+    });
+  }
+
+  openExternalApplication(Appurl: string, transactionId: string | undefined): void {
+    const dialogRef = this._matDialog.open(AbhaDialogpageComponent, {
+      panelClass: 'full-app-dialog',
+      width: '95vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      maxHeight: '95vh',
+      data: { url: Appurl, transactionId: transactionId },
+      disableClose: false,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('ABHA Final Response:', result);
+      if (result.transactionId) {
+        this.profilePage(result);
+      }
+
+    });
+  }
+
+  profilePage(data: any): void {
+    const dialogRef = this._matDialog.open(AbhaPatientCardComponent, {
+      width: '95vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      maxHeight: '95vh',
+      data: data,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log('ABHA Final Response:', result);
+
+    });
+  }
+
+}
+
+export class abhaRegInsert {
+  RegId: number;
+  regId: number;
+  emailId: string;
+  RegID: number;
+  RegDate: Date;
+  regDate: Date;
+  PatientName: string;
+  patientName: string;
+  RegTime: Time;
+  prefixId: number;
+  PrefixId: number;
+  PrefixID: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  FirstName: string;
+  MiddleName: string;
+  LastName: string;
+  Address: string;
+  address: string;
+  City: string;
+  city: string;
+  PinNo: string;
+  regNo: string;
+  RegNo: string;
+  dateOfBirth: Date;
+  dateofBirth: Date;
+  DateofBirth: Date;
+  Age: any;
+  age: any;
+  GenderId: number;
+  genderId: any;
+  PhoneNo: string;
+  phoneNo: string;
+  MobileNo: string;
+  mobileNo: string;
+  AddedBy: number;
+  AgeYear: any;
+  AgeMonth: any;
+  AgeDay: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  CountryId: number;
+  countryId: number;
+  StateId: number;
+  stateId: number;
+  CityId: number;
+  cityId: number;
+  MaritalStatusId: number;
+  maritalStatusId: number;
+  IsCharity: boolean;
+  ReligionId: number;
+  religionId: number;
+  AreaId: number;
+  areaId: number;
+  VillageId: number;
+  TalukaId: number;
+  PatientWeight: number;
+  AreaName: string;
+  AadharCardNo: string;
+  aadharCardNo: string;
+  PanCardNo: string;
+  currentDate = new Date();
+  AdmissionID: any;
+  VisitId: any;
+  isSeniorCitizen: boolean
+  doctorName: any;
+  departmentName: any;
+  UnitId: any;
+  billNo: any;
+  departmentId: any;
+  doctorId: any;
+  campId: any;
+  emgContactPersonName: any;
+  emgRelationshipId: any;
+  emgMobileNo: any;
+  emgLandlineNo: any;
+  engAddress: any;
+  emgAadharCardNo: any;
+  emgDrivingLicenceNo: any;
+  medTourismNationalityId: any;
+  medTourismPassportNo: any;
+  medTourismVisaIssueDate: Date;
+  medTourismCitizenship: any;
+  medTourismPortOfEntry: any;
+  medTourismResidentialAddress: any;
+  medTourismOfficeWorkAddress: any;
+  medTourismVisaValidityDate: Date;
+  medTourismDateOfEntry: Date;
+  emgId: any
+  ipdNo: any;
+  ipdno: any;
+  genderName: any;
+  traiffId: any;
+  companyId: any;
+  PBillNo: any;
+  BillNo: any;
+  BillTime: any;
+  PatientType: any;
+  adharCardNo: any;
+  admissionID: any;
+  tariffName: any;
+  panCardNo: any;
+  pinNo: any;
+  regTime: any;
+  husbandDob: Date;
+  wifeDob: Date;
+  disabled: any;
+  /**
+   * Constructor
+   *
+   * @param RegInsert
+   */
+
+  constructor(RegInsert) {
+    {
+      this.RegId = RegInsert.RegId || 0;
+      this.regId = RegInsert.regId || 0;
+      this.RegID = RegInsert.RegID || 0;
+      this.RegDate = RegInsert.RegDate || this.currentDate;
+      this.regDate = RegInsert.regDate || this.currentDate;
+      this.patientName = RegInsert.patientName;
+      this.RegTime = RegInsert.RegTime || this.currentDate;
+      this.regTime = RegInsert.regTime || this.currentDate;
+      this.prefixId = RegInsert.prefixId || 0;
+      this.PrefixId = RegInsert.PrefixId || 0;
+      this.PrefixID = RegInsert.PrefixID || 0;
+      this.PrefixID = RegInsert.PrefixID || 0;
+      this.firstName = RegInsert.firstName || '';
+      this.middleName = RegInsert.middleName || '';
+      this.lastName = RegInsert.lastName || '';
+      this.FirstName = RegInsert.FirstName || '';
+      this.MiddleName = RegInsert.MiddleName || '';
+      this.LastName = RegInsert.LastName || '';
+      this.Address = RegInsert.Address || '';
+      this.RegNo = RegInsert.RegNo || '';
+      this.pinNo = RegInsert.pinNo || '';
+      this.panCardNo = RegInsert.panCardNo || '';
+      this.regNo = RegInsert.regNo || '';
+      this.City = RegInsert.City || '';
+      this.PinNo = RegInsert.PinNo || '';
+      this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;
+      this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
+      this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
+      this.Age = RegInsert.Age || '';
+      this.GenderId = RegInsert.GenderId || 0;
+      this.genderId = RegInsert.genderId || 0;
+      this.PhoneNo = RegInsert.PhoneNo || '';
+      this.phoneNo = RegInsert.phoneNo || '';
+      this.MobileNo = RegInsert.MobileNo || '';
+      this.mobileNo = RegInsert.mobileNo || '';
+      this.AddedBy = RegInsert.AddedBy || '';
+      this.AgeYear = RegInsert.AgeYear || '0';
+      this.AgeMonth = RegInsert.AgeMonth || '0';
+      this.AgeDay = RegInsert.AgeDay || '0';
+      this.ageYear = RegInsert.ageYear || '0';
+      this.ageMonth = RegInsert.ageMonth || '0';
+      this.ageDay = RegInsert.ageDay || '0';
+      this.CountryId = RegInsert.CountryId || 0;
+      this.countryId = RegInsert.countryId || 0;
+      this.StateId = RegInsert.StateId || 0;
+      this.stateId = RegInsert.stateId || 0;
+      this.CityId = RegInsert.CityId || 0;
+      this.cityId = RegInsert.cityId || 0;
+      this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
+
+      this.IsCharity = RegInsert.IsCharity || false;
+      this.ReligionId = RegInsert.ReligionId || 0;
+      this.religionId = RegInsert.religionId || 0;
+      this.AreaId = RegInsert.AreaId || 0;
+      this.areaId = RegInsert.areaId || 0;
+      this.VillageId = RegInsert.VillageId || '';
+      this.TalukaId = RegInsert.TalukaId || '';
+      this.PatientWeight = RegInsert.PatientWeight || '';
+      this.AreaName = RegInsert.AreaName || '';
+      this.AadharCardNo = RegInsert.AadharCardNo || '';
+      this.aadharCardNo = RegInsert.aadharCardNo || '';
+      this.PanCardNo = RegInsert.PanCardNo || '';
+      this.AdmissionID = RegInsert.AdmissionID || '';
+      this.VisitId = RegInsert.VisitId || 0;
+      this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
+      this.maritalStatusId = RegInsert.maritalStatusId || 0;
+      this.doctorName = RegInsert.doctorName || "";
+      this.departmentName = RegInsert.departmentName || "";
+      this.UnitId = RegInsert.UnitId || 0;
+      this.billNo = RegInsert.billNo || 0;
+      this.departmentId = RegInsert.departmentId || 0;
+      this.doctorId = RegInsert.doctorId || 0;
+      this.campId = RegInsert.campId || 0;
+      this.emgContactPersonName = RegInsert.emgContactPersonName || "";
+      this.emgRelationshipId = RegInsert.emgRelationshipId || 0;
+      this.emgMobileNo = RegInsert.emgMobileNo || 0;
+      this.emgLandlineNo = RegInsert.emgLandlineNo || 0;
+      this.engAddress = RegInsert.engAddress || '';
+      this.emgAadharCardNo = RegInsert.emgAadharCardNo || 0;
+      this.emgDrivingLicenceNo = RegInsert.emgDrivingLicenceNo || 0;
+      this.medTourismPassportNo = RegInsert.medTourismPassportNo || 0;
+      this.medTourismNationalityId = RegInsert.medTourismNationalityId || 0;
+      this.medTourismVisaIssueDate = RegInsert.medTourismVisaIssueDate || '1900-01-01';
+      this.medTourismCitizenship = RegInsert.medTourismCitizenship || ''
+      this.medTourismPortOfEntry = RegInsert.medTourismPortOfEntry || ''
+      this.medTourismResidentialAddress = RegInsert.medTourismResidentialAddress || ''
+      this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
+      this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || '1900-01-01';
+      this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || '1900-01-01';
+      this.emgId = RegInsert.emgId || 0
+      this.ipdNo = RegInsert.ipdNo || 0
+      this.ipdno = RegInsert.ipdno || 0
+      this.genderName = RegInsert.genderName || ''
+      this.traiffId = RegInsert.traiffId || 0
+      this.companyId = RegInsert.companyId || 0
+      this.PBillNo = RegInsert.PBillNo || 0
+      this.BillNo = RegInsert.BillNo || 0
+      this.BillTime = RegInsert.BillTime || ''
+      this.PatientType = RegInsert.PatientType || ''
+      this.adharCardNo = RegInsert.adharCardNo || ''
+      this.address = RegInsert.address || ''
+      this.admissionID = RegInsert.admissionID || ''
+      this.tariffName = RegInsert.tariffName || ''
+      this.husbandDob = RegInsert.husbandDob || ''
+      this.wifeDob = RegInsert.wifeDob || ''
+      this.disabled = RegInsert.disable || ''
+    }
+  }
+}

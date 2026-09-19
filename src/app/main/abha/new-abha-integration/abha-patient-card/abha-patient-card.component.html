@@ -1,0 +1,237 @@
+<div class="abha-dialog">
+
+  <div class="abha-dialog-header">
+    <div class="abha-dialog-header__title">
+      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">ABHA Link Page</span>
+    </div>
+    <div class="abha-dialog-header__actions">
+      <button mat-icon-button type="button" tabindex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+        matTooltip="Close" style="color:#fff; --mdc-icon-button-icon-color:#fff; --mat-icon-button-icon-color:#fff;">
+        <mat-icon style="color:#fff;">close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="abha-dialog-body" fxLayout="row">
+
+    <div class="abha-col" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+      <form [formGroup]="personalFormGroup" class="mat-form-field-100 abha-form">
+        <mat-card class="detail-card abha-card">
+          <mat-card-content class="abha-card-content">
+            <h3 class="section-title">
+              <mat-icon>person_outline</mat-icon> ABHA Information
+            </h3>
+
+            <div class="kv-grid">
+              <div class="kv-row">
+                <span class="k">ABHA Number</span>
+                <span class="v">{{ profile.abhaNumber || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">ABHA Address</span>
+                <span class="v">{{ profile.abhaAddress || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">First Name</span>
+                <span class="v">{{ profile.firstName || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Middle Name</span>
+                <span class="v">{{ profile.middleName || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Last Name</span>
+                <span class="v">{{ profile.lastName || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Full Name</span>
+                <span class="v">{{ profile.name ?? '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Date of Birth</span>
+                <span class="v">{{ profile.dob | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Day / Month / Year</span>
+                <span class="v mono">{{ dobSeparate1.day }} / {{ dobSeparate1.month }} / {{ dobSeparate1.year }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Gender</span>
+                <span class="v">{{ genderLabel }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Mobile</span>
+                <span class="v mono">{{ profile.mobile || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Pincode</span>
+                <span class="v mono">{{ profile.pinCode || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">District</span>
+                <span class="v mono">{{ profile.districtName || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">State</span>
+                <span class="v mono">{{ profile.stateName || '—' }}</span>
+              </div>
+              <div class="kv-row full-width">
+                <span class="k">Address</span>
+                <span class="v mono">{{ profile.address || '—' }}</span>
+              </div>
+            </div>
+
+            <div class="form-btn action-row">
+              <p class="abha-note">
+                <mat-icon class="abha-note__icon">info_outline</mat-icon>
+                <span>Patient registered details will be updated as per ABHA details</span>
+              </p>
+              <button mat-raised-button color="primary" (click)="OnContinueAbha()">
+                Link & Continue
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </div>
+
+    <div class="patient-col" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+      <!-- Patient search results table -->
+      <div class="airmid-table-container overflow-hidden" style="height: 200px">
+        <mat-table class="airmid-table" [dataSource]="filteredOptions">
+
+          <ng-container matColumnDef="abhaLinked">
+            <mat-header-cell *matHeaderCellDef class="w-100">ABHA</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="w-100" matTooltip="ABHA Linked">
+              <img *ngIf="element.abhaTranId > 0" src="assets/images/logos/abha.jpeg" width="28" height="28"
+                alt="ABHA Linked">
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="regNo">
+            <mat-header-cell *matHeaderCellDef class="w-100">Reg No</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="w-100">{{ element.regNo }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="patientName">
+            <mat-header-cell *matHeaderCellDef class="w-200">Patient Name</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="w-200" [matTooltip]="element.patientName">
+              {{ element.patientName }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Gender">
+            <mat-header-cell *matHeaderCellDef class="w-100">Gender</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="w-100">{{ element.gender }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="mobileNo">
+            <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="w-120">{{ element.mobileNo }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="DOB">
+            <mat-header-cell *matHeaderCellDef class="w-120">DOB</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="w-120">
+              {{ element.dateofBirth | date:'dd-MM-yyyy' }}
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
+         <mat-row *matRowDef="let row; columns: displayedColumns"
+         (click)="onSelectPatient(row)"
+         [style.background-color]="selectedRow === row ? '#e0e0e0' : null"
+         style="cursor:pointer;"></mat-row>
+        </mat-table>
+
+        <!-- Empty state -->
+        <div class="table-empty-state" *ngIf="!filteredOptions?.length">
+          <mat-icon>search_off</mat-icon>
+          <span>No matching patients found</span>
+        </div>
+      </div>
+
+      <!-- Personal info + registration actions -->
+
+      <form [formGroup]="personalFormGroup" class="mat-form-field-100 personal-form">
+
+        <mat-card class="detail-card personal-card" *ngIf="showCard">
+          <mat-card-content class="personal-card-content">
+            <h3 class="section-title">
+              <mat-icon>person_outline</mat-icon> Personal Information
+            </h3>
+
+            <div class="kv-grid">
+              <div class="kv-row">
+                <span class="k">ABHA Number</span>
+                <span class="v">{{ abhaNumber || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">ABHA Address</span>
+                <span class="v">{{ abhaAddress || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">First Name</span>
+                <span class="v">{{ registerObj.firstName || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Middle Name</span>
+                <span class="v">{{ registerObj.middleName || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Last Name</span>
+                <span class="v">{{ registerObj.lastName || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Full Name</span>
+                <span class="v">{{ fullname ?? '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Date of Birth</span>
+                <span class="v">{{ dob | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Day / Month / Year</span>
+                <span class="v mono">{{ dobSeparate.day }} / {{ dobSeparate.month }} / {{ dobSeparate.year }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Gender</span>
+                <span class="v">{{ genderN }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Mobile</span>
+                <span class="v mono">{{ registerObj.mobileNo || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">Pincode</span>
+                <span class="v mono">{{ registerObj.pinNo || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">City</span>
+                <span class="v mono">{{ cityN || '—' }}</span>
+              </div>
+              <div class="kv-row">
+                <span class="k">State</span>
+                <span class="v mono">{{ stateN || '—' }}</span>
+              </div>
+              <div class="kv-row full-width">
+                <span class="k">Address</span>
+                <span class="v mono">{{ registerObj.address || '—' }}</span>
+              </div>
+            </div>
+
+            <div class="form-btn action-row">
+              <ng-container>
+                <button mat-raised-button color="primary" (click)="OnEditRegistration()">
+                  Continue
+                </button>
+              </ng-container>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+      </form>
+    </div>
+
+  </div>
+</div>

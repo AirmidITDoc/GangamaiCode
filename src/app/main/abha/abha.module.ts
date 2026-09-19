@@ -36,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { AbhaLinkComponent } from './Abha linking/abha-link.component';
+// import { AbhaDialogpageComponent } from './new-abha-integration/abha-dialogpage/abha-dialogpage.component';
 
 const appRoutes: Routes = [
     // { path: 'create-aadhaar', component: CreateAadhaarComponent, title: 'Create ABHA via Aadhaar' },
@@ -43,15 +44,20 @@ const appRoutes: Routes = [
     // { path: 'verify', component: VerifyAbhaComponent, title: 'Verify ABHA' },
     // { path: 'profile', component: AbhaProfileComponent, title: 'ABHA Profile' },
     {
+        path: "abhalist",
+        loadChildren: () => import("./new-abha-integration/new-abha-integration.module").then((m) => m.NewAbhaIntegrationModule),
+    },
+    {
         path: "**",
         component: AbhaComponent
-    }
+    },
 ];
 
 @NgModule({
     declarations: [
         AbhaStepperComponent, OtpInputComponent, AadhaarStepComponent, AbhaAddressStepComponent, MobileStepComponent, OtpStepComponent,
-        ProfileCardStepComponent, AbhaComponent, AbhaVerifyComponent, VerifyByAbhaOtpComponent, VerifyByAbhaAddressComponent, VerifyByMobileComponent, VerifyByAadhaarComponent, AbhaLinkComponent
+        ProfileCardStepComponent, AbhaComponent, AbhaVerifyComponent, VerifyByAbhaOtpComponent, VerifyByAbhaAddressComponent, VerifyByMobileComponent,
+         VerifyByAadhaarComponent, AbhaLinkComponent
     ],
     imports: [
         RouterModule.forChild(appRoutes),

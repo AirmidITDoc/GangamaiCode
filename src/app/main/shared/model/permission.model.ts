@@ -123,6 +123,8 @@ export enum permissionCodes {
     // OT?
     OTReservation = 'OTReservation',
     ConsentMaster = 'ConsentMaster',
+    ConstantMaster = 'ConstantMaster',
+    AnaesthesiaMaster = 'AnaesthesiaMaster',
 
     //Nursing Station
     NursingConsent = 'NursingConsent',
