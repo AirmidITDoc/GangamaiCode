@@ -109,32 +109,37 @@ export class NewMembershipComponent {
         // { heading: "Mediclaim Company", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         // { heading: "Mediclaim Issuance", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        { heading: "Date", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-        { heading: "Mem No", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Native Place", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Age", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Mobile No", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "BloodGroup", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "PAN", key: "pan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Aadhaar No. ", key: "aadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Mediclaim PolicyNo", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Address", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Education ", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Occupation", key: "occupationName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Medications", key: "medications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: " MediclaimIssuanceAmt ", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "CompanyName ", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Mediclaim StartDate", key: "mediclaimStartDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-        { heading: "Mediclaim EndDate", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-        { heading: "Aayushman Id ", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "PreviousMemberId ", key: "previousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "FamilyDoctorName ", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "FamilyDoctorContact ", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Body CheckupDate", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-        { heading: "Mediclaim", key: "hasMediclaim", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-        { heading: "Ayushman", key: "ayushmanEnrolled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        { heading: "MEM. DATE", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "MEM. NO.", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "NAME ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "NATIVE PLACE", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "AGE", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "MOBILE NO.", key: "mobileNo1", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "EMERGENCY MOBILE NO.", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BLOOD GRP", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "FAMILY DR", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "COSULTING DR", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "MEDICATION", key: "medications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "LAST BODY CHECKING DATE	", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "MEDICLIAM CO.NAME", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: " SUM INSURED ", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+        { heading: "POLICY NO.", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "MEDICLAIM VALID TILL", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "AAYUSHMAN ENROLLMENT", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+
+        { heading: "ADDRESS	", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PAN NO.", key: "pan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "AADHAR NO. ", key: "aadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+        // { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Education ", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Occupation", key: "occupationName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        //  { heading: "Mediclaim StartDate", key: "mediclaimStartDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        // { heading: "PreviousMemberId ", key: "previousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        //  { heading: "Mediclaim", key: "hasMediclaim", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        // { heading: "Ayushman", key: "ayushmanEnrolled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -293,9 +298,6 @@ export class NewMembershipComponent {
             return false;
         }
     }
-
-
-    //whatsapp
 
     private overlayRef: OverlayRef | null = null;
     private EmailOverlayRef: OverlayRef | null = null;

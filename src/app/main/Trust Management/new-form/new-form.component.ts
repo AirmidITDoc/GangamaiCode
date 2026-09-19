@@ -967,7 +967,7 @@ export class NewFormComponent {
 
       this._NewMemberService.MembershipSave(this.personalFormGroup.value).subscribe(response => {
         console.log(response)
-        this.getMembershipview(response)
+        // this.getMembershipview(response)
         this._matDialog.closeAll();
 
       });

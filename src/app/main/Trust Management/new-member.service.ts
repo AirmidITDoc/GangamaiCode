@@ -50,15 +50,7 @@ export class NewMemberService {
     return this._httpClient.PostData("Report/ViewReportFromDB", mode);
   }
 
-  // public getIndicationList(employee) {
-  //   return this._httpClient.PostData("Common", employee);
-  // }
-  // public getIndicationById(Id) {
-  //   return this._httpClient.GetData("Pcpndprocess/IndicationtList" + Id);
-  // }
-  // public getIndicationbyIdList(param) {
-  //   return this._httpClient.PostData("Pcpndprocess/IndicationtList", param);
-  // }
+  
 public getMemeberbyIdList(param) {
        return this._httpClient.GetData("TrustMemershipReg/" + param)
     }
