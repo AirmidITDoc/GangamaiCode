@@ -16,7 +16,7 @@ export class NewDiettypeMasterComponent {
   myForm: FormGroup;
   isActive: boolean = true;
   DietTypeId = 0;
-  autocompleteModeDietCategory: string = 'DietCategoryMaster'
+  autocompleteModeDietCategory: string = 'MDietCategoryMaster'
 
   constructor(
     public _diettypeMasterService: DiettypeMasterService,
@@ -71,7 +71,7 @@ export class NewDiettypeMasterComponent {
         { name: "pattern", Message: "Only char allowed." }
       ],
       DietCode: [
-        { name: "required", Message: "Food Code is required" }
+        { name: "required", Message: "Diet Code is required" }
       ],
       DietCategoryId: [
         { name: "required", Message: "Diet Category is required" }

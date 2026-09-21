@@ -21,17 +21,16 @@ export class DietcategoryMasterService {
   createDietCategoryForm(): FormGroup {
     return this._formBuilder.group({
       dietCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      categoryCode: [0, [Validators.required]],
+      categoryCode: ['',Validators.required],
       categoryName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      description: [""],
-      isActive: [true, [Validators.required]]
+      description: [""]
     });
   }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      categoryName: [""],
-      IsDeletedSearch: ["2"],
+      categoryNameSearch: [""],
+      IsDeletedSearch: [""],
     });
   }
 

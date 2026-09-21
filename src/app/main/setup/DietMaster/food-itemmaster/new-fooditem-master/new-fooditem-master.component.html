@@ -17,7 +17,7 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="foodItemId" formControlName="foodItemId">
+                <input type="hidden" name="FoodItemId" formControlName="foodItemId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Food Name" formControlName="foodName" [formGroup]="myForm"
@@ -31,11 +31,8 @@
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Food Category" formControlName="foodCategoryId" [formGroup]="myForm"
-                            [validations]="getValidationMessages().FoodCategory" [mode]="autocompleteModeFoodItem">
+                            [validations]="getValidationMessages().FoodCategory" [mode]="autocompleteModeFoodCategory">
                         </airmid-dropdown>
-                        <!-- <airmid-textbox label="Food Category" formControlName="foodCategoryId" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().FoodCategory">
-                        </airmid-textbox> -->
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Local Name" formControlName="localName" [formGroup]="myForm"
@@ -61,8 +58,7 @@
             <form [formGroup]="myForm">
 
                 <div class="modal-footer-container">
-                    <app-airmid-slider label="IsActive/Deactive" formControlName="active" [formGroup]="myForm"
-                        [(ngModel)]="isActive"></app-airmid-slider>
+                    <div></div>
                     <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">

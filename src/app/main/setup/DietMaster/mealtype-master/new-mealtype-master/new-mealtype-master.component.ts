@@ -11,8 +11,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewMealtypeMasterComponent implements OnInit {
   myForm: FormGroup;
-  isActive: boolean = true;
-  dietcategoryid = 0;
+  // isActive: boolean = true;
+  MealId = 0;
   constructor(
     public _mealTypeMasterService: MealtypeMasterService,
     public dialogRef: MatDialogRef<NewMealtypeMasterComponent>,
@@ -26,21 +26,21 @@ export class NewMealtypeMasterComponent implements OnInit {
     // const timeValue = this.myForm.get('dispatchTime')?.value;
     console.log(this.data)
     if ((this.data?.mealId ?? 0) > 0) {
-      this.dietcategoryid = this.data.mealId
-      this.isActive = this.data.active,
-        this.myForm.patchValue({
-          mealId: this.data.mealId,
-          mealTypeCode: this.data.mealTypeCode,
-          mealName: this.data.mealName,
-          mealSequence: this.data.mealSequence,
+      this.MealId = this.data.mealId
+      //  this.isActive = this.data.active,
+      this.myForm.patchValue({
+        mealId: this.data.mealId,
+        mealTypeCode: this.data.mealTypeCode,
+        mealName: this.data.mealName,
+        // mealSequence: this.data.mealSequence,
 
-          dispatchTime: this.formatTime(this.data.dispatchTime),
-          preparationStartTime: this.formatTime(this.data.preparationStartTime),
-          orderCutoffTime: this.formatTime(this.data.orderCutoffTime),
-          defaultTime: this.formatTime(this.data.defaultTime),
+        dispatchTime: this.formatTime(this.data.dispatchTime),
+        preparationStartTime: this.formatTime(this.data.preparationStartTime),
+        orderCutoffTime: this.formatTime(this.data.orderCutoffTime),
+        defaultTime: this.formatTime(this.data.defaultTime),
 
-          active: this.data.active
-        });
+        active: this.data.active
+      });
     }
   }
 
@@ -80,8 +80,17 @@ export class NewMealtypeMasterComponent implements OnInit {
       MealTypeCode: [
         { name: "required", Message: "Meal Type Code is required" }
       ],
-      MealSequence: [
-        { name: "required", Message: "Meal Sequence is required" }
+      DispatchTime: [
+        { name: "required", Message: "dispatchTime is required" }
+      ],
+      PreparationStartTime: [
+        { name: "required", Message: "preparationStartTime is required" }
+      ],
+      OrderCutoffTime: [
+        { name: "required", Message: "orderCutoffTime is required" }
+      ],
+      DefaultTime: [
+        { name: "required", Message: "defaultTime is required" }
       ]
     };
   }

@@ -14,9 +14,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class NewAllergyMasterComponent implements OnInit {
   myForm: FormGroup;
-  IsActive: boolean = true;
   AllergyId = 0;
   autocompleteModeAllergy = "MFoodCategoryMaster"
+  // isActive: boolean = true;
 
   constructor(
     public _allergyMasterService: AllergyMasterService,
@@ -32,7 +32,7 @@ export class NewAllergyMasterComponent implements OnInit {
     console.log(this.data)
     if ((this.data?.allergyId ?? 0) > 0) {
       this.AllergyId = this.data.allergyId
-      this.IsActive = this.data.active
+      // this.isActive = this.data.active
       this.myForm.patchValue(this.data);
     }
   }
@@ -66,15 +66,15 @@ export class NewAllergyMasterComponent implements OnInit {
   getValidationMessages() {
     return {
       AllergyName: [
-        { name: "required", Message: "AllergyName is required" },
-        { name: "maxlength", Message: "AllergyName should not be greater than 50 char." },
+        { name: "required", Message: "Allergy Name is required" },
+        { name: "maxlength", Message: "Allergy Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
       AllergyCode: [
-        { name: "required", Message: "AllergyCode is required" }
+        { name: "required", Message: "Allergy Code is required" }
       ],
       CategoryId: [
-        { name: "required", Message: "Category is required" }
+        { name: "required", Message: "Food Category is required" }
       ],
       SeverityId: [
         { name: "required", Message: "Severity is required" }

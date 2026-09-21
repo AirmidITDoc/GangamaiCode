@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewDietrestrictionMasterComponent implements OnInit {
   myForm: FormGroup;
   isActive: boolean = true;
-  RestrictionTypeId = 0;
+  RestrictionId = 0;
   autocompleteModeDietRestriction: string = 'DietRestriction'
 
   constructor(
@@ -30,8 +30,9 @@ export class NewDietrestrictionMasterComponent implements OnInit {
     this.myForm.markAllAsTouched();
 
     console.log("ngOnInit", this.data)
-    if ((this.data?.restrictionTypeId ?? 0) > 0) {
-      this.RestrictionTypeId = this.data.restrictionTypeId
+    if ((this.data?.restrictionId ?? 0) > 0) {
+      console.log(this.data.restrictionId)
+      this.RestrictionId = this.data.restrictionId
       this.isActive = this.data.active
       this.myForm.patchValue(this.data);
     }

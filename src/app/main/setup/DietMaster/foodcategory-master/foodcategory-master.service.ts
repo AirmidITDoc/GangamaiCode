@@ -22,16 +22,15 @@ export class FoodcategoryMasterService {
     createFoodCategoryForm(): FormGroup {
       return this._formBuilder.group({
         foodCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        foodCategoryCode: [0, [Validators.required]],
-        foodCategoryName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        active: [[Validators.required]]
+        foodCategoryCode: ["", [Validators.required]],
+        foodCategoryName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]]
       });
     }
   
     createSearchForm(): FormGroup {
       return this._formBuilder.group({
-        foodCategoryName: [""],
-        IsDeletedSearch: ["2"],
+        foodCategoryNameSearch: [""],
+        IsDeletedSearch: [""],
       });
     }
   

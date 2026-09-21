@@ -19,6 +19,7 @@ import { NewDiettypeMasterComponent } from './new-diettype-master/new-diettype-m
 })
 export class DiettypeMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietTypeMaster, permissionType.Add);
+  dietName: any = "";
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -29,36 +30,40 @@ export class DiettypeMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Diet Code", key: "dietCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width:350 },
+    { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Diet Code", key: "dietCode", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     { heading: "Diet Category", key: "dietCategoryId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Default Calories", key: "defaultCalories", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Default Proteins", key: "defaultProtein", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Default Fluids", key: "defaultFluid", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Display Order", key: "displayOrder", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Remarks", key: "remarks", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Remarks", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "isActive", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DietTypeMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietTypeMaster, permissionType.Delete), callback: (data: any) => {
-            console.log(data)
-            this._diettypeMasterService.deactivateTheStatus(data.dietTypeId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietTypeMaster, permissionType.Delete),
+          callback: (data: any) => {
+            if (data?.active === true) {
+              this._diettypeMasterService.deactivateTheStatus(data.dietTypeId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "dietName", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "dietName", fieldValue: this.dietName, opType: OperatorComparer.StartsWith },
+    { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {

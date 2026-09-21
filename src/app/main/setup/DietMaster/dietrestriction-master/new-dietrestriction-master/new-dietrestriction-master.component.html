@@ -17,7 +17,7 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="restrictionId" formControlName="restrictionId">
+                <input type="hidden" name="RestrictionId" formControlName="restrictionId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Restriction Name" formControlName="restrictionName" [formGroup]="myForm"
@@ -34,8 +34,9 @@
                             [formGroup]="myForm" [validations]="getValidationMessages().RestrictionTypeId"
                             [mode]="autocompleteModeDietRestriction">
                         </airmid-dropdown> -->
-                        <airmid-textbox label="Restriction Type" formControlName="restrictionTypeId" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().RestrictionTypeId" [readonly]="true">
+                        <airmid-textbox label="Restriction Type" formControlName="restrictionTypeId"
+                            [formGroup]="myForm" [maxLength]="50"
+                            [validations]="getValidationMessages().RestrictionTypeId" [readonly]="true">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -51,10 +52,8 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <form [formGroup]="myForm">
-
                 <div class="modal-footer-container">
-                    <app-airmid-slider label="IsActive/Deactive" formControlName="active" [formGroup]="myForm"
-                        [(ngModel)]="isActive"></app-airmid-slider>
+                    <div></div>
                     <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">

@@ -19,6 +19,7 @@ import { NewMealtypeMasterComponent } from './new-mealtype-master/new-mealtype-m
 })
 export class MealtypeMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.MealTypeMaster, permissionType.Add);
+  mealName: any = "";
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -41,21 +42,24 @@ export class MealtypeMasterComponent {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.MealTypeMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
           action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.MealTypeMaster, permissionType.Delete), callback: (data: any) => {
-            console.log(data)
-            this._mealTypeMasterService.deactivateTheStatus(data.mealId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+            if (data?.active === true) {
+              this._mealTypeMasterService.deactivateTheStatus(data.mealId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     }
   ]
 
   allFilters = [
-    { fieldName: "mealName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "mealName", fieldValue: this.mealName, opType: OperatorComparer.StartsWith },
     { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 

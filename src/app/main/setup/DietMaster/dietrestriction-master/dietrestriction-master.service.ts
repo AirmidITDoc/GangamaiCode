@@ -22,17 +22,16 @@ export class DietrestrictionMasterService {
     return this._formBuilder.group({
       restrictionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       restrictionName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      restrictionCode: [0,[Validators.required]],
+      restrictionCode: ['',[Validators.required]],
       restrictionTypeId: [0, [Validators.required]],
-      description: [""],
-      active: [[Validators.required]]
+      description: [""]
     });
   }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      restrictionName: [""],
-      IsDeletedSearch: ["2"],
+      restrictionNameSearch: [""],
+      IsDeletedSearch: [""],
     });
   }
 

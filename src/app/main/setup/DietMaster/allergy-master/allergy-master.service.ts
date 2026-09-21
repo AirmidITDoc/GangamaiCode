@@ -22,20 +22,20 @@ export class AllergyMasterService {
   createAllergyForm(): FormGroup {
     return this._formBuilder.group({
       allergyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      allergyCode: [0, [Validators.required]],
+      allergyCode: ["", [Validators.required]],
       allergyName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      categoryId: [0, [Validators.required]],
+      categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       severityId: [0, [Validators.required]],
       reaction: [""],
-      isKitchenAlert: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      active: [true, [Validators.required]]
+      isKitchenAlert: [false],
+      // active: [[Validators.required]]
     });
   }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      allergyName: [""],
-      IsDeletedSearch: ["2"],
+      allergyNameSearch: [""],
+      IsDeletedSearch: [""],
     });
   }
 

@@ -21,24 +21,23 @@ export class DiettypeMasterService {
   createDietTypeForm(): FormGroup {
     return this._formBuilder.group({
       dietTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      dietCode: [0, [Validators.required]],
+      dietCode: ['',Validators.required],
       dietName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       shortName: [""],
       dietCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      defaultCalories: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      defaultProtein: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      defaultFluid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      displayOrder: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      defaultCalories: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      defaultProtein: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      defaultFluid: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      displayOrder: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       remarks: [""],
-      description: [""],
-      isActive: [true, [Validators.required]]
+      description: [""]
     });
   }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      dietName: [""],
-      IsDeletedSearch: ["2"],
+      dietNameSearch: [""],
+      IsDeletedSearch: [""],
     });
   }
 

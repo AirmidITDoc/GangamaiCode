@@ -17,6 +17,7 @@ export class NewFeedingrouteMasterComponent implements OnInit {
   isActive: boolean = true;
   FeedingRouteId = 0;
   autocompleteModeFeedingRoute: string = 'MDietTypeMaster'
+  
 
   constructor(
     public _feedingRouteMasterService: FeedingrouteMasterService,

@@ -19,6 +19,7 @@ import { NewAllergyMasterComponent } from './new-allergy-master/new-allergy-mast
 })
 export class AllergyMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.AllergyMaster, permissionType.Add);
+  allergyName: any = "";
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -34,7 +35,7 @@ export class AllergyMasterComponent {
   }
 
   allColumns = [
-     {
+    {
       heading: "IsKitchenAlert", key: "isKitchenAlert", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100,
       template: this.actionsTemplate
     },
@@ -43,27 +44,30 @@ export class AllergyMasterComponent {
     { heading: "Category", key: "categoryId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Severity", key: "severityId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Reaction", key: "reaction", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "IsKitchenAlert", key: "isKitchenAlert", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.AllergyMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.AllergyMaster, permissionType.Delete), callback: (data: any) => {
-            console.log(data)
-            this._allergyMasterService.deactivateTheStatus(data.allergyId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.AllergyMaster, permissionType.Delete),
+          callback: (data: any) => {
+            if (data?.active === true) {
+              this._allergyMasterService.deactivateTheStatus(data.allergyId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "allergyName", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "Active", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "allergyName", fieldValue: this.allergyName, opType: OperatorComparer.StartsWith },
+    { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {

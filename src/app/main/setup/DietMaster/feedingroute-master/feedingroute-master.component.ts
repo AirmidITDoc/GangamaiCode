@@ -19,6 +19,7 @@ import { NewFeedingrouteMasterComponent } from './new-feedingroute-master/new-fe
 })
 export class FeedingrouteMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.FeedingRouteMaster, permissionType.Add);
+  feedingRouteName: any = "";
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -29,28 +30,33 @@ export class FeedingrouteMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "feeding Route Name", key: "feedingRouteName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "feeding Route Code", key: "feedingRouteCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Feeding Route Name", key: "feedingRouteName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Feeding Route Code", key: "feedingRouteCode", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Diet Type", key: "dietTypesId", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 500 },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.FeedingRouteMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.FeedingRouteMaster, permissionType.Delete), callback: (data: any) => {
-            this._feedingRouteMasterService.deactivateTheStatus(data.feedingRouteId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.FeedingRouteMaster, permissionType.Delete),
+          callback: (data: any) => {
+            if (data?.active === true) {
+              this._feedingRouteMasterService.deactivateTheStatus(data.feedingRouteId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "feedingRouteName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "feedingRouteName", fieldValue: this.feedingRouteName, opType: OperatorComparer.StartsWith },
     { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 

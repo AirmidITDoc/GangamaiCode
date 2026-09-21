@@ -19,6 +19,7 @@ import { NewDietrestrictionMasterComponent } from './new-dietrestriction-master/
 })
 export class DietrestrictionMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietRestrictionMaster, permissionType.Add);
+  restrictionName: any = "";
 
   constructor(
     public permissionService: PagePermissionService,
@@ -33,25 +34,30 @@ export class DietrestrictionMasterComponent {
     { heading: "Restriction Name", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Restriction Code", key: "restrictionCode", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Restriction Type", key: "restrictionTypeId", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width:500 },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DietRestrictionMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietRestrictionMaster, permissionType.Delete), callback: (data: any) => {
-            this._dietResMasterService.deactivateTheStatus(data.restrictionId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietRestrictionMaster, permissionType.Delete),
+          callback: (data: any) => {
+            if (data?.active === true) {
+              this._dietResMasterService.deactivateTheStatus(data.restrictionId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "restrictionName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "restrictionName", fieldValue: this.restrictionName, opType: OperatorComparer.StartsWith },
     { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 

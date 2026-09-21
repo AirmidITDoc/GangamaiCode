@@ -19,28 +19,32 @@ export class MealtypeMasterService {
   }
 
   createMealTypeForm(): FormGroup {
-    const now = new Date();
+    // const now = new Date();
+    // const currentTime =
+    //   `${String(now.getHours()).padStart(2, '0')}:` +
+    //   `${String(now.getMinutes()).padStart(2, '0')}`;
 
-    const currentTime =
-      `${String(now.getHours()).padStart(2, '0')}:` +
-      `${String(now.getMinutes()).padStart(2, '0')}`;
     return this._formBuilder.group({
       mealId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mealTypeCode: [0, [Validators.required]],
+      mealTypeCode: ["", [Validators.required]],
       mealName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      // mealSequence: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      dispatchTime: [currentTime],
-      preparationStartTime: [currentTime],
-      orderCutoffTime: [currentTime],
-      defaultTime: [currentTime],
-      active: [[Validators.required]]
+
+      // dispatchTime: [currentTime],
+      // preparationStartTime: [currentTime],
+      // orderCutoffTime: [currentTime],
+      // defaultTime: [currentTime]
+
+      dispatchTime: ["", [Validators.required]],
+      preparationStartTime: ["", [Validators.required]],
+      orderCutoffTime: ["", [Validators.required]],
+      defaultTime: ["", [Validators.required]]
     });
   }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      mealName: [""],
-      IsDeletedSearch: ["2"],
+      mealNameSearch: [""],
+      IsDeletedSearch: [""],
     });
   }
 

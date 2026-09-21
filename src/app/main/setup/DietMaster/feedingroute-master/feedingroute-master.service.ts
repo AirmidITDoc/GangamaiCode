@@ -23,17 +23,16 @@ export class FeedingrouteMasterService {
      return this._formBuilder.group({
        feedingRouteId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
        feedingRouteName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-       feedingRouteCode: [0, [Validators.required]],
+       feedingRouteCode: ["", [Validators.required]],
        dietTypesId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
        description: [""],
-       active: [[Validators.required]]
      });
    }
  
    createSearchForm(): FormGroup {
      return this._formBuilder.group({
-       feedingRouteName: [""],
-       IsDeletedSearch: ["2"],
+       feedingRouteNameSearch: [""],
+       IsDeletedSearch: [""],
      });
    }
  
