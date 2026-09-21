@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { ConstantMastersService } from '../constant-masters.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-newconstant-master',
@@ -14,6 +15,8 @@ import { ConstantMastersService } from '../constant-masters.service';
 })
 export class NewconstantMasterComponent {
   form: FormGroup;
+  constantTypeList: any[] = [];
+  type: any;
 
   constructor(
     public _ConstantService: ConstantMastersService,
@@ -32,10 +35,24 @@ export class NewconstantMasterComponent {
       this.form.patchValue(this.data);
       console.log(this.data)
     }
+
+    this._ConstantService.getconstantType().subscribe({
+      next: (res) => {
+        this.constantTypeList = res;
+      },
+      error: (err) => {
+        console.error('Failed to load constant types', err);
+      }
+    });
+  }
+
+  selectChange(event: MatSelectChange): void {
+    this.type = event.value;
+    console.log('Selected type:', this.type);
   }
 
   onSubmit() {
-    this.form.get('value').setValue(this.form.get('value').value)
+    // this.form.get('value').setValue(this.form.get('value').value)
     if (!this.form.invalid) {
       console.log(this.form.value)
       this._ConstantService.constantMasterSave(this.form.value).subscribe((response) => {

@@ -20,6 +20,11 @@ export class PatientInformationComponent implements OnInit {
   @Input() patientType: string = '';
   @Input() tariffName: string = '';
   @Input() companyName: string = '';
+  @Input() abhaNumber: string = '';
+  @Input() abhaAddress: string = '';
+  @Input() abhaFullName: string = '';
+  @Input() abhaGender: any;
+  @Input() abhaDOB: any;
 
   constructor() { }
 

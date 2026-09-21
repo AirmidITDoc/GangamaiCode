@@ -24,6 +24,8 @@ export class ConstantMastersComponent {
   searchForm: FormGroup;
   constantTypeList: any[] = [];
   type = ''
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ConstantMaster, permissionType.Add);
+  isActiveFilter: string = '2';
 
   allColumns = [
     { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -33,18 +35,25 @@ export class ConstantMastersComponent {
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
-          action: gridActions.edit, callback: (data: any) => {
+          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ConstantMaster, permissionType.Edit), callback: (data: any) => {
             this.onSave(data);
+          }
+        }, {
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.ConstantMaster, permissionType.Delete), callback: (data: any) => {
+            this._ConstantService.deactivateTheStatus(data.constantId).subscribe((response: any) => {
+              this.grid.bindGridData();
+            });
           }
         }]
     }
   ]
   allFilters = [
     { fieldName: "ConstantType", fieldValue: '', opType: OperatorComparer.StartsWith },
-    { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+    { fieldName: "IsActive", fieldValue: this.isActiveFilter, opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ConstantMaster,
     apiUrl: "Constants/ConstantsList",
     columnsList: this.allColumns,
     sortField: "ConstantId",
@@ -71,6 +80,8 @@ export class ConstantMastersComponent {
   }
 
   getfilterdata() {
+    const isActive = this.searchForm.get('isActive')?.value ?? '2';
+
     this.gridConfig = {
       apiUrl: "Constants/ConstantsList",
       columnsList: this.allColumns,
@@ -78,7 +89,7 @@ export class ConstantMastersComponent {
       sortOrder: 0,
       filters: [
         { fieldName: "ConstantType", fieldValue: String(this.type), opType: OperatorComparer.StartsWith },
-        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+        { fieldName: "IsActive", fieldValue:  String(isActive), opType: OperatorComparer.Equals }
       ]
     }
     console.log(this.gridConfig)
@@ -89,15 +100,21 @@ export class ConstantMastersComponent {
   clearType(): void {
     this.type = '';
     this.searchForm.get('constantType')?.setValue('');
-  
+
     this.getfilterdata();
   }
 
   createSearchFrom() {
     return this._formBuilder.group({
       constantType: '',
+      isActive: '2'
     });
   }
+
+  onStatusChange(value: string) {
+  this.isActiveFilter = value;
+  this.getfilterdata();        // rebuilds the filters and reloads the grid
+}
 
   selectChange(event: MatSelectChange): void {
     this.type = event.value;
@@ -114,13 +131,11 @@ export class ConstantMastersComponent {
       {
         maxWidth: "90vw",
         maxHeight: '85%',
-        width: '35%',
+        width: '50%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
         this.grid.bindGridData();
-      }
     });
   }
 }
