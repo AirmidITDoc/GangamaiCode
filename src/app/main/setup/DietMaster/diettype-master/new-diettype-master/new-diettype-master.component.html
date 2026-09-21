@@ -1,0 +1,92 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Diet Type</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="myForm">
+                <input type="hidden" name="DietTypeId" formControlName="dietTypeId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Diet Name" formControlName="dietName" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().DietName">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Diet Code" formControlName="dietCode" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().DietCode">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Short Name" formControlName="shortName" [formGroup]="myForm"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Diet Category" formControlName="dietCategoryId" [formGroup]="myForm"
+                            [validations]="getValidationMessages().DietCategoryId" [mode]="autocompleteModeDietCategory">
+                        </airmid-dropdown>
+                        <!-- <airmid-textbox label="Diet Category" formControlName="dietCategoryId" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().DietCategoryId">
+                        </airmid-textbox> -->
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Defalut Protein" formControlName="defaultCalories" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().DefaultCalories">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Defalut Protein" formControlName="defaultProtein" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().DefalutProtein">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Defalut Fluid" formControlName="defaultFluid" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().DefalutFluid">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Display Order" formControlName="displayOrder" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().DisplayOrder">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <textarea rows="1" formControlName="remarks" placeholder="Remarks" matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <textarea rows="1" formControlName="description" placeholder="Description"
+                                matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                    <div></div>
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
