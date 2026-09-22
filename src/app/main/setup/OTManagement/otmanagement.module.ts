@@ -56,6 +56,18 @@ const appRoutes: Routes = [
             import("./anaesthesia-master/anaesthesia-master.module").then((m) => m.AnaesthesiaMasterModule
             ),
     },
+    {
+        path: "levelmaster",
+        loadChildren: () =>
+            import("./level-master/level-master.module").then((m) => m.LevelMasterModule
+            ),
+    },
+    {
+        path: "patientpositionmaster",
+        loadChildren: () =>
+            import("./patient-position-master/patient-position-master.module").then((m) => m.PatientPositionMasterModule
+            ),
+    },
 ];
 
 @NgModule({

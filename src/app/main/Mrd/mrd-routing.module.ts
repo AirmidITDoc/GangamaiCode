@@ -9,11 +9,6 @@ const appRoutes: Routes = [
         loadChildren: () => import("./mrd-detail-list/mrd-details.module").then((m) => m.MrdDetailsModule),
 
     },
-    //  {
-    //     path: "prescription",
-    //     loadChildren: () => import("./mrd-detail-list/mrd-details.module").then((m) => m.MrdDetailsModule),
-
-    // },
     {
         path: "certificates",
         loadChildren: () => import("./certificate/cretificate.module").then((m) => m.CretificateModule),
@@ -23,6 +18,10 @@ const appRoutes: Routes = [
         path: "icdupdate",
         loadChildren: () => import("./icd-update/icd-update.module").then((m) => m.IcdUpdateModule),
 
+    },
+     {
+        path: "mrdtemplate",
+        loadChildren: () => import("./mrd-template/mrd-template.module").then((m) => m.MrdTemplateModule),
     },
 ];
 

@@ -13,18 +13,18 @@ import { NewconstantMasterComponent } from '../../constant-masters/newconstant-m
 import { ConstantMastersService } from '../../constant-masters/constant-masters.service';
 
 @Component({
-  selector: 'app-anaesthesia-master',
-  templateUrl: './anaesthesia-master.component.html',
-  styleUrls: ['./anaesthesia-master.component.scss'],
+  selector: 'app-patient-position-master',
+  templateUrl: './patient-position-master.component.html',
+  styleUrls: ['./patient-position-master.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class AnaesthesiaMasterComponent {
+export class PatientPositionMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   searchForm: FormGroup;
   constantTypeList: any[] = [];
   type = ''
-  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.AnaesthesiaMaster, permissionType.Add);
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PatientPositionMaster, permissionType.Add);
 
   allColumns = [
     { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -34,11 +34,11 @@ export class AnaesthesiaMasterComponent {
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
-          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.AnaesthesiaMaster, permissionType.Edit), callback: (data: any) => {
+          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.PatientPositionMaster, permissionType.Edit), callback: (data: any) => {
             this.onSave(data);
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.AnaesthesiaMaster, permissionType.Delete), callback: (data: any) => {
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.PatientPositionMaster, permissionType.Delete), callback: (data: any) => {
             this._ConstantService.deactivateTheStatus(data.constantId).subscribe((response: any) => {
               this.grid.bindGridData();
             });
@@ -47,12 +47,12 @@ export class AnaesthesiaMasterComponent {
     }
   ]
   allFilters = [
-    { fieldName: "ConstantType", fieldValue: 'ANESTHESIA_TYPES', opType: OperatorComparer.StartsWith },
+    { fieldName: "ConstantType", fieldValue: 'PatientPosition', opType: OperatorComparer.StartsWith },
     { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
-    permissionCode: permissionCodes.AnaesthesiaMaster,
+    permissionCode: permissionCodes.PatientPositionMaster,
     apiUrl: "Constants/ConstantsList",
     columnsList: this.allColumns,
     sortField: "ConstantId",
@@ -125,7 +125,7 @@ export class AnaesthesiaMasterComponent {
         width: '35%',
         data: {
           row: row,
-          defaultConstantType: 'ANESTHESIA_TYPES'
+          defaultConstantType: 'PatientPosition'
         }
       });
     dialogRef.afterClosed().subscribe(result => {

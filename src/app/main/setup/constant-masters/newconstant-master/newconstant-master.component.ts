@@ -31,9 +31,16 @@ export class NewconstantMasterComponent {
     this.form = this._ConstantService.Form();
     this.form.markAllAsTouched();
 
-    if ((this.data?.constantId ?? 0) > 0) {
-      this.form.patchValue(this.data);
-      console.log(this.data)
+    const row = this.data?.row ?? this.data ?? null;
+
+    if ((row?.constantId ?? 0) > 0) {
+      this.form.patchValue(row);
+      console.log(row);
+    }
+
+    if (this.data?.defaultConstantType) {
+      this.form.get('constantType')?.setValue(this.data.defaultConstantType);
+      this.form.get('constantType')?.disable();
     }
 
     this._ConstantService.getconstantType().subscribe({
@@ -54,8 +61,9 @@ export class NewconstantMasterComponent {
   onSubmit() {
     // this.form.get('value').setValue(this.form.get('value').value)
     if (!this.form.invalid) {
-      console.log(this.form.value)
-      this._ConstantService.constantMasterSave(this.form.value).subscribe((response) => {
+      const payload=this.form.getRawValue();
+      console.log(payload)
+      this._ConstantService.constantMasterSave(payload).subscribe((response) => {
         this.onClear(true);
       });
     } {

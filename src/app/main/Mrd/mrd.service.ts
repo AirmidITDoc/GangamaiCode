@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from '../shared/services/formvalidationservice.service';
 
 @Injectable({
     providedIn: 'root'
@@ -8,14 +9,12 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class MrdService {
 
     constructor(private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder) {
-
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService) {
     }
-
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
-
             FirstName: '',
             LastName: '',
             fromDate: [(new Date()).toISOString()],
@@ -25,7 +24,26 @@ export class MrdService {
         });
     }
 
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            TemplateNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
 
+    createRadiologytemplateForm(): FormGroup {
+        return this._formBuilder.group({
+            templateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            templateName: ["",
+                [Validators.required,
+                this._FormvalidationserviceService.allowEmptyStringValidator()]
+            ],
+            templateDesc: ["", Validators.required],
+            // isActive: [true,
+            //     // [Validators.required]
+            // ],
+        });
+    }
 
     public MrdcasepaperInsert(employee) {
         return this._httpClient.PostData("InPatient/MrdMedicalcasepaperInsert", employee)
@@ -51,8 +69,12 @@ export class MrdService {
         return this._httpClient.GetData("DeathCertificate/GetById/" + Id);
     }
 
-     public getMedicalDetailsById(Id) {
+    public getMedicalDetailsById(Id) {
         return this._httpClient.GetData("MedicolegalCertificate/" + Id);
+    }
+
+    public getMLCById(Id) {
+        return this._httpClient.GetData("MlcInformation/" + Id);
     }
 
     public getAdmissionById(Id) {
@@ -64,14 +86,14 @@ export class MrdService {
     }
 
     public medicoCertificateSave(Param: any) {
-        debugger
+        // debugger
         if (Param.docId) {
             return this._httpClient.PutData("MedicolegalCertificate/" + Param.docId, Param);
         } else return this._httpClient.PostData('MedicolegalCertificate', Param);
     }
 
     public deathCertificateSave(Param: any) {
-        debugger
+        // debugger
         if (Param.certificateId) {
             return this._httpClient.PutData("DeathCertificate/Update/" + Param.certificateId, Param);
         } else return this._httpClient.PostData('DeathCertificate/Insert', Param);
@@ -81,4 +103,13 @@ export class MrdService {
         return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
 
+    public templateMasterSave(Param: any) {
+        if (Param.templateId) {
+            return this._httpClient.PutData("MRDTemplate/" + Param.templateId, Param);
+        } else return this._httpClient.PostData("MRDTemplate", Param);
+    }
+
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("MRDTemplate?Id=" + m_data.toString());
+    }
 }
