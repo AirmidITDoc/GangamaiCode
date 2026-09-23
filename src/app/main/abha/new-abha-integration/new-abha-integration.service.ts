@@ -35,8 +35,8 @@ export class NewAbhaIntegrationService {
         Validators.maxLength(50),
         Validators.pattern("^[A-Za-z/() ]*$")
       ]],
-      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      fromDate: [],
+      enddate: [],
       MobileNo: ['', [
         Validators.minLength(10),
         Validators.maxLength(10),
@@ -79,5 +79,8 @@ export class NewAbhaIntegrationService {
   }
   public getAbhaByNumber(Id) {
     return this._httpClient1.GetData("PatientAbhaInformation/ByAbhaNumber/" + Id);
+  }
+  public getCareContextById(Id) {
+    return this._httpClient1.GetData("AbhaConnects/Encounter/" + Id);
   }
 }

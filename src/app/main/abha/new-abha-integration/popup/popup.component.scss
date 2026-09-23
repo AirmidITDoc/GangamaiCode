@@ -129,3 +129,63 @@
   justify-content: flex-end;
   margin-top: 20px;
 }
+
+.peccid-icon {
+  color: #2e7d32; // green
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.status-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+}
+
+.status-box span {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
+    cursor: default;
+}
+
+/* Completed state - green */
+.status-ABHAcompleted {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border: 1px solid #b7dfc0;
+}
+
+/* Pending state - amber/orange */
+.status-ABHApending {
+    background-color: #fff4e5;
+    color: #b05a00;
+    border: 1px solid #ffd8a8;
+}
+
+/* Optional: small dot indicator before the text */
+.status-ABHAcompleted::before,
+.status-ABHApending::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.status-ABHAcompleted::before {
+    background-color: #1e7e34;
+}
+
+.status-ABHApending::before {
+    background-color: #b05a00;
+}

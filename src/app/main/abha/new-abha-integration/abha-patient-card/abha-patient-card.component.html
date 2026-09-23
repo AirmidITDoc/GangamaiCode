@@ -22,6 +22,11 @@
               <mat-icon>person_outline</mat-icon> ABHA Information
             </h3>
 
+            <div class="abha-photo-section" *ngIf="abhaPhotoSrc">
+              <span class="k">ABHA Photo</span>
+              <img class="abha-photo" [src]="abhaPhotoSrc" alt="ABHA Photo" (error)="onPhotoError()" />
+            </div>
+
             <div class="kv-grid">
               <div class="kv-row">
                 <span class="k">ABHA Number</span>
@@ -138,10 +143,8 @@
           </ng-container>
 
           <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
-         <mat-row *matRowDef="let row; columns: displayedColumns"
-         (click)="onSelectPatient(row)"
-         [style.background-color]="selectedRow === row ? '#e0e0e0' : null"
-         style="cursor:pointer;"></mat-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onSelectPatient(row)"
+            [style.background-color]="selectedRow === row ? '#e0e0e0' : null" style="cursor:pointer;"></mat-row>
         </mat-table>
 
         <!-- Empty state -->

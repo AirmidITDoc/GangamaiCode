@@ -34,9 +34,8 @@ export class MrdService {
     createRadiologytemplateForm(): FormGroup {
         return this._formBuilder.group({
             templateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            templateName: ["",
-                [Validators.required,
-                this._FormvalidationserviceService.allowEmptyStringValidator()]
+            templateName: ['',
+                [Validators.required, Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),]
             ],
             templateDesc: ["", Validators.required],
             // isActive: [true,

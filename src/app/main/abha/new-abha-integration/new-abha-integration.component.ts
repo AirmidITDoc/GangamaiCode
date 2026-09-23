@@ -72,13 +72,17 @@ export class NewAbhaIntegrationComponent {
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    //  { heading: "Age", key: "displayAge", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "AbhaNumber", key: "abhaNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "AbhaAddress", key: "abhaAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "AbhaFullName", key: "abhaFullName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+    { heading: "AbhaDOB", key: "yearOfBirth", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "AbhaGender", key: "gender", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
     { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -99,8 +103,8 @@ export class NewAbhaIntegrationComponent {
       { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
       { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
       { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "AreaId", fieldValue: String(this.AreaId), opType: OperatorComparer.Equals }
@@ -109,8 +113,8 @@ export class NewAbhaIntegrationComponent {
 
   onChangeFirst() {
     debugger
-    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900",
+    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900",
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -440,6 +444,9 @@ export class abhaRegInsert {
   husbandDob: Date;
   wifeDob: Date;
   disabled: any;
+  regID:any;
+  peErrMessage:any;
+  ccErrMessage:any;
   /**
    * Constructor
    *
@@ -554,6 +561,10 @@ export class abhaRegInsert {
       this.husbandDob = RegInsert.husbandDob || ''
       this.wifeDob = RegInsert.wifeDob || ''
       this.disabled = RegInsert.disable || ''
+      this.regID = RegInsert.regID || ''
+      this.peErrMessage = RegInsert.peErrMessage || ''
+      this.ccErrMessage = RegInsert.ccErrMessage || ''
+
     }
   }
 }
