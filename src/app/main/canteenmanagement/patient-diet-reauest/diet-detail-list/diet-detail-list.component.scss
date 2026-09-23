@@ -1,0 +1,220 @@
+.mat-form-field-wrapper {
+  padding-bottom: 0.34375em;
+}
+
+@import "src/@fuse/scss/fuse";
+
+.mat-row,
+.mat-footer-row {
+  min-height: 28px;
+  height: 35px;
+}
+
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+
+
+
+}
+
+.active-icon {
+  border-radius: 50%;
+}
+
+
+.active-icon {
+  border-radius: 50%;
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.status-completed,
+.status-pending {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  writing-mode: horizontal-tb;
+  /* force horizontal text */
+}
+
+.status-completed {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-pending {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.status-not-requested {
+  background-color: #ffebee;
+  /* light red */
+  color: #c62828;
+  /* dark red text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status-received {
+  background-color: #e8f5e9;
+  /* light green */
+  color: #2e7d32;
+  /* dark green text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* ========== Green Checkbox ========== */
+.accept-checkbox {
+  display: inline-flex !important;
+  align-items: center;
+  margin-left: 2px;
+
+  ::ng-deep .mdc-checkbox {
+    width: 20px !important;
+    height: 20px !important;
+    padding: 0 !important;
+  }
+
+  ::ng-deep .mdc-checkbox__background {
+    width: 18px !important;
+    height: 18px !important;
+    border: 2px solid #2e7d32 !important;
+    border-radius: 4px !important;
+    background-color: #e8f5e9 !important;
+  }
+
+  /* Checked state */
+  &.mat-mdc-checkbox-checked {
+    ::ng-deep .mdc-checkbox__background {
+      background-color: #2e7d32 !important;
+      border-color: #2e7d32 !important;
+    }
+
+    ::ng-deep .mdc-checkbox__checkmark {
+      color: #ffffff !important;
+    }
+
+    ::ng-deep .mdc-checkbox__checkmark-path {
+      stroke: #ffffff !important;
+    }
+  }
+
+  /* Hover */
+  &:hover:not(.mat-mdc-checkbox-disabled) {
+    ::ng-deep .mdc-checkbox__background {
+      background-color: #c8e6c9 !important;
+      border-color: #1b5e20 !important;
+    }
+  }
+
+  .status-box {
+    display: flex;
+    align-items: center;
+    width: 100%; // fill the cell — the cell itself is now fixed by table-layout
+    box-sizing: border-box;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .status-pill {
+    display: inline-block;
+    width: 80px;
+    flex-shrink: 0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  .checkbox-slot {
+    width: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .checkbox-placeholder {
+    color: rgba(0, 0, 0, 0.38); // muted, like a disabled/empty state
+    font-size: 14px;
+    line-height: 1;
+  }
+}
+
+.info-badge-top {
+  .dashboard-card {
+    min-width: 155px;
+    border-radius: 12px;
+    padding: 4px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    color: black; //#fff;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: 100%;
+
+    .card-label {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .card-value {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    .card-icon {
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      font-size: 28px;
+      opacity: 0.7;
+    }
+
+    
+    &.total {
+      background: #c3eff6;
+    }
+
+    &.accept {
+      background: #9eee9c;
+    }
+
+    &.pending {
+      background: #f9d8ff;
+    }
+
+    &.deliver {
+      background: #86d7b4;
+    }
+
+    & .cancel {
+      font-size: 13px;
+    }
+
+    &.app-Cancel {
+      background: #fabebe;
+    }
+  }
+
+}

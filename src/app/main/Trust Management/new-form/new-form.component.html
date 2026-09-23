@@ -1054,15 +1054,6 @@
 
                                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                         *ngIf="WFeesstatus">
-                                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>Membership ended Date</mat-label>
-                                                            <input matInput [matDatepicker]="wmembershipvalidDate"
-                                                                placeholder="wmembershipvalidDate"
-                                                                formControlName="wmembershipvalidDate" />
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="wmembershipvalidDate"></mat-datepicker-toggle>
-                                                            <mat-datepicker #wmembershipvalidDate></mat-datepicker>
-                                                        </mat-form-field> -->
 
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Membership ended Date</mat-label>
@@ -1103,7 +1094,7 @@
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-4">
 
                                                 <airmid-dropdown label="Prefix" formControlName="CPrefixId"
-                                                    [formGroup]="Childrensform" [value]="registerObj?.CPrefixId"
+                                                    [formGroup]="Childrensform"
                                                     [validations]="getValidationMessages().CPrefixId"
                                                     (selectionChange)="onChangeCPrefix($event)" ValueField="prefixId"
                                                     TextField="prefixName"
@@ -1146,80 +1137,37 @@
                                     </div>
                                 </div>
 
-                                <div
+                                <div class="airmid-table-container"
                                     style="height: 160px; max-height: 170px; overflow-y: auto; border: 1px solid #ddd;">
-                                    <mat-table matSort [dataSource]="DSChildrenList"
-                                        [@animateStagger]="{ value: '50' }">
-
-
-                                        <!-- <ng-container matColumnDef="Prefix">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-100">
-                                                Prefix </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
-                                                <span>{{ element.PrefixName }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
+                                    <mat-table matSort [dataSource]="DSChildrenList" [@animateStagger]="{ value: '50' }"
+                                        class="airmid-table table">
 
                                         <ng-container matColumnDef="Prefix">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-230">
-                                                Prefix
-                                            </mat-header-cell>
-
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
-
-                                                <ng-container *ngIf="!isEditing(contact); else editTemplate">
-                                                    <span>{{ contact.PrefixName }}</span>
-                                                    <button mat-icon-button (click)="CenableEditing(contact)"
-                                                        class="clear-button">
-                                                        <mat-icon>edit</mat-icon>
-                                                    </button>
-                                                </ng-container>
-
-
-                                                <ng-template #editTemplate>
-                                                    <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px"
-                                                        fxLayoutAlign="start center">
-                                                        <airmid-dropdown formControlName="CEditPrefixId" class="w-180"
-                                                            appearance="fill" [formGroup]="Relform"
-                                                            [mode]="autocompleteModeprefix"
-                                                            [validations]="getValidationMessages().CEditPrefixId"
-                                                            (selectionChange)="CDropDownValue($event)">
-                                                        </airmid-dropdown>
-                                                    </form>
-                                                </ng-template>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <!-- <ng-container matColumnDef="Name">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-450">
-                                                Child
+                                                class="w-230">PrefixName
                                                 Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-450">
-                                                <span>{{ element.Name }}</span>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+                                                <span>{{ contact.PrefixName}}</span>
+                                                <div fxLayout="row" fxLayoutGap="6px">
+                                                    <ng-container *ngIf="!contact.CEditPrefixId; else showInput">
+                                                        <button mat-icon-button (click)="ChildenableEditing(contact)"
+                                                            class="clear-button">
+                                                            <mat-icon>edit</mat-icon></button>
+                                                    </ng-container>
+                                                    <ng-template #showInput>
+                                                        <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
+                                                            <airmid-dropdown formControlName="CEditPrefixId"
+                                                                class="w-180" appearance="fill" [formGroup]="Relform"
+                                                                [mode]="autocompleteModeprefix"
+                                                                [validations]="getValidationMessages().CEditPrefixId"
+                                                                (selectionChange)="DropDownValue($event,contact)"></airmid-dropdown>
+                                                        </form>
+                                                        <mat-icon matTooltip="Close"
+                                                            (click)="ChildisableEditing(contact)">cancel</mat-icon>
+                                                    </ng-template>
+                                                </div>
                                             </mat-cell>
                                         </ng-container>
-
-                                        <ng-container matColumnDef="MobileNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-250">MobileNo</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
-                                                <span>{{ element.MobileNo }}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-
-
-                                        <ng-container matColumnDef="Address">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-400">Address</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-400">
-                                                <span>{{ element.Address }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
-
 
                                         <ng-container matColumnDef="Name">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Name
@@ -1343,16 +1291,9 @@
                                     <mat-table class="airmid-table" matSort [dataSource]="DSRelativeList"
                                         [@animateStagger]="{ value: '50' }">
 
-                                        <!-- <ng-container matColumnDef="Prefix">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-100">
-                                                Prefix </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
-                                                <span>{{ element.PrefixName }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
 
-                                        <ng-container matColumnDef="Prefix">
+
+                                        <!-- <ng-container matColumnDef="Prefix">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                 class="w-230">
                                                 Prefix
@@ -1380,18 +1321,35 @@
                                                     </form>
                                                 </ng-template>
                                             </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="Prefix">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-230">PrefixName
+                                                Name</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+                                                <span>{{ contact.PrefixName}}</span>
+                                                <div fxLayout="row" fxLayoutGap="6px">
+                                                    <ng-container *ngIf="!contact.REditPrefixId; else showInput">
+                                                        <button mat-icon-button (click)="RelenableEditing(contact)"
+                                                            class="clear-button">
+                                                            <mat-icon>edit</mat-icon></button>
+                                                    </ng-container>
+                                                    <ng-template #showInput>
+                                                        <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
+                                                            <airmid-dropdown formControlName="REditPrefixId"
+                                                                class="w-180" appearance="fill" [formGroup]="Relform"
+                                                                [mode]="autocompleteModeprefix"
+                                                                [validations]="getValidationMessages().REditPrefixId"
+                                                                (selectionChange)="DropDownValue1($event,contact)"></airmid-dropdown>
+                                                        </form>
+                                                        <mat-icon matTooltip="Close"
+                                                            (click)="RelisableEditing(contact)">cancel</mat-icon>
+                                                    </ng-template>
+                                                </div>
+                                            </mat-cell>
                                         </ng-container>
 
-
-                                        <!-- <ng-container matColumnDef="RName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-450">
-                                                Relative
-                                                Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-450">
-                                                <span>{{ element.RName }}</span>
-                                            </mat-cell>
-                                        </ng-container>-->
 
 
                                         <ng-container matColumnDef="RName">
@@ -1405,14 +1363,6 @@
                                             </mat-cell>
                                         </ng-container>
 
-
-                                        <!-- <ng-container matColumnDef="RMobileNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-250">MobileNo</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
-                                                <span>{{ element.RMobileNo }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
                                         <ng-container matColumnDef="RMobileNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Relative
                                                 MobileNo
@@ -1427,13 +1377,6 @@
                                         </ng-container>
 
 
-                                        <!-- <ng-container matColumnDef="RAddress">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-400">Address</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-400">
-                                                <span>{{ element.RAddress }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
 
                                         <ng-container matColumnDef="RAddress">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Relative
@@ -1446,14 +1389,6 @@
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="Relation">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-150">Relation</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
-                                                <span>{{ element.RelationName }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
 
 
                                         <ng-container matColumnDef="Relation">
@@ -1564,17 +1499,8 @@
                                     <mat-table class="airmid-table" matSort [dataSource]="DSEmrgencyList"
                                         [@animateStagger]="{ value: '50' }">
 
-                                        <!-- 
-                                        <ng-container matColumnDef="Prefix">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-100">
-                                                Prefix </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
-                                                <span>{{ element.PrefixName }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
 
-                                        <ng-container matColumnDef="Prefix">
+                                        <!-- <ng-container matColumnDef="Prefix">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                 class="w-230">
                                                 Prefix
@@ -1602,17 +1528,33 @@
                                                     </form>
                                                 </ng-template>
                                             </mat-cell>
-                                        </ng-container>
-
-
-                                        <!-- <ng-container matColumnDef="EName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-450">
-                                                Emergency Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-450">
-                                                <span>{{ element.EName || element.emrgencyName}}</span>
-                                            </mat-cell>
                                         </ng-container> -->
+                                        <ng-container matColumnDef="Prefix">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-230">PrefixName
+                                                Name</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+                                                <span>{{ contact.PrefixName}}</span>
+                                                <div fxLayout="row" fxLayoutGap="6px">
+                                                    <ng-container *ngIf="!contact.EEditPrefixId; else showInput">
+                                                        <button mat-icon-button (click)="EmenableEditing(contact)"
+                                                            class="clear-button">
+                                                            <mat-icon>edit</mat-icon></button>
+                                                    </ng-container>
+                                                    <ng-template #showInput>
+                                                        <form [formGroup]="Relform" fxLayout="row" fxLayoutGap="2px">
+                                                            <airmid-dropdown formControlName="EEditPrefixId"
+                                                                class="w-180" appearance="fill" [formGroup]="Relform"
+                                                                [mode]="autocompleteModeprefix"
+                                                                [validations]="getValidationMessages().EEditPrefixId"
+                                                                (selectionChange)="DropDownValue2($event,contact)"></airmid-dropdown>
+                                                        </form>
+                                                        <mat-icon matTooltip="Close"
+                                                            (click)="EmableEditing(contact)">cancel</mat-icon>
+                                                    </ng-template>
+                                                </div>
+                                            </mat-cell>
+                                        </ng-container>
 
                                         <ng-container matColumnDef="EName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>EName
@@ -1625,13 +1567,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="EMobileNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-250">EMobileNo</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
-                                                <span>{{ element.EMobileNo || element.emrgencyMobile }}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
+
 
                                         <ng-container matColumnDef="EMobileNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>EMobileNo
@@ -1645,13 +1581,6 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="EAddress">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-400">EAddress</mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-400">
-                                                <span>{{ element.Address || element.emrgencyAddress}}</span>
-                                            </mat-cell>
-                                        </ng-container> -->
 
 
                                         <ng-container matColumnDef="EAddress">

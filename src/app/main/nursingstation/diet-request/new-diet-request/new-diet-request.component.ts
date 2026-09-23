@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -33,6 +33,9 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 })
 export class NewDietRequestComponent {
 
+  DietForm: FormGroup;
+  dietmenuForm: FormGroup;
+
   displayedColumns = [
     'CheckBox',
     'regno',
@@ -51,16 +54,19 @@ export class NewDietRequestComponent {
   vRegNo: any;
   sIsLoading: string = "";
   dataSource = new MatTableDataSource<any>();
+  dietReqId = 0
+  registerObj: any;
+  vAdmission: any;
+  vipdNo: any;
 
-  DietForm: FormGroup;
-  dietmenuForm: FormGroup;
 
+  isShowPrintButtons: boolean = false;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
   @ViewChild('Outputpaginator', { static: true }) public Outputpaginator: MatPaginator;
 
-  autocompleteModedietMenu: string = "DietMenu";
-  autocompleteModemealType: string = "MealType";
-  autocompleteModedietType: string = "DietType";
+  autocompleteModedietMenu: string = "MDietMenuMaster";
+  autocompleteModemealType: string = "MMealTypeMaster";
+  autocompleteModedietType: string = "MDietTypeMaster";
   autocompleteModedietReisc: string = "DietRestiction";
   autocompleteModeallergy: string = "Allergy";
 
@@ -70,23 +76,38 @@ export class NewDietRequestComponent {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
-    public _formbuilder: UntypedFormBuilder,
+    public _formbuilder: UntypedFormBuilder, @Inject(MAT_DIALOG_DATA) public data: any,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
+
+    console.log(this.data)
     this.GetPatientdetail();
     this.DietForm = this.CreatedietForm();
     this.DietForm.markAllAsTouched();
 
     this.dietmenuForm = this.createDietReqForm()
+
+    if (this.data) {
+      this.registerObj = this.data
+      this.dietReqId = this.data.dietReqId
+
+      this.DietForm.get('dietMenuId').setValue(this.registerObj.dietMenuId)
+      this.GetPatientdetail(() => {
+        if (this.data) {
+          this.GetDetails();
+        }
+      });
+    }
+
   }
 
   CreatedietForm() {
     return this._formbuilder.group({
-      dietMenuId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      mealTypeId: [1],
-      dietTypeId: [1],
+      dietMenuId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mealTypeId: [''],
+      dietTypeId: [''],
       dietRestrictionId: [0],
       allergyId: [0],
       nutritionistId: [1],
@@ -96,7 +117,7 @@ export class NewDietRequestComponent {
 
   createDietReqForm() {
     return this._formbuilder.group({
-      dietReqId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      dietReqId: [this.dietReqId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       date: [this.datePipe.transform(new Date, 'yyyy-MM-dd')],
       time: [new Date()],
       unitId: [this.accountService.currentUserValue.user.unitId],
@@ -108,9 +129,10 @@ export class NewDietRequestComponent {
   }
 
   createDietDetReqDetails(item: any, dietFormValue: any): FormGroup {
+    debugger
     return this._formbuilder.group({
       dietReqDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      dietReqId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      dietReqId: [this.dietReqId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       orderDate: [this.datePipe.transform(new Date, 'yyyy-MM-dd')],
       orderTime: [new Date()],
       opipid: [item.admissionID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -137,7 +159,7 @@ export class NewDietRequestComponent {
     return this.dietmenuForm.get('tDietPatReqDetails') as FormArray;
   }
 
-  //////////////////////////////////////// main patient list ////////////////////////////////////////
+
   @ViewChild('grid5') grid5: AirmidTableComponent;
   gridConfig5: gridModel = new gridModel();
   pname = "%"
@@ -201,28 +223,51 @@ export class NewDietRequestComponent {
     this.selection.toggle(contact); // deselect — this also unchecks the row's mat-checkbox automatically
   }
 
-  GetPatientdetail() {
+  // GetPatientdetail() {
 
-    // debugger
+  //   const filters: any[] = [];
+
+  //   filters.push(
+
+  //     {
+  //       "fieldName": "PatientName",
+  //       "fieldValue": this.pname,
+  //       "opType": "Equals"
+  //     },
+  //     {
+  //       "fieldName": "WardId",
+  //       "fieldValue": String(this.wardid),
+  //       "opType": "Equals"
+  //     },
+  //     {
+  //       "fieldName": "DoctorId",
+  //       "fieldValue": String(this.doctorid),
+  //       "opType": "Equals"
+  //     }
+  //   );
+
+  //   const data = {
+  //     "first": 0,
+  //     "rows": 999999,
+  //     "sortField": "RegNo",
+  //     "sortOrder": 0,
+  //     "filters": filters,
+  //     "exportType": "JSON",
+  //     "columns": []
+  //   };
+  //   console.log(data)
+  //   this._ClinicalcareService.getSampleRecivedlist(data).subscribe((response) => {
+  //     this.dataSource.data = response.data;
+  //     console.log(this.dataSource.data)
+  //   });
+  // }
+  GetPatientdetail(onLoaded?: () => void) {
     const filters: any[] = [];
 
     filters.push(
-
-      {
-        "fieldName": "PatientName",
-        "fieldValue": this.pname,
-        "opType": "Equals"
-      },
-      {
-        "fieldName": "WardId",
-        "fieldValue": String(this.wardid),
-        "opType": "Equals"
-      },
-      {
-        "fieldName": "DoctorId",
-        "fieldValue": String(this.doctorid),
-        "opType": "Equals"
-      }
+      { "fieldName": "PatientName", "fieldValue": this.pname, "opType": "Equals" },
+      { "fieldName": "WardId", "fieldValue": String(this.wardid), "opType": "Equals" },
+      { "fieldName": "DoctorId", "fieldValue": String(this.doctorid), "opType": "Equals" }
     );
 
     const data = {
@@ -234,13 +279,12 @@ export class NewDietRequestComponent {
       "exportType": "JSON",
       "columns": []
     };
-    console.log(data)
+
     this._ClinicalcareService.getSampleRecivedlist(data).subscribe((response) => {
       this.dataSource.data = response.data;
-      console.log(this.dataSource.data)
+      if (onLoaded) onLoaded();
     });
   }
-
   onChangeFirst() {
     debugger
     this.pname = this._ClinicalcareService.MyForm.get('PatientName').value + '%'
@@ -266,10 +310,7 @@ export class NewDietRequestComponent {
     this.onChangeFirst();
   }
 
-  registerObj: any;
-  vAdmission: any;
-  vipdNo: any;
-  isShowPrintButtons: boolean = false;
+
   getpatientDet(obj) {
     console.log(obj)
 
@@ -286,7 +327,6 @@ export class NewDietRequestComponent {
     this.vAdmission = this.registerObj.admissionID
     this.vipdNo = this.registerObj.ipdNo
   }
-  //////////////////////////////////////// main patient list end ////////////////////////////////////////
 
   onSave() {
     if (this.selection.selected.length === 0) {
@@ -296,6 +336,15 @@ export class NewDietRequestComponent {
 
     const dietFormValue = this.DietForm.value;
 
+    this.dietmenuForm.patchValue({
+      dietReqId: this.dietReqId,
+      dietMenuId: dietFormValue.dietMenuId,
+      mealTypeId: dietFormValue.mealTypeId,
+      dietTypeId: dietFormValue.dietTypeId,
+
+    });
+
+
     this.dietDetailsArray.clear();
     this.selection.selected.forEach(item => {
       this.dietDetailsArray.push(this.createDietDetReqDetails(item, dietFormValue));
@@ -303,19 +352,60 @@ export class NewDietRequestComponent {
 
     console.log('Final array value:', this.dietDetailsArray.value);
 
-    this.dietmenuForm.patchValue({
-      dietReqId:0,
-      dietMenuId: dietFormValue.dietMenuId
-    });
 
     const payload = this.dietmenuForm.value;
     console.log('Final payload:', payload);
 
     this._ClinicalcareService.SaveDietReq(payload).subscribe(() => {
-            this._matDialog.closeAll();
-        });
+      this._matDialog.closeAll();
+    });
   }
 
+
+  GetDetails() {
+    const filters: any[] = [];
+
+    filters.push(
+      { fieldName: "DietReqId", fieldValue: String(this.dietReqId), opType: OperatorComparer.Equals }
+    );
+
+    const data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "DietReqDetId",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+
+    this._ClinicalcareService.getdetaillist(data).subscribe((response) => {
+      const existingDetails = response.data || [];
+      debugger
+      if (existingDetails.length) {
+        this.DietForm.get('mealTypeId').setValue(existingDetails[0].mealTypeId);
+        this.DietForm.get('dietTypeId').setValue(existingDetails[0].dietTypeId);
+      }
+
+      existingDetails.forEach((detail: any) => {
+        const matchedRow = this.dataSource.data.find(
+          row => row.admissionID === detail.opipid
+        );
+        if (matchedRow) {
+          matchedRow.comments = detail.comments ?? '';   // <-- set comment onto the row BEFORE selecting
+          this.selection.select(matchedRow);
+        }
+      });
+    });
+  }
+  onCommentChange(item: any, value: string) {
+    debugger
+    item.comments = value;
+    console.log('Updated comment for', item.patientName, '→', item.comments, item);
+  }
+  onClose() {
+
+  }
 }
 export class PatientList {
   DoctorName: any;

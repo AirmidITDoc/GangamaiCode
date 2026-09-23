@@ -5,7 +5,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Canteen Request List
+                    Patient Diet Request List
                 </span>
             </div>
         </div>
@@ -14,91 +14,240 @@
             </button>
 
         </div>
-
-
     </div>
+    <ng-template #HeaderCancleTask>
+        <mat-toolbar class="accent dialog-header">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span>Request Cancel for Request Id-{{ReqId}}</span>
+            </div>
 
+            <button mat-icon-button [mat-dialog-close]="true" matTooltip="Close" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <div class="dialog-content">
+            <form [formGroup]="HeaderCancleTaskForm">
+                <airmid-textbox label="Reason *" formControlName="Reason" [formGroup]="HeaderCancleTaskForm"
+                    [value]="Reason">
+                </airmid-textbox>
+            </form>
+        </div>
+
+        <div class="dialog-footer">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" (click)="HeaderRequestCancle()">Save</button>
+        </div>
+    </ng-template>
+
+    <ng-template #DetailCancleTask>
+        <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Detail Request Cancel -
+                    {{ReqDetId}}</span>
+            </div>
+            <div class="close-icon">
+                <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar>
+
+
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div class="center p-12 pb-56" style="border-radius: 4px;">
+
+                    <div class="content-card">
+                        <form [formGroup]="DetailCancleTaskForm">
+
+                            <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+
+
+                                <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+
+
+
+                                </div>
+                                <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+                                    <airmid-textbox label="Reason" formControlName="Reason" fxFlex="99%"
+                                        [formGroup]="DetailCancleTaskForm" [value]="Reason">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" fxLayoutAlign="end">
+            <div class="next-div button-row-group" style="padding-right: 20px;">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" color="accent" (click)="DetailRequestCancle()">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+
+    </ng-template>
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-            <ng-template #Billstatus let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.isBillGenerated=='1'" matTooltip="Bill Generated">account_box
-                    </mat-icon>
-                </div>
+            <ng-template #IsCancelledBy let-element>
+                <span [ngClass]="{
+                'status-not-requested': element.isCancelled == true,
+                'status-received': element.isCancelled !== true
+              }">
+                    {{ element.isCancelled? 'Cancelled' : 'Active' }}
+                </span>
             </ng-template>
 
+            <!-- <ng-template #status let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon *ngIf="element.status=='1'" matTooltip="Request Status">account_box
+                    </mat-icon>
+                </div>
+            </ng-template> -->
 
 
             <ng-template #actionButtonTemplate let-element>
 
                 <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <button mat-icon-button matTooltip="Print Canteen Request" (click)="onPrint(element)">
-                        <mat-icon>print</mat-icon>
+                    <button mat-icon-button color="primary" [disabled]="element.isAccept  || element.isCancelled"
+                        (click)="Edit(element)" matTooltip="Edit Diet Request">
+                        <mat-icon>edit</mat-icon>
                     </button>
-                    <!-- *ngIf="element.isCancelled==false" -->
-                    <button mat-icon-button (click)="Canteencancle(element)" matTooltip="Canteen Request Cancel">
-                        <mat-icon title="Cancel Request">cancel</mat-icon>
+                    <!-- <button mat-icon-button matTooltip="Print Canteen Request" (click)="onPrint(element)">
+                        <mat-icon>print</mat-icon>
+                    </button> -->
+
+                    <button mat-stroked-button color="warn" class="cancel-diet-btn"
+                        (click)="openheadercancletask(element)" matTooltip="Cancel Diet Request"
+                        *ngIf="!element.isCancelled">
+
+                        <span>Cancel</span>
                     </button>
 
                 </div>
 
             </ng-template>
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+                class="px-12 py-4 border-bottom gap-8">
+                <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
 
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+
+                        <div class="dashboard-card registrations">
+                            <div class="card-label">Diet Plan Created</div>
+                            <div class="card-value">{{VNewcount}}</div>
+                            <mat-icon class="card-icon">receipt_long</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card pending">
+                            <div class="card-label">Pending Order</div>
+                            <div class="card-value">
+                                <div> {{VPendingcount}}</div>
+                            </div>
+                            <mat-icon class="card-icon">group</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card app-Cancel">
+                            <div class="card-label">Diet Plan Cancel</div>
+                            <div class="card-value">{{VCancelcount}}</div>
+                            <mat-icon class="card-icon">receipt_long</mat-icon>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
             <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails($event)" #grid
                 :ShowButtons="false">
                 <ng-container filters>
                     <form [formGroup]="myFilterform" fxLayout="column">
                         <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
                             formStartControlName="fromDate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="Getrequestdetail()"
                             [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
                         <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>UHID</mat-label>
-                            <input matInput placeholder="Search UHID" autocomplete="off"
+                            <mat-label>DietReqId</mat-label>
+                            <input matInput placeholder="Search Diet Req No" autocomplete="off"
                                 (keypress)="keyPressAlphanumeric($event)" [formGroup]="myFilterform"
-                                formControlName="RegNo" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                formControlName="DietReqId" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('DietReqId')">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>First Name</mat-label>
-                            <input matInput placeholder="Search First Name" autocomplete="off"
-                                [formGroup]="myFilterform" formControlName="fName" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('fName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-
-
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="lName" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('lName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-
-                        <airmid-dropdown label="Ward Name" formControlName="wardId" fxFlex [formGroup]="myFilterform"
-                            [validations]="getValidationMessages().WardName" [mode]="autocompleteModewardName"
-                            (selectionChange)="selectChangeward($event)">
-                        </airmid-dropdown>
                     </form>
                 </ng-container>
             </airmid-table>
         </div>
 
+
+        <ng-template #isAccept let-element>
+            <div class="status-box">
+                <span [ngClass]="{
+            'status-completed': element.isAccept === true,
+            'status-pending': element.isAccept !== true
+          }">
+                    {{ element.isAccept ? 'Accepted' : 'Pending' }}
+                </span>
+
+                <!-- <mat-checkbox *ngIf="!element.isAccept" class="accept-checkbox" color="primary"
+                    (change)="AcceptRequest(element)" matTooltip="Accept Diet Request">
+                </mat-checkbox> -->
+            </div>
+        </ng-template>
+
+
+        <ng-template #isDelived let-element>
+            <span [ngClass]="{
+                'status-not-requested': element.isDelived == 0,
+                'status-received': element.isDelived > 0
+              }">
+                {{ element.isDelived == false ? 'Pending' : 'Delivered' }}
+            </span>
+        </ng-template>
+
+        <ng-template #detIsCancelled let-element>
+            <div class="status-box">
+                <span class="status-pill" [ngClass]="{
+            'status-not-requested': element.detIsCancelled == true,
+            'status-received': element.detIsCancelled !== true
+        }">
+                    {{ element.detIsCancelled ? 'Cancelled ' : 'Active' }}
+                </span>
+
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplate1 let-element>
+
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button color="warn" (click)="opendetailcancletask(element)"
+                    matTooltip="Cancel Diet Detail Request"
+                    *ngIf="!element.detIsCancelled && isDetailicon && !CancleStatus  && !element.isAccept">
+                    <mat-icon>highlight_off</mat-icon>
+                </button>
+            </div>
+
+        </ng-template>
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
 
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">

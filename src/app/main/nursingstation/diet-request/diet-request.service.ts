@@ -295,4 +295,23 @@ export class DietRequestService {
             return this._httpClient1.PutData("DietPatientRequest/Edit/" + Param.dietReqId, Param);
         } else return this._httpClient1.PostData("DietPatientRequest/Insert", Param);
     }
+
+
+    public Requestcancle(employee, loader = true) {
+
+        return this._httpClient1.PostData("DietPatientRequest/DietPatientReqHeaderCancel", employee);
+    }
+
+    public DetailRequestcancle(employee, loader = true) {
+
+        return this._httpClient1.PostData("DietPatientRequest/DietPatReqDetailCanel", employee);
+    }
+
+
+    public getdetaillist(employee) {
+        return this._httpClient1.PostData("DietPatientRequest/DietPatientRequestDetailsList", employee)
+    }
+    public getRequestlist(employee) {
+        return this._httpClient1.PostData("DietPatientRequest/DietPatientRequestHeaderList", employee)
+    }
 }

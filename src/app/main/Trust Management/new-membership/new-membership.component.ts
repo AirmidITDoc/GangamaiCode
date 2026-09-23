@@ -45,8 +45,9 @@ export class NewMembershipComponent {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('hasMediclaim') hasMediclaim!: TemplateRef<any>;
-    @ViewChild('ayushmanEnrolled') ayushmanEnrolled!: TemplateRef<any>;
+    // @ViewChild('hasMediclaim') hasMediclaim!: TemplateRef<any>;
+    // @ViewChild('ayushmanEnrolled') ayushmanEnrolled!: TemplateRef<any>;
+    @ViewChild('residenceType') residenceType!: TemplateRef<any>;
 
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -57,8 +58,9 @@ export class NewMembershipComponent {
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'hasMediclaim')!.template = this.hasMediclaim;
-        this.gridConfig.columnsList.find(col => col.key === 'ayushmanEnrolled')!.template = this.hasMediclaim;
+        // this.gridConfig.columnsList.find(col => col.key === 'hasMediclaim')!.template = this.hasMediclaim;
+        // this.gridConfig.columnsList.find(col => col.key === 'ayushmanEnrolled')!.template = this.hasMediclaim;
+        this.gridConfig.columnsList.find(col => col.key === 'residenceType')!.template = this.residenceType;
 
     }
 
@@ -115,24 +117,24 @@ export class NewMembershipComponent {
         { heading: "NATIVE PLACE", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AGE", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "MOBILE NO.", key: "mobileNo1", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "EMERGENCY MOBILE NO.", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "EMERGENCY MOBILE", key: "emrgencyMobile", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "BLOOD GRP", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "FAMILY DR", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "COSULTING DR", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "FAMILY DR", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "COSULTING DR", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "MEDICATION", key: "medications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "LAST BODY CHECKING DATE	", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "LAST BODY CHECKING DATE", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6 },
         { heading: "MEDICLIAM CO.NAME", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: " SUM INSURED ", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         { heading: "POLICY NO.", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "MEDICLAIM VALID TILL", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-        { heading: "AAYUSHMAN ENROLLMENT", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "MEDICLAIM VALID TILL", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 180 },
+        { heading: "AAYUSHMAN ENROLLMENT", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 180 },
 
 
         { heading: "ADDRESS	", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "PAN NO.", key: "pan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "AADHAR NO. ", key: "aadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-
+        { heading: "Residence Own", key: "residenceType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
         // { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "Education ", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         // { heading: "Occupation", key: "occupationName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -286,8 +288,6 @@ export class NewMembershipComponent {
         this.myFilterform.get('StatusSearch').setValue("0");
         this.myFilterform.get('PatientTypeSearch').setValue("3");
     }
-
-
 
     keyPressAlphanumeric(event) {
         const inp = String.fromCharCode(event.keyCode);

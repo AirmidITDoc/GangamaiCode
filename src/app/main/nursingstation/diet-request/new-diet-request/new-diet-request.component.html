@@ -23,23 +23,13 @@
         </div>
     </mat-toolbar>
 
-    <!-- <mat-drawer-container autosize fxFlex style="height: 100%;">
-
-        <div class="example-sidenav-content">
-            <form [formGroup]="_ClinicalcareService.MyForm" class="h-100-p"
-                style="height: 250px; width: 250px; border: 1px solid red;">
-            </form>
-        </div>
-
-        <mat-drawer #drawer class="example-sidenav sidebar-drawer" mode="side" opened> -->
-
     <div fxLayout="row" class="content-area">
         <div class="sidebar-content px-12 pt-12 h-100-p" style="width: 25%;">
             <form [formGroup]="_ClinicalcareService.MyForm" class="h-100-p">
                 <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
 
                     <div fxFlex fxLayout="row" class="gap-8">
-                        <airmid-dropdown label="Ward Name" formControlName="WardName"
+                        <airmid-dropdown label="Ward Name" formControlName="WardName" fxFlex
                             [formGroup]="_ClinicalcareService.MyForm" [mode]="autocompleteward"
                             (selectionChange)="getSelectedObjward($event)">
                         </airmid-dropdown>
@@ -83,9 +73,9 @@
                             </ng-container>
 
                             <ng-container matColumnDef="regno">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                     UHID No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                     {{contact.regNo}}
                                 </mat-cell>
                             </ng-container>
@@ -124,9 +114,7 @@
                             <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-550"
                                 [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                         </mat-table>
-                        <!-- <airmid-table [gridConfig]="gridConfig5" class="content mt-4" #grid5 [ShowFilter]="false"
-                                [ShowButtons]="false" (onSelectRow)="getpatientDet($event)">
-                            </airmid-table> -->
+
                     </mat-card>
                 </div>
             </form>
@@ -186,19 +174,18 @@
 
 
             <!-- Selected Patients -->
-            <div class="selected-patients">
+            <!-- <div class="selected-patients">
                 <div *ngFor="let contact of selection.selected" class="selected-patient">
-                    <!-- Chip Row -->
-                    <mat-chip-set aria-label="Selected patient">
-                        <mat-chip (removed)="removeChip(contact)">
-                            {{ contact.patientName }}
-                            <button matChipRemove>
-                                <mat-icon>cancel</mat-icon>
-                            </button>
+                
+                    <mat-chip-list *ngIf="selection.selected.length" aria-label="Selected patients">
+                        <mat-chip *ngFor="let item of selection.selected" [removable]="true"
+                            (removed)="removeChip(item)">
+                            {{ item.patientName }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
                         </mat-chip>
-                    </mat-chip-set>
+                    </mat-chip-list>
 
-                    <!-- Comment Textbox for this patient -->
+                  
                     <mat-form-field appearance="outline">
                         <mat-label>Comment for {{ contact.patientName }}</mat-label>
                         <input matInput type="text" [(ngModel)]="contact.comments" [ngModelOptions]="{standalone: true}"
@@ -206,7 +193,24 @@
                     </mat-form-field>
 
                 </div>
-            </div>
+            </div> -->
+
+          <div *ngFor="let item of selection.selected; let i = index" class="patient-chip-row">
+    <mat-chip-list>
+        <mat-chip [removable]="true" (removed)="removeChip(item)">
+            {{ item.patientName }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+
+    <textarea class="comment-box" matInput
+        [placeholder]="'Comment for ' + item.patientName"
+        name="comment_{{ i }}"
+        [(ngModel)]="item.comments"
+        [ngModelOptions]="{standalone: true}">
+    </textarea>
+</div>
+            <!-- // -->
             <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" style="width: 100%;">
                 <label style="font-size: 16px; font-weight: bold; white-space: nowrap;">Selected Patients:</label>
                 <mat-chip-set aria-label="Selected patients"
@@ -227,11 +231,8 @@
                     <button type="button" (click)="onSave()" class="btn btn-primary"> Save </button>
                 </div>
             </div>
-            
+
         </div>
     </div>
-
-    <!-- </mat-drawer>
-    </mat-drawer-container> -->
 
 </div>

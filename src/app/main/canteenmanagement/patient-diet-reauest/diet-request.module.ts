@@ -2,6 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -12,7 +13,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
@@ -21,9 +21,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -36,26 +34,30 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { DietRequestComponent } from './diet-request.component';
-import { NewDietRequestComponent } from './new-diet-request/new-diet-request.component';
+
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { PatientDietReauestComponent } from './patient-diet-reauest.component';
+import { DietDetailListComponent } from './diet-detail-list/diet-detail-list.component';
 
 
 const routes: Routes = [
     {
-        path: "**",
-        component: DietRequestComponent,
+        path: '**',
+        component: PatientDietReauestComponent
     },
 ];
 
-
 @NgModule({
-    declarations: [
-        DietRequestComponent,
-        NewDietRequestComponent
-    ],
+    declarations: [PatientDietReauestComponent, DietDetailListComponent, ],
     imports: [
+        CommonModule,
         RouterModule.forChild(routes),
         CommonModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatListModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -77,24 +79,25 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatChipsModule,
-        MatProgressSpinnerModule,
         ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSidenavModule,
-        MatExpansionModule,
-        MatGridListModule,
         MatSnackBarModule,
-        MatSlideToggleModule,
-        MatListModule,
-        SharedModule,
         MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
         NgxMatSelectSearchModule,
-        MatDatepickerModule,
-        //  NgMultiSelectDropDownModule.forRoot(),
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        MatChipsModule,
+        // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule,
         MatSliderModule,
-        FormsModule   
+        FormsModule,
+        MatSidenavModule,
+        MatCardModule,
+
+        MatButtonToggleModule
     ],
     providers: [
         DatePipe,

@@ -16,7 +16,7 @@
 
         </div>
     </div>
-    <ng-template #hasMediclaim let-element>
+    <!-- <ng-template #hasMediclaim let-element>
         <span [ngClass]="{
                 'status-not-requested': element.hasMediclaim == 0,
                 'status-received': element.hasMediclaim > 0
@@ -32,6 +32,15 @@
                 'status-received': element.ayushmanEnrolled > 0
               }">
             {{ element.ayushmanEnrolled == 0 ? 'No' : 'Yes' }}
+        </span>
+    </ng-template> -->
+
+    <ng-template #residenceType let-element>
+        <span [ngClass]="{
+                'status-not-requested': element.residenceType !== true,
+                'status-received': element.residenceType ==true
+              }">
+            {{ element.residenceType == true ? 'Yes' : 'No' }}
         </span>
     </ng-template>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">

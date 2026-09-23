@@ -215,7 +215,7 @@ export class CanteenSalesComponent implements OnInit {
   ngOnInit(): void {
 
     this.myFilterbillform = this._CanteenmanagementService.myFilterbrowseform();
-debugger
+    debugger
     this.CanteenForm = this.createCanteenform()
     this.billdetailArray.push(this.CanteenBillDetails());
     this.getItemTable1List();
@@ -229,7 +229,7 @@ debugger
 
 
   createCanteenform() {
-    
+
     return this._FormBuilder.group({
       billNo: 0,
       date: [(new Date()).toISOString()],
@@ -259,7 +259,7 @@ debugger
   }
 
   CanteenBillDetails(element: any = {}): FormGroup {
-    
+
     return this._FormBuilder.group({
       cdetId: [0],
       billNo: 0,
@@ -285,7 +285,7 @@ debugger
 
 
   get billdetailArray(): FormArray {
-    
+
     return this.CanteenForm.get('tCanteenBillDetails') as FormArray;
   }
 
@@ -305,14 +305,14 @@ debugger
       return;
     }
 
-    
+
     if (this.dsItemDetTable2.data.length == 0) {
       this.toastr.warning('Please select a Item Name .', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
       });
       return;
     }
-    
+
     if (this.vDiscAmt == 0)
       this.vTotalTotAmount = this.vTotalFinalAmount
     else
@@ -398,7 +398,7 @@ debugger
       this.CanteenForm.get('paidAmount')?.setValue(0)
 
     }
-    
+
     console.log(this.CanteenForm.value)
     this._CanteenmanagementService.canteenBillSave(this.CanteenForm.value).subscribe(response => {
       console.log(response)
@@ -523,7 +523,7 @@ debugger
 
     this.getLatestIemList(vdata)
   }
-  
+
   resetform() {
     this._CanteenmanagementService.userFormGroup.reset()
     this._CanteenmanagementService.userFormGroup.get('Type').setValue('2')
@@ -534,7 +534,7 @@ debugger
 
 
   viewgetBillThermalReportPdf(BillNo) {
-    
+
     const param = {
       "searchFields": [
         {
@@ -573,7 +573,7 @@ debugger
   @ViewChild(AirmidCardViewComponent) cardView: AirmidCardViewComponent;
 
   getLatestIemList(Param) {
-    
+
     this.gridConfigcard = {
       apiUrl: "CanteenRequest/CanteenItemList",
       columnsList: this.allcardcolumns,
@@ -736,7 +736,7 @@ debugger
   ReqLength = 0
   //BillDetailList ReqId
   getBillDetList(Param) {
-    
+
     let filters: any[] = [];
     this.chargeslist = []
     filters.push(
@@ -760,7 +760,7 @@ debugger
     // console.log(vdata);
     this._CanteenmanagementService.getBillDetailsList(data).subscribe(data => {
       // this.dsBillDetailList.data = data.data as BillDetailList[];
-      
+
       data.data.forEach(element => {
         this.chargeslist.push(
           {
@@ -820,7 +820,7 @@ debugger
 
 
   onChangeBill() {
-    
+
     this.fromDate = this.datePipe.transform(this.myFilterbillform.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterbillform.get('FirstName').value + "%"
@@ -830,7 +830,7 @@ debugger
   }
 
   getfilterdataBill() {
-    
+
     this.gridConfig1 = {
       apiUrl: "CanteenRequest/CanteenRequestHeaderList",
       columnsList: this.allbillcolumns,
@@ -905,7 +905,7 @@ debugger
 
   getfilterdata() {
 
-    
+
     let fromDate1 = this._CanteenmanagementService.userFormGroup.get("start").value || "";
     let toDate1 = this._CanteenmanagementService.userFormGroup.get("end").value || "";
     fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
@@ -931,7 +931,7 @@ debugger
   wardId = 0
   GetDetails1(data) {
     console.log(data)
-    
+
     this.IsWard = true
 
     this.ReqId = parseInt(data.reqId)
