@@ -109,7 +109,7 @@
                 <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                     <mat-icon>menu</mat-icon>
                 </button>
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> OPD EMR </span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> IPD EMR </span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -134,87 +134,6 @@
                 <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
                     <!-- patient info parte -->
                     <div class="modal-card-container">
-                        <!-- <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 15px">
-                            <div class="patient-info-sales my-8">
-                                <div class="sales-patient-info-title">
-                                    <span style="font-weight: 700;">
-                                        Patient Information
-                                    </span>
-                                </div>
-                                <hr>
-                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                    fxLayoutAlign="space-between center" class="patient-info">
-                                    <div class="patient-sub">
-                                        <div class="patient-info-row patient-info-1-111" fxLayout="row"
-                                            fxLayoutAlign="space-between">
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">UHID No
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{RegNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{PatientName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Doctor Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{Doctorname}}</span>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">OPD No</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vOPDNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Age | Gender
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}
-                                                        D | {{GenderName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Department</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{DepartmentName}}</span>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
-
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Type | Tariff
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{PatientType}} |
-                                                        {{Tarrifname}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Company Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"
-                                                        style="color: orange;">{{CompanyName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ref-Doctor Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{RefDocName}}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </mat-card> -->
-
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
                             <div class="patient-info-sales">
                                 <div class="patient-info-title border-bottom pb-1 mb-1">
@@ -608,81 +527,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- <hr> -->
-                                                <!--<form [formGroup]="MedicineItemForm">
-                                                    <div fxLayout="row" class="gap-8" fxLayoutAlign="end">
 
-                                                        <airmid-autocomplete label="Enter Drug Name"
-                                                            [formGroup]="MedicineItemForm" formControlName="ItemId"
-                                                            placeholderText="Enter Drug Name" fxFlex
-                                                            [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
-                                                            (selectionChange)="selectChangeItemName($event)"
-                                                            TextField="formattedText" ValueField="ItemId"
-                                                            (onClearSelection)="ItemFromReset()">
-                                                        </airmid-autocomplete>
-
-                                                        <airmid-dropdown label="Dose Name" formControlName="DoseId"
-                                                            *ngIf="showDoseDropdownRefresh"
-                                                            [formGroup]="MedicineItemForm" #doseDropdown
-                                                            [validations]="getValidationMessages().DoseId"
-                                                            [mode]="autocompleteModeDose" [(ngModel)]="vdoseName"
-                                                            (selectionChange)="selectChangeDoseName($event)">
-                                                        </airmid-dropdown>
-
-                                                        <mat-form-field appearance="outline" fxFlex="6%">
-                                                            <mat-label>Day</mat-label>
-                                                            <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day"
-                                                                (keydown.enter)="onEnterqty($event); $event.preventDefault()"
-                                                                formControlName="Day" matInput required #Day
-                                                                (keypress)="keyPressAlphanumeric($event)">
-                                                        </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex="20%">
-                                                            <mat-label>Instruction</mat-label>
-                                                            <input type="text" name="Instruction" [maxLength]="200"
-                                                                [(ngModel)]="vInstruction" formControlName="Instruction"
-                                                                matInput #Instruction
-                                                                (keydown.enter)="onEnterremark($event)">
-                                                        </mat-form-field>
-
-                                                        <div class="input-add-button">
-                                                            <div matTooltip="Select Drug to enable this button!!"
-                                                                [matTooltipPosition]="'above'">
-                                                                <button class="btn btn-primary btn-with-icon"
-                                                                    (click)="onAdd()" #addbutton>
-                                                                    <span class="btn-icon">
-                                                                        <mat-icon> add </mat-icon>
-                                                                    </span>
-                                                                    <span>Add</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>&nbsp; 
-
-                                                        <mat-divider [vertical]="true"></mat-divider>&nbsp;
-
-                                                        <airmid-dropdown label="Template List"
-                                                            *ngIf="showTemplateRefresh" formControlName="TemplateId"
-                                                            [formGroup]="MedicineItemForm"
-                                                            [validations]="getValidationMessages().TemplateId"
-                                                            [mode]="autocompleteModeTemplate" ValueField="presId"
-                                                            TextField="presTemplateName"
-                                                            ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=CasePaperTemplate"
-                                                            (selectionChange)="selectChangeTemplateName($event)">
-                                                        </airmid-dropdown>
-
-                                                        <div class="input-add-button">
-                                                            <div matTooltip="Select Drug to enable this button!!"
-                                                                [matTooltipPosition]="'above'">
-                                                                <button #addbutton class="btn btn-primary btn-with-icon"
-                                                                    (click)="onTemplDetAdd()">
-                                                                    <span class="btn-icon">
-                                                                        <mat-icon> add </mat-icon>
-                                                                    </span>
-                                                                </button>
-                                                            </div>
-                                                        </div> 
-                                                    </div>
-                                                </form>-->
                                             </div>
                                             <!-- Medicine Table Component -->
                                             <app-medicine-table-new #medicineTableRef [storeId]="vstoreId"
@@ -717,24 +562,6 @@
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
 
-                                                    <!-- <airmid-dropdown label="Service" formControlName="mAssignService"
-                                                        [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
-                                                        ValueField="serviceId" TextField="serviceName"
-                                                        [ApiUrl]="'BillingService/GetServicewithGroupWiseList?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&SrvcName=%'"
-                                                        [ReqFullObj]="true"
-                                                        (selectionChange)="selectChangeServiceName($event)">
-                                                    </airmid-dropdown> -->
-
-                                                    <!-- <airmid-dropdown label="Service" formControlName="mAssignService"  *ngIf="showServiceDropdown"
-                                                        [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
-                                                        ValueField="serviceId" TextField="serviceName"
-                                                        [ApiUrl]="serviceApiUrl" [ReqFullObj]="true"
-                                                        (selectionChange)="selectChangeServiceName($event)">
-                                                    </airmid-dropdown> -->
-
-                                                    <!-- 
-                                                        [ApiUrl]="'BillingService/GetServicewithGroupWiseList?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&SrvcName=%'"
-                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName=%" -->
 
                                                 </div>
 
@@ -805,12 +632,6 @@
                                                     [mode]="autocompletedepartment"
                                                     (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
 
-                                                <!-- <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
-                                                    fxFlex="35%" [formGroup]="MedicineItemForm"
-                                                    [validations]="getValidationMessages().DoctorID"
-                                                    [mode]="autocompleteModeDoctor"
-                                                    (selectionChange)="selectChangeDoctorName($event)">
-                                                </airmid-dropdown> -->
 
                                                 <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                                     [formGroup]="MedicineItemForm" fxFlex="35%"
@@ -864,8 +685,9 @@
                                                     <mat-datepicker #picker1></mat-datepicker>
                                                 </mat-form-field>
 
-                                                <airmid-dropdown label="Prescription Doctor Name" formControlName="prescDoctorId"
-                                                    fxFlex="35%" [formGroup]="MedicineItemForm"
+                                                <airmid-dropdown label="Prescription Doctor Name"
+                                                    formControlName="prescDoctorId" fxFlex="35%"
+                                                    [formGroup]="MedicineItemForm"
                                                     [validations]="getValidationMessages().prescDoctorId"
                                                     [mode]="autocompleteModeDoctor"
                                                     (selectionChange)="selectChangePrscDoctorName($event)">
@@ -1729,7 +1551,6 @@
                                                     <airmid-editor label="Certificate Details"
                                                         formControlName="certificateText"
                                                         [formGroup]="mycertificateForm"
-                                                        [mentionItems]="diagnosisMentionItems"
                                                         (valueChange)="onEditorValueChange($event)">
                                                     </airmid-editor>
                                                 </div>
@@ -1790,11 +1611,7 @@
                         <mat-radio-button value="NormalHead">Print Normal</mat-radio-button>
                     </mat-radio-group>
 
-                    <!-- <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
-                        (change)="onChangeLangaugeRadio($event)" fxLayout="row">
-                        <mat-radio-button value="false">Print In Marathi</mat-radio-button>
-                        <mat-radio-button value="true">Print In English</mat-radio-button>
-                    </mat-radio-group> -->
+
                 </form>
 
                 <div class="sales-footer-buttons gap-6" fxLayout="row">
@@ -1807,41 +1624,3 @@
     </div>
 
 </div>
-
-<!-- <h2>Speech Recognition (Native Web API)</h2>
-
-<label for="language">Choose a language:</label>
-<select id="language" [(ngModel)]="selectedLang">
-  <option value="en-US">English (US)</option>
-  <option value="hi-IN">Hindi</option>
-  <option value="mr-IN">Marathi</option>
-</select>
-
-<br /><br />
-<button (click)="startRecognition()" [disabled]="isListening">
-  <i class="fas fa-microphone"></i> Start
-</button>
-
-<button (click)="stopRecognition()" [disabled]="!isListening">
-  <i class="fas fa-microphone-slash"></i> Stop
-</button>
-
-<label for="speechInput">Speech to Input:</label>
-<input type="text" id="speechInput" [(ngModel)]="transcript" placeholder="Speak something..." /> -->
-
-
-<!-- Language selection -->
-<!-- <select [(ngModel)]="selectedLang">
-  <option value="en-US">English</option>
-  <option value="hi-IN">Hindi</option>
-  <option value="mr-IN">Marathi</option>
-</select> -->
-
-<!-- Input field for speech transcript -->
-<!-- <input type="text" [(ngModel)]="transcript" placeholder="Speak something..." /> -->
-
-<!-- Single toggle button with icon -->
-<!-- <button (click)="toggleRecognition()">
-  <i [class]="isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-  {{ isListening ? 'Stop' : 'Start' }}
-</button> -->

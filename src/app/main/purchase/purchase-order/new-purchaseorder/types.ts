@@ -13,6 +13,9 @@ export interface GRNItemResponseType {
     formattedText: string;
     umoName: string;
     taxPer: number;
+    stockUomid:any
+    hsncode:any
+    unitOfMeasureId:any
 }
 
 export interface PurchaseFormModel {
@@ -77,7 +80,7 @@ export interface PurchaseFormModel {
     GRNType: string;
     GSTType: GSTType;
     PaymentType: string;
-
+unitOfMeasureId:any
 
 
 }

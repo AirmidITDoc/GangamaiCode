@@ -38,6 +38,7 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatTimepickerModule } from "mat-timepicker";
 import { MrdDetailsService } from "../mrd-detail-list/mrd-details.service";
 import { IcdUpdateComponent } from './icd-update.component';
+import { NewICDEComponent } from './new-icde/new-icde.component';
 
 
 const routes: Routes = [
@@ -50,7 +51,8 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-       IcdUpdateComponent
+       IcdUpdateComponent,
+       NewICDEComponent
     ],
     imports: [
         RouterModule.forChild(routes),

@@ -49,7 +49,8 @@ import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
-// import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
+import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
+import { NewIPDCasepaperComponent } from './new-ipdcasepaper/new-ipdcasepaper.component';
 
 const routes: Routes = [
     {
@@ -67,7 +68,8 @@ const routes: Routes = [
         SubCompanyTPAInfoComponent, IPDSearcPatienthComponent, NewAdmissionComponent,
         CompanyInformationComponent,
         AdmissionCancelComponent,
-// InitialAccessmentComponent
+        InitialAccessmentComponent,
+        NewIPDCasepaperComponent
         // AdmissionViewComponent
     ],
     imports: [
@@ -115,7 +117,7 @@ const routes: Routes = [
         MatButtonToggleModule,
         MatTimepickerModule,
 
-         
+
     ],
     providers: [
         AdmissionService,

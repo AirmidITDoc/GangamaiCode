@@ -140,6 +140,7 @@ export class NewCasepaperComponent implements OnInit {
     HistoryList: any = [];
     addCheiflist: any[] = [];
     addDiagnolist: any = [];
+    diagnosisMentionItems: Array<{ id: string | number; text: string }> = [];
     addExaminlist: any = [];
     doseId = 0
     doseName = ""
@@ -1125,8 +1126,6 @@ export class NewCasepaperComponent implements OnInit {
                 const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
                 if (Diagnosis.length > 0) {
                     Diagnosis.forEach(element => {
-                        debugger
-                        console.log(element)
                         this.addDiagnolist.push(
                             {
                                 id: element.id,
@@ -1138,6 +1137,12 @@ export class NewCasepaperComponent implements OnInit {
                             }
                         )
                     })
+                    this.diagnosisMentionItems = this.addDiagnolist
+                        .filter(item => item.descriptionName)
+                        .map(item => ({
+                            id: item.id,
+                            text: item.descriptionName
+                        }));
                     this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
                 }
                 // Process Examination

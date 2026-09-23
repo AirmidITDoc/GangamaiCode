@@ -8,6 +8,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 import { ToastrService } from 'ngx-toastr';
 import { IcdUpdateService } from './icd-update.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { NewICDEComponent } from './new-icde/new-icde.component';
 
 @Component({
   selector: 'app-icd-update',
@@ -103,7 +104,19 @@ export class IcdUpdateComponent {
     });
   }
 
+  getICDE() {
+    const dialogRef = this._matDialog.open(NewICDEComponent,
+      {
+        maxWidth: "95vw",
+        width: '100%',
+        height: "80vh",
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
 
+    });
+
+  }
   getSelectedObjIP(obj: any): void {
     console.log("icd-update", obj)
     if ((obj?.regID ?? 0) > 0) {

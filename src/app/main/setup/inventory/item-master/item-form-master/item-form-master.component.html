@@ -1,4 +1,3 @@
-
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
   <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
     <div fxLayout="row" fxLayoutAlign="start center">
@@ -46,10 +45,15 @@
                   style="padding: 10px;">
 
                   <!-- 1st row -->
-                  <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsncode"
+                  <!-- <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsncode"
                     [formGroup]="itemForm" [validations]="getValidationMessages().hsNcode" [maxLength]="30" fxFlex="25%"
                     (input)="onHSNChange($event)">
-                  </airmid-textbox>
+                  </airmid-textbox> -->
+
+                  <airmid-dropdown label="HSN Code" formControlName="hsNcode" [formGroup]="itemForm"
+                    (selectionChange)="onChangeHsn($event)" fxFlex="25%" ValueField="hsncodeId" TextField="hsncodeName"
+                    ApiUrl="HSNCodeMaster/search-HSNCode"></airmid-dropdown>
+
 
                   <airmid-textbox label="Item Short Name" formControlName="itemShortName"
                     [value]="registerObj?.itemShortName" [formGroup]="itemForm"
@@ -155,9 +159,9 @@
                     [formGroup]="itemForm" fxFlex="40%">
                   </airmid-textbox>
 
-                     <airmid-textbox label="Local Language Name" formControlName="localLanguageName"
+                  <airmid-textbox label="Local Language Name" formControlName="localLanguageName"
                     [value]="registerObj?.localLanguageName" [formGroup]="itemForm"
-                    [validations]="getValidationMessages().localLanguageName"  fxFlex="20%">
+                    [validations]="getValidationMessages().localLanguageName" fxFlex="20%">
                   </airmid-textbox>
 
                   <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -255,9 +259,9 @@
 
                   <!-- Dropdown -->
                   <airmid-dropdown label="Item DrugType" formControlName="mAssignItemToDrugs" [formGroup]="itemForm"
-                    [IsMultiPle]="true" [value]="registerObj.mAssignItemToDrugs"
-                     #ddlDrug ValueField="itemDrugTypeId"
-                    TextField="drugTypeName" ApiUrl="ItemDrugTypeMaster/get-ItemDrugType" [ReqFullObj]="true" fxFlex="25">
+                    [IsMultiPle]="true" [value]="registerObj.mAssignItemToDrugs" #ddlDrug ValueField="itemDrugTypeId"
+                    TextField="drugTypeName" ApiUrl="ItemDrugTypeMaster/get-ItemDrugType" [ReqFullObj]="true"
+                    fxFlex="25">
                   </airmid-dropdown>
 
                   <!-- Chips -->

@@ -22,6 +22,7 @@ import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseOrderService } from '../purchase-order.service';
 import { PurchaseRequisitionlistComponent } from './purchase-requisitionlist/purchase-requisitionlist.component';
 import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from './types';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 // import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
 
 @Component({
@@ -493,11 +494,11 @@ export class NewPurchaseorderComponent {
             console.log(formValues)
 
             const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
-
+            debugger
             if (formValues.ItemName) {
                 const newItem = new ItemNameList({
                     ...formValues,
-                    ItemName: formValues.ItemName.itemName,
+                    ItemName: formValues.ItemName.itemName || this.ItemName,
                     TotalQty: totalQty,
                     ItemId: formValues.ItemName.itemId,
                     UOM: formValues.UOMId || '', //this.UmoId,// formValues.UOMId || 0,
@@ -804,15 +805,21 @@ export class NewPurchaseorderComponent {
         this.lastsupplierflag = true
         this.isExpanded = true;
         this.ItemID = item.itemId
-        this.UmoId = item.umoId
-        this.Umoname = item.umoName
+        this.UmoId = item.umoId || item.unitOfMeasureId,
+            this.Umoname = item.umoName || item.stockUomid
+
+        this.userFormGroup.get('ItemName')?.setValue({
+            itemId: item.itemId,
+            formattedText: item.itemName || item.formattedText,
+        });
+
 
         this.userFormGroup.patchValue({
             // UOMId: item.umoId, 
-            UOMId: item.umoName,
+            UOMId: item.umoName || item.stockUomid || item.unitOfMeasureId,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             Qty: '',// item.balanceQty,
-            HSNcode: item.hsNcode || '0'
+            HSNcode: item.hsNcode || item.hsncode || '0'
         });
 
         if (((item?.cgstPer ?? 0) || 0) > 0) {
@@ -1416,9 +1423,50 @@ export class NewPurchaseorderComponent {
         this.unitomeasure = row.unitomeasure
         this.effectivefrom = row.effectiveFrom
         this.effectiveto = row.effectiveTo
-        debugger
-        // this.userFormGroup.get('CGSTPer').setValue(this.GstId)
 
+        // this.userFormGroup.get('CGSTPer').setValue(this.GstId)
+        // this.onChangeHsn(this.HsncodeName)
+    }
+    showItemAutocomplete = true;
+    onChangeHsn($event) {
+
+        console.log($event)
+        this.HsncodeName = $event.hsncodeName
+
+
+        if (this.HsncodeName != '') {
+            this._PurchaseOrder.getbyHsncode(this.HsncodeName).subscribe((data: any) => {
+
+                console.log(data);
+                if (data && data.length > 0) {
+                    const item = data[0];
+
+                    this.ItemName = item.itemName;
+                    this.ItemId = item.itemId;
+
+
+                    this.userFormGroup.get('ItemName')?.setValue(item.itemId);
+                    this.userFormGroup.get('UOMId')?.setValue(item.uomId);
+
+                    this.userFormGroup.get('ConversionFactor')?.setValue(item.conversionFactor);
+                    this.userFormGroup.get('CGSTPer')?.setValue(item.cgst);
+                    this.userFormGroup.get('IGSTPer')?.setValue(item.igst);
+                    debugger
+                    console.log('StoreId:', this.vstoreId);
+                    console.log('ApiUrl:', this.ApiUrl);
+
+                    this.showItemAutocomplete = false;
+
+                    this.getSelectedItem(item)
+                    const itemNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                    if (itemNameElement) {
+                        itemNameElement.focus();
+                    }
+                } else {
+                    Swal.fire("HSNcode does not exist.")
+                }
+            });
+        }
     }
 }
 export class LastThreeItemList {

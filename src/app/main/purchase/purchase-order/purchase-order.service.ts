@@ -63,80 +63,6 @@ export class PurchaseOrderService {
     }
 
 
-    // getPurchaseOrderForm() {
-    //   return this._formBuilder.group({
-    //     purchaseId: [''],
-    //     purchaseNo: [''],
-    //     StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    //     SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    //     TotalAmount: [''],
-    //     DiscAmount: [''],
-    //     Disc: [''],
-
-    //     grandTotal: [''],
-    //     ItemName: ['', [Validators.required]],
-    //     ConversionFactor: [''],
-    //     Qty: [0, [Validators.required]],
-    //     UOM: [''],
-    //     Rate: ['', [Validators.required]],
-
-    //     HSNcode: '',
-    //     GST: [''],
-    //     GSTPer: [''],
-    //     GSTAmount: [''],
-    //     NetAmount: [''],
-    //     MRP: [''],
-    //     Specification: [''],
-    //     SupplierID: '',
-    //     Address: [''],
-    //     Mobile: '',
-    //     Contact: '',
-    //     GSTNo: '',
-    //     Email: '',
-    //     PurchaseDate: [new Date()],
-    //     DefRate: '',
-
-    //     CGSTPer: [''],
-    //     CGSTAmount: [''],
-    //     SGSTPer: [''],
-    //     SGSTAmount: [''],
-    //     IGSTPer: [''],
-    //     IGSTAmount: [''],
-    //     GSTType: [16],
-    //     UOMId: [''],
-
-    //     PurchaseId: [0],
-
-    //   });
-
-    // }
-
-    // getPurchaseOrderFinalForm() {
-    //   return this._formBuilder.group({
-    //     TransportCharges: [''],
-    //     HandlingCharges: [''],
-    //     Freight: [''],
-    //     OctriAmount: [''],
-    //     Worrenty: [''],
-    //     roundVal: [''],
-    //     NetAmount: [''],
-    //     Remark: ['', [Validators.required]],
-    //     PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    //     PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-
-    //   });
-    // }
-    // createPOEmailFrom() {
-    //   return this._formBuilder.group({
-    //     ToMailId: [''],
-    //     Subject: [''],
-    //     Body: [''],
-    //     CCName: [''],
-    //     bccName: ['']
-    //   })
-    // }
-
-
     public getLastThreeItemInfo(Param) {
         return this._httpClient1.PostData("Purchase/LastThreeItemList", Param);
     }
@@ -184,7 +110,9 @@ export class PurchaseOrderService {
         return this._httpClient.post("WhatsappEmail/EmailSave", emp);
     }
 
-
+  public getbyHsncode(element) {
+        return this._httpClient1.GetData("ItemMaster/ItemInformationByHSNcode?HSNcode=" + element)
+    }
     showToast(message: string, type: ToastType = ToastType.SUCCESS) {
         if (type === ToastType.SUCCESS) {
             this.toastr.success(message, `${type} !`, {

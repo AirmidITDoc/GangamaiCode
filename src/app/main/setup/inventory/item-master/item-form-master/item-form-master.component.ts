@@ -11,6 +11,7 @@ import { ItemMaster, ItemMasterComponent } from "../item-master.component";
 import { ItemMasterService } from "../item-master.service";
 import { NewItemWiseSupplierRateComponent } from "../item-wise-supplier-rate/new-item-wise-supplier-rate/new-item-wise-supplier-rate.component";
 import { NewGenericComponent } from "../../item-generic-master/new-generic/new-generic.component";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-item-form-master",
@@ -113,10 +114,11 @@ export class ItemFormMasterComponent implements OnInit {
 
 
 
-    onHSNChange(event: any) {
-        const upper = event.target.value.toUpperCase();
-        this.itemForm.get('hsNcode')?.setValue(upper, { emitEvent: false });
-    }
+    // onHSNChange(event: any) {
+    //     const upper = event.target.value.toUpperCase();
+    //     this.vHSNCode=event.value
+    //     this.itemForm.get('hsNcode')?.setValue(upper, { emitEvent: false });
+    // }
 
     onNewItemWiseSupprate(row: any = null) {
         const that = this;
@@ -239,11 +241,12 @@ export class ItemFormMasterComponent implements OnInit {
 
     onSubmit() {
         if (this.itemForm.valid) {
-            // const formData = this.itemForm.getRawValue() as ItemMaster;
-            //  console.log(formData)
             if (!this.itemForm.get('hsNcode').value) {
                 this.itemForm.get('hsNcode').setValue('0')
-            }
+            } else
+                this.itemForm.get('hsNcode').setValue(this.HsncodeName)
+
+
             console.log(this.itemForm.value)
             const formData = { ...this.itemForm.value };
 
@@ -409,4 +412,48 @@ export class ItemFormMasterComponent implements OnInit {
         };
     }
 
+    vhsncodeId = 0
+    HsncodeName = ''
+    gstrate = ''
+    UnitOfMeasureId = 0
+    GstId = 0
+
+
+    onChangeHsn($event) {
+
+        console.log($event)
+        this.HsncodeName = $event.hsncodeName
+        // this.vhsncodeId = $event.hsncodeId
+        if (this.HsncodeName != '') {
+            this._itemService.getbyHsncode(this.HsncodeName).subscribe((data: any) => {
+
+                console.log(data);
+                if (data && data.length > 0) {
+                    const item = data[0];
+                    debugger
+                    const totalGst = Number(item.cgst) + Number(item.sgst);
+
+                    const controlsToSet = {
+                        purchaseUomid: item.purchaseUomid,
+                        stockUomid: item.stockUomid,
+                        conversionFactor: item.conversionFactor,
+                        cgst: String(totalGst),
+                        igst: String(item.igst)
+                    };
+
+                    Object.entries(controlsToSet).forEach(([key, value]) => {
+                        const control = this.itemForm.get(key);
+                        if (control) {
+                            control.setValue(value);
+                        } else {
+                            console.warn(`Control "${key}" not found on itemForm`);
+                        }
+                    });
+
+                } else {
+                    Swal.fire("HSNcode does not exist.")
+                }
+            });
+        }
+    }
 }

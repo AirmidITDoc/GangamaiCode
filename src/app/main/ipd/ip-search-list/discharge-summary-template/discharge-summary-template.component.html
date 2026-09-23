@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container labpatientMain resize-form-fields">
   <div class="modal-header accent">
     <div class="modal-header-content">
       <div class="modal-header-title">
@@ -83,7 +83,7 @@
 
 
                 <airmid-editor label="Template Details" formControlName="templateDescriptionHtml"
-                  [(value)]="vTemplateDesc" [formGroup]="DischargesumForm">
+                  [mentionItems]="mentionItems" [(value)]="vTemplateDesc" [formGroup]="DischargesumForm">
                 </airmid-editor>
 
 

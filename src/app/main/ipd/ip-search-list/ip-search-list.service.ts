@@ -421,7 +421,7 @@ export class IPSearchListService {
         return this._httpClient.post("InPatient/InsertIPPrescription", employee);
     }
 
-     public getuserwisecashcounterlist(vUserID,Type) {
+    public getuserwisecashcounterlist(vUserID, Type) {
         return this._httpClient1.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
     }
     // Dashboard
@@ -716,7 +716,7 @@ export class IPSearchListService {
         return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
     }
 
-    
+
 
     public getchargesList(Id) {
         return this._httpClient1.PostData("IPBill/IPAddchargesList", Id);
@@ -1109,34 +1109,36 @@ export class IPSearchListService {
     public getAccessDetailList(param) {
         return this._httpClient1.PostData("LoginManager/loginAccessDetailsList", param)
     }
-     public commonList(Param) {
+    public commonList(Param) {
         return this._httpClient1.PostData("Common", Param);
     }
 
-      public SalesBillList(employee) {//m_Rtrv_PatientVisitedListSearch
+    public SalesBillList(employee) {//m_Rtrv_PatientVisitedListSearch
         return this._httpClient1.PostData("Sales/PharSalesSettlemet", employee)
     }
 
-     public getpharmacyAmt(m_data) {
+    public getpharmacyAmt(m_data) {
         return this._httpClient1.PostData("Common", m_data)
     }
-        public getIPFInalGroupWiseReportView(Param) {
-           return this._httpClient1.PostData("Report/ViewReport", Param);
+    public getIPFInalGroupWiseReportView(Param) {
+        return this._httpClient1.PostData("Report/ViewReport", Param);
     }
 
-    
-   getDiagnosisListbyId(Id) {
-    return this._httpClient1.GetData('DischargeSummary/IpAdmissionDiagnosisInformation/' + Id);
+
+    getDiagnosisListbyId(Id) {
+        return this._httpClient1.GetData('DischargeSummary/IpAdmissionDiagnosisInformation/' + Id);
     }
 
-     public getRtrvCheifComplaintList1(employee) {
+    public getRtrvCheifComplaintList1(employee) {
         return this._httpClient1.PostData("OPDPrescriptionMedical/GetDignosisList", employee);
     }
-  public getRtrvdiagnosisList(employee) {
+    public getRtrvdiagnosisList(employee) {
         return this._httpClient1.PostData("OPDPrescriptionMedical/GetDignosisList", employee);
     }
+    getDiagnosisList1(descriptionType: string) {
+        return this._httpClient1.GetData('OPDPrescriptionMedical/GetDiagnosisList?descriptionType=' + descriptionType);
+    }
 
-    
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

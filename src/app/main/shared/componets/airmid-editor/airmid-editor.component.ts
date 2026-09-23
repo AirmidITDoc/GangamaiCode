@@ -51,7 +51,6 @@ import {
     PlainTableOutput,
     RemoveFormat,
     ShowBlocks,
-    Strikethrough,
     Style,
     Subscript,
     Superscript,
@@ -64,13 +63,15 @@ import {
     TableToolbar,
     TextTransformation,
     Underline,
-    SourceEditing
+    SourceEditing,
+    Strikethrough
 } from 'ckeditor5';
 
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
  */
 const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
+
 @Component({
     selector: 'airmid-editor',
     templateUrl: './airmid-editor.component.html',
@@ -122,7 +123,7 @@ export class AirmidEditorComponent {
                 'numberedList',
                 'outdent',
                 'indent',
-                'insertImage', 
+                'insertImage',
             ],
             shouldNotGroupWhenFull: false
         },
@@ -150,8 +151,9 @@ export class AirmidEditorComponent {
             HorizontalLine,
             HtmlComment,
             HtmlEmbed,
-            Image,
-            
+            // NOTE: `Image` removed — it isn't a real ckeditor5 export and was
+            // never imported above, so referencing it would throw at runtime.
+            // ImageBlock + ImageInline already provide full image support.
             ImageBlock,
             ImageCaption,
             ImageInline,
@@ -253,7 +255,7 @@ export class AirmidEditorComponent {
         },
         image: {
             toolbar: [
-                  'insertImage',
+                'insertImage',
                 'toggleImageCaption',
                 'imageTextAlternative',
                 '|',
@@ -290,9 +292,33 @@ export class AirmidEditorComponent {
             feeds: [
                 {
                     marker: '@',
-                    feed: [
-                        /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
-                    ]
+                    feed: (queryText: string) => {
+                        return this.mentionItems
+                            .filter(item =>
+                                item.text
+                                    ?.toLowerCase()
+                                    .includes(queryText.toLowerCase())
+                            )
+                            .slice(0, 10)
+                            // IMPORTANT: CKEditor inserts the feed item's `id`
+                            // into the editor content — NOT `text`, and NOT
+                            // whatever itemRenderer draws in the popup list.
+                            // `id` MUST start with the marker character or the
+                            // value you pick from the dropdown won't show up
+                            // (or won't show up correctly) once inserted.
+                            .map(item => ({
+                                id: `@${item.text}`,   // what gets written into the doc
+                                text: item.text,       // used by itemRenderer below
+                                originalId: item.id    // keep your real db id if needed
+                            }));
+                    },
+                    itemRenderer: (item: any) => {
+                        const itemElement = document.createElement('span');
+                        itemElement.classList.add('custom-item');
+                        itemElement.id = `mention-list-item-id-${item.originalId}`;
+                        itemElement.textContent = item.text; // shows the name in the popup
+                        return itemElement;
+                    }
                 }
             ]
         },
@@ -345,20 +371,27 @@ export class AirmidEditorComponent {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         }
     };
+
     languages: LanguageOption[] = [];
     selectedLang = 'en-US';
+
     @Input() data: string = '';
+    @Input() mentionItems: any[] = [];
+
     private destroy: Subject<void> = new Subject();
     control = new FormControl();
+
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";
+
     private _disabled: boolean = false;
     private _placeholder: string = '';
     private _required: boolean = false;
     stateChanges: Subject<void> = new Subject();
     @Output() valueChange = new EventEmitter<string>();
+
     @Input()
     get disabled(): boolean {
         return this._disabled;
@@ -367,6 +400,7 @@ export class AirmidEditorComponent {
         this._disabled = coerceBooleanProperty(value);
         this.stateChanges.next();
     }
+
     @Input()
     get placeholder(): string {
         return this._placeholder ?? this.label;
@@ -375,6 +409,7 @@ export class AirmidEditorComponent {
         this._placeholder = value;
         this.stateChanges.next();
     }
+
     @Input()
     get required(): boolean {
         return this._required;
@@ -383,15 +418,17 @@ export class AirmidEditorComponent {
         this._required = coerceBooleanProperty(value);
         this.stateChanges.next();
     }
+
     get errorState(): boolean {
         return this.ngControl.control !== null ? !!this.ngControl.control : false;
     }
+
     get activeErrors(): string[] {
         try {
             if (!this.formGroup || this.formGroup[this.formControlName] || !this.validations || this.validations.length <= 0) {
                 return [];
             }
-            // Find active validation 
+            // Find active validation
             return this.validations
                 .filter((validation: any) => this.formGroup.controls[this.formControlName].hasError(validation.name.toLowerCase()))
                 .map((validation: any) => validation.Message);
@@ -399,6 +436,7 @@ export class AirmidEditorComponent {
             console.log("Html Editor Error => ", error);
         }
     }
+
     @Input()
     get value(): (string | []) {
         return this.control.value;
@@ -409,6 +447,7 @@ export class AirmidEditorComponent {
             this.stateChanges.next();
         }
     }
+
     onTouched(): void { }
 
     registerOnChange(onChange: (value: string | null) => void): void {
@@ -418,20 +457,6 @@ export class AirmidEditorComponent {
     registerOnTouched(onTouched: () => void): void {
         this.onTouched = onTouched;
     }
-    // writeValue(value: string | null): void {
-    //     this.control.setValue(value);
-    // }
-
-    // added by raksha 27/9/25
-    writeValue(value: string | null): void {
-        // update Angular side
-        this.control.setValue(value, { emitEvent: false });
-
-        // update CKEditor if already initialized
-        if (this.editorInstance && value !== this.editorInstance.getData()) {
-            this.editorInstance.setData(value || '');
-        }
-    }
 
     constructor(@Optional() @Self() public ngControl: NgControl | null,
         public speechService: SpeechRecognitionService) {
@@ -440,19 +465,41 @@ export class AirmidEditorComponent {
             ngControl.valueAccessor = this;
         }
     }
+
     onChange(event: any): void {
         const editorData = event.editor.getData();
         this.valueChange.emit(editorData);
     }
 
-
     editorInstance: any;
     onReady(editor: any): void {
         this.editorInstance = editor;
 
+        // Custom rendering for mentions inside the editor content itself.
+        // Without this, CKEditor falls back to plain inline text for the
+        // `mention` model attribute — this gives you a styleable chip
+        // (`<span class="mention" data-mention="@Name">@Name</span>`)
+        // so selected mentions are visibly distinct once inserted.
+        editor.conversion.for('editingDowncast').attributeToElement({
+            model: 'mention',
+            view: (modelAttributeValue: any, { writer }: any) => {
+                if (!modelAttributeValue) {
+                    return;
+                }
+                return writer.createAttributeElement('span', {
+                    class: 'mention',
+                    'data-mention': modelAttributeValue.id
+                }, {
+                    priority: 20,
+                    id: modelAttributeValue.uid
+                });
+            },
+            converterPriority: 'high'
+        });
+
         // Set initial data (from parent)
         if (this.value) {
-            editor.setData(this.value);
+            editor.setData(this.value as string);
         }
 
         // Listen for live typing without cursor reset
@@ -462,22 +509,12 @@ export class AirmidEditorComponent {
         });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['value'] && this.editorInstance) {
-            const newVal = changes['value'].currentValue;
-            if (newVal !== this.editorInstance.getData()) {
-                this.editorInstance.setData(newVal);
-            }
-        }
-    }
-
     //////////////// mic code /////////////////
     ngOnInit(): void {
         this.languages = this.speechService.supportedLanguages;
     }
 
     onLangChange() {
-        debugger
         if (this.speechService.isListening) {
             this.speechService.stopRecognition();
         }
@@ -501,4 +538,36 @@ export class AirmidEditorComponent {
         });
     }
 
+    private resetEditorFocusAfterSetData(): void {
+        // Let CKEditor finish its internal re-render from setData() first
+        setTimeout(() => {
+            if (!this.editorInstance) { return; }
+            this.editorInstance.editing.view.focus();
+            const model = this.editorInstance.model;
+            model.change((writer: any) => {
+                writer.setSelection(
+                    writer.createPositionAt(model.document.getRoot(), 'end')
+                );
+            });
+        });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['value'] && this.editorInstance) {
+            const newVal = changes['value'].currentValue;
+            if (newVal !== this.editorInstance.getData()) {
+                this.editorInstance.setData(newVal || '');
+                this.resetEditorFocusAfterSetData();
+            }
+        }
+    }
+
+    writeValue(value: string | null): void {
+        this.control.setValue(value, { emitEvent: false });
+
+        if (this.editorInstance && value !== this.editorInstance.getData()) {
+            this.editorInstance.setData(value || '');
+            this.resetEditorFocusAfterSetData();
+        }
+    }
 }

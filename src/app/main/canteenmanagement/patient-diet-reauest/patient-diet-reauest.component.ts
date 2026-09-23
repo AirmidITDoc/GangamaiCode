@@ -14,7 +14,6 @@ import { DietRequestService } from './diet-request.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DietDetailListComponent } from './diet-detail-list/diet-detail-list.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { ReqDetailPopupComponent } from './req-detail-popup/req-detail-popup.component';
 
 
 @Component({
@@ -88,26 +87,24 @@ export class PatientDietReauestComponent {
         }
     ]
 
-    // Columns for the DETAIL grid (renamed from `allcolumns` to avoid a duplicate
-    // class-field name clash with the header grid's `allcolumns` above)
-    detailColumns = [
+     detailColumns = [
         {
-            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 120,
+            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.isAccept
         },
         {
-            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 120,
+            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.isDelived
         },
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "OPIPID", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-        { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Restriction ", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        // { heading: "Restriction ", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Accepted DateTime", key: "isAcceptedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
         { heading: "Delived DateTime", key: "isDelivedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },

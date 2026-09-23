@@ -1,0 +1,301 @@
+labpatientMain resize-form-fields
+<div class="modal-wrapper grid-container ">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                    Initial Accessment Form
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" (click)="onClose(false)" matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div fxLayout="column" class="gap-12">
+            <div class="modal-card-container">
+                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                    <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
+                                        (data?.middleName ? ' ' + data.middleName : '') +
+                                        (data?.lastName ? ' ' + data.lastName : '')
+                                        || data?.patientName
+                                        " [doctorName]="data?.doctorName" [departmentName]="data?.departmentName"
+                                        [doa]="data?.admissionDate" [ipdNo]="data?.ipdno || data?.ipdno"
+                                        [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
+                                        [refDocName]="data?.refDocName"
+                                        [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
+                                        [patientType]="data?.patientType" [tariffName]="data?.tariffName"
+                                        [companyName]="data?.companyName"></app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-body-container">
+            <div fxLayout="row" class="pt-12">
+                <div>
+                    <form [formGroup]="AccessForm" fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
+                        <mat-form-field style="width: 22rem">
+                            <input matInput placeholder="Search" autocomplete="off" name="NameSearch"
+                                (keyup)="getIcdedata()" formControlName="NameSearch" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()"
+                                (keyup)="getIcdedata()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-body-container">
+                <div fxLayout="row" fxFlex="100%" fxLayoutGap="8px grid" class="overflow-auto">
+                    <div fxLayout="column" fxFlex="40">
+
+                        <div
+                            style="height: 460px; max-height: 470px; overflow-y: auto; overflow-x: auto; border: 1px solid #ddd;">
+                            <mat-table class="airmid-table" matSort [dataSource]="ICDEtList"
+                                [@animateStagger]="{ value: '50' }">
+
+                                <ng-container matColumnDef="diagnosisName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">
+                                        Diagnosis Name</mat-header-cell>
+
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-350 text-ellipsis"
+                                        [matTooltip]="element.diagnosisName" matTooltipPosition="above">
+                                        {{ element.diagnosisName }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="shortName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                                        Short Name
+                                    </mat-header-cell>
+
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100 text-ellipsis"
+                                        [matTooltip]="element.shortName" matTooltipPosition="above">
+                                        {{ element.shortName }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="icdversion">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        class="w-70">Icd Version</mat-header-cell>
+
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-70 text-ellipsis"
+                                        [matTooltip]="element.icdversion" matTooltipPosition="above">
+                                        {{ element.icdversion }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="icdcode">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        class="w-100">ICDE Code</mat-header-cell>
+
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100 text-ellipsis"
+                                        [matTooltip]="element.icdcode" matTooltipPosition="above">
+                                        {{ element.icdcode }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Add" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="w-50">Add</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm style="padding-left: 2rem" class="w-50">
+                                        <mat-icon (click)="onAdd(element)" style="cursor: pointer">add</mat-icon>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6"></mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">Select
+                                        Parameters...</mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" class="accent min-width-900 airmid-row"
+                                    *matHeaderRowDef="displayedColumns1;"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+                                    class="element min-width-900 airmid-row"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }" cdkDrag></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"></mat-footer-row>
+                            </mat-table>
+
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxFlex="60">
+                        <div style="height: 460px; max-height:470px; overflow-y: auto; border: 1px solid #ddd;">
+                            <mat-table class="airmid-table" matSort [dataSource]="DSdiagnosis"
+                                [@animateStagger]="{ value: '50' }">
+
+                                <!-- <ng-container matColumnDef="shortName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                        Main CName
+                                    </mat-header-cell>
+
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200 text-ellipsis"
+                                        [matTooltip]="element.shortName" matTooltipPosition="above">
+                                        {{ element.shortName }}
+                                    </mat-cell>
+                                </ng-container> -->
+
+
+                                <ng-container matColumnDef="icdcode">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">ICDE
+                                        Code</mat-header-cell>
+
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100 text-ellipsis"
+                                        [matTooltip]="element.icdcode" matTooltipPosition="above">
+                                        {{ element.icdcode }}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="diagnosisName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-450">
+                                        Description</mat-header-cell>
+
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-450 text-ellipsis"
+                                        [matTooltip]="element.diagnosisName" matTooltipPosition="above">
+                                        {{ element.diagnosisName }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6"></mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">Select
+                                        ICDE...</mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" class="accent min-width-2500 airmid-row"
+                                    *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns2" class="element"
+                                    class="element min-width-2500 airmid-row"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }" cdkDrag></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{ hide: DSdiagnosis != null }"></mat-footer-row>
+                            </mat-table>
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="start stretch">
+
+                            <form [formGroup]="AccessForm" fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
+                                <div fxLayout="column" fxFlex="50">
+
+                                    <div fxLayout="row" fxLayoutGap="12px">
+                                        <div fxFlex="50">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Causeof Death</mat-label>
+                                                <textarea formControlName="causeofdeath" placeholder="causeofdeath"
+                                                    matInput [(ngModel)]="vcauseofdeath" cols="100" rows="2"></textarea>
+
+                                                <button mat-icon-button matSuffix (click)="onMicToggle1()"
+                                                    [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                    type="button">
+                                                    <i
+                                                        [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Provisional Diagnosis</mat-label>
+                                                <textarea formControlName="pdiagnosis" placeholder="pdiagnosis" matInput
+                                                    [(ngModel)]="vpdiagnosis" cols="100" rows="2"></textarea>
+
+
+                                                <button mat-icon-button matSuffix (click)="onMicToggle2()"
+                                                    [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                    type="button">
+                                                    <i
+                                                        [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutGap="12px">
+                                        <div fxFlex="50">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Icde Code</mat-label>
+                                                <textarea formControlName="Icdecode" placeholder="Icdecode" matInput
+                                                    [(ngModel)]="vIcdecode" cols="100" rows="2"></textarea>
+
+
+                                                <button mat-icon-button matSuffix (click)="onMicToggle3()"
+                                                    [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                    type="button">
+                                                    <i
+                                                        [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Final Diagnosis</mat-label>
+                                                <textarea formControlName="fdiagnosis" placeholder="fdiagnosis" matInput
+                                                    [(ngModel)]="vfdiagnosis" cols="100" rows="2"></textarea>
+
+
+                                                <button mat-icon-button matSuffix (click)="onMicToggle4()"
+                                                    [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                    type="button">
+                                                    <i
+                                                        [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-container">
+
+                <div class="modal-footer-buttons" style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="btn btn-danger-outline" (click)="onClose(false)">
+                        Close
+                    </button>
+
+                    <button type="button" class="btn btn-primary" (click)="onSubmit()">
+                        Save
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

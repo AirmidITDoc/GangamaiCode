@@ -229,9 +229,7 @@ export class ItemMasterService {
         return this._httpClient.GetData("ItemType/" + Id);
     }
 
-    // public ItemMasterCancle(Param: any) {
-
-    //   return this._httpClient.PostData("ItemMaster/ItemCanceled", Param);
-    // }
-
+   public getbyHsncode(element) {
+        return this._httpClient.GetData("ItemMaster/ItemInformationByHSNcode?HSNcode=" + element)
+    }
 }

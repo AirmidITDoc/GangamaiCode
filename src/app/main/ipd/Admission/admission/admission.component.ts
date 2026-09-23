@@ -37,6 +37,8 @@ import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
+import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
+import { NewIPDCasepaperComponent } from './new-ipdcasepaper/new-ipdcasepaper.component';
 // import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
 
 @Component({
@@ -675,10 +677,10 @@ export class AdmissionComponent implements OnInit {
     }
 
     getAdmittedPatientCasepaperTempview(element) {
-        if((element?.parentOpipid || 0) > 0){
-        this.commonService.Onprint("AdmissionId", element.admissionId, "IpBabyCasepaperReport");
-        }else{
-        this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
+        if ((element?.parentOpipid || 0) > 0) {
+            this.commonService.Onprint("AdmissionId", element.admissionId, "IpBabyCasepaperReport");
+        } else {
+            this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
         }
     }
 
@@ -912,29 +914,28 @@ export class AdmissionComponent implements OnInit {
 
     }
 
-    //   getinitialAccessment(row) {
-    //     const dialogRef = this._matDialog.open(InitialAccessmentComponent,
-    //         {
-    //             maxHeight: "95vh",
-    //             maxWidth: '95wh',
-    //             data: row
-    //         });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
+    getinitialAccessment(row) {
+        const dialogRef = this._matDialog.open(NewIPDCasepaperComponent,
+            {
+                maxHeight: "95vh",
+                maxWidth: '110wh',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
 
-    //         this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-    //         this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+            this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
-    //         this.onChangeFirst()
+            this.onChangeFirst()
 
-    //     });
+        });
 
-    // }
+    }
     //
     dataSource = new MatTableDataSource<AdmissionPersonlModel>();
     GetAdmissiondetail() {
-        // debugger
-        // Format date values
+      
         const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
         const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
 
@@ -1024,7 +1025,7 @@ export class AdmissionComponent implements OnInit {
 
         // API call to admission service
         this._AdmissionService.getadmissionlist(data).subscribe((response) => {
-            // debugger
+           
             this.dataSource.data = response.data;
 
             if (this.dataSource.data.length > 0) {
@@ -1944,7 +1945,7 @@ export class RegInsert {
             this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
             this.emgId = RegInsert.emgId || 0
             this.traiffId = RegInsert.traiffId || 0;
-            this.pinNo = RegInsert.pinNo || 0 ;
+            this.pinNo = RegInsert.pinNo || 0;
 
         }
     }
