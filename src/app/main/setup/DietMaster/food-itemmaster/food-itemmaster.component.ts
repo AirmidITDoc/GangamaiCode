@@ -39,14 +39,14 @@ export class FoodItemmasterComponent {
   }
 
   allColumns = [
-    { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Food Code", key: "foodCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Food Category", key: "foodCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Local Name", key: "localName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Food Category", key: "foodCategoryId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Unit", key: "unit", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "Vegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Vegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
+      heading: "IsVegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
       template: this.actionsTemplate
     },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },

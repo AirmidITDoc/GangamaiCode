@@ -30,10 +30,10 @@ export class DietcategoryMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA',width:100 },
-    { heading: "Category Code", key: "categoryCode", sort: true, align: 'left', emptySign: 'NA', width:80 },
-    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA' , width:500},
-    { heading: "Active", key: "isActive", type: gridColumnTypes.status, align: "center", width:80 },
+    { heading: "Category Code", key: "categoryCode", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 500 },
+    { heading: "Active", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -45,7 +45,6 @@ export class DietcategoryMasterComponent {
         }, {
           action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietCategoryMaster, permissionType.Delete),
           callback: (data: any) => {
-            console.log(data)
             if (data?.isActive === true) {
               this._dietCategoryMasterService.deactivateTheStatus(data.dietCategoryId).subscribe((response: any) => {
                 this.grid.bindGridData();

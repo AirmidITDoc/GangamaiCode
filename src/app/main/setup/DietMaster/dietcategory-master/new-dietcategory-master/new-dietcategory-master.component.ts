@@ -27,7 +27,6 @@ export class NewDietcategoryMasterComponent implements OnInit {
     this.myForm = this._dietCategoryMasterService.createDietCategoryForm();
     this.myForm.markAllAsTouched();
 
-    console.log(this.data)
     if ((this.data?.dietCategoryId ?? 0) > 0) {
       this.dietcategoryid = this.data.dietCategoryId
       this.IsActive = this.data.isActive
@@ -38,7 +37,6 @@ export class NewDietcategoryMasterComponent implements OnInit {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log(this.myForm.value)
       this._dietCategoryMasterService.dietCategorySave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -68,9 +66,9 @@ export class NewDietcategoryMasterComponent implements OnInit {
         { name: "maxlength", Message: "Category Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      CategoryCode: [
-        { name: "required", Message: "Category Code is required" }
-      ]
+      // CategoryCode: [
+      //   { name: "required", Message: "Category Code is required" }
+      // ]
     };
   }
 

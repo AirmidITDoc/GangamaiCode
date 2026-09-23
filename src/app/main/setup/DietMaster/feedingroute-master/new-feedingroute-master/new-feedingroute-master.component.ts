@@ -30,7 +30,6 @@ export class NewFeedingrouteMasterComponent implements OnInit {
     this.myForm = this._feedingRouteMasterService.createFeedingRouteForm();
     this.myForm.markAllAsTouched();
 
-    console.log("ngOnInit", this.data)
     if ((this.data?.feedingRouteId ?? 0) > 0) {
       this.FeedingRouteId = this.data.feedingRouteId
       this.isActive = this.data.active
@@ -41,7 +40,6 @@ export class NewFeedingrouteMasterComponent implements OnInit {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log("Submit Form Values", this.myForm.value)
       this._feedingRouteMasterService.FeedingRouteSave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });

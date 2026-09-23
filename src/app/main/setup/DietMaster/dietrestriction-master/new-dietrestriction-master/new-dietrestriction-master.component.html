@@ -19,17 +19,17 @@
             <form [formGroup]="myForm">
                 <input type="hidden" name="RestrictionId" formControlName="restrictionId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Restriction Name" formControlName="restrictionName" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().RestrictionName">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Restriction Code" formControlName="restrictionCode" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().RestrictionCode">
                         </airmid-textbox>
-                    </div>
-                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    </div> -->
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <!-- <airmid-dropdown label="Restriction Type" formControlName="restrictionTypeId"
                             [formGroup]="myForm" [validations]="getValidationMessages().RestrictionTypeId"
                             [mode]="autocompleteModeDietRestriction">

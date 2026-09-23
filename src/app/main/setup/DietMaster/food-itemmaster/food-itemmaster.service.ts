@@ -21,10 +21,10 @@ export class FoodItemmasterService {
   createFoodItemForm(): FormGroup {
     return this._formBuilder.group({
       foodItemId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      foodName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      foodCode: ["", [Validators.required]],
+      foodName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      // foodCode: ["", [Validators.required]],
       foodCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      localName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      localName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       unit: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator]],
       isVegetarian: [false],
     });
@@ -43,9 +43,8 @@ export class FoodItemmasterService {
 
   public foodItemSave(Param: any) {
     if (Param.foodItemId) {
-      console.log("Update Form Value (Param)", Param)
-      return this._httpClient.PutData("FoodItemMaster/" + Param.foodItemId, Param);
-    } else return this._httpClient.PostData("FoodItemMaster", Param);
+      return this._httpClient.PutData("FoodItemMaster/Edit/" + Param.foodItemId, Param);
+    } else return this._httpClient.PostData("FoodItemMaster/Insert", Param);
   }
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("FoodItemMaster?Id=" + m_data.toString());

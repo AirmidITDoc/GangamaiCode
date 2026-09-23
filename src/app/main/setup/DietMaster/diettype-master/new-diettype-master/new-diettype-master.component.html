@@ -25,11 +25,11 @@
                             [maxLength]="50" [validations]="getValidationMessages().DietName">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Diet Code" formControlName="dietCode" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().DietCode">
                         </airmid-textbox>
-                    </div>
+                    </div> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Short Name" formControlName="shortName" [formGroup]="myForm"
                             [maxLength]="50">
@@ -55,20 +55,20 @@
                             [maxLength]="50" [validations]="getValidationMessages().DefalutFluid">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Display Order" formControlName="displayOrder" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().DisplayOrder">
                         </airmid-textbox>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <textarea rows="1" formControlName="remarks" placeholder="Remarks" matInput></textarea>
-                        </mat-form-field>
-                    </div>
+                    </div> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" fxFlex>
                             <textarea rows="1" formControlName="description" placeholder="Description"
                                 matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                         <mat-form-field appearance="outline" fxFlex>
+                            <textarea rows="1" formControlName="remarks" placeholder="Remarks" matInput></textarea>
                         </mat-form-field>
                     </div>
                 </div>

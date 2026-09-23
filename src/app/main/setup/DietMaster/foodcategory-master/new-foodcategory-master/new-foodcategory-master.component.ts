@@ -26,7 +26,6 @@ export class NewFoodcategoryMasterComponent implements OnInit{
     this.myForm = this._foodCategoryMasterService.createFoodCategoryForm();
     this.myForm.markAllAsTouched();
 
-    console.log(this.data)
     if ((this.data?.foodCategoryId ?? 0) > 0) {
       this.FoodCategoryId = this.data.foodCategoryId
       this.myForm.patchValue(this.data);
@@ -36,7 +35,6 @@ export class NewFoodcategoryMasterComponent implements OnInit{
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log(this.myForm.value)
       this._foodCategoryMasterService.foodCategorySave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -66,9 +64,9 @@ export class NewFoodcategoryMasterComponent implements OnInit{
         { name: "maxlength", Message: "Food Category Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      FoodCategoryCode: [
-        { name: "required", Message: "Food Category Code is required" }
-      ]
+      // FoodCategoryCode: [
+      //   { name: "required", Message: "Food Category Code is required" }
+      // ]
     };
   }
 

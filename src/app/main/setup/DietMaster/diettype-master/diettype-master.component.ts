@@ -30,16 +30,16 @@ export class DiettypeMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Diet Code", key: "dietCode", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     { heading: "Diet Category", key: "dietCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Display Order", key: "displayOrder", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Default Calories", key: "defaultCalories", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Default Proteins", key: "defaultProtein", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Default Fluids", key: "defaultFluid", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Display Order", key: "displayOrder", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Remarks", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Remarks", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "isActive", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

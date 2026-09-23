@@ -30,8 +30,8 @@ export class FoodpreferenceMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Food Preference Name", key: "foodPreferenceName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Food Preference Code", key: "foodPreferenceCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Food Preference Name", key: "foodPreferenceName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

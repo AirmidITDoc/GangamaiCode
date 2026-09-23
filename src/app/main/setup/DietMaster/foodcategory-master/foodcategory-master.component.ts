@@ -31,8 +31,8 @@ export class FoodcategoryMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Food Category Name", key: "foodCategoryName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Food Category Code", key: "foodCategoryCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Food Category Name", key: "foodCategoryName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "isActive", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -75,9 +75,9 @@ export class FoodcategoryMasterComponent {
     const that = this;
     const dialogRef = this._matDialog.open(NewFoodcategoryMasterComponent,
       {
-        maxWidth: "50vw",
+        maxWidth: "30vw",
         maxHeight: '50%',
-        width: '70%',
+        width: '50%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {

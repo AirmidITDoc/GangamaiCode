@@ -24,21 +24,17 @@
                             [maxLength]="50" [validations]="getValidationMessages().AllergyName">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Allergy Code" formControlName="allergyCode" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().AllergyCode">
                         </airmid-textbox>
-                    </div>
+                    </div> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Category" formControlName="categoryId" [formGroup]="myForm"
                             [validations]="getValidationMessages().CategoryId" [mode]="autocompleteModeAllergy">
-                            <!-- [mode]="autocompleteModeFoodItem" -->
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <!-- <airmid-dropdown label="Severity" formControlName="severityId" [formGroup]="myForm"
-                            [validations]="getValidationMessages().SeverityId"  [readonly]="true">
-                        </airmid-dropdown> -->
                         <airmid-textbox label="Severity" formControlName="severityId" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().SeverityId" [readonly]="true">
                         </airmid-textbox>
@@ -49,9 +45,10 @@
                         </airmid-textbox>
                     </div>
                      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-checkbox label="IsKitchenAlert" formControlName="isKitchenAlert" [formGroup]="myForm">
+                        <!-- <mat-checkbox label="IsKitchenAlert" formControlName="isKitchenAlert" [formGroup]="myForm">
                             IsKitchenAlert
-                        </mat-checkbox>
+                        </mat-checkbox> -->
+                        <app-airmid-slider label="IsKitchenAlert" formControlName="isKitchenAlert" [formGroup]="myForm" [(ngModel)]="isKitchenAlert"></app-airmid-slider> 
                     </div>
                 </div>
             </form>

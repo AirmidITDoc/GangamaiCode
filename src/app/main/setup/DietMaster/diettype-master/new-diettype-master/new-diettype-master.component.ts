@@ -29,7 +29,6 @@ export class NewDiettypeMasterComponent {
     this.myForm = this._diettypeMasterService.createDietTypeForm();
     this.myForm.markAllAsTouched();
 
-    console.log(this.data)
     if ((this.data?.dietTypeId ?? 0) > 0) {
       this.DietTypeId = this.data.dietTypeId
       this.isActive = this.data.isActive
@@ -39,7 +38,6 @@ export class NewDiettypeMasterComponent {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log(this.myForm.value)
       this._diettypeMasterService.dietTypeSave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -70,15 +68,15 @@ export class NewDiettypeMasterComponent {
         { name: "maxlength", Message: "Diet Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      DietCode: [
-        { name: "required", Message: "Diet Code is required" }
-      ],
+      // DietCode: [
+      //   { name: "required", Message: "Diet Code is required" }
+      // ],
       DietCategoryId: [
         { name: "required", Message: "Diet Category is required" }
       ],
-      DisplayOrder: [
-        { name: "required", Message: "Display Order is required" }
-      ],
+      // DisplayOrder: [
+      //   { name: "required", Message: "Display Order is required" }
+      // ],
       DefaultCalories: [
         { name: "required", Message: "Defalut Calories is required" }
       ],

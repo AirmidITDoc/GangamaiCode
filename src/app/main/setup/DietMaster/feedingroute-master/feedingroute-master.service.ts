@@ -22,8 +22,8 @@ export class FeedingrouteMasterService {
    createFeedingRouteForm(): FormGroup {
      return this._formBuilder.group({
        feedingRouteId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-       feedingRouteName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-       feedingRouteCode: ["", [Validators.required]],
+       feedingRouteName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+       feedingRouteCode: [""],
        dietTypesId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
        description: [""],
      });
@@ -42,9 +42,8 @@ export class FeedingrouteMasterService {
  
    public FeedingRouteSave(Param: any) {
      if (Param.feedingRouteId) {
-       console.log("Update Form Value (Param)", Param)
-       return this._httpClient.PutData("FeedingRoute/" + Param.feedingRouteId, Param);
-     } else return this._httpClient.PostData("FeedingRoute", Param);
+       return this._httpClient.PutData("FeedingRoute/Edit/" + Param.feedingRouteId, Param);
+     } else return this._httpClient.PostData("FeedingRoute/Insert", Param);
    }
    public deactivateTheStatus(m_data) {
      return this._httpClient.DeleteData("FeedingRoute?Id=" + m_data.toString());

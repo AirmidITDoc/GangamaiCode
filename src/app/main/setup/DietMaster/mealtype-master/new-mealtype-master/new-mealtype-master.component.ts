@@ -24,13 +24,13 @@ export class NewMealtypeMasterComponent implements OnInit {
     this.myForm = this._mealTypeMasterService.createMealTypeForm();
     this.myForm.markAllAsTouched();
     // const timeValue = this.myForm.get('dispatchTime')?.value;
-    console.log(this.data)
+  
     if ((this.data?.mealId ?? 0) > 0) {
       this.MealId = this.data.mealId
       //  this.isActive = this.data.active,
       this.myForm.patchValue({
         mealId: this.data.mealId,
-        mealTypeCode: this.data.mealTypeCode,
+        // mealTypeCode: this.data.mealTypeCode,
         mealName: this.data.mealName,
         // mealSequence: this.data.mealSequence,
 
@@ -47,7 +47,6 @@ export class NewMealtypeMasterComponent implements OnInit {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log(this.myForm.value)
       this._mealTypeMasterService.mealTypeSave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -77,9 +76,9 @@ export class NewMealtypeMasterComponent implements OnInit {
         { name: "maxlength", Message: "MealName should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      MealTypeCode: [
-        { name: "required", Message: "Meal Type Code is required" }
-      ],
+      // MealTypeCode: [
+      //   { name: "required", Message: "Meal Type Code is required" }
+      // ],
       DispatchTime: [
         { name: "required", Message: "dispatchTime is required" }
       ],

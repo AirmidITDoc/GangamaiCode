@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewFooditemMasterComponent implements OnInit {
 
   myForm: FormGroup;
-  // isActive: boolean = true;
+  isVegetarian: boolean = true;
   FoodItemId = 0;
   autocompleteModeFoodCategory: string = 'MFoodCategoryMaster'
 
@@ -30,10 +30,9 @@ export class NewFooditemMasterComponent implements OnInit {
     this.myForm = this._fooditemMasterService.createFoodItemForm();
     this.myForm.markAllAsTouched();
 
-    console.log("ngOnInit",this.data)
     if ((this.data?.foodItemId ?? 0) > 0) {
       this.FoodItemId = this.data.foodItemId
-      // this.isActive = this.data.active
+      this.isVegetarian = this.data.isVegetarian
       this.myForm.patchValue(this.data);
     }
   }
@@ -41,7 +40,6 @@ export class NewFooditemMasterComponent implements OnInit {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log("Submit Form Values",this.myForm.value)
       this._fooditemMasterService.foodItemSave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -71,9 +69,9 @@ export class NewFooditemMasterComponent implements OnInit {
         { name: "maxlength", Message: "Food Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      FoodCode: [
-        { name: "required", Message: "Food Code is required" }
-      ],
+      // FoodCode: [
+      //   { name: "required", Message: "Food Code is required" }
+      // ],
       FoodCategory: [
         { name: "required", Message: "Food Category is required" }
       ],

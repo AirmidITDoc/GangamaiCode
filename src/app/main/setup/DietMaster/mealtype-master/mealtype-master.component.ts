@@ -30,13 +30,13 @@ export class MealtypeMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Meal Type Code", key: "mealTypeCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Meal Sequence", key: "mealSequence", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Default Time", key: "defaultTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
     { heading: "Order Cutoff Time", key: "orderCutoffTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
     { heading: "Preparation StartTime", key: "preparationStartTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
     { heading: "Dispatch Time", key: "dispatchTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
-    { heading: "Meal Sequence", key: "mealSequence", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "isActive", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
