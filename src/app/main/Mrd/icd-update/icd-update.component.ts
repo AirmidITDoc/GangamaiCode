@@ -105,16 +105,16 @@ export class IcdUpdateComponent {
   }
 
   getICDE() {
-    const dialogRef = this._matDialog.open(NewICDEComponent,
-      {
-        maxWidth: "95vw",
-        width: '100%',
-        height: "80vh",
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+    // const dialogRef = this._matDialog.open(NewICDEComponent,
+    //   {
+    //     maxWidth: "95vw",
+    //     width: '100%',
+    //     height: "80vh",
+    //   });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed - Insert Action', result);
 
-    });
+    // });
 
   }
   getSelectedObjIP(obj: any): void {

@@ -45,14 +45,14 @@
                   style="padding: 10px;">
 
                   <!-- 1st row -->
-                  <!-- <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsncode"
+                  <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsncode"
                     [formGroup]="itemForm" [validations]="getValidationMessages().hsNcode" [maxLength]="30" fxFlex="25%"
                     (input)="onHSNChange($event)">
-                  </airmid-textbox> -->
+                  </airmid-textbox>
 
-                  <airmid-dropdown label="HSN Code" formControlName="hsNcode" [formGroup]="itemForm"
+                  <!-- <airmid-dropdown label="HSN Code" formControlName="hsNcode" [formGroup]="itemForm"
                     (selectionChange)="onChangeHsn($event)" fxFlex="25%" ValueField="hsncodeId" TextField="hsncodeName"
-                    ApiUrl="HSNCodeMaster/search-HSNCode"></airmid-dropdown>
+                    ApiUrl="HSNCodeMaster/search-HSNCode"></airmid-dropdown> -->
 
 
                   <airmid-textbox label="Item Short Name" formControlName="itemShortName"
@@ -259,9 +259,13 @@
 
                   <!-- Dropdown -->
                   <airmid-dropdown label="Item DrugType" formControlName="mAssignItemToDrugs" [formGroup]="itemForm"
-                    [IsMultiPle]="true" [value]="registerObj.mAssignItemToDrugs" #ddlDrug ValueField="itemDrugTypeId"
+                     [IsMultiPle]="true" [value]="registerObj.mAssignItemToDrugs"
+                     #ddlDrug ValueField="itemDrugTypeId"
+                    TextField="drugTypeName" ApiUrl="ItemDrugTypeMaster/get-ItemDrugType" [ReqFullObj]="true" fxFlex="25">
+                    
+                    <!-- [IsMultiPle]="true" [value]="registerObj.mAssignItemToDrugs" #ddlDrug ValueField="itemDrugTypeId"
                     TextField="drugTypeName" ApiUrl="ItemDrugTypeMaster/get-ItemDrugType" [ReqFullObj]="true"
-                    fxFlex="25">
+                    fxFlex="25"> -->
                   </airmid-dropdown>
 
                   <!-- Chips -->

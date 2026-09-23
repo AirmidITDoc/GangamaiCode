@@ -915,21 +915,21 @@ export class AdmissionComponent implements OnInit {
     }
 
     getinitialAccessment(row) {
-        const dialogRef = this._matDialog.open(NewIPDCasepaperComponent,
-            {
-                maxHeight: "95vh",
-                maxWidth: '110wh',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
+        // const dialogRef = this._matDialog.open(NewIPDCasepaperComponent,
+        //     {
+        //         maxHeight: "95vh",
+        //         maxWidth: '110wh',
+        //         data: row
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     console.log('The dialog was closed - Insert Action', result);
 
-            this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-            this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+        //     this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+        //     this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
-            this.onChangeFirst()
+        //     this.onChangeFirst()
 
-        });
+        // });
 
     }
     //

@@ -289,38 +289,34 @@ export class AirmidEditorComponent {
             }
         },
         mention: {
-            feeds: [
-                {
-                    marker: '@',
-                    feed: (queryText: string) => {
-                        return this.mentionItems
-                            .filter(item =>
-                                item.text
-                                    ?.toLowerCase()
-                                    .includes(queryText.toLowerCase())
-                            )
-                            .slice(0, 10)
-                            // IMPORTANT: CKEditor inserts the feed item's `id`
-                            // into the editor content — NOT `text`, and NOT
-                            // whatever itemRenderer draws in the popup list.
-                            // `id` MUST start with the marker character or the
-                            // value you pick from the dropdown won't show up
-                            // (or won't show up correctly) once inserted.
-                            .map(item => ({
-                                id: `@${item.text}`,   // what gets written into the doc
-                                text: item.text,       // used by itemRenderer below
-                                originalId: item.id    // keep your real db id if needed
-                            }));
-                    },
-                    itemRenderer: (item: any) => {
-                        const itemElement = document.createElement('span');
-                        itemElement.classList.add('custom-item');
-                        itemElement.id = `mention-list-item-id-${item.originalId}`;
-                        itemElement.textContent = item.text; // shows the name in the popup
-                        return itemElement;
-                    }
-                }
-            ]
+            feeds: []
+            // feeds: [
+            //     {
+            //         marker: '@',
+            //         feed: (queryText: string) => {
+            //             return this.mentionItems
+            //                 .filter(item =>
+            //                     item.text
+            //                         ?.toLowerCase()
+            //                         .includes(queryText.toLowerCase())
+            //                 )
+            //                 .slice(0, 10)
+
+            //                 .map(item => ({
+            //                     id: `@${item.text}`,   // what gets written into the doc
+            //                     text: item.text,       // used by itemRenderer below
+            //                     originalId: item.id    // keep your real db id if needed
+            //                 }));
+            //         },
+            //         itemRenderer: (item: any) => {
+            //             const itemElement = document.createElement('span');
+            //             itemElement.classList.add('custom-item');
+            //             itemElement.id = `mention-list-item-id-${item.originalId}`;
+            //             itemElement.textContent = item.text; // shows the name in the popup
+            //             return itemElement;
+            //         }
+            //     }
+            // ]
         },
         placeholder: 'Type or paste your content here!',
         style: {
@@ -499,7 +495,8 @@ export class AirmidEditorComponent {
 
         // Set initial data (from parent)
         if (this.value) {
-            editor.setData(this.value as string);
+             editor.setData(this.value);
+            // editor.setData(this.value as string);
         }
 
         // Listen for live typing without cursor reset

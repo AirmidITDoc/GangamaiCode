@@ -114,11 +114,11 @@ export class ItemFormMasterComponent implements OnInit {
 
 
 
-    // onHSNChange(event: any) {
-    //     const upper = event.target.value.toUpperCase();
-    //     this.vHSNCode=event.value
-    //     this.itemForm.get('hsNcode')?.setValue(upper, { emitEvent: false });
-    // }
+    onHSNChange(event: any) {
+        const upper = event.target.value.toUpperCase();
+        this.vHSNCode=event.value
+        this.itemForm.get('hsNcode')?.setValue(upper, { emitEvent: false });
+    }
 
     onNewItemWiseSupprate(row: any = null) {
         const that = this;
@@ -243,8 +243,9 @@ export class ItemFormMasterComponent implements OnInit {
         if (this.itemForm.valid) {
             if (!this.itemForm.get('hsNcode').value) {
                 this.itemForm.get('hsNcode').setValue('0')
-            } else
-                this.itemForm.get('hsNcode').setValue(this.HsncodeName)
+            }
+            //  else
+            //     this.itemForm.get('hsNcode').setValue(this.HsncodeName)
 
 
             console.log(this.itemForm.value)

@@ -148,7 +148,7 @@ export class DischargeSummaryTemplateComponent {
 
         // this.DischargesumForm = this.showDischargeSummaryForm();
 
-        this.getDiagnosisList();
+        // this.getDiagnosisList();
 
     }
 

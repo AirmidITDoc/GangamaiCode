@@ -475,7 +475,6 @@ export class NewPurchaseorderComponent {
             this.getSupplierRate();
         });
     }
-    // Add Item
     onAdd() {
 
         if (!this._PurchaseOrder.validatePurchaseForm(this.userFormGroup)) {
@@ -494,11 +493,11 @@ export class NewPurchaseorderComponent {
             console.log(formValues)
 
             const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
-            debugger
+
             if (formValues.ItemName) {
                 const newItem = new ItemNameList({
                     ...formValues,
-                    ItemName: formValues.ItemName.itemName || this.ItemName,
+                    ItemName: formValues.ItemName.itemName,
                     TotalQty: totalQty,
                     ItemId: formValues.ItemName.itemId,
                     UOM: formValues.UOMId || '', //this.UmoId,// formValues.UOMId || 0,
@@ -548,6 +547,7 @@ export class NewPurchaseorderComponent {
         this.userFormGroup.get('IGSTPer').reset();
         this.userFormGroup.get('IGSTPer').enable();
     }
+
 
     deleteTableRow(row: ItemNameList) {
         this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
@@ -799,29 +799,23 @@ export class NewPurchaseorderComponent {
 
     }
 
-    getSelectedItem(item: GRNItemResponseType): void {
+ getSelectedItem(item: GRNItemResponseType): void {
         debugger
         console.log(item)
         this.lastsupplierflag = true
         this.isExpanded = true;
         this.ItemID = item.itemId
-        this.UmoId = item.umoId || item.unitOfMeasureId,
-            this.Umoname = item.umoName || item.stockUomid
-
-        this.userFormGroup.get('ItemName')?.setValue({
-            itemId: item.itemId,
-            formattedText: item.itemName || item.formattedText,
-        });
-
-
+        this.UmoId = item.umoId
+        this.Umoname = item.umoName
+ 
         this.userFormGroup.patchValue({
-            // UOMId: item.umoId, 
-            UOMId: item.umoName || item.stockUomid || item.unitOfMeasureId,
+            // UOMId: item.umoId,
+            UOMId: item.umoName,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             Qty: '',// item.balanceQty,
-            HSNcode: item.hsNcode || item.hsncode || '0'
+            HSNcode: item.hsNcode || '0'
         });
-
+ 
         if (((item?.cgstPer ?? 0) || 0) > 0) {
             this.userFormGroup.patchValue({
                 CGSTPer: item?.taxPer,
@@ -863,6 +857,7 @@ export class NewPurchaseorderComponent {
             }
         }, 100);
     }
+ 
     calculateTotalamt() {
         // if (this.vDefRate == 0) {
         this.validateFormValues();
