@@ -116,7 +116,7 @@ export class NewMembershipComponent {
         { heading: "NAME ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "NATIVE PLACE", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AGE", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "MOBILE NO.", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "MOBILE NO.", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "EMERGENCY MOBILE", key: "emrgencyMobile", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "BLOOD GRP", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "FAMILY DR", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
