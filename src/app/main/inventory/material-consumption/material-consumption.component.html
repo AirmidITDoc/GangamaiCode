@@ -10,9 +10,12 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+             <!-- <button mat-raised-button color="primary" (click)="GetPatientEncounterDetails()"> 
+                GetPatientEncounterDetails
+            </button>  -->
             <!-- <button mat-raised-button color="primary" (click)="create2()"> 
                 Create 
-            </button>  -->
+            </button>   -->
             <button mat-raised-button (click)="NewMatrialCon()" *ngIf="IsAdd">+ ADD Consumption
             </button>
             <!-- <button mat-raised-button color="primary" (click)="create()"> 
@@ -90,4 +93,196 @@
             </airmid-table>
         </div>
     </div>
-</div>   
+</div>  
+
+
+ <!-- Progress Dialog -->
+ <div class="progress-overlay" *ngIf="isProgressDialogOpen">
+
+  <div class="progress-dialog"> 
+    <h2>ABHA Patient Data Processing</h2> 
+    <p class="progress-message">
+      Please wait while patient information is being processed...
+    </p> 
+
+    <!-- 1. Encounter -->
+    <div class="progress-row">
+
+      <div class="status-icon"
+        [class.progress]="encounterStatus === 'inprogress'"
+        [class.completed]="encounterStatus === 'completed'"
+        [class.failed]="encounterStatus === 'failed'">
+
+        <mat-spinner   *ngIf="encounterStatus === 'inprogress'"  diameter="24">
+        </mat-spinner>
+
+        <mat-icon *ngIf="encounterStatus === 'completed'">
+          check_circle
+        </mat-icon>
+
+        <mat-icon *ngIf="encounterStatus === 'failed'">
+          error
+        </mat-icon>
+
+      </div>
+
+      <div class="status-content"> 
+        <div class="status-title">
+          Patient Encounter Details
+        </div>
+
+        <div  class="status-text" *ngIf="encounterStatus === 'inprogress'"> 
+          Fetching patient encounter details... 
+        </div>
+
+        <div class="status-text completed-text"  *ngIf="encounterStatus === 'completed'"> 
+          Completed successfully 
+        </div>
+
+        <div class="status-text failed-text"  *ngIf="encounterStatus === 'failed'"> 
+          Failed to fetch encounter details 
+        </div>  
+      </div> 
+    </div> 
+
+    <!-- Connector -->
+    <div  class="connector"   [class.active]="encounterStatus === 'completed'">
+    </div> 
+
+    <!-- 2. One Minute Wait -->
+    <div class="progress-row">
+
+      <div class="status-icon"
+        [class.progress]="waitStatus === 'inprogress'"
+        [class.completed]="waitStatus === 'completed'"
+        [class.pending]="waitStatus === 'pending'">
+
+        <mat-spinner *ngIf="waitStatus === 'inprogress'" diameter="24">
+        </mat-spinner>
+
+        <mat-icon *ngIf="waitStatus === 'completed'">
+          check_circle
+        </mat-icon>
+
+        <mat-icon *ngIf="waitStatus === 'pending'">
+          radio_button_unchecked
+        </mat-icon>
+
+      </div>
+
+      <div class="status-content"> 
+        <div class="status-title">
+          Waiting Period
+        </div>
+
+        <div class="status-text" *ngIf="waitStatus === 'inprogress'"> 
+          Please wait before proceeding... 
+          <span class="countdown">
+            {{ countdown }} sec remaining
+          </span> 
+        </div>
+
+        <div class="status-text completed-text"  *ngIf="waitStatus === 'completed'"> 
+          1 minute completed 
+        </div>
+
+        <div class="status-text" *ngIf="waitStatus === 'pending'"> 
+          Waiting to start... 
+        </div> 
+      </div> 
+    </div> 
+
+    <!-- Connector -->
+    <div  class="connector"  [class.active]="waitStatus === 'completed'">
+    </div> 
+
+    <!-- 3. Care Context -->
+    <div class="progress-row">
+
+      <div class="status-icon"
+        [class.progress]="careContextStatus === 'inprogress'"
+        [class.completed]="careContextStatus === 'completed'"
+        [class.failed]="careContextStatus === 'failed'"
+        [class.pending]="careContextStatus === 'pending'">
+
+        <mat-spinner  *ngIf="careContextStatus === 'inprogress'"  diameter="24">
+        </mat-spinner>
+
+        <mat-icon *ngIf="careContextStatus === 'completed'">
+          check_circle
+        </mat-icon>
+
+        <mat-icon *ngIf="careContextStatus === 'failed'">
+          error
+        </mat-icon>
+
+        <mat-icon *ngIf="careContextStatus === 'pending'">
+          radio_button_unchecked
+        </mat-icon>
+
+      </div>
+
+      <div class="status-content">
+
+        <div class="status-title">
+          Care Context Details
+        </div>
+
+        <div  class="status-text"  *ngIf="careContextStatus === 'pending'"> 
+          Waiting for previous step... 
+        </div>
+
+        <div class="status-text"  *ngIf="careContextStatus === 'inprogress'"> 
+          Processing care context details... 
+        </div>
+
+        <div class="status-text completed-text"  *ngIf="careContextStatus === 'completed'"> 
+          Completed successfully 
+        </div>
+
+        <div  class="status-text failed-text"   *ngIf="careContextStatus === 'failed'"> 
+          Failed to process care context 
+        </div> 
+      </div> 
+    </div> 
+
+    <!-- Overall Progress -->
+    <mat-progress-bar class="overall-progress"  mode="determinate"
+      [value]="encounterStatus === 'completed' &&
+        waitStatus === 'completed' &&
+        careContextStatus === 'completed'
+          ? 100
+          : waitStatus === 'completed'
+            ? 66
+            : encounterStatus === 'completed'
+              ? 33
+              : 0
+      ">
+    </mat-progress-bar> 
+
+    <!-- All Completed -->
+    <div  class="all-completed"  *ngIf="
+        encounterStatus === 'completed' &&
+        waitStatus === 'completed' &&
+        careContextStatus === 'completed'
+      ">
+
+      <mat-icon>check_circle</mat-icon>
+
+      <span>
+        All processes completed successfully.
+      </span>
+
+    </div> 
+
+    <!-- OK -->
+    <div  class="dialog-actions"  *ngIf="
+        encounterStatus === 'completed' &&  waitStatus === 'completed' &&
+        careContextStatus === 'completed' ">
+
+      <button mat-raised-button color="primary"  (click)="closeProgressDialog()"> 
+        OK 
+      </button>  
+    </div> 
+  </div> 
+</div>

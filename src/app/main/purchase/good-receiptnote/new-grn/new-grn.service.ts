@@ -21,6 +21,7 @@ export class NewGRNService {
         const values = {
             totalAmount: Number(obj.TotalAmount || 0),
             discAmount: Number(obj.DisAmount || 0),
+            discAmount2:Number(obj.DisAmount2 || 0),
             cgst: Number(obj.SGST || 0),
             sgst: Number(obj.SGST || 0),
             igst: Number(obj.IGST || 0),
@@ -205,6 +206,29 @@ export class NewGRNService {
             netAmount
         };
     }
+
+
+      public calculateGSTAfterTwoTimeDisc(values: GSTCalculationResult): GSTCalculation {
+        const totalDiscAmt =  Number(values.discAmount || 0) +  Number(values.discAmount2 || 0); 
+        const baseAmount = values.totalAmount - totalDiscAmt;
+
+        const cgstAmount = (baseAmount * values.cgst) / 100;
+        const sgstAmount = (baseAmount * values.sgst) / 100;
+        const igstAmount = 0; // IGST is 0 for GST after discount
+
+        const totalGSTAmount = cgstAmount + sgstAmount + igstAmount;
+        const netAmount = baseAmount + totalGSTAmount;
+
+        return {
+            baseAmount,
+            cgstAmount,
+            sgstAmount,
+            igstAmount,
+            totalGSTAmount,
+            netAmount
+        };
+    }
+
     public getGSTCalculation(type: GSTType, values: GSTCalculationResult): GSTCalculation {
         let calculation: GSTCalculation;
         switch (type) {
@@ -222,6 +246,10 @@ export class NewGRNService {
             }
             case GSTType.GST_ON_PUR_PLUS_FREE_QTY: {
                 calculation = this.calculateGSTOnPurPlusFreeQty(values);
+                break;
+            }
+            case GSTType.GST_AFTER_TWO_TIME_DISC: {
+                calculation = this.calculateGSTAfterTwoTimeDisc(values);
                 break;
             }
             default: {
@@ -244,10 +272,14 @@ export class NewGRNService {
 
         // Calculate discount
         const discAmount = (totalAmount * Number(contact.DiscPercentage || 0)) / 100;
+        // Amount after Discount  
+        const amountAfterDiscount1 = Number((totalAmount- discAmount).toFixed(2)); 
+        const discAmount2 = (Number(amountAfterDiscount1 || 0) * Number(contact.Disc2 || 0)) / 100; 
 
         return {
             totalAmount,
             discAmount,
+            discAmount2,
             cgst: Number(contact.CGSTPer || 0),
             sgst: Number(contact.SGSTPer || 0),
             igst: Number(contact.IGSTPer || 0),
@@ -263,7 +295,8 @@ export class NewGRNService {
         this.calculateCellTotalAmount(contact);
         ///contact.POBalQty = (Number(contact.POQty || 0) - Number(contact.Qty || 0));
         const discountAmount = (Number(contact.TotalAmount || 0) * Number(contact.Disc || 0)) / 100;
-        const discountAmount2 = (Number(contact.TotalAmount || 0) * Number(contact.Disc2 || 0)) / 100;
+        const amountAfterDiscount1 = Number(((contact.TotalAmount || 0) - discountAmount).toFixed(2)); 
+        const discountAmount2 = (Number(amountAfterDiscount1 || 0) * Number(contact.Disc2 || 0)) / 100;
         contact.DisAmount = discountAmount;
         contact.DisAmount2 = discountAmount2;
     }

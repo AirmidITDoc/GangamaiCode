@@ -46,7 +46,7 @@
 
                             <airmid-dropdown label="To Store Name" formControlName="ToStoreId" [formGroup]="StoreFrom"
                                 [(ngModel)]="fromstoreId" fxFlex="30%" [mode]="autocompletestore1"
-                                (selectionChange)="selectChangeStore1($event)">
+                                (selectionChange)="selectChangeStore1($event)" [readonly]="IndentFlag">
                             </airmid-dropdown>
 
                             
@@ -129,7 +129,8 @@
                             <ng-container matColumnDef="ItemName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
                                     ItemName </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250 ellipsis-text"
+                                  matTooltip="{{contact.BatchNo || '-'}}">
                                     {{contact.ItemName}}
                                 </mat-cell>
                             </ng-container>
@@ -137,7 +138,8 @@
                             <ng-container matColumnDef="BatchNO">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     BatchNo</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100 ellipsis-text"
+                                 matTooltip="{{contact.BatchNo || '-'}}">
                                     {{contact.BatchNo}}
                                 </mat-cell>
                             </ng-container>

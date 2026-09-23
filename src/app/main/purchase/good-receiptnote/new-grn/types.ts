@@ -90,7 +90,7 @@ export enum GSTType {
     GST_ON_MRP = 'GST On MRP',
     GST_ON_PUR_PLUS_FREE_QTY = 'GST on Pur Plus FreeQty',
     GST_ON_MRP_PLUS_FREE_QTY = 'GST on MRP Plus FreeQty',
-    GST_AFTER_TWO_TIME_DISC = 'GST After TwoTime Disc'
+    GST_AFTER_TWO_TIME_DISC = 'GST After TwoTime Disc'  
 }
 export interface GSTCalculation {
     baseAmount: number;
@@ -108,6 +108,7 @@ export interface GSTValidation {
 export interface GSTCalculationResult {
     totalAmount: number;
     discAmount: number;
+    discAmount2: number;
     cgst: number;
     sgst: number;
     igst: number;

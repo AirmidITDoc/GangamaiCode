@@ -869,27 +869,44 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         // Calculate discount amount
         const totalAmount = Number(values.TotalAmount || 0);
         const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(2));
+        // Amount after Discount  
+        const amountAfterDiscount1 = Number((totalAmount - discountAmount).toFixed(2));
+        // Discount 2
+        const discountPercentage2 = Number(values.Disc2 || 0); 
+          if (discountPercentage2 >= 100 || discountPercentage2 < 0) {
+            this.newGRNService.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);
+            form.patchValue({ Disc2: 0 });
+            this.calculateGSTType();
+            return;
+        } 
+        // Discount 2 Amount 
+         const discountAmount2 = Number(((amountAfterDiscount1 * discountPercentage2) / 100).toFixed(2));
+
         // Update form with new discount amount
         form.patchValue({
-            DisAmount: discountAmount
+            DisAmount: discountAmount,
+            DisAmount2: discountAmount2
         }, { emitEvent: false });
 
         // // Recalculate GST after discount update
         this.calculateGSTType();
     }
-    calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
+    calculateGSTType(type?: GSTType) {
+         debugger
         const form = this.userFormGroup;
         const formValues = form.getRawValue() as GRNFormModel;
+
+        const selectedGSTType = type || this.GSTTypeName || GSTType.GST_BEFORE_DISC;
 
         // Get all required values with proper type conversion
         const values = this.newGRNService.normalizeValues(formValues);
 
         // Get GST Calculation
-        const calculation = this.newGRNService.getGSTCalculation(type, values);
+        const calculation = this.newGRNService.getGSTCalculation(selectedGSTType, values);
 
         // Update form with calculated values
         form.patchValue({
-            IGST: type === GSTType.GST_AFTER_DISC ? 0 : values.igst,
+            IGST: selectedGSTType === GSTType.GST_AFTER_DISC ? 0 : values.igst,
             CGSTAmount: calculation.cgstAmount.toFixed(2),
             SGSTAmount: calculation.sgstAmount.toFixed(2),
             IGSTAmount: calculation.igstAmount.toFixed(2),
@@ -942,12 +959,17 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.GSTTypeName = event.text
         this.GSTTypeID = event.value;
         const newGSTType = event.text as GSTType;
-        this.calculateGSTType(newGSTType);
+       
         if (event.text == "GST After TwoTime Disc") {
-            this.IsDiscPer2 = true
+            this.IsDiscPer2 = true 
         } else {
             this.IsDiscPer2 = false
+            this.userFormGroup.patchValue({
+             Disc2: 0,
+              DisAmount2: 0
+           }, { emitEvent: false });
         }
+        this.calculateGSTType(newGSTType);
         // Update gst type of table data 
         this.dsItemNameList.data.forEach((item) => {
             item.GSTType = newGSTType;

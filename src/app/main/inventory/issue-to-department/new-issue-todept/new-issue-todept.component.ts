@@ -135,6 +135,7 @@ export class NewIssueTodeptComponent {
 
   IsMaterialAccept: boolean = false;
   IsIndentAgainstMaterialAccept: boolean = false;
+  IndentFlag :boolean = false;
   ngOnInit(): void {
     this.vstoreId = this.accountService.currentUserValue.user.storeId;
     const rawValue = this?._configue?.configParams?.IsMaterialAcceptDirect || '';
@@ -179,12 +180,10 @@ export class NewIssueTodeptComponent {
     this.stockArray1.push(this.currentstockform());
     this.indentdetailArray.push(this.indentdetailform());
 
-    if (this.data) {
-      debugger;
-      console.log(this.data);
-
+    if (this.data) {  
       this.fromstoreId = this.data.fromStoreId;
       this.vIndentId = this.data.indentId;
+      this.IndentFlag = !!this.data.indentId;
       this.getIndentItemDetList();
       if (this.vIndentId > 0) {
         this.FinalIssueaginstAcceptForm = this.IssueIndentaganistAcceptFrom();
@@ -284,8 +283,7 @@ export class NewIssueTodeptComponent {
       },
     });
   } 
-  materialAcceptIssueDetailsform(element: any = {}): FormGroup {
-    console.log(element);
+  materialAcceptIssueDetailsform(element: any = {}): FormGroup { 
     return this._formBuilder.group({
       issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -381,8 +379,7 @@ export class NewIssueTodeptComponent {
     return this.MaterialForm.get('materialAcceptIssueDetails') as FormArray;
   }
 
-  IssueItemdetailform(element: any = {}): FormGroup {
-    console.log(element);
+  IssueItemdetailform(element: any = {}): FormGroup { 
     return this._formBuilder.group({
       issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -402,9 +399,7 @@ export class NewIssueTodeptComponent {
       status: ['0'],
     });
   }
-  currentstockform(element: any = {}): FormGroup {
-    debugger;
-    console.log(element);
+  currentstockform(element: any = {}): FormGroup {  
     return this._formBuilder.group({
       itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -413,8 +408,7 @@ export class NewIssueTodeptComponent {
     });
   }
 
-  indentdetailform(element: any = {}): FormGroup {
-    console.log(element);
+  indentdetailform(element: any = {}): FormGroup { 
     return this._formBuilder.group({
       indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -436,9 +430,7 @@ export class NewIssueTodeptComponent {
     });
   }
 
-  itemdetailform(element: any = {}): FormGroup {
-    console.log(element);
-    debugger;
+  itemdetailform(element: any = {}): FormGroup { 
     return this._formBuilder.group({
       issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -768,7 +760,7 @@ export class NewIssueTodeptComponent {
         ItemName: contact.itemName || '',
         BatchNo: contact.batchNo,
         BatchExpDate: this.datePipe.transform(contact.batchExpDate, 'yyyy-MM-dd'),
-        BalanceQty: contact.balanceQty - this.RQty || 0, // BQty || 0,
+        BalanceQty: contact.balanceQty ||  0, //- this.RQty || 0, // BQty || 0,
         Qty: this.RQty || 0,
         UnitRate: contact.unitMRP,
         UnitMRP: contact.unitMRP,

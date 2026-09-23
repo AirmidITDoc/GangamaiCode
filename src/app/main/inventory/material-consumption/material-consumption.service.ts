@@ -112,5 +112,15 @@ export class MaterialConsumptionService {
   public getAbhaURL(Param) {
         return this._httpClient1.PostData("AbhaConnects/InitiateClient",Param);
     }
+  public getAbhaTransactionIdList(Param) {
+        return this._httpClient1.GetData("AbhaConnects/" + Param);
+    } 
 
+
+      public GetPatientEncounterDetails(Param) {
+        return this._httpClient1.PostData("AbhaConnects/GetPatientEncounterDetails" , Param);
+    } 
+      public GetCarecontextDetails(Param) {
+        return this._httpClient1.PostData("AbhaConnects/linkCareContext" , Param);
+    } 
 }

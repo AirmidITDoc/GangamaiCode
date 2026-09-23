@@ -225,6 +225,7 @@ export class MaterialConsumptionComponent implements OnInit {
 
   create2() {
     let url: string | undefined;
+    let transactionId: string | undefined;
     const getData = {
       clientId: 1,
       hospitalId: 6,
@@ -239,6 +240,7 @@ export class MaterialConsumptionComponent implements OnInit {
       next: (response: any) => {
         console.log('ABHA API Response:', response);
        url = response?.callbackUrl; 
+       transactionId = response?.transactionId; 
       },
       error: (error) => {
         console.error('ABHA URL API Error:', error);
@@ -248,21 +250,185 @@ export class MaterialConsumptionComponent implements OnInit {
           return;
         }
         setTimeout(() => {
-            this.openExternalApplication(url);  
+            this.openExternalApplication(url,transactionId);  
         }, 1000);
     }
     });
   }
 
-  openExternalApplication(Appurl: string): void {
-    this._matDialog.open(ApplicationdialogComponent, {
+  openExternalApplication(Appurl: string, transactionId: string | undefined): void {
+     const dialogRef  = this._matDialog.open(ApplicationdialogComponent, {
       panelClass: 'full-app-dialog',
       width: '95vw',
       height: '95vh',
       maxWidth: '95vw',
       maxHeight: '95vh',
-      data: { url: Appurl },
+      data: { url: Appurl, transactionId: transactionId },
       disableClose: false,
     });
+     dialogRef.afterClosed().subscribe((result) => {
+    console.log('ABHA Final Response:', result);
+  });
   } 
+
+    GetPatientEncounterDetails1() { 
+      let response: string | undefined;
+    const getData = {
+      abhaNumber: '91-7464-3370-2840',
+      abhaAddress: '91746433702840@sbx',
+      hipId: 'AIRMIDABHA',
+      OpIpId: 536228,
+      opIpType:0, 
+    }; 
+    this._MaterialConsumptionService.GetPatientEncounterDetails(getData).subscribe({
+      next: (response: any) => {
+        console.log('Patient Encounter Details:', response);
+        response = response;
+     
+      },
+      error: (error) => {
+        console.error('Patient Encounter API Error:', error);
+      },
+       complete: () => {
+         this.GetCarecontextDetails(response)
+    }
+    });
+  } 
+  GetCarecontextDetails1(response: any) { 
+    const getData = {
+      abhaId :  "string",
+      abhaNumber: '91-7464-3370-2840',
+      patientReferenceNumber: response?.patientReferenceNumber || '00000',
+      yearOfBirth: '2003-05-01 00:00:00.00',
+      "careContexts": [
+        {
+        referenceNumber: "OP/07/2026/142",
+        comment:"string",
+        } 
+      ], 
+      hipId: 'AIRMIDABHA', 
+    };  
+ 
+    this._MaterialConsumptionService.GetCarecontextDetails(getData).subscribe({
+      next: (response: any) => {
+        console.log('Care Context Details:', response);
+     
+      },
+      error: (error) => {
+        console.error('Care Context API Error:', error);
+      },
+       complete: () => {
+         
+    }
+    });
+  } 
+
+
+isProgressDialogOpen = false;
+encounterStatus: 'pending' | 'inprogress' | 'completed' | 'failed' = 'pending';
+waitStatus: 'pending' | 'inprogress' | 'completed' = 'pending';
+careContextStatus: 'pending' | 'inprogress' | 'completed' | 'failed' = 'pending';
+
+encounterResponse: any; 
+countdown = 0;
+countdownInterval: any; 
+
+GetPatientEncounterDetails() { 
+  this.isProgressDialogOpen = true; 
+  this.encounterStatus = 'inprogress';
+  this.waitStatus = 'pending';
+  this.careContextStatus = 'pending';
+  this.countdown = 0;
+
+  const getData = {
+    abhaNumber: '91-7464-3370-2840',
+    abhaAddress: '91746433702840@sbx',
+    hipId: 'AIRMIDABHA',
+    OpIpId: "536228",
+    opIpType: "0"
+  };
+
+  this._MaterialConsumptionService.GetPatientEncounterDetails(getData).subscribe({ 
+      next: (response: any) => {
+        console.log('Patient Encounter Details:', response);
+        this.encounterResponse = response;
+      }, 
+      error: (error) => {
+        console.error('Patient Encounter API Error:', error);
+        this.encounterStatus = 'failed';
+      }, 
+      complete: () => { 
+        // 1st API completed
+        this.encounterStatus = 'completed'; 
+        // Start 1 minute wait
+        this.startOneMinuteWait();
+      } 
+    });
+} 
+startOneMinuteWait() { 
+  this.waitStatus = 'inprogress';
+  this.countdown = 60; 
+  this.countdownInterval = setInterval(() => { 
+    this.countdown--; 
+    if (this.countdown <= 0) { 
+      clearInterval(this.countdownInterval);  
+      this.countdown = 0; 
+      // 1 minute completed
+      this.waitStatus = 'completed'; 
+      // Call 2nd API
+      this.GetCarecontextDetails(this.encounterResponse);
+    } 
+  }, 1000);
+}
+
+
+GetCarecontextDetails(response: any) { 
+  debugger
+  this.careContextStatus = 'inprogress'; 
+  const getData = {
+    abhaId: "string",
+    abhaNumber: '91-7464-3370-2840', 
+    patientReferenceNumber:
+      response[0]?.patientReferenceNumber || '00000', 
+    yearOfBirth: '2003-05-01 00:00:00.00', 
+    careContexts: [
+      {
+        referenceNumber: response[0]?.careContexts[0],
+        comment: "string"
+      }
+    ], 
+    hipId: response[0]?.hipId
+  };
+
+  this._MaterialConsumptionService.GetCarecontextDetails(getData).subscribe({ 
+      next: (response: any) => {
+        console.log('Care Context Details:', response);
+      }, 
+      error: (error) => {
+        console.error('Care Context API Error:', error);
+        this.careContextStatus = 'failed';
+      }, 
+      complete: () => {
+        this.careContextStatus = 'completed';
+      } 
+    });
+} 
+closeProgressDialog() { 
+  this.isProgressDialogOpen = false; 
+  if (this.countdownInterval) {
+    clearInterval(this.countdownInterval);
+  } 
+}
+ 
+//   [
+//     {
+//         "message": "Encounter data saved successfully",
+//         "errMessage": null,
+//         "hipId": "AIRMIDABHA",
+//         "patientReferenceNumber": "200884",
+//         "careContexts": [
+//             "OP/07/2026/142"
+//         ]
+//     }
+// ]
 }
