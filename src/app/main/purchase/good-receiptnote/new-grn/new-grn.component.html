@@ -175,7 +175,7 @@
                       (keypress)="keyPressDigitDecimalOnly($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
-                    <airmid-textbox fxFlex="7%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
+                    <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
                       placeholder="Rate" [min]="0" (valueChange)="calculateTotalamt()"
                       [validations]="getValidationMessages().rate"
                       (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"
@@ -196,7 +196,7 @@
                       <!-- <airmid-textbox label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup" type="text"
                         (keyup)="calculateDiscper2Amt()"></airmid-textbox> -->
 
-                      <airmid-textbox fxFlex="4%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
+                      <airmid-textbox fxFlex="100%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
                         placeholder="Disc2" [validations]="getValidationMessages().Disc" [type]="'text'"
                         (keypress)="keyPressDigitDecimalOnly($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
@@ -206,7 +206,7 @@
                       type="text" #CGST
                       (change)="getchangegstper(userFormGroup.get('CGST')?.value, 'CGST')"></airmid-textbox>  -->
 
-                    <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="7%" [formGroup]="userFormGroup"
+                    <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="6%" [formGroup]="userFormGroup"
                       [validations]="getValidationMessages().CGST" [mode]="autocompleteModeGSTTypesValues"
                       (selectionChange)="getchangegstper($event)" (onClearSelection)="getchangegstper($event)">
                     </airmid-dropdown>
@@ -226,7 +226,7 @@
                     <!-- <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup"
                       type="text" [readonly]="true"></airmid-textbox> -->
 
-                    <airmid-textbox fxFlex="6%" label="Hos.MRP" formControlName="HospitalMRP"
+                    <airmid-textbox fxFlex="5%" label="Hos.MRP" formControlName="HospitalMRP"
                       [formGroup]="userFormGroup" placeholder="HospitalMRP"
                       [validations]="getValidationMessages().HospitalMRP" [type]="'text'"
                       (keypress)="keyPressDigitDecimalOnly($event)"></airmid-textbox>

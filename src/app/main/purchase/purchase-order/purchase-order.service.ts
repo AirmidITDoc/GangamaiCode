@@ -30,6 +30,7 @@ export class PurchaseOrderService {
         const values = {
             totalAmount: Number(obj.TotalAmount || 0),
             discAmount: Number(obj.DiscAmount || 0),
+            discAmount2:Number(0),
             cgst: Number(obj.CGSTPer || 0),
             sgst: Number(obj.SGSTPer || 0),
             igst: Number(obj.IGSTPer || 0),

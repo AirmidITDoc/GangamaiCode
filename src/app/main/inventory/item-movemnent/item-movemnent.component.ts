@@ -89,12 +89,13 @@ export class ItemMovemnentComponent implements OnInit {
     }
 
     getfilterdata() {
-        // debugger
+         debugger
         const fromDateControl = this._ItemMovemnentService.ItemSearchGroup.get('start')?.value;
         const toDateControl = this._ItemMovemnentService.ItemSearchGroup.get('end')?.value;
 
         this.fromDate = this.datePipe.transform(fromDateControl, 'yyyy-MM-dd');
         this.toDate = this.datePipe.transform(toDateControl, 'yyyy-MM-dd');
+        this.TostoreId =  this._ItemMovemnentService.ItemSearchGroup.get('ToStoreId')?.value || 0;
 
         this.gridConfig = {
             apiUrl: "ItemMovement/ItemMovementList",
@@ -139,8 +140,7 @@ export class ItemMovemnentComponent implements OnInit {
 
     ItemFromReset() {
         // this.TostoreId = 0
-    }
-
+    } 
     selectChangeItem(obj: any) {
         // debugger;
         console.log(obj);
@@ -152,23 +152,7 @@ export class ItemMovemnentComponent implements OnInit {
             this.itemId = "0";
         }
         this.getfilterdata();
-    }
-
-    onSave(row: any = null) {
-        const that = this;
-        // const dialogRef = this._matDialog.open(,
-        //     {
-        //         maxWidth: "95vw",
-        //         height: '95%',
-        //         width: '70%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
-    }
+    } 
    ngOnDestroy() { 
     this._ItemMovemnentService.ItemSearchGroup.reset();
     }
