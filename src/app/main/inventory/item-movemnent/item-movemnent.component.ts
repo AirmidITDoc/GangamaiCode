@@ -6,6 +6,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { ItemMovemnentService } from './item-movemnent.service';
 
 @Component({
@@ -35,18 +36,23 @@ export class ItemMovemnentComponent implements OnInit {
 
     allColumns = [
         // { heading: "No", key: "movementNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "Date", key: "tranDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Transaction Type", key: "transactionType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Doc.No", key: "documentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Date", key: "tranDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Doc.No", key: "documentNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Transaction Type", key: "transactionType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 110,type:6 },
         { heading: "Receipt Qty", key: "receiptQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
         { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
         { heading: "Bal Qty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-        { heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 90 }
+        { heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "GST %", key: "vatPer", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "UnitMRP", key: "perUnitMRP", sort: true, align: 'left', emptySign: 'NA', width: 120,type: gridColumnTypes.amount },
+        { heading: "LandedRate", key: "perUnitLandedPrice", sort: true, align: 'left', emptySign: 'NA', width: 120,type: gridColumnTypes.amount },
+        { heading: "PurRate", key: "perUnitPurRate", sort: true, align: 'left', emptySign: 'NA', width: 120 ,type: gridColumnTypes.amount}
     ]
-
+ 
     allFilters = [
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
