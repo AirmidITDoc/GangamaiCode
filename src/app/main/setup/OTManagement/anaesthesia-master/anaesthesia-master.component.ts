@@ -123,7 +123,10 @@ export class AnaesthesiaMasterComponent {
         maxWidth: "90vw",
         maxHeight: '85%',
         width: '35%',
-        data: row
+        data: {
+          row: row,
+          defaultConstantType: 'ANESTHESIA_TYPES'
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

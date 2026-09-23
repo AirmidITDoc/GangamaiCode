@@ -15,9 +15,9 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewFooditemMasterComponent implements OnInit {
 
   myForm: FormGroup;
-  isActive: boolean = true;
-  fooditemid = 0;
-  autocompleteModeFoodItem: string = 'MFoodCategoryMaster'
+  // isActive: boolean = true;
+  FoodItemId = 0;
+  autocompleteModeFoodCategory: string = 'MFoodCategoryMaster'
 
   constructor(
     public _fooditemMasterService: FoodItemmasterService,
@@ -32,8 +32,8 @@ export class NewFooditemMasterComponent implements OnInit {
 
     console.log("ngOnInit",this.data)
     if ((this.data?.foodItemId ?? 0) > 0) {
-      this.fooditemid = this.data.foodItemId
-      this.isActive = this.data.active
+      this.FoodItemId = this.data.foodItemId
+      // this.isActive = this.data.active
       this.myForm.patchValue(this.data);
     }
   }

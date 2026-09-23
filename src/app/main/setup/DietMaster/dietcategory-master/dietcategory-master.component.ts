@@ -19,6 +19,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 })
 export class DietcategoryMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietCategoryMaster, permissionType.Add);
+  categoryName: any = "";
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -29,28 +30,33 @@ export class DietcategoryMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Category Code", key: "categoryCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Active", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA',width:100 },
+    { heading: "Category Code", key: "categoryCode", sort: true, align: 'left', emptySign: 'NA', width:80 },
+    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA' , width:500},
+    { heading: "Active", key: "isActive", type: gridColumnTypes.status, align: "center", width:80 },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DietCategoryMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.isActive === true) {
+              this.onSave(data);
+            }
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietCategoryMaster, permissionType.Delete), callback: (data: any) => {
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietCategoryMaster, permissionType.Delete),
+          callback: (data: any) => {
             console.log(data)
-            this._dietCategoryMasterService.deactivateTheStatus(data.dietCategoryId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+            if (data?.isActive === true) {
+              this._dietCategoryMasterService.deactivateTheStatus(data.dietCategoryId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "categoryName", fieldValue: this.categoryName, opType: OperatorComparer.StartsWith },
     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 
@@ -82,4 +88,5 @@ export class DietcategoryMasterComponent {
     });
     console.log(row)
   }
+
 }

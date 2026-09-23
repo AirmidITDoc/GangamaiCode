@@ -17,7 +17,7 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="foodCategoryId" formControlName="foodCategoryId">
+                <input type="hidden" name="FoodCategoryId" formControlName="foodCategoryId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Food Category Name" formControlName="foodCategoryName"
@@ -38,10 +38,8 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <form [formGroup]="myForm">
-
                 <div class="modal-footer-container">
-                    <app-airmid-slider label="IsActive/Deactive" formControlName="active" [formGroup]="myForm"
-                        [(ngModel)]="isActive"></app-airmid-slider>
+                    <div></div>
                     <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">

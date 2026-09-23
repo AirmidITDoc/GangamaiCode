@@ -23,15 +23,15 @@ export class FoodpreferenceMasterService {
     return this._formBuilder.group({
       foodPreferenceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       foodPreferenceName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      foodPreferenceCode: [0, [Validators.required]],
-      active: [[Validators.required]]
+      foodPreferenceCode: ["", [Validators.required]],
+      // active: [[Validators.required]]
     });
   }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      foodPreferenceName: [""],
-      IsDeletedSearch: ["2"],
+      foodPreferenceNameSearch: [""],
+      IsDeletedSearch: [""],
     });
   }
 

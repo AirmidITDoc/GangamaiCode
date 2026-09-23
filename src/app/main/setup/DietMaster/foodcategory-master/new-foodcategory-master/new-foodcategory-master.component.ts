@@ -14,8 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewFoodcategoryMasterComponent implements OnInit{
   myForm: FormGroup;
-  isActive: boolean = true;
-  dietcategoryid = 0;
+  FoodCategoryId = 0;
   constructor(
     public _foodCategoryMasterService: FoodcategoryMasterService,
     public dialogRef: MatDialogRef<NewFoodcategoryMasterComponent>,
@@ -29,8 +28,7 @@ export class NewFoodcategoryMasterComponent implements OnInit{
 
     console.log(this.data)
     if ((this.data?.foodCategoryId ?? 0) > 0) {
-      this.dietcategoryid = this.data.foodCategoryId
-      this.isActive = this.data.active
+      this.FoodCategoryId = this.data.foodCategoryId
       this.myForm.patchValue(this.data);
     }
   }

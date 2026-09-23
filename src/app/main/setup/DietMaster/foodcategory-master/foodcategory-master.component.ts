@@ -19,6 +19,7 @@ import { NewFoodcategoryMasterComponent } from './new-foodcategory-master/new-fo
 })
 export class FoodcategoryMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.FoodCategoryMaster, permissionType.Add);
+  foodCategoryName: any = "";
 
   constructor(
     public permissionService: PagePermissionService,
@@ -37,14 +38,17 @@ export class FoodcategoryMasterComponent {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.FoodCategoryMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
           action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.FoodCategoryMaster, permissionType.Delete), callback: (data: any) => {
-            console.log(data)
-            this._foodCategoryMasterService.deactivateTheStatus(data.foodCategoryId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+            if (data?.active === true) {
+              this._foodCategoryMasterService.deactivateTheStatus(data.foodCategoryId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     }

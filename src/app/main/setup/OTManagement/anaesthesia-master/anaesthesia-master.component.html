@@ -16,10 +16,10 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" class="content">
-            <ng-container filters>
+        <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false">
+            <!-- <ng-container filters>
                 <form [formGroup]="searchForm">
-                    <!-- <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline">
                         <mat-label>Anaesthesia Type</mat-label>
                         <mat-select formControlName="constantType" [formGroup]="searchForm"
                             (selectionChange)="selectChange($event)">
@@ -31,9 +31,9 @@
                             (click)="clearType()" aria-label="Clear">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-form-field> -->
+                    </mat-form-field>
                 </form>
-            </ng-container>
+            </ng-container> -->
         </airmid-table>
     </div>
 </div>

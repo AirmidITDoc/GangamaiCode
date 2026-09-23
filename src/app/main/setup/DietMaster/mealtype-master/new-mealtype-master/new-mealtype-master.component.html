@@ -1,0 +1,77 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Meal Type</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="myForm">
+                <input type="hidden" name="MealId" formControlName="mealId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Meal Name" formControlName="mealName" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().MealName">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Meal Type Code" formControlName="mealTypeCode" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().MealTypeCode">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Default Time</mat-label>
+                            <input matInput type="time" formControlName="defaultTime">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Order CutOff Time</mat-label>
+                            <input matInput type="time" formControlName="orderCutoffTime">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Preparation StartTime</mat-label>
+                            <input matInput type="time" formControlName="preparationStartTime">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Dispatch Time</mat-label>
+                            <input matInput type="time" formControlName="dispatchTime">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <form [formGroup]="myForm">
+
+                <div class="modal-footer-container">
+                    <div></div>
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

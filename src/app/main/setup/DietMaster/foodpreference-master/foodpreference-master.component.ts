@@ -19,6 +19,7 @@ import { NewFoodpreferenceMasterComponent } from './new-foodpreference-master/ne
 })
 export class FoodpreferenceMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.FoodPreferenceMaster, permissionType.Add);
+  foodPreferenceName: any = "";
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -36,19 +37,24 @@ export class FoodpreferenceMasterComponent {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.FoodPreferenceMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.FoodPreferenceMaster, permissionType.Delete), callback: (data: any) => {
-            this._foodPrefMasterService.deactivateTheStatus(data.foodPreferenceId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.FoodPreferenceMaster, permissionType.Delete),
+          callback: (data: any) => {
+            if (data?.active === true) {
+              this._foodPrefMasterService.deactivateTheStatus(data.foodPreferenceId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "restrictionName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "foodPreferenceName", fieldValue: this.foodPreferenceName, opType: OperatorComparer.StartsWith },
     { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 

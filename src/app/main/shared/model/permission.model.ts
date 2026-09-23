@@ -92,9 +92,9 @@ export enum permissionCodes {
 
     // Ot Master
     SetupOtManagment = 'SetupOtManagment',
-    SetupOTConsent='SetupOTConsent',
-    SetupOTSpecality='SetupOTSpecality',
-    SetupOTSubSpecality='SetupOTSubSpecality',
+    SetupOTConsent = 'SetupOTConsent',
+    SetupOTSpecality = 'SetupOTSpecality',
+    SetupOTSubSpecality = 'SetupOTSubSpecality',
 
     //Pathology
 
@@ -125,6 +125,8 @@ export enum permissionCodes {
     ConsentMaster = 'ConsentMaster',
     ConstantMaster = 'ConstantMaster',
     AnaesthesiaMaster = 'AnaesthesiaMaster',
+    LevelMaster = 'LevelMaster',
+    PatientPositionMaster = 'PatientPositionMaster',
 
     //Nursing Station
     NursingConsent = 'NursingConsent',
@@ -231,5 +233,7 @@ export enum permissionCodes {
     FoodCategoryMaster = 'FoodCategoryMaster',
     MealTypeMaster = 'MealTypeMaster',
     FoodItemMaster = 'FoodItemMaster',
-    DietMenuMaster = 'DietMenuMaster'
+    DietMenuMaster = 'DietMenuMaster',
+
+    MRDTemplate = 'MRDTemplate'
 }

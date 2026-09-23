@@ -12,7 +12,7 @@
             <span class="patient-col-value">{{patientName}}</span>
         </div>
 
-         <div class="patient-info-chip" *ngIf="mobileNo">
+        <div class="patient-info-chip" *ngIf="mobileNo">
             <mat-icon>call</mat-icon>
             <span class="patient-col-key">Mobile No:</span>
             <span class="patient-col-value">{{mobileNo}}</span>
@@ -76,6 +76,37 @@
             <mat-icon>business</mat-icon>
             <span class="patient-col-key">Company Name:</span>
             <span class="patient-col-value" style="color: orange;">{{companyName}}</span>
+        </div>
+
+        <!-- Abha Details -->
+        <div class="patient-info-chip" *ngIf="abhaNumber">
+            <mat-icon></mat-icon>
+            <span class="patient-col-key">ABHA Number:</span>
+            <span class="patient-col-value">{{abhaNumber}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="abhaAddress">
+            <mat-icon></mat-icon>
+            <span class="patient-col-key">ABHA Address:</span>
+            <span class="patient-col-value">{{abhaAddress}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="abhaFullName">
+            <mat-icon>person</mat-icon>
+            <span class="patient-col-key">ABHA FullName:</span>
+            <span class="patient-col-value">{{abhaFullName}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="abhaGender">
+            <mat-icon>wc</mat-icon>
+            <span class="patient-col-key">ABHA Gender:</span>
+            <span class="patient-col-value">{{abhaGender}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="abhaDOB">
+            <mat-icon>cake</mat-icon>
+            <span class="patient-col-key">ABHA DOB:</span>
+            <span class="patient-col-value">{{abhaDOB | date:'dd/MM/yyyy'}}</span>
         </div>
     </ng-container>
 

@@ -1,0 +1,39 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Level List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">+ New Level
+            </button>
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false">
+            <!-- <ng-container filters>
+                <form [formGroup]="searchForm">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Anaesthesia Type</mat-label>
+                        <mat-select formControlName="constantType" [formGroup]="searchForm"
+                            (selectionChange)="selectChange($event)">
+                            <mat-option *ngFor="let item of constantTypeList" [value]="item.constantType">
+                                {{ item.constantType }}
+                            </mat-option>
+                        </mat-select>
+                        <button mat-icon-button matSuffix *ngIf="searchForm.get('constantType')?.value"
+                            (click)="clearType()" aria-label="Clear">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </form>
+            </ng-container> -->
+        </airmid-table>
+    </div>
+</div>

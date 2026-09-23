@@ -21,6 +21,7 @@ import { NewFooditemMasterComponent } from './new-fooditem-master/new-fooditem-m
 export class FoodItemmasterComponent {
 
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.FoodItemMaster, permissionType.Add);
+  foodName: any = "";
 
   constructor(
     public permissionService: PagePermissionService,
@@ -31,11 +32,11 @@ export class FoodItemmasterComponent {
   ngOnInit(): void { }
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
 
-   ngAfterViewInit() {
+  ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'isVegetarian')!.template = this.actionsTemplate;
-   }
+  }
 
   allColumns = [
     { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
@@ -44,28 +45,33 @@ export class FoodItemmasterComponent {
     { heading: "Local Name", key: "localName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Unit", key: "unit", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "Vegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA' },
-     {
-            heading: "Vegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
-            template: this.actionsTemplate
-        },
+    {
+      heading: "Vegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
+      template: this.actionsTemplate
+    },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.FoodItemMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
+            if (data?.active === true) {
+              this.onSave(data);
+            }
           }
         }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.FoodItemMaster, permissionType.Delete), callback: (data: any) => {
-            this._fooditemMasterService.deactivateTheStatus(data.foodItemId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.FoodItemMaster, permissionType.Delete),
+          callback: (data: any) => {
+            if (data?.active === true) {
+              this._fooditemMasterService.deactivateTheStatus(data.foodItemId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
+            }
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "foodName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "foodName", fieldValue: this.foodName, opType: OperatorComparer.StartsWith },
     { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 
@@ -95,7 +101,7 @@ export class FoodItemmasterComponent {
         that.grid.bindGridData();
       }
     });
-    console.log("New/Edit Form Row",row)
+    console.log("New/Edit Form Row", row)
   }
 
 }

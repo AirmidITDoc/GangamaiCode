@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewFoodpreferenceMasterComponent implements OnInit {
   myForm: FormGroup;
-  isActive: boolean = true;
+  // isActive: boolean = true;
   FoodPreferenceId = 0;
 
   constructor(
@@ -31,7 +31,7 @@ export class NewFoodpreferenceMasterComponent implements OnInit {
     console.log("ngOnInit", this.data)
     if ((this.data?.foodPreferenceId ?? 0) > 0) {
       this.FoodPreferenceId = this.data.foodPreferenceId
-      this.isActive = this.data.active
+      // this.isActive = this.data.active
       this.myForm.patchValue(this.data);
     }
   }
