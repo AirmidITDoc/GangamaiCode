@@ -28,7 +28,7 @@
 
   width: 100%;
 
-  border: 1px solid red;
+  // border: 1px solid red;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -67,4 +67,16 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
+}
+.patient-chip-row {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.comment-box {
+    width: 100%;
+    margin-top: 8px;
+    min-height: 40px;
 }

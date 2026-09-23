@@ -1,0 +1,250 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Patient Diet Request Detail List
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #HeaderCancleTask>
+        <mat-toolbar class="accent dialog-header">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span>Request Cancel for Request Id-{{ReqId}}</span>
+            </div>
+
+            <button mat-icon-button [mat-dialog-close]="true" matTooltip="Close" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <div class="dialog-content">
+            <form [formGroup]="HeaderCancleTaskForm">
+                <airmid-textbox label="Reason *" formControlName="Reason" [formGroup]="HeaderCancleTaskForm"
+                    [value]="Reason">
+                </airmid-textbox>
+            </form>
+        </div>
+
+        <div class="dialog-footer">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" (click)="HeaderRequestCancle()">Save</button>
+        </div>
+    </ng-template>
+
+    <ng-template #DetailCancleTask>
+        <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Detail Request Cancel -
+                    {{ReqDetId}}</span>
+            </div>
+            <div class="close-icon">
+                <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar>
+
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div class="center p-12 pb-56" style="border-radius: 4px;">
+                    <div class="content-card">
+                        <form [formGroup]="DetailCancleTaskForm">
+                            <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+                                <div fxFlexFill fxlayout="row" fxLayoutGap="8px"></div>
+                                <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+                                    <airmid-textbox label="Reason" formControlName="Reason" fxFlex="99%"
+                                        [formGroup]="DetailCancleTaskForm" [value]="Reason">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" fxLayoutAlign="end">
+            <div class="next-div button-row-group" style="padding-right: 20px;">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" color="accent" (click)="DetailRequestCancle()">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </ng-template>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+
+        <!-- Status cell: Accepted/Pending pill + checkbox for bulk selection -->
+        <ng-template #isAccept let-element>
+            <div class="status-box">
+                <span class="status-pill" [ngClass]="{
+                    'status-completed': element.isAccept === true,
+                    'status-pending': element.isAccept !== true
+                }">
+                    {{ element.isAccept ? 'Accepted' : 'Pending' }}
+                </span>
+
+                <div class="checkbox-slot">
+                    <mat-checkbox
+                        *ngIf="element.isAccept !== true && !CancleStatus && !element.detIsCancelled; else noCheckbox"
+                        class="accept-checkbox" [checked]="isAcceptRowSelected(element)"
+                        (change)="toggleAcceptRowCheckbox(element, $event.checked)" matTooltip="Select for accept"
+                        [disableRipple]="true">
+                    </mat-checkbox>
+                    <ng-template #noCheckbox>
+                        <span class="checkbox-placeholder">--------</span>
+                    </ng-template>
+                </div>
+            </div>
+        </ng-template>
+
+
+        <ng-template #isDelived let-element>
+            <div class="status-box">
+                <span class="status-pill" [ngClass]="{
+                    'status-not-requested': element.isDelived !== true,
+                    'status-received': element.isDelived == true
+                }">
+                    {{ element.isDelived ? 'Delivered' : 'Pending' }}
+                </span>
+
+                <div class="checkbox-slot">
+                    <mat-checkbox
+                        *ngIf="element.isDelived !== true && element.isAccept === true && !CancleStatus && !element.detIsCancelled; else noDeliverCheckbox"
+                        class="accept-checkbox" [checked]="isDeliverRowSelected(element)"
+                        (change)="toggleDeliverRowCheckbox(element, $event.checked)" matTooltip="Select for deliver"
+                        [disableRipple]="true">
+                    </mat-checkbox>
+                    <ng-template #noDeliverCheckbox>
+                        <span class="checkbox-placeholder">--------</span>
+                    </ng-template>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #detIsCancelled let-element>
+            <div class="status-box">
+                <span class="status-pill" [ngClass]="{
+                    'status-not-requested': element.detIsCancelled == true,
+                    'status-received': element.detIsCancelled !== true
+                }">
+                    {{ element.detIsCancelled ? 'Cancelled' : 'Active' }}
+                </span>
+            </div>
+        </ng-template>
+
+
+        <ng-template #actionButtonTemplate1 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button color="primary" [disabled]="element.isAccept" (click)="AcceptRequest(element)"
+                    matTooltip="Accept Diet Request">
+                    <mat-icon>verified</mat-icon>
+                </button>
+
+                <button mat-icon-button color="warn" (click)="opendetailcancletask(element)"
+                    matTooltip="Cancel Diet Request"
+                    *ngIf="!element.detIsCancelled && !element.isDelived && !CancleStatus">
+                    <mat-icon>remove_circle</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+            class="px-12 py-4 border-bottom gap-8">
+            <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
+
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+
+                    <div class="dashboard-card total">
+                        <div class="card-label">Total Order Count</div>
+                        <div class="card-value">{{VTotalcount}}</div>
+                        <mat-icon class="card-icon">receipt_long</mat-icon>
+                    </div>
+
+                    <div class="dashboard-card accept">
+                        <div class="card-label">Accept Order</div>
+                        <div class="card-value">
+                            <div>{{VAcceptcount}}</div>
+                        </div>
+                        <mat-icon class="card-icon">thumb_up</mat-icon>
+                    </div>
+
+                    <div class="dashboard-card deliver">
+                        <div class="card-label">Order Delivered</div>
+                        <div class="card-value">{{vDelived}}</div>
+                        <mat-icon class="card-icon">local_shipping</mat-icon>
+                    </div>
+
+
+                    <div class="dashboard-card pending">
+                        <div class="card-label">Accept Pending</div>
+                        <div class="card-value">{{VaccPendingcount}}</div>
+                        <mat-icon class="card-icon">hourglass_empty</mat-icon>
+                    </div>
+
+
+                    <div class="dashboard-card pending">
+                        <div class="card-label">Deliver Pending</div>
+                        <div class="card-value">{{VdelPendingcount}}</div>
+                        <mat-icon class="card-icon">local_shipping</mat-icon>
+                    </div>
+
+
+                    <div class="dashboard-card app-Cancel">
+                        <div class="card-label">Order Cancelled</div>
+                        <div class="card-value">{{VCancelcount}}</div>
+                        <mat-icon class="card-icon">cancel</mat-icon>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="p-8" style="gap:16px; flex-wrap: wrap;">
+            <div fxLayout="row" fxLayoutAlign="start center" style="gap:8px;" *ngIf="!CancleStatus">
+                <mat-checkbox [checked]="masterCheckedAccept" (change)="toggleMasterCheckboxAccept($event.checked)">
+                    Select All Pending Accept
+                </mat-checkbox>
+
+                <button class="btn btn-primary" [disabled]="!selectedAcceptRows.length"
+                    (click)="AcceptSelectedRequests()">
+                    Accept Selected ({{selectedAcceptRows.length}})
+                </button>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" style="gap:8px;" *ngIf="!CancleStatus">
+                <mat-checkbox [checked]="masterCheckedDeliver" (change)="toggleMasterCheckboxDeliver($event.checked)">
+                    Select All Pending Deliver
+                </mat-checkbox>
+
+                <button class="btn btn-primary" [disabled]="!selectedDeliverRows.length"
+                    (click)="DeliverSelectedRequests()">
+                    Deliver Selected ({{selectedDeliverRows.length}})
+                </button>
+            </div>
+
+            <span style="font-size: large; font-weight: bold;" *ngIf="CancleStatus">
+                This request has been cancelled.
+            </span>
+        </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+            </airmid-table>
+        </div>
+
+    </div>
+</div>

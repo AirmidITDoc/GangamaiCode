@@ -183,6 +183,8 @@
   }
 }
 
+//
+
 .info-badge-top {
   .dashboard-card {
     min-width: 155px;
@@ -217,15 +219,15 @@
     }
 
     &.registrations {
-      background: #c1ddf3;
+      background: #d4d4fb;
     }
 
     &.appointments {
       background: #cdeefa;
     }
 
-    &.pending{
-      background: #cde9b8;
+    &.pending {
+      background: #f9d8ff;
     }
 
     & .card-value div {
@@ -236,5 +238,30 @@
       background: #f5c6c6;
     }
   }
+.detail-drawer-container {
+  height: 100vh;
+  width: 100%;
+}
 
+.detail-drawer-container .mat-drawer-backdrop.mat-drawer-shown {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.detail-drawer.mat-drawer {
+  width: 410px !important;
+  max-width: 95vw !important;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.25);
+}
+
+.detail-drawer .mat-drawer-inner-container {
+  width: 100% !important;
+  height: 100%;
+  overflow: auto;
+}
+
+@media (max-width: 600px) {
+  .detail-drawer.mat-drawer {
+    width: 100% !important;
+  }
+}
 }

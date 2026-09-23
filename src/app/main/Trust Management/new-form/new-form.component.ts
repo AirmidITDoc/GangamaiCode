@@ -116,7 +116,8 @@ export class NewFormComponent {
   CPrefix = ''
   RPrefix = ''
   EPrefix = ''
-
+  familyDoctorName = ''
+  wfamilyDoctorName = ''
   SaveStatus: boolean = false;
   value = new Date()
   value1 = new Date()
@@ -221,7 +222,7 @@ export class NewFormComponent {
   ngOnInit(): void {
     this.today = new Date();
 
-    // Things that DON'T depend on regObj can stay outside, run immediately
+
     this.personalFormGroup = this.createFinalProcessForm();
     this.Wifeform = this.Createwifeform();
     this.Childrensform = this.CreateChildrenform();
@@ -497,7 +498,7 @@ export class NewFormComponent {
       "hconsultDoctorId": [0],
 
       "familyDoctorId": [0],
-      "familyDoctorName": ['',],
+      "familyDoctorName": [this.familyDoctorName],
       "familyDoctorContact": ['', [
         Validators.minLength(10),
         Validators.maxLength(10),
@@ -506,7 +507,7 @@ export class NewFormComponent {
 
       "wconsultDoctorId": [0],
       "wfamilyDoctorId": [0],
-      "wfamilyDoctorName": ['',],
+      "wfamilyDoctorName": [this.wfamilyDoctorName],
       "wfamilyDoctorContact": ['', [
         Validators.minLength(10),
         Validators.maxLength(10),
@@ -605,7 +606,7 @@ export class NewFormComponent {
     return this.formBuilder.group({
       "childId": 0,
       "membershipId": 0,// this.vmembershipId,
-      "prefixId": [item.PrefixId || item.Prefix],
+      "prefixId": [item.PrefixId || item.Prefix || 0],
       "prefixName": [item.PrefixName || ''],
       "childName": [item.Name || ''],
       "childMobile": [item.MobileNo || ''],
@@ -623,7 +624,7 @@ export class NewFormComponent {
     return this.formBuilder.group({
       "relativeId": 0,
       "membershipId": 0,// this.vmembershipId,
-      "prefixId": [item.PrefixId || item.Prefix],
+      "prefixId": [item.PrefixId || item.Prefix || 0],
       "prefixName": [item.PrefixName || ''],
       "relationId": [item.RelationId || 0],
       "relativeName": [item.RName || ''],
@@ -643,7 +644,7 @@ export class NewFormComponent {
     return this.formBuilder.group({
       "emrgencyId": 0,
       "membershipId": 0,// this.vmembershipId,
-      "prefixId": [item.PrefixId || item.Prefix],
+      "prefixId": [item.PrefixId || item.Prefix || 0],
       "prefixName": [item.PrefixName || ''],
       "emrgencyName": [item.EName || ''],
       "emrgencyMobile": [item.EMobileNo || ''],
@@ -957,6 +958,8 @@ export class NewFormComponent {
     this.personalFormGroup.get("wmediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wmediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.wmediclaimEndDate || null)
     this.personalFormGroup.get("declarationDate").setValue(this.datePipe.transform(this.personalFormGroup.get("declarationDate").value, "yyyy-MM-dd"))
     this.personalFormGroup.get("receiptDate").setValue(this.datePipe.transform(this.personalFormGroup.get("receiptDate").value, "yyyy-MM-dd"))
+    this.personalFormGroup.get("familyDoctorName").setValue(this.familyDoctorName)
+    this.personalFormGroup.get("wfamilyDoctorName").setValue(this.wfamilyDoctorName)
 
     console.log(this.personalFormGroup.value)
 
@@ -1535,36 +1538,29 @@ export class NewFormComponent {
       });
       return;
     }
+    debugger
 
+    const newEntry = {
+      PrefixId: this.Childrensform.get('CPrefixId').value || 0,
+      PrefixName: this.CPrefix,//
+      Name: this.Childrensform.get('Name').value || '',
+      MobileNo: this.Childrensform.get('MobileNo').value || '',
+      Address: this.Childrensform.get('Address').value || '',
 
+    }
     if (this.vmembershipId > 0 && this.DSChildrenList.data.length > 0) {
 
-      const newEntry = {
-        PrefixId: this.Childrensform.get('CPrefixId').value || 0,
-        PrefixName: this.CPrefix,//
-        Name: this.Childrensform.get('Name').value || '',
-        MobileNo: this.Childrensform.get('MobileNo').value || '',
-        Address: this.Childrensform.get('Address').value || '',
-
-      }
       this.DSChildrenList.data.push(newEntry as any);
       this.DSChildrenList.data = this.DSChildrenList.data
     }
     else {
-      const newEntry = {
-        PrefixId: this.Childrensform.get('CPrefixId').value || 0,
-        PrefixName: this.CPrefix,//
-        Name: this.Childrensform.get('Name').value || '',
-        MobileNo: this.Childrensform.get('MobileNo').value || '',
-        Address: this.Childrensform.get('Address').value || '',
 
-      }
       this.list1.push(newEntry);
 
       this.DSChildrenList.data = [...this.list1];
     }
 
-
+    this.CPrefix = ''
     this.Childrensform.get('CPrefixId').reset('');
     this.Childrensform.get('Name').reset('');
     this.Childrensform.get('MobileNo').reset('');
@@ -1593,37 +1589,28 @@ export class NewFormComponent {
       });
       return;
     }
-
+    const newEntry1 = {
+      PrefixId: this.Relativeform.get('RPrefixId').value || 0,
+      PrefixName: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
+      RName: this.Relativeform.get('RName').value || '',
+      RelationId: this.Relativeform.get('Relation').value || '',
+      RelationName: this.relationName,// this.Relativeform.get('Relation').value || '',
+      RMobileNo: this.Relativeform.get('RMobileNo').value || '',
+      RAddress: this.Relativeform.get('RAddress').value || '',
+      // RelationName: this.Relativeform.get('RelationName').value || '',
+    }
     if (this.vmembershipId > 0 && this.DSRelativeList.data.length > 0) {
 
-      const newEntry1 = {
-        PrefixId: this.Relativeform.get('RPrefixId').value || 0,
-        PrefixName: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
-        RName: this.Relativeform.get('RName').value || '',
-        RelationId: this.Relativeform.get('Relation').value || '',
-        RelationName: this.relationName,// this.Relativeform.get('Relation').value || '',
-        RMobileNo: this.Relativeform.get('RMobileNo').value || '',
-        RAddress: this.Relativeform.get('RAddress').value || '',
-        // RelationName: this.Relativeform.get('RelationName').value || '',
-      }
       this.DSRelativeList.data.push(newEntry1 as any);
       this.DSRelativeList.data = this.DSRelativeList.data
 
     } else {
 
-      const newEntry = {
-        PrefixId: this.Relativeform.get('RPrefixId').value || 0,
-        PrefixName: this.RPrefix,// this.Relativeform.get('RPrefixId').value || '',
-        RName: this.Relativeform.get('RName').value || '',
-        RelationId: this.Relativeform.get('Relation').value || '',
-        RelationName: this.relationName,// this.Relativeform.get('Relation').value || '',
-        RMobileNo: this.Relativeform.get('RMobileNo').value || '',
-        RAddress: this.Relativeform.get('RAddress').value || '',
-        // RelationName: this.Relativeform.get('RelationName').value || '',
-      }
-      this.list2.push(newEntry);
+      this.list2.push(newEntry1);
       this.DSRelativeList.data = [...this.list2];
     }
+
+    this.RPrefix = ''
     this.Relativeform.get('RPrefixId').reset('');
     this.Relativeform.get('RName').reset('');
     this.Relativeform.get('Relation').reset('');
@@ -1651,41 +1638,31 @@ export class NewFormComponent {
       });
       return;
     }
-    if (this.DSEmrgencyList.data.length > 0) {
-      this.DSEmrgencyList.data.forEach((element) => {
-        const newEntry2 = {
-          PrefixId: this.Emrgencyform.get('EPrefixId').value || 0,
-          PrefixName: this.EPrefix,// this.Emrgencyform.get('EPrefixId').value || '',
-          EName: this.Emrgencyform.get('EName').value || '',
-          EMobileNo: this.Emrgencyform.get('EMobileNo').value || '',
-          Address: this.Emrgencyform.get('EAddress').value || '',
-        }
-        this.DSEmrgencyList.data.push(newEntry2 as any);
-        this.DSEmrgencyList.data = this.DSEmrgencyList.data
-      });
 
+    const newEntry2 = {
+      PrefixId: this.Emrgencyform.get('EPrefixId').value || 0,
+      PrefixName: this.EPrefix,// this.Emrgencyform.get('EPrefixId').value || '',
+      EName: this.Emrgencyform.get('EName').value || '',
+      EMobileNo: this.Emrgencyform.get('EMobileNo').value || '',
+      Address: this.Emrgencyform.get('EAddress').value || '',
+    }
+    if (this.DSEmrgencyList.data.length > 0) {
+
+      this.DSEmrgencyList.data.push(newEntry2 as any);
+      this.DSEmrgencyList.data = this.DSEmrgencyList.data
 
     }
 
     else {
 
-      const newEntry1 = {
-        PrefixId: this.Emrgencyform.get('EPrefixId').value || 0,
-        PrefixName: this.EPrefix,// this.Emrgencyform.get('EPrefixId').value || '',
-        EName: this.Emrgencyform.get('EName').value || '',
-        EMobileNo: this.Emrgencyform.get('EMobileNo').value || '',
-        Address: this.Emrgencyform.get('EAddress').value || '',
-
-      }
-
-      this.Elist1.push(newEntry1);
+      this.Elist1.push(newEntry2);
       this.DSEmrgencyList.data = [...this.Elist1];
     }
     this.Emrgencyform.get('EPrefixId').reset('');
     this.Emrgencyform.get('EName').reset('');
     this.Emrgencyform.get('EMobileNo').reset('');
     this.Emrgencyform.get('EAddress').reset('');
-
+    this.EPrefix = ''
 
     const serviceIdElement = document.querySelector(`[name='EName']`) as HTMLElement;
     if (serviceIdElement) {
@@ -2118,9 +2095,9 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId).subscribe((response) => {
-        // this.docregisterObj = response;
-        // console.log(this.registerObj)
-        this.hfDoctor =response.phone
+        console.log(response)
+        this.familyDoctorName = response.firstName +' '+ response.lastName
+        this.hfDoctor = response.phone
         this.personalFormGroup.get("familyDoctorContact").setValue(this.hfDoctor);
 
       }, (error) => {
@@ -2138,8 +2115,6 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId1 = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId1).subscribe((response) => {
-        // this.registerObj = response;
-        // console.log(this.registerObj)
         this.hcDoctor = response.phone
         this.personalFormGroup.get("hConsultDoctorContact").setValue(this.hcDoctor);
 
@@ -2158,8 +2133,7 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId2 = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId2).subscribe((response) => {
-        // this.registerObj = response;
-        // console.log(this.registerObj)
+        this.wfamilyDoctorName =  response.firstName +' '+ response.lastName
         this.wfDoctor = response.phone
         this.personalFormGroup.get("wfamilyDoctorContact").setValue(this.wfDoctor);
 
@@ -2177,8 +2151,6 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId3 = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId3).subscribe((response) => {
-        // this.registerObj = response;
-        // console.log(this.registerObj)
         this.wcDoctor = response.phone
         this.personalFormGroup.get("wConsultDoctorContact").setValue(this.wcDoctor);
 
@@ -2190,16 +2162,162 @@ export class NewFormComponent {
     }
 
   }
+  ///
+  CEditPrefixId: boolean = false;
+  ChildenableEditing(row: Childdetail) {
+    row.CEditPrefixId = true;
+    row.PrefixName = '';
+    this.Relform.get('CEditPrefixId')?.setValue('');
+  }
+
+  ChildisableEditing(row: Childdetail) {
+    row.CEditPrefixId = false;
+    this.Relform.get('CEditPrefixId')?.setValue('');
+  }
+  DropDownValue(event: any, row: Childdetail) {
+    debugger;
+    console.log('Dropdown Event:', event);
+    console.log('Selected Row:', row);
+
+    const newPrefixId = event?.value;
+    const newPrefixName = event?.text;
+
+    if (newPrefixId === null || newPrefixId === undefined || newPrefixId === '') {
+      return;
+    }
+    const data = this.DSChildrenList.data;
+    const index = row.PrefixId
+      ? data.findIndex(item => item.PrefixId === row.PrefixId)
+      : data.findIndex(
+        item => (item.childName || item.Name) === (row.childName || row.Name)
+
+      );
+
+    if (index === -1) {
+      console.log('Row not found');
+      return;
+    }
+
+    data[index].PrefixId = newPrefixId;
+    data[index].PrefixName = newPrefixName;
+    data[index].CEditPrefixId = false;
+    this.DSChildrenList.data = [
+      ...data
+    ];
+    this.Relform.get('CEditPrefixId')?.setValue('');
+
+    console.log(
+      'Prefix Updated Successfully:',
+      data[index]
+    );
+  }
+  //R
+  REditPrefixId: boolean = false;
+  RelenableEditing(row: Relativedetail) {
+    row.REditPrefixId = true;
+    row.PrefixName = '';
+    this.Relform.get('REditPrefixId')?.setValue('');
+  }
+
+  RelisableEditing(row: Relativedetail) {
+    row.REditPrefixId = false;
+    this.Relform.get('REditPrefixId')?.setValue('');
+  }
+  DropDownValue1(event: any, row: Relativedetail) {
+    debugger;
+    console.log('Dropdown Event:', event);
+    console.log('Selected Row:', row);
+
+    const newPrefixId = event?.value;
+    const newPrefixName = event?.text;
+
+    if (newPrefixId === null || newPrefixId === undefined || newPrefixId === '') {
+      return;
+    }
+    const data = this.DSRelativeList.data;
+    const index = row.PrefixId
+      ? data.findIndex(item => item.PrefixId === row.PrefixId)
+      : data.findIndex(
+        item => (item.relativeName || item.RName) === (row.relativeName || row.RName)
+
+      );
+
+
+    if (index === -1) {
+      console.log('Row not found');
+      return;
+    }
+
+    data[index].PrefixId = newPrefixId;
+    data[index].PrefixName = newPrefixName;
+    data[index].REditPrefixId = false;
+    this.DSRelativeList.data = [
+      ...data
+    ];
+    this.Relform.get('REditPrefixId')?.setValue('');
+
+    console.log(
+      'Prefix Updated Successfully:',
+      data[index]
+    );
+  }
+  //E
+  EEditPrefixId: boolean = false;
+  EmenableEditing(row: Emrgencdetail) {
+    row.EEditPrefixId = true;
+    row.PrefixName = '';
+    this.Relform.get('EEditPrefixId')?.setValue('');
+  }
+
+  EmableEditing(row: Emrgencdetail) {
+    row.EEditPrefixId = false;
+    this.Relform.get('EEditPrefixId')?.setValue('');
+  }
+  DropDownValue2(event: any, row: Emrgencdetail) {
+    debugger;
+    console.log('Dropdown Event:', event);
+    console.log('Selected Row:', row);
+
+    const newPrefixId = event?.value;
+    const newPrefixName = event?.text;
+
+    if (newPrefixId === null || newPrefixId === undefined || newPrefixId === '') {
+      return;
+    }
+    const data = this.DSEmrgencyList.data;
+    const index = row.PrefixId
+      ? data.findIndex(item => item.PrefixId === row.PrefixId)
+      : data.findIndex(
+        item => (item.emrgencyName || item.EName) === (row.emrgencyName || row.EName)
+
+      );
+
+
+    if (index === -1) {
+      console.log('Row not found');
+      return;
+    }
+
+    data[index].PrefixId = newPrefixId;
+    data[index].PrefixName = newPrefixName;
+    data[index].EEditPrefixId = false;
+    this.DSEmrgencyList.data = [
+      ...data
+    ];
+    this.Relform.get('EEditPrefixId')?.setValue('');
+
+    console.log(
+      'Prefix Updated Successfully:',
+      data[index]
+    );
+  }
 }
-
-
 
 export class Childdetail {
   Prefix: any
   Name: any;
   MobileNo: any;
   Address: any;
-
   childId: any;
   membershipId: any;
   prefixId: any;
@@ -2208,7 +2326,10 @@ export class Childdetail {
   childAddress: any;
   prefixName: any;
   PrefixName: any;
-
+  // Edit related
+  CEditPrefixId: boolean = false;
+  EditPrefixId: any;
+  PrefixId: any;
 
   constructor(Childdetail) {
     this.Name = Childdetail.Name || '';
@@ -2225,7 +2346,7 @@ export class Childdetail {
     this.prefixName = Childdetail.prefixName || '';
 
     this.PrefixName = Childdetail.PrefixName || '';
-
+    this.CEditPrefixId = Childdetail.CEditPrefixId || false;
   }
 }
 
@@ -2248,6 +2369,9 @@ export class Relativedetail {
   RelationId: any;
   RelationName: any;
   relationName: any;
+  REditPrefixId: any;
+  PrefixId: any;
+
 
   constructor(Relativedetail) {
     this.RName = Relativedetail.RName || '';
@@ -2270,7 +2394,8 @@ export class Relativedetail {
     this.RelationId = Relativedetail.RelationId || '';
     this.RelationName = Relativedetail.RelationName || '';
     this.relationName = Relativedetail.relationName || '';
-
+    this.REditPrefixId = Relativedetail.REditPrefixId || '';
+    this.PrefixId = Relativedetail.PrefixId || '';
 
   }
 }
@@ -2287,6 +2412,8 @@ export class Emrgencdetail {
   emrgencyAddress: any;
   emrgencyMobile: any;
   PrefixName: any;
+  PrefixId: any;
+  EEditPrefixId: any
   constructor(Emrgencdetail) {
     this.EName = Emrgencdetail.EName || '';
     this.EMobileNo = Emrgencdetail.EMobileNo || '';
@@ -2298,6 +2425,9 @@ export class Emrgencdetail {
     this.emrgencyMobile = Emrgencdetail.emrgencyMobile || '';
     this.prefixName = Emrgencdetail.prefixName || '';
     this.PrefixName = Emrgencdetail.PrefixName || '';
+    this.PrefixId = Emrgencdetail.PrefixId || '';
+
+    this.EEditPrefixId = Emrgencdetail.EEditPrefixId || '';
   }
 }
 
