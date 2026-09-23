@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { gridModel } from 'app/core/models/gridRequest';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
@@ -49,7 +49,7 @@ export class MrdTemplateComponent {
   ]
 
   allFilters = [
-    // { fieldName: "CertificateName", fieldValue: "%", opType: OperatorComparer.Equals }
+    { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
@@ -70,7 +70,7 @@ export class MrdTemplateComponent {
   }
 
   onChangeFirst() {
-    this.TemplateName = this.searchFormGroup.get('TemplateNameSearch').value + "%"
+    this.TemplateName = this.searchFormGroup.get('TemplateNameSearch').value //+ "%"
     this.getfilterdata();
   }
 
@@ -81,7 +81,7 @@ export class MrdTemplateComponent {
       sortField: "",
       sortOrder: 0,
       filters: [
-        // { fieldName: "CertificateName", fieldValue: this.TemplateName , opType: OperatorComparer.Contains }
+        { fieldName: "TemplateName", fieldValue: this.TemplateName , opType: OperatorComparer.Contains }
       ]
     }
     console.log(this.gridConfig)
