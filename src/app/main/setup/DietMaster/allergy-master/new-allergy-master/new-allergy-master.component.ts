@@ -16,7 +16,7 @@ export class NewAllergyMasterComponent implements OnInit {
   myForm: FormGroup;
   AllergyId = 0;
   autocompleteModeAllergy = "MFoodCategoryMaster"
-  // isActive: boolean = true;
+  isKitchenAlert: boolean = true;
 
   constructor(
     public _allergyMasterService: AllergyMasterService,
@@ -29,10 +29,9 @@ export class NewAllergyMasterComponent implements OnInit {
     this.myForm = this._allergyMasterService.createAllergyForm();
     this.myForm.markAllAsTouched();
 
-    console.log(this.data)
     if ((this.data?.allergyId ?? 0) > 0) {
       this.AllergyId = this.data.allergyId
-      // this.isActive = this.data.active
+      this.isKitchenAlert = this.data.isKitchenAlert
       this.myForm.patchValue(this.data);
     }
   }
@@ -40,7 +39,6 @@ export class NewAllergyMasterComponent implements OnInit {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log(this.myForm.value)
       this._allergyMasterService.allergySave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -70,9 +68,9 @@ export class NewAllergyMasterComponent implements OnInit {
         { name: "maxlength", Message: "Allergy Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      AllergyCode: [
-        { name: "required", Message: "Allergy Code is required" }
-      ],
+      // AllergyCode: [
+      //   { name: "required", Message: "Allergy Code is required" }
+      // ],
       CategoryId: [
         { name: "required", Message: "Food Category is required" }
       ],

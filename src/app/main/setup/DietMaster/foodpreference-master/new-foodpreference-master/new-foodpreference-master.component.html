@@ -19,16 +19,16 @@
             <form [formGroup]="myForm">
                 <input type="hidden" name="foodPreferenceId" formControlName="foodPreferenceId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Food Preference Name" formControlName="foodPreferenceName" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().FoodPreferenceName">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Food Preference Code" formControlName="foodPreferenceCode" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().FoodPreferenceCode">
                         </airmid-textbox>
-                    </div>
+                    </div> -->
                 </div>
             </form>
         </div>

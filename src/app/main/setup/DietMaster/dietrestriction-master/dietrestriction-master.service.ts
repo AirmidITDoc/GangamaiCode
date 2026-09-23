@@ -21,8 +21,8 @@ export class DietrestrictionMasterService {
   createRestrictionForm(): FormGroup {
     return this._formBuilder.group({
       restrictionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      restrictionName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      restrictionCode: ['',[Validators.required]],
+      restrictionName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      // restrictionCode: [''],
       restrictionTypeId: [0, [Validators.required]],
       description: [""]
     });
@@ -41,9 +41,8 @@ export class DietrestrictionMasterService {
 
   public DietRestrictionSave(Param: any) {
     if (Param.restrictionId) {
-      console.log("Update Form Value (Param)", Param)
-      return this._httpClient.PutData("DietRestriction/" + Param.restrictionId, Param);
-    } else return this._httpClient.PostData("DietRestriction", Param);
+      return this._httpClient.PutData("DietRestriction/Edit/" + Param.restrictionId, Param);
+    } else return this._httpClient.PostData("DietRestriction/Insert", Param);
   }
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("DietRestriction?Id=" + m_data.toString());

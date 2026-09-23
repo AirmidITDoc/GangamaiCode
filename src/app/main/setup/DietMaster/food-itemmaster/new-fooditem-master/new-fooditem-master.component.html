@@ -24,11 +24,11 @@
                             [maxLength]="50" [validations]="getValidationMessages().FoodName">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Food Code" formControlName="foodCode" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().FoodCode">
                         </airmid-textbox>
-                    </div>
+                    </div> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Food Category" formControlName="foodCategoryId" [formGroup]="myForm"
                             [validations]="getValidationMessages().FoodCategory" [mode]="autocompleteModeFoodCategory">
@@ -45,9 +45,11 @@
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-checkbox label="IsVegeterian" formControlName="isVegetarian" [formGroup]="myForm">
+                        <!-- <mat-checkbox label="IsVegeterian" formControlName="isVegetarian" [formGroup]="myForm">
                             IsVegeterian
-                        </mat-checkbox>
+                        </mat-checkbox> -->
+                        <app-airmid-slider label="IsVegeterian" formControlName="isVegetarian" [formGroup]="myForm"
+                            [(ngModel)]="isVegetarian"></app-airmid-slider>
                     </div>
                 </div>
             </form>

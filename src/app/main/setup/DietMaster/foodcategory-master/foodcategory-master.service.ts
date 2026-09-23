@@ -22,8 +22,8 @@ export class FoodcategoryMasterService {
     createFoodCategoryForm(): FormGroup {
       return this._formBuilder.group({
         foodCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        foodCategoryCode: ["", [Validators.required]],
-        foodCategoryName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]]
+        // foodCategoryCode: ["", [Validators.required]],
+        foodCategoryName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]]
       });
     }
   
@@ -40,8 +40,8 @@ export class FoodcategoryMasterService {
   
     public foodCategorySave(Param: any) {
       if (Param.foodCategoryId) {
-        return this._httpClient.PutData("FoodCategoryMaster/" + Param.foodCategoryId, Param);
-      } else return this._httpClient.PostData("FoodCategoryMaster", Param);
+        return this._httpClient.PutData("FoodCategoryMaster/Edit/" + Param.foodCategoryId, Param);
+      } else return this._httpClient.PostData("FoodCategoryMaster/Insert", Param);
     }
     public deactivateTheStatus(m_data) {
       return this._httpClient.DeleteData("FoodCategoryMaster?Id=" + m_data.toString());

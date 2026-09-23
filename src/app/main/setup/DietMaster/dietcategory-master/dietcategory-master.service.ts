@@ -21,8 +21,8 @@ export class DietcategoryMasterService {
   createDietCategoryForm(): FormGroup {
     return this._formBuilder.group({
       dietCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      categoryCode: ['',Validators.required],
-      categoryName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      categoryCode: [''],
+      categoryName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       description: [""]
     });
   }

@@ -29,9 +29,7 @@ export class NewDietrestrictionMasterComponent implements OnInit {
     this.myForm = this._dietResMasterService.createRestrictionForm();
     this.myForm.markAllAsTouched();
 
-    console.log("ngOnInit", this.data)
     if ((this.data?.restrictionId ?? 0) > 0) {
-      console.log(this.data.restrictionId)
       this.RestrictionId = this.data.restrictionId
       this.isActive = this.data.active
       this.myForm.patchValue(this.data);
@@ -41,7 +39,6 @@ export class NewDietrestrictionMasterComponent implements OnInit {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log("Submit Form Values", this.myForm.value)
       this._dietResMasterService.DietRestrictionSave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -71,9 +68,9 @@ export class NewDietrestrictionMasterComponent implements OnInit {
         { name: "maxlength", Message: "Restriction Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      RestrictionCode: [
-        { name: "required", Message: "Restriction Code is required" }
-      ],
+      // RestrictionCode: [
+      //   { name: "required", Message: "Restriction Code is required" }
+      // ],
       RestrictionTypeId: [
         { name: "required", Message: "Restriction Type is required" }
       ]

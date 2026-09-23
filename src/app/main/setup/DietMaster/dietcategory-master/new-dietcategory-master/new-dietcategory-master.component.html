@@ -19,16 +19,16 @@
             <form [formGroup]="myForm">
                 <input type="hidden" name="dietcategoryid" formControlName="dietCategoryId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Category Name" formControlName="categoryName" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().categoryName">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Category Code" formControlName="categoryCode" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().CategoryCode">
                         </airmid-textbox>
-                    </div>
+                    </div> -->
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" fxFlex>
                             <textarea rows="1" formControlName="description" placeholder="Description"

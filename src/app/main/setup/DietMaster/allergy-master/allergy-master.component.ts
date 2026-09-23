@@ -39,8 +39,8 @@ export class AllergyMasterComponent {
       heading: "IsKitchenAlert", key: "isKitchenAlert", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100,
       template: this.actionsTemplate
     },
-    { heading: "Allergy Name", key: "allergyName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Allergy Code", key: "allergyCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Allergy Name", key: "allergyName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Category", key: "categoryId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Severity", key: "severityId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Reaction", key: "reaction", sort: true, align: 'left', emptySign: 'NA' },

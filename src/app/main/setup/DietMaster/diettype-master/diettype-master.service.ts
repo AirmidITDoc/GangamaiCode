@@ -21,14 +21,14 @@ export class DiettypeMasterService {
   createDietTypeForm(): FormGroup {
     return this._formBuilder.group({
       dietTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      dietCode: ['',Validators.required],
-      dietName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      shortName: [""],
+      // dietCode: [''],
+      dietName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      shortName: ["",[Validators.pattern(/^[a-zA-Z ]+$/)]],
       dietCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       defaultCalories: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       defaultProtein: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       defaultFluid: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      displayOrder: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // displayOrder: [''],
       remarks: [""],
       description: [""]
     });

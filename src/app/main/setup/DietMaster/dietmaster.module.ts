@@ -20,12 +20,12 @@ const appRoutes: Routes = [
       import("./food-itemmaster/food-itemmaster.module").then((m) => m.FoodItemmasterModule
       ),
   },
-  // {
-  //   path: "menuMaster",
-  //   loadChildren: () =>
-  //     import("./menu-master/menu-master.module").then((m) => m.MenuMasterModule
-  //     ),
-  // },
+  {
+    path: "menuMaster",
+    loadChildren: () =>
+      import("./menu-master/menu-master.module").then((m) => m.MenuMasterModule
+      ),
+  },
   {
     path: "dietrestrictionMaster",
     loadChildren: () =>

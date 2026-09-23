@@ -28,7 +28,6 @@ export class NewFoodpreferenceMasterComponent implements OnInit {
     this.myForm = this._foodPrefMasterService.createFoodPreferenceForm();
     this.myForm.markAllAsTouched();
 
-    console.log("ngOnInit", this.data)
     if ((this.data?.foodPreferenceId ?? 0) > 0) {
       this.FoodPreferenceId = this.data.foodPreferenceId
       // this.isActive = this.data.active
@@ -39,7 +38,6 @@ export class NewFoodpreferenceMasterComponent implements OnInit {
 
   onSubmit() {
     if (!this.myForm.invalid) {
-      console.log("Submit Form Values", this.myForm.value)
       this._foodPrefMasterService.FoodPreferenceSave(this.myForm.value).subscribe((response) => {
         this.onClear(true);
       });
@@ -69,9 +67,9 @@ export class NewFoodpreferenceMasterComponent implements OnInit {
         { name: "maxlength", Message: "Food Preference Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      FoodPreferenceCode: [
-        { name: "required", Message: "Food Preference Code is required" }
-      ]
+      // FoodPreferenceCode: [
+      //   { name: "required", Message: "Food Preference Code is required" }
+      // ]
     };
   }
 

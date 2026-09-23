@@ -22,8 +22,8 @@ export class FoodpreferenceMasterService {
   createFoodPreferenceForm(): FormGroup {
     return this._formBuilder.group({
       foodPreferenceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      foodPreferenceName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      foodPreferenceCode: ["", [Validators.required]],
+      foodPreferenceName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      foodPreferenceCode: [""],
       // active: [[Validators.required]]
     });
   }
@@ -41,9 +41,8 @@ export class FoodpreferenceMasterService {
 
   public FoodPreferenceSave(Param: any) {
     if (Param.foodPreferenceId) {
-      console.log("Update Form Value (Param)", Param)
-      return this._httpClient.PutData("FoodPreference/" + Param.foodPreferenceId, Param);
-    } else return this._httpClient.PostData("FoodPreference", Param);
+      return this._httpClient.PutData("FoodPreference/Edit/" + Param.foodPreferenceId, Param);
+    } else return this._httpClient.PostData("FoodPreference/Insert", Param);
   }
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("FoodPreference?Id=" + m_data.toString());

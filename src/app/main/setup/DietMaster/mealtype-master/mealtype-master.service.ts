@@ -26,8 +26,8 @@ export class MealtypeMasterService {
 
     return this._formBuilder.group({
       mealId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mealTypeCode: ["", [Validators.required]],
-      mealName: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      // mealTypeCode: ["", [Validators.required]],
+      mealName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
       // dispatchTime: [currentTime],
       // preparationStartTime: [currentTime],
@@ -55,7 +55,7 @@ export class MealtypeMasterService {
   public mealTypeSave(Param: any) {
     if (Param.mealId) {
       return this._httpClient.PutData("MealTypeMaster/" + Param.mealId, Param);
-    } else return this._httpClient.PostData("MealTypeMaster", Param);
+    } else return this._httpClient.PostData("MealTypeMaster/Insert", Param);
   }
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("MealTypeMaster?Id=" + m_data.toString());

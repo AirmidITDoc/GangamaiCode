@@ -30,8 +30,8 @@ export class FeedingrouteMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Feeding Route Name", key: "feedingRouteName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Feeding Route Code", key: "feedingRouteCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Feeding Route Name", key: "feedingRouteName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Diet Type", key: "dietTypesId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 500 },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
