@@ -35,10 +35,10 @@
   padding: 16px 16px 16px 22px !important; // more left padding so text clears the accent bar
   margin: 4px 6px 12px 6px;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
-              rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
-              rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-              transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: default;
 
   &::before {
@@ -54,14 +54,14 @@
   &:hover {
     transform: translateY(-4px);
     box-shadow: rgba(0, 0, 0, 0.45) 0px 6px 10px,
-                rgba(0, 0, 0, 0.35) 0px 14px 20px -6px,
-                rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+      rgba(0, 0, 0, 0.35) 0px 14px 20px -6px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   }
 
   &:focus-within {
     box-shadow: rgba(63, 81, 181, 0.35) 0px 0px 0px 3px,
-                rgba(0, 0, 0, 0.4) 0px 2px 4px,
-                rgba(0, 0, 0, 0.3) 0px 7px 13px -3px;
+      rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px;
 
     &::before {
       background: linear-gradient(180deg, #3f51b5, #303f9f);
@@ -84,13 +84,13 @@
   color: #3f51b5;
 }
 
-.close-icon {
+.menuclose-icon {
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
 }
 
-.close-icon button {
+.menuclose-icon button {
   width: 30px;
   height: 30px;
   line-height: 30px;
@@ -99,13 +99,13 @@
   transition: color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
 }
 
-.close-icon button:hover {
+.menuclose-icon button:hover {
   color: #ffffff;
   background-color: #e53935;
   transform: rotate(90deg);
 }
 
-.close-icon mat-icon {
+.menuclose-icon mat-icon {
   font-size: 18px;
   width: 18px;
   height: 18px;
@@ -117,40 +117,56 @@
   width: 100%;
 }
 
-.scroll-btn {
-  flex-shrink: 0;
-  z-index: 2;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  color: #3f51b5;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 6px;
-  transition: background-color 0.25s ease, transform 0.2s ease;
+// .scroll-btn {
+//   flex-shrink: 0;
+//   z-index: 2;
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 50%;
+//   background-color: #ffffff;
+//   color: #3f51b5;
+//   box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 6px;
+//   transition: background-color 0.25s ease, transform 0.2s ease;
 
-  &:hover {
-    background-color: #3f51b5;
-    color: #ffffff;
-    transform: scale(1.08);
-  }
+//   &:hover {
+//     background-color: #3f51b5;
+//     color: #ffffff;
+//     transform: scale(1.08);
+//   }
 
-  mat-icon {
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-  }
-}
+//   mat-icon {
+//     font-size: 22px;
+//     width: 22px;
+//     height: 22px;
+//     line-height: 22px;
+//   }
+// }
 
-.scroll-btn-left {
-  margin-right: 8px;
-}
+// .scroll-btn-left {
+//   margin-right: 8px;
+// }
 
-.scroll-btn-right {
-  margin-left: 8px;
-}
+// .scroll-btn-right {
+//   margin-left: 8px;
+// }
 
 .menucard mat-card-title,
-.menucard > div:first-child {
-  padding-left: 4px; 
+.menucard>div:first-child {
+  padding-left: 4px;
+}
+
+.menucard {
+  cursor: move;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms ease;
 }

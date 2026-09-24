@@ -23,12 +23,6 @@
                             <form [formGroup]="dietMenuForm">
                                 <input type="hidden" name="dietMenuId" formControlName="dietMenuId">
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Menu Code" formControlName="dietMenuCode"
-                                            [formGroup]="dietMenuForm" [maxLength]="50"
-                                            [validations]="getValidationMessages().MenuCode">
-                                        </airmid-textbox>
-                                    </div> -->
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Menu Name" formControlName="dietMenuName"
                                             [formGroup]="dietMenuForm" [maxLength]="50"
@@ -54,46 +48,18 @@
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Calories" formControlName="calories"
+                                        <airmid-textbox label="Calories (Kcal)" formControlName="calories"
                                             [formGroup]="dietMenuForm" [maxLength]="50"
                                             [validations]="getValidationMessages().Calories">
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Protein" formControlName="protein"
+                                        <airmid-textbox label="Protein (g)" formControlName="protein"
                                             [formGroup]="dietMenuForm" [maxLength]="50"
                                             [validations]="getValidationMessages().Protein">
                                         </airmid-textbox>
                                     </div>
                                 </div>
-                                <!-- <div fxFlexFill fxLayout="row" class="gap-4">
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                        <airmid-textbox label="Diet Menu Name" formControlName="dietMenuId"
-                                            [formGroup]="dietMenuDetailForm" [maxLength]="50">
-                                        </airmid-textbox>
-                                    </div>
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                        <airmid-textbox label="Food Item Name" formControlName="foodItemId"
-                                            [formGroup]="dietMenuDetailForm" [maxLength]="50">
-                                        </airmid-textbox>
-                                    </div>
-                                    <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                        <airmid-textbox label="Quantity" formControlName="quantity"
-                                            [formGroup]="dietMenuDetailForm" [maxLength]="50">
-                                        </airmid-textbox>
-                                    </div>
-
-                                    <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                        <airmid-textbox label="Unit" formControlName="unitId"
-                                            [formGroup]="dietMenuDetailForm" [maxLength]="50">
-                                        </airmid-textbox>
-                                    </div>
-                                    <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                        <airmid-textbox label="Sequence No" formControlName="sequenceNo"
-                                            [formGroup]="dietMenuDetailForm" [maxLength]="50">
-                                        </airmid-textbox>
-                                    </div>
-                                </div> -->
                             </form>
                         </mat-card>
                     </div>
@@ -121,103 +87,74 @@
 
 
                             <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 8px 0;">
-
-                            <div class="scroll-wrapper">
+                            <!-- <div class="scroll-wrapper">
                                 <button mat-icon-button class="scroll-btn scroll-btn-left"
                                     (click)="scrollCards('left')">
                                     <mat-icon>chevron_left</mat-icon>
                                 </button>
 
-                                <div class="scroll-container" #scrollContainer>
-                                    <div fxLayout="row wrap" fxLayoutGap="20px grid" style="padding:5px 0px">
-                                        <div *ngFor="let item of selectedFoodItems; let i = index" class="menucard">
+                                <div class="scroll-container" #scrollContainer> -->
+                            <div fxLayout="row wrap" fxLayoutGap="20px grid" style="padding:5px 0px" cdkDropList
+                                (cdkDropListDropped)="dropFoodItem($event)">
+                                <div *ngFor="let item of selectedFoodItems; let i = index" class="menucard">
 
-                                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-                                                <div fxFlex="80%">
-                                                    <mat-card-title>
-                                                        {{ item.name }}
-                                                    </mat-card-title>
-                                                </div>
+                                        <div fxFlex="15%">
+                                            <mat-card-title>
+                                                {{ item.sequenceNo }}
+                                            </mat-card-title>
+                                        </div>
 
-                                                <div fxFlex="10%" class="close-icon">
-                                                    <button mat-icon-button type="button" tabIndex="-1"
-                                                        matTooltip="Remove" (click)="removeFoodItem(i)">
-                                                        <mat-icon>close</mat-icon>
-                                                    </button>
-                                                </div>
+                                        <div fxFlex="70%">
+                                            <mat-card-title>
+                                                {{ item.name }}
+                                            </mat-card-title>
+                                        </div>
 
-                                            </div>
+                                        <div fxFlex="10%" class="menuclose-icon">
+                                            <button mat-icon-button type="button" tabIndex="-1" matTooltip="Remove"
+                                                (click)="removeFoodItem(i)">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </div>
 
-                                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                    </div>
 
-                                                <div fxFlex="50%">
-                                                    <airmid-textbox label="Quantity" [maxLength]="50"
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                                        <div fxFlex="50%">
+                                            <!-- <airmid-textbox label="Quantity" [maxLength]="50"
                                                         [(ngModel)]="item.quantity"
                                                         [ngModelOptions]="{standalone: true}">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                                <div fxFlex="50%">
-                                                    <airmid-textbox label="Unit" [maxLength]="50"
-                                                        [(ngModel)]="item.unitId" [ngModelOptions]="{standalone: true}">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                            </div>
-
+                                                    </airmid-textbox> -->
+                                            <airmid-textbox label="Quantity" [maxLength]="50"
+                                                (selectionChange)="item.unitId = $event?.value ?? $event"
+                                                [value]="item.quantity" (valueChange)="item.quantity = $event">
+                                            </airmid-textbox>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <button mat-icon-button class="scroll-btn scroll-btn-right"
+                                        <div fxFlex="50%">
+                                            <!-- <airmid-textbox label="Unit" [maxLength]="50" [value]="item.unitId"
+                                                        (valueChange)="item.unitId = $event">
+                                                    </airmid-textbox> -->
+                                            <airmid-dropdown label="Unit" formControlName="unitId"
+                                                [formGroup]="dietMenuDetailForm" [mode]="autocompleteModeUnit">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- </div> -->
+
+                            <!-- <button mat-icon-button class="scroll-btn scroll-btn-right"
                                     (click)="scrollCards('right')">
                                     <mat-icon>chevron_right</mat-icon>
                                 </button>
-                            </div>
-
-                            <!-- <div fxLayout="row wrap" fxLayoutGap="20px grid">
-                                <div *ngFor="let item of selectedFoodItems; let i = index" fxFlex="25%" fxFlex.xs="100%"
-                                    fxFlex.sm="50%" fxFlex.md="33.33%" class="menucard">
-                                    <mat-card fxFlex.gt-sm="100%" fxFlex 
-                                       style="padding: 10px; gap: 4px; margin-top: 10px;">
-
-                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
-
-                                            <div fxFlex="80%" fxFlex.xs="90%" fxFlex.sm="90%">
-                                                <mat-card-title>
-                                                    {{ item.name }}
-                                                </mat-card-title>
-                                            </div>
-
-                                            <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%" class="close-icon">
-                                                <button mat-icon-button type="button" tabIndex="-1" matTooltip="Remove"
-                                                    (click)="removeFoodItem(i)">
-                                                    <mat-icon>close</mat-icon>
-                                                </button>
-                                            </div>
-
-                                        </div>
-
-                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
-
-                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                                <airmid-textbox label="Quantity" [maxLength]="50"
-                                                    [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}">
-                                                </airmid-textbox>
-                                            </div>
-
-                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                                <airmid-textbox label="Unit" [maxLength]="50" [(ngModel)]="item.unitId"
-                                                    [ngModelOptions]="{standalone: true}">
-                                                </airmid-textbox>
-                                            </div>
-
-                                        </div>
-
-                                    </mat-card>
-                                </div>
                             </div> -->
+
                         </mat-card>
                     </div>
                 </div>

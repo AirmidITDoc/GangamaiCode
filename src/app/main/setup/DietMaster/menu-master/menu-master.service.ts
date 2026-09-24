@@ -41,7 +41,7 @@ export class MenuMasterService {
       foodItemId: [''],
       active: [true, [Validators.required]],
 
-      // mDietMenuDetailMasters: this._formBuilder.array([])
+      mDietMenuDetailMasters: this._formBuilder.array([])
     });
   }
 
