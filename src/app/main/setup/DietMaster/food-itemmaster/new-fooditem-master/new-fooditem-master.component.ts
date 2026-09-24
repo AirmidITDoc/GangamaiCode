@@ -18,6 +18,7 @@ export class NewFooditemMasterComponent implements OnInit {
   isVegetarian: boolean = true;
   FoodItemId = 0;
   autocompleteModeFoodCategory: string = 'MFoodCategoryMaster'
+  autocompleteModeUnit: string = 'TypesOfFoodItemUnits'
 
   constructor(
     public _fooditemMasterService: FoodItemmasterService,

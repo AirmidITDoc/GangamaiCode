@@ -27,6 +27,13 @@ export class MenuMasterComponent {
   Fromdate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   Todate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+  @ViewChild('grid') grid: AirmidTableComponent;
+  @ViewChild('grid1') grid1: AirmidTableComponent;
+  gridConfig1: gridModel = new gridModel();
+  
+
+  isShowDetailTable: boolean = false;
+
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -43,49 +50,56 @@ export class MenuMasterComponent {
     this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
   }
 
-  // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  @ViewChild('grid') grid: AirmidTableComponent;
-  @ViewChild('grid1') grid1: AirmidTableComponent;
 
+  //   {
+  //     "dietMenuId": 10020,
+  //     "dietMenuCode": "DM023",
+  //     "dietMenuName": "thali",
+  //     "mealTypeId": 0,
+  //     "dietTypeId": 0,
+  //     "texture": "soft",
+  //     "calories": "1320",
+  //     "protein": "26",
+  //     "mealTypeCode": "MT003",
+  //     "mealName": "Demo",
+  //     "dietCode": "LSOD",
+  //     "dietName": "Low Sodium Diet",
+  //     "createdDate": "23/09/2026"
+  // }
   allColumns = [
     { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Meal Type", key: "mealTypeId", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Diet Type", key: "dietTypeId", sort: true, align: 'left', emptySign: 'NA' },
+
+    { heading: "Meal Type Code", key: "mealTypeCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Meal Type", key: "mealName", sort: true, align: 'left', emptySign: 'NA' },
+
+
+    { heading: "Diet Code", key: "dietCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA' },
+
     { heading: "Texture", key: "texture", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Calories", key: "calories", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Protein", key: "protein", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "meal Type Code", key: "mealTypeCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "dietCode", key: "dietCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "dietName", key: "dietName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "createdDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Food Item", key: "foodItemId", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Qantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Unit", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Sequence No", key: "sequenceNo", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-    {
-      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        {
-          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Edit), callback: (data: any) => {
-            this.onSave(data);
-          }
-        }, {
-          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Delete), callback: (data: any) => {
-            this._menuMasterService.deactivateTheStatus(data.specialtyId).subscribe((response: any) => {
-              this.grid.bindGridData();
-            });
-          }
-        }]
-    } //Action 1-view, 2-Edit,3-delete
+    { heading: "Proteins", key: "protein", sort: true, align: 'left', emptySign: 'NA' },
+
+    // {
+    //   heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+    //     {
+    //       action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Edit), callback: (data: any) => {
+    //         this.onSave(data);
+    //       }
+    //     }, {
+    //       action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Delete), callback: (data: any) => {
+    //         this._menuMasterService.deactivateTheStatus(data.specialtyId).subscribe((response: any) => {
+    //           this.grid.bindGridData();
+    //         });
+    //       }
+    //     }]
+    // }
   ]
 
   allFilters = [
-    // { fieldName: "DietMenuId", fieldValue: this.DietMenuId, opType: OperatorComparer.Contains },
     { fieldName: "Fromdate", fieldValue: this.Fromdate, opType: OperatorComparer.Contains },
-    { fieldName: "Todate", fieldValue: this.Todate, opType: OperatorComparer.Contains },
-    // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "Todate", fieldValue: this.Todate, opType: OperatorComparer.Contains }
   ]
 
   gridConfig: gridModel = {
@@ -121,28 +135,29 @@ export class MenuMasterComponent {
 
   GetDetails1(data: any): void {
 
-    // console.log("detailList:", data)
-    // const ipMedID = data.medicalRecoredId;
+    console.log("detailList:", data)
+    const dietMenuID = data.dietMenuId;
 
-    // this.gridConfig = {
-    //   apiUrl: "DietMenuMaster/DietmenumasterDetailsList",
-    //   columnsList: [
-    //     { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA'},
-    //     { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
-    //     { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
-    //     { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA' },
-    //     { heading: "Quantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
-    //   ],
-    //   sortField: "ipMedID",
-    //   sortOrder: 0,
-    //   filters: [
-    //     { fieldName: "ipMedID", fieldValue: String(ipMedID), opType: OperatorComparer.Equals },
-    //   ]
-    // };
-    // this.isShowDetailTable = true;
+    this.gridConfig1 = {
+      apiUrl: "DietMenuMaster/DietmenumasterDetailsList",
+      columnsList: [
+        { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Quantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
+      ],
+      sortField: "DietMenuId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "DietMenuId", fieldValue: String(dietMenuID), opType: OperatorComparer.Contains },
+      ],
+      row: 25
+    };
+    this.isShowDetailTable = true;
     // setTimeout(() => {
-    //   this.grid1.gridConfig = this.gridConfig1;
-    //   this.grid1.bindGridData();
+      this.grid1.gridConfig = this.gridConfig1;
+      this.grid1.bindGridData();
     // }, 500);
   }
 
@@ -153,11 +168,11 @@ export class MenuMasterComponent {
     const that = this;
     const dialogRef = this._matDialog.open(NewMenuMasterComponent,
       {
-        maxWidth: "90vw",
-        maxHeight: '90%',
+        maxWidth: "85vw",
+        maxHeight: '100%',
         width: '90%',
         // maxWidth: "95vw",
-        height: '95%',
+        height: '100%',
         // width: '90%',
         data: row
       });

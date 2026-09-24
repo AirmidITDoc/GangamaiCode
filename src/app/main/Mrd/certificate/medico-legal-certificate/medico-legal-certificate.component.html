@@ -256,10 +256,10 @@
 
                             <mat-form-field appearance="outline" class="timeField" fxFlex>
                                 <mat-label>Accident Time</mat-label>
-                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="accidentTime"
+                                <input matTimepicker #accidentPicker="matTimepicker" mode="12h" formControlName="accidentTime"
                                     [disableDialogOpenOnClick]="isDatePckrDisabled" />
                                 <mat-icon matSuffix
-                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                    (click)="!isDatePckrDisabled ? accidentPicker.showDialog() : ''">access_time</mat-icon>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" style="width: 33%;">
