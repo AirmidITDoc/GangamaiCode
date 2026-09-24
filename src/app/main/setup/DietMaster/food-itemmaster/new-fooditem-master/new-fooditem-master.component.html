@@ -39,11 +39,17 @@
                             [maxLength]="50" [validations]="getValidationMessages().LocalName">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Unit" formControlName="unit" [formGroup]="myForm" [maxLength]="50"
                             [validations]="getValidationMessages().Unit">
                         </airmid-textbox>
+                    </div> -->
+                    <div fxFlex="50%">
+                        <airmid-dropdown label="Unit" formControlName="unit" [formGroup]="myForm"
+                            [mode]="autocompleteModeUnit">
+                        </airmid-dropdown>
                     </div>
+
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <!-- <mat-checkbox label="IsVegeterian" formControlName="isVegetarian" [formGroup]="myForm">
                             IsVegeterian
