@@ -63,9 +63,7 @@ export class DietRequestComponent {
         { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-        // `type` added so the IsCancelledBy icon template actually renders — without it the
-        // grid has no reason to look at `.template` at all, even once it's assigned.
-        // { heading: "Cancelled  By", key: "cancelledUser ", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Cancelled Date", key: "isCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 140, type: 6 },
 
         {

@@ -302,6 +302,21 @@ export class AbhaPatientCardComponent {
     return this.genderLabels[this.profile.gender] || this.profile.gender;
   }
 
+  get abhaPhotoSrc(): string | null {
+    const photo = this.profile?.photo;
+    if (!photo) return null;
+
+    // If the API already returns a full data URL, use it as is
+    return photo.startsWith('data:')
+      ? photo
+      : `data:image/jpeg;base64,${photo}`;
+  }
+
+  onPhotoError() {
+    // Optional: hide or replace the broken image
+    if (this.profile) this.profile.photo = null;
+  }
+
   createSearchForm() {
     return this.formBuilder.group({
       RegId: [''],

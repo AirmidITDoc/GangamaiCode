@@ -279,3 +279,19 @@ mat-row {
     margin-left: auto;              // stays at the right even when it wraps
   }
 }
+
+.abha-photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.abha-photo {
+  width: 120px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}

@@ -74,12 +74,12 @@ export class PatientDietReauestComponent {
         { heading: "Status", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
 
         { heading: "Request Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        { heading: "DietReq No", key: "dietReqNo", sort: true, align: 'right', emptySign: 'NA', width: 80 },
+        { heading: "DietReq No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
 
         { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Cancelled  By", key: "isCancelledBy", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-        { heading: "Cancelled Date", key: "isCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+          { heading: "Cancelled Date", key: "isCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
