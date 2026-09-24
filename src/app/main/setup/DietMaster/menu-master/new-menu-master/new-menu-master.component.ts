@@ -76,10 +76,10 @@ export class NewMenuMasterComponent implements OnInit {
     return this._formBuilder.group({
       menuDetId: [element.menuDetId ?? 0],
       dietMenuId: [element.dietMenuId ?? 0],
-      foodItemId: [element.foodItemId ?? 0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      foodItemId: [element.foodItemId ?? 0],
       // foodName: [element.name ?? ''],
-      quantity: [element.quantity ?? '', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      unitId: [element.unitId ?? '', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      quantity: [element.quantity ?? 0],
+      unitId: [element.unitId ?? 0],
       sequenceNo: [element.sequenceNo ?? 0]
     });
   }
@@ -136,8 +136,8 @@ export class NewMenuMasterComponent implements OnInit {
       dietMenuId: this.dietMenuForm.get('dietMenuId')?.value || 0,
       foodItemId: foodItemId,
       name: foodName,
-      quantity: '',
-      unitId: unit?.value ?? '', //unit is defined as value
+      quantity: 0,
+      unitId: unit?.value ?? 0, //unit is defined as value
       sequenceNo: this.selectedFoodItems.length + 1
     });
     console.log('Selected Food ADDed Items:', this.selectedFoodItems);
@@ -170,93 +170,6 @@ export class NewMenuMasterComponent implements OnInit {
     return this.apiCaller.GetData(`Dropdown/GetBindDropDown?mode=${mode}`);
   }
 
-  //old
-  // onSubmit() {
-
-  //   if (this.dietMenuForm.invalid) {
-  //     const invalidFields = [];
-
-  //     for (const controlName in this.dietMenuForm.controls) {
-
-  //       if (this.dietMenuForm.controls[controlName].invalid) {
-
-  //         invalidFields.push(`New Menu Form: ${controlName}`);
-
-  //       }
-
-  //     }
-
-  //     if (invalidFields.length > 0) {
-
-  //       invalidFields.forEach(field => {
-
-  //         this.toastr.warning(
-  //           `Field "${field}" is invalid.`,
-  //           'Warning'
-  //         );
-
-  //       });
-
-  //     }
-
-  //     return;
-  //   }
-
-  //   // Check food items
-  //   if (this.selectedFoodItems.length === 0) {
-
-  //     this.toastr.warning(
-  //       'Please select at least one food item.',
-  //       'Warning'
-  //     );
-
-  //     return;
-  //   }
-
-  //   // Create detail list
-  //   const detailList = this.selectedFoodItems.map((item, index) => {
-
-  //     return {
-  //       menuDetId: 0,
-  //       dietMenuId: this.dietMenuForm.get('dietMenuId')?.value || 0,
-  //       foodItemId: item.foodItemId,
-  //       quantity: Number(item.quantity),
-  //       unitId: Number(item.unitId),
-  //       sequenceNo: index + 1
-  //     };
-
-  //   });
-
-
-  //   // Final API payload
-  //   const payload = {
-  //     dietMenuId: this.dietMenuForm.get('dietMenuId')?.value || 0,
-  //     dietMenuCode: this.dietMenuForm.get('dietMenuCode')?.value,
-  //     dietMenuName: this.dietMenuForm.get('dietMenuName')?.value,
-  //     mealTypeId: this.dietMenuForm.get('mealTypeId')?.value,
-  //     dietTypeId: this.dietMenuForm.get('dietTypeId')?.value,
-  //     texture: this.dietMenuForm.get('texture')?.value,
-  //     calories: this.dietMenuForm.get('calories')?.value,
-  //     protein: this.dietMenuForm.get('protein')?.value,
-  //     mDietMenuDetailMasters: detailList
-  //   }
-
-  //   this._menuMasterService.menuSave(payload).subscribe(
-  //     response => {
-
-  //       this.toastr.success(
-  //         'Diet Menu saved successfully.',
-  //         'Success'
-  //       );
-
-  //       this.onClear(true);
-
-  //     }
-  //   );
-  // }
-
-  //new 
-
   onSubmit(): void {
 
     if (!this.dietMenuForm.invalid) {
@@ -280,67 +193,32 @@ export class NewMenuMasterComponent implements OnInit {
       });
     }
     else {
-      const invalidFields = [];
-
-      if (this.dietMenuForm.invalid) {
-        for (const controlName in this.dietMenuForm.controls) {
-          if (this.dietMenuForm.controls[controlName].invalid) {
-            invalidFields.push(`Form: ${controlName}`);
-          }
-        }
-      }
-
+      const invalidFields = this.collectErrors(this.dietMenuForm);
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
         });
+        return;
       }
     }
   }
 
-  // onSubmit(): void {
-
-  //   if (this.dietMenuForm.invalid) {
-  //     this.dietMenuForm.markAllAsTouched();
-  //     return;
-  //   }
-
-  //   const dietMenuId = this.dietMenuForm.get('dietMenuId')?.value || 0;
-  //   const menuData = {
-  //     dietMenuId: dietMenuId,
-  //     dietMenuName: this.dietMenuForm.get('dietMenuName')?.value,
-  //     mealTypeId: this.dietMenuForm.get('mealTypeId')?.value,
-  //     dietTypeId: this.dietMenuForm.get('dietTypeId')?.value,
-  //     texture: this.dietMenuForm.get('texture')?.value,
-  //     calories: this.dietMenuForm.get('calories')?.value,
-  //     protein: this.dietMenuForm.get('protein')?.value,
-
-  //     mDietMenuDetailMasters: this.selectedFoodItems.map(
-  //       (item, index) => ({
-  //         menuDetId: item.menuDetId || 0,
-  //         dietMenuId: dietMenuId,
-  //         foodItemId: Number(item.foodItemId),
-  //         quantity: Number(item.quantity),
-  //         unitId: Number(item.unitId),
-  //         sequenceNo: index + 1
-  //       })
-  //     )
-  //   };
-
-  //   console.log(menuData);
-
-
-  //   this._menuMasterService.menuSave(menuData).subscribe({
-  //     next: (response) => {
-  //       this.onClear(true);
-  //       console.log(response);
-  //     },
-  //     error: (error) => {
-  //       console.error(error);
-  //     }
-  //   });
-  // }
+  collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {
+    let errors: string[] = [];
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        // go deeper
+        errors = errors.concat(this.collectErrors(control, newKey));
+      } else {
+        if (control?.invalid) {
+          errors.push(newKey);
+        }
+      }
+    });
+    return errors;
+  }
 
   dropFoodItem(event: CdkDragDrop<any[]>): void {
 
