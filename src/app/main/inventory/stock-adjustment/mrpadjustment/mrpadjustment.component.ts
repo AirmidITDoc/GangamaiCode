@@ -100,7 +100,7 @@ export class MRPAdjustmentComponent implements OnInit {
                 "landedRate": [this.vNewLandedRate, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
                 "purRate": [this.vNewPurchaseRate, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
                 "addedBy": [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                "addedDateTim": [(new Date()).toISOString().split('T')[0]],
+                "addedDateTime": [(new Date()).toISOString().split('T')[0]],
 
             }),
             "curruntStockModel": this._formBuilder.group({
@@ -113,8 +113,9 @@ export class MRPAdjustmentComponent implements OnInit {
                 "landedRate": [0],
                 "oldUnitMrp": [this.vOldMRP],
                 "oldUnitPur": [this.vPurchaseRate],
-                "oldUnitLanded": [this.vLandedRate]
-
+                "oldUnitLanded": [this.vLandedRate],
+                "addedBy": [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            
             })
         });
     }
@@ -181,7 +182,7 @@ export class MRPAdjustmentComponent implements OnInit {
             this.mrpform.get('mrpAdjustmentMod.landedRate').setValue(this.MRPAdjform.get('newLandedRate').value || 0)
             this.mrpform.get('mrpAdjustmentMod.purRate').setValue(this.MRPAdjform.get('NewPurchaseRate').value || 0)
             this.mrpform.get('mrpAdjustmentMod.addedBy').setValue(this.accountService.currentUserValue.userId)
-            this.mrpform.get('mrpAdjustmentMod.addedDateTim').setValue(new Date())
+            this.mrpform.get('mrpAdjustmentMod.addedDateTime').setValue(new Date())
 
             this.mrpform.get('curruntStockModel.storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
             this.mrpform.get('curruntStockModel.stockId').setValue(this.registerObj.stockId || 0)

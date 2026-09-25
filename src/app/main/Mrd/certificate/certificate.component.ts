@@ -91,13 +91,6 @@ export class CertificateComponent implements OnInit {
         { heading: "Certificate DateTime", key: "mlcTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-            // actions: [
-            //     {
-            //         action: gridActions.edit, callback: (data: any) => {
-            //             this.OnNewDeathCertificate(data);
-            //         }
-            //     }
-            // ],
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ];

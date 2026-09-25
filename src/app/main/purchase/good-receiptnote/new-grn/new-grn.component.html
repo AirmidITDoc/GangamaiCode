@@ -154,7 +154,7 @@
 
                     <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
                       placeholder="Qty" [validations]="getValidationMessages().qty" [type]="'text'"
-                      (keypress)="keyPressDigitsOnly($event)"></airmid-textbox>
+                      (keypress)="keyPressDigitsOnly($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
 
