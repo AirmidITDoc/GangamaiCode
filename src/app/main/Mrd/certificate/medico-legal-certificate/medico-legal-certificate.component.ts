@@ -350,7 +350,6 @@ export class MedicoLegalCertificateComponent {
         this.Remark = this.MLCData.remark
 
         const backendValue = response.reportingTime; // "19-09-2025 13:00:00"
-
         if (backendValue) {
           // Parse backend time
           const timePart = backendValue.split(' ')[1]; // "13:00:00"

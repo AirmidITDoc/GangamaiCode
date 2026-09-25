@@ -14,27 +14,18 @@ export class MenuMasterService {
     private _httpClient: ApiCaller,
     private _formBuilder: UntypedFormBuilder
   ) {
-    // this.myformSearch = this.createSearchForm();
+    this.myformSearch = this.filterForm();
   }
 
 
   filterForm(): FormGroup {
     return this._formBuilder.group({
-      Fromdate: [(new Date()).toISOString()],
-      Todate: [(new Date()).toISOString()]
+      DietName: '',
+      MealName: "",
+      DietMenuName: "",
     });
   }
 
-
-
-  createSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      // dietMenuName: [""],
-      Fromdate: [(new Date()).toISOString()],
-      Todate: [(new Date()).toISOString()],
-      IsDeletedSearch: ["2"],
-    });
-  }
 
   public menuSave(Param: any) {
     if (Param.dietMenuId) {
