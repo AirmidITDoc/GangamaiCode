@@ -23,6 +23,10 @@ export class MenuMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
   DietMenuId: any = "";
 
+  DietMenuName = "%"
+  DietName = "%"
+  MealName = "%"
+
   myFilterform: FormGroup;
   Fromdate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   Todate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -30,7 +34,7 @@ export class MenuMasterComponent {
   @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
   gridConfig1: gridModel = new gridModel();
-  
+
 
   isShowDetailTable: boolean = false;
 
@@ -43,29 +47,7 @@ export class MenuMasterComponent {
   ngOnInit(): void {
     this.myFilterform = this._menuMasterService.filterForm();
   }
-  onChangeStartDate(value) {
-    this.gridConfig.filters[0].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
-  onChangeEndDate(value) {
-    this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
 
-
-  //   {
-  //     "dietMenuId": 10020,
-  //     "dietMenuCode": "DM023",
-  //     "dietMenuName": "thali",
-  //     "mealTypeId": 0,
-  //     "dietTypeId": 0,
-  //     "texture": "soft",
-  //     "calories": "1320",
-  //     "protein": "26",
-  //     "mealTypeCode": "MT003",
-  //     "mealName": "Demo",
-  //     "dietCode": "LSOD",
-  //     "dietName": "Low Sodium Diet",
-  //     "createdDate": "23/09/2026"
-  // }
   allColumns = [
     { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
@@ -98,8 +80,9 @@ export class MenuMasterComponent {
   ]
 
   allFilters = [
-    { fieldName: "Fromdate", fieldValue: this.Fromdate, opType: OperatorComparer.Contains },
-    { fieldName: "Todate", fieldValue: this.Todate, opType: OperatorComparer.Contains }
+    { fieldName: "DietMenuName", fieldValue: this.DietMenuName, opType: OperatorComparer.StartsWith },
+    { fieldName: "MealName", fieldValue: this.MealName, opType: OperatorComparer.StartsWith },
+    { fieldName: "DietName", fieldValue: this.DietName, opType: OperatorComparer.StartsWith }
   ]
 
   gridConfig: gridModel = {
@@ -111,11 +94,25 @@ export class MenuMasterComponent {
     filters: this.allFilters
   }
 
+  Clearfilter(event) {
+    if (event == 'DietMenuName')
+      this.myFilterform.get('DietMenuName').setValue("")
+    if (event == 'MealName')
+      this.myFilterform.get('MealName').setValue("")
+    if (event == 'DietName')
+      this.myFilterform.get('DietName').setValue("")
+
+    this.onChangeFirst();
+  }
+
   onChangeFirst() {
-    this.Fromdate = this.datePipe.transform(this.myFilterform.get('Fromdate').value, "yyyy-MM-dd")
-    this.Todate = this.datePipe.transform(this.myFilterform.get('Todate').value, "yyyy-MM-dd")
+    this.DietMenuName = this.myFilterform.get('DietMenuName').value || '0'
+    this.MealName = this.myFilterform.get('MealName').value + "%"
+    this.DietName = this.myFilterform.get('DietName').value + "%"
+
     this.getfilterdata();
   }
+
 
   getfilterdata() {
     this.gridConfig = {
@@ -124,8 +121,9 @@ export class MenuMasterComponent {
       sortField: "DietMenuid",
       sortOrder: 0,
       filters: [
-        { fieldName: "Fromdate", fieldValue: this.Fromdate, opType: OperatorComparer.Contains },
-        { fieldName: "Todate", fieldValue: this.Todate, opType: OperatorComparer.Contains }
+        { fieldName: "DietMenuName", fieldValue: this.DietMenuName, opType: OperatorComparer.StartsWith },
+        { fieldName: "MealName", fieldValue: this.MealName, opType: OperatorComparer.StartsWith },
+        { fieldName: "DietName", fieldValue: this.DietName, opType: OperatorComparer.StartsWith }
       ],
       row: 25
     }
@@ -147,7 +145,7 @@ export class MenuMasterComponent {
         { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Quantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
       ],
-      sortField: "DietMenuId",
+      sortField: "DietMenuid",
       sortOrder: 0,
       filters: [
         { fieldName: "DietMenuId", fieldValue: String(dietMenuID), opType: OperatorComparer.Contains },
@@ -156,8 +154,8 @@ export class MenuMasterComponent {
     };
     this.isShowDetailTable = true;
     // setTimeout(() => {
-      this.grid1.gridConfig = this.gridConfig1;
-      this.grid1.bindGridData();
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
     // }, 500);
   }
 

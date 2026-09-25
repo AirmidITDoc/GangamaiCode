@@ -19,10 +19,32 @@
         <airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowButtons="false"
             (onSelectRow)="GetDetails1($event)">
             <ng-container filters>
-                <form [formGroup]="myFilterform">
-                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="Fromdate"
-                        formEndControlName="Todate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+                <form [formGroup]="myFilterform" fxLayout="column">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Diet Menu Name</mat-label>
+                        <input matInput placeholder="Search Diet Menu Name" autocomplete="off"
+                            [formGroup]="myFilterform" formControlName="DietMenuName"
+                            (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('DietMenuName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>MealName</mat-label>
+                        <input matInput placeholder="Search Meal Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="MealName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MealName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>DietName</mat-label>
+                        <input matInput placeholder="Search Diet Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="DietName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('DietName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
                 </form>
             </ng-container>
         </airmid-table>
@@ -33,40 +55,3 @@
     </div>
 
 </div>
-
-<!-- {
-    "sortField": "DietMenuid",
-    "sortOrder": -1,
-    "filters": [
-        {
-            "fieldName": "DietMenuId",
-            "fieldValue": "10020",
-            "opType": "Contains"
-        }
-    ],
-    "columns": [
-        {
-            "Name": "Diet Menu Code",
-            "Data": "dietMenuCode"
-        },
-        {
-            "Name": "Diet Menu Name",
-            "Data": "dietMenuName"
-        },
-        {
-            "Name": "Food Name",
-            "Data": "foodName"
-        },
-        {
-            "Name": "Name",
-            "Data": "name"
-        },
-        {
-            "Name": "Quantity",
-            "Data": "quantity"
-        }
-    ],
-    "first": 0,
-    "rows": 25,
-    "exportType": 1
-} -->
