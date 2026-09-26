@@ -1,0 +1,134 @@
+<div class="simple page-layout modal-wrapper grid-container" dynamicTableHeight>
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> IPD EMR </span>
+            </div>
+        </div>
+    </div>
+
+    <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
+        <!-- patient info parte -->
+        <div class="modal-card-container">
+
+            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                <div class="patient-info-sales">
+                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                    </div>
+                    <div class="Ipd-patient-info w-100-p">
+                        <!-- <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
+                                        (data?.middleName ? ' ' + data.middleName : '') +
+                                        (data?.lastName ? ' ' + data.lastName : '')
+                                        || data?.patientName
+                                        " [doctorName]="data?.doctorname" [departmentName]="data?.departmentName"
+                            [doa]="data.admissionDate" [ipdNo]="data?.ipdno || data?.ipdno"
+                            [ageString]="(data?.ageYear  !== undefined ? data?.ageYear  + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.GenderName : '')"
+                            [refDocName]="data?.refDocName" [wardBedName]="data?.roomName"
+                            [patientType]="data?.patientType" [tariffName]="data?.tariffName"
+                            [companyName]="data?.companyName"></app-patient-information> -->
+                    </div>
+                </div>
+            </mat-card>
+
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                <mat-tab label="EMR">
+                    <div class="content">
+                        <mat-card style="padding: 5px;">
+                            <div fxLayout="column">
+                                <div class="prescription-title" style="font-weight: 700;">
+                                    Vitals
+                                </div>
+                                <hr>
+                                <div fxLayout="row wrap" fxLayoutGap="4px" class="resize-form-fields">
+                                    <!-- Height [(ngModel)]="vHeight"  -->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Height</mat-label>
+                                        <input matInput placeholder="Height in cm" [maxLength]="20">
+                                        <span matSuffix style="font-size: medium;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size:medium;">cm</span>
+                                    </mat-form-field>
+
+                                    <!-- Weight [(ngModel)]="vWeight" -->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Weight</mat-label>
+                                        <input matInput id="weightField" placeholder="Weight in Kg" [maxLength]="20">
+                                        <span matSuffix style="font-size: medium;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: medium;">kg</span>
+                                    </mat-form-field>
+
+                                    <!-- BMI [(ngModel)]="vBMI"-->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>BMI</mat-label>
+                                        <input matInput placeholder="BMI" readonly />
+                                    </mat-form-field>
+
+                                    <!-- BSL [(ngModel)]="vBSL"-->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>BSL</mat-label>
+                                        <input matInput placeholder="BSL" id="bslField" [maxLength]="20">
+                                    </mat-form-field>
+
+                                    <!-- SpO2 [(ngModel)]="vSpO2" -->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>SpO2</mat-label>
+                                        <input matInput placeholder="SpO2" id="spo2Field" [maxLength]="20">
+                                    </mat-form-field>
+
+                                    <!-- Pulse [(ngModel)]="vPulse" -->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Pulse</mat-label>
+                                        <input matInput placeholder="Pulse" id="pulseField" [maxLength]="10">
+                                        <span matSuffix style="font-size: medium;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: medium;">bpm</span>
+                                    </mat-form-field>
+
+                                    <!-- BP [(ngModel)]="vBP"-->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>BP</mat-label>
+                                        <input matInput placeholder="BP" id="bpField" [maxLength]="10"
+                                            placeholder="Enter as 120/80">
+                                        <span matSuffix style="font-size: medium;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: medium;">mmHg</span>
+                                    </mat-form-field>
+
+                                    <!-- Temperature [(ngModel)]="vTemp" -->
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Temp</mat-label>
+                                        <input matInput placeholder="Temp" id="tempField" [maxLength]="10" OnlyNumber>
+                                        <span matSuffix style="font-size: medium;">|</span>
+                                        <span matSuffix style="margin-right: 15px; font-size: medium;">°C</span>
+                                    </mat-form-field>
+
+                                    <!-- <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>B.Group</mat-label>
+                                        <mat-select placeholder="BloodGroup" id="bloodField" name="BloodGroup">
+                                            <mat-option>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>B. Group</mat-label>
+                                        <mat-select placeholder="BloodGroup">
+                                            <mat-option>A+</mat-option>
+                                            <mat-option>A-</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Allergies </mat-label>
+                                        <input matInput id="allergyField" placeholder="Allergies" [maxLength]="50">
+                                        <span matSuffix style="font-size: medium;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: medium;">AL</span>
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

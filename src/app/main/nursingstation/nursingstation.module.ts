@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-
-
 const approtes: Routes = [
 
     {
@@ -17,8 +15,6 @@ const approtes: Routes = [
         path: "requestforlabtest",
         loadChildren: () => import("./requestforlabtest/requestforlabtest.module").then((m) => m.RequestforlabtestModule),
     },
-
-
     {
         path: "dialysis",
         loadChildren: () => import("./clinical-care-chart/clinical-care-chart.module").then((m) => m.ClinicalCareChartModule),
@@ -27,14 +23,9 @@ const approtes: Routes = [
         path: "dialysissms",
         loadChildren: () => import("./consent/consent.module").then((m) => m.ConsentModule),
     },
-    // {
-    //   path:"patientrefvisit",
-    //   loadChildren: () => import("./patient-ref-visit/patientrefvisit.module").then((m)=>m.PatientrefvisitModule), 
-    // },
-
     {
         path: "patientrefvisit",
-        loadChildren: () => import("../ipd/ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+        loadChildren: () => import("./ipd-emr/ipd-emr.module").then((m) => m.IpdEMRModule),
     },
     {
         path: "bedtransfer",
@@ -74,14 +65,13 @@ const approtes: Routes = [
 
     {
         path: "dietrequest",
-        loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
+         loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
     },
 
 ];
 @NgModule({
     declarations: [
-       
-    ],
+  ],
     imports: [
         RouterModule.forChild(approtes),
     ]
