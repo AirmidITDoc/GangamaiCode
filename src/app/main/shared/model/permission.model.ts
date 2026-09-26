@@ -235,5 +235,6 @@ export enum permissionCodes {
     FoodItemMaster = 'FoodItemMaster',
     DietMenuMaster = 'DietMenuMaster',
 
-    MRDTemplate = 'MRDTemplate'
+    MRDTemplate = 'MRDTemplate',
+    MRDCertificate = 'MRDCertificate'
 }

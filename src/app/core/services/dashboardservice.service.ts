@@ -79,7 +79,7 @@ async UserAccConfigSettingParam1(): Promise<any> {
   };
 
   const data = await this.http.PostData("Common", Params).toPromise();
-  debugger
+  // debugger
   this.DashboardconfigParams = data;
 
   return data;
