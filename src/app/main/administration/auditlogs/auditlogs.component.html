@@ -1,0 +1,54 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+
+    
+    <!-- Header -->
+    <mat-toolbar class="audit-header-toolbar">
+        <span class="title">
+            <mat-icon>history</mat-icon>
+            Audit Logs
+        </span>
+        <span class="spacer"></span>
+    </mat-toolbar>
+
+
+    <div class="audit-list" fusePerfectScrollbar>
+
+        <mat-card class="audit-card" *ngFor="let log of pagedAuditLogs">
+
+            <div class="audit-row">
+
+                <span class="method-badge">
+                    {{ getMethod(log.description) }}
+                </span>
+
+                <span class="audit-item">
+                    <mat-icon>fingerprint</mat-icon>
+                    {{ log.id }}
+                </span>
+
+                <span class="audit-item action-by">
+                    <mat-icon>person</mat-icon>
+                    {{ log.actionByName }}
+                </span>
+
+                <span class="audit-item entity-name" [matTooltip]="log.entityName">
+                    <mat-icon>route</mat-icon>
+                    {{ log.entityName }}
+                </span>
+
+                <span class="audit-item created-date">
+                    <mat-icon>event</mat-icon>
+                    {{ log.createdOn | date:'dd-MMM-yyyy hh:mm:ss a' }}
+                </span>
+
+            </div>
+
+        </mat-card>
+
+    </div>
+
+    <mat-paginator [length]="totalRecords" [pageSize]="20" [pageSizeOptions]="[20, 50, 150, 200]" showFirstLastButtons
+        (page)="onPageChange($event)">
+    </mat-paginator>
+
+</div>

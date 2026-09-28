@@ -19,53 +19,6 @@
 
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
-        <!-- <mat-tab label="Sms Status Detail List">
-
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                SMS Send List
-                            </span>
-                        </div>
-                    </div>
-                    <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-                        <button mat-raised-button (click)="onSave()">+ New SMS
-                        </button>
-
-                    </div>
-                </div>
-
-                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <ng-template #actionisSent let-element>
-                        <div>
-                            <button mat-icon-button (click)="onSave(element)" matTooltip="Resend SMS"
-                                *ngIf="element.isSent==true">
-                                <mat-icon *ngIf="element.isSent==true" matTooltip="SMS ReSend">
-                                    <img width="30px" height="30px" src="assets/images/logos/resend.png">
-                                </mat-icon>
-                            </button>
-                        </div>
-                    </ng-template>
-                    <airmid-table [gridConfig]="gridConfig" class="content">
-                        <ng-container filters>
-                            <airmid-datepicker [formGroup]="MySearchForm" [isRangePicker]="true"
-                                formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
-
-                        </ng-container>
-                    </airmid-table>
-                </div>
-            </div>
-
-        </mat-tab> -->
-
         <mat-tab label="WhatsApp Send List">
 
             <div fusePerfectScrollbar
