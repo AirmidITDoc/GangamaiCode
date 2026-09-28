@@ -58,7 +58,9 @@ export class PopupComponent {
     'visitDate',
     'opdNo',
     'departmentName',
-    'doctorName'
+    'doctorName',
+    'peEncounterStatus',
+    'CareContextStatus'
   ]
 
   visitdataSource = new MatTableDataSource<abhaRegInsert>();
@@ -104,34 +106,35 @@ export class PopupComponent {
     return this.selection.selected.some(row => !!row.peccid);
   }
 
-  selection = new SelectionModel<any>(true, []); // true = multi-select
+  selection = new SelectionModel<any>(true, []);
+  selection1 = new SelectionModel<any>(true, []);
 
   // Whether the number of selected elements matches the total number of (enabled) rows
-  isAllSelected(): boolean {
-    const numSelected = this.selection.selected.length;
-    const enabledRows = this.visitdataSource.data.filter(row => !row.disabled);
-    return numSelected === enabledRows.length && enabledRows.length > 0;
-  }
+  // isAllSelected(): boolean {
+  //   const numSelected = this.selection.selected.length;
+  //   const enabledRows = this.visitdataSource.data.filter(row => !row.disabled);
+  //   return numSelected === enabledRows.length && enabledRows.length > 0;
+  // }
 
-  // Whether some but not all rows are selected (for indeterminate state)
-  isSomeSelected(): boolean {
-    return this.selection.hasValue() && !this.isAllSelected();
-  }
+  // // Whether some but not all rows are selected (for indeterminate state)
+  // isSomeSelected(): boolean {
+  //   return this.selection.hasValue() && !this.isAllSelected();
+  // }
 
-  // Selects all rows if not all selected; otherwise clears selection
-  masterToggle(): void {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.visitdataSource.data
-        .filter(row => !row.disabled)
-        .forEach(row => this.selection.select(row));
-    }
-  }
+  // // Selects all rows if not all selected; otherwise clears selection
+  // masterToggle(): void {
+  //   if (this.isAllSelected()) {
+  //     this.selection.clear();
+  //   } else {
+  //     this.visitdataSource.data
+  //       .filter(row => !row.disabled)
+  //       .forEach(row => this.selection.select(row));
+  //   }
+  // }
 
-  areAllRowsDisabled(): boolean {
-    return this.visitdataSource.data.every(row => row.disabled);
-  }
+  // areAllRowsDisabled(): boolean {
+  //   return this.visitdataSource.data.every(row => row.disabled);
+  // }
 
   onCheckboxChange(contact: any, checked: boolean): void {
     // Clear previously selected row
@@ -200,35 +203,34 @@ export class PopupComponent {
     const row = this.selectedRow;
     return !!row && !!row.ccWorkflowId && !row.ccErrMessage;
   }
-
-  selection1 = new SelectionModel<any>(true, []); // true = multi-select
+ // true = multi-select
 
   // Whether the number of selected elements matches the total number of (enabled) rows
-  isAllSelected1(): boolean {
-    const numSelected = this.selection1.selected.length;
-    const enabledRows = this.admissiondataSource.data.filter(row => !row.disabled);
-    return numSelected === enabledRows.length && enabledRows.length > 0;
-  }
+  // isAllSelected1(): boolean {
+  //   const numSelected = this.selection1.selected.length;
+  //   const enabledRows = this.admissiondataSource.data.filter(row => !row.disabled);
+  //   return numSelected === enabledRows.length && enabledRows.length > 0;
+  // }
 
-  // Whether some but not all rows are selected (for indeterminate state)
-  isSomeSelected1(): boolean {
-    return this.selection1.hasValue() && !this.isAllSelected();
-  }
+  // // Whether some but not all rows are selected (for indeterminate state)
+  // isSomeSelected1(): boolean {
+  //   return this.selection1.hasValue() && !this.isAllSelected();
+  // }
 
-  // Selects all rows if not all selected; otherwise clears selection
-  masterToggle1(): void {
-    if (this.isAllSelected()) {
-      this.selection1.clear();
-    } else {
-      this.admissiondataSource.data
-        .filter(row => !row.disabled)
-        .forEach(row => this.selection1.select(row));
-    }
-  }
+  // // Selects all rows if not all selected; otherwise clears selection
+  // masterToggle1(): void {
+  //   if (this.isAllSelected()) {
+  //     this.selection1.clear();
+  //   } else {
+  //     this.admissiondataSource.data
+  //       .filter(row => !row.disabled)
+  //       .forEach(row => this.selection1.select(row));
+  //   }
+  // }
 
-  areAllRowsDisabled1(): boolean {
-    return this.admissiondataSource.data.every(row => row.disabled);
-  }
+  // areAllRowsDisabled1(): boolean {
+  //   return this.admissiondataSource.data.every(row => row.disabled);
+  // }
 
   getLastAdmissionDoctorList(regId) {
     const vdata = {
@@ -510,6 +512,208 @@ export class PopupComponent {
     this.isProgressDialogOpen = false;
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
+    }
+  }
+
+  ///////////////IP ///////////////////
+
+  
+  get IPselectedRow(): any {
+    const selected = this.selection1.selected;
+    return selected.length > 0 ? selected[0] : null;
+  }
+  get isIPEncounterCompleted(): boolean {
+    const row = this.IPselectedRow;
+    return !!row && row.peccid > 0 && !row.peErrMessage;
+  }
+  get isIPCareContextCompleted(): boolean {
+    const row = this.IPselectedRow;
+    return !!row && !!row.ccWorkflowId && !row.ccErrMessage;
+  }
+
+   onIPCheckboxChange(contact: any, checked: boolean): void {
+    // Clear previously selected row
+    this.selection1.clear();
+
+    if (!checked) {
+      return;
+    }
+
+    // Select only the current row
+    this.selection1.select(contact);
+
+    if ((contact?.abhaTranId ?? 0) > 0) {
+      this._abhaIntegrationService.getAbhaById(contact.abhaTranId).subscribe((response) => {
+        console.log('Get ABHA DATA', response);
+        this.abhaNumber = response.abhaNumber;
+        this.abhaAddress = response.abhaAddress;
+        this.abhaId = response.abhaTranId;
+        this.DOB = response.yearOfBirth
+      });
+    }
+
+    if (contact.peccid > 0 && !contact.peErrMessage) {
+      // encounter succeeded — lock encounter btn, unlock care context
+      this.IPencounterBtnDisabled = true;
+      this.IPcareContextEnabled = true;
+    } else {
+      // encounter failed — allow retry, block care context
+      this.IPencounterBtnDisabled = false;
+      this.IPcareContextEnabled = false;
+    }
+  }
+
+  GetIPPatientEncounterDetails() {
+
+    const selectedAddmission = this.selection1.selected[0];
+    const selectedReg = this.patientDetail.regId;
+
+    const getData = {
+      abhaNumber: String(this.abhaNumber), //'91-7464-3370-2840', //
+      abhaAddress: String(this.abhaAddress), //'91746433702840@sbx', //
+      hipId: 'AIRMIDABHA',
+      OpIpId: String(selectedAddmission.admissionID), //"536228", //
+      opIpType: "1"
+    };
+
+    this._abhaIntegrationService.pushAbhaEncounterDet(getData).subscribe({
+      next: (response: any) => {
+        console.log('IP Patient Encounter Details:', response);
+        this.encounterResponse = response;
+        // wait 1 minute before refreshing, since ABDM processing is async on their end
+        this.encounterRefreshTimer = setTimeout(() => {
+          this.refreshAdmissionGridAndReselect(selectedReg);
+        }, 60000);
+      },
+      error: (error) => {
+        console.error('Patient Encounter API Error:', error);
+        this.encounterStatus = 'failed';
+      }
+    });
+  }
+
+  refreshAdmissionGridAndReselect(regId: any) {
+    const vdata = {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "RegId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegId",
+          "fieldValue": String(regId),//"140306", //
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._abhaIntegrationService.getLastAdmissionDoctorList(vdata).subscribe(res => {
+      this.admissiondataSource.data = [...res.data];   // new array reference triggers table refresh
+      this.reselectRowByAdmission(regId);
+      this.reselectRowByAdmission1(regId);
+    });
+  }
+
+  IPcareContextEnabled: boolean = false;
+  IPencounterBtnDisabled: boolean = false;
+  // isEncounterInProgress: boolean = false;
+  // private encounterRefreshTimer: any;
+  reselectRowByAdmission(regId: any) {
+    this.selection1.clear();
+    const matchedRow = this.admissiondataSource.data.find(row => row.regID === regId);
+
+    if (!matchedRow) {
+      return;
+    }
+
+    this.selection1.select(matchedRow);
+
+    if (matchedRow.peErrMessage == "") {
+      // encounter succeeded — lock encounter btn, unlock care context
+      this.IPencounterBtnDisabled = true;
+      this.IPcareContextEnabled = true;
+    } else {
+      // encounter failed — allow retry, block care context
+      this.IPencounterBtnDisabled = false;
+      this.IPcareContextEnabled = false;
+      Swal.fire({
+        icon: 'error',
+        title: 'Encounter Failed',
+        text: matchedRow.peErrMessage,
+        confirmButtonText: 'OK'
+      });
+    }
+  }
+
+  GetIPCarecontextDetails() {
+    debugger
+
+    const selectedData = this.selection1.selected[0];
+    const selectedReg = this.patientDetail.regId;
+    this._abhaIntegrationService.getCareContextById(selectedData.peccid).subscribe((response) => {
+      // console.log('Get CareContext DATA', response);
+      this.careContextDet = response
+
+      const getData = {
+        abhaId: String(this.abhaAddress), //"string", //
+        abhaNumber: String(this.abhaNumber), //'91-7464-3370-2840', //
+        patientReferenceNumber:
+          this.careContextDet?.pePatientReferenceNumber || '00000',
+        yearOfBirth: String(this.DOB).substring(0, 4),//'2003-05-01 00:00:00.00'
+        careContexts: [
+          {
+            referenceNumber: this.careContextDet?.peCareContext,
+            comment: "string"
+          }
+        ],
+        hipId: this.careContextDet?.peHipId
+      };
+
+      console.log('Get CareContext', getData);
+      this._abhaIntegrationService.pushAbhaLinkCare(getData).subscribe({
+        next: (response: any) => {
+          console.log('Care Context Details:', response);
+          this.encounterRefreshTimer = setTimeout(() => {
+            this.refreshAdmissionGridAndReselect(selectedReg);
+          }, 2000);
+        },
+        error: (error) => {
+          console.error('Care Context API Error:', error);
+          this.careContextStatus = 'failed';
+        }
+      });
+    });
+
+    // return;
+
+  }
+
+  reselectRowByAdmission1(regId: any) {
+    this.selection1.clear();
+    const matchedRow = this.admissiondataSource.data.find(row => row.regID === regId);
+
+    if (!matchedRow) {
+      return;
+    }
+
+    this.selection1.select(matchedRow);
+
+    if (matchedRow.ccErrMessage == "") {
+      // encounter succeeded — lock encounter btn, unlock care context
+      this.IPencounterBtnDisabled = true;
+      this.IPcareContextEnabled = true;
+    } else {
+      // encounter failed — allow retry, block care context
+      this.IPencounterBtnDisabled = false;
+      this.IPcareContextEnabled = false;
+      Swal.fire({
+        icon: 'error',
+        title
+          : 'CareContext Failed',
+        text: matchedRow.ccErrMessage,
+        confirmButtonText: 'OK'
+      });
     }
   }
 }
