@@ -15,6 +15,8 @@ import { NewCertificateComponent } from './new-certificate/new-certificate.compo
 import { MedicoLegalCertificateComponent } from './medico-legal-certificate/medico-legal-certificate.component';
 import { DeathCertificateComponent } from './death-certificate/death-certificate.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
     selector: 'app-certificate',
@@ -35,7 +37,7 @@ export class CertificateComponent implements OnInit {
     label: any = "2"
 
     labelName: any;
-
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.MRDCertificate, permissionType.Edit);
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('RequestColorCode') RequestColorCode!: TemplateRef<any>;
@@ -52,6 +54,7 @@ export class CertificateComponent implements OnInit {
         public _MrdService: MrdService,
         public _matDialog: MatDialog,
         private commonService: PrintserviceService,
+        public permissionService: PagePermissionService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
