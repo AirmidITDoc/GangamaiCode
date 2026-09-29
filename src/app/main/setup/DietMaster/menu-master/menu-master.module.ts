@@ -27,6 +27,7 @@ import { MenuMasterComponent } from './menu-master.component';
 import { NewMenuMasterComponent } from './new-menu-master/new-menu-master.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatChipsModule } from '@angular/material/chips';
 
 const routes: Routes = [
   {
@@ -64,7 +65,8 @@ const routes: Routes = [
       MatExpansionModule,
       MatCardModule,
       MatSlideToggleModule,
-      DragDropModule
+      DragDropModule,
+      MatChipsModule
     ],
      providers: [DatePipe]
 })

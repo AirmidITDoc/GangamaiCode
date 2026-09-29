@@ -28,11 +28,14 @@ export class MenuMasterService {
 
 
   public menuSave(Param: any) {
-    if (Param.dietMenuId) {
-      return this._httpClient.PutData("DietMenuMaster/" + Param.dietMenuId, Param);
-    } else return this._httpClient.PostData("DietMenuMaster/Insert/", Param);
+    if (Param.dietmenumaster.dietMenuId) {
+      return this._httpClient.PutData("DietMenuMaster/Edit/" + Param.dietmenumaster.dietMenuId, Param);
+    } else return this._httpClient.PostData("DietMenuMaster/Insert", Param);
   }
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("DietMenuMaster?Id=" + m_data.toString());
+  }
+  public getMenuDetList(param) {
+    return this._httpClient.PostData("DietMenuMaster/DietmenumasterDetailsList", param);
   }
 }

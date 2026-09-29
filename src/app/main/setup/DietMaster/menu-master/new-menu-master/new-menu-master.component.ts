@@ -8,6 +8,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-new-menu-master',
@@ -30,6 +31,7 @@ export class NewMenuMasterComponent implements OnInit {
   selectedFoodItems: any[] = [];
   foodItemList: any[] = [];
   unitList: any[] = [];
+  isEditMode: boolean = false;
 
   constructor(
     public _menuMasterService: MenuMasterService,
@@ -38,7 +40,8 @@ export class NewMenuMasterComponent implements OnInit {
     public toastr: ToastrService,
     private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    private apiCaller: ApiCaller
+    private apiCaller: ApiCaller,
+    private accountService: AuthenticationService,
   ) { }
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
@@ -63,29 +66,29 @@ export class NewMenuMasterComponent implements OnInit {
       texture: ["", [Validators.pattern(/^[a-zA-Z ]+$/), Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       calories: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       protein: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // active: [true, [Validators.required]],
 
       ///extra fild
       foodItemId: [''],
+      createdBy: this.accountService.currentUserValue.userId,
+      modifiedBy: this.accountService.currentUserValue.userId,
 
-      mDietMenuDetailMasters: this._formBuilder.array([])
+      dietMenuDetailMasters: this._formBuilder.array([])
     });
   }
 
   createDietMenuDetailForm(element: any = {}): FormGroup {
     return this._formBuilder.group({
-      menuDetId: [element.menuDetId ?? 0],
       dietMenuId: [element.dietMenuId ?? 0],
       foodItemId: [element.foodItemId ?? 0],
-      // foodName: [element.name ?? ''],
       quantity: [element.quantity ?? 0],
       unitId: [element.unitId ?? 0],
-      sequenceNo: [element.sequenceNo ?? 0]
+      sequenceNo: [element.sequenceNo ?? 0],
+      createdBy: this.accountService.currentUserValue.userId
     });
   }
 
   get dietDetailArray(): FormArray {
-    return this.dietMenuForm.get('mDietMenuDetailMasters') as FormArray;
+    return this.dietMenuForm.get('dietMenuDetailMasters') as FormArray;
   }
 
   ngOnInit(): void {
@@ -96,6 +99,47 @@ export class NewMenuMasterComponent implements OnInit {
     this.dietDetailArray.push(this.createDietMenuDetailForm());
 
     this.loadDropdownOptions();
+
+    if (this.data) {
+      console.log("Retrive data:", this.data)
+      this.dietMenuForm.patchValue(this.data)
+      this.featchDetList(this.data)
+    }
+  }
+
+  featchDetList(data: any): void {
+
+    const m_data =
+    {
+      "first": 0,
+      "rows": 99999,
+      "sortField": "MenuDetId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "DietMenuId",
+          "fieldValue": String(data.dietMenuId),
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._menuMasterService.getMenuDetList(m_data).subscribe(det => {
+      console.log("details data:", det.data)
+
+      this.selectedFoodItems = (det.data ?? []).map((item: any) => ({
+        menuDetId: item.menuDetId ?? 0,
+        dietMenuId: item.dietMenuId ?? 0,
+        foodItemId: item.foodItemId ?? item.FoodItemId,
+        name: item.foodName ?? '',
+        quantity: item.quantity ?? 0,
+        unitId: String(item.unitId) ?? 0,
+        sequenceNo: item.sequenceNo ?? item.SequenceNo ?? 0
+      }));
+
+      console.log('Loaded Food Items for Edit:', this.selectedFoodItems);
+    });
   }
 
   selectChangeFoodName(data: any): void {
@@ -171,7 +215,6 @@ export class NewMenuMasterComponent implements OnInit {
   }
 
   onSubmit(): void {
-
     if (!this.dietMenuForm.invalid) {
 
       this.dietDetailArray.clear();
@@ -180,14 +223,32 @@ export class NewMenuMasterComponent implements OnInit {
         return;
       }
 
+      const isEdit = this.dietMenuForm.get('dietMenuId').value != 0;
+
       this.selectedFoodItems.forEach((item, i) => {
         item.sequenceNo = i + 1;
         this.dietDetailArray.push(this.createDietMenuDetailForm(item));
       });
 
       this.dietMenuForm.removeControl('foodItemId')
-      console.log(this.dietMenuForm.value);
-      this._menuMasterService.menuSave(this.dietMenuForm.value).subscribe(response => {
+      if (!isEdit) {
+        this.dietMenuForm.removeControl('modifiedBy')
+      }else{
+        this.dietMenuForm.removeControl('createdBy')        
+      }
+
+      const formValue = this.dietMenuForm.value;
+      const { dietMenuDetailMasters, ...dietmenumaster } = formValue;
+
+      const payload = {
+        dietmenumaster,
+        dietMenuDetailMasters
+      };
+
+      console.log(payload);
+      // return;
+
+      this._menuMasterService.menuSave(payload).subscribe(response => {
         this.toastr.success('Diet Menu saved successfully.', 'Success');
         this.onClear(true);
       });

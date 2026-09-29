@@ -28,37 +28,49 @@
 
                 <!-- op/ip radio / search textbox -->
                 <div class="modal-card-container" *ngIf="showOpIpControls">
-                    <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
-                        <div class="radio-container">
-                            <mat-radio-group aria-label="Select an option" formControlName="opIpType" name="opIpType"
-                                [formGroup]="certificateForm" (change)="onChangeType($event)"
-                                (blur)="onChangeType($event)" [(ngModel)]="vSelectedOption">
-                                <mat-radio-button value="OP" [disabled]="vCheckBox == true">OP</mat-radio-button>
-                                <mat-radio-button value="IP">IP</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
 
-                        <div class="input-container gap-8" fxFlex="50%">
+                    <div style="display:flex; align-items:center; gap:16px; width:100%">
 
-                            <airmid-autocomplete lbl="RgId" *ngIf="certificateForm.get('opIpType').value == 'OP'"
-                                [formGroup]="certificateForm" formControlName="opIpId"
+                        <!-- OP / IP radios in one line -->
+                        <mat-radio-group formControlName="opIpType" (change)="onChangeType($event)"
+                            style="display:flex; gap:12px; flex:0 0 auto">
+                            <mat-radio-button value="OP">OP</mat-radio-button>
+                            <mat-radio-button value="IP">IP</mat-radio-button>
+                        </mat-radio-group>
+
+                        <!-- Search field -->
+                        <div style="flex:1; min-width:0">
+                            <airmid-autocomplete *ngIf="!vDCCheckBox && certificateForm.get('opIpType').value == 'OP'"
+                                style="display:block; width:100%" lbl="RgId" [formGroup]="certificateForm"
+                                formControlName="opIpId" label="Search OP-Reg No / Patient Name / Mobile No"
                                 placeholderText="OP-RegNo/Patient Name/Mobile No"
-                                label="Search OP-Reg No / Patient Name / Mobile No" TextField="formattedText"
-                                ValueField="opIpId" ApiUrl="VisitDetail/search-patient?Keyword="
-                                (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
-                                ValueField="opIpId">
+                                ApiUrl="VisitDetail/search-patient?Keyword=" TextField="formattedText"
+                                ValueField="opIpId" (selectionChange)="getSelectedObjOP($event)">
                             </airmid-autocomplete>
 
-                            <airmid-autocomplete lbl="RgId" *ngIf="certificateForm.get('opIpType').value == 'IP'"
-                                [formGroup]="certificateForm" formControlName="opIpId"
+                            <airmid-autocomplete *ngIf="!vDCCheckBox && certificateForm.get('opIpType').value == 'IP'"
+                                style="display:block; width:100%" lbl="RgId" [formGroup]="certificateForm"
+                                formControlName="opIpId" label="Search IP-Reg No / Patient Name / Mobile No"
                                 placeholderText="IP-RegNo/Patient Name/Mobile No"
-                                label="Search IP-Reg No / Patient Name / Mobile No" ValueField="admissionID"
-                                TextField="formattedText" ApiUrl="Admission/search-patient?Keyword="
-                                (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
-                                TextField="formattedText">
+                                ApiUrl="Admission/search-patient?Keyword=" TextField="formattedText"
+                                ValueField="admissionID" (selectionChange)="getSelectedObjIP($event)">
                             </airmid-autocomplete>
 
+                            <airmid-autocomplete *ngIf="vDCCheckBox" style="display:block; width:100%" lbl="RegID"
+                                [formGroup]="certificateForm" formControlName="opIpId"
+                                label="Search Reg No / Patient Name / Mobile No (DC)"
+                                placeholderText="RegNo / First Name / Last Name / Mobile No (DC)"
+                                ApiUrl="Admission/Dischargesearch-patient?Keyword=" TextField="formattedText"
+                                ValueField="regId" (selectionChange)="getSelectedObjDC($event)">
+                            </airmid-autocomplete>
                         </div>
+
+                        <!-- Checkbox -->
+                        <mat-checkbox style="white-space:nowrap; flex:0 0 auto" [checked]="vDCCheckBox"
+                            (change)="getDischargedList($event)">
+                            IsDischarged
+                        </mat-checkbox>
+
                     </div>
                 </div>
 
@@ -78,8 +90,9 @@
                                         " [doctorName]="opipPatientDetailsObj?.doctorName || vDoctorName"
                                         [departmentName]="opipPatientDetailsObj?.departmentName"
                                         [doa]="opipPatientDetailsObj?.admissionDate"
-                                        [ipdNo]="opipPatientDetailsObj?.ipdNo"
-                                        [ageString]="(opipPatientDetailsObj?.age !== undefined ? opipPatientDetailsObj?.age + 'Y|' + opipPatientDetailsObj?.ageMonth + 'M|' + opipPatientDetailsObj?.ageDay + 'D | ' + opipPatientDetailsObj?.genderName : '')"
+                                        [ipdNo]="opipPatientDetailsObj?.ipdNo" [ageString]="opipPatientDetailsObj?.age != null
+                                        ? opipPatientDetailsObj.age + 'Y|' + (opipPatientDetailsObj.ageMonth ?? 0) + 'M|' + (opipPatientDetailsObj.ageDay ?? 0) + 'D | ' + (opipPatientDetailsObj.genderName ?? '')
+                                        : ''"
                                         [refDocName]="opipPatientDetailsObj?.refDoctorName || vRefDocName"></app-patient-information>
                                 </div>
                             </div>
@@ -256,8 +269,8 @@
 
                             <mat-form-field appearance="outline" class="timeField" fxFlex>
                                 <mat-label>Accident Time</mat-label>
-                                <input matTimepicker #accidentPicker="matTimepicker" mode="12h" formControlName="accidentTime"
-                                    [disableDialogOpenOnClick]="isDatePckrDisabled" />
+                                <input matTimepicker #accidentPicker="matTimepicker" mode="12h"
+                                    formControlName="accidentTime" [disableDialogOpenOnClick]="isDatePckrDisabled" />
                                 <mat-icon matSuffix
                                     (click)="!isDatePckrDisabled ? accidentPicker.showDialog() : ''">access_time</mat-icon>
                             </mat-form-field>

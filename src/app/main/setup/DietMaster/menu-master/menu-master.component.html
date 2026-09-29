@@ -15,43 +15,72 @@
             </button>
         </div>
     </div>
+
+    <ng-template #dietMenuDetails let-element>
+        <div class="food-collapse-row">
+            <mat-chip-set>
+                <mat-chip
+                    *ngFor="let data of getDetailArray(element?.dietMenuDetails).slice(0, isExpanded(element) ? undefined : visibleCount)">
+                    {{ getDetailNames(data) }}
+                </mat-chip>
+                <mat-chip *ngIf="!isExpanded(element) && getDetailArray(element?.dietMenuDetails).length > visibleCount"
+                    class="more-chip"
+                    style="--mdc-chip-label-text-color: #fff; --mdc-chip-elevated-container-color: #3949AB;"
+                    (click)="expandRow(element)">
+                    +{{ getDetailArray(element?.dietMenuDetails).length - visibleCount }} more
+                </mat-chip>
+            </mat-chip-set>
+        </div>
+    </ng-template>
+
+    <!-- dont delete it is dropdown way -->
+    <!-- <ng-template #dietMenuDetails let-element>
+        <div class="menu-details-cell">
+            <div class="items-trigger" [class.active]="expandedRow === element" (click)="toggleRow(element)">
+                <mat-icon>{{ expandedRow === element ? 'expand_less' : 'expand_more' }}</mat-icon>
+                <span>{{ getDetailArray(element?.dietMenuDetails).length }} {{
+                    getDetailArray(element?.dietMenuDetails).length === 1 ? 'item' : 'items' }}</span>
+            </div>
+
+            <div class="items-panel" *ngIf="expandedRow === element">
+                <div class="item-row" *ngFor="let data of getDetailArray(element?.dietMenuDetails)">
+                    <mat-icon>restaurant</mat-icon>
+                    <span class="item-name">{{ getDetailNames(data).split(' - ')[0] }}</span>
+                    <span class="item-qty">{{ getDetailNames(data).split(' - ')[1] }}</span>
+                </div>
+            </div>
+        </div>
+    </ng-template> -->
+
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowButtons="false"
-            (onSelectRow)="GetDetails1($event)">
+        <!-- (onSelectRow)="GetDetails1($event)" -->
+        <airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowButtons="false">
             <ng-container filters>
                 <form [formGroup]="myFilterform" fxLayout="column">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Diet Menu Name</mat-label>
                         <input matInput placeholder="Search Diet Menu Name" autocomplete="off"
-                            [formGroup]="myFilterform" formControlName="DietMenuName"
-                            (input)="onChangeFirst()" />
+                            [formGroup]="myFilterform" formControlName="DietMenuName" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('DietMenuName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>MealName</mat-label>
-                        <input matInput placeholder="Search Meal Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="MealName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MealName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>DietName</mat-label>
-                        <input matInput placeholder="Search Diet Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="DietName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('DietName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                    
+                        <airmid-dropdown label="Meal Type" formControlName="MealName" [formGroup]="myFilterform"
+                            [(ngModel)]="gridConfig.filters[1].fieldValue"(selectionChange)="MealTypeView($event)" [mode]="autocompleteModeMealType">
+                        </airmid-dropdown>
+                        
+                        <airmid-dropdown label="Diet Type" formControlName="DietName" [formGroup]="myFilterform"
+                             [(ngModel)]="gridConfig.filters[2].fieldValue"(selectionChange)="DietTypeView($event)" [mode]="autocompleteModeDietType">
+                        </airmid-dropdown>
+                        
                 </form>
             </ng-container>
         </airmid-table>
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+    <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
         </airmid-table>
-    </div>
+    </div> -->
 
 </div>

@@ -12,14 +12,11 @@ export class IpdEmrService {
   MyForm: FormGroup;
 
   constructor(
-    // public _formbuilder: UntypedFormBuilder,
-    // public _httpClient: HttpClient,
-    // public _httpClient1: ApiCaller,
-    // private _FormvalidationserviceService: FormvalidationserviceService
-    )
-     {
-    // this.MyForm = this.createMyForm()
+    public _httpClient: ApiCaller,
+  ) { }
+
+  public onSaveCasepaper(param) {
+    return this._httpClient.PostData("EMR/Insert", param);
   }
 
- 
 }
