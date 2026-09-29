@@ -1,413 +1,880 @@
-// ============================================================
-// Clinical Care Chart - Component Styles
-// ============================================================
+.ipd-emr-page {
+    width: 100%;
+    height: 100vh !important;
+    min-height: 0 !important;
+    max-height: 100vh !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
+    box-sizing: border-box;
+}
 
-// --- Patient List Toggle Pill (Toolbar Right) ---
-.patient-list-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 14px 0 10px;
-  height: 34px;
-  border-radius: 20px;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  outline: none;
-  white-space: nowrap;
+.ipd-emr-toolbar {
+    width: 100%;
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+    flex: 0 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden !important;
+    box-sizing: border-box;
+}
 
-  .toggle-icon {
+.patient-list-toggle-btn1 {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px 0 10px;
+    height: 34px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    outline: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.patient-list-toggle-btn1 .toggle-icon {
     font-size: 18px;
     width: 18px;
     height: 18px;
     line-height: 18px;
     opacity: 0.9;
-  }
+}
 
-  .toggle-label {
+.patient-list-toggle-btn1 .toggle-label {
     line-height: 1;
-  }
+}
 
-  .toggle-arrow {
+.patient-list-toggle-btn1 .toggle-arrow {
     font-size: 16px;
     width: 16px;
     height: 16px;
     line-height: 16px;
-    opacity: 0.75;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
 
-  &:hover {
+    opacity: 0.75;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.patient-list-toggle-btn1:hover {
     background: rgba(255, 255, 255, 0.22);
     border-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
+}
 
-  &.is-open {
+.patient-list-toggle-btn1.is-open {
     background: rgba(255, 255, 255, 0.28);
     border-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-
-    .toggle-arrow {
-      opacity: 1;
-    }
-  }
 }
 
-// --- Icon Toolbar ---
-.icon-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-
-  .icon-toolbar-btn {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background-color: #eef2ff;
-    border: 1px solid #dce1f7;
-
-    &:hover {
-      background-color: var(--app-primary);
-      border-color: var(--app-primary);
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(63, 81, 181, 0.3);
-
-      .mat-icon {
-        color: #fff !important;
-      }
-    }
-
-    .mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-      color: var(--app-primary);
-      transition: color 0.2s ease;
-    }
-  }
+.patient-list-toggle-btn1.is-open .toggle-arrow {
+    opacity: 1;
 }
 
-// --- Patient Info Override ---
-.patient-sub {
-  padding: 4px 0;
-
-  .patient-info-row {
-    gap: 4px;
-  }
-}
-
-// --- Assessment Tables ---
-.assessment-table-container {
-  overflow: auto;
-  min-height: 60px;
-  max-height: 200px;
-}
-
-// --- Pain Measurement Scale ---
-.pain-scale-section {
-  padding: 10px 0;
-
-  h1 {
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #333;
-  }
-}
-
-.pain-scale-bar {
-  background-color: #555;
-  height: 2px;
-  margin-right: 46px;
-}
-
-.pain-scale-numbers {
-  display: flex;
-  justify-content: space-between;
-  margin-right: 30px;
-  padding: 0 2px;
-
-  .pain-number {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .vertical-line {
-      width: 1px;
-      height: 12px;
-      background-color: #555;
-      margin: 0;
-    }
-
-    span:last-child {
-      font-size: 12px;
-      font-weight: 600;
-      margin-top: 2px;
-    }
-  }
-}
-
-.pain-scale-emojis {
-  display: flex;
-  justify-content: space-between;
-  margin-right: 10px;
-  padding: 6px 0;
-
-  .pain-emoji {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-
-    span {
-      font-size: 11px;
-      font-weight: 500;
-      white-space: nowrap;
-      text-align: center;
-      color: #555;
-    }
-
-    img {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  }
-}
-
-.pain-slider-container {
-  margin-right: 30px;
-  padding: 0 4px;
-
-  .mat-slider {
+.ipd-drawer-container {
     width: 100%;
-  }
+
+    height: calc(100vh - 50px) !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 50px) !important;
+
+    flex: 1 1 auto;
+
+    display: flex;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
 }
 
-.pain-level-display {
-  padding: 6px 8px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--app-primary);
+.ipd-drawer-container.mat-drawer-container {
+    height: calc(100vh - 50px) !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 50px) !important;
+
+    overflow: hidden !important;
 }
 
-// --- Slider Styles ---
-.mat-slider.mat-slider-horizontal .mat-slider-wrapper {
-  top: 18px;
+
+.ipd-drawer-container .mat-drawer-content {
+    height: 100% !important;
+    min-height: 0 !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
 }
 
-.mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
-  height: 12px;
-  border-radius: 5px;
+
+.example-sidenav-content1 {
+    width: 100%;
+
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 6px 8px;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
 }
 
-.mat-slider.mat-slider-horizontal .mat-slider-track-background,
-.mat-slider.mat-slider-horizontal .mat-slider-track-fill {
-  height: 100%;
+.ipd-main-content {
+    width: 100%;
+
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
 }
 
-.mat-slider.mat-slider-horizontal .mat-slider-track-fill {
-  background-color: blue;
-  background: linear-gradient(to right,
-      rgb(114, 236, 77),
-      rgb(238, 210, 96),
-      rgb(238, 125, 77));
+.patient-info-section {
+    width: 100%;
+
+    flex: 0 0 auto;
+
+    min-height: 0;
+
+    margin-top: -4px;
+
+    box-sizing: border-box;
 }
 
-.mat-accent .mat-slider-thumb {
-  height: 30px;
-  width: 30px;
-  background-color: white;
-  border: solid 2px gray;
-  bottom: -20px;
-  right: -20px;
+.patient-info-card1 {
+    width: 100%;
+
+    padding: 2px 10px !important;
+    margin: 0 !important;
+
+    box-sizing: border-box;
 }
 
-.mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
-  background-color: white;
+.patient-info-sales1,
+.patient-info-title1,
+.Ipd-patient-info1 {
+    width: 100%;
 }
 
-// --- Sidebar ---
-.sidebar-drawer {
-  width: 340px;
-  background-color: #eef5f5;
-  overflow: hidden !important;
+.ipdemr-scroll {
+    width: 100%;
+    flex: 1 1 auto;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+
+    padding: 8px !important;
+
+    box-sizing: border-box;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
 }
 
-.sidebar-content {
-  overflow: hidden !important;
 
-  // Remove space between form fields (Ward Name + Patient Name)
-  .mat-mdc-form-field-subscript-wrapper {
-    display: none;
-  }
+/* EMR scrollbar */
+.ipdemr-scroll::-webkit-scrollbar {
+    width: 8px;
+}
 
-  .mat-mdc-form-field {
+.ipdemr-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.ipdemr-scroll::-webkit-scrollbar-thumb {
+    background: #7986cb;
+    border-radius: 8px;
+}
+
+.ipdemr-scroll::-webkit-scrollbar-thumb:hover {
+    background: #5c6bc0;
+}
+
+.ipdemr-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #7986cb #f1f1f1;
+}
+
+.ipd-emr-form {
+    width: 100%;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    display: block;
+
+    box-sizing: border-box;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.ipdemr-scroll > form {
+    width: 100%;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box;
+}
+
+.ipdemr-scroll > form + form {
+    margin-top: 0 !important;
+}
+
+
+.emr-section-card {
+    width: 100%;
+
+    padding: 6px 8px !important;
+
+    margin: 0 0 5px !important;
+
+    box-sizing: border-box;
+
+    overflow: visible;
+}
+
+.emr-section-card hr {
+    border: none;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+    margin: 8px 0;
+}
+
+.vital-info-row {
+    width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    flex-wrap: nowrap;
+
+    overflow-x: auto;
+
+    padding-bottom: 2px;
+
+    box-sizing: border-box;
+}
+
+.vital-field {
+    flex: 1 1 0;
+
+    min-width: 110px;
+
+    margin-right: 5px !important;
+
+    box-sizing: border-box;
+}
+
+.unit-suffix {
+    margin-left: 4px;
+    margin-right: 8px;
+
+    font-size: medium;
+}
+
+.other-info-row {
+    width: 100%;
+
+    display: flex;
+
+    flex-wrap: nowrap;
+
+    align-items: flex-start;
+
+    box-sizing: border-box;
+}
+
+.other-info-field {
+    flex: 1 1 0;
+
+    min-width: 120px;
+
+    margin-right: 5px !important;
+    margin-top: 20px !important;
+
+    box-sizing: border-box;
+}
+
+
+.family-history-section {
+    width: 100%;
+
+    margin-top: 10px;
+
+    box-sizing: border-box;
+}
+
+.family-history-section hr {
+    border: none;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+    margin: 8px 0;
+}
+
+.family-history-form-row {
+    width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    flex-wrap: nowrap;
+
+    box-sizing: border-box;
+}
+
+
+/* Member Name */
+.family-member-field {
+    width: 19%;
+    flex: 0 0 19%;
+
+    margin-right: 5px !important;
+}
+
+
+/* Relationship */
+.relationship-field {
+    width: 19%;
+    flex: 0 0 19%;
+
+    min-width: 0;
+
+    margin-right: 5px !important;
+}
+
+.relationship-field airmid-dropdown,
+.relationship-field .mat-mdc-form-field {
+    display: block;
+
+    width: 100%;
+}
+
+
+/* Age */
+.family-age-field {
+    width: 12%;
+    flex: 0 0 12%;
+
+    margin-right: 5px !important;
+}
+
+
+/* Duration */
+.family-duration-field {
+    width: 12%;
+    flex: 0 0 12%;
+
+    margin-right: 5px !important;
+}
+
+
+/* Clinical History */
+.family-clinical-field {
+    width: 25%;
+    flex: 0 0 25%;
+
+    margin-right: 5px !important;
+}
+
+
+.input-add-button1 {
+    flex: 0 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    height: 56px;
+
+    box-sizing: border-box;
+}
+
+.input-add-button1 button {
+    height: 36px !important;
+    min-height: 36px !important;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    margin: 0 !important;
+}
+
+.input-add-button1 mat-icon {
+    font-size: 18px;
+
+    width: 18px;
+    height: 18px;
+
+    line-height: 18px;
+}
+
+
+.family-history-table {
+    width: 100%;
+
+    margin-top: 5px;
+
+    overflow-x: auto;
+
+    box-sizing: border-box;
+}
+
+.family-history-table mat-card {
+    width: 100%;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    box-sizing: border-box;
+}
+
+.family-history-table mat-table {
+    width: 100%;
+
+    min-width: 650px;
+
+    height: auto;
+
+    max-height: 280px;
+
+    overflow-y: auto;
+}
+
+.family-history-table .mat-mdc-header-row {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 2;
+}
+
+.emr-sub-section {
+    width: 100%;
+
+    margin-top: 8px;
+
+    box-sizing: border-box;
+}
+
+.emr-sub-section .section-title {
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+.emr-sub-section app-airmid-chipautocomplete {
+    width: 100%;
+
+    display: block;
+}
+
+.three-field,
+.duration-field {
+    width: 19%;
+
+    margin: 5px 5px 0 0 !important;
+}
+
+
+.ipd-main-content > .modal-footer1 {
+    /*
+     * Fixed footer height.
+     * It will always remain visible.
+     */
+    flex: 0 0 42px;
+
+    width: 100%;
+
+    height: 42px;
+    min-height: 42px;
+    max-height: 42px;
+
+    margin: 0 !important;
+
+    padding: 3px 0 0 0 !important;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    box-sizing: border-box;
+
+    overflow: hidden !important;
+}
+
+.footer-navigation-container1 {
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    box-sizing: border-box;
+}
+
+.modal-footer-buttons1 {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+}
+
+
+.modal-footer-buttons1 button {
+    height: 36px !important;
+
+    min-height: 36px !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box;
+}
+
+
+.ipd-drawer-container .mat-drawer {
+    height: 100% !important;
+
+    max-height: 100% !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
+}
+
+.ipd-drawer-container .mat-drawer-inner-container {
+    height: 100% !important;
+
+    max-height: 100% !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
+}
+
+
+.sidebar-drawer1 {
+    width: 340px !important;
+
+    min-width: 340px !important;
+
+    max-width: 340px !important;
+
+    height: 100% !important;
+
+    max-height: 100% !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
+}
+
+
+.sidebar-content1 {
+    width: 100%;
+
+    height: 100% !important;
+
+    min-height: 0 !important;
+
+    max-height: 100% !important;
+
+    padding: 10px !important;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
+
+    background: #f5f5f5;
+}
+
+
+.sidebar-form1 {
+    width: 100%;
+
+    height: 100% !important;
+
+    min-height: 0 !important;
+
+    max-height: 100% !important;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
+}
+
+
+.sidebar-form1 > div {
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
+}
+
+
+.ward-search-row {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    gap: 6px;
+
+    flex: 0 0 auto;
+
+    box-sizing: border-box;
+}
+
+.ward-dropdown {
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    width: 100%;
+}
+
+.ward-dropdown airmid-dropdown,
+.ward-dropdown .mat-mdc-form-field {
+    display: block !important;
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+}
+
+
+/* Ward Search Button */
+.ward-search-btn {
+    flex: 0 0 40px !important;
+
+    width: 40px !important;
+
+    min-width: 40px !important;
+
+    max-width: 40px !important;
+
+    height: 40px !important;
+
+    min-height: 40px !important;
+
+    max-height: 40px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-sizing: border-box;
+}
+
+.patient-name-field {
+    width: 100% !important;
+
+    min-width: 100% !important;
+
+    flex: 0 0 auto;
+
+    margin: 2px 0 4px !important;
+
+    box-sizing: border-box;
+}
+
+.sidebar-content1 .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+}
+
+.sidebar-content1 .mat-mdc-form-field {
     margin-bottom: 0 !important;
-  }
-
-  // Pagination in one line
-  .mat-mdc-paginator {
-    .mat-mdc-paginator-container {
-      flex-wrap: nowrap !important;
-      justify-content: center;
-      padding: 0 4px;
-      min-height: 40px;
-    }
-
-    .mat-mdc-paginator-range-label {
-      white-space: nowrap;
-      font-size: 11px;
-      margin: 0 4px;
-    }
-
-    .mat-mdc-paginator-page-size {
-      margin-right: 4px;
-
-      .mat-mdc-paginator-page-size-label {
-        font-size: 11px;
-        white-space: nowrap;
-      }
-
-      .mat-mdc-paginator-page-size-select {
-        width: 56px !important;
-      }
-    }
-
-    .mat-mdc-paginator-range-actions {
-      gap: 0;
-
-      .mat-mdc-icon-button {
-        width: 28px;
-        height: 28px;
-        padding: 2px;
-      }
-    }
-  }
 }
 
-.example-sidenav-content {
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  overflow: hidden !important;
+
+.patient-list-card {
+    width: 100%;
+
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    max-height: 100%;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box;
 }
 
-// --- Table Container ---
-.table-container {
-  max-height: 400px;
-  overflow-y: auto;
-  overflow-x: auto;
+
+.patient-list-card airmid-table {
+    width: 100%;
+
+    height: 100% !important;
+
+    min-height: 0;
+
+    flex: 1 1 auto;
+
+    display: block;
+
+    overflow: auto !important;
+
+    box-sizing: border-box;
 }
 
-// --- Card & Tab Spacing Overrides ---
+.patient-list-card .content {
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 0;
+
+    overflow: auto !important;
+
+    box-sizing: border-box;
+}
+
+
+// .table-container {
+//     width: 100%;
+//     max-height: 100%;
+//     overflow-y: auto;
+//     overflow-x: auto;
+//     box-sizing: border-box;
+// }
+
+// .airmid-table-container {
+//     width: 100%;
+//     padding: 0 !important;
+//     box-sizing: border-box;
+// }
+
+// .airmid-table-container .center {
+//     padding: 4px !important;
+// }
+
+
+.sidebar-drawer1::-webkit-scrollbar,
+.sidebar-content1::-webkit-scrollbar,
+.sidebar-form1::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar-drawer1,
+.sidebar-content1,
+.sidebar-form1 {
+    scrollbar-width: none;
+}
+
 .mat-card {
-  margin-bottom: 4px;
+    margin-bottom: 4px;
 }
 
 .mat-tab-body-content {
-  padding: 2px 0 !important;
+    padding: 2px 0 !important;
 }
 
-// --- Tab Structure Compact ---
-.tab-container {
-  padding: 0 !important;
-}
-
-.tab-body {
-  padding: 0 !important;
-}
-
-.tab-box {
-  padding: 0 !important;
-}
-
-.tab-content {
-  padding: 0 !important;
-
-  .mat-mdc-card {
-    padding: 6px 8px !important;
-    margin: 0 !important;
-  }
-}
-
-.tab-footer {
-  padding: 4px 8px !important;
-
-  .tab-footer-action {
-    padding: 0 !important;
-  }
-}
-
-// --- Form Field Compact (all tabs) ---
-.dynamic-table-wrapper {
-
-  // Remove subscript/hint area below every input
-  .mat-mdc-form-field-subscript-wrapper {
+.mat-mdc-form-field-subscript-wrapper {
     display: none !important;
-  }
-
-  // Small gap between form field rows (prevent touching)
-  .mat-mdc-form-field {
-    margin-bottom: 4px !important;
-  }
-
-  // Compact outline form field infix
-  .mat-mdc-form-field-infix {
-    padding-top: 8px !important;
-    padding-bottom: 4px !important;
-    min-height: 36px !important;
-  }
-
-  // Reduce mat-card padding inside tabs
-  .mat-mdc-card {
-    padding: 6px 8px !important;
-  }
-
-  // Tighten row gaps
-  [fxLayoutGap="6px"],
-  [fxLayoutGap="10px"] {
-    gap: 4px !important;
-  }
 }
 
-// --- Table header compact ---
-.table-header {
-  padding: 4px 8px;
-  margin-bottom: 2px;
+.mat-mdc-form-field {
+    margin-bottom: 4px;
 }
 
-// --- airmid-table compact ---
-.airmid-table-container {
-  padding: 0 !important;
-
-  .center {
-    padding: 4px !important;
-  }
+.mat-mdc-form-field-infix {
+    min-height: 36px;
 }
 
-// --- Top header compact ---
-.top-header-info {
-  padding: 4px 0 !important;
+:host {
+    display: block;
 
-  .top-header-title {
-    .h2 {
-      font-size: 14px !important;
-    }
-  }
+    width: 100%;
+    height: 100%;
+
+    min-height: 0;
+
+    overflow: hidden !important;
+}
+
+:host ::ng-deep html,
+:host ::ng-deep body {
+    overflow: hidden !important;
 }
