@@ -37,9 +37,11 @@ export class ItemFormMasterComponent implements OnInit {
     drugId = 0;
     drugName = ''
     menuId = 0;
+    vitemdescription:any='';
 
 
     autocompleteModeGSTTypesValues: string = "GSTTypes";
+     autocompleteModeRoute: string = "Route";
     autocompleteModeGSTTypesValues1: string = "GSTTypes";
     autocompleteModeItemType: string = "ItemType";
     autocompleteModeItemCategory: string = "ItemCategory";
@@ -59,6 +61,7 @@ export class ItemFormMasterComponent implements OnInit {
     @ViewChild('ddlDrug') ddlDrug: AirmidDropDownComponent;
     ItemId: any = 0;
     vchkactive: any = true;
+    vIsBrand: any = false;
     grid: any;
     vHSNCode: any;
     vCGST: any;
@@ -83,6 +86,8 @@ export class ItemFormMasterComponent implements OnInit {
             this.ItemId = this.data.itemID
             this.vHSNCode = this.data.hsNcode
             this.vchkactive = this.data.isActive
+            this.vIsBrand =  this.data.isBrand
+            this.vitemdescription =this.data?.drugDescription || '';
             this.vCGST = this.data.cgst
             this.vSGST = this.data.sgst
             this.vIGST = this.data.igst
@@ -408,6 +413,9 @@ export class ItemFormMasterComponent implements OnInit {
             ],
             mAssignItemToStores: [
                 { name: "required", Message: "Store Name is required" }
+            ],
+              itemroute: [
+                { name: "required", Message: "Route ID is required" }
             ],
             localLanguageName: []
         };

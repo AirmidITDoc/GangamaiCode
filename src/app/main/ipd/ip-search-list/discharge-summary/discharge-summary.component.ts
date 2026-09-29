@@ -17,6 +17,7 @@ import { PaidItemList } from 'app/main/pharmacy/sales-return-bill-settlement/sal
 import { ConfigService } from 'app/core/services/config.service';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { Console } from 'console';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
     selector: 'app-discharge-summary',
@@ -33,6 +34,7 @@ export class DischargeSummaryComponent implements OnInit {
     Chargeslist: any = [];
     rtrvDischargeSList = new DischargeSummary({});
     screenFromString = 'discharge-summary';
+     autocompletedepartment: string = "Department";
     dateTimeObj: any;
     ItemId: any;
     vDay: any = 1;
@@ -79,6 +81,8 @@ export class DischargeSummaryComponent implements OnInit {
     vClinicalFinding = "BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
     doseId = 0
     doseName = ""
+    VfollowUpReason:any= '';
+    VfollowUpDescription:any= '';
     DocName3 = 0
     vIsNormalDeath = "1";
     ItemName: any;
@@ -199,7 +203,17 @@ export class DischargeSummaryComponent implements OnInit {
                 lifeStyle: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 warningSymptoms: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 radiology: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                isNormalOrDeath: [1],
+                isNormalOrDeath: [1], 
+                isRefferal: [false],
+                isRefDepartmentId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+                isRefDoctorId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+                carePlanTitle:  ['CARE PLAN', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                carePlanDescription: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                followUpReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                followUpDepartmentId:  [0, this._FormvalidationserviceService.onlyNumberValidator()],
+                followUpDoctorId:  [0, this._FormvalidationserviceService.onlyNumberValidator()],
+                followUpDescription:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                templateDescriptionHtml: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
                 dischargeSummaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
             prescriptionDischarge: this._formBuilder.array([]),
@@ -208,8 +222,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
 
     // 2. FormArray Group for Refund Detail
-    createprescriptionDischarge(item: any = {}): FormGroup {
-        debugger
+    createprescriptionDischarge(item: any = {}): FormGroup { 
         return this._formBuilder.group({
             opdIpdId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -271,6 +284,13 @@ export class DischargeSummaryComponent implements OnInit {
                     this.DischargesumInsertForm.get("dischargModel.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
                     this.DischargesumInsertForm.get("dischargModel.dischargeSummaryDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                     this.DischargesumInsertForm.get("dischargModel.dischargeSummaryTime")?.setValue(this.dateTimeObj.time)
+                    this.DischargesumInsertForm.get("dischargModel.carePlanDescription")?.setValue(this.vLifeStyle)
+                    this.DischargesumInsertForm.get("dischargModel.isRefDoctorId")?.setValue(this.DischargesumInsertForm.get('dischargModel.dischargeDoctor2')?.value)
+                    const doctor2 = this.DischargesumInsertForm.get('dischargModel.dischargeDoctor2')?.value;
+                    const isReferral = Number(doctor2) > 0;
+                    this.DischargesumInsertForm.get('dischargModel.isRefferal')?.setValue(isReferral);
+
+
 
                     if (this.DischargesumInsertForm.get('dischargModel.dischargeSummaryId')?.value) {
                         this.DischargesumInsertForm.get('dischargModel.updatedBy').setValue(this.accountService.currentUserValue.userId);
@@ -335,7 +355,7 @@ export class DischargeSummaryComponent implements OnInit {
 
         await this.delay(1000);
 
-        this.viewgetInvesigationPdf(this.vAdmissionId);
+        //this.viewgetInvesigationPdf(this.vAdmissionId);
     }
 
     viewgetInvesigationPdf(element) {
@@ -696,29 +716,35 @@ export class DischargeSummaryComponent implements OnInit {
             this.rtrvDischargeSList = this.RetrDischargeSumryList[0]
             if (this.RetrDischargeSumryList.length != 0) {
                 this.rtrvDischargeSList = this.RetrDischargeSumryList[0]
-                this.DischargeSummaryId = this.RetrDischargeSumryList[0].dischargeSummaryId || 0
-                this.vDiagnosis = this.RetrDischargeSumryList[0].diagnosis
-                this.vhistory = this.RetrDischargeSumryList[0].history
-                this.vClinicalCondition = this.RetrDischargeSumryList[0].clinicalConditionOnAdmisssion
-                this.vClinicalFinding = this.RetrDischargeSumryList[0].clinicalFinding
-                this.vSURGERYprocedure = this.RetrDischargeSumryList[0].surgeryProcDone
-                this.vOperativeNotes = this.RetrDischargeSumryList[0].opertiveNotes
-                this.vPathology = this.RetrDischargeSumryList[0].investigation
-                this.vRadiology = this.RetrDischargeSumryList[0].radiology
-                this.vTreatmentGiven = this.RetrDischargeSumryList[0].treatmentGiven
-                this.vTreatmentAdvisedAfterDischarge = this.RetrDischargeSumryList[0].treatmentAdvisedAfterDischarge
-                this.vOtherConDrOpinions = this.RetrDischargeSumryList[0].otherConDrOpinions
-                this.vPainManagementTechnique = this.RetrDischargeSumryList[0].painManagementTechnique
-                this.vLifeStyle = this.RetrDischargeSumryList[0].lifeStyle
-                this.vConditionofTimeDischarge = this.RetrDischargeSumryList[0].conditionAtTheTimeOfDischarge
+                this.DischargeSummaryId = this.RetrDischargeSumryList[0]?.dischargeSummaryId || 0
+                this.vDiagnosis = this.RetrDischargeSumryList[0]?.diagnosis
+                this.vhistory = this.RetrDischargeSumryList[0]?.history
+                this.vClinicalCondition = this.RetrDischargeSumryList[0]?.clinicalConditionOnAdmisssion
+                this.vClinicalFinding = this.RetrDischargeSumryList[0]?.clinicalFinding
+                this.vSURGERYprocedure = this.RetrDischargeSumryList[0]?.surgeryProcDone
+                this.vOperativeNotes = this.RetrDischargeSumryList[0]?.opertiveNotes
+                this.vPathology = this.RetrDischargeSumryList[0]?.investigation
+                this.vRadiology = this.RetrDischargeSumryList[0]?.radiology
+                this.vTreatmentGiven = this.RetrDischargeSumryList[0]?.treatmentGiven
+                this.vTreatmentAdvisedAfterDischarge = this.RetrDischargeSumryList[0]?.treatmentAdvisedAfterDischarge
+                this.vOtherConDrOpinions = this.RetrDischargeSumryList[0]?.otherConDrOpinions
+                this.vPainManagementTechnique = this.RetrDischargeSumryList[0]?.painManagementTechnique
+                this.vLifeStyle = this.RetrDischargeSumryList[0]?.lifeStyle
+                this.vConditionofTimeDischarge = this.RetrDischargeSumryList[0]?.conditionAtTheTimeOfDischarge
                 this.vDoctorAssistantName = this.RetrDischargeSumryList[0].doctorAssistantName
-                this.vClaimNumber = String(this.RetrDischargeSumryList[0].claimNumber) || "0"
-                this.vPreOthNumber = String(this.RetrDischargeSumryList[0].preOthNumber) || "0"
-                this.vIsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
-                this.DischargesumInsertForm.get("dischargModel.followupdate")?.setValue(this.RetrDischargeSumryList[0].followupdate)
-                this.DischargesumInsertForm.get("dischargModel.dischargeDoctor1")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
-                this.DischargesumInsertForm.get("dischargModel.dischargeDoctor2")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
-                this.DischargesumInsertForm.get("dischargeDoctor3")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
+                this.vClaimNumber = String(this.RetrDischargeSumryList[0]?.claimNumber) || "0"
+                this.vPreOthNumber = String(this.RetrDischargeSumryList[0]?.preOthNumber) || "0"
+                this.vIsNormalDeath = this.RetrDischargeSumryList[0]?.isNormalOrDeath
+                this.DischargesumInsertForm.get("dischargModel.followupdate")?.setValue(this.RetrDischargeSumryList[0]?.followupdate)
+                this.DischargesumInsertForm.get("dischargModel.dischargeDoctor1")?.setValue(this.RetrDischargeSumryList[0]?.dischargeDoctor1)
+                this.DischargesumInsertForm.get("dischargModel.dischargeDoctor2")?.setValue(this.RetrDischargeSumryList[0]?.dischargeDoctor2)
+                this.DischargesumInsertForm.get("dischargModel.dischargeDoctor3")?.setValue(this.RetrDischargeSumryList[0]?.dischargeDoctor3)
+                this.DischargesumInsertForm.get("dischargModel.isRefDepartmentId")?.setValue(this.RetrDischargeSumryList[0]?.isRefDepartmentId)
+                this.DischargesumInsertForm.get("dischargModel.followUpDepartmentId")?.setValue(this.RetrDischargeSumryList[0]?.followUpDepartmentId)
+                this.DischargesumInsertForm.get("dischargModel.followUpDoctorId")?.setValue(this.RetrDischargeSumryList[0]?.followUpDoctorId)
+                this.VfollowUpReason = this.RetrDischargeSumryList[0]?.followUpReason
+                this.VfollowUpDescription =this.RetrDischargeSumryList[0]?.followUpDescription
+
 
                 if (this.RetrDischargeSumryList[0].isNormalOrDeath == 0)
                     this.vIsNormalDeath = "0"
@@ -961,6 +987,15 @@ export class DischargeSummaryComponent implements OnInit {
             ],
             wardId: [
                 { name: "required", Message: "wardId Name is required" }
+            ],
+            followupDepartmentId: [
+                { name: "required", Message: "followup department Name is required" }
+            ],
+               followupdoctor: [
+                { name: "required", Message: "followup doctor Name is required" }
+            ],
+              ReferDepartmentId: [
+                { name: "required", Message: "refer department Name is required" }
             ],
             DoseId: []
 
