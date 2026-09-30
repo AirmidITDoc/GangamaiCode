@@ -13,6 +13,7 @@ import { DietRequestService } from './diet-request.service';
 import { NewDietRequestComponent } from './new-diet-request/new-diet-request.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
     selector: 'app-diet-request',
@@ -32,9 +33,25 @@ export class DietRequestComponent {
     lname = "%"
     WardId = "0"
     autocompleteModewardName: string = "Room";
+    @ViewChild('detailDrawer') detailDrawer: MatDrawer;
 
     ReqId = 0
     ReqDetId = 0
+
+    Accepted: boolean = false
+    Delivered: boolean = false
+    Acceptedcnt = 0
+    Deliveredcnt = 0
+    NotAcceptedcnt = 0
+    NotDeliveredcnt = 0
+    dataSource = new MatTableDataSource<RequestMaster>();
+
+    VCancelcount = 0;
+    VNewcount = 0;
+    VAcceptcount = 0;
+    VPendingcount = 0;
+
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -55,16 +72,15 @@ export class DietRequestComponent {
 
     allcolumns = [
         { heading: "Status", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 80, type: gridColumnTypes.template },
+        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
 
         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        { heading: "Diet Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         // { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Cancelled Date", key: "isCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 140, type: 6 },
+        { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+
 
         {
             heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -183,82 +199,61 @@ export class DietRequestComponent {
     isShowDetailTable: boolean = false;
     isDetailicon: boolean = true;
 
-    GetDetails(data) {
-        console.log(data)
-        const DietReqId = String(data.dietReqId)
-        debugger
-        if (data.isCancelled)
-            this.isDetailicon = false
-        else
-            this.isDetailicon = true
+    // GetDetails(data) {
+    //     console.log(data)
+    //     const DietReqId = String(data.dietReqId)
+    //     debugger
+    //     if (data.isCancelled)
+    //         this.isDetailicon = false
+    //     else
+    //         this.isDetailicon = true
 
-        this.gridConfig1 = {
-            apiUrl: "DietPatientRequest/DietPatientRequestDetailsList",
-            columnsList: [
-                // {
-                //     heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', width: 100,
-                //     type: gridColumnTypes.template, template: this.status
-                // },
-                {
-                    heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 140,
-                    type: gridColumnTypes.template, template: this.isAccept
-                },
-                {
-                    heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 120,
-                    type: gridColumnTypes.template, template: this.isDelived
-                },
-                { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    //     this.gridConfig1 = {
+    //         apiUrl: "DietPatientRequest/DietPatientRequestDetailsList",
+    //         columnsList: [
+    //             // {
+    //             //     heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', width: 100,
+    //             //     type: gridColumnTypes.template, template: this.status
+    //             // },
+    //             {
+    //                 heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 110,
+    //                 type: gridColumnTypes.template, template: this.isAccept
+    //             },
+    //             {
+    //                 heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 110,
+    //                 type: gridColumnTypes.template, template: this.isDelived
+    //             },
+    //             { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    //             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    //             { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    //             { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+    //             { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    //             { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    //             { heading: "Accepted DateTime", key: "acceptedUser", sort: true, align: 'left', emptySign: 'NA', width: 210, type: 8 },
+    //             { heading: "Delived DateTime", key: "deliverUser", sort: true, align: 'left', emptySign: 'NA', width: 210, type: 8 },
+    //             { heading: "Cancelled", key: "detIsCancelledBy", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.template },
+    //             { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 210 },
+    //             { heading: "Cancelled Reason", key: "cancelledReason", sort: true, align: 'left', emptySign: 'NA', width: 140 },
 
-                { heading: "OPIPID", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    //             {
+    //                 heading: "Action", key: "action1", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+    //                 template: this.actionButtonTemplate1  // Assign ng-template to the column
+    //             }
+    //         ],
+    //         sortField: "DietReqDetId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "DietReqId", fieldValue: DietReqId, opType: OperatorComparer.Equals }
 
-                { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+    //         ]
+    //     }
+    //     this.isShowDetailTable = true;
 
-                // { heading: "DietMenuCode", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                // { heading: "Diet MenuName", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                // { heading: "MealTypeCode", key: "MealTypeCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-                // { heading: "DietCode", key: "DietCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-                { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-                { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                // { heading: "Restriction ", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                // { heading: "Allergy", key: "allergyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                // { heading: "Reaction", key: "reaction", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                // { heading: "Accepted By", key: "isAcceptedUser", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                { heading: "Accepted DateTime", key: "isAcceptedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+    //     this.cdr.detectChanges();
 
-                // { heading: "DelivedBy", key: "isDelivedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                { heading: "Delived DateTime", key: "isDelivedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 140, type: 8 },
-                {
-                    heading: "Cancelled", key: "detIsCancelled", sort: true, align: 'left', emptySign: 'NA', width: 140,
-                    type: gridColumnTypes.template, template: this.detIsCancelled
-                },
-                { heading: "Cancelled DateTime", key: "detIsCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
-
-
-                { heading: "CancelledBy", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                { heading: "Cancelled Reason", key: "cancelledReason", sort: true, align: 'left', emptySign: 'NA', width: 140 },
-                {
-                    heading: "Action", key: "action1", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-                    template: this.actionButtonTemplate1  // Assign ng-template to the column
-                }
-            ],
-            sortField: "DietReqDetId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "DietReqId", fieldValue: DietReqId, opType: OperatorComparer.Equals }
-
-            ]
-        }
-        this.isShowDetailTable = true;
-
-        this.cdr.detectChanges();
-
-        this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
-    }
+    //     this.grid1.gridConfig = this.gridConfig1;
+    //     this.grid1.bindGridData();
+    // }
 
     onPrint(element) {
         console.log(element)
@@ -290,9 +285,14 @@ export class DietRequestComponent {
 
     HeaderRequestCancle() {
         Swal.fire({
+
+            icon: 'question',
             title: 'Do you want to Cancle Request',
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
+
 
         }).then((flag) => {
 
@@ -329,9 +329,14 @@ export class DietRequestComponent {
     }
     DetailRequestCancle(element) {
         Swal.fire({
+
+            icon: 'question',
             title: 'Do you want to Cancle Request',
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
+
 
         }).then((flag) => {
 
@@ -363,9 +368,10 @@ export class DietRequestComponent {
         const that = this;
         const dialogRef = this._matDialog.open(NewDietRequestComponent,
             {
-                maxWidth: "95vw",
-                maxHeight: "99vh",
-                width: "100%"
+                width: '90%',
+                maxWidth: '95vw',
+                height: '98%',   // add this if missing — without it the dialog sizes to content and can overflow the viewport, causing the page-level scrollbar
+                autoFocus: false
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -381,9 +387,10 @@ export class DietRequestComponent {
         const that = this;
         const dialogRef = this._matDialog.open(NewDietRequestComponent,
             {
-                maxWidth: "95vw",
-                maxHeight: "99vh",
-                width: "100%",
+                width: '90%',
+                maxWidth: '95vw',
+                height: '98%',   // add this if missing — without it the dialog sizes to content and can overflow the viewport, causing the page-level scrollbar
+                autoFocus: false,
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -403,14 +410,9 @@ export class DietRequestComponent {
 
         }
     }
-    //
-    dataSource = new MatTableDataSource<RequestMaster>();
-
-    VCancelcount = 0;
-    VNewcount = 0;
-    VAcceptcount = 0;
-    VPendingcount = 0;
+    reqNo: any = ""
     Getrequestdetail() {
+
 
         this.VNewcount = 0;
         this.VAcceptcount = 0;
@@ -443,7 +445,7 @@ export class DietRequestComponent {
             },
             {
                 "fieldName": "DietReqId",
-                "fieldValue": String(this.regNo),
+                "fieldValue": String(this.reqNo),
                 "opType": "Equals"
             }
         );
@@ -460,9 +462,11 @@ export class DietRequestComponent {
         console.log(data)
         this._DietRequestService.getRequestlist(data).subscribe((response) => {
             this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
             if (this.dataSource.data.length > 0) {
                 this.VNewcount = this.dataSource.data.length
                 this.VCancelcount = 0;
+
                 this.dataSource.data.forEach(element => {
 
                     if (element.isCancelled) {
@@ -470,23 +474,140 @@ export class DietRequestComponent {
                     }
 
                 });
-                console.log(this.dataSource.data)
+
             }
         });
     }
 
+    GetrequestdetailStatus(event) {
+        this.ReqId = event.dietReqNo
+        this.VNewcount = 0;
+        this.VAcceptcount = 0;
+        this.VPendingcount = 0;
+        this.VCancelcount = 0;
+
+        const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
+
+        const filters: any[] = [];
+
+        // Handle date range
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+
+
+        filters.push(
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": String(this.fromDate),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": String(this.toDate),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "DietReqId",
+                "fieldValue": String(this.ReqId),
+                "opType": "Equals"
+            }
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "DietReqId",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+        console.log(data)
+        this._DietRequestService.getRequestlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+            if (this.dataSource.data.length > 0) {
+
+                this.Accepted = this.dataSource.data[0].allAccepted
+                this.Delivered = this.dataSource.data[0].allDelivered
+
+                this.Acceptedcnt = this.dataSource.data[0].acceptedCount
+                this.Deliveredcnt = this.dataSource.data[0].deliveredCount
+                this.NotAcceptedcnt = this.dataSource.data[0].notAcceptedCount
+                this.NotDeliveredcnt = this.dataSource.data[0].notDeliveredCount
+
+                this.dataSource.data.forEach(element => {
+
+                    if (element.isCancelled) {
+                        this.VCancelcount = this.VCancelcount + 1;
+                    }
+
+                });
+
+            }
+        });
+    }
+    onRowClick(row: any) {
+        this.GetDetails(row);
+        this.detailDrawer.open();
+    }
+    detailList: any[] = [];
+
+    GetDetails(data) {
+        console.log(data);
+        this.ReqId = data.dietReqId;
+        const DietReqId = String(data.dietReqId);
+
+        // this.gridConfig1.filters[0].fieldValue = DietReqId;
+
+        const requestData = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "DietReqDetId",
+            "sortOrder": 0,
+            "filters": [
+                { "fieldName": "DietReqId", "fieldValue": DietReqId, "opType": "Equals" }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        };
+
+        this._DietRequestService.getRequestdetaillist(requestData).subscribe((response) => {
+            this.detailList = response.data || [];
+            this.cdr.detectChanges();
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
+    closeDetailDrawer() {
+        this.detailDrawer.close();
+    }
+
+
+    onDrawerOpenedChange(isOpen: boolean) {
+        if (!isOpen) {
+            this.isShowDetailTable = false;
+        }
+    }
 }
 
 
 export class RequestMaster {
     visitId: number;
     isCancelled: any;
-    RegID: number;
-    visitDate: any;
-    visitTime: any;
-    unitId: number;
-
-
+    isAccept: any;
+    isDelived: any;
+    detIsCancelled: any;
+    allAccepted: any;
+    allDelivered: any;
+    acceptedCount: any;
+    deliveredCount: any;
+    notAcceptedCount: any;
+    notDeliveredCount: any;
     /**
      * Constructor
      *
@@ -496,9 +617,15 @@ export class RequestMaster {
         {
             this.visitId = RequestMaster.visitId || 0;
             this.isCancelled = RequestMaster.isCancelled || 0;
-            this.RegID = RequestMaster.RegID || 0;
-            this.visitDate = RequestMaster.visitDate || "";
-            this.visitTime = RequestMaster.visitTime || "";
+            this.isAccept = RequestMaster.isAccept || '';
+            this.isDelived = RequestMaster.isDelived || "";
+            this.detIsCancelled = RequestMaster.detIsCancelled || "";
+            this.allAccepted = RequestMaster.allAccepted || 0;
+            this.allDelivered = RequestMaster.allDelivered || '';
+            this.acceptedCount = RequestMaster.acceptedCount || "";
+            this.deliveredCount = RequestMaster.deliveredCount || "";
+            this.notAcceptedCount = RequestMaster.notAcceptedCount || "";
+            this.notDeliveredCount = RequestMaster.notDeliveredCount || "";
 
         }
     }

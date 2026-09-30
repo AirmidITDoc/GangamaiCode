@@ -14,10 +14,10 @@
 }
 
 .integrated-controls {
-//   position: absolute;
-//   top: 8px;
-//   right: 8px;
-//   z-index: 1000;
+  //   position: absolute;
+  //   top: 8px;
+  //   right: 8px;
+  //   z-index: 1000;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -78,9 +78,17 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .language-select {
@@ -96,12 +104,12 @@
   outline: none !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
-  
+
   &:hover {
     border-color: #2196f3 !important;
     box-shadow: 0 1px 3px rgba(33, 150, 243, 0.1) !important;
   }
-  
+
   &:focus {
     border-color: #2196f3 !important;
     box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2) !important;
@@ -144,4 +152,9 @@
 
 ::ng-deep .editor-area .ck-toolbar__separator {
   background-color: #e0e0e0 !important;
+}
+
+::ng-deep .ck-content .dx-text {
+  color: #0e323d;
+  font-size: 16px;
 }

@@ -20,29 +20,25 @@
 /* =====================================================
    CHIP / INPUT BOX
    ===================================================== */
-
 .chip-wrapper {
   flex: 1;
   width: auto;
-  min-height: 55px;
-  height: 55px;
+  height: auto;
+  min-height: 64px;
+  overflow: visible;
+
 
   box-sizing: border-box;
-
   border: 1px solid #a6a3a3;
   border-radius: 5px;
-
   padding: 8px 10px;
 
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-
   gap: 8px;
-
   background-color: #fff;
 }
-
 
 /* =====================================================
    CHIPS
@@ -206,27 +202,25 @@
 .autocomplete-list {
   position: absolute;
 
-  top: 57px;
+  top: 100%;
+  /* was 57px, so it always sits just below the box */
+  margin-top: 2px;
   left: 0;
-
-  /* Same width as input box, don't cover mic */
   right: 52px;
 
   z-index: 1000;
-
   background-color: #fff;
-
   border: 1px solid #ccc;
-
   border-radius: 4px;
-
   max-height: 150px;
-
   overflow-y: auto;
-
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+/* an empty dropdown shows nothing, so there is no stray line */
+.autocomplete-list:empty {
+  display: none;
+}
 
 /* AUTOCOMPLETE ITEM */
 

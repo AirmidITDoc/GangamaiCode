@@ -40,6 +40,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PatientDietReauestComponent } from './patient-diet-reauest.component';
 import { DietDetailListComponent } from './diet-detail-list/diet-detail-list.component';
+import { RequestcardpopupComponent } from './requestcardpopup/requestcardpopup.component';
 
 
 const routes: Routes = [
@@ -50,7 +51,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PatientDietReauestComponent, DietDetailListComponent, ],
+    declarations: [PatientDietReauestComponent, DietDetailListComponent, RequestcardpopupComponent, ],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),

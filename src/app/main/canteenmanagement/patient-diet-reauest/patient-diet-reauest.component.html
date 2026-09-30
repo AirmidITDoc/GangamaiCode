@@ -1,7 +1,7 @@
 <mat-drawer-container class="detail-drawer-container" hasBackdrop="true" fxFlexFill style="height: 100%;">
 
 
-    <mat-drawer #detailDrawer mode="over" position="end" class="detail-drawer" style="width: 500px; max-width: 95vw;"
+    <mat-drawer #detailDrawer mode="over" position="end" class="detail-drawer" style="width: 600px; max-width: 95vw;"
         (openedChange)="onDrawerOpenedChange($event)">
 
         <mat-toolbar class="accent" style="width: 100%; height: 50px; justify-content: space-between;">
@@ -15,9 +15,82 @@
         </mat-toolbar>
 
         <div class="p-12" style="height: calc(100% - 50px); overflow: auto;">
-            <airmid-table *ngIf="isShowDetailTable" [gridConfig]="gridConfig1" class="content" #grid1
-                [ShowFilter]="false" [ShowButtons]="false">
-            </airmid-table>
+            <div class="mb-12">
+                <span style="font-weight: bold;color: rgb(45, 84, 90);padding-right: 20px;">Total Accepted Orders-
+                    {{Accepted}}</span>
+                <span style="font-weight: bold;color: rgb(45, 84, 90);">Total Delivered Orders- {{Delivered}}</span>
+            </div>
+
+            <!-- 2 cards per row (always at least 2) -->
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+
+                <mat-card *ngFor="let item of detailList" style="border-radius: 8px; margin: 0; min-width: 0;">
+                    <mat-card-content>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between start" style="gap: 6px;">
+                            <span style="font-size: 14px; font-weight: 600; min-width: 0; word-break: break-word;">
+                                {{ item.patientName || 'NA' }}
+                            </span>
+                            <span *ngIf="item.detIsCancelled" class="status-not-requested"
+                                style="font-size: 11px; flex-shrink: 0;">
+                                Cancelled
+                            </span>
+                        </div>
+
+                        <div style="font-size: 12px; color: rgba(0,0,0,0.6); margin-top: 4px; word-break: break-word;">
+                            {{ item.roomName }}
+                        </div>
+
+                        <div style="font-size: 14px;font-weight: bold; color: rgba(45, 134, 150, 0.6); margin-top: 2px; word-break: break-word;"
+                            *ngIf="item.mealName || item.dietName">
+                            {{ item.mealName }} <span *ngIf="item.dietName"> | {{ item.dietName }}</span>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" class="mt-8"
+                            style="gap: 8px; flex-wrap: wrap;">
+
+                            <span class="status-box" [ngClass]="{
+                            'status-completed': item.isAccept === true,
+                            'status-pending': item.isAccept !== true
+                        }" style="padding: 3px 5px; border-radius: 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; min-width: 0;">
+                                <mat-icon style="font-size: 15px; height:15px; width:15px;">
+                                    {{ item.isAccept ? 'check_circle' : 'hourglass_empty' }}
+                                </mat-icon>
+                                {{ item.isAccept ? 'Accepted' : 'Pending' }}
+                            </span>
+
+                            <span class="status-box" [ngClass]="{
+                            'status-received': item.isDelived === true,
+                            'status-not-requested': item.isDelived !== true
+                        }" style="padding: 3px 5px; border-radius: 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; min-width: 0;">
+                                <mat-icon style="font-size: 15px; height:15px; width:15px;">
+                                    {{ item.isDelived ? 'local_shipping' : 'schedule' }}
+                                </mat-icon>
+                                {{ item.isDelived ? 'Delivered' : 'Pending' }}
+                            </span>
+
+                        </div>
+
+                        <div class="mt-8" style="font-size: 12px; color: rgba(0,0,0,0.6); word-break: break-word;"
+                            *ngIf="item.comments">
+                            <b>Comments:</b> {{ item.comments }}
+                        </div>
+
+                        <div class="mt-4" style="font-size: 11px; color: rgba(0,0,0,0.5); word-break: break-word;"
+                            *ngIf="item.detIsCancelled">
+                            <b>Cancelled by:</b> {{ item.cancelledUser }} — {{ item.cancelledReason }}
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+
+            </div>
+
+            <div *ngIf="!detailList || detailList.length === 0"
+                style="text-align:center; color: rgba(0,0,0,0.5); margin-top: 40px;">
+                No records found
+            </div>
+
         </div>
 
     </mat-drawer>
@@ -133,14 +206,15 @@
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                    <ng-template #IsCancelledBy let-element>
+                    <ng-template #isCancelled let-element>
                         <span [ngClass]="{
-                        'status-not-requested': element.isCancelled == true,
-                        'status-received': element.isCancelled !== true
-                      }">
-                            {{ element.isCancelled? 'Cancelled' : 'Confirmed' }}
+                'status-not-requested': element.isCancelled == true,
+                'status-received': element.isCancelled !== true
+              }">
+                            {{ element.isCancelled? 'Cancelled' : 'Active' }}
                         </span>
                     </ng-template>
+
 
                     <ng-template #actionButtonTemplate let-element>
 
@@ -160,7 +234,8 @@
 
                             <button mat-stroked-button color="warn" class="cancel-diet-btn"
                                 (click)="openheadercancletask(element); $event.stopPropagation()"
-                                matTooltip="Cancel Diet Request" *ngIf="!element.isCancelled">
+                                matTooltip="Cancel Diet Request"
+                                *ngIf="!element.isCancelled && !Accepted && !Delivered && element.deliveredCount ==0">
 
                                 <span>Cancel</span>
                             </button>
@@ -169,11 +244,11 @@
                         </div>
 
                     </ng-template>
-
                     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
                         class="px-12 py-4 border-bottom gap-8">
                         <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
 
+                            <!-- LEFT side: existing cards -->
                             <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
 
                                 <div class="dashboard-card registrations">
@@ -182,29 +257,62 @@
                                     <mat-icon class="card-icon">receipt_long</mat-icon>
                                 </div>
 
-                                <!-- <div class="dashboard-card pending">
-                                    <div class="card-label">Pending Order</div>
-                                    <div class="card-value">
-                                        <div> {{VPendingcount}}</div>
-                                    </div>
-                                    <mat-icon class="card-icon">hourglass_empty</mat-icon>
-                                </div> -->
-
                                 <div class="dashboard-card app-Cancel">
                                     <div class="card-label">Diet Plan Cancel</div>
                                     <div class="card-value">{{VCancelcount}}</div>
                                     <mat-icon class="card-icon">cancel</mat-icon>
                                 </div>
 
+                            </div>
+
+                            <span
+                                style="font-size: large;color: rgb(36, 84, 98);margin-left: 400px;font-weight: bold;margin-right: 20px;">
+                                Selected Request Details Status
+                            </span>
+
+                            <!-- RIGHT side: new cards, each visually distinct -->
+                            <div fxLayout="row" fxLayoutAlign="end center" class="gap-8">
+
+                                <div class="dashboard-card app-accept">
+                                    <div class="card-label">Accepted</div>
+                                    <div class="card-value">{{Acceptedcnt}}</div>
+                                    <mat-icon class="card-icon">thumb_up</mat-icon>
+                                </div>
+
+                                <div class="dashboard-card app-notaccept">
+                                    <div class="card-label">Not Accepted</div>
+                                    <div class="card-value">{{NotAcceptedcnt}}</div>
+                                    <mat-icon class="card-icon">hourglass_empty</mat-icon>
+                                </div>
+
+                                <div class="dashboard-card app-deliver">
+                                    <div class="card-label">Delivered</div>
+                                    <div class="card-value">{{Deliveredcnt}}</div>
+                                    <mat-icon class="card-icon">local_shipping</mat-icon>
+                                </div>
+
+                                <div class="dashboard-card app-notdeliver">
+                                    <div class="card-label">Not Delivered</div>
+                                    <div class="card-value">{{NotDeliveredcnt}}</div>
+                                    <mat-icon class="card-icon">local_shipping</mat-icon>
+                                </div>
 
                             </div>
 
                         </div>
 
                     </div>
-
+                    <ng-template #doctorNameWithPopoverTemplate let-element>
+                        <!-- Doctor Name with Hover Popover -->
+                        <span (mouseenter)="openDoctorDetailsPopover($event, element)"
+                            (mouseleave)="closeDoctorDetailsPopover()"
+                            style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
+                            {{ element.dietReqNo }}
+                        </span>
+                    </ng-template>
+                    <!-- (onSelectRow)="onRowClick($event)" -->
                     <airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowButtons="false"
-                        (onSelectRow)="onRowClick($event)">
+                        (onSelectRow)="GetrequestdetailStatus($event)">
                         <ng-container filters>
                             <form [formGroup]="myFilterform" fxLayout="column">
                                 <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"

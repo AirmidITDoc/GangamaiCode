@@ -6,33 +6,56 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Patient ICD Code
+                    MRD Patient ICD Code
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="getICDE()">Add ICD Code
+            <button mat-raised-button (click)="getICDE()">Add ICD Update
             </button>
         </div>
     </div>
 
     <div class="modal-body" fusePerfectScrollbar>
-    
+
         <!-- icd list -->
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <!-- *ngIf="IsEdit" -->
+                    <button mat-icon-button matTooltip="Edit ICD" (click)="onSave(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <!-- <button mat-icon-button matTooltip="Print" (click)="getMembershipview(element)">
+                    <mat-icon> print</mat-icon>
+                </button> -->
 
+                </div>
+            </ng-template>
             <airmid-table [gridConfig]="gridConfig" class="content">
                 <ng-container filters>
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Diagnosis Name</mat-label>
-                        <input matInput placeholder="Search Diagnosis  Name" autocomplete="off"
-                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                    <form [formGroup]="myFilterform" fxLayout="column">
 
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Admission Id</mat-label>
+                            <input matInput placeholder="Search Admission Id" autocomplete="off"
+                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="myFilterform"
+                                formControlName="AdmId" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('AdmId')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Diagnosis Id</mat-label>
+                            <input matInput placeholder="Search Diagnosis Id" autocomplete="off"
+                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="myFilterform"
+                                formControlName="IPDiagId" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('IPDiagId')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </form>
                 </ng-container>
             </airmid-table>
         </div>

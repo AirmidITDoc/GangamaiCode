@@ -1,0 +1,194 @@
+.doctor-details-popover-container {
+    width: 950px;
+    max-height: 950px;
+    padding: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+
+    .popover-header {
+        background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        color: white;
+        padding: 16px 20px;
+        margin-bottom: 0;
+
+        h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .header-icon {
+                font-size: 24px;
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+
+    .popover-body {
+        padding: 20px;
+        max-height: 500px;
+        overflow-y: auto;
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            gap: 16px;
+
+            p {
+                margin: 0;
+                color: #666;
+                font-size: 14px;
+            }
+        }
+
+        .no-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            gap: 12px;
+            color: #999;
+
+            mat-icon {
+                font-size: 48px;
+                width: 48px;
+                height: 48px;
+                color: #ccc;
+            }
+
+            p {
+                margin: 0;
+                font-size: 14px;
+            }
+        }
+
+        .details-content {
+            .detail-section {
+                margin-bottom: 24px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .section-title {
+                    margin: 0 0 12px 0;
+                    font-size: 15px;
+                    font-weight: 600;
+                    color: #4CAF50;
+                    padding-bottom: 8px;
+                    border-bottom: 2px solid #e0e0e0;
+                }
+
+                .detail-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 8px;
+
+                    .detail-item {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+
+                        &.full-width {
+                            grid-column: 1 / -1;
+                        }
+
+                        .detail-label {
+                            font-size: 12px;
+                            font-weight: 600;
+                            color: #041d2b;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+
+                        .detail-value {
+                            font-size: 14px;
+                            color: #333;
+                            font-weight: 500;
+                            word-break: break-word;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Scrollbar styling
+.doctor-details-popover-container .popover-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.doctor-details-popover-container .popover-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.doctor-details-popover-container .popover-body::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+
+    &:hover {
+        background: #555;
+    }
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.status-completed,
+.status-pending {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  writing-mode: horizontal-tb;
+  /* force horizontal text */
+}
+
+.status-completed {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-pending {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.status-not-requested {
+  background-color: #ffebee;
+  /* light red */
+  color: #c62828;
+  /* dark red text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status-received {
+  background-color: #e8f5e9;
+  /* light green */
+  color: #2e7d32;
+  /* dark green text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}

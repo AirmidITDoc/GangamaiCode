@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
@@ -20,7 +20,7 @@ import { FormGroup } from '@angular/forms';
   animations: fuseAnimations,
 })
 export class MenuMasterComponent {
-  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
+  // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
   DietMenuId: any = "";
 
   myFilterform: FormGroup;
@@ -30,12 +30,12 @@ export class MenuMasterComponent {
   @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
   gridConfig1: gridModel = new gridModel();
-  
+
 
   isShowDetailTable: boolean = false;
 
   constructor(
-    public permissionService: PagePermissionService,
+    public permissionService: PagePermissionService, private cdr: ChangeDetectorRef,
     public toastr: ToastrService, public _matDialog: MatDialog,
     public _menuMasterService: MenuMasterService, public datePipe: DatePipe
   ) { }
@@ -50,22 +50,6 @@ export class MenuMasterComponent {
     this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
   }
 
-
-  //   {
-  //     "dietMenuId": 10020,
-  //     "dietMenuCode": "DM023",
-  //     "dietMenuName": "thali",
-  //     "mealTypeId": 0,
-  //     "dietTypeId": 0,
-  //     "texture": "soft",
-  //     "calories": "1320",
-  //     "protein": "26",
-  //     "mealTypeCode": "MT003",
-  //     "mealName": "Demo",
-  //     "dietCode": "LSOD",
-  //     "dietName": "Low Sodium Diet",
-  //     "createdDate": "23/09/2026"
-  // }
   allColumns = [
     { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
@@ -137,27 +121,28 @@ export class MenuMasterComponent {
 
     console.log("detailList:", data)
     const dietMenuID = data.dietMenuId;
-
+    debugger
     this.gridConfig1 = {
       apiUrl: "DietMenuMaster/DietmenumasterDetailsList",
       columnsList: [
         { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Quantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Quantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
       ],
-      sortField: "DietMenuId",
+      sortField: "DietMenuid",
       sortOrder: 0,
       filters: [
-        { fieldName: "DietMenuId", fieldValue: String(dietMenuID), opType: OperatorComparer.Contains },
+        { fieldName: "DietMenuId", fieldValue: "10008", opType: OperatorComparer.Contains },
       ],
       row: 25
     };
     this.isShowDetailTable = true;
+    this.cdr.detectChanges();
     // setTimeout(() => {
-      this.grid1.gridConfig = this.gridConfig1;
-      this.grid1.bindGridData();
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
     // }, 500);
   }
 
