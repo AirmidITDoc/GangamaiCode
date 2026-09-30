@@ -30,26 +30,14 @@ export class NewDiettypeMasterComponent {
     this.myForm = this._diettypeMasterService.createDietTypeForm();
     this.myForm.markAllAsTouched();
 
-    // if ((this.data?.dietTypeId ?? 0) > 0) {
-    //   this.DietTypeId = this.data.dietTypeId
-    //   this.isActive = this.data.isActive
-    //   this.dietCategoryId = this.data.dietCategoryId
-    //   // this.myForm.patchValue(this.data);
-    //   this.myForm.patchValue(
-    //     {
-    //       ...this.data,
-    //       dietCategoryId: this.data.dietCategoryId
-    //     }
-    //   );
-    //   console.log("MyForm", this.data)
-    // }
     if ((this.data?.dietTypeID ?? 0) > 0) {
-
-      this.DietTypeId = this.data.dietTypeID;
+    
+      // this.DietTypeId = this.data.dietTypeID;
       this.isActive = this.data.active;
       this.dietCategoryId = this.data.dietCategoryId;
 
       this.myForm.patchValue({
+        dietTypeId : this.data.dietTypeID,
         dietCategoryId: this.data.dietCategoryId,
         dietName: this.data.dietName,
         dietCode: this.data.dietCode,
