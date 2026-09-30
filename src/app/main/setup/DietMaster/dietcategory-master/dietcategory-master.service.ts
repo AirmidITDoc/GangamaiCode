@@ -22,7 +22,7 @@ export class DietcategoryMasterService {
     return this._formBuilder.group({
       dietCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       categoryCode: [''],
-      categoryName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      categoryName: ["",[Validators.pattern(/^[^0-9]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       description: [""]
     });
   }

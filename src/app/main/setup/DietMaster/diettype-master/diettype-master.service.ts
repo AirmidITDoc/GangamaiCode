@@ -20,15 +20,13 @@ export class DiettypeMasterService {
 
   createDietTypeForm(): FormGroup {
     return this._formBuilder.group({
-      dietTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // dietCode: [''],
-      dietName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      shortName: ["",[Validators.pattern(/^[a-zA-Z ]+$/)]],
+      // dietTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      dietName: ["", [Validators.pattern(/^[^0-9]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      shortName: ["",[Validators.pattern(/^[^0-9]+$/)]],
       dietCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      defaultCalories: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      defaultProtein: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      defaultFluid: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // displayOrder: [''],
+      defaultCalories: ['',[Validators.pattern(/^[0-9]+$/)]],
+      defaultProtein: ['', [Validators.pattern(/^[0-9]+$/)]],
+      defaultFluid: ['', [Validators.pattern(/^[0-9]+$/)]],
       remarks: [""],
       description: [""]
     });

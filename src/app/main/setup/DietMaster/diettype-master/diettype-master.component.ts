@@ -30,15 +30,15 @@ export class DiettypeMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Diet Code", key: "dietCode", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Diet Code", key: "dietCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Diet Category", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    { heading: "Diet Category", key: "dietCategoryId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Display Order", key: "displayOrder", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Default Calories", key: "defaultCalories", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Default Proteins", key: "defaultProtein", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Default Fluids", key: "defaultFluid", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Default Calories(Kcal)", key: "defaultCalories", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Default Proteins(g)", key: "defaultProtein", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Default Fluids(mL)", key: "defaultFluid", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Remarks", key: "remarks", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "isActive", key: "active", type: gridColumnTypes.status, align: "center" },
     {
@@ -62,8 +62,8 @@ export class DiettypeMasterComponent {
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "dietName", fieldValue: this.dietName, opType: OperatorComparer.StartsWith },
-    { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "DietName", fieldValue: this.dietName, opType: OperatorComparer.StartsWith },
+    { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {

@@ -16,7 +16,9 @@ export class NewAllergyMasterComponent implements OnInit {
   myForm: FormGroup;
   AllergyId = 0;
   autocompleteModeAllergy = "MFoodCategoryMaster"
+  autocompleteModeSeverity: string = 'TypesOfSeverity'
   isKitchenAlert: boolean = true;
+  categoryId: any;
 
   constructor(
     public _allergyMasterService: AllergyMasterService,
@@ -28,11 +30,17 @@ export class NewAllergyMasterComponent implements OnInit {
   ngOnInit(): void {
     this.myForm = this._allergyMasterService.createAllergyForm();
     this.myForm.markAllAsTouched();
-
+    console.log("Data", this.data)
     if ((this.data?.allergyId ?? 0) > 0) {
       this.AllergyId = this.data.allergyId
+      this.categoryId = this.data.foodCategoryId
       this.isKitchenAlert = this.data.isKitchenAlert
-      this.myForm.patchValue(this.data);
+      this.myForm.patchValue(
+        {
+          ...this.data,
+          categoryId: this.data.foodCategoryId
+        }
+      );
     }
   }
 

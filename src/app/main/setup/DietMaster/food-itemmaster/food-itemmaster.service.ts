@@ -24,7 +24,7 @@ export class FoodItemmasterService {
       foodName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       // foodCode: ["", [Validators.required]],
       foodCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      localName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      localName: ["", [Validators.pattern(/^[^0-9]+$/)]],
       unit: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator]],
       isVegetarian: [false],
     });

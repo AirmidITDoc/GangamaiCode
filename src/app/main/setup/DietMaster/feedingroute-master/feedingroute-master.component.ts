@@ -31,8 +31,8 @@ export class FeedingrouteMasterComponent {
 
   allColumns = [
     { heading: "Feeding Route Code", key: "feedingRouteCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Diet Type", key: "dietName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Feeding Route Name", key: "feedingRouteName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Diet Type", key: "dietTypesId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 500 },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {
@@ -56,8 +56,8 @@ export class FeedingrouteMasterComponent {
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "feedingRouteName", fieldValue: this.feedingRouteName, opType: OperatorComparer.StartsWith },
-    { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "FeedingRouteName", fieldValue: this.feedingRouteName, opType: OperatorComparer.StartsWith },
+    { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
