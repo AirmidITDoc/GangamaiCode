@@ -32,8 +32,8 @@ export class DietrestrictionMasterComponent {
 
   allColumns = [
     { heading: "Restriction Code", key: "restrictionCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Restriction Name", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Restriction Type", key: "restrictionTypeId", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Restriction Name", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 500 },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {

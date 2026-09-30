@@ -25,7 +25,7 @@ export class AllergyMasterService {
       allergyCode: [""],
       allergyName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      severityId: [0, [Validators.required]],
+      severityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       reaction: [""],
       isKitchenAlert: [true],
       // active: [[Validators.required]]

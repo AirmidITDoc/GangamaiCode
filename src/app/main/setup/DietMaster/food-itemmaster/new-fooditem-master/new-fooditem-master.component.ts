@@ -76,9 +76,9 @@ export class NewFooditemMasterComponent implements OnInit {
       FoodCategory: [
         { name: "required", Message: "Food Category is required" }
       ],
-      LocalName: [
-        { name: "required", Message: "Local Name is required" }
-      ],
+      // LocalName: [
+      //   { name: "required", Message: "Local Name is required" }
+      // ],
       Unit: [
         { name: "required", Message: "Unit is required" }
       ],

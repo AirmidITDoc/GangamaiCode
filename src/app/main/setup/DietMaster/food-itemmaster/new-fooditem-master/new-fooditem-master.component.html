@@ -20,30 +20,20 @@
                 <input type="hidden" name="FoodItemId" formControlName="foodItemId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Food Name" formControlName="foodName" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().FoodName">
-                        </airmid-textbox>
-                    </div>
-                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Food Code" formControlName="foodCode" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().FoodCode">
-                        </airmid-textbox>
-                    </div> -->
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Food Category" formControlName="foodCategoryId" [formGroup]="myForm"
                             [validations]="getValidationMessages().FoodCategory" [mode]="autocompleteModeFoodCategory">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Local Name" formControlName="localName" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().LocalName">
+                        <airmid-textbox label="Food Name" formControlName="foodName" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().FoodName">
                         </airmid-textbox>
                     </div>
-                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Unit" formControlName="unit" [formGroup]="myForm" [maxLength]="50"
-                            [validations]="getValidationMessages().Unit">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Local Name" formControlName="localName" [formGroup]="myForm"
+                            [maxLength]="50">
                         </airmid-textbox>
-                    </div> -->
+                    </div>
                     <div fxFlex="50%">
                         <airmid-dropdown label="Unit" formControlName="unit" [formGroup]="myForm"
                             [mode]="autocompleteModeUnit">
@@ -51,9 +41,6 @@
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <!-- <mat-checkbox label="IsVegeterian" formControlName="isVegetarian" [formGroup]="myForm">
-                            IsVegeterian
-                        </mat-checkbox> -->
                         <app-airmid-slider label="IsVegeterian" formControlName="isVegetarian" [formGroup]="myForm"
                             [(ngModel)]="isVegetarian"></app-airmid-slider>
                     </div>

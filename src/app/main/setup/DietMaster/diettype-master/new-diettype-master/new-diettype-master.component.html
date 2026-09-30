@@ -21,45 +21,36 @@
                 <input type="hidden" name="DietTypeId" formControlName="dietTypeId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Diet Category" formControlName="dietCategoryId" [formGroup]="myForm"
+                            [validations]="getValidationMessages().DietCategoryId"
+                            [mode]="autocompleteModeDietCategory">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Diet Name" formControlName="dietName" [formGroup]="myForm"
                             [maxLength]="50" [validations]="getValidationMessages().DietName">
                         </airmid-textbox>
                     </div>
-                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Diet Code" formControlName="dietCode" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().DietCode">
-                        </airmid-textbox>
-                    </div> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Short Name" formControlName="shortName" [formGroup]="myForm"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Diet Category" formControlName="dietCategoryId" [formGroup]="myForm"
-                            [validations]="getValidationMessages().DietCategoryId" [mode]="autocompleteModeDietCategory">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Defalut Calories" formControlName="defaultCalories" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().DefaultCalories">
+                        <airmid-textbox label="Defalut Calories (Kcal)" formControlName="defaultCalories" [formGroup]="myForm"
+                            [maxLength]="50">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Defalut Protein" formControlName="defaultProtein" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().DefalutProtein">
+                        <airmid-textbox label="Defalut Protein (g)" formControlName="defaultProtein" [formGroup]="myForm"
+                            [maxLength]="50">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Defalut Fluid" formControlName="defaultFluid" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().DefalutFluid">
+                        <airmid-textbox label="Defalut Fluid (mL)" formControlName="defaultFluid" [formGroup]="myForm"
+                            [maxLength]="50">
                         </airmid-textbox>
                     </div>
-                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Display Order" formControlName="displayOrder" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().DisplayOrder">
-                        </airmid-textbox>
-                    </div> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" fxFlex>
                             <textarea rows="1" formControlName="description" placeholder="Description"
@@ -67,7 +58,7 @@
                         </mat-form-field>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                         <mat-form-field appearance="outline" fxFlex>
+                        <mat-form-field appearance="outline" fxFlex>
                             <textarea rows="1" formControlName="remarks" placeholder="Remarks" matInput></textarea>
                         </mat-form-field>
                     </div>

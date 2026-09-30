@@ -24,31 +24,27 @@
                             [maxLength]="50" [validations]="getValidationMessages().AllergyName">
                         </airmid-textbox>
                     </div>
-                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Allergy Code" formControlName="allergyCode" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().AllergyCode">
-                        </airmid-textbox>
-                    </div> -->
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Category" formControlName="categoryId" [formGroup]="myForm"
+                        <airmid-dropdown label="Food Category" formControlName="categoryId" [formGroup]="myForm"
                             [validations]="getValidationMessages().CategoryId" [mode]="autocompleteModeAllergy">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Severity" formControlName="severityId" [formGroup]="myForm"
-                            [maxLength]="50" [validations]="getValidationMessages().SeverityId" [readonly]="true">
-                        </airmid-textbox>
+                        <!-- <airmid-textbox label="Severity" formControlName="severityId" [formGroup]="myForm"
+                            [maxLength]="50" [validations]="getValidationMessages().SeverityId"
+                        </airmid-textbox> -->
+                        <airmid-dropdown label="Severity" formControlName="severityId" [formGroup]="myForm"
+                            [validations]="getValidationMessages().SeverityId" [mode]="autocompleteModeSeverity">
+                        </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Reaction" formControlName="reaction" [formGroup]="myForm"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
-                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <!-- <mat-checkbox label="IsKitchenAlert" formControlName="isKitchenAlert" [formGroup]="myForm">
-                            IsKitchenAlert
-                        </mat-checkbox> -->
-                        <app-airmid-slider label="IsKitchenAlert" formControlName="isKitchenAlert" [formGroup]="myForm" [(ngModel)]="isKitchenAlert"></app-airmid-slider> 
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <app-airmid-slider label="IsKitchenAlert" formControlName="isKitchenAlert" [formGroup]="myForm"
+                            [(ngModel)]="isKitchenAlert"></app-airmid-slider>
                     </div>
                 </div>
             </form>
@@ -58,9 +54,7 @@
         <div class="footer-navigation-container">
             <form [formGroup]="myForm">
                 <div class="modal-footer-container">
-                   <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="active" [formGroup]="myForm"
-                        [(ngModel)]="isActive"></app-airmid-slider> -->
-                        <div></div>
+                    <div></div>
                     <div class="modal-footer-buttons">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
