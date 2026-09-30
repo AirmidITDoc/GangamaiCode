@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
@@ -45,7 +45,7 @@ export class MenuMasterComponent {
   }
 
   constructor(
-    public permissionService: PagePermissionService, private cdr: ChangeDetectorRef,
+    public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
     public _menuMasterService: MenuMasterService, public datePipe: DatePipe
   ) { }
@@ -207,7 +207,7 @@ export class MenuMasterComponent {
       row: 25
     };
     this.isShowDetailTable = true;
-    this.cdr.detectChanges();
+   
     // setTimeout(() => {
     this.grid1.gridConfig = this.gridConfig1;
     this.grid1.bindGridData();
