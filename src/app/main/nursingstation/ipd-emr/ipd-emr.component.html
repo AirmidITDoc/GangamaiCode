@@ -171,32 +171,6 @@
                                             (chipsChange)="selectChangeChiefComplaint($event)">
                                         </app-airmid-chipautocomplete>
                                     </div>
-
-                                    <!-- <mat-form-field appearance="outline" class="three-field">
-                                        <mat-label>
-                                            Chief Complaints
-                                        </mat-label>
-
-                                        <input matInput type="text" formControlName="chiefComplaints">
-                                    </mat-form-field>
-
-
-                                    <mat-form-field appearance="outline" class="three-field">
-                                        <mat-label>
-                                            Duration
-                                        </mat-label>
-
-                                        <input matInput type="text" formControlName="chiefComplaintsDuration">
-                                    </mat-form-field>
-
-
-                                    <mat-form-field appearance="outline" class="three-field">
-                                        <mat-label>
-                                            Present History
-                                        </mat-label>
-
-                                        <input matInput type="text" formControlName="presentHistory">
-                                    </mat-form-field> -->
                                 </div>
                             </div>
 
@@ -272,6 +246,13 @@
 
                                 <mat-form-field appearance="outline" class="other-info-field">
                                     <mat-label>
+                                        Allergie Remark
+                                    </mat-label>
+                                    <input matInput type="text" formControlName="allergyRemark">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="other-info-field">
+                                    <mat-label>
                                         Social Habits
                                     </mat-label>
                                     <input matInput type="text" formControlName="socialHabits">
@@ -283,6 +264,13 @@
                                     </mat-label>
                                     <input matInput type="text" formControlName="medicalHistory">
                                 </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" class="other-info-field">
+                                    <mat-label>
+                                        Family Medical History
+                                    </mat-label>
+                                    <input matInput type="text" formControlName="familyMedicalHistory">
+                                </mat-form-field> -->
 
                                 <mat-form-field appearance="outline" class="other-info-field">
                                     <mat-label>
@@ -322,14 +310,17 @@
                                             <input matInput type="text" formControlName="memberName">
                                         </mat-form-field>
 
+                                         <div class="relationship-field">
+                                            <airmid-dropdown label="Gender" [formGroup]="familyHistoryForm"
+                                                formControlName="genderId" [mode]="autocompleteModegender"
+                                                (selectionChange)="selectChangeGender($event)">
+                                            </airmid-dropdown>
+                                        </div>
+
                                         <!-- Relationship -->
                                         <div class="relationship-field">
-                                            <!-- <airmid-dropdown label="Relationship" [formGroup]="familyHistoryForm"
-                                                formControlName="relationshipId" [mode]="autocompleteModerelationship">
-                                            </airmid-dropdown> -->
-                                            <airmid-dropdown label="Relationship"
-                                                [formGroup]="familyHistoryForm" formControlName="relationshipId"
-                                                [mode]="autocompleteModerelationship"
+                                            <airmid-dropdown label="Relationship" [formGroup]="familyHistoryForm"
+                                                formControlName="relationshipId" [mode]="autocompleteModerelationship"
                                                 (selectionChange)="selectChangeRelation($event)">
                                             </airmid-dropdown>
                                         </div>
@@ -348,6 +339,13 @@
                                                 Clinical History
                                             </mat-label>
                                             <input matInput type="text" formControlName="clinicalHistory">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" class="family-clinical-field">
+                                            <mat-label>
+                                                Summary
+                                            </mat-label>
+                                            <input matInput type="text" formControlName="summary">
                                         </mat-form-field>
 
                                         <!-- Duration -->
@@ -402,6 +400,16 @@
                                                 </mat-cell>
                                             </ng-container>
 
+                                             <ng-container matColumnDef="gender">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Gender
+                                                </mat-header-cell>
+
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span>{{ element.genderName }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="Age">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     Age
@@ -417,6 +425,15 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                     <span> {{element.clinicalHistory}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="summary">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Summary
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span> {{element.summary}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -453,14 +470,15 @@
                         </mat-card>
 
                     </form>
+
                 </mat-card>
 
                 <!--footer buttons-->
                 <div class="modal-footer1">
                     <div class="footer-navigation-container1">
                         <div class="modal-footer-buttons1">
-                            <button class="btn btn-primary" color="accent" (click)="onSave()">
-                                <span>Save</span>
+                            <button class="btn btn-primary" color="accent" (click)="onSave()" [disabled]="isSaving">
+                                 <span>{{ isSaving ? 'Saving...' : 'Save' }}</span>
                             </button>
                         </div>
                     </div>

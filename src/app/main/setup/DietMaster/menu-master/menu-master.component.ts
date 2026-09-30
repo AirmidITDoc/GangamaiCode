@@ -20,7 +20,7 @@ import { FormGroup } from '@angular/forms';
   animations: fuseAnimations,
 })
 export class MenuMasterComponent {
-  // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
   DietMenuId: any = "";
 
   DietMenuName = "%"
