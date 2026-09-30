@@ -35,7 +35,7 @@ export class NewDietRequestComponent {
 
   DietForm: FormGroup;
   dietmenuForm: FormGroup;
-
+  MyForm: FormGroup;
   displayedColumns = [
     'CheckBox',
     'regno',
@@ -88,8 +88,9 @@ export class NewDietRequestComponent {
     this.DietForm.markAllAsTouched();
 
     this.dietmenuForm = this.createDietReqForm()
-
+    this.MyForm = this.createMyForm()
     if (this.data) {
+      debugger
       this.registerObj = this.data
       this.dietReqId = this.data.dietReqId
 
@@ -103,11 +104,20 @@ export class NewDietRequestComponent {
 
   }
 
+
+  createMyForm() {
+    return this._formbuilder.group({
+      WardName: [''],
+      RegID: [''],
+      PatientName: ['']
+
+    })
+  }
   CreatedietForm() {
     return this._formbuilder.group({
       dietMenuId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      mealTypeId: [''],
-      dietTypeId: [''],
+      mealTypeId: [0],
+      dietTypeId: [0],
       dietRestrictionId: [0],
       allergyId: [0],
       nutritionistId: [1],
@@ -121,7 +131,7 @@ export class NewDietRequestComponent {
       date: [this.datePipe.transform(new Date, 'yyyy-MM-dd')],
       time: [new Date()],
       unitId: [this.accountService.currentUserValue.user.unitId],
-      dietReqNo: "12", //--> auto increment
+      dietReqNo: "1", //--> auto increment
       dietMenuId: [0],
 
       tDietPatReqDetails: this._formbuilder.array([]),
@@ -137,9 +147,9 @@ export class NewDietRequestComponent {
       orderTime: [new Date()],
       opipid: [item.admissionID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opiptype: 1,
-      dietMenuId: [dietFormValue.dietMenuId],
-      mealTypeId: [dietFormValue.mealTypeId],
-      dietTypeId: [dietFormValue.dietTypeId],
+      dietMenuId: [dietFormValue.dietMenuId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mealTypeId: [dietFormValue.mealTypeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      dietTypeId: [dietFormValue.dietTypeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       dietRestrictionId: [dietFormValue.dietRestrictionId],
       allergyId: [dietFormValue.allergyId],
       nutritionistId: [dietFormValue.nutritionistId],
@@ -287,8 +297,8 @@ export class NewDietRequestComponent {
   }
   onChangeFirst() {
     debugger
-    this.pname = this._ClinicalcareService.MyForm.get('PatientName').value + '%'
-    this.wardid = this._ClinicalcareService.MyForm.get('WardName').value
+    this.pname = this.MyForm.get('PatientName').value + '%'
+    this.wardid = this.MyForm.get('WardName').value
 
     if (!this.wardid) {
       this.wardid = "0";
@@ -306,7 +316,7 @@ export class NewDietRequestComponent {
 
   Clearfilter(event) {
     if (event == 'PatientName')
-      this._ClinicalcareService.MyForm.get('PatientName').setValue("")
+      this.MyForm.get('PatientName').setValue("")
     this.onChangeFirst();
   }
 
@@ -330,7 +340,7 @@ export class NewDietRequestComponent {
 
   onSave() {
     if (this.selection.selected.length === 0) {
-      Swal.fire('Error!', 'Please select Patient', 'error');
+      Swal.fire("Please select at least one patient from the list.")
       return;
     }
 
@@ -351,14 +361,32 @@ export class NewDietRequestComponent {
     });
 
     console.log('Final array value:', this.dietDetailsArray.value);
-
-
     const payload = this.dietmenuForm.value;
     console.log('Final payload:', payload);
 
-    this._ClinicalcareService.SaveDietReq(payload).subscribe(() => {
-      this._matDialog.closeAll();
-    });
+    if (!this.DietForm.invalid) {
+      this._ClinicalcareService.SaveDietReq(payload).subscribe(() => {
+        this._matDialog.closeAll();
+      });
+    }
+    else {
+      const invalidFields = [];
+
+      if (this.DietForm.invalid) {
+        for (const controlName in this.DietForm.controls) {
+          if (this.DietForm.controls[controlName].invalid) {
+            invalidFields.push(`Diet  Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
+    }
   }
 
 
@@ -381,6 +409,7 @@ export class NewDietRequestComponent {
 
     this._ClinicalcareService.getdetaillist(data).subscribe((response) => {
       const existingDetails = response.data || [];
+      console.log(response)
       debugger
       if (existingDetails.length) {
         this.DietForm.get('mealTypeId').setValue(existingDetails[0].mealTypeId);
@@ -404,7 +433,7 @@ export class NewDietRequestComponent {
     console.log('Updated comment for', item.patientName, '→', item.comments, item);
   }
   onClose() {
-
+    this.MyForm.get('PatientName').setValue('')
   }
 }
 export class PatientList {
@@ -424,169 +453,3 @@ export class PatientList {
     }
   }
 }
-export class PainAssesList {
-  givendate: any;
-  giventime: any;
-  PainAssess: any;
-  Employeename: string;
-
-  constructor(PainAssesList) {
-    {
-
-      this.givendate = PainAssesList.givendate || 0;
-      this.giventime = PainAssesList.giventime || 0;
-      this.PainAssess = PainAssesList.PainAssess || 0;
-      this.Employeename = PainAssesList.Employeename || "";
-    }
-  }
-}
-export class VitalsList {
-  date: any;
-  time: any;
-  temperature: any;
-  Temperature: any;
-  Pulse: any;
-  pulse: any;
-  Respiration: any;
-  PainAssess: any;
-  BP: any;
-  MewaScore: any;
-  AVPU: any;
-  TakenBy: any;
-  CVP: any;
-  cvp: any;
-  peep: any;
-  constructor(VitalsList) {
-    {
-
-      this.date = VitalsList.date || 0;
-      this.time = VitalsList.time || 0;
-      this.temperature = VitalsList.temperature || 0;
-      this.Pulse = VitalsList.Pulse || 0;
-      this.pulse = VitalsList.pulse || 0;
-      this.Respiration = VitalsList.Respiration || 0;
-      this.Temperature = VitalsList.Temperature || 0;
-      this.BP = VitalsList.BP || 0;
-      this.MewaScore = VitalsList.MewaScore || 0;
-      this.AVPU = VitalsList.AVPU || 0;
-      this.TakenBy = VitalsList.TakenBy || 0;
-      this.CVP = VitalsList.CVP || 0;
-      this.cvp = VitalsList.cvp || 0
-      this.peep = VitalsList.peep || 0
-    }
-  }
-}
-export class SugarlevelList {
-  Date: any;
-  BSL: any;
-  bsl: any;
-  UrineSugar: any;
-  ETTpressure: any;
-  UrineKetone: any;
-  Bodies: any;
-  IntakeMode: any;
-  bodies: any;
-  intakeMode: any;
-  ReportedToRMO: any;
-  Addedby: any;
-  CVP: any;
-  constructor(SugarlevelList) {
-    {
-
-      this.Date = SugarlevelList.Date || 0;
-      this.BSL = SugarlevelList.BSL || 0;
-      this.bsl = SugarlevelList.bsl || 0;
-      this.UrineSugar = SugarlevelList.UrineSugar || 0;
-      this.ETTpressure = SugarlevelList.ETTpressure || 0;
-      this.Bodies = SugarlevelList.Bodies || 0;
-      this.bodies = SugarlevelList.bodies || 0;
-      this.intakeMode = SugarlevelList.intakeMode || 0;
-      this.IntakeMode = SugarlevelList.IntakeMode || 0;
-      this.ReportedToRMO = SugarlevelList.ReportedToRMO || 0;
-      this.Addedby = SugarlevelList.Addedby || 0;
-      this.UrineKetone = SugarlevelList.UrineKetone || 0;
-    }
-  }
-}
-export class OxygenVentilatorlist {
-  Date: any;
-  Mode: any;
-  TidolV: any;
-  setRange: any;
-  ipap: any;
-  MinuteV: any;
-  rateTotal: any;
-  epap: any;
-  peep: any;
-  pc: any;
-  mvpercentage: any;
-  prSup: any;
-  fio2: any;
-  ie: any;
-  oxygenRate: any;
-  saturationWithO2: any;
-  flowTrigger: any;
-  CreatedBy: any;
-  tidolV: any;
-  constructor(OxygenVentilatorlist) {
-    {
-      this.Date = OxygenVentilatorlist.Date || 0;
-      this.Mode = OxygenVentilatorlist.Mode || 0;
-      this.TidolV = OxygenVentilatorlist.TidolV || 0;
-      this.tidolV = OxygenVentilatorlist.tidolV || 0
-      this.setRange = OxygenVentilatorlist.setRange || 0;
-      this.ipap = OxygenVentilatorlist.ipap || 0;
-      this.MinuteV = OxygenVentilatorlist.MinuteV || 0;
-      this.rateTotal = OxygenVentilatorlist.rateTotal || 0;
-      this.epap = OxygenVentilatorlist.epap || 0;
-      this.pc = OxygenVentilatorlist.pc || 0;
-      this.peep = OxygenVentilatorlist.peep || 0;
-      this.mvpercentage = OxygenVentilatorlist.mvpercentage || 0;
-      this.prSup = OxygenVentilatorlist.prSup || 0;
-      this.fio2 = OxygenVentilatorlist.fio2 || 0;
-      this.ie = OxygenVentilatorlist.ie || 0;
-      this.oxygenRate = OxygenVentilatorlist.oxygenRate || 0;
-      this.saturationWithO2 = OxygenVentilatorlist.saturationWithO2 || 0;
-      this.flowTrigger = OxygenVentilatorlist.flowTrigger || 0;
-      this.CreatedBy = OxygenVentilatorlist.CreatedBy || 0;
-    }
-  }
-}
-
-export class INputOutputList {
-  date: any;
-  time: any;
-  Temperature: any;
-  temperature: any;
-  Pulse: any;
-  pulse: any;
-  Respiration: any;
-  PainAssess: any;
-  BP: any;
-  MewaScore: any;
-  AVPU: any;
-  TakenBy: any;
-  CVP: any;
-  cvp: any;
-  peep: any;
-  constructor(INputOutputList) {
-    {
-
-      this.date = INputOutputList.date || 0;
-      this.time = INputOutputList.time || 0;
-      this.temperature = INputOutputList.temperature || 0;
-      this.Pulse = INputOutputList.Pulse || 0;
-      this.pulse = INputOutputList.pulse || 0;
-      this.Respiration = INputOutputList.Respiration || 0;
-      this.Temperature = INputOutputList.Temperature || 0;
-      this.BP = INputOutputList.BP || 0;
-      this.MewaScore = INputOutputList.MewaScore || 0;
-      this.AVPU = INputOutputList.AVPU || 0;
-      this.TakenBy = INputOutputList.TakenBy || 0;
-      this.CVP = INputOutputList.CVP || 0;
-      this.cvp = INputOutputList.cvp || 0
-      this.peep = INputOutputList.peep || 0
-    }
-  }
-}
-

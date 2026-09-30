@@ -3,7 +3,8 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: 150px; /* match your w-150 width */
+  max-width: 150px;
+  /* match your w-150 width */
 }
 
 .right-panel {
@@ -25,17 +26,11 @@
 
 .selected-patients {
   flex: 0 1 auto;
-
   width: 100%;
-
-  // border: 1px solid red;
-
   overflow-y: auto;
   overflow-x: hidden;
-
   min-height: 0;
   max-height: 100%;
-
   padding: 4px;
 }
 
@@ -68,15 +63,89 @@
   min-height: 0;
   overflow: hidden;
 }
+
 .patient-chip-row {
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    padding: 12px;
-    margin-bottom: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+// SINGLE, top-level definition — merged, with flex/scroll rules included
+.patient-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  flex: 1 1 auto;   // takes remaining space in .right-panel's flex column
+  min-height: 0;    // critical: lets it shrink and scroll instead of overflowing siblings
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px;
+  align-content: start;
+
+  // hide the scrollbar but keep scrolling functional
+  scrollbar-width: none;      // Firefox
+  -ms-overflow-style: none;   // legacy Edge/IE
+
+  &::-webkit-scrollbar {
+    display: none;            // Chrome/Safari/Edge
+  }
+}
+
+.patient-comment-card {
+  background: #ffffff;
+  border-left: 4px solid #1e88e5;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(30, 136, 229, 0.15);
+  padding: 10px 12px;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 3px 10px rgba(30, 136, 229, 0.25);
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.patient-name {
+  font-size: 18px;
+  color: #144c59;
+  font-weight: bold;
+}
+
+.remove-icon {
+  color: #1e88e5;
+  opacity: 0.75;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    opacity: 1;
+    color: #d32f2f;
+  }
 }
 
 .comment-box {
-    width: 100%;
-    margin-top: 8px;
-    min-height: 40px;
+  width: 100%;
+  border: 1px solid #bbdefb;
+  background: #f5faff;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-size: 12px;
+  resize: vertical;
+  min-height: 26px;
+
+  &:focus {
+    outline: none;
+    border-color: #1e88e5;
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+  }
+
+  
 }

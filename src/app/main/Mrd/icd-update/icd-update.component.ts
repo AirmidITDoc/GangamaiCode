@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { IcdUpdateService } from './icd-update.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { NewICDEComponent } from './new-icde/new-icde.component';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-icd-update',
@@ -18,11 +20,10 @@ import { NewICDEComponent } from './new-icde/new-icde.component';
   animations: fuseAnimations,
 })
 export class IcdUpdateComponent {
-
+  myFilterform: FormGroup;
   IcdUpdateForm: FormGroup;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-  ////////////// search variables /////////////
   patientDetailsObj: any = {};
 
   vPatientName: any;
@@ -34,11 +35,13 @@ export class IcdUpdateComponent {
   vRoomName: any;
   vBedName: any;
   vgender: any;
-  vopIpId: any;
+  vopIpId: any = 0;
   vRegNo: any;
-
+  admId = "0"
+  IPDiagId = "0"
   IpFilterDisable = false;
-  ////////////// search variables /////////////
+  IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Membership, permissionType.Edit);
+
 
   constructor(
     public _matDialog: MatDialog,
@@ -52,41 +55,45 @@ export class IcdUpdateComponent {
   ngOnInit(): void {
     this.IcdUpdateForm = this.createICDUpdateForm();
     this.IcdUpdateForm.markAllAsTouched();
+    this.myFilterform = this.filterForm()
   }
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
-
+  }
   allcolumns = [
-    { heading: "ICD Diagnosis Name", key: "diagnosisName", sort: true, align: 'left', emptySign: 'NA', width: 600 },
-    { heading: "ICD version", key: "icdversion", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "ICD Code", key: "icdcode", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
 
-    // {
-    //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-    //         {
-    //             action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.MICDE_Master, permissionType.Edit), callback: (data: any) => {
-    //                 this.onSave(data);
-    //             }
-    //         }, {
-    //             action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.MICDE_Master, permissionType.Delete), callback: (data: any) => {
-    //                 this._ICDEMasterService.deactivateTheStatus(data.icdid).subscribe((data: any) => {
-    //                     this.grid.bindGridData();
-    //                 });
-    //             }
-    //         }]
-    // }
+    { heading: "Diagnosis Id", key: "ipdiagId", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+
+    { heading: "Admission Id", key: "admId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Age", key: "ageGender", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+    { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "ICD Code", key: "icdcode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    // { heading: "ICDE Diagnosis Name", key: "diagnosis", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+    { heading: "Diagnosis ", key: "diagnosisinformation", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+
+    { heading: "Created By ", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+
+    {
+      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate
+    }
   ]
 
   allfilters = [
-    { fieldName: "DiagnosisName", fieldValue: "", opType: OperatorComparer.StartsWith },
-    // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "AdmId", fieldValue: String(this.vopIpId), opType: OperatorComparer.Equals },
+    { fieldName: "IPDiagId", fieldValue: this.IPDiagId, opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "MIcdDiagnosisMaster/List",
+    apiUrl: "MRDDiagnosisInfo/MRDDiagnosisInfoList",
     columnsList: this.allcolumns,
-    sortField: "Icdid",
+    sortField: "IPDiagId",
     sortOrder: 0,
     filters: this.allfilters
   }
@@ -96,27 +103,14 @@ export class IcdUpdateComponent {
       opIpType: [true],
     });
   }
-  onSearch() { }
+  filterForm(): FormGroup {
+    return this._formBuilder.group({
 
-  onSearchClear() {
-    this._IcdUpdateSerivce.myformSearch.reset({
-      DoseNameSearch: ""
+      AdmId: '',
+      IPDiagId: ''
     });
   }
 
-  getICDE() {
-    // const dialogRef = this._matDialog.open(NewICDEComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     width: '100%',
-    //     height: "80vh",
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-
-    // });
-
-  }
   getSelectedObjIP(obj: any): void {
     console.log("icd-update", obj)
     if ((obj?.regID ?? 0) > 0) {
@@ -142,5 +136,81 @@ export class IcdUpdateComponent {
       console.log('Search Patient Info:', this.patientDetailsObj);
     }
   }
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'AdmId')
+      this.myFilterform.get('AdmId').setValue("")
+    if (event == 'IPDiagId')
+      this.myFilterform.get('IPDiagId').setValue("")
 
+    this.onChangeFirst();
+  }
+
+  onChangeFirst() {
+    this.vopIpId = this.myFilterform.get('AdmId').value
+    this.IPDiagId = this.myFilterform.get('IPDiagId').value
+
+    this.getfilterdata();
+  }
+
+  getfilterdata() {
+
+
+    let AdmId = this.myFilterform.get("AdmId").value || "";
+    this.gridConfig = {
+      apiUrl: "MRDDiagnosisInfo/MRDDiagnosisInfoList",
+      columnsList: this.allcolumns,
+      sortField: "IPDiagId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "AdmId", fieldValue: this.vopIpId, opType: OperatorComparer.Equals },
+        { fieldName: "IPDiagId", fieldValue: this.IPDiagId, opType: OperatorComparer.Equals }
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+
+    if (this.gridConfig) {
+      debugger
+      setTimeout(() => {
+
+      }, 500);
+    }
+  }
+  keyPressAlphanumeric(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  getICDE() {
+    const dialogRef = this._matDialog.open(NewICDEComponent,
+      {
+        maxWidth: "95vw",
+        width: '100%',
+        height: "80vh",
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+
+  }
+
+  onSave(row: any = null) {
+    const that = this;
+    const dialogRef = this._matDialog.open(NewICDEComponent,
+      {
+        maxWidth: "95vw",
+        width: '100%',
+        height: "80vh",
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+
+    });
+  }
 }

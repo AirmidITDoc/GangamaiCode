@@ -13,6 +13,10 @@ import { LanguageOption, SpeechRecognitionService } from "app/main/shared/servic
 import { ToastrService } from "ngx-toastr";
 import Swal from "sweetalert2";
 import { IcdUpdateService } from "../icd-update.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-new-icde',
@@ -21,15 +25,16 @@ import { IcdUpdateService } from "../icd-update.service";
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class NewICDEComponent {
+export class NewICDEComponent implements OnInit {
   IcdUpdateForm: FormGroup
   searchFormGroup: FormGroup;
   private recognition: any = null;
   isListening = false;
   selectedLang = 'en-US';
   languages: LanguageOption[] = [];
-
+  ipdiagId = 0
   registerObj: any;
+  registerObj1: any
   vcauseofdeath: any
   vpdiagnosis: any
   vIcdecode: any
@@ -38,12 +43,13 @@ export class NewICDEComponent {
   PatientName: any;
   RegId1 = "0";
   vIPDNo = ''
-
+  isSyncflag = false
+  flagCode = 'NotSync'
   constructor(
     public _IcdUpdateService: IcdUpdateService,
     public dialogRef: MatDialogRef<NewICDEComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any, public datePipe: DatePipe,
+    public toastr: ToastrService, public permissionService: PagePermissionService,
     private _formBuilder: UntypedFormBuilder, public speechService: SpeechRecognitionService,
     private _loggedService: AuthenticationService,
     private _FormvalidationserviceService: FormvalidationserviceService,
@@ -51,128 +57,88 @@ export class NewICDEComponent {
   ) { }
 
   ICDEtList: any = new MatTableDataSource<ICDEdetailList>();
+
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-    this.IcdUpdateForm = this.createAccessmentForm();
-    this.IcdUpdateForm.markAllAsTouched();
-    // this.AccessDignosisArray.push(this.createmopCasepaperDignosis());
 
     if (this.data) {
-      this.vAdmissionId = this.data.admissionId
+      console.log(this.data)
+      this.vAdmissionId = this.data.admId
+      this.ipdiagId = this.data.ipdiagId
 
+      if (this.ipdiagId > 0)
+        this.getRtrvdiagnosisList(this.data)
     }
 
+
+    this.IcdUpdateForm = this.buildForm();
+    this.IcdUpdateForm.markAllAsTouched();
+    debugger
+    if (this.ipdiagId > 0) {
+      const v = this.data.isSync;
+      this.IcdUpdateForm.get('mrdDiagnosisInfoHeader.isSync')
+        .setValue(v === true || v === 1 || v === '1' || v === 'true');
+    }
+
+    if ((this.vAdmissionId ?? 0) > 0) {
+      setTimeout(() => {
+
+
+        this._IcdUpdateService.getAdmissionById(this.vAdmissionId).subscribe((response) => {
+          this.registerObj1 = response;
+          console.log(this.registerObj1)
+          if (response) {
+            this._IcdUpdateService.getRegistraionById(response.regId).subscribe((response) => {
+              this.registerObj = response;
+              this.PatientName = response.firstName + ' ' + response.middleName + ' ' + response.lastName
+              this.registerObj.admissionDate = this.registerObj1.admissionDate
+              this.registerObj.regNo = this.registerObj1.regNo
+              this.registerObj.admissionDate = this.registerObj1.admissionId
+              this.registerObj.admissionDate = this.registerObj1.admissionDate
+              this.registerObj.admissionDate = this.registerObj1.admissionDate
+              console.log(this.registerObj)
+            });
+          }
+
+        });
+      }, 500);
+    }
   }
+
   createSearchForm() {
     return this._formBuilder.group({
       RegId: 0,
       AppointmentDate: [(new Date()).toISOString()],
     });
   }
-  createAccessmentForm(): FormGroup {
+
+
+  buildForm(): FormGroup {
     return this._formBuilder.group({
-      NameSearch: [''],
-      causeofdeath: [''],
-      pdiagnosis: [''],
-      Icdecode: [''],
-      fdiagnosis: [''],
-
-      hid: 0,
-      reqDate: [new Date().toISOString],
-      reqTime: [new Date().toISOString],
-      oP_IP_Type: 1,
-      oP_IP_Id: this.vAdmissionId,
+      mrdDiagnosisInfoHeader: this._formBuilder.group({
+        ipdiagId: [this.ipdiagId || 0],
+        admId: [this.vAdmissionId, Validators.required],
+        isSync: [false],
+        createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+        modifiedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
 
 
-      PatientDignosisMaster: this._formBuilder.array([]),
-      PatientCauseMaster: this._formBuilder.array([]),
-      PatientProvisionalDignosisMaster: this._formBuilder.array([]),
-      PatientfinalDignosisMaster: this._formBuilder.array([]),
-
+      PatientDignosisMaster: [[]],
     });
   }
 
-  addDiagnolist: any = [];
+  get diagnosisChips(): any[] {
+    return this.IcdUpdateForm.get('PatientDignosisMaster')?.value || [];
+  }
 
-  selectChangeDiagnosis(selectedChips: string[]) {
+  addDiagnolist: any[] = [];
 
-    this.addDiagnolist = selectedChips;
+  selectChangeDiagnosis(selectedChips: any[]) {
+    this.addDiagnolist = selectedChips || [];
     this.IcdUpdateForm.get('PatientDignosisMaster')?.setValue(this.addDiagnolist);
   }
 
-  addProvDiagnolist: any = [];
-
-  selectChangeProvDiagnosis(selectedChips: string[]) {
-
-    this.addProvDiagnolist = selectedChips;
-    this.IcdUpdateForm.get('PatientProvisionalDignosisMaster')?.setValue(this.addProvDiagnolist);
-  }
-
-
-  addCauselist: any = [];
-
-  selectChangeCause(selectedChips: string[]) {
-
-    this.addCauselist = selectedChips;
-    this.IcdUpdateForm.get('PatientCauseMaster')?.setValue(this.addCauselist);
-  }
-
-  addfinalDiagnolist: any = [];
-
-  selectChangefinalDiagnosis(selectedChips: string[]) {
-
-    this.addfinalDiagnolist = selectedChips;
-    this.IcdUpdateForm.get('PatientfinalDignosisMaster')?.setValue(this.addfinalDiagnolist);
-  }
-
-  addDiagnos(event: any): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      this.addDiagnolist.push(value.trim());
-    }
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-  removeDiagno(Diagno: string): void {
-    const index = this.addDiagnolist.indexOf(Diagno);
-    if (index >= 0) {
-      this.addDiagnolist.splice(index, 1);
-    }
-  }
-  selectedobjDiagno(obj): void {
-    const value = obj.Diagnosis;
-    if ((value || '').trim()) {
-      this.addDiagnolist.push(value.trim());
-    }
-  }
-
-
-  createmopCasepaperDignosis(element: any = {}): FormGroup {
-    debugger
-    return this._formBuilder.group({
-      // visitId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      // descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      // icdcode: [element.icdcode ?? ''],
-      // diagnosisName: [element.diagnosisName ?? '']
-
-      icdCode: [element.icdcode ?? ''],
-      icdCodeDesc: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      updatedBy: 0,
-      icdcdeMainName: [element.diagnosisName ?? ''],
-      mainIcdcdeId: [element.icdcode ?? ''],
-
-    });
-  }
-
-  get AccessDignosisArray(): FormArray {
-    return this.IcdUpdateForm.get('PatientDignosisMaster') as FormArray;
-  }
   getSelectedObj(obj) {
     console.log(obj)
     this.RegId1 = obj.regID;
@@ -180,99 +146,231 @@ export class NewICDEComponent {
     this.vIPDNo = obj.ipdNo
     this.vAdmissionId = obj.admissionID
     this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+
+    this.IcdUpdateForm.get('mrdDiagnosisInfoHeader.admId')?.setValue(this.vAdmissionId);
+
     console.log("this  : " + this.registerObj);
-    this.getRtrvdiagnosisList(this.vAdmissionId)
+    // this.getRtrvdiagnosisList(this.vAdmissionId)
   }
 
   onSubmit() {
 
+    // Swal.fire({
 
-    console.log(this.IcdUpdateForm.value)
+    //        title: 'Do you want to Syncrnize  ICD Code ',
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#3085d6",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "Yes, Cancel it!"
+
+
+    // }).then((flag) => {
+
+    //   if (flag.isConfirmed) {
+    //     this.isSync = true
+    //     // this.IcdUpdateForm.get('isSync').setValue(true)
+    //     this.flagCode = 'Sync'
+    //   } else
+    //     this.flagCode = ''
+    // });
+    const header = this.IcdUpdateForm.get('mrdDiagnosisInfoHeader') as FormGroup;
+
+    if (this.ipdiagId !== 0) {
+      header.removeControl('createdBy');
+    } else {
+      header.removeControl('modifiedBy');
+    }
+
+    if (this.IcdUpdateForm.get('mrdDiagnosisInfoHeader.isSync').value)
+      this.flagCode = 'Sync'
+    else
+      this.flagCode = 'NotSync'
+
+    if (this.IcdUpdateForm.invalid) {
+      this.IcdUpdateForm.markAllAsTouched();
+      this.toastr.warning('Please fill all required fields');
+      return;
+    }
+
+    const formValue = this.IcdUpdateForm.value;
+    const createdBy = this.accountService.currentUserValue.userId;
+
+    debugger
+    const mrdDiagnosisInfoDetail = (formValue.PatientDignosisMaster || []).map((chip: any) => ({
+      // ipdiagDetId: chip.ipdiagDetId || 0,
+      ipdiagId: chip.ipdiagId || this.ipdiagId || 0,
+      admId: this.vAdmissionId,
+      diagnosis: chip.diagnosisName || chip.diagnosis || chip.icdCodeWithDignosis || '',
+      icdcode: chip.icdcode || '',
+      diagnosisinformation: chip.icdCodeWithDignosis || chip.diagnosisinformation || chip.descriptionName || '',
+      flagCode: this.flagCode,
+      createdBy: createdBy
+    }));
+
+    if (!mrdDiagnosisInfoDetail.length) {
+      this.toastr.warning('Please select at least one diagnosis');
+      return;
+    }
+
     const submitData = {
-      // "admissionReg": this.personalFormGroup.value,
-      // "admission": this.admissionFormGroup.value,
-      // "patientPolicy": this.policyFormGroup.value
+      mrdDiagnosisInfoHeader: formValue.mrdDiagnosisInfoHeader,
+      mrdDiagnosisInfoDetail: mrdDiagnosisInfoDetail
     };
 
+    console.log(submitData);
 
     this._IcdUpdateService.IcdeInsert(submitData).subscribe(response => {
-
-
-    })
+      this._matDialog.closeAll();
+    });
   }
+
   mentionItems: Array<{ id: string | number; text: string }> = [];
-  AllTypeDescription: any = []
+
 
   getRtrvdiagnosisList(obj?: any): void {
-    this.addDiagnolist = [];
-    this.AllTypeDescription = [];
 
     console.log('vAdmissionId →', this.vAdmissionId);
     debugger
+    const filters: any[] = [];
+
+    filters.push(
+
+      {
+        "fieldName": "AdmId",
+        "fieldValue": String(this.vAdmissionId),
+        "opType": "Equals"
+      }
+    );
+
+    const data = {
+      "first": 0,
+      "rows": 999,
+      "sortField": "",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    this._IcdUpdateService.getDiagnosisListbyId(data).subscribe((response) => {
+      const Diagnosis = response.data;
+      console.log(response.data)
+      this.addDiagnolist = [];
+
+      if (Diagnosis && Diagnosis.length > 0) {
+        Diagnosis.forEach((element: any) => {
+          debugger
+          const diagnosisObj = {
+            id: element.ipdiagnosisId,
+            ipdiagDetId: element.ipdiagDetId || 0,
+            ipdiagId: element.ipdiagId || this.ipdiagId || 0,
+            descriptionName: element.descriptionName || element.diagnosisinformation,
+            icdcode: element.icdcode || '',
+            diagnosisName: element.diagnosis || element.descriptionName || element.diagnosisinformation,
+            icdCodeWithDignosis: element.diagnosisinformation ||
+              `${element.icdcode || ''} - ${element.diagnosis || element.descriptionName || ''
+              }`
+          };
+
+          this.addDiagnolist.push(diagnosisObj);
+        });
+      }
+
+      this.IcdUpdateForm.get('PatientDignosisMaster')?.setValue(this.addDiagnolist);
+
+      this.updateDiagnosisMentionItems(this.addDiagnolist);
+
+      console.log('CHIP DATA:', this.addDiagnolist);
+
+    });
+  }
+
+  getRtrvProvisionaldiagnosis(obj?: any): void {
+
+    console.log('vAdmissionId →', this.vAdmissionId);
+    debugger
+    const filters: any[] = [];
+
+    filters.push(
+
+      {
+        "fieldName": "AdmId",
+        "fieldValue": String(this.vAdmissionId),
+        "opType": "Equals"
+      }
+    );
+
+    const data = {
+      "first": 0,
+      "rows": 999,
+      "sortField": "",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    this._IcdUpdateService.getDiagnosisListbyId(data).subscribe((response) => {
+      const Diagnosis = response.data;
+      console.log(response.data)
+      this.addDiagnolist = [];
+
+      if (Diagnosis && Diagnosis.length > 0) {
+        Diagnosis.forEach((element: any) => {
+          debugger
+          const diagnosisObj = {
+            id: element.ipdiagnosisId,
+            ipdiagDetId: element.ipdiagDetId || 0,
+            ipdiagId: element.ipdiagId || this.ipdiagId || 0,
+            descriptionName: element.descriptionName || element.diagnosisinformation,
+            icdcode: element.icdcode || '',
+            diagnosisName: element.diagnosis || element.descriptionName || element.diagnosisinformation,
+            icdCodeWithDignosis: element.diagnosisinformation ||
+              `${element.icdcode || ''} - ${element.diagnosis || element.descriptionName || ''
+              }`
+          };
+
+          this.addDiagnolist.push(diagnosisObj);
+        });
+      }
+
+      this.IcdUpdateForm.get('PatientDignosisMaster')?.setValue(this.addDiagnolist);
+
+      this.updateDiagnosisMentionItems(this.addDiagnolist);
+
+      console.log('CHIP DATA:', this.addDiagnolist);
+
+    });
+  }
+  getDiagnosisList() {
+
     this._IcdUpdateService
-      .getDiagnosisListbyId(this.vAdmissionId)
-      .subscribe({
-        next: (response: any) => {
+      .getDiagnosisList1('Diagnosis')
+      .subscribe((response: any) => {
+        console.log('Diagnosis API Response:', response);
 
-          const Diagnosis = response;
-          console.log(response)
-          this.addDiagnolist = [];
+        const diagnoses = Array.isArray(response) ? response : response?.data || [];
+        this.updateDiagnosisMentionItems(diagnoses);
 
-          const diagnosisArray = this.IcdUpdateForm.get(
-            'PatientDignosisMaster'
-          ) as FormArray;
-
-          diagnosisArray.clear();
-
-          if (Diagnosis && Diagnosis.length > 0) {
-
-            Diagnosis.forEach((element: any) => {
-
-              const diagnosisObj = {
-                id: element.ipdiagnosisId,
-                descriptionName: element.descriptionName || '',
-                icdcode: element.icdcode || '',
-                diagnosisName:
-                  element.diagnosis || element.descriptionName || '',
-                icdCodeWithDignosis:
-                  element.diagnosisinformation ||
-                  `${element.icdcode || ''} - ${element.diagnosis || element.descriptionName || ''
-                  }`
-              };
-
-              // For displaying chips
-              this.addDiagnolist.push(diagnosisObj);
-
-              // For FormArray
-              diagnosisArray.push(
-                this._formBuilder.control(diagnosisObj)
-              );
-            });
-          }
-
-          this.updateDiagnosisMentionItems(this.addDiagnolist);
-
-          console.log('CHIP DATA:', this.addDiagnolist);
-          console.log('FORM DATA:', diagnosisArray.value);
-        },
-
-        error: (err) => {
-          console.error(
-            'Error fetching diagnosis list',
-            err
-          );
-        }
+        console.log('Mention Items:', this.mentionItems);
       });
   }
+
   private updateDiagnosisMentionItems(diagnoses: any[]): void {
     this.mentionItems = (diagnoses || [])
       .map(item => {
-        const text = item.text || item.descriptionName || item.diagnosis ||
-          item.diagnosisName || item.diagnosisinformation;
-        return text ? {
+        // Priority: descriptionName first
+        const text = item.descriptionName
+          || item.diagnosisName
+          || item.diagnosis
+          || item.text
+          || item.diagnosisinformation;
+        if (!text || !isNaN(Number(text))) {
+          return null;
+        }
+
+        return {
           id: item.id || item.ipdiagnosisId || text,
-          text
-        } : null;
+          text: text
+        };
       })
       .filter((item): item is { id: string | number; text: string } => item !== null);
   }

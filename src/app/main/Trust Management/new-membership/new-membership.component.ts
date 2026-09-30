@@ -113,6 +113,8 @@ export class NewMembershipComponent {
 
         { heading: "MEM. DATE", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
         { heading: "MEM. NO.", key: "membershipNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "DEATH DATE", key: "hdeathDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+
         { heading: "NAME ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "NATIVE PLACE", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AGE", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120 },
@@ -120,7 +122,11 @@ export class NewMembershipComponent {
         { heading: "EMERGENCY MOBILE", key: "emrgencyMobile", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "BLOOD GRP", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "FAMILY DR", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "COSULTING DR", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "FAMILY DR NO.", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+        { heading: "COSULTING DR", key: "hConsultDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "COSULTING Dr NO.", key: "hConsultDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
         { heading: "MEDICATION", key: "medications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "LAST BODY CHECKING DATE", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6 },
         { heading: "MEDICLIAM CO.NAME", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -129,13 +135,12 @@ export class NewMembershipComponent {
         { heading: "POLICY NO.", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "MEDICLAIM VALID TILL", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 180 },
         { heading: "AAYUSHMAN ENROLLMENT", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-
-
+        { heading: "RESIDENCE OWN", key: "residenceType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
         { heading: "ADDRESS	", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "PAN NO.", key: "pan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
         { heading: "AADHAR NO. ", key: "aadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Residence Own", key: "residenceType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
-        // { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PAN NO.", key: "pan", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "EMAIL", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "Education ", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         // { heading: "Occupation", key: "occupationName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         //  { heading: "Mediclaim StartDate", key: "mediclaimStartDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },

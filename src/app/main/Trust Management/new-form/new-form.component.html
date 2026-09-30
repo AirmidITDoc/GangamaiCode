@@ -545,7 +545,7 @@
                                                 <!-- [options]="ConstDoctor" -->
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                     *ngIf="showDoctorDropdownRefresh">
-                                                    <airmid-dropdown label="Consultant Doctor Name"
+                                                    <airmid-dropdown label="Husband Consultant Doctor Name"
                                                         formControlName="hconsultDoctorId"
                                                         [value]="regObj?.hconsultDoctorId ?? 0"
                                                         [formGroup]="personalFormGroup"
@@ -557,7 +557,7 @@
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
 
 
-                                                    <airmid-textbox label="Husband Con.Doctor contactNo"
+                                                    <airmid-textbox label="Husband Consultant Doctor Number"
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         formControlName="hConsultDoctorContact"
                                                         [value]="regObj?.hConsultDoctorContact"
@@ -583,7 +583,7 @@
 
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <airmid-textbox label="Wife Doctor contactNo"
+                                                    <airmid-textbox label="Wife FamilyDoctor Number"
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         formControlName="wfamilyDoctorContact"
                                                         [value]="regObj?.wfamilyDoctorContact"
@@ -595,7 +595,7 @@
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                     *ngIf="showDoctorDropdownRefresh">
                                                     <!-- [value]="regObj.wconsultDoctorId ?? 0" -->
-                                                    <airmid-dropdown label="Consultant Doctor Name"
+                                                    <airmid-dropdown label="Wife Consultant Doctor Name"
                                                         formControlName="wconsultDoctorId"
                                                         [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().wconsultDoctorId"
@@ -605,7 +605,7 @@
                                                 </div>
 
                                                 <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Wife Con.Doctor contactNo"
+                                                    <airmid-textbox label="Wife Consultant Doctor Number"
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         formControlName="wConsultDoctorContact"
                                                         [value]="regObj?.wConsultDoctorContact"
@@ -1440,7 +1440,7 @@
 
 
                                 <span
-                                    style="font-size: large;text-align: center;font-weight: bold;padding: 10px;">Emegency
+                                    style="font-size: large;text-align: center;font-weight: bold;padding: 10px;">EMERGENCY
                                     Information
                                     Details</span>
 
