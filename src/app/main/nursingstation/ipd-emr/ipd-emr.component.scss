@@ -192,7 +192,8 @@
 
     margin: 0 !important;
 
-    padding: 8px !important;
+    display: block !important;
+    padding: 8px 8px 65px !important;
 
     box-sizing: border-box;
 
@@ -200,6 +201,9 @@
     overflow-x: hidden !important;
 }
 
+.modal-footer1.drawer-open {
+    left: 340px;      /* same as .sidebar-drawer1 width */
+}
 
 /* EMR scrollbar */
 .ipdemr-scroll::-webkit-scrollbar {
@@ -248,6 +252,7 @@
     padding: 0 !important;
 
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .ipdemr-scroll > form + form {
@@ -363,8 +368,8 @@
 
 /* Member Name */
 .family-member-field {
-    width: 19%;
-    flex: 0 0 19%;
+    width: 15%;
+    flex: 0 0 15%;
 
     margin-right: 5px !important;
 }
@@ -372,8 +377,8 @@
 
 /* Relationship */
 .relationship-field {
-    width: 19%;
-    flex: 0 0 19%;
+    width: 10%;
+    flex: 0 0 10%;
 
     min-width: 0;
 
@@ -390,8 +395,8 @@
 
 /* Age */
 .family-age-field {
-    width: 12%;
-    flex: 0 0 12%;
+    width: 7%;
+    flex: 0 0 7%;
 
     margin-right: 5px !important;
 }
@@ -399,8 +404,8 @@
 
 /* Duration */
 .family-duration-field {
-    width: 12%;
-    flex: 0 0 12%;
+    width: 9%;
+    flex: 0 0 9%;
 
     margin-right: 5px !important;
 }
@@ -408,8 +413,8 @@
 
 /* Clinical History */
 .family-clinical-field {
-    width: 25%;
-    flex: 0 0 25%;
+    width: 15%;
+    flex: 0 0 15%;
 
     margin-right: 5px !important;
 }
@@ -517,66 +522,98 @@
 }
 
 
-.ipd-main-content > .modal-footer1 {
-    /*
-     * Fixed footer height.
-     * It will always remain visible.
-     */
-    flex: 0 0 42px;
+// .ipd-main-content > .modal-footer1 {
+//     /*
+//      * Fixed footer height.
+//      * It will always remain visible.
+//      */
+//     flex: 0 0 42px;
 
-    width: 100%;
+//     width: 100%;
 
+//     height: 42px;
+//     min-height: 42px;
+//     max-height: 42px;
+
+//     margin: 0 !important;
+
+//     padding: 3px 0 0 0 !important;
+
+//     display: flex;
+
+//     align-items: center;
+
+//     justify-content: flex-end;
+
+//     box-sizing: border-box;
+
+//     overflow: hidden !important;
+// }
+.modal-footer1 {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;                 /* full width */
     height: 42px;
-    min-height: 42px;
-    max-height: 42px;
-
-    margin: 0 !important;
-
-    padding: 3px 0 0 0 !important;
-
+    background: #fff;
+    border-top: 1px solid #ddd;
+    padding: 3px 16px 0 0;
     display: flex;
-
     align-items: center;
-
     justify-content: flex-end;
-
+    z-index: 100;
     box-sizing: border-box;
-
-    overflow: hidden !important;
 }
 
 .footer-navigation-container1 {
-    width: 100%;
-
-    height: 100%;
-
     display: flex;
-
     align-items: center;
-
     justify-content: flex-end;
-
-    box-sizing: border-box;
 }
 
 .modal-footer-buttons1 {
     display: flex;
-
     align-items: center;
-
-    justify-content: flex-end;
 }
-
 
 .modal-footer-buttons1 button {
-    height: 36px !important;
-
-    min-height: 36px !important;
-
-    margin: 0 !important;
-
-    box-sizing: border-box;
+    height: 36px;
+    min-height: 36px;
+    margin: 0;
 }
+
+// .footer-navigation-container1 {
+//     width: 100%;
+
+//     height: 100%;
+
+//     display: flex;
+
+//     align-items: center;
+
+//     justify-content: flex-end;
+
+//     box-sizing: border-box;
+// }
+
+// .modal-footer-buttons1 {
+//     display: flex;
+
+//     align-items: center;
+
+//     justify-content: flex-end;
+// }
+
+
+// .modal-footer-buttons1 button {
+//     height: 36px !important;
+
+//     min-height: 36px !important;
+
+//     margin: 0 !important;
+
+//     box-sizing: border-box;
+// }
 
 
 .ipd-drawer-container .mat-drawer {

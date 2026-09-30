@@ -83,7 +83,7 @@ export class AirmidDiagnosChipautocompleteComponent
           this.filteredOptions = [];
         }
       });
-    debugger
+    // debugger
     this.languages = this.speechService.supportedLanguages;
 
     if (this.languages?.length > 0) {
