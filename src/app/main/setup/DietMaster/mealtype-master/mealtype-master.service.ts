@@ -19,24 +19,13 @@ export class MealtypeMasterService {
   }
 
   createMealTypeForm(): FormGroup {
-    // const now = new Date();
-    // const currentTime =
-    //   `${String(now.getHours()).padStart(2, '0')}:` +
-    //   `${String(now.getMinutes()).padStart(2, '0')}`;
 
     return this._formBuilder.group({
       mealId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // mealTypeCode: ["", [Validators.required]],
       mealName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-
-      // dispatchTime: [currentTime],
-      // preparationStartTime: [currentTime],
-      // orderCutoffTime: [currentTime],
-      // defaultTime: [currentTime]
-
-      dispatchTime: ["", [Validators.required]],
-      preparationStartTime: ["", [Validators.required]],
-      orderCutoffTime: ["", [Validators.required]],
+      dispatchTime:"00:00",
+      preparationStartTime: "00:00",
+      orderCutoffTime: "00:00",
       defaultTime: ["", [Validators.required]]
     });
   }

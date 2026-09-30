@@ -16,6 +16,7 @@ export class NewDiettypeMasterComponent {
   myForm: FormGroup;
   isActive: boolean = true;
   DietTypeId = 0;
+  dietCategoryId: any;
   autocompleteModeDietCategory: string = 'MDietCategoryMaster'
 
   constructor(
@@ -29,10 +30,26 @@ export class NewDiettypeMasterComponent {
     this.myForm = this._diettypeMasterService.createDietTypeForm();
     this.myForm.markAllAsTouched();
 
-    if ((this.data?.dietTypeId ?? 0) > 0) {
-      this.DietTypeId = this.data.dietTypeId
-      this.isActive = this.data.isActive
-      this.myForm.patchValue(this.data);
+    if ((this.data?.dietTypeID ?? 0) > 0) {
+    
+      // this.DietTypeId = this.data.dietTypeID;
+      this.isActive = this.data.active;
+      this.dietCategoryId = this.data.dietCategoryId;
+
+      this.myForm.patchValue({
+        dietTypeId : this.data.dietTypeID,
+        dietCategoryId: this.data.dietCategoryId,
+        dietName: this.data.dietName,
+        dietCode: this.data.dietCode,
+        shortName: this.data.shortName,
+        description: this.data.description,
+        defaultCalories: this.data.defaultCalories,
+        defaultProtein: this.data.defaultProtein,
+        defaultFluid: this.data.defaultFluid,
+        active: this.data.active,
+        displayOrder: this.data.displayOrder,
+        remarks: this.data.remarks
+      });
     }
   }
 
@@ -68,24 +85,18 @@ export class NewDiettypeMasterComponent {
         { name: "maxlength", Message: "Diet Name should not be greater than 50 char." },
         { name: "pattern", Message: "Only char allowed." }
       ],
-      // DietCode: [
-      //   { name: "required", Message: "Diet Code is required" }
-      // ],
       DietCategoryId: [
         { name: "required", Message: "Diet Category is required" }
       ],
-      // DisplayOrder: [
-      //   { name: "required", Message: "Display Order is required" }
+      // DefaultCalories: [
+      //   { name: "required", Message: "Defalut Calories is required" }
       // ],
-      DefaultCalories: [
-        { name: "required", Message: "Defalut Calories is required" }
-      ],
-      DefalutProtein: [
-        { name: "required", Message: "Defalut Protein is required" }
-      ],
-      DefalutFluid: [
-        { name: "required", Message: "Defalut Fluid is required" }
-      ],
+      // DefalutProtein: [
+      //   { name: "required", Message: "Defalut Protein is required" }
+      // ],
+      // DefalutFluid: [
+      //   { name: "required", Message: "Defalut Fluid is required" }
+      // ],
     };
   }
 

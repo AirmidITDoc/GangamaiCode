@@ -40,11 +40,10 @@ export class FoodItemmasterComponent {
 
   allColumns = [
     { heading: "Food Code", key: "foodCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Food Category", key: "foodCategoryName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Local Name", key: "localName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Food Category", key: "foodCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Unit", key: "unit", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Vegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Unit", key: "value", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "IsVegeterian", key: "isVegetarian", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
       template: this.actionsTemplate
@@ -71,8 +70,8 @@ export class FoodItemmasterComponent {
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "foodName", fieldValue: this.foodName, opType: OperatorComparer.StartsWith },
-    { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "FoodName", fieldValue: this.foodName, opType: OperatorComparer.StartsWith },
+    { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {

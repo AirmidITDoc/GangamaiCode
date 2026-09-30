@@ -37,7 +37,7 @@ export class DietRequestComponent {
 
     ReqId = 0
     ReqDetId = 0
-
+    CancleStatus: boolean = true
     Accepted: boolean = false
     Delivered: boolean = false
     Acceptedcnt = 0
@@ -467,6 +467,12 @@ export class DietRequestComponent {
                 this.VNewcount = this.dataSource.data.length
                 this.VCancelcount = 0;
 
+                // this.Accepted = this.dataSource.data[0].allAccepted
+                // this.Delivered = this.dataSource.data[0].allDelivered
+
+
+                // if (this.Accepted)
+                //     this.CancleStatus = false
                 this.dataSource.data.forEach(element => {
 
                     if (element.isCancelled) {
@@ -532,8 +538,6 @@ export class DietRequestComponent {
             console.log(this.dataSource.data)
             if (this.dataSource.data.length > 0) {
 
-                this.Accepted = this.dataSource.data[0].allAccepted
-                this.Delivered = this.dataSource.data[0].allDelivered
 
                 this.Acceptedcnt = this.dataSource.data[0].acceptedCount
                 this.Deliveredcnt = this.dataSource.data[0].deliveredCount

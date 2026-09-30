@@ -197,5 +197,23 @@
       background: #fabebe;
     }
   }
+.unaccept-checkbox {
+  /* Angular Material MDC checkbox colors */
+  --mdc-checkbox-unselected-icon-color: #ef6c00;
+  --mdc-checkbox-unselected-hover-icon-color: #ef6c00;
+  --mdc-checkbox-selected-icon-color: #ef6c00;
+  --mdc-checkbox-selected-hover-icon-color: #ef6c00;
+  --mdc-checkbox-selected-focus-icon-color: #ef6c00;
+  --mdc-checkbox-selected-pressed-icon-color: #ef6c00;
+}
 
+/* fallback if the variables above have no effect in your Material version */
+.unaccept-checkbox ::ng-deep .mdc-checkbox__background {
+  border-color: #ef6c00 !important;
+}
+.unaccept-checkbox ::ng-deep .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
+.unaccept-checkbox ::ng-deep .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+  background-color: #ef6c00 !important;
+  border-color: #ef6c00 !important;
+}
 }

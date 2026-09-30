@@ -23,16 +23,12 @@ export class NewMealtypeMasterComponent implements OnInit {
   ngOnInit(): void {
     this.myForm = this._mealTypeMasterService.createMealTypeForm();
     this.myForm.markAllAsTouched();
-    // const timeValue = this.myForm.get('dispatchTime')?.value;
   
     if ((this.data?.mealId ?? 0) > 0) {
       this.MealId = this.data.mealId
-      //  this.isActive = this.data.active,
       this.myForm.patchValue({
         mealId: this.data.mealId,
-        // mealTypeCode: this.data.mealTypeCode,
         mealName: this.data.mealName,
-        // mealSequence: this.data.mealSequence,
 
         dispatchTime: this.formatTime(this.data.dispatchTime),
         preparationStartTime: this.formatTime(this.data.preparationStartTime),
@@ -79,18 +75,18 @@ export class NewMealtypeMasterComponent implements OnInit {
       // MealTypeCode: [
       //   { name: "required", Message: "Meal Type Code is required" }
       // ],
-      DispatchTime: [
-        { name: "required", Message: "dispatchTime is required" }
-      ],
-      PreparationStartTime: [
-        { name: "required", Message: "preparationStartTime is required" }
-      ],
-      OrderCutoffTime: [
-        { name: "required", Message: "orderCutoffTime is required" }
-      ],
-      DefaultTime: [
-        { name: "required", Message: "defaultTime is required" }
-      ]
+      // DispatchTime: [
+      //   { name: "required", Message: "dispatchTime is required" }
+      // ],
+      // PreparationStartTime: [
+      //   { name: "required", Message: "preparationStartTime is required" }
+      // ],
+      // OrderCutoffTime: [
+      //   { name: "required", Message: "orderCutoffTime is required" }
+      // ],
+      // DefaultTime: [
+      //   { name: "required", Message: "defaultTime is required" }
+      // ]
     };
   }
 

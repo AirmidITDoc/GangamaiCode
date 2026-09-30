@@ -5,12 +5,11 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidChipautocompleteComponent } from 'app/main/shared/componets/airmid-chipautocomplete/airmid-chipautocomplete.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { IpdEmrService } from './ipd-emr.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { PatientList } from '../clinical-care-chart/clinical-care-chart.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Component({
   selector: 'app-ipd-emr',
@@ -24,6 +23,7 @@ export class IpdEMRComponent implements OnInit {
   BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "Not Available"];
   autocompleteModerelationship: string = "Relationship";
   autocompleteward: string = "Room";
+  autocompleteModegender: string = "Gender";
 
   isLoading: string = '';
   sIsLoading: string = "";
@@ -48,12 +48,15 @@ export class IpdEMRComponent implements OnInit {
   painLevel: any;
   additionalNotes: any;
   painLocation: any;
+  ipdEmrId: any;
+  genderName: any;
 
   isShowDetailTable: boolean = false;
   isShowDetailTable2: boolean = false;
 
   // registerObj: any;
-  registerObj = new RegInsert({});
+  registerObj = new emrInsert({});
+  UpdateRegObj = new emrInsert({});
   vAdmissionId: any;
   vipdNo: any;
   vRegId: any;
@@ -75,6 +78,9 @@ export class IpdEMRComponent implements OnInit {
   vTemp: any;
   vSpO2: any;
   vPulse: any;
+  ProdiagnosisMentionItems: Array<{ id: string | number; text: string }> = [];
+  FinaldiagnosisMentionItems: Array<{ id: string | number; text: string }> = [];
+  isSaving = false;
 
   @ViewChild('chiefComplaintInput') chiefComplaintInput: AirmidChipautocompleteComponent;
 
@@ -84,19 +90,23 @@ export class IpdEMRComponent implements OnInit {
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
   Chargelist: any[] = [];
   relationshipName: any;
-
+  relationshipList = new MatTableDataSource<FamilyHistoryList>();
+  genderList = new MatTableDataSource<FamilyHistoryList>();
   MyForm!: FormGroup;
   familyHistoryForm!: FormGroup;
   vitalsForm: FormGroup;
   emrForm!: FormGroup;
   AllCompExmDescription: any = []
   AllProFinalDiagnosisDescription: any = []
+  UpdateRtrvDescriptionList: any = [];
 
   displayedColumns: string[] = [
     'MemberName',
+    'gender',
     'RelationshipId',
     'Age',
     'ClinicalHistory',
+    'summary',
     'Duration',
     'Action'
   ]
@@ -114,10 +124,17 @@ export class IpdEMRComponent implements OnInit {
     this.MyForm = this.createMyForm()
 
     this.createEMRForm();
+    this.emrForm.markAllAsTouched();
 
     this.familyHistoryForm = this.createFamilyMedicalHistory();
+    this.familyHistoryForm.markAllAsTouched();
 
     this.vitalsForm = this.createVitalsForm();
+    this.vitalsForm.markAllAsTouched();
+
+    this.getRelationshipList();
+    this.getGenderList();
+    this.getBMIcalculation();
   }
 
   createMyForm(): FormGroup {
@@ -125,11 +142,11 @@ export class IpdEMRComponent implements OnInit {
       WardName: [''],
       RegID: [''],
       PatientName: [''],
-      BloodGroup: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(3)]],
-      mAssignChiefComplaint: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      mAssignProDiagnosis: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      mAssignFinalDiagnosis: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      BloodGroup: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(3)]],
+      mAssignChiefComplaint: [[], [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignProDiagnosis: [[], [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignFinalDiagnosis: [[], [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignExamination: [[], [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator]],
     });
   }
 
@@ -138,10 +155,10 @@ export class IpdEMRComponent implements OnInit {
     this.emrForm = this._formbuilder.group({
       // Main EMR fields
       ipdEmrId: [0],
-      opipid: [0],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       opiptype: [1],
       socialHabits: [''],
-      bloodGroup: [''],
+      bloodGroup: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       medicalHistory: [''],
       familyMedicalHistory: [''],
       provisional: [''],
@@ -174,11 +191,12 @@ export class IpdEMRComponent implements OnInit {
     return this.emrForm.get('tIpEmrdiagnosisInfos') as FormArray;
   }
 
+  // Pro & Final Diagnosis
   createDiagnosisInfo(element: any = {}): FormGroup {
     return this._formbuilder.group({
       ipemrdiagnId: [0],
-      ipemrid: [0],
-      admId: [this.vAdmissionId],
+      ipemrid: [this.ipdEmrId ?? 0],
+      admId: [this.vAdmissionId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       diagnosis: [element.diagnosisName ?? ''],
       icdcode: [element.icdcode ?? ''],
       diagnosisinformation: [element.descriptionName ?? ''],
@@ -186,13 +204,6 @@ export class IpdEMRComponent implements OnInit {
     });
   }
 
-  // addDiagnosisInfo(): void {
-  //   this.diagnosisInfos.push(this.createDiagnosisInfo());
-  // }
-
-  // removeDiagnosisInfo(index: number): void {
-  //   this.diagnosisInfos.removeAt(index);
-  // }
   /////////////////////////////////End Of Diagnosis Information FormArray////////////////////////////
 
   /////////////////////////////////Diagnosis History FormArray////////////////////////////
@@ -204,8 +215,8 @@ export class IpdEMRComponent implements OnInit {
   createDiagnosisHistory(element: any = {}): FormGroup {
     return this._formbuilder.group({
       emrdignId: [0],
-      ipemrid: [0],
-      admissionId: [this.vAdmissionId],
+      ipemrid: [this.ipdEmrId ?? 0],
+      admissionId: [this.vAdmissionId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       icdcode: [element.icdcode ?? ''],
@@ -214,13 +225,6 @@ export class IpdEMRComponent implements OnInit {
     });
   }
 
-  // addDiagnosisHistory(): void {
-  //   this.diagnosisHistories.push(this.createDiagnosisHistory());
-  // }
-
-  // removeDiagnosisHistory(index: number): void {
-  //   this.diagnosisHistories.removeAt(index);
-  // }
   /////////////////////////////////End Of Diagnosis History FormArray////////////////////////////
 
   /////////////////////////////////Family Medical History FormArray////////////////////////////
@@ -231,10 +235,10 @@ export class IpdEMRComponent implements OnInit {
   createFamilyMedicalHistory(element: any = {}): FormGroup {
     return this._formbuilder.group({
       fhistId: [0],
-      ipEmrId: [0],
-      regId: [this.vRegId ?? 0],
+      ipEmrId: [this.ipdEmrId ?? 0],
+      regId: [this.vRegId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       opIpType: [1],
-      admissionId: [this.vAdmissionId],
+      admissionId: [this.vAdmissionId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       relationshipId: [element.relationshipId ?? 0],
       memberName: [element.memberName ?? ''],
       age: [element.age ?? 0],
@@ -246,13 +250,6 @@ export class IpdEMRComponent implements OnInit {
     });
   }
 
-  // addFamilyMedicalHistory(): void {
-  //   this.familyMedicalHistories.push(this.createFamilyMedicalHistory());
-  // }
-
-  // removeFamilyMedicalHistory(index: number): void {
-  //   this.familyMedicalHistories.removeAt(index);
-  // }
   /////////////////////////////////End Of Family Medical History FormArray////////////////////////////
 
   /////////////////////////////////Vitals FormArray////////////////////////////
@@ -263,12 +260,12 @@ export class IpdEMRComponent implements OnInit {
   createVitalsForm(element: any = {}): FormGroup {
     return this._formbuilder.group({
       ipemrVitalId: [0],
-      ipemrId: [0],
+      ipemrId: [this.ipdEmrId ?? 0],
       opiptype: [1],
-      opipid: [this.vAdmissionId],
-      height: [element.height ?? '', [Validators.maxLength(20)]],
-      weight: [element.weight ?? '', [Validators.maxLength(20)]],
-      bmi: [element.bmi ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      opipid: [this.vAdmissionId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      height: [element.height ?? '', [Validators.required, Validators.maxLength(20)]],
+      weight: [element.weight ?? '', [Validators.required, Validators.maxLength(20)]],
+      bmi: [element.bmi ?? '0', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       bsl: [element.bsl ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       spo2: [element.spo2 ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       temp: [element.temp ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
@@ -336,8 +333,51 @@ export class IpdEMRComponent implements OnInit {
     this.onChangeFirst();
   }
 
+  getRelationshipList(): void {
+
+    const data = {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "relationshipId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "relationshipName",
+          "fieldValue": "",
+          "opType": "StartsWith"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._IpdEmrService.getRelationshipCombo(data).subscribe((res: any) => {
+      this.relationshipList = res;
+    });
+  }
+
+  getGenderList(): void {
+
+    const data = {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "genderId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "genderName",
+          "fieldValue": "",
+          "opType": "StartsWith"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._IpdEmrService.getGenderCombo(data).subscribe((res: any) => {
+      this.genderList = res;
+    });
+  }
+
   getpatientDet(obj: any): void {
-    console.log(obj)
 
     this.isShowPrintButtons = true
     this.painLevel = 0
@@ -353,17 +393,172 @@ export class IpdEMRComponent implements OnInit {
     this.vAdmissionId = this.registerObj.admissionID
     this.vipdNo = this.registerObj.ipdNo
     this.vRegId = this.registerObj.regId ?? 0
+
+    this.ClearEMRForm();
+    if (this.registerObj.ipdEmrId) {
+      this._IpdEmrService.getEmrId(this.registerObj.ipdEmrId).subscribe((res) => {
+        this.UpdateRegObj = res
+        this.ipdEmrId = res.ipdEmrId
+        // console.log(this.UpdateRegObj)
+        this.emrForm.patchValue(this.UpdateRegObj)
+
+        /////////// vitals data retrive ////////////////
+        this.vitalsForm.patchValue(res.tIpEmrVitals[0])
+
+        /////////// vitals data retrive end ////////////////
+
+        /////////// All 4 dropdowns retrive////////////////
+
+        this.addCheiflist = [];
+        this.addProDiagnolist = [];
+        this.addFinalDiagnolist = [];
+        this.addExaminlist = [];
+        this.AllCompExmDescription = []
+        this.AllProFinalDiagnosisDescription = []
+
+        if (res && Array.isArray(res.tIpEmrdignosisHistories)) {
+          this.UpdateRtrvDescriptionList = res.tIpEmrdignosisHistories
+
+          // ChiefComplaint
+          const ChiefComplaint = this.UpdateRtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
+          this.addCheiflist = [];
+          if (ChiefComplaint.length > 0) {
+            ChiefComplaint.forEach(element => {
+              this.addCheiflist.push(
+                {
+                  id: element.emrdignId,
+                  descriptionName: element.descriptionName,
+                }
+              )
+            })
+            this.MyForm.get('mAssignChiefComplaint').setValue(this.addCheiflist);
+          }
+
+          // Examination
+          const Examination = this.UpdateRtrvDescriptionList.filter(item => item.descriptionType === 'Examination');
+          if (Examination.length > 0) {
+            Examination.forEach(element => {
+              this.addExaminlist.push(
+                {
+                  id: element.emrdignId,
+                  descriptionName: element.descriptionName
+                }
+              )
+            });
+            this.MyForm.get('mAssignExamination').setValue(this.addExaminlist);
+          }
+        }
+
+        if (res && Array.isArray(res.tIpEmrdiagnosisInfos)) {
+          this.UpdateRtrvDescriptionList = res.tIpEmrdiagnosisInfos
+
+          // Pro Diagnosis
+          const ProDiagnosis = this.UpdateRtrvDescriptionList.filter(item => item.flagCode === 'ProDiagnosis');
+          if (ProDiagnosis.length > 0) {
+            ProDiagnosis.forEach(element => {
+              this.addProDiagnolist.push(
+                {
+                  id: element.ipemrdiagnId,
+                  descriptionName: element.diagnosisinformation,
+                  icdcode: element.icdcode || '',
+                  diagnosisName: element.diagnosis,
+                  icdCodeWithDignosis: element.diagnosisinformation
+                }
+              )
+            })
+            this.ProdiagnosisMentionItems = this.addProDiagnolist
+              .filter(item => item.descriptionName)
+              .map(item => ({
+                id: item.id,
+                text: item.descriptionName
+              }));
+            this.MyForm.get('mAssignProDiagnosis').setValue(this.addProDiagnolist);
+          }
+
+          // Final Diagnosis
+          const FinalDiagnosis = this.UpdateRtrvDescriptionList.filter(item => item.flagCode === 'FinalDiagnosis');
+          if (FinalDiagnosis.length > 0) {
+            FinalDiagnosis.forEach(element => {
+              this.addFinalDiagnolist.push(
+                {
+                  id: element.ipemrdiagnId,
+                  descriptionName: element.diagnosisinformation,
+                  icdcode: element.icdcode || '',
+                  diagnosisName: element.diagnosis,
+                  icdCodeWithDignosis: element.diagnosisinformation
+                }
+              )
+            })
+            this.FinaldiagnosisMentionItems = this.addFinalDiagnolist
+              .filter(item => item.descriptionName)
+              .map(item => ({
+                id: item.id,
+                text: item.descriptionName
+              }));
+            this.MyForm.get('mAssignFinalDiagnosis').setValue(this.addFinalDiagnolist);
+          }
+        }
+        /////////// All 4 dropdowns retrive end////////////////
+
+        /////////// family table data retrive ////////////////
+        const history = res.tIpEmrfamilyMedicalHistories || [];
+
+        this.Chargelist = history.map((item: any) => ({
+          fhistId: item.fhistId,
+          relationshipId: item.relationshipId,
+          relationshipName: this.relationshipList.data.find(r => r.relationshipId === item.relationshipId)?.relationshipName ?? '',
+          memberName: item.memberName,
+          age: item.age,
+          clinicalHistory: item.clinicalHistory,
+          duration: item.duration,
+          genderId: item.genderId ?? 0,
+          genderName: this.genderList.data.find(r => r.genderId === item.genderId)?.genderName ?? '',
+          summary: item.summary ?? '',
+          status: true
+        }));
+
+        this.dsFamilyHistoryList.data = [...this.Chargelist];
+        /////////// family table data retrive end ////////////////
+
+      })
+    }
   }
   //////////////////////////////////////// main patient list end ////////////////////////////////////////
-  onClose() {
 
-  }
   onSave() {
 
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       })
+      return;
+    }
+
+    const hasValue = (v: any) =>
+      v !== null && v !== undefined && String(v).trim() !== '';
+
+    const drugAllergy = this.emrForm.get('drugAllergy').value;
+    const normalAllergy = this.emrForm.get('normalAllergy').value;
+    const allergyRemark = this.emrForm.get('allergyRemark').value;
+
+    if ((hasValue(drugAllergy) || hasValue(normalAllergy)) && !hasValue(allergyRemark)) {
+      // replace with your toastr / snackbar
+      this.toastr.warning('Allergy Remark is required when Drug Allergy or Normal Allergy is entered');
+      this.emrForm.get('allergyRemark').markAsTouched();
+      return;
+    }
+
+    const fields = ['mAssignChiefComplaint', 'mAssignProDiagnosis', 'mAssignFinalDiagnosis', 'mAssignExamination'];
+
+    const hasError = fields.some(name => {
+      const c = this.MyForm.get(name);
+      c.markAsTouched();
+      c.updateValueAndValidity();
+      return c.invalid;
+    });
+
+    if (hasError) {
+      this.toastr.warning('Chief Complaint, Provisional Diagnosis, Final Diagnosis and Examination are required');
       return;
     }
 
@@ -430,7 +625,7 @@ export class IpdEMRComponent implements OnInit {
     const vitals = {
       height: this.vitalsForm.get('height')?.value,
       weight: this.vitalsForm.get('weight')?.value,
-      bmi: String(this.vitalsForm.get('bmi')?.value),
+      bmi: String(this.vitalsForm.get('bmi')?.value) ?? '0',
       bsl: this.vitalsForm.get('bsl')?.value,
       spo2: this.vitalsForm.get('spo2')?.value,
       temp: this.vitalsForm.get('temp')?.value,
@@ -448,12 +643,16 @@ export class IpdEMRComponent implements OnInit {
       finalDiagnosis: this.addFinalDiagnolist.map(x => x.diagnosisName).join(', ')
     });
 
-    console.log('Save form:', this.emrForm.value)
+    // console.log('Save form:', this.emrForm.value)
 
     if (!this.emrForm.invalid) {
-      
+
+      if (this.isSaving) return;      // blocks a second click or Enter key press
+      this.isSaving = true;
+
       this._IpdEmrService.onSaveCasepaper(this.emrForm.value).subscribe(response => {
         this.resetEMRForm();
+        this.getPatientListwardWise();
       });
 
     } else {
@@ -484,12 +683,7 @@ export class IpdEMRComponent implements OnInit {
     return errors;
   }
 
-  resetEMRForm() {
-    // 1. Remove all rows from the FormArrays
-    // (this.emrForm.get('tIpEmrdiagnosisInfos') as FormArray).clear();
-    // (this.emrForm.get('tIpEmrdignosisHistories') as FormArray).clear();
-    // (this.emrForm.get('tIpEmrfamilyMedicalHistories') as FormArray).clear();
-    // (this.emrForm.get('tIpEmrVitals') as FormArray).clear();
+  ClearEMRForm() {
 
     // 2. Reset the normal fields to their defaults
     this.emrForm.reset({
@@ -497,7 +691,7 @@ export class IpdEMRComponent implements OnInit {
       opipid: 0,
       opiptype: 1,
       socialHabits: '',
-      bloodGroup: '',
+      bloodGroup: 0,
       medicalHistory: '',
       familyMedicalHistory: '',
       provisional: '',
@@ -514,6 +708,7 @@ export class IpdEMRComponent implements OnInit {
     this.addFinalDiagnolist = [];
     this.addExaminlist = [];
     this.dsFamilyHistoryList.data = [];
+    this.Chargelist = []
 
     this.MyForm.reset({
       mAssignChiefComplaint: [],
@@ -521,7 +716,43 @@ export class IpdEMRComponent implements OnInit {
       mAssignFinalDiagnosis: [],
       mAssignExamination: [],
     });
-    this.registerObj = new RegInsert({});
+    this.vitalsForm.reset();
+  }
+
+  resetEMRForm() {
+  this.isSaving = false;
+    // 2. Reset the normal fields to their defaults
+    this.emrForm.reset({
+      ipdEmrId: 0,
+      opipid: 0,
+      opiptype: 1,
+      socialHabits: '',
+      bloodGroup: 0,
+      medicalHistory: '',
+      familyMedicalHistory: '',
+      provisional: '',
+      finalDiagnosis: '',
+      chiefComplaints: '',
+      examination: '',
+      currentMedications: '',
+      normalAllergy: '',
+      drugAllergy: '',
+      allergyRemark: ''
+    });
+    this.addCheiflist = [];
+    this.addProDiagnolist = [];
+    this.addFinalDiagnolist = [];
+    this.addExaminlist = [];
+    this.dsFamilyHistoryList.data = [];
+    this.Chargelist = []
+
+    this.MyForm.reset({
+      mAssignChiefComplaint: [],
+      mAssignProDiagnosis: [],
+      mAssignFinalDiagnosis: [],
+      mAssignExamination: [],
+    });
+    this.registerObj = new emrInsert({});
     this.vitalsForm.reset();
   }
 
@@ -529,17 +760,48 @@ export class IpdEMRComponent implements OnInit {
     this.relationshipName = obj.text
   }
 
+  selectChangeGender(obj: any) {
+    this.genderName = obj.text
+  }
+
   addFamilyHistory(): void {
 
+    const f = this.familyHistoryForm.value;
+
+    const isEmpty = (v: any) =>
+      v === null || v === undefined || String(v).trim() === '' || v === 0;
+
+    // No member name -> do nothing, no validation
+    if (isEmpty(f.memberName)) {
+      return;
+    }
+
+    // Member name present -> all other fields are required
+    const missing: string[] = [];
+    if (!f.relationshipId || f.relationshipId === 0) missing.push('Relationship');
+    if (isEmpty(f.age)) missing.push('Age');
+    if (isEmpty(f.clinicalHistory)) missing.push('Clinical History');
+    if (isEmpty(f.duration)) missing.push('Duration');
+    if (isEmpty(f.genderId)) missing.push('Gender');
+    if (isEmpty(f.summary)) missing.push('Summary');
+
+    if (missing.length > 0) {
+      // replace with your toastr / snackbar
+      this.toastr.warning(`Please fill: ${missing.join(', ')}`);
+      this.familyHistoryForm.markAllAsTouched();
+      return;
+    }
+
     const newEntry = {
-      relationshipId: this.familyHistoryForm.get('relationshipId').value,
+      relationshipId: f.relationshipId,
       relationshipName: this.relationshipName,
-      memberName: this.familyHistoryForm.get('memberName').value,
-      age: this.familyHistoryForm.get('age').value,
-      clinicalHistory: this.familyHistoryForm.get('clinicalHistory').value,
-      duration: this.familyHistoryForm.get('duration').value,
-      genderId: 0,
-      summary: '',
+      memberName: f.memberName.trim(),
+      age: f.age,
+      clinicalHistory: f.clinicalHistory,
+      duration: f.duration,
+      genderId: f.genderId,
+      genderName: this.genderName,
+      summary: f.summary,
       status: true
     };
 
@@ -563,66 +825,14 @@ export class IpdEMRComponent implements OnInit {
     });
   }
 
-  // addFamilyHistory(): void {
-  //   if (this.familyHistoryForm.invalid) {
-  //     this.familyHistoryForm.markAllAsTouched();
-
-  //     Object.keys(this.familyHistoryForm.controls).forEach(controlName => {
-  //       const control = this.familyHistoryForm.get(controlName);
-
-  //       if (control?.invalid) {
-  //         this.toastr.warning(`Field "${controlName}" is invalid.`, 'Warning');
-  //       }
-  //     });
-
-  //     return;
-  //   }
-
-  //   const value = this.familyHistoryForm.getRawValue();
-
-  //   const familyHistory = new FamilyHistoryList({
-  //     MemberName: value.memberName,
-  //     RelationshipId: value.relationshipId,
-  //     Age: value.age,
-  //     ClinicalHistory: value.clinicalHistory,
-  //     Duration: value.duration
-  //   });
-
-  //   this.dsFamilyHistoryList.data = [
-  //     ...this.dsFamilyHistoryList.data,
-  //     familyHistory
-  //   ];
-
-  //   this.familyHistoryForm.reset({
-  //     fhistId: 0,
-  //     ipEmrId: 0,
-  //     regId: '',
-  //     opIpType: 1,
-  //     admissionId: 0,
-  //     relationshipId: null,
-  //     memberName: '',
-  //     age: '',
-  //     clinicalHistory: '',
-  //     duration: '',
-  //     genderId: '',
-  //     summary: '',
-  //     status: true
-  //   });
-  // }
-
   deleteTableRow(event: MouseEvent, row: FamilyHistoryList): void {
-
     event.stopPropagation();
 
-    const index = this.dsFamilyHistoryList.data.indexOf(row);
+    const index = this.Chargelist.indexOf(row);
 
     if (index !== -1) {
-
-      const data = [...this.dsFamilyHistoryList.data];
-
-      data.splice(index, 1);
-
-      this.dsFamilyHistoryList.data = data;
+      this.Chargelist.splice(index, 1);
+      this.dsFamilyHistoryList.data = [...this.Chargelist];
 
       this.toastr.success('Deleted successfully', 'Success');
     }
@@ -639,7 +849,6 @@ export class IpdEMRComponent implements OnInit {
   }
 
   selectChangeDiagnosis(selectedChips: string[]) {
-    console.log(selectedChips)
     this.addProDiagnolist = selectedChips;
     this.MyForm.get('mAssignProDiagnosis')?.setValue(this.addProDiagnolist);
 
@@ -649,7 +858,6 @@ export class IpdEMRComponent implements OnInit {
   }
 
   selectChangeFinalDiagnosis(selectedChips: string[]) {
-    console.log(selectedChips)
     this.addFinalDiagnolist = selectedChips;
     this.MyForm.get('mAssignFinalDiagnosis')?.setValue(this.addFinalDiagnolist);
 
@@ -687,19 +895,33 @@ export class IpdEMRComponent implements OnInit {
     }
   }
 
-  getBMIcalculation() {
-    const height = this.vitalsForm.get('height')?.value;
-    const weight = this.vitalsForm.get('weight')?.value;
+  // getBMIcalculation() {
+  //   const height = this.vitalsForm.get('height')?.value;
+  //   const weight = this.vitalsForm.get('weight')?.value;
+
+  //   if (height > 0 && weight > 0) {
+  //     const heightInMeters = height / 100;
+  //     const bmi = weight / (heightInMeters * heightInMeters);
+  //     this.vitalsForm.get('bmi')?.setValue(Math.round(bmi));
+
+  //   } else {
+  //     this.vitalsForm.get('bmi')?.setValue(0);
+  //     // this.toastr.warning('Please enter valid height (above 30 cm) and weight.');
+  //   }
+  // }
+  getBMIcalculation(): void {
+    const height = Number(this.vitalsForm.get('height')?.value);
+    const weight = Number(this.vitalsForm.get('weight')?.value);
+
+    let bmi: number | string = '';   // use 0 here if the backend needs a number
 
     if (height > 0 && weight > 0) {
       const heightInMeters = height / 100;
-      const bmi = weight / (heightInMeters * heightInMeters);
-      this.vitalsForm.get('bmi')?.setValue(Math.round(bmi));
-
-    } else {
-      this.vitalsForm.get('bmi')?.setValue(0);
-      // this.toastr.warning('Please enter valid height (above 30 cm) and weight.');
+      bmi = Math.round(weight / (heightInMeters * heightInMeters));
     }
+
+    this.vitalsForm.get('bmi')?.setValue(bmi);
+    this.vBMI = bmi;   // keeps the [(ngModel)]="vBMI" in your HTML in sync
   }
 
   onEnter(event: KeyboardEvent, nextInputId: string) {
@@ -775,6 +997,10 @@ export class FamilyHistoryList {
   Age: number | string = '';
   ClinicalHistory = '';
   Duration = '';
+  relationshipId: any;
+  relationshipName: any;
+  genderId: any;
+  genderName: any;
 
   constructor(data: Partial<FamilyHistoryList> = {}) {
     this.fhistId = data.fhistId ?? 0;
@@ -783,5 +1009,238 @@ export class FamilyHistoryList {
     this.Age = data.Age ?? '';
     this.ClinicalHistory = data.ClinicalHistory ?? '';
     this.Duration = data.Duration ?? '';
+    this.relationshipId = data.relationshipId ?? 0;
+    this.relationshipName = data.relationshipName ?? '';
+    this.genderId = data.genderId ?? 0;
+    this.genderName = data.genderName ?? '';
   }
 }
+
+export class emrInsert {
+  RegId: number;
+  regId: number;
+  emailId: string;
+  RegID: number;
+  RegDate: Date;
+  regDate: Date;
+  PatientName: string;
+  patientName: string;
+  // RegTime: Time;
+  prefixId: number;
+  PrefixId: number;
+  PrefixID: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  FirstName: string;
+  MiddleName: string;
+  LastName: string;
+  Address: string;
+  address: string;
+  City: string;
+  city: string;
+  PinNo: string;
+  regNo: string;
+  RegNo: string;
+  dateOfBirth: Date;
+  dateofBirth: Date;
+  DateofBirth: Date;
+  Age: any;
+  age: any;
+  GenderId: number;
+  genderId: any;
+  PhoneNo: string;
+  phoneNo: string;
+  MobileNo: string;
+  mobileNo: string;
+  AddedBy: number;
+  AgeYear: any;
+  AgeMonth: any;
+  AgeDay: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  CountryId: number;
+  countryId: number;
+  StateId: number;
+  stateId: number;
+  CityId: number;
+  cityId: number;
+  MaritalStatusId: number;
+  maritalStatusId: number;
+  IsCharity: boolean;
+  ReligionId: number;
+  religionId: number;
+  AreaId: number;
+  areaId: number;
+  VillageId: number;
+  TalukaId: number;
+  PatientWeight: number;
+  AreaName: string;
+  AadharCardNo: string;
+  aadharCardNo: string;
+  PanCardNo: string;
+  currentDate = new Date();
+  AdmissionID: any;
+  VisitId: any;
+  isSeniorCitizen: boolean
+  doctorName: any;
+  departmentName: any;
+  UnitId: any;
+  billNo: any;
+  departmentId: any;
+  doctorId: any;
+  campId: any;
+  emgContactPersonName: any;
+  emgRelationshipId: any;
+  emgMobileNo: any;
+  emgLandlineNo: any;
+  engAddress: any;
+  emgAadharCardNo: any;
+  emgDrivingLicenceNo: any;
+  medTourismNationalityId: any;
+  medTourismPassportNo: any;
+  medTourismVisaIssueDate: Date;
+  medTourismCitizenship: any;
+  medTourismPortOfEntry: any;
+  medTourismResidentialAddress: any;
+  medTourismOfficeWorkAddress: any;
+  medTourismVisaValidityDate: Date;
+  medTourismDateOfEntry: Date;
+  emgId: any
+  ipdNo: any;
+  ipdno: any;
+  genderName: any;
+  traiffId: any;
+  companyId: any;
+  PBillNo: any;
+  BillNo: any;
+  BillTime: any;
+  PatientType: any;
+  adharCardNo: any;
+  admissionID: any;
+  tariffName: any;
+  panCardNo: any;
+  pinNo: any;
+  regTime: any;
+  husbandDob: Date;
+  wifeDob: Date;
+  ipdEmrId: any;
+  /**
+   * Constructor
+   *
+   * @param emrInsert
+   */
+
+  constructor(emrInsert) {
+    {
+      this.RegId = emrInsert.RegId || 0;
+      this.regId = emrInsert.regId || 0;
+      this.RegID = emrInsert.RegID || 0;
+      this.RegDate = emrInsert.RegDate || this.currentDate;
+      this.regDate = emrInsert.regDate || this.currentDate;
+      this.patientName = emrInsert.patientName;
+      // this.RegTime = emrInsert.RegTime || this.currentDate;
+      this.regTime = emrInsert.regTime || this.currentDate;
+      this.prefixId = emrInsert.prefixId || 0;
+      this.PrefixId = emrInsert.PrefixId || 0;
+      this.PrefixID = emrInsert.PrefixID || 0;
+      this.PrefixID = emrInsert.PrefixID || 0;
+      this.firstName = emrInsert.firstName || '';
+      this.middleName = emrInsert.middleName || '';
+      this.lastName = emrInsert.lastName || '';
+      this.FirstName = emrInsert.FirstName || '';
+      this.MiddleName = emrInsert.MiddleName || '';
+      this.LastName = emrInsert.LastName || '';
+      this.Address = emrInsert.Address || '';
+      this.RegNo = emrInsert.RegNo || '';
+      this.pinNo = emrInsert.pinNo || '';
+      this.panCardNo = emrInsert.panCardNo || '';
+      this.regNo = emrInsert.regNo || '';
+      this.City = emrInsert.City || '';
+      this.PinNo = emrInsert.PinNo || '';
+      this.dateOfBirth = emrInsert.dateOfBirth || this.currentDate;
+      this.dateofBirth = emrInsert.dateofBirth || this.currentDate;
+      this.DateofBirth = emrInsert.DateofBirth || this.currentDate;
+      this.Age = emrInsert.Age || '';
+      this.GenderId = emrInsert.GenderId || 0;
+      this.genderId = emrInsert.genderId || 0;
+      this.PhoneNo = emrInsert.PhoneNo || '';
+      this.phoneNo = emrInsert.phoneNo || '';
+      this.MobileNo = emrInsert.MobileNo || '';
+      this.mobileNo = emrInsert.mobileNo || '';
+      this.AddedBy = emrInsert.AddedBy || '';
+      this.AgeYear = emrInsert.AgeYear || '0';
+      this.AgeMonth = emrInsert.AgeMonth || '0';
+      this.AgeDay = emrInsert.AgeDay || '0';
+      this.ageYear = emrInsert.ageYear || '0';
+      this.ageMonth = emrInsert.ageMonth || '0';
+      this.ageDay = emrInsert.ageDay || '0';
+      this.CountryId = emrInsert.CountryId || 0;
+      this.countryId = emrInsert.countryId || 0;
+      this.StateId = emrInsert.StateId || 0;
+      this.stateId = emrInsert.stateId || 0;
+      this.CityId = emrInsert.CityId || 0;
+      this.cityId = emrInsert.cityId || 0;
+      this.MaritalStatusId = emrInsert.MaritalStatusId || 0;
+
+      this.IsCharity = emrInsert.IsCharity || false;
+      this.ReligionId = emrInsert.ReligionId || 0;
+      this.religionId = emrInsert.religionId || 0;
+      this.AreaId = emrInsert.AreaId || 0;
+      this.areaId = emrInsert.areaId || 0;
+      this.VillageId = emrInsert.VillageId || '';
+      this.TalukaId = emrInsert.TalukaId || '';
+      this.PatientWeight = emrInsert.PatientWeight || '';
+      this.AreaName = emrInsert.AreaName || '';
+      this.AadharCardNo = emrInsert.AadharCardNo || '';
+      this.aadharCardNo = emrInsert.aadharCardNo || '';
+      this.PanCardNo = emrInsert.PanCardNo || '';
+      this.AdmissionID = emrInsert.AdmissionID || '';
+      this.VisitId = emrInsert.VisitId || 0;
+      this.isSeniorCitizen = emrInsert.isSeniorCitizen || 0
+      this.maritalStatusId = emrInsert.maritalStatusId || 0;
+      this.doctorName = emrInsert.doctorName || "";
+      this.departmentName = emrInsert.departmentName || "";
+      this.UnitId = emrInsert.UnitId || 0;
+      this.billNo = emrInsert.billNo || 0;
+      this.departmentId = emrInsert.departmentId || 0;
+      this.doctorId = emrInsert.doctorId || 0;
+      this.campId = emrInsert.campId || 0;
+      this.emgContactPersonName = emrInsert.emgContactPersonName || "";
+      this.emgRelationshipId = emrInsert.emgRelationshipId || 0;
+      this.emgMobileNo = emrInsert.emgMobileNo || 0;
+      this.emgLandlineNo = emrInsert.emgLandlineNo || 0;
+      this.engAddress = emrInsert.engAddress || '';
+      this.emgAadharCardNo = emrInsert.emgAadharCardNo || 0;
+      this.emgDrivingLicenceNo = emrInsert.emgDrivingLicenceNo || 0;
+      this.medTourismPassportNo = emrInsert.medTourismPassportNo || 0;
+      this.medTourismNationalityId = emrInsert.medTourismNationalityId || 0;
+      this.medTourismVisaIssueDate = emrInsert.medTourismVisaIssueDate || '1900-01-01';
+      this.medTourismCitizenship = emrInsert.medTourismCitizenship || ''
+      this.medTourismPortOfEntry = emrInsert.medTourismPortOfEntry || ''
+      this.medTourismResidentialAddress = emrInsert.medTourismResidentialAddress || ''
+      this.medTourismOfficeWorkAddress = emrInsert.medTourismOfficeWorkAddress || ''
+      this.medTourismVisaValidityDate = emrInsert.medTourismVisaValidityDate || '1900-01-01';
+      this.medTourismDateOfEntry = emrInsert.medTourismDateOfEntry || '1900-01-01';
+      this.emgId = emrInsert.emgId || 0
+      this.ipdNo = emrInsert.ipdNo || 0
+      this.ipdno = emrInsert.ipdno || 0
+      this.genderName = emrInsert.genderName || ''
+      this.traiffId = emrInsert.traiffId || 0
+      this.companyId = emrInsert.companyId || 0
+      this.PBillNo = emrInsert.PBillNo || 0
+      this.BillNo = emrInsert.BillNo || 0
+      this.BillTime = emrInsert.BillTime || ''
+      this.PatientType = emrInsert.PatientType || ''
+      this.adharCardNo = emrInsert.adharCardNo || ''
+      this.address = emrInsert.address || ''
+      this.admissionID = emrInsert.admissionID || ''
+      this.tariffName = emrInsert.tariffName || ''
+      this.husbandDob = emrInsert.husbandDob || ''
+      this.wifeDob = emrInsert.wifeDob || ''
+      this.ipdEmrId = emrInsert.ipdEmrId || 0
+    }
+  }
+}
+

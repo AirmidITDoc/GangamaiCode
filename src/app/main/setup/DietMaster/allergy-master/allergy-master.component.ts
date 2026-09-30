@@ -41,8 +41,8 @@ export class AllergyMasterComponent {
     },
     { heading: "Allergy Code", key: "allergyCode", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Allergy Name", key: "allergyName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Category", key: "categoryId", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Severity", key: "severityId", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Food Category", key: "foodCategoryName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Severity", key: "value", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Reaction", key: "reaction", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Active", key: "active", type: gridColumnTypes.status, align: "center" },
     {
@@ -66,8 +66,8 @@ export class AllergyMasterComponent {
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "allergyName", fieldValue: this.allergyName, opType: OperatorComparer.StartsWith },
-    { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "AllergyName", fieldValue: this.allergyName, opType: OperatorComparer.StartsWith },
+    { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {

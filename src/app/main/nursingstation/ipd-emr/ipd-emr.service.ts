@@ -16,7 +16,21 @@ export class IpdEmrService {
   ) { }
 
   public onSaveCasepaper(param) {
-    return this._httpClient.PostData("EMR/Insert", param);
+    if (param.ipdEmrId) {
+      return this._httpClient.PutData("EMR/Edit/" + param.ipdEmrId, param);
+    } return this._httpClient.PostData("EMR/Insert", param);
+  }
+
+  public getEmrId(id) {
+    return this._httpClient.GetData("EMR/" + id);
+  }
+
+  public getRelationshipCombo(param) {
+    return this._httpClient.PostData("RelationshipMaster/List", param);
+  }
+
+  public getGenderCombo(param) {
+    return this._httpClient.PostData("Gender/List", param);
   }
 
 }
