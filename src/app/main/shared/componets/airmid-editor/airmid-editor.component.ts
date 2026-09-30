@@ -289,34 +289,34 @@ export class AirmidEditorComponent {
             }
         },
         mention: {
-            feeds: []
-            // feeds: [
-            //     {
-            //         marker: '@',
-            //         feed: (queryText: string) => {
-            //             return this.mentionItems
-            //                 .filter(item =>
-            //                     item.text
-            //                         ?.toLowerCase()
-            //                         .includes(queryText.toLowerCase())
-            //                 )
-            //                 .slice(0, 10)
+            // feeds: []
+            feeds: [
+                {
+                    marker: '@',
+                    feed: (queryText: string) => {
+                        return this.mentionItems
+                            .filter(item =>
+                                item.text
+                                    ?.toLowerCase()
+                                    .includes(queryText.toLowerCase())
+                            )
+                            .slice(0, 10)
 
-            //                 .map(item => ({
-            //                     id: `@${item.text}`,   // what gets written into the doc
-            //                     text: item.text,       // used by itemRenderer below
-            //                     originalId: item.id    // keep your real db id if needed
-            //                 }));
-            //         },
-            //         itemRenderer: (item: any) => {
-            //             const itemElement = document.createElement('span');
-            //             itemElement.classList.add('custom-item');
-            //             itemElement.id = `mention-list-item-id-${item.originalId}`;
-            //             itemElement.textContent = item.text; // shows the name in the popup
-            //             return itemElement;
-            //         }
-            //     }
-            // ]
+                            .map(item => ({
+                                id: `@${item.text}`,   // what gets written into the doc
+                                text: item.text,       // used by itemRenderer below
+                                originalId: item.id    // keep your real db id if needed
+                            }));
+                    },
+                    itemRenderer: (item: any) => {
+                        const itemElement = document.createElement('span');
+                        itemElement.classList.add('custom-item');
+                        itemElement.id = `mention-list-item-id-${item.originalId}`;
+                        itemElement.textContent = item.text; // shows the name in the popup
+                        return itemElement;
+                    }
+                }
+            ]
         },
         placeholder: 'Type or paste your content here!',
         style: {

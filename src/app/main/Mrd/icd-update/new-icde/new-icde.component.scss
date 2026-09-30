@@ -18,3 +18,46 @@
          transform: translateY(-1.1em) scale(0.75);
      }
  }
+
+ .section-card {
+     padding: 5px;
+     border-radius: 12px;
+     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+     border: 1px solid rgba(0, 0, 0, 0.05);
+ }
+
+ .section-label {
+     gap: 8px;
+     margin-bottom: 8px;
+     font-size: 14px;
+     font-weight: 700;
+     color: #144c59;
+     text-transform: uppercase;
+     letter-spacing: 0.3px;
+ }
+
+ .section-icon {
+     font-size: 20px;
+     height: 20px;
+     width: 20px;
+     color: #1e88e5;
+ }
+
+ .patient-info-card {
+     margin-top: 8px;
+     padding: 8px 12px;
+     border-radius: 8px;
+     background: #f7fbfd;
+     border: 1px solid #e0eef5;
+     box-shadow: none;
+ }
+
+ .btn-danger-outline,
+ .btn-primary {
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     border-radius: 8px;
+     padding: 6px 16px;
+     font-weight: 600;
+ }

@@ -57,28 +57,29 @@ export class DietDetailListComponent {
 
     allcolumns = [
         {
-            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 170,
+            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 270,
             type: gridColumnTypes.template, template: this.isAccept
         },
         {
-            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 170,
+            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 270,
             type: gridColumnTypes.template, template: this.isDelived
         },
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "OPIPID", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-        { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        // { heading: "OPIPID", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+        { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+        // { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        // { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Restriction ", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Accepted DateTime", key: "isAcceptedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-        { heading: "Delived DateTime", key: "isDelivedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+        { heading: "Accepted By", key: "acceptedUser", sort: true, align: 'left', emptySign: 'NA', width: 270 },
+        { heading: "Delivered By", key: "deliverUser", sort: true, align: 'left', emptySign: 'NA', width: 270 },
+
+
         { heading: "Cancelled", key: "detIsCancelled", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.template },
-        { heading: "Cancelled DateTime", key: "detIsCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Cancelled Reason", key: "cancelledReason", sort: true, align: 'left', emptySign: 'NA', width: 140 },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -108,13 +109,14 @@ export class DietDetailListComponent {
     ) { }
 
     ngOnInit(): void {
-        this.CancleStatus = this.data.isCancelled;
+        debugger
+        // this.CancleStatus = this.data.isCancelled;
 
         this.myFilterform = this.filterForm();
         this.HeaderCancleTaskForm = this.CreateheaderCancleForm();
         this.DetailCancleTaskForm = this.CreatdetailCancleForm();
 
-
+        console.log(this.data)
     }
 
     ngAfterViewInit() {
@@ -154,6 +156,7 @@ export class DietDetailListComponent {
     }
 
     GetDetails(data) {
+        debugger
         const DietReqId = String(data.dietReqId);
         debugger
         this.gridConfig1 = {
@@ -198,6 +201,8 @@ export class DietDetailListComponent {
     toggleMasterCheckboxAccept(checked: boolean) {
         this.masterCheckedAccept = checked;
         this.selectedAcceptRows = checked ? [...this.pendingAcceptRows] : [];
+
+
     }
 
     toggleAcceptRowCheckbox(element: any, checked: boolean) {
@@ -205,11 +210,15 @@ export class DietDetailListComponent {
             if (!this.selectedAcceptRows.includes(element)) {
                 this.selectedAcceptRows.push(element);
             }
+            this.masterCheckedAccept = this.pendingAcceptRows.length > 0
+                && this.selectedAcceptRows.length === this.pendingAcceptRows.length;
+
+            this.AcceptSelectedRequests();
         } else {
             this.selectedAcceptRows = this.selectedAcceptRows.filter(r => r !== element);
+            this.masterCheckedAccept = this.pendingAcceptRows.length > 0
+                && this.selectedAcceptRows.length === this.pendingAcceptRows.length;
         }
-        this.masterCheckedAccept = this.pendingAcceptRows.length > 0
-            && this.selectedAcceptRows.length === this.pendingAcceptRows.length;
     }
 
     isAcceptRowSelected(element: any): boolean {
@@ -226,11 +235,13 @@ export class DietDetailListComponent {
         const count = this.selectedAcceptRows.length;
 
         Swal.fire({
-            title: count === 1
-                ? 'Do you want to Accept this Request?'
-                : `Accept ${count} selected requests?`,
+            icon: 'question',
+            title: 'Do you want to Accept this Request?',
+            // text: count === 1 ? 'Accept this request?' : `Accept ${count} selected requests?`,
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (!flag.isConfirmed) return;
 
@@ -248,16 +259,16 @@ export class DietDetailListComponent {
                 () => {
                     this.toastr.success(count === 1 ? 'Request accepted' : 'Selected requests accepted');
                     this.grid1.bindGridData();
+                    this.selectedAcceptRows = [];
+                    this.masterCheckedAccept = false;
+                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
                 },
                 (error) => {
                     this.toastr.error(error.message);
                 }
             );
         });
-
-        this.Getrequestdetailcount(this.data.dietReqId)
     }
-
 
     toggleMasterCheckboxDeliver(checked: boolean) {
         this.masterCheckedDeliver = checked;
@@ -269,11 +280,15 @@ export class DietDetailListComponent {
             if (!this.selectedDeliverRows.includes(element)) {
                 this.selectedDeliverRows.push(element);
             }
+            this.masterCheckedDeliver = this.pendingDeliverRows.length > 0
+                && this.selectedDeliverRows.length === this.pendingDeliverRows.length;
+
+            this.DeliverSelectedRequests();
         } else {
             this.selectedDeliverRows = this.selectedDeliverRows.filter(r => r !== element);
+            this.masterCheckedDeliver = this.pendingDeliverRows.length > 0
+                && this.selectedDeliverRows.length === this.pendingDeliverRows.length;
         }
-        this.masterCheckedDeliver = this.pendingDeliverRows.length > 0
-            && this.selectedDeliverRows.length === this.pendingDeliverRows.length;
     }
 
     isDeliverRowSelected(element: any): boolean {
@@ -289,11 +304,13 @@ export class DietDetailListComponent {
         const count = this.selectedDeliverRows.length;
 
         Swal.fire({
-            title: count === 1
-                ? 'Do you want to Deliver this Request?'
-                : `Deliver ${count} selected requests?`,
+            icon: 'question',
+            title: 'Do you want to Deliver this Request?',
+            // text: count === 1 ? 'Deliver this request?' : `Deliver ${count} selected requests?`,
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (!flag.isConfirmed) return;
 
@@ -311,16 +328,16 @@ export class DietDetailListComponent {
                 () => {
                     this.toastr.success(count === 1 ? 'Request delivered' : 'Selected requests delivered');
                     this.grid1.bindGridData();
+                    this.selectedDeliverRows = [];
+                    this.masterCheckedDeliver = false;
+                    this.Getrequestdetailcount(this.data.dietReqId); // moved into success callback
                 },
                 (error) => {
                     this.toastr.error(error.message);
                 }
             );
         });
-
-        this.Getrequestdetailcount(this.data.dietReqId)
     }
-
     onPrint(element) {
         this.commonService.Onprint("ReqId", element.reqId, "CanteenRequestprint");
     }

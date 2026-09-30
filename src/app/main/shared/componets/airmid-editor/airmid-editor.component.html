@@ -1,28 +1,20 @@
 <div class="ckeditor-container" fxFlexFill>
   <div class="editor-area" fxFlexFill>
     <ckeditor [editor]="editor" [config]="editorConfig" [disabled]="disabled" [formControlName]="formControlName"
-              (ready)="onReady($event)"></ckeditor>
-    
+      (ready)="onReady($event)"></ckeditor>
+
     <!-- Integrated Controls in Editor Toolbar -->
     <div class="integrated-controls">
-      <button mat-icon-button
-              (click)="onMicToggle()"
-              [color]="speechService.isListening ? 'warn' : 'primary'"
-              type="button"
-              [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
-              matTooltipPosition="below"
-              class="mic-button"
-              aria-label="Toggle Speech Recognition">
+      <button mat-icon-button (click)="onMicToggle()" [color]="speechService.isListening ? 'warn' : 'primary'"
+        type="button" [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+        matTooltipPosition="below" class="mic-button" aria-label="Toggle Speech Recognition">
         <mat-icon>{{speechService.isListening ? 'mic_off' : 'mic'}}</mat-icon>
       </button>
-      
+
       <div class="language-dropdown-container">
-        <select class="language-select" 
-                [(ngModel)]="selectedLang" 
-                (change)="onLangChange()"
-                [ngModelOptions]="{standalone: true}"
-                matTooltip="Select Speech Recognition Language"
-                matTooltipPosition="below">
+        <select class="language-select" [(ngModel)]="selectedLang" (change)="onLangChange()"
+          [ngModelOptions]="{standalone: true}" matTooltip="Select Speech Recognition Language"
+          matTooltipPosition="below">
           <option *ngFor="let lang of languages" [value]="lang.code">
             {{ lang.label }}
           </option>

@@ -14,15 +14,7 @@
   display: flex;
   flex: 1 1 auto;
   width: 100%;
-
-
-
 }
-
-.active-icon {
-  border-radius: 50%;
-}
-
 
 .active-icon {
   border-radius: 50%;
@@ -186,55 +178,105 @@
 .info-badge-top {
   .dashboard-card {
     min-width: 155px;
-    border-radius: 12px;
-    padding: 4px 10px;
+    border-radius: 10px;
+    padding: 8px 12px;
     display: flex;
     flex-direction: column;
     justify-content: start;
-    color: black; //#fff;
+    color: black;
     position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-left: 4px solid transparent; // color set per variant below
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     height: 100%;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+    }
 
     .card-label {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       margin-bottom: 2px;
+      color: rgba(0, 0, 0, 0.6);
     }
 
     .card-value {
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 18px;
+      font-weight: 700;
       margin-bottom: 2px;
+      color: #1a1a1a;
     }
 
     .card-icon {
       position: absolute;
       right: 12px;
       bottom: 10px;
-      font-size: 28px;
-      opacity: 0.7;
-    }
-
-    &.registrations {
-      background: #c1ddf3;
-    }
-
-    &.appointments {
-      background: #cdeefa;
-    }
-
-    &.pending{
-      background: #cde9b8;
+      font-size: 26px;
+      opacity: 0.3;
     }
 
     & .card-value div {
-      font-size: 13px;
+      font-size: 15px;
+    }
+
+    // ===== Color variants =====
+
+    &.registrations {
+      background: #e4e3fc;
+      border-left-color: #5c5ce0;
+      .card-value { color: #4341b0; }
+      .card-icon { color: #5c5ce0; }
+    }
+
+    &.appointments {
+      background: #d3ebfc;
+      border-left-color: #2b8fd6;
+      .card-value { color: #1565a8; }
+      .card-icon { color: #2b8fd6; }
+    }
+
+    &.pending {
+      background: #fdedcb;
+      border-left-color: #d99a1e;
+      .card-value { color: #a86a00; }
+      .card-icon { color: #d99a1e; }
     }
 
     &.app-Cancel {
-      background: #f5c6c6;
+      background: #fbdcdc;
+      border-left-color: #d9534f;
+      .card-value { color: #b23a3a; }
+      .card-icon { color: #d9534f; }
+    }
+
+    &.app-accept {
+      background: #d7f5e7;
+      border-left-color: #2e9e6e;
+      .card-value { color: #1e7e51; }
+      .card-icon { color: #2e9e6e; }
+    }
+
+    &.app-notaccept {
+      background: #fce0e0;
+      border-left-color: #d95c5c;
+      .card-value { color: #b23a3a; }
+      .card-icon { color: #d95c5c; }
+    }
+
+    &.app-deliver {
+      background: #d3ebfc;
+      border-left-color: #2b8fd6;
+      .card-value { color: #1565a8; }
+      .card-icon { color: #2b8fd6; }
+    }
+
+    &.app-notdeliver {
+      background: #fdedcb;
+      border-left-color: #d99a1e;
+      .card-value { color: #a86a00; }
+      .card-icon { color: #d99a1e; }
     }
   }
-
 }

@@ -23,14 +23,24 @@ export class IcdUpdateService {
 
   public IcdeInsert(employee) {
     debugger
-    // if (employee.discharge.dischargeSummaryId == 0)
-      return this._httpClient.PostData("ICDUpdate/InsertICD", employee);
-    // else
-    //   return this._httpClient.PutData("DischargeSummary/DischargeTemplateUpdate", employee);
+    if (employee.mrdDiagnosisInfoHeader.ipdiagId == 0)
+      return this._httpClient.PostData("MRDDiagnosisInfo/Insert", employee);
+    else
+      return this._httpClient.PutData("MRDDiagnosisInfo/Edit/"+ employee.mrdDiagnosisInfoHeader.ipdiagId,employee);
+  }
+  public getAdmissionById(Id) {
+    return this._httpClient.GetData("Admission/" + Id);
   }
 
-  
-    getDiagnosisListbyId(Id) {
-        return this._httpClient.GetData('DischargeSummary/IpAdmissionDiagnosisInformation/' + Id);
-    }
+  getDiagnosisList1(descriptionType: string) {
+    return this._httpClient.GetData('OPDPrescriptionMedical/GetDiagnosisList?descriptionType=' + descriptionType);
+  }
+  getDiagnosisListbyId(data) {
+    // return this._httpClient.GetData('DischargeSummary/IpAdmissionDiagnosisInformation/' + Id);
+    return this._httpClient.PostData('MRDDiagnosisInfo/MRDDiagnosisInformationList', data);
+
+  }
+  public getRegistraionById(Id) {
+    return this._httpClient.GetData("OutPatient/" + Id);
+  }
 }

@@ -200,9 +200,9 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         const available = this.extractNumberValue(dept.AvailableCount) || 0;
         const reserved = Math.max(Math.round(total * 0.07), 0); // Calculate reserved as 7% of total
         const percent = total ? Math.round((inUse / total) * 100) : 0;
-
+        //  dept.BedName,//
         return {
-            name: dept.BedName,// this.extractStringValue(dept.WardName) || this.extractStringValue(dept.DepartmentName) || 'Department ' + (index + 1),
+            name: this.extractStringValue(dept.WardName) || this.extractStringValue(dept.DepartmentName) || 'Department ' + (index + 1),
             image: this.departmentImages[index % this.departmentImages.length],
             total,
             inUse,

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
@@ -20,7 +20,7 @@ import { FormGroup } from '@angular/forms';
   animations: fuseAnimations,
 })
 export class MenuMasterComponent {
-  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
+  // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
   DietMenuId: any = "";
 
   DietMenuName = "%"
@@ -189,24 +189,25 @@ export class MenuMasterComponent {
 
     console.log("detailList:", data)
     const dietMenuID = data.dietMenuId;
-
+    debugger
     this.gridConfig1 = {
       apiUrl: "DietMenuMaster/DietmenumasterDetailsList",
       columnsList: [
         { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Quantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Name", key: "name", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Quantity", key: "quantity", sort: true, align: 'left', emptySign: 'NA' },
       ],
       sortField: "DietMenuid",
       sortOrder: 0,
       filters: [
-        { fieldName: "DietMenuId", fieldValue: String(dietMenuID), opType: OperatorComparer.Contains },
+        { fieldName: "DietMenuId", fieldValue: "10008", opType: OperatorComparer.Contains },
       ],
       row: 25
     };
     this.isShowDetailTable = true;
+   
     // setTimeout(() => {
     this.grid1.gridConfig = this.gridConfig1;
     this.grid1.bindGridData();

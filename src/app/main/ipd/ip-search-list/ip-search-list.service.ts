@@ -1138,7 +1138,9 @@ export class IPSearchListService {
     getDiagnosisList1(descriptionType: string) {
         return this._httpClient1.GetData('OPDPrescriptionMedical/GetDiagnosisList?descriptionType=' + descriptionType);
     }
-
+    public getDiscounttransactionlist(employee) {
+        return this._httpClient1.PostData("IPBill/DiscountTransactionHistoryList", employee)
+    }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

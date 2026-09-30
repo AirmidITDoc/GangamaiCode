@@ -28,14 +28,7 @@
   border-radius: 50%;
 }
 
-.status-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  white-space: nowrap;
-  min-width: 120px;
-}
+
 
 .status-completed,
 .status-pending {
@@ -124,38 +117,26 @@
   }
 
   .status-box {
-    display: flex;
-    align-items: center;
-    width: 100%; // fill the cell — the cell itself is now fixed by table-layout
-    box-sizing: border-box;
-    gap: 8px;
-    overflow: hidden;
-  }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
 
-  .status-pill {
-    display: inline-block;
-    width: 80px;
-    flex-shrink: 0;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+.status-pill {
+  white-space: nowrap;
+}
 
+.checkbox-slot {
+  display: inline-flex;
+  align-items: center;
+}
 
-  .checkbox-slot {
-    width: 20px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .checkbox-placeholder {
-    color: rgba(0, 0, 0, 0.38); // muted, like a disabled/empty state
-    font-size: 14px;
-    line-height: 1;
-  }
+.accept-checkbox {
+  margin: 0;
+  line-height: 1;
+}
 }
 
 .info-badge-top {
@@ -191,7 +172,7 @@
       opacity: 0.7;
     }
 
-    
+
     &.total {
       background: #c3eff6;
     }

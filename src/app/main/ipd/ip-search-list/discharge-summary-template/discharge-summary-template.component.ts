@@ -148,25 +148,11 @@ export class DischargeSummaryTemplateComponent {
 
         // this.DischargesumForm = this.showDischargeSummaryForm();
 
-        // this.getDiagnosisList();
+        this.getDiagnosisList();
 
     }
 
-    // getDiagnosisList() {
-
-    //     this._IpSearchListService
-    //         .getDiagnosisListbyId('Diagnosis')
-    //         .subscribe((response: any[]) => {
-    //             console.log('Diagnosis API Response:', response);
-
-    //             this.mentionItems = response.map(item => ({
-    //                 id: '@' + item.descriptionName,
-    //                 text: item.descriptionName
-    //             }));
-
-    //             console.log('Mention Items:', this.mentionItems);
-    //         });
-    // }
+ 
     MedicineItemform(): FormGroup {
         return this._formBuilder.group({
             ItemId: '',
@@ -1268,8 +1254,12 @@ export class DischargeSummaryTemplateComponent {
             this.isItemIdSelected = true
     }
     onAddTemplate(e) {
+           this.vTemplateDesc = this.Tempdesc
+           
         this.DischargesumForm.get('discharge').get('templateDescriptionHtml')
             .setValue(this.Tempdesc);
+
+            
     }
 
     onClose() {

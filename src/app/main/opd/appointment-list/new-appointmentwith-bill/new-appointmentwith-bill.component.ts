@@ -2038,21 +2038,32 @@ export class NewAppointmentwithBillComponent {
     }
 
 
-    async printBothReports(response: any) {
-        this.OnViewReportPdf(response.opdIpdId);
-
-        await this.delay(1000);
-
-        this.viewgetOPBillReportPdf(response.billNo);
+    async printBothReports(response: any) { 
+            this.OnViewReportPdf(response.opdIpdId);
+            await this.delay(5000);
+            this.viewgetOPBillReportPdf(response.billNo);  
     }
-
-    private delay(ms: number): Promise<void> {
+        private delay(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+    viewgetOPBillReportPdf(element) {
+        if (this.IsOPCasePaperPrtWithoutPreviewID) {
+            this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt", true);
+        } else {
+            this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt", false);
+        }
+    }
+
 
     OnViewReportPdf(element) {
-
-        this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+        // this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+        if (this.searchFormGroup.get('regRadio').value == "registration") {
+            //new case paper
+            this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
+        } else{
+            //Follow up case paper
+            this.commonService.Onprint("VisitId", element, "AppointmentReceiptWithoutHeader");
+        } 
     }
 
 
@@ -2282,14 +2293,7 @@ export class NewAppointmentwithBillComponent {
         });
     }
 
-    viewgetOPBillReportPdf(element) {
-        debugger
-        if (this.IsOPCasePaperPrtWithoutPreviewID) {
-            this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt", true);
-        } else {
-            this.commonService.OnprintDirect("BillNo", element, "OpBillReceipt", false);
-        }
-    }
+
     Patientnewold: any = 1;
     resetFilteredOptions() {
         this.filteredOptions = [];

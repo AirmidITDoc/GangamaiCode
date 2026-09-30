@@ -1,20 +1,14 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar resize-form-fields" fxLayout="column" fxFlexFill
-    style="height: 100%;">
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar resize-form-fields" fxLayout="column" fxFlexFill>
 
     <mat-toolbar style="width: 100%; justify-content: space-between; height: 50px">
-        <!-- Left: menu + title -->
+
         <div fxLayout="row" fxLayoutAlign="start center">
-            <!-- <button class="patient-list-toggle-btn" (click)="drawer.toggle()" [class.is-open]="drawer.opened"
-                matTooltip="Toggle Patient List" matTooltipPosition="below">
-                <mat-icon class="toggle-icon">people_alt</mat-icon>
-                <span class="toggle-label">Patient List</span>
-                <mat-icon class="toggle-arrow">{{ drawer.opened ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-            </button> -->
+
             <span class="logo-text h1 ml-8" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"
-                style="color: white">Diet Request</span>
+                style="color: white">New Diet Request</span>
         </div>
 
-        <!-- Right: patient list toggle pill -->
+
         <div class="close-icon">
             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                 matTooltip="Close">
@@ -24,13 +18,13 @@
     </mat-toolbar>
 
     <div fxLayout="row" class="content-area">
-        <div class="sidebar-content px-12 pt-12 h-100-p" style="width: 25%;">
-            <form [formGroup]="_ClinicalcareService.MyForm" class="h-100-p">
+        <div class="sidebar-content px-12 pt-12 h-100-p" style="width:40%;">
+            <form [formGroup]="MyForm" class="h-100-p">
                 <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
 
                     <div fxFlex fxLayout="row" class="gap-8">
                         <airmid-dropdown label="Ward Name" formControlName="WardName" fxFlex
-                            [formGroup]="_ClinicalcareService.MyForm" [mode]="autocompleteward"
+                            [formGroup]="MyForm" [mode]="autocompleteward"
                             (selectionChange)="getSelectedObjward($event)">
                         </airmid-dropdown>
                         <div>
@@ -53,18 +47,18 @@
 
                     <mat-card fxFlex.gt-sm="100%" fxFlex fxLayout="column" class="pb-3" dynamicTableHeight>
                         <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
-                            class="airmid-table">
+                            >
 
                             <ng-container matColumnDef="CheckBox">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                    <mat-checkbox (change)="$event ? masterToggle() : null" class="w-40"
                                         [checked]="selection.hasValue() && isAllSelected()"
                                         [indeterminate]="selection.hasValue() && !isAllSelected()"
                                         [disabled]="areAllRowsDisabled()">
                                     </mat-checkbox>
                                 </th>
 
-                                <td mat-cell *matCellDef="let contact">
+                                <td mat-cell *matCellDef="let contact" class="w-40">
                                     <mat-checkbox (click)="$event.stopPropagation()"
                                         (change)="$event ? selection.toggle(contact) : null"
                                         [checked]="selection.isSelected(contact)" [disabled]="contact.disabled">
@@ -81,16 +75,16 @@
                             </ng-container>
 
                             <ng-container matColumnDef="patientName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                     Patient Name</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150 ellipsis-cell"
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 ellipsis-cell"
                                     [matTooltip]="contact.patientName">
                                     {{contact.patientName}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="roomName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                     RoomName</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150 ellipsis-cell"
                                     [matTooltip]="contact.roomName">
@@ -111,8 +105,10 @@
 
                             <mat-header-row class="accent min-width-550"
                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-550"
-                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-550 h-32"
+                                [@animate]="{ value: '*', params: { y: '100%' } }"
+                                (click)="!row.disabled && selection.toggle(row)" style="cursor: pointer;">
+                            </mat-row>
                         </mat-table>
 
                     </mat-card>
@@ -128,7 +124,7 @@
                     <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="8px grid">
 
                         <!-- Diet Menu -->
-                        <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="48%">
+                        <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="60%">
                             <airmid-dropdown label="Diet Menu" formControlName="dietMenuId" [formGroup]="DietForm"
                                 [mode]="autocompleteModedietMenu">
                             </airmid-dropdown>
@@ -195,38 +191,22 @@
                 </div>
             </div> -->
 
-          <div *ngFor="let item of selection.selected; let i = index" class="patient-chip-row">
-    <mat-chip-list>
-        <mat-chip [removable]="true" (removed)="removeChip(item)">
-            {{ item.patientName }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-    </mat-chip-list>
+            <div class="patient-cards-grid">
+                <div *ngFor="let item of selection.selected; let i = index" class="patient-comment-card">
+                    <div class="card-header">
+                        <span class="patient-name">{{item.ipdNo}} | {{ item.patientName }} | {{item.roomName}} |
+                            {{item.bedName}}</span>
+                        <mat-icon class="remove-icon" (click)="removeChip(item)" matTooltip="Remove">cancel</mat-icon>
+                    </div>
 
-    <textarea class="comment-box" matInput
-        [placeholder]="'Comment for ' + item.patientName"
-        name="comment_{{ i }}"
-        [(ngModel)]="item.comments"
-        [ngModelOptions]="{standalone: true}">
-    </textarea>
-</div>
-            <!-- // -->
-            <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" style="width: 100%;">
-                <label style="font-size: 16px; font-weight: bold; white-space: nowrap;">Selected Patients:</label>
-                <mat-chip-set aria-label="Selected patients"
-                    style="display: flex; flex-wrap: wrap; gap: 4px; height: 120px; overflow-y: auto; align-content: flex-start;">
-                    <mat-chip *ngFor="let contact of selection.selected" (removed)="removeChip(contact)">
-                        {{ contact.patientName }}
-                        <button matChipRemove>
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </mat-chip>
-                </mat-chip-set>
-            </div> -->
+                    <textarea class="comment-box" rows="1" placeholder="Add a comment..." name="comment_{{ i }}"
+                        [(ngModel)]="item.comments" [ngModelOptions]="{standalone: true}">
+                    </textarea>
+                </div>
+            </div>
 
-            <!-- Footer -->
             <div class="modal-footer">
-                <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="12px">
+                <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="12px" style="margin-bottom:10px;">
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"> Close </button>
                     <button type="button" (click)="onSave()" class="btn btn-primary"> Save </button>
                 </div>

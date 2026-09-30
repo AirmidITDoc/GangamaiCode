@@ -25,11 +25,7 @@ export class DietRequestService {
         private _FormvalidationserviceService: FormvalidationserviceService,
     ) {
         this.MyForm = this.createMyForm()
-        this.VitalsForm = this.createVitalsForm(),
-            this.SugarForm = this.createSugarForm(),
-            this.OxygenForm = this.CreateOxygenForm(),
-            this.ApacheScoreForm = this.CreateApachescoreForm(),
-            this.InPutOutputForm = this.CreateInputoutForm()
+
     }
 
     createMyForm() {
@@ -37,177 +33,10 @@ export class DietRequestService {
             WardName: [''],
             RegID: [''],
             PatientName: ['']
-            // FromDate:[new Date()],
-            // ToDate:[new Date()],
-        })
-    }
-    createPainAssesForm() {
-        return this._formbuilder.group({
-            // DailyWeight: [''],
-            painAssessmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            painAssessmentDate: [new Date()],
-            painAssessmentTime: [new Date()],
-            admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            painAssessementValue: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        })
-    }
-    createPainAssesweightForm() {
-        return this._formbuilder.group({
-            patWeightId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            patWeightDate: [new Date()],
-            patWeightTime: [new Date()],
-            admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            patWeightValue: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        })
-    }
-    createVitalsForm() {
-        return this._formbuilder.group({
-            vitalId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            vitalDate: [new Date()],
-            vitalTime: [new Date()],
-            admissionId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-            temperature: ['', [Validators.maxLength(10)]],
-            pulse: ['', [Validators.maxLength(10)]],
-            respiration: ['', [Validators.maxLength(10)]],
-            bloodPresure: ['', [Validators.maxLength(10)]],
-            cvp: ['', [Validators.maxLength(10)]],
-            peep: ['', [Validators.maxLength(10)]],
-            arterialBloodPressure: ['', [Validators.maxLength(10)]],
-            papressureReading: ['', [Validators.maxLength(10)]],
-            brady: ['', [Validators.maxLength(10)]],
-            apnea: ['', [Validators.maxLength(10)]],
-            abdominalGrith: ['', [Validators.maxLength(10)]],
-            desaturation: ['', [Validators.maxLength(10)]],
-            saturationWithO2: ['', [Validators.maxLength(10)]],
-            saturationWithoutO2: ['', [Validators.maxLength(10)]],
-            po2: ['', [Validators.maxLength(10)]],
-            fio2: ['', [Validators.maxLength(10)]],
-            pfration: ['', [Validators.maxLength(10)]],
-            suctionType: 0
-        })
-    }
-    createSugarForm() {
-        return this._formbuilder.group({
-            id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            entryDate: [new Date()],
-            entryTime: [new Date()],
-            admissionId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-            bsl: ['', [Validators.maxLength(10)]],
-            urineSugar: ['', [Validators.maxLength(10)]],
-            ettpressure: ['', [Validators.maxLength(10)]],
-            urineKetone: ['', [Validators.maxLength(10)]],
-            bodies: ['', [Validators.maxLength(10)]],
-            intakeMode: 0,
-            reportedToRmo: ['', [Validators.maxLength(10)]],
-
-            // extra fields
-            InformedTo: [''],
-            InformedBy: [''],
-            Injection: [''],
-            InjectionDose: [''],
-            Tablet: [''],
-            TabletDose: [''],
-        })
-    }
-    CreateOxygenForm() {
-        return this._formbuilder.group({
-            // Tidol: [''],
-            // SetRange: [''],
-            // IPAP: [''],
-            // minuteV: [''],
-            // RateTotal: [''],
-            // EPAP: [''],
-            // Peep: [''],
-            // PC: [''],
-            // MV: [''],
-            // Sup: [''],
-            // FiO2: [''],
-            // IE: [''],
-            // OxygenRate: [''],
-            // SaturationWitho2: [''],
-            FlowTrigger: [''],
-
-            id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            entryDate: [new Date()],
-            entryTime: [new Date()],
-            admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            mode: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tidolV: ['', [Validators.maxLength(10)]],
-            setRange: ['', [Validators.maxLength(10)]],
-            ipap: ['', [Validators.maxLength(10)]],
-            minuteV: ['', [Validators.maxLength(10)]],
-            rateTotal: ['', [Validators.maxLength(10)]],
-            epap: ['', [Validators.maxLength(10)]],
-            peep: ['', [Validators.maxLength(10)]],
-            pc: ['', [Validators.maxLength(10)]],
-            mvpercentage: ['', [Validators.maxLength(10)]],
-            prSup: ['', [Validators.maxLength(10)]],
-            fio2: ['', [Validators.maxLength(10)]],
-            ie: ['', [Validators.maxLength(10)]],
-            oxygenRate: ['', [Validators.maxLength(10)]],
-            saturationWithO2: ['', [Validators.maxLength(10)]],
-            flowTrigger: ['', [Validators.maxLength(10)]],
-        })
-    }
-    CreateApachescoreForm() {
-        return this._formbuilder.group({
-            Pulse: [''],
-            Respiraiton: [''],
-            TempRectal: [''],
-            MeanArterialPressure: [''],
-            ArterialPH: [''],
-            Oxygenation: [''],
-            SerumHCO3: [''],
-            WBC: [''],
-            Hematocrit: [''],
-            SerumCretinine: [''],
-            SerumPotassium: [''],
-            SerumSodium: [''],
-            EYEOpening: ['0'],
-            VerbalResponse: ['0'],
-            Motarresponse: ['0'],
-            ChroniPoints: ['0'],
-            TotalCGS: [''],
-            DeathRate: [''],
-            TotalApachescore: [''],
-            valueA: [''],
-            valueB: [''],
-            valueC: ['']
-        })
-    }
-    CreateInputoutForm() {
-        return this._formbuilder.group({
-            IV: [''],
-            IVQty: [''],
-            PreOral: [''],
-            PreOralQty: [''],
-            PreJT: [''],
-            PreJTQty: [''],
-            PreRT: [''],
-            PreRTQty: [''],
-            Otiner: [''],
-            OtinerQty: [''],
-            PDHD: [''],
-            PDHDQty: [''],
-            Influsions: [''],
-            InflusionsQty: [''],
-            Boluses: [''],
-            BolusesQty: [''],
-            Urine: [''],
-            UrineQty: [''],
-            NGAspiratic: [''],
-            NGAspiraticQty: [''],
-            Drange: [''],
-            DrangeQty: [''],
-            Other: [''],
-            OtherQty: [''],
-            Stool: [''],
-            StoolQty: [''],
-            PDHDOutput: [''],
-            PDHDOutputQty: ['']
 
         })
     }
+
 
     public getWardList() {
         return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_WardMasterListForCombo", {});
@@ -313,5 +142,8 @@ export class DietRequestService {
     }
     public getRequestlist(employee) {
         return this._httpClient1.PostData("DietPatientRequest/DietPatientRequestHeaderList", employee)
+    }
+     public getRequestdetaillist(employee) {
+        return this._httpClient1.PostData("DietPatientRequest/DietPatientRequestDetailsList", employee)
     }
 }
