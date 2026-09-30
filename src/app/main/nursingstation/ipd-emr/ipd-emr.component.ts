@@ -378,7 +378,6 @@ export class IpdEMRComponent implements OnInit {
   }
 
   getpatientDet(obj: any): void {
-    console.log(obj)
 
     this.isShowPrintButtons = true
     this.painLevel = 0
@@ -400,7 +399,7 @@ export class IpdEMRComponent implements OnInit {
       this._IpdEmrService.getEmrId(this.registerObj.ipdEmrId).subscribe((res) => {
         this.UpdateRegObj = res
         this.ipdEmrId = res.ipdEmrId
-        console.log(this.UpdateRegObj)
+        // console.log(this.UpdateRegObj)
         this.emrForm.patchValue(this.UpdateRegObj)
 
         /////////// vitals data retrive ////////////////
@@ -644,7 +643,7 @@ export class IpdEMRComponent implements OnInit {
       finalDiagnosis: this.addFinalDiagnolist.map(x => x.diagnosisName).join(', ')
     });
 
-    console.log('Save form:', this.emrForm.value)
+    // console.log('Save form:', this.emrForm.value)
 
     if (!this.emrForm.invalid) {
 
@@ -850,7 +849,6 @@ export class IpdEMRComponent implements OnInit {
   }
 
   selectChangeDiagnosis(selectedChips: string[]) {
-    console.log(selectedChips)
     this.addProDiagnolist = selectedChips;
     this.MyForm.get('mAssignProDiagnosis')?.setValue(this.addProDiagnolist);
 
@@ -860,7 +858,6 @@ export class IpdEMRComponent implements OnInit {
   }
 
   selectChangeFinalDiagnosis(selectedChips: string[]) {
-    console.log(selectedChips)
     this.addFinalDiagnolist = selectedChips;
     this.MyForm.get('mAssignFinalDiagnosis')?.setValue(this.addFinalDiagnolist);
 
