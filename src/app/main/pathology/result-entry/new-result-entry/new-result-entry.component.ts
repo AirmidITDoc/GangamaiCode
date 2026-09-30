@@ -414,7 +414,7 @@ export class NewResultEntryComponent {
                 "searchFields": [
                     {
                         "fieldName": "PathReportId",
-                        "fieldValue": String(rbj[0].PathReportId), //"150598",  
+                        "fieldValue": String(this.reportIdData), //String(rbj[0].PathReportId), //"150598",  
                         "opType": "Equals"
                     }
                 ],
@@ -426,7 +426,7 @@ export class NewResultEntryComponent {
                 "searchFields": [
                     {
                         "fieldName": "PathReportId",
-                        "fieldValue": String(rbj[0].PathReportId),
+                        "fieldValue": String(this.reportIdData), //String(rbj[0].PathReportId),
                         "opType": "Equals"
                     }
                 ],
@@ -480,7 +480,8 @@ export class NewResultEntryComponent {
                 },
                 {
                     "fieldName": "ServiceId ",
-                    "fieldValue": String(rbj[0].ServiceId),
+                    "fieldValue": String(this.ServiceIdData),
+                    // "fieldValue": String(rbj[0].ServiceId),
                     "opType": "Equals"
                 },
                 {
@@ -490,7 +491,8 @@ export class NewResultEntryComponent {
                 },
                 {
                     "fieldName": "PathReportId",
-                    "fieldValue": String(rbj[0].PathReportId),
+                    "fieldValue": String(this.reportIdData),
+                    // "fieldValue": String(rbj[0].PathReportId),
                     "opType": "Equals"
                 },
                 {
@@ -542,7 +544,8 @@ export class NewResultEntryComponent {
                 },
                 {
                     "fieldName": "ServiceId ",
-                    "fieldValue": String(rbj[0].ServiceId),
+                    "fieldValue": String(this.ServiceIdData),
+                    // "fieldValue": String(rbj[0].ServiceId),
                     "opType": "Equals"
                 },
                 {
@@ -552,7 +555,8 @@ export class NewResultEntryComponent {
                 },
                 {
                     "fieldName": "PathReportId",
-                    "fieldValue": String(rbj[0].PathReportId),
+                    "fieldValue": String(this.reportIdData),
+                    // "fieldValue": String(rbj[0].PathReportId),
                     "opType": "Equals"
                 },
                 {
@@ -876,7 +880,7 @@ export class NewResultEntryComponent {
                 }
 
                 ////////////// end ///////////////
-                
+
                 // this.Pthologyresult = Visit as Pthologyresult[];
                 // this.dataSource.sort = this.sort;
                 // this.dataSource.paginator = this.paginator;
@@ -1173,18 +1177,22 @@ export class NewResultEntryComponent {
             });
             return;
         }
-        this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
-        this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
-        this.ResultForm.get("pathologyReport").setValue(this.PathResultForm.value)
+        // this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
+        // this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
+        // this.ResultForm.get("pathologyReport").setValue(this.PathResultForm.value)
 
         this.pathologyResultArray.clear();
         this.dataSource.data.forEach(item => {
             console.log(item)
             this.pathologyResultArray.push(this.createResultdetailForm(item));
         });
-
-
+        debugger
+        this.pathologyReportArray.clear();
+        [...new Set(this.reportIdData)].forEach(id => {
+            this.pathologyReportArray.push(this.createPathologyResultForm(id));
+        });
         console.log(this.ResultForm.value);
+
         this._SampleService.PathResultentryInsert(this.ResultForm.value).subscribe(response => {
             if (response) {
                 this._matDialog.closeAll();
@@ -1239,14 +1247,14 @@ export class NewResultEntryComponent {
 
     createResultInsertForm(): FormGroup {
         return this.formBuilder.group({
-            pathologyReport: '',// this.PathResultForm.value,
+            pathologyReport: this.formBuilder.array([]),// this.PathResultForm.value,
             pathologyResult: this.formBuilder.array([]) // FormArray for details
         });
     }
 
-    createPathologyResultForm(): FormGroup {
+    createPathologyResultForm(pathReportId: any = null): FormGroup {
         return this.formBuilder.group({
-            pathReportId: this.vPathReportId,
+            pathReportId: pathReportId,
             reportDate: this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),
             reportTime: this.datePipe.transform(this.currentDate, "HH:mm"),
             isCompleted: true,
@@ -1255,11 +1263,15 @@ export class NewResultEntryComponent {
             pathResultDr2: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             pathResultDr3: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isTemplateTest: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            suggestionNotes: "",
+            suggestionNotes: [this.otherForm.get("suggestionNotes").value ?? ''],
             admVisitDoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             refDoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
+    }
+
+    get pathologyReportArray(): FormArray {
+        return this.ResultForm.get('pathologyReport') as FormArray;
     }
 
     createResultdetailForm(item: any = {}, index: number = 0): FormGroup {

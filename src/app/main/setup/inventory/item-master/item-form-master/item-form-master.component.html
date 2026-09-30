@@ -283,7 +283,32 @@
               </mat-card>
             </form>
 
+  <br>
+            <form [formGroup]="itemForm" noValidate fxLayout="column" style="padding: 0 10px;">
 
+              <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                class="top-header accent heading-container h-40 border-radius-4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
+                  Item Description
+                </span>
+              </div>
+
+              <mat-card>
+                <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px" style="padding: 10px">
+                  <airmid-dropdown label="Item Route Name" formControlName="routeId"
+                      [value]="registerObj?.routeId" [formGroup]="itemForm"
+                    [validations]="getValidationMessages().itemroute" [mode]="autocompleteModeRoute"
+                    fxFlex="20%">
+                  </airmid-dropdown>
+
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Item Description</mat-label>
+                    <textarea matInput name="itemdescription" formControlName="drugDescription" [(ngModel)]="vitemdescription" 
+                      rows="1"></textarea>
+                  </mat-form-field>
+                </div>
+              </mat-card>
+            </form>
           </div>
         </div>
       </div>
@@ -299,6 +324,11 @@
         <mat-checkbox aria-label="IsActive" formControlName="isActive" [(ngModel)]="vchkactive"
           style="font-weight: bold;">
           IsActive
+        </mat-checkbox> 
+
+         <mat-checkbox aria-label="IsBrand" formControlName="isBrand" [(ngModel)]="vIsBrand"
+          style="font-weight: bold;">
+          IsBrand
         </mat-checkbox>
 
         <!-- <mat-checkbox aria-label="CreateApproval" formControlName="CreateApproval" (change)="onChangeMode($event)" style="font-weight: bold;">

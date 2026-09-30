@@ -188,7 +188,9 @@ export class ItemMasterService {
             content: ['', [Validators.required]],
             isValidContent: [false],
             mAssignItemToDrugs: [[]], 
-            
+            isBrand:[false],
+            drugDescription:[''],
+            routeId:[0]
         });
     }
 

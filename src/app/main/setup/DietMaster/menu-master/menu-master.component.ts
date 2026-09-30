@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
@@ -23,6 +23,12 @@ export class MenuMasterComponent {
   // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Add);
   DietMenuId: any = "";
 
+  DietMenuName = "%"
+  DietName = "0"
+  MealName = "0"
+  autocompleteModeDietType: string = 'MDietTypeMaster'
+  autocompleteModeMealType: string = 'MMealTypeMaster'
+
   myFilterform: FormGroup;
   Fromdate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   Todate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -30,9 +36,13 @@ export class MenuMasterComponent {
   @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
   gridConfig1: gridModel = new gridModel();
-
+  @ViewChild('dietMenuDetails') dietMenuDetails!: TemplateRef<any>;
 
   isShowDetailTable: boolean = false;
+  visibleCount = 2;
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'dietMenuDetails')!.template = this.dietMenuDetails;
+  }
 
   constructor(
     public permissionService: PagePermissionService, private cdr: ChangeDetectorRef,
@@ -43,47 +53,41 @@ export class MenuMasterComponent {
   ngOnInit(): void {
     this.myFilterform = this._menuMasterService.filterForm();
   }
-  onChangeStartDate(value) {
-    this.gridConfig.filters[0].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
-  onChangeEndDate(value) {
-    this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
 
   allColumns = [
     { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA' },
-
-    { heading: "Meal Type Code", key: "mealTypeCode", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Meal Type", key: "mealName", sort: true, align: 'left', emptySign: 'NA' },
-
-
-    { heading: "Diet Code", key: "dietCode", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA' },
-
+    { heading: "Diet Type", key: "dietName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Texture", key: "texture", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Calories", key: "calories", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Proteins", key: "protein", sort: true, align: 'left', emptySign: 'NA' },
-
-    // {
-    //   heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-    //     {
-    //       action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Edit), callback: (data: any) => {
-    //         this.onSave(data);
-    //       }
-    //     }, {
-    //       action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Delete), callback: (data: any) => {
-    //         this._menuMasterService.deactivateTheStatus(data.specialtyId).subscribe((response: any) => {
-    //           this.grid.bindGridData();
-    //         });
-    //       }
-    //     }]
-    // }
+    {
+      heading: "Menu Details", key: "dietMenuDetails", sort: true, align: "left", width: 550, type: gridColumnTypes.template,
+      template: this.dietMenuDetails
+    },
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        {
+          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Edit), callback: (data: any) => {
+            this.onSave(data);
+          }
+        }
+        // , {
+        //   action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietMenuMaster, permissionType.Delete), callback: (data: any) => {
+        //     this._menuMasterService.deactivateTheStatus(data.dietMenuId).subscribe((response: any) => {
+        //       this.grid.bindGridData();
+        //     });
+        //   }
+        // }
+      ]
+    }
   ]
 
   allFilters = [
-    { fieldName: "Fromdate", fieldValue: this.Fromdate, opType: OperatorComparer.Contains },
-    { fieldName: "Todate", fieldValue: this.Todate, opType: OperatorComparer.Contains }
+    { fieldName: "DietMenuName", fieldValue: this.DietMenuName, opType: OperatorComparer.StartsWith },
+    { fieldName: "MealName", fieldValue: this.MealName, opType: OperatorComparer.StartsWith },
+    { fieldName: "DietName", fieldValue: this.DietName, opType: OperatorComparer.StartsWith }
   ]
 
   gridConfig: gridModel = {
@@ -95,11 +99,74 @@ export class MenuMasterComponent {
     filters: this.allFilters
   }
 
+  MealTypeView(value) {
+    if (value.value !== 0)
+      this.MealName = value.value
+    else
+      this.MealName = "0"
+
+    this.onChangeFirst();
+  }
+
+  DietTypeView(value) {
+    if (value.value !== 0)
+      this.DietName = value.value
+    else
+      this.DietName = "0"
+
+    this.onChangeFirst();
+  }
+
+  // chip design
+  getDetailArray(data: string): string[] {
+    if (!data) {
+      return [];
+    }
+    return data.split('|')
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
+  }
+
+  getDetailNames(data: string): string {
+    const parts = data.split('~');
+    const foodName = parts[0]?.trim() ?? '';
+    const quantity = parts[1]?.trim() ?? '';
+    const unit = parts[2]?.trim() ?? '';
+    return `${foodName} - ${quantity} ${unit}`.trim();
+  }
+
+  expandedRows = new Set<any>();
+
+  isExpanded(element: any): boolean {
+    return this.expandedRows.has(element);
+  }
+
+  expandRow(element: any): void {
+    this.expandedRows.add(element);
+  }
+
+  // dropdown way
+  // expandedRow: any = null;
+
+  // toggleRow(element: any): void {
+  //   this.expandedRow = this.expandedRow === element ? null : element;
+  // }
+
+  Clearfilter(event) {
+    if (event == 'DietMenuName')
+      this.myFilterform.get('DietMenuName').setValue("")
+
+    this.onChangeFirst();
+  }
+
   onChangeFirst() {
-    this.Fromdate = this.datePipe.transform(this.myFilterform.get('Fromdate').value, "yyyy-MM-dd")
-    this.Todate = this.datePipe.transform(this.myFilterform.get('Todate').value, "yyyy-MM-dd")
+    this.DietMenuName = this.myFilterform.get('DietMenuName').value + "%"
+    this.MealName = this.myFilterform.get('MealName').value || "0"
+    this.DietName = this.myFilterform.get('DietName').value || "0"
+
     this.getfilterdata();
   }
+
 
   getfilterdata() {
     this.gridConfig = {
@@ -108,8 +175,9 @@ export class MenuMasterComponent {
       sortField: "DietMenuid",
       sortOrder: 0,
       filters: [
-        { fieldName: "Fromdate", fieldValue: this.Fromdate, opType: OperatorComparer.Contains },
-        { fieldName: "Todate", fieldValue: this.Todate, opType: OperatorComparer.Contains }
+        { fieldName: "DietMenuName", fieldValue: this.DietMenuName, opType: OperatorComparer.StartsWith },
+        { fieldName: "MealName", fieldValue: this.MealName, opType: OperatorComparer.StartsWith },
+        { fieldName: "DietName", fieldValue: this.DietName, opType: OperatorComparer.StartsWith }
       ],
       row: 25
     }
@@ -157,7 +225,7 @@ export class MenuMasterComponent {
         maxHeight: '100%',
         width: '90%',
         // maxWidth: "95vw",
-        height: '100%',
+        height: '90%',
         // width: '90%',
         data: row
       });

@@ -1,0 +1,529 @@
+<div class="simple page-layout inner-sidebar left-sidebar resize-form-fields ipd-emr-page">
+    <mat-toolbar class="ipd-emr-toolbar">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button class="patient-list-toggle-btn1" (click)="drawer.toggle()" [class.is-open]="drawer.opened"
+                matTooltip="Toggle Patient List" matTooltipPosition="below">
+
+                <mat-icon class="toggle-icon">people_alt </mat-icon>
+
+                <span class="toggle-label">Patient List</span>
+
+                <mat-icon class="toggle-arrow"> {{ drawer.opened ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+            </button>
+
+            <span class="logo-text h1 ml-8" [@animate]="{ value: '*',params: { delay: '100ms', x: '-25px' } }">
+                IPD EMR
+            </span>
+        </div>
+    </mat-toolbar>
+
+    <mat-drawer-container autosize class="ipd-drawer-container">
+        <div class="example-sidenav-content1">
+            <div fxLayout="column" class="ipd-main-content">
+
+                <!--patient Info-->
+                <div class="patient-info-section">
+                    <mat-card class="patient-info-card1">
+                        <div class="patient-info-sales1">
+                            <div class="patient-info-title1 border-bottom pb-1 mb-1">
+                                <span class="h1 m-0" style="line-height: normal;">
+                                    Patient Information
+                                </span>
+                            </div>
+
+                            <div class="Ipd-patient-info1 w-100-p">
+                                <app-patient-information [uhidNo]="registerObj?.regNo" [patientName]="registerObj?.patientName ||
+                                        ((registerObj?.firstName || '') +
+                                        (registerObj?.middleName ? ' ' + registerObj.middleName : '') +
+                                        (registerObj?.lastName ? ' ' + registerObj.lastName : ''))"
+                                    [doctorName]="registerObj?.doctorName || vDoctorname"
+                                    [departmentName]="registerObj?.departmentName" [ipdNo]="registerObj?.ipdNo"
+                                    [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')">
+                                </app-patient-information>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+
+                <!--Scorll Bar Area-->
+                <mat-card class="ipdemr-scroll">
+                    <form [formGroup]="vitalsForm" class="ipd-emr-form">
+
+                        <!--vital info-->
+                        <mat-card class="emr-section-card">
+                            <div>
+                                <span class="h3 font-weight-600"> Vital Info</span>
+                            </div>
+                            <hr>
+                            <div fxLayout="row" fxLayoutGap="16px" class="vital-info-row">
+
+                                <!-- Height -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label>Height</mat-label>
+                                    <input matInput formControlName="height" placeholder="Height in cm" [maxLength]="20"
+                                        (keydown)="onEnter($event, 'weightField')" OnlyNumber
+                                        (keyup)="getBMIcalculation()" [(ngModel)]="vHeight"
+                                        (keypress)="keyPressCharater($event)">
+                                    <span matSuffix>|</span>
+                                    <span matSuffix class="unit-suffix"> cm </span>
+                                </mat-form-field>
+
+                                <!-- Weight -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label> Weight</mat-label>
+                                    <input matInput formControlName="weight" id="weightField" placeholder="Weight in Kg"
+                                        [maxLength]="20" (keydown)="onEnter($event, 'bmiField')" OnlyNumber
+                                        (keyup)="getBMIcalculation()" [(ngModel)]="vWeight"
+                                        (keypress)="keyPressCharater($event)">
+                                    <span matSuffix>|</span>
+                                    <span matSuffix class="unit-suffix"> kg </span>
+                                </mat-form-field>
+
+                                <!-- BMI -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label>BMI</mat-label>
+                                    <input matInput formControlName="bmi" placeholder="BMI" readonly [(ngModel)]="vBMI"
+                                        id="bmiField" (keydown)="onEnter($event, 'bslField')"
+                                        [style.color]="getVitalColorClass('BMI', vBMI)" [style.fontWeight]="'500'" />
+                                </mat-form-field>
+
+                                <!-- BSL -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label> BSL</mat-label>
+                                    <input matInput formControlName="bsl" placeholder="BSL" id="bslField"
+                                        [maxLength]="20" (keydown)="onEnter($event, 'spo2Field')" OnlyNumber
+                                        (keypress)="keyPressCharater($event)" [(ngModel)]="vBSL">
+                                </mat-form-field>
+
+                                <!-- SpO2 -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label>SpO2</mat-label>
+                                    <input matInput formControlName="spo2" placeholder="SpO2" id="spo2Field"
+                                        [maxLength]="20" (keydown)="onEnter($event, 'pulseField')" OnlyNumber
+                                        (keypress)="keyPressCharater($event)" [(ngModel)]="vSpO2"
+                                        [style.color]="getVitalColorClass('SpO2', vSpO2)" [style.fontWeight]="'500'">
+                                </mat-form-field>
+
+                                <!-- Pulse -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label>Pulse</mat-label>
+                                    <input matInput formControlName="pulse" placeholder="Pulse" id="pulseField"
+                                        [maxLength]="10" (keydown)="onEnter($event, 'bpField')" OnlyNumber
+                                        (keypress)="keyPressCharater($event)" [(ngModel)]="vPulse"
+                                        [style.color]="getVitalColorClass('Pulse', vPulse)" [style.fontWeight]="'500'">
+                                    <span matSuffix>|</span>
+                                    <span matSuffix class="unit-suffix"> bpm </span>
+                                </mat-form-field>
+
+                                <!-- BP -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label> BP </mat-label>
+                                    <input matInput formControlName="bp" placeholder="BP" id="bpField" [maxLength]="10"
+                                        (keydown)="onEnter($event, 'tempField')" OnlyNumber
+                                        (keypress)="keyPressOk($event)" [(ngModel)]="vBP"
+                                        [style.color]="getVitalColorClass('BP', vBP)" [style.fontWeight]="'500'"
+                                        placeholder="Enter as 120/80">
+                                    <span matSuffix>|</span>
+                                    <span matSuffix class="unit-suffix">mmHg</span>
+                                </mat-form-field>
+
+                                <!-- Temperature -->
+                                <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label>Temp</mat-label>
+                                    <input matInput formControlName="temp" placeholder="Temp" id="tempField"
+                                        [maxLength]="10" OnlyNumber (keydown)="onEnter($event, 'bloodField')"
+                                        (keypress)="keyPressDigitDecimalOnly($event)" [(ngModel)]="vTemp"
+                                        [style.color]="getVitalColorClass('Temp', vTemp)" [style.fontWeight]="'500'">
+                                    <span matSuffix>|</span>
+                                    <span matSuffix class="unit-suffix">°C</span>
+                                </mat-form-field>
+
+                                <!-- Blood Group -->
+                                <!-- <mat-form-field appearance="outline" class="vital-field">
+                                    <mat-label>BloodGroup</mat-label>
+
+                                    <mat-select placeholder="BloodGroup" id="bloodField" name="BloodGroup">
+                                        <mat-option *ngFor="let i of BloodGroupNames" [value]="i">
+                                            {{ i }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                            </div>
+                        </mat-card>
+                    </form>
+                    <!--Other info-->
+                    <form [formGroup]="emrForm">
+                        <mat-card class="emr-section-card">
+
+                            <!--Chief Complaint-->
+                            <div class="emr-sub-section">
+                                <div fxLayout="row" fxLayoutGap="16px">
+                                    <div class="section-title">
+                                        Chief Complaints
+                                    </div>
+
+                                    <div class="chief-complaint-wrapper">
+                                        <app-airmid-chipautocomplete fxFlex #chiefComplaintInput
+                                            [chips]="MyForm.get('mAssignChiefComplaint')?.value"
+                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
+                                            [displayKey]="'descriptionName'" [allowCustom]="true"
+                                            (chipsChange)="selectChangeChiefComplaint($event)">
+                                        </app-airmid-chipautocomplete>
+                                    </div>
+
+                                    <!-- <mat-form-field appearance="outline" class="three-field">
+                                        <mat-label>
+                                            Chief Complaints
+                                        </mat-label>
+
+                                        <input matInput type="text" formControlName="chiefComplaints">
+                                    </mat-form-field>
+
+
+                                    <mat-form-field appearance="outline" class="three-field">
+                                        <mat-label>
+                                            Duration
+                                        </mat-label>
+
+                                        <input matInput type="text" formControlName="chiefComplaintsDuration">
+                                    </mat-form-field>
+
+
+                                    <mat-form-field appearance="outline" class="three-field">
+                                        <mat-label>
+                                            Present History
+                                        </mat-label>
+
+                                        <input matInput type="text" formControlName="presentHistory">
+                                    </mat-form-field> -->
+                                </div>
+                            </div>
+
+                            <!--Examination-->
+                            <div class="emr-sub-section">
+                                <div class="section-title">
+                                    Examination :
+                                </div>
+
+                                <app-airmid-chipautocomplete fxFlex #AssignExamination
+                                    [chips]="MyForm.get('mAssignExamination')?.value"
+                                    [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
+                                    [displayKey]="'descriptionName'" [allowCustom]="true"
+                                    (chipsChange)="selectChangeExamination($event)">
+
+                                </app-airmid-chipautocomplete>
+
+                                <!-- <app-airmid-chipautocomplete>
+                                </app-airmid-chipautocomplete>
+
+                                <div>
+                                    <mat-form-field appearance="outline" class="duration-field">
+                                        <mat-label>
+                                            Duration
+                                        </mat-label>
+                                        <input matInput type="text" formControlName="examinationDuration">
+                                    </mat-form-field>
+                                </div> -->
+                            </div>
+
+                            <!--Provisional-->
+                            <div class="emr-sub-section">
+                                <div class="section-title">
+                                    Provisional :
+                                </div>
+                                <app-airmid-diagnos-chipautocomplete fxFlex
+                                    [chips]="MyForm.get('mAssignProDiagnosis')?.value"
+                                    [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
+                                    [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
+                                    (chipsChange)="selectChangeDiagnosis($event)">
+                                </app-airmid-diagnos-chipautocomplete>
+                            </div>
+
+                            <!--Final Diagnosis-->
+                            <div class="emr-sub-section">
+                                <div class="section-title">
+                                    Final Diagnosis :
+                                </div>
+
+                                <app-airmid-diagnos-chipautocomplete fxFlex
+                                    [chips]="MyForm.get('mAssignFinalDiagnosis')?.value"
+                                    [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
+                                    [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
+                                    (chipsChange)="selectChangeFinalDiagnosis($event)">
+                                </app-airmid-diagnos-chipautocomplete>
+                            </div>
+
+                            <!--Remaining Fields-->
+                            <div fxLayout="row" fxLayoutGap="16px" class="other-info-row">
+                                <mat-form-field appearance="outline" class="other-info-field">
+                                    <mat-label>
+                                        Drug Allergies
+                                    </mat-label>
+                                    <input matInput type="text" formControlName="drugAllergy">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="other-info-field">
+                                    <mat-label>
+                                        Allergies
+                                    </mat-label>
+                                    <input matInput type="text" formControlName="normalAllergy">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="other-info-field">
+                                    <mat-label>
+                                        Social Habits
+                                    </mat-label>
+                                    <input matInput type="text" formControlName="socialHabits">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="other-info-field">
+                                    <mat-label>
+                                        Medical History
+                                    </mat-label>
+                                    <input matInput type="text" formControlName="medicalHistory">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="other-info-field">
+                                    <mat-label>
+                                        Current Medication
+                                    </mat-label>
+                                    <input matInput type="text" formControlName="currentMedications">
+                                </mat-form-field>
+
+                                <div class="other-info-field">
+                                    <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
+                                        [formGroup]="emrForm" [mode]="autocompleteModebloodGroup">
+                                    </airmid-dropdown>
+                                </div>
+
+                            </div>
+
+                            <!--Family medical history-->
+                            <div class="family-history-section">
+                                <div>
+                                    <span class="font-weight-700">
+                                        Family Medical History
+                                    </span>
+                                </div>
+
+                                <hr>
+
+                                <form [formGroup]="familyHistoryForm">
+                                    <!--Family medical history Form-->
+                                    <div fxLayout="row" fxLayoutGap="12px" class="family-history-form-row">
+
+                                        <!-- Member Name -->
+                                        <mat-form-field appearance="outline" class="family-member-field">
+                                            <mat-label>
+                                                Member Name
+                                            </mat-label>
+
+                                            <input matInput type="text" formControlName="memberName">
+                                        </mat-form-field>
+
+                                        <!-- Relationship -->
+                                        <div class="relationship-field">
+                                            <!-- <airmid-dropdown label="Relationship" [formGroup]="familyHistoryForm"
+                                                formControlName="relationshipId" [mode]="autocompleteModerelationship">
+                                            </airmid-dropdown> -->
+                                            <airmid-dropdown label="Relationship"
+                                                [formGroup]="familyHistoryForm" formControlName="relationshipId"
+                                                [mode]="autocompleteModerelationship"
+                                                (selectionChange)="selectChangeRelation($event)">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <!-- Age -->
+                                        <mat-form-field appearance="outline" class="family-age-field">
+                                            <mat-label>
+                                                Age
+                                            </mat-label>
+                                            <input matInput type="text" formControlName="age">
+                                        </mat-form-field>
+
+                                        <!-- Clinical History -->
+                                        <mat-form-field appearance="outline" class="family-clinical-field">
+                                            <mat-label>
+                                                Clinical History
+                                            </mat-label>
+                                            <input matInput type="text" formControlName="clinicalHistory">
+                                        </mat-form-field>
+
+                                        <!-- Duration -->
+                                        <mat-form-field appearance="outline" class="family-duration-field">
+                                            <mat-label>
+                                                Duration
+                                            </mat-label>
+                                            <input matInput type="text" formControlName="duration">
+                                        </mat-form-field>
+
+                                        <!-- Add Button -->
+                                        <div class="input-add-button1">
+                                            <div matTooltip="Select name to enable this button!!"
+                                                [matTooltipDisabled]="!familyHistoryForm.invalid"
+                                                matTooltipPosition="above">
+
+                                                <button mat-raised-button color="primary" type="button"
+                                                    (click)="addFamilyHistory()">
+                                                    <mat-icon>
+                                                        add
+                                                    </mat-icon>
+                                                    Add
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+
+                                <!--Family medical history table-->
+                                <div class="family-history-table">
+                                    <mat-card>
+                                        <mat-table class="h-280" matSort [dataSource]="dsFamilyHistoryList"
+                                            [@animateStagger]="{value:'50'}" class="airmid-table">
+
+                                            <ng-container matColumnDef="MemberName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Member Name
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span> {{element.memberName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="RelationshipId">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Relationship
+                                                </mat-header-cell>
+
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span>{{ element.relationshipName }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Age">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Age
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span> {{element.age}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="ClinicalHistory">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Clinical history
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span> {{element.clinicalHistory}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Duration">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Duration
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span> {{element.duration}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <ng-container class="actions">
+                                                        <mat-icon (click)="deleteTableRow($event ,contact)"
+                                                            color="warn">
+                                                            delete
+                                                        </mat-icon>
+                                                    </ng-container>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        </mat-table>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </mat-card>
+
+                    </form>
+                </mat-card>
+
+                <!--footer buttons-->
+                <div class="modal-footer1">
+                    <div class="footer-navigation-container1">
+                        <div class="modal-footer-buttons1">
+                            <button class="btn btn-primary" color="accent" (click)="onSave()">
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Patient Sidebar -->
+        <mat-drawer #drawer class="example-sidenav sidebar-drawer1" mode="side" opened>
+            <div class="sidebar-content1">
+                <form [formGroup]="MyForm" class="sidebar-form1">
+                    <div class="1">
+
+                        <!-- Ward Search -->
+                        <div class="ward-search-row">
+                            <div class="ward-dropdown">
+                                <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="MyForm"
+                                    [mode]="autocompleteward" [(ngModel)]="gridConfig5.filters[1].fieldValue"
+                                    (selectionChange)="getSelectedObjward($event)">
+                                </airmid-dropdown>
+                            </div>
+
+                            <button type="button" class="ward-search-btn btn btn-primary btn-with-icon btn-xs"
+                                (click)="onChangeFirst()">
+                                <mat-icon>
+                                    search
+                                </mat-icon>
+                            </button>
+                        </div>
+
+                        <!-- Patient Name -->
+                        <mat-form-field appearance="outline" class="patient-name-field">
+                            <mat-label>
+                                Patient Name
+                            </mat-label>
+                            <input matInput type="text" name="PatientName" formControlName="PatientName"
+                                placeholder="Search First Name / Last Name" (input)="onChangeFirst()">
+                            <button matSuffix mat-icon-button aria-label="Clear" type="button"
+                                (click)="Clearfilter('PatientName')">
+                                <mat-icon>
+                                    close
+                                </mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <!-- Patient Table -->
+                        <mat-card class="patient-list-card">
+                            <div matColumnDef="loading" [ngClass]="{
+                                    hide: !(sIsLoading == 'loading-data')
+                                }" class="backgroundBlur">
+
+                                <div class="spinner-border text-danger">
+                                </div>
+                            </div>
+
+                            <airmid-table [gridConfig]="gridConfig5" class="content" #grid5 [ShowFilter]="false"
+                                [ShowButtons]="false" (onSelectRow)="getpatientDet($event)">
+                            </airmid-table>
+                        </mat-card>
+                    </div>
+                </form>
+            </div>
+        </mat-drawer>
+    </mat-drawer-container>
+</div>

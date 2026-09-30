@@ -87,13 +87,6 @@
 
 
                             <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 8px 0;">
-                            <!-- <div class="scroll-wrapper">
-                                <button mat-icon-button class="scroll-btn scroll-btn-left"
-                                    (click)="scrollCards('left')">
-                                    <mat-icon>chevron_left</mat-icon>
-                                </button>
-
-                                <div class="scroll-container" #scrollContainer> -->
                             <div fxLayout="row wrap" fxLayoutGap="20px grid" style="padding:5px 0px" cdkDropList
                                 (cdkDropListDropped)="dropFoodItem($event)">
                                 <div *ngFor="let item of selectedFoodItems; let i = index" class="menucard">
@@ -121,39 +114,32 @@
 
                                     </div>
 
-                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
-
+                                    <div fxLayout="row wrap" fxLayoutGap="8px grid">
                                         <div fxFlex="50%">
-                                            <!-- <airmid-textbox label="Quantity" [maxLength]="50"
-                                                        [(ngModel)]="item.quantity"
-                                                        [ngModelOptions]="{standalone: true}">
-                                                    </airmid-textbox> -->
-                                            <airmid-textbox label="Quantity" [maxLength]="50"
-                                                (selectionChange)="item.unitId = $event?.value ?? $event"
-                                                [value]="item.quantity" (valueChange)="item.quantity = $event">
-                                            </airmid-textbox>
+                                            <mat-form-field appearance="outline" class="w-100">
+                                                <mat-label>Quantity</mat-label>
+                                                <input matInput type="text" [(ngModel)]="item.quantity"
+                                                    [ngModelOptions]="{standalone: true}" maxlength="10">
+                                            </mat-form-field>
                                         </div>
 
                                         <div fxFlex="50%">
-                                            <!-- <airmid-textbox label="Unit" [maxLength]="50" [value]="item.unitId"
-                                                        (valueChange)="item.unitId = $event">
-                                                    </airmid-textbox> -->
-                                            <airmid-dropdown label="Unit" formControlName="unitId"
-                                                [formGroup]="dietMenuDetailForm" [mode]="autocompleteModeUnit">
-                                            </airmid-dropdown>
+                                            <mat-form-field appearance="outline" class="w-100">
+                                                <mat-label>Unit</mat-label>
+                                                <mat-select [(ngModel)]="item.unitId"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <mat-option *ngFor="let u of unitList" [value]="u.value">
+                                                        {{ u.text }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
+
 
                                     </div>
 
                                 </div>
                             </div>
-                            <!-- </div> -->
-
-                            <!-- <button mat-icon-button class="scroll-btn scroll-btn-right"
-                                    (click)="scrollCards('right')">
-                                    <mat-icon>chevron_right</mat-icon>
-                                </button>
-                            </div> -->
 
                         </mat-card>
                     </div>

@@ -11,7 +11,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { NewTallyInerfaceComponent } from './new-tally-inerface/new-tally-inerface.component';
 
 
 const appRoutes: Routes = [
@@ -101,14 +100,15 @@ const appRoutes: Routes = [
         path: "lab-paymentmodechanges",
         loadChildren: () => import("./lab-paymentmodechanges/lab-paymentmodechanges.module").then((m) => m.LabPaymentmodechangesModule),
     },
+    {
+        path: "AuditLogs",
+        loadChildren: () => import("./auditlogs/auditlogs.module").then((m) => m.AuditlogsModule),
+    },
 
 ];
 
 @NgModule({
     declarations: [
-
-
-    
   ],
     imports: [
         RouterModule.forChild(appRoutes),

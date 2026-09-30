@@ -87,7 +87,7 @@ export class ItemMasterComponent implements OnInit {
     
         { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-
+        { heading: "Description", key: "drugDescription", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -308,6 +308,7 @@ export class ItemMaster {
     content: any;
     stockUomid: any;
     localLanguageName: any;
+    routeId:any;
 
     /**
      * Constructor
@@ -371,7 +372,8 @@ export class ItemMaster {
             this.content = ItemMaster.content || ''
             this.stockUomid = ItemMaster.stockUomid || 0
             this.mAssignItemToDrugs = ItemMaster.mAssignItemToDrugs || [];
-            this.localLanguageName = ItemMaster.localLanguageName || ''
+            this.localLanguageName = ItemMaster.localLanguageName || '';
+             this.routeId = ItemMaster.routeId || 0;
 
         }
     }

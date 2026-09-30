@@ -1,10 +1,14 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { MenuMasterService } from '../menu-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-new-menu-master',
@@ -17,6 +21,7 @@ export class NewMenuMasterComponent implements OnInit {
   dietMenuForm: FormGroup;
   dietMenuDetailForm: FormGroup;
   isActive: boolean = true;
+  private destroy$ = new Subject<void>()
 
   autocompleteModeDietType: string = 'MDietTypeMaster'
   autocompleteModeMealType: string = 'MMealTypeMaster'
@@ -25,12 +30,18 @@ export class NewMenuMasterComponent implements OnInit {
 
   selectedFoodItems: any[] = [];
   foodItemList: any[] = [];
+  unitList: any[] = [];
+  isEditMode: boolean = false;
 
   constructor(
     public _menuMasterService: MenuMasterService,
     public dialogRef: MatDialogRef<NewMenuMasterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    private apiCaller: ApiCaller,
+    private accountService: AuthenticationService,
   ) { }
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
@@ -45,51 +56,91 @@ export class NewMenuMasterComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.dietMenuForm = this._menuMasterService.createMenuForm();
-    this.dietMenuForm.markAllAsTouched();
+  createMenuForm(): FormGroup {
+    return this._formBuilder.group({
+      dietMenuId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      dietMenuName: ["", [Validators.pattern(/^[a-zA-Z ]+$/), Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      // dietMenuCode: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mealTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      dietTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      texture: ["", [Validators.pattern(/^[a-zA-Z ]+$/), Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      calories: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      protein: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
-    this.dietMenuDetailForm = this._menuMasterService.createDietMenuDetailForm();
-    this.dietMenuDetailForm.markAllAsTouched();
+      ///extra fild
+      foodItemId: [''],
+      createdBy: this.accountService.currentUserValue.userId,
+      modifiedBy: this.accountService.currentUserValue.userId,
+
+      dietMenuDetailMasters: this._formBuilder.array([])
+    });
   }
 
-  //old
-  // selectChangeFoodName(data: any): void {
+  createDietMenuDetailForm(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      dietMenuId: [element.dietMenuId ?? 0],
+      foodItemId: [element.foodItemId ?? 0],
+      quantity: [element.quantity ?? 0],
+      unitId: [element.unitId ?? 0],
+      sequenceNo: [element.sequenceNo ?? 0],
+      createdBy: this.accountService.currentUserValue.userId
+    });
+  }
 
-  //   if (!data) {
-  //     return;
-  //   }
+  get dietDetailArray(): FormArray {
+    return this.dietMenuForm.get('dietMenuDetailMasters') as FormArray;
+  }
 
-  //   // Get selected food item ID
-  //   const foodItemId = data.foodItemId;
+  ngOnInit(): void {
+    this.dietMenuForm = this.createMenuForm();
+    this.dietMenuForm.markAllAsTouched();
 
-  //   // Get selected food item name
-  //   const foodName = data.foodName;
+    this.dietMenuDetailForm = this.createDietMenuDetailForm();
+    this.dietDetailArray.push(this.createDietMenuDetailForm());
 
-  //   // Prevent duplicate food items
-  //   const alreadyExists = this.selectedFoodItems.some(
-  //     (item: any) => item.foodItemId == foodItemId
-  //   );
+    this.loadDropdownOptions();
 
-  //   if (!alreadyExists) {
+    if (this.data) {
+      console.log("Retrive data:", this.data)
+      this.dietMenuForm.patchValue(this.data)
+      this.featchDetList(this.data)
+    }
+  }
 
-  //     // this.selectedFoodItems.push({
-  //     //   foodItemId: foodItemId,
-  //     //   name: foodName
-  //     // });
-  //     this.selectedFoodItems.push({
-  //       foodItemId: foodItemId,
-  //       name: foodName,
-  //       quantity: 0,
-  //       unitId: 0,
-  //       sequenceNo: this.selectedFoodItems.length + 1
-  //     });
+  featchDetList(data: any): void {
 
-  //   }
+    const m_data =
+    {
+      "first": 0,
+      "rows": 99999,
+      "sortField": "MenuDetId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "DietMenuId",
+          "fieldValue": String(data.dietMenuId),
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._menuMasterService.getMenuDetList(m_data).subscribe(det => {
+      console.log("details data:", det.data)
 
-  //   // Clear dropdown
-  //   this.dietMenuForm.get('foodItemId')?.setValue(null);
-  // }
+      this.selectedFoodItems = (det.data ?? []).map((item: any) => ({
+        menuDetId: item.menuDetId ?? 0,
+        dietMenuId: item.dietMenuId ?? 0,
+        foodItemId: item.foodItemId ?? item.FoodItemId,
+        name: item.foodName ?? '',
+        quantity: item.quantity ?? 0,
+        unitId: String(item.unitId) ?? 0,
+        sequenceNo: item.sequenceNo ?? item.SequenceNo ?? 0
+      }));
+
+      console.log('Loaded Food Items for Edit:', this.selectedFoodItems);
+    });
+  }
 
   selectChangeFoodName(data: any): void {
 
@@ -119,17 +170,21 @@ export class NewMenuMasterComponent implements OnInit {
       return;
     }
 
+    const unit = this.unitList.find(u =>
+      String(u.value) === String(selectedItem.unit) ||
+      u.text?.toLowerCase() === String(selectedItem.unit ?? '').toLowerCase()
+    );
+
     this.selectedFoodItems.push({
       menuDetId: 0,
       dietMenuId: this.dietMenuForm.get('dietMenuId')?.value || 0,
       foodItemId: foodItemId,
       name: foodName,
-      quantity: '',
-      unitId: '',
+      quantity: 0,
+      unitId: unit?.value ?? 0, //unit is defined as value
       sequenceNo: this.selectedFoodItems.length + 1
     });
-
-    console.log('Selected Food Items:', this.selectedFoodItems);
+    console.log('Selected Food ADDed Items:', this.selectedFoodItems);
 
     this.dietMenuForm.patchValue({
       foodItemId: null
@@ -144,132 +199,86 @@ export class NewMenuMasterComponent implements OnInit {
     });
   }
 
-  //old
-  // onSubmit() {
+  private loadDropdownOptions(): void {
+    this.fetchDropdownOptions(this.autocompleteModeUnit)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(options => {
+        this.unitList = options || [];
+      });
+  }
 
-  //   if (this.dietMenuForm.invalid) {
-  //     const invalidFields = [];
-
-  //     for (const controlName in this.dietMenuForm.controls) {
-
-  //       if (this.dietMenuForm.controls[controlName].invalid) {
-
-  //         invalidFields.push(`New Menu Form: ${controlName}`);
-
-  //       }
-
-  //     }
-
-  //     if (invalidFields.length > 0) {
-
-  //       invalidFields.forEach(field => {
-
-  //         this.toastr.warning(
-  //           `Field "${field}" is invalid.`,
-  //           'Warning'
-  //         );
-
-  //       });
-
-  //     }
-
-  //     return;
-  //   }
-
-  //   // Check food items
-  //   if (this.selectedFoodItems.length === 0) {
-
-  //     this.toastr.warning(
-  //       'Please select at least one food item.',
-  //       'Warning'
-  //     );
-
-  //     return;
-  //   }
-
-  //   // Create detail list
-  //   const detailList = this.selectedFoodItems.map((item, index) => {
-
-  //     return {
-  //       menuDetId: 0,
-  //       dietMenuId: this.dietMenuForm.get('dietMenuId')?.value || 0,
-  //       foodItemId: item.foodItemId,
-  //       quantity: Number(item.quantity),
-  //       unitId: Number(item.unitId),
-  //       sequenceNo: index + 1
-  //     };
-
-  //   });
-
-
-  //   // Final API payload
-  //   const payload = {
-  //     dietMenuId: this.dietMenuForm.get('dietMenuId')?.value || 0,
-  //     dietMenuCode: this.dietMenuForm.get('dietMenuCode')?.value,
-  //     dietMenuName: this.dietMenuForm.get('dietMenuName')?.value,
-  //     mealTypeId: this.dietMenuForm.get('mealTypeId')?.value,
-  //     dietTypeId: this.dietMenuForm.get('dietTypeId')?.value,
-  //     texture: this.dietMenuForm.get('texture')?.value,
-  //     calories: this.dietMenuForm.get('calories')?.value,
-  //     protein: this.dietMenuForm.get('protein')?.value,
-  //     mDietMenuDetailMasters: detailList
-  //   }
-
-  //   this._menuMasterService.menuSave(payload).subscribe(
-  //     response => {
-
-  //       this.toastr.success(
-  //         'Diet Menu saved successfully.',
-  //         'Success'
-  //       );
-
-  //       this.onClear(true);
-
-  //     }
-  //   );
-  // }
-
-  //new 
-  onSubmit(): void {
-
-    if (this.dietMenuForm.invalid) {
-      this.dietMenuForm.markAllAsTouched();
-      return;
+  private fetchDropdownOptions(mode: string): Observable<any[]> {
+    if (!mode) {
+      return of([]);
     }
+    return this.apiCaller.GetData(`Dropdown/GetBindDropDown?mode=${mode}`);
+  }
 
-    const dietMenuId = this.dietMenuForm.get('dietMenuId')?.value || 0;
-    const menuData = {
-      dietMenuId: dietMenuId,
-      dietMenuName: this.dietMenuForm.get('dietMenuName')?.value,
-      mealTypeId: this.dietMenuForm.get('mealTypeId')?.value,
-      dietTypeId: this.dietMenuForm.get('dietTypeId')?.value,
-      texture: this.dietMenuForm.get('texture')?.value,
-      calories: this.dietMenuForm.get('calories')?.value,
-      protein: this.dietMenuForm.get('protein')?.value,
+  onSubmit(): void {
+    if (!this.dietMenuForm.invalid) {
 
-      mDietMenuDetailMasters: this.selectedFoodItems.map(
-        (item, index) => ({
-          menuDetId: item.menuDetId || 0,
-          dietMenuId: dietMenuId,
-          foodItemId: Number(item.foodItemId),
-          quantity: Number(item.quantity),
-          unitId: Number(item.unitId),
-          sequenceNo: index + 1
-        })
-      )
-    };
+      this.dietDetailArray.clear();
+      if (this.selectedFoodItems.length === 0) {
+        this.toastr.warning('No food items selected!', 'Warning');
+        return;
+      }
 
-    console.log(menuData);
+      const isEdit = this.dietMenuForm.get('dietMenuId').value != 0;
 
-    this._menuMasterService.menuSave(menuData).subscribe({
-      next: (response) => {
+      this.selectedFoodItems.forEach((item, i) => {
+        item.sequenceNo = i + 1;
+        this.dietDetailArray.push(this.createDietMenuDetailForm(item));
+      });
+
+      this.dietMenuForm.removeControl('foodItemId')
+      if (!isEdit) {
+        this.dietMenuForm.removeControl('modifiedBy')
+      }else{
+        this.dietMenuForm.removeControl('createdBy')        
+      }
+
+      const formValue = this.dietMenuForm.value;
+      const { dietMenuDetailMasters, ...dietmenumaster } = formValue;
+
+      const payload = {
+        dietmenumaster,
+        dietMenuDetailMasters
+      };
+
+      console.log(payload);
+      // return;
+
+      this._menuMasterService.menuSave(payload).subscribe(response => {
+        this.toastr.success('Diet Menu saved successfully.', 'Success');
         this.onClear(true);
-        console.log(response);
-      },
-      error: (error) => {
-        console.error(error);
+      });
+    }
+    else {
+      const invalidFields = this.collectErrors(this.dietMenuForm);
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+        });
+        return;
+      }
+    }
+  }
+
+  collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {
+    let errors: string[] = [];
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        // go deeper
+        errors = errors.concat(this.collectErrors(control, newKey));
+      } else {
+        if (control?.invalid) {
+          errors.push(newKey);
+        }
       }
     });
+    return errors;
   }
 
   dropFoodItem(event: CdkDragDrop<any[]>): void {

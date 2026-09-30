@@ -322,17 +322,17 @@ export class MedicoLegalCertificateComponent {
     this.dateTimeObj = dateTimeObj;
   }
 
-  onChangeType(event) {
-    if (event.value == 'OP') {
-      this.opIpType = false;
-      this.opIpId = "";
-    }
-    else if (event.value == 'IP') {
-      this.opIpType = true;
-      this.opIpId = "";
-    }
-    this.patientInfoReset();
-  }
+  // onChangeType(event) {
+  //   if (event.value == 'OP') {
+  //     this.opIpType = false;
+  //     this.opIpId = "";
+  //   }
+  //   else if (event.value == 'IP') {
+  //     this.opIpType = true;
+  //     this.opIpId = "";
+  //   }
+  //   this.patientInfoReset();
+  // }
 
   getSelectedObjIP(obj) {
     if ((obj.regID ?? 0) > 0) {
@@ -350,7 +350,80 @@ export class MedicoLegalCertificateComponent {
         this.Remark = this.MLCData.remark
 
         const backendValue = response.reportingTime; // "19-09-2025 13:00:00"
+        if (backendValue) {
+          // Parse backend time
+          const timePart = backendValue.split(' ')[1]; // "13:00:00"
+          const [hours, minutes, seconds] = timePart.split(':').map(Number);
 
+          const timeOnly = new Date();
+          timeOnly.setHours(hours, minutes, seconds || 0, 0);
+
+          this.certificateForm.get('reportingTime')?.setValue(timeOnly);
+        } else {
+          // No backend value → set current time
+          const now = new Date();
+          this.certificateForm.get('reportingDate')?.setValue(now);
+          this.certificateForm.get('reportingTime')?.setValue(now);
+        }
+      });
+    }
+  }
+
+  // vDCCheckBox: boolean = false;
+  // getDischargedList(event) {
+  //   if (event.checked == true) {
+  //     this.vDCCheckBox = true;
+  //     this.certificateForm.get('opIpType').setValue('IP');
+  //     this.patientInfoReset()
+  //   }
+  //   else {
+  //     this.vDCCheckBox = false;
+  //     this.certificateForm.get('opIpType').setValue('IP');
+  //   }
+  //   this.certificateForm.get('opIpId').setValue('');
+  // }
+
+  vDCCheckBox: boolean = false;
+
+  onChangeType(event) {
+    if (event.value == 'OP') {
+      this.opIpType = false;
+      this.vDCCheckBox = false;                                   // uncheck discharge when OP is selected
+      // this.certificateForm.get('IsDischargedit').setValue(false);
+    } else if (event.value == 'IP') {
+      this.opIpType = true;
+    }
+    this.opIpId = "";
+    this.certificateForm.get('opIpId').setValue('');
+    this.patientInfoReset();
+  }
+
+  getDischargedList(event) {
+    this.vDCCheckBox = event.checked;
+    if (event.checked) {
+      this.opIpType = true;
+      this.certificateForm.get('opIpType').setValue('IP');        // only force IP when checking
+    }
+    // on uncheck, leave opIpType as it is
+    this.certificateForm.get('opIpId').setValue('');
+    this.patientInfoReset();
+  }
+
+  getSelectedObjDC(obj) {
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Discharge:", obj)
+      this.opipPatientDetailsObj = obj
+      this.vRegNo = obj.regNo
+      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vIPDNo = obj.ipdNo
+      this.opIpId = obj.admissionID;
+
+      this._mrdService.getMLCById(this.opIpId).subscribe((response) => {
+        this.MLCData = new MlcDetail(response ?? {});
+        this.DetailGiven = this.MLCData.detailGiven
+        this.Remark = this.MLCData.remark
+
+        const backendValue = response.reportingTime; // "19-09-2025 13:00:00"
         if (backendValue) {
           // Parse backend time
           const timePart = backendValue.split(' ')[1]; // "13:00:00"
@@ -442,30 +515,6 @@ export class MedicoLegalCertificateComponent {
       this.certificateForm.get('causeofInjuries')?.setValue(updated);
     });
   }
-
-  // onCauseMicToggle() {
-
-  //   if (this.activeMic === 'cause') {
-  //     this.speechService.stopRecognition();
-  //     this.activeMic = null;
-  //     return;
-  //   }
-
-  //   // Stop previous microphone if any
-  //   if (this.speechService.isListening) { this.speechService.stopRecognition(); }
-
-  //   this.activeMic = 'cause';
-
-  //   this.speechService.startRecognition(this.selectedCauseLang, (text: string) => {
-
-  //     const currentText = this.certificateForm.get('causeofInjuries')?.value || '';
-
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-
-  //     this.certificateForm.get('causeofInjuries')?.setValue(updated);
-  //   }
-  //   );
-  // }
 
   onClose(val: boolean) {
     this.dialogRef.close(val);
