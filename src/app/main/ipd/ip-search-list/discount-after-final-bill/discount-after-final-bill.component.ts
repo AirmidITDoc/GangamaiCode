@@ -143,10 +143,6 @@ export class DiscountAfterFinalBillComponent implements OnInit {
 
  CalcDiscPer() {
     debugger
-    console.log('CalcDiscPer called', new Date().getTime());
-console.log('vbalAmt:', this.vbalAmt);
-console.log('DiscPer2:', this.MyFrom.get('DiscountPer2').value);
-
     let DiscAmt2;
     let CompanyDiscAmt;
     let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
@@ -176,6 +172,7 @@ console.log('DiscPer2:', this.MyFrom.get('DiscountPer2').value);
         else {
             this.vDiscAmount2 = ((parseFloat(this.vbalAmt) * parseFloat(DiscPer2)) / 100).toFixed(2) || 0;
             DiscAmt2 = this.vDiscAmount2;
+           this.MyFrom.get('DiscAmount2').setValue(DiscAmt2)
         }
     } else {
         if (DiscPer2 == 0 || DiscPer2 == '' || DiscPer2 == null || DiscPer2 == undefined) {
@@ -208,6 +205,7 @@ console.log('DiscPer2:', this.MyFrom.get('DiscountPer2').value);
         else {
             this.vCompanyDiscAmt = ((parseFloat(this.vbalAmt) * parseFloat(CompanyDiscPer)) / 100).toFixed(2) || 0;
             CompanyDiscAmt = this.vCompanyDiscAmt;
+               this.MyFrom.get('CompanyDiscAmt').setValue(CompanyDiscAmt)
         }
     }
     else {
@@ -243,7 +241,26 @@ CalcDiscAmt() {
             }
             else {
                 this.vDiscountPer2 = ((parseFloat(DiscAmt2) / parseFloat(this.vbalAmt)) * 100).toFixed(2) || 0;
-                DiscPer2 = this.vDiscountPer2;
+                DiscPer2 = this.vDiscountPer2; 
+                this.MyFrom.get("DiscountPer2").setValue(DiscPer2);
+
+                  const DiscountPer = +DiscPer2 || 0;
+                if (this.UserDicPerLimit > 0) {
+                    if (DiscountPer > this.UserDicPerLimit) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Discount Limit Exceeded',
+                            text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                            confirmButtonColor: '#d33'
+                        }).then(() => {
+                            this.MyFrom.get("DiscountPer2").setValue(this.UserDicPerLimit);
+                            this.MyFrom.get('DiscAmount2').setValue('');
+                            this.vDiscAmount2 = '';
+                            this.CalcDiscPer();
+                            return;
+                        })
+                    }
+                } 
             }
         } else {
             if (DiscAmt2 == 0 || DiscAmt2 == '' || DiscAmt2 == null || DiscAmt2 == undefined) {
@@ -263,6 +280,26 @@ CalcDiscAmt() {
             else {
                 this.vCompanyDiscper = ((parseFloat(CompanyDiscAmt) / parseFloat(this.vbalAmt)) * 100).toFixed(2) || 0;
                 CompanyDiscPer = this.vCompanyDiscper;
+                 this.MyFrom.get("CompanyDiscper").setValue(CompanyDiscPer);
+
+            const DiscountPer = +CompanyDiscPer || 0;
+                if (this.UserDicPerLimit > 0) {
+                    if (DiscountPer > this.UserDicPerLimit) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Discount Limit Exceeded',
+                            text: `You are allowed to apply a maximum discount of ${this.UserDicPerLimit}%. Please contact the administrator if you require a higher discount.`,
+                            confirmButtonColor: '#d33'
+                        }).then(() => {
+                            this.MyFrom.get("CompanyDiscper").setValue(this.UserDicPerLimit);
+                            this.MyFrom.get('CompanyDiscAmt').setValue('');
+                            this.vCompanyDiscAmt = '';
+                            this.CalcDiscPer();
+                            return;
+                        })
+                    }
+                }
+                 
             }
         }
         else {
@@ -311,7 +348,7 @@ CalcDiscAmt() {
         // }
 
         this.saveform.get('billNo').setValue(this.selectedAdvanceObj?.billNo)
-        this.saveform.get('balanceAmt').setValue(this.vbalAmt)
+        this.saveform.get('balanceAmt').setValue(formvalues?.BalAmount || 0)
         this.saveform.get('netPayableAmt').setValue(formvalues?.NetAmount)
         this.saveform.get('concessionAmt').setValue(formvalues?.DiscAmount2 || 0)
         this.saveform.get('compDiscAmt').setValue(formvalues?.CompanyDiscAmt || 0)
