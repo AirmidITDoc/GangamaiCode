@@ -127,7 +127,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         { heading: "Accepted DateTime", key: "isAcceptedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 210, type: 8 },
         { heading: "Delived DateTime", key: "isDelivedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 210, type: 8 },
         { heading: "Cancelled", key: "detIsCancelledBy", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.template },
-        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 210 },
+        { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Cancelled Reason", key: "cancelledReason", sort: true, align: 'left', emptySign: 'NA', width: 140 },
         // {
         //     heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -259,8 +259,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     // NEW: plain array backing the card list in the drawer
     detailList: any[] = [];
 
-    // Populates detailList by calling the detail API directly
-    // (replaces grid1 binding since we no longer render a table in the drawer)
+
     GetDetails(data) {
         console.log(data);
         this.ReqId = data.dietReqId;
@@ -574,7 +573,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
 
     GetrequestdetailStatus(event) {
         this.ReqId = event.dietReqNo
-        this.VNewcount = 0;
+
         this.VAcceptcount = 0;
         this.VPendingcount = 0;
         this.VCancelcount = 0;
