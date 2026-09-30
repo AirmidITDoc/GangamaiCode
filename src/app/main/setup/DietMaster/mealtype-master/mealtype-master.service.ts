@@ -23,9 +23,9 @@ export class MealtypeMasterService {
     return this._formBuilder.group({
       mealId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       mealName: ["", [Validators.pattern(/^[a-zA-Z ]+$/),Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      dispatchTime: [""],
-      preparationStartTime: [""],
-      orderCutoffTime: [""],
+      dispatchTime:"00:00",
+      preparationStartTime: "00:00",
+      orderCutoffTime: "00:00",
       defaultTime: ["", [Validators.required]]
     });
   }
