@@ -14,6 +14,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DietRequestService } from '../diet-request.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { RequestMaster } from '../patient-diet-reauest.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
     selector: 'app-diet-detail-list',
@@ -57,11 +58,11 @@ export class DietDetailListComponent {
 
     allcolumns = [
         {
-            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 270,
+            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 180,
             type: gridColumnTypes.template, template: this.isAccept
         },
         {
-            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 270,
+            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 180,
             type: gridColumnTypes.template, template: this.isDelived
         },
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
@@ -307,10 +308,9 @@ export class DietDetailListComponent {
             icon: 'question',
             title: 'Do you want to Deliver this Request?',
             // text: count === 1 ? 'Deliver this request?' : `Deliver ${count} selected requests?`,
-            showCancelButton: true,
+            confirmButtonText: 'Yes, Deliver',
             confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Cancel it!"
+            cancelButtonColor: "#d33"
         }).then((flag) => {
             if (!flag.isConfirmed) return;
 
@@ -409,7 +409,7 @@ export class DietDetailListComponent {
                     "cancelledReason": this.DetailCancleTaskForm.get('Reason').value
                 };
                 this._DietRequestService.DetailRequestcancle(submitData).subscribe(response => {
-                    this._matDialog.closeAll();
+                    // this._matDialog.closeAll();
                     this.grid1.bindGridData();
                 }, (error) => {
                     this.toastr.error(error.message);
@@ -418,12 +418,21 @@ export class DietDetailListComponent {
         });
     }
 
+    onAcceptCheck(element: any, event: MatCheckboxChange) {
+        event.source.checked = false;      // stays as it was until the API succeeds
+        this.AcceptRequest(element);       // your existing method
+    }
+
+    onUnAcceptCheck(element: any, event: MatCheckboxChange) {
+        event.source.checked = true;
+        this.UnAcceptRequest(element);
+    }
 
     AcceptRequest(element) {
         Swal.fire({
             title: 'Do you want to Accept Request',
-            showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonText: 'Yes,Accept'
+
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
@@ -434,7 +443,7 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestAccept(submitData).subscribe(response => {
                     this.toastr.success('Request accepted');
-                    this._matDialog.closeAll();
+                    // this._matDialog.closeAll();
                     this.grid1.bindGridData();
                 }, (error) => {
                     this.toastr.error(error.message);
@@ -443,22 +452,27 @@ export class DietDetailListComponent {
         });
     }
 
-    DeliverRequest(element) {
+    UnAcceptRequest(element) {
+
+        if (element.isDelived) {
+            this.toastr.warning('Delivered request cannot be un-accepted');
+            return;
+        }
+
         Swal.fire({
-            title: 'Do you want to Deliver Request',
-            showCancelButton: true,
-            confirmButtonText: 'OK',
+            title: 'Do you want to Un-Accept Request',
+            confirmButtonText: 'Yes, Un-Accept'
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
                     "dietReqDetId": element.dietReqDetId,
-                    "isDelived": true,
-                    "isDelivedBy": this._loggedService.currentUserValue.userId,
-                    "isDelivedDateTime": this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+                    "isAccept": false,
+                    "isAcceptedBy": 0,
+                    "isAcceptedDateTime": null,
                 };
-                this._DietRequestService.RequestDeliver(submitData).subscribe(response => {
-                    this.toastr.success('Request Deliver');
-                    this._matDialog.closeAll();
+                this._DietRequestService.RequestAccept(submitData).subscribe(response => {
+                    this.toastr.success('Request un-accepted');
+                    // this._matDialog.closeAll();
                     this.grid1.bindGridData();
                 }, (error) => {
                     this.toastr.error(error.message);
@@ -466,6 +480,64 @@ export class DietDetailListComponent {
             }
         });
     }
+    onDeliverCheck(element: any, event: MatCheckboxChange) {
+        event.source.checked = false;
+        this.DeliverRequest(element);
+    }
+
+    onUnDeliverCheck(element: any, event: MatCheckboxChange) {
+        event.source.checked = true;
+        this.UnDeliverRequest(element);
+    }
+
+    DeliverRequest(element) {
+        Swal.fire({
+            title: 'Do you want to mark as Delivered',
+            confirmButtonText: 'Yes, Deliver',
+
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+                const submitData = {
+                    "dietReqDetId": element.dietReqDetId,
+                    "isDelived": true,
+                    "isDelivedBy": this._loggedService.currentUserValue.userId,
+                    "isDelivedDateTime": this.datePipe.transform(new Date(), "yyyy-MM-dd HH:mm:ss"),
+                };
+                this._DietRequestService.RequestDeliver(submitData).subscribe(response => {
+                    this.toastr.success('Request delivered');
+                    // this._matDialog.closeAll();
+                    this.grid1.bindGridData();
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
+            }
+        });
+    }
+
+    UnDeliverRequest(element) {
+        Swal.fire({
+            title: 'Do you want to Un-Deliver Request',
+            confirmButtonText: 'Yes, Un-Deliver',
+
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+                const submitData = {
+                    "dietReqDetId": element.dietReqDetId,
+                    "isDelived": false,
+                    "isDelivedBy": 0,
+                    "isDelivedDateTime": null,
+                };
+                this._DietRequestService.RequestDeliver(submitData).subscribe(response => {
+                    this.toastr.success('Request un-delivered');
+                    // this._matDialog.closeAll();
+                    this.grid1.bindGridData();
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
+            }
+        });
+    }
+
 
     onEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement;

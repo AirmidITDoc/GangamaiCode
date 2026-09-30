@@ -122,8 +122,7 @@
                         <span>Request Cancel for Request Id-{{ReqId}}</span>
                     </div>
 
-                    <button mat-icon-button [mat-dialog-close]="true" matTooltip="Close" aria-label="Close dialog"
-                        *ngIf="CancleStatus">
+                    <button mat-icon-button [mat-dialog-close]="true" matTooltip="Close" aria-label="Close dialog">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-toolbar>
@@ -223,7 +222,7 @@
 
                             <button mat-stroked-button color="warn" class="cancel-diet-btn"
                                 (click)="openheadercancletask(element)" matTooltip="Cancel Diet Request"
-                                *ngIf="!element.isCancelled">
+                                *ngIf="!element.isCancelled && !element.allAccepted">
 
                                 <span>Cancel</span>
                             </button>
@@ -252,10 +251,10 @@
 
                             </div>
 
-                            <span
+                            <!-- <span
                                 style="font-size: large;color: rgb(36, 84, 98);margin-left: 400px;font-weight: bold;margin-right: 20px;">
                                 Selected Request Details Status
-                            </span>
+                            </span> -->
 
                             <!-- RIGHT side: new cards, each visually distinct -->
                             <!-- <div fxLayout="row" fxLayoutAlign="end center" class="gap-8">

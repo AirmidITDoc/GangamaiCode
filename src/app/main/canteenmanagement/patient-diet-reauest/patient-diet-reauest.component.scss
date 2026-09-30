@@ -178,4 +178,22 @@
   border-radius: 20px;
   font-weight: 600;
 }
+
+.diet-drawer-container {
+  position: fixed;
+  inset: 0;              /* covers the whole screen */
+  z-index: 1000;         /* above the table and the top toolbar */
+  background: transparent;
+  pointer-events: none;  /* the page underneath stays clickable while closed */
+}
+
+.diet-drawer-container.mat-drawer-container-has-open {
+  pointer-events: auto;  /* takes clicks (and the backdrop) only when open */
+}
+
+.detail-drawer {
+  width: 600px;
+  max-width: 95vw;
+  height: 100%;
+}
 }
