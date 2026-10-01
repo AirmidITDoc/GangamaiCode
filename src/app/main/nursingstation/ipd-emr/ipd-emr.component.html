@@ -251,6 +251,14 @@
                                     <input matInput type="text" formControlName="allergyRemark">
                                 </mat-form-field>
 
+                                <div class="other-info-field other-info-field--small">
+                                    <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
+                                        [formGroup]="emrForm" [mode]="autocompleteModebloodGroup">
+                                    </airmid-dropdown>
+                                </div>
+
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="16px" class="other-info-row">
                                 <mat-form-field appearance="outline" class="other-info-field">
                                     <mat-label>
                                         Social Habits
@@ -279,12 +287,6 @@
                                     <input matInput type="text" formControlName="currentMedications">
                                 </mat-form-field>
 
-                                <div class="other-info-field">
-                                    <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
-                                        [formGroup]="emrForm" [mode]="autocompleteModebloodGroup">
-                                    </airmid-dropdown>
-                                </div>
-
                             </div>
 
                             <!--Family medical history-->
@@ -310,7 +312,7 @@
                                             <input matInput type="text" formControlName="memberName">
                                         </mat-form-field>
 
-                                         <div class="relationship-field">
+                                        <div class="relationship-field">
                                             <airmid-dropdown label="Gender" [formGroup]="familyHistoryForm"
                                                 formControlName="genderId" [mode]="autocompleteModegender"
                                                 (selectionChange)="selectChangeGender($event)">
@@ -400,7 +402,7 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                             <ng-container matColumnDef="gender">
+                                            <ng-container matColumnDef="gender">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     Gender
                                                 </mat-header-cell>
@@ -478,7 +480,7 @@
                     <div class="footer-navigation-container1">
                         <div class="modal-footer-buttons1">
                             <button class="btn btn-primary" color="accent" (click)="onSave()" [disabled]="isSaving">
-                                 <span>{{ isSaving ? 'Saving...' : 'Save' }}</span>
+                                <span>{{ isSaving ? 'Saving...' : 'Save' }}</span>
                             </button>
                         </div>
                     </div>
