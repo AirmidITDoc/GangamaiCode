@@ -53,7 +53,7 @@ const routes: Routes = [
         MedicalrecordComponent,
         PrescriptionTemplateComponent,
         PrePresciptionListComponent,
-       // NewCasepaperComponent,
+        NewCasepaperComponent,
         AddItemComponent,
         PatientcertificateComponent,
         MedicineTableNewComponent,
