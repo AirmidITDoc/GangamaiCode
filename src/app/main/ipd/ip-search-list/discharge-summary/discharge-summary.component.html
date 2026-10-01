@@ -407,11 +407,19 @@
                   <div fxLayout="column" class="gap-8">
                     <div class="card-content" [formGroupName]="'dischargModel'">
                       <div class="form-title mb-2 pb-2 border-bottom">
-                        <span class="h3 font-weight-600">FOLLOW UP</span>
+                      <span class="h3 font-weight-600">FOLLOW UP / CARE PLAN</span>
                       </div>
 
                       <div class="input-container input-error-hidden">
                         <div fxFlexFill fxLayout="row wrap" fxLayoutGap="8px 16px grid">
+
+                            <div fxFlex="100" fxFlex.xs="100">
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>Care PlanTitle</mat-label>
+                              <input name="carePlanTitle" formControlName="carePlanTitle" matInput />
+                            </mat-form-field>
+                          </div> 
+
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>FOLLOW UP / CARE PLAN DESCRIPTION</mat-label>

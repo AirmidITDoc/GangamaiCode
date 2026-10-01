@@ -253,7 +253,7 @@
 
                                                 <div fxLayout="row wrap" fxLayoutGap="10px">
                                                     <!-- Height [(ngModel)]="vHeight"  -->
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Height</mat-label>
                                                         <input matInput formControlName="Height"
                                                             placeholder="Height in cm" [maxLength]="20"
@@ -266,7 +266,7 @@
                                                     </mat-form-field>
 
                                                     <!-- Weight [(ngModel)]="vWeight" -->
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Weight</mat-label>
                                                         <input matInput formControlName="Weight" id="weightField"
                                                             placeholder="Weight in Kg" [maxLength]="20"
@@ -279,7 +279,7 @@
                                                     </mat-form-field>
 
                                                     <!-- BMI [(ngModel)]="vBMI"-->
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>BMI</mat-label>
                                                         <input matInput formControlName="BMI" placeholder="BMI" readonly
                                                             [(ngModel)]="vBMI" id="bmiField"
@@ -289,7 +289,7 @@
                                                     </mat-form-field>
 
                                                     <!-- BSL [(ngModel)]="vBSL"-->
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>BSL</mat-label>
                                                         <input matInput formControlName="BSL" placeholder="BSL"
                                                             id="bslField" [maxLength]="20"
@@ -298,7 +298,7 @@
                                                     </mat-form-field>
 
                                                     <!-- SpO2 [(ngModel)]="vSpO2" -->
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>SpO2</mat-label>
                                                         <input matInput formControlName="SpO2" placeholder="SpO2"
                                                             id="spo2Field" [maxLength]="20"
@@ -309,7 +309,7 @@
                                                     </mat-form-field>
 
                                                     <!-- Pulse [(ngModel)]="vPulse" -->
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Pulse</mat-label>
                                                         <input matInput formControlName="Pulse" placeholder="Pulse"
                                                             id="pulseField" [maxLength]="10"
@@ -323,7 +323,7 @@
                                                     </mat-form-field>
 
                                                     <!-- BP [(ngModel)]="vBP"-->
-                                                    <mat-form-field appearance="outline" fxFlex="11%">
+                                                    <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>BP</mat-label>
                                                         <input matInput formControlName="BP" placeholder="BP"
                                                             id="bpField" [maxLength]="10"
@@ -337,7 +337,7 @@
                                                     </mat-form-field>
 
                                                     <!-- Temperature [(ngModel)]="vTemp" -->
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Temp</mat-label>
                                                         <input matInput formControlName="Temp" placeholder="Temp"
                                                             id="tempField" [maxLength]="10" OnlyNumber
@@ -352,7 +352,7 @@
                                                             style="margin-right: 15px; font-size: x-large;">°C</span>
                                                     </mat-form-field>
 
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>B.Group</mat-label>
                                                         <mat-select placeholder="BloodGroup" id="bloodField"
                                                             (selectionChange)="focusNext('allergyField')"
@@ -362,13 +362,43 @@
                                                         </mat-select>
                                                     </mat-form-field>
 
-                                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                                    <!-- <mat-form-field appearance="outline" fxFlex="8%">
                                                         <mat-label>ALGY </mat-label>
                                                         <input matInput formControlName="Allergies" id="allergyField"
                                                             placeholder="Allergies" [maxLength]="50">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">AL</span>
+                                                    </mat-form-field> -->
+                                                </div>
+
+                                                  <div fxLayout="row wrap" fxLayoutGap="10px"> 
+                                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                                        <mat-label>ALLERGY </mat-label>
+                                                        <input matInput formControlName="Allergies" id="allergyField"
+                                                            placeholder="Allergies" [maxLength]="50">
+                                                        <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">AL</span>
+                                                    </mat-form-field>
+
+                                                     <mat-form-field appearance="outline" fxFlex="20%">
+                                                        <mat-label>DRUG ALLERGY</mat-label>
+                                                        <input matInput formControlName="drugAllergy" id="drugAllergyField"
+                                                            placeholder="Drug Allergy" >
+                                                        <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">AL</span>
+                                                    </mat-form-field>
+
+
+                                                     <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>ALLERGY REMARK</mat-label>
+                                                        <input matInput formControlName="allergyRemark" id="allergyRemarkField"
+                                                            placeholder="Allergy Remark" >
+                                                        <!-- <span matSuffix style="font-size: x-large;">|</span>
+                                                        <span matSuffix
+                                                            style="margin-right: 10px; font-size: x-large;">AL</span> -->
                                                     </mat-form-field>
                                                 </div>
 
@@ -833,7 +863,7 @@
                                                 </span>
                                             </div>
                                             <hr>
-                                            <div fxLayout="row" fxLayoutGap="6px">
+                                            <div fxLayout="row wrap" fxLayoutGap="6px">
                                                 <div fxFlex="13%">
                                                     <mat-button-toggle-group [(ngModel)]="dateStyle"
                                                         (change)="OnChangeDobType($event)" aria-label="Font Style"
@@ -864,12 +894,34 @@
                                                     <mat-datepicker #picker1></mat-datepicker>
                                                 </mat-form-field>
 
-                                                <airmid-dropdown label="Prescription Doctor Name" formControlName="prescDoctorId"
-                                                    fxFlex="35%" [formGroup]="MedicineItemForm"
-                                                    [validations]="getValidationMessages().prescDoctorId"
-                                                    [mode]="autocompleteModeDoctor"
-                                                    (selectionChange)="selectChangePrscDoctorName($event)">
-                                                </airmid-dropdown>
+
+                                                 <airmid-dropdown label="FollowUp Department Name" formControlName="followUpDepartmentId"
+                                                    fxFlex [formGroup]="MedicineItemForm"
+                                                    [validations]="getValidationMessages().followUpDepartmentId"
+                                                    [mode]="autocompletedepartment"
+                                                    (selectionChange)="selectChangefollowupdepartment($event)"></airmid-dropdown> 
+                                            
+                                                <airmid-dropdown label="FollowUp Doctor Name" formControlName="followUpDoctorId"
+                                                    [formGroup]="MedicineItemForm" fxFlex
+                                                    (selectionChange)="selectChangefollowupDoctorName($event)"
+                                                    [validations]="getValidationMessages().followUpDoctorId"
+                                                    #followupddlDoctor></airmid-dropdown>
+
+                                                    <div fxFlex="40" fxFlex.xs="100">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>followUp Reason</mat-label>
+                                                            <input name="followUpReason" formControlName="followUpReason" matInput />
+                                                        </mat-form-field>
+                                                    </div>
+                                                    
+                                                    <div fxFlex fxFlex.xs="100">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>followUp Description</mat-label>
+                                                            <input name="followUpDescription" formControlName="followUpDescription" 
+                                                                matInput />
+                                                        </mat-form-field>
+                                                    </div>
+                                              
                                             </div>
                                         </form>
                                     </mat-card>
@@ -1000,7 +1052,7 @@
                                                                 <div class="patient-sub">
                                                                     <div class="patient-info-row pt-4" fxLayout="column"
                                                                         fxLayoutAlign="space-between">
-                                                                        <div fxLayout="row"
+                                                                        <div fxLayout="row wrap" fxLayoutGap="6px"
                                                                             fxLayoutAlign="space-between">
                                                                             <div class="patient-col">
                                                                                 <span
@@ -1029,7 +1081,7 @@
                                                                                 <span class="patient-col-key">BMI</span>
                                                                                 <span>:</span>
                                                                                 <span
-                                                                                    class="patient-col-value">{{patient.BMI}}</span>
+                                                                                    class="patient-col-value">{{patient.bmi}}</span>
                                                                             </div>
 
                                                                             <div class="patient-col">
@@ -1086,17 +1138,45 @@
                                                                                 <span
                                                                                     class="patient-col-key">B.Group</span>
                                                                                 <span>:</span>
-                                                                                <span class="patient-col-value">
+                                                                                <span class="patient-col-value">{{patient.bloodGroup}}
                                                                                 </span>
                                                                             </div>
 
-                                                                            <div class="patient-col">
+                                                                           <div class="patient-col">
                                                                                 <span
-                                                                                    class="patient-col-key">Allergy</span>
+                                                                                    class="patient-col-key">Drug Allergy</span>
                                                                                 <span>:</span>
-                                                                                <span class="patient-col-value">
+                                                                                <span
+                                                                                    class="patient-col-value">{{patient.allergy}}
+                                                                                    <!-- <span matSuffix
+                                                                                        style="font-size: 13px;"> |
+                                                                                        AL</span> -->
                                                                                 </span>
                                                                             </div>
+
+                                                                              <div class="patient-col">
+                                                                                <span
+                                                                                    class="patient-col-key">Drug Allergy</span>
+                                                                                <span>:</span>
+                                                                                <span
+                                                                                    class="patient-col-value">{{patient.drugAllergy}}
+                                                                                    <!-- <span matSuffix
+                                                                                        style="font-size: 13px;"> |
+                                                                                        AL</span> -->
+                                                                                </span>
+                                                                            </div>
+
+                                                                             <div class="patient-col">
+                                                                                <span
+                                                                                    class="patient-col-key">Allergy Remark</span>
+                                                                                <span>:</span>
+                                                                                <span
+                                                                                    class="patient-col-value">{{patient.allergyRemark}}
+                                                                                    
+                                                                                </span>
+                                                                            </div>
+
+
                                                                         </div>
                                                                         <!-- </div> -->
 
@@ -1783,21 +1863,29 @@
     <div class="modal-footer" *ngIf="selectedTabIndexHide !== 2">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="space-between center" fxFlexFill>
-                <form [formGroup]="caseFormGroup" fxLayout="row" fxLayoutGap="20px">
-                    <mat-radio-group aria-label="Select an option" formControlName="LetteHeadRadio"
-                        (change)="LetterheadFilter($event)" fxLayout="row">
-                        <mat-radio-button value="LetterHead"> Letter Head</mat-radio-button>
-                        <mat-radio-button value="NormalHead">Print Normal</mat-radio-button>
-                    </mat-radio-group>
+                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
+                    <form [formGroup]="caseFormGroup" fxLayout="row" fxLayoutGap="20px">
+                        <mat-radio-group aria-label="Select an option" formControlName="LetteHeadRadio"
+                            (change)="LetterheadFilter($event)" fxLayout="row" fxLayoutGap="10px">
+                            <mat-radio-button value="LetterHead"> Letter Head</mat-radio-button>
+                            <mat-radio-button value="NormalHead">Print Normal</mat-radio-button>
+                        </mat-radio-group>
+                
+                        <!-- <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
+                                        (change)="onChangeLangaugeRadio($event)" fxLayout="row">
+                                        <mat-radio-button value="false">Print In Marathi</mat-radio-button>
+                                        <mat-radio-button value="true">Print In English</mat-radio-button>
+                                    </mat-radio-group> -->
+                    </form>
+                    <form [formGroup]="MedicineItemForm">
+                        <airmid-dropdown label="Prescription Doctor Name" formControlName="prescDoctorId" fxFlex
+                            [formGroup]="MedicineItemForm" [validations]="getValidationMessages().prescDoctorId"
+                            [mode]="autocompleteModeDoctor" (selectionChange)="selectChangePrscDoctorName($event)">
+                        </airmid-dropdown>
+                    </form>
+                </div>
 
-                    <!-- <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
-                        (change)="onChangeLangaugeRadio($event)" fxLayout="row">
-                        <mat-radio-button value="false">Print In Marathi</mat-radio-button>
-                        <mat-radio-button value="true">Print In English</mat-radio-button>
-                    </mat-radio-group> -->
-                </form>
-
-                <div class="sales-footer-buttons gap-6" fxLayout="row">
+                <div class="sales-footer-buttons" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="6px">
                     <!-- <button class="btn btn-danger-outline" (click)="OnipRequest()">IP Request</button> -->
                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     <button class="btn btn-primary" (click)="onSave()">Save</button>

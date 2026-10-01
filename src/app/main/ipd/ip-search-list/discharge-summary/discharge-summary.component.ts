@@ -63,6 +63,7 @@ export class DischargeSummaryComponent implements OnInit {
     vDiagnosis: any;
     vClinicalCondition: any;
     vSURGERYprocedure: any;
+    vcarePlanTitle:any='';
     vPathology: any;
     vRadiology: any;
     vTreatmentGiven: any;
@@ -744,6 +745,7 @@ export class DischargeSummaryComponent implements OnInit {
                 this.DischargesumInsertForm.get("dischargModel.followUpDoctorId")?.setValue(this.RetrDischargeSumryList[0]?.followUpDoctorId)
                 this.VfollowUpReason = this.RetrDischargeSumryList[0]?.followUpReason
                 this.VfollowUpDescription =this.RetrDischargeSumryList[0]?.followUpDescription
+                this.DischargesumInsertForm.get("dischargModel.carePlanTitle")?.setValue(this.RetrDischargeSumryList[0]?.carePlanTitle)
 
 
                 if (this.RetrDischargeSumryList[0].isNormalOrDeath == 0)

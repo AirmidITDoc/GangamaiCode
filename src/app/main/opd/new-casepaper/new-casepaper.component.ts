@@ -224,6 +224,7 @@ export class NewCasepaperComponent implements OnInit {
     @ViewChild('ddlService2') ddlService2: AirmidDropDownComponent;
     @ViewChild('medicineTableRef') medicineTableRef: MedicineTableNewComponent;
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+     @ViewChild('followupddlDoctor') followupddlDoctor: AirmidDropDownComponent;
 
 
 
@@ -647,6 +648,8 @@ export class NewCasepaperComponent implements OnInit {
             mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService2: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             historyOfIllness: [''],
+            drugAllergy: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            allergyRemark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             prescDoctorId: this.vPrscDoctorId
         });
     }
@@ -672,6 +675,10 @@ export class NewCasepaperComponent implements OnInit {
             TemplateId: [''],
 
             prescDoctorId: [this.vPrscDoctorId || 0],
+            followUpReason:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            followUpDescription: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            followUpDepartmentId: [0],
+            followUpDoctorId: [0] 
         });
     }
 
@@ -680,7 +687,11 @@ export class NewCasepaperComponent implements OnInit {
             tPrescription: this._formBuilder.array([]),
             visitDetails: this._formBuilder.group({
                 visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                followupDate: ['']
+                followupDate: [''],
+                followUpReason:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                followUpDescription: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                followUpDepartmentId: [0],
+                followUpDoctorId: [0] 
             }),
             topRequestList: this._formBuilder.array([]),
             mopCasepaperDignosisMaster: this._formBuilder.array([]),
@@ -729,6 +740,8 @@ export class NewCasepaperComponent implements OnInit {
             allergy: [element.allergy ?? ''],
             bloodGroup: [element.bloodGroup ?? ''],
             historyOfIllness: [element.historyOfIllness ?? ''],
+            drugAllergy: [element.drugAllergy ?? ''],
+            allergyRemark: [element.allergyRemark ?? ''],
             prescDoctorId: [this.vPrscDoctorId || 0],
         });
     }
@@ -836,6 +849,8 @@ export class NewCasepaperComponent implements OnInit {
                 departmentId: this.departmentId,//this.MedicineItemForm.get('departmentId')?.value,
                 historyOfIllness: this.caseFormGroup.get('historyOfIllness')?.value,
                 prescDoctorId: this.vPrscDoctorId,
+                drugAllergy: this.caseFormGroup.get('drugAllergy')?.value,
+                allergyRemark: this.caseFormGroup.get('allergyRemark')?.value,
             };
 
             if (this.dsItemList.data.length === 0) {
@@ -888,6 +903,13 @@ export class NewCasepaperComponent implements OnInit {
             }
             this.casePaperInsertForm.get(['visitDetails', 'visitId'])?.setValue(this.vOPIPId);
             this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
+            this.casePaperInsertForm.get(['visitDetails', 'followUpReason'])?.setValue(this.MedicineItemForm.get('followUpReason')?.value);
+            this.casePaperInsertForm.get(['visitDetails', 'followUpDescription'])?.setValue(this.MedicineItemForm.get('followUpDescription')?.value);
+            this.casePaperInsertForm.get(['visitDetails', 'followUpDepartmentId'])?.setValue(this.MedicineItemForm.get('followUpDepartmentId')?.value);
+            this.casePaperInsertForm.get(['visitDetails', 'followUpDoctorId'])?.setValue(this.MedicineItemForm.get('followUpDoctorId')?.value);
+
+           
+          
             console.log('form:', this.casePaperInsertForm.value)
             this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
                 // if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
@@ -989,7 +1011,7 @@ export class NewCasepaperComponent implements OnInit {
         this.getRtrvTestServiceList(obj); // retrive list
         this.getRtrvCheifComplaintList(obj); // retrive list
     }
-
+followupdoctorid:any=0;
     getPrescription(obj) {
         this.visitIdRefresh = obj.visitId;
 
@@ -1029,8 +1051,11 @@ export class NewCasepaperComponent implements OnInit {
                     Allergies: current.Allergies || firstItem.allergy,
                     BloodGroup: current.BloodGroup || firstItem.bloodGroup,
                     historyOfIllness: current.historyOfIllness || firstItem.historyOfIllness,
-                    prescDoctorId: current.prescDoctorId || firstItem.prescDoctorId
+                    prescDoctorId: current.prescDoctorId || firstItem.prescDoctorId,
+                    allergyRemark: current.allergyRemark || firstItem?.allergyRemark,
+                    drugAllergy: current.drugAllergy || firstItem?.drugAllergy,
                 });
+                this.followupdoctorid = 0;
                 this.vhistoryofillness = firstItem.historyOfIllness
                 this.vChiefComplaint = firstItem.chiefComplaint;
                 this.vDiagnosis = firstItem.diagnosis;
@@ -1043,13 +1068,20 @@ export class NewCasepaperComponent implements OnInit {
                 this.doctorId = firstItem.patientReferDocId
                 this.MedicineItemForm.get('departmentId').setValue(firstItem.departmentId)
                 this.MedicineItemForm.get('prescDoctorId').setValue(firstItem.prescDoctorId)
+                this.MedicineItemForm.get('followUpDepartmentId').setValue(firstItem.followUpDepartmentId)
+                this.MedicineItemForm.get('followUpDoctorId').setValue(firstItem.followUpDoctorId)
+                this.MedicineItemForm.get('followUpReason').setValue(firstItem?.followUpReason)
+                this.MedicineItemForm.get('followUpDescription').setValue(firstItem?.followUpDescription)
+               if ((firstItem?.followUpDepartmentId || 0) > 0) {
+                this.followupdoctorid = firstItem?.followUpDoctorId || 0
+                this.selectChangefollowupdepartment(firstItem?.followUpDepartmentId)}
+
                 if (firstItem.departmentId) {
 
                     setTimeout(() => {
                         this._CasepaperService.getDoctorsByDepartment(firstItem.departmentId).subscribe((data: any) => {
                             this.ddlDoctor.options = data;
-                            console.log(data)
-                            debugger
+                            console.log(data) 
                             this.ddlDoctor.bindGridAutoComplete();
 
                         });
@@ -1516,7 +1548,9 @@ export class NewCasepaperComponent implements OnInit {
             ChiefComplaint: [],
             Examination: [],
             departmentId: [],
-            prescDoctorId: []
+            prescDoctorId: [],
+            followUpDepartmentId:[],
+            followUpDoctorId:[]
         }
     }
 
@@ -3104,6 +3138,32 @@ export class NewCasepaperComponent implements OnInit {
             });
         }
     }
+
+    selectChangefollowupdepartment(obj: any) {
+debugger 
+        if (obj.value) {
+            this._CasepaperService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+                this.followupddlDoctor.options = data;
+                this.followupddlDoctor.bindGridAutoComplete();
+            });
+        } else{
+             this._CasepaperService.getDoctorsByDepartment(obj).subscribe((data: any) => {
+                if (data) {
+                    this.followupddlDoctor.options = data;
+                    this.followupddlDoctor.bindGridAutoComplete();
+                    const incomingDoctorId =  this.followupdoctorid || 0;
+                    if (incomingDoctorId) {
+                        const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                        if (matchedDoctor) {
+                            this.MedicineItemForm.get('followUpDoctorId')?.setValue(matchedDoctor.value);
+                        }
+                    }
+                }
+            });
+        }
+    }
+    selectChangefollowupDoctorName(row) {
+    }
     getLabResultview(row: any): void {
         this._matDialog.open(LababnormalListComponent, {
             maxWidth: "95vw",
@@ -3430,6 +3490,12 @@ export class MedicineItemList {
     departmentId: any
     historyOfIllness: any
     prescDoctorId: any
+    allergyRemark:any;
+    followUpReason:any;
+    followUpDescription:any;
+    drugAllergy: any;
+    followUpDepartmentId:any;
+    followUpDoctorId:any;
     /**
     * Constructor
     *
@@ -3518,8 +3584,12 @@ export class MedicineItemList {
             this.departmentId = MedicineItemList.departmentId || 0
             this.historyOfIllness = MedicineItemList.historyOfIllness || ''
             this.prescDoctorId = MedicineItemList.prescDoctorId || 0
-
-
+             this.allergyRemark = MedicineItemList.allergyRemark || 0;
+             this.drugAllergy = MedicineItemList.drugAllergy || 0;
+            this.followUpReason = MedicineItemList.followUpReason || ''
+            this.followUpDescription = MedicineItemList.followUpDescription || '';
+            this.followUpDepartmentId = MedicineItemList.followUpDepartmentId || '';
+            this.followUpDoctorId = MedicineItemList.followUpDoctorId || ''; 
         }
     }
 }
