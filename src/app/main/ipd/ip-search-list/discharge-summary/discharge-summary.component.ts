@@ -205,13 +205,13 @@ export class DischargeSummaryComponent implements OnInit {
                 radiology: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 isNormalOrDeath: [1], 
                 isRefferal: [false],
-                isRefDepartmentId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+                isRefDepartmentId: [0],
                 isRefDoctorId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
                 carePlanTitle:  ['CARE PLAN', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 carePlanDescription: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 followUpReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                followUpDepartmentId:  [0, this._FormvalidationserviceService.onlyNumberValidator()],
-                followUpDoctorId:  [0, this._FormvalidationserviceService.onlyNumberValidator()],
+                followUpDepartmentId:  [0],
+                followUpDoctorId:  [0],
                 followUpDescription:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 templateDescriptionHtml: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
                 dischargeSummaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -989,13 +989,13 @@ export class DischargeSummaryComponent implements OnInit {
                 { name: "required", Message: "wardId Name is required" }
             ],
             followupDepartmentId: [
-                { name: "required", Message: "followup department Name is required" }
+                // { name: "required", Message: "followup department Name is required" }
             ],
                followupdoctor: [
-                { name: "required", Message: "followup doctor Name is required" }
+                // { name: "required", Message: "followup doctor Name is required" }
             ],
               ReferDepartmentId: [
-                { name: "required", Message: "refer department Name is required" }
+                // { name: "required", Message: "refer department Name is required" }
             ],
             DoseId: []
 
