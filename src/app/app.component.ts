@@ -320,7 +320,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         this._httpClient1.PostData("Common", Params).subscribe(data => {
             this.UserAcessConfigSetting = data
-            console.log(this.UserAcessConfigSetting)
+            // console.log(this.UserAcessConfigSetting)
             this.configService.setCongiParam1(this.UserAcessConfigSetting);
         });
     }
@@ -362,7 +362,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 panelClass: 'responsive-dialog'
             });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log('The dialog was closed - Insert Action', result);
+            // console.log('The dialog was closed - Insert Action', result);
         });
     }
 
@@ -376,7 +376,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 panelClass: 'responsive-dialog'
             });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log('The dialog was closed - Insert Action', result);
+            // console.log('The dialog was closed - Insert Action', result);
         });
     }
 }

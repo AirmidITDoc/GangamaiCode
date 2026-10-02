@@ -141,14 +141,14 @@ export class CashlessCompanyDashboardComponent implements OnInit {
 
     ngOnInit(): void {
         this.myformSearch = this._CashlessDashboardService.createSearchForm();
-            this.myformSearch.get('fromDate')?.setValue(this.fromDate)
+        this.myformSearch.get('fromDate')?.setValue(this.fromDate)
         this.myformSearch.get('enddate')?.setValue(this.toDate)
         this.getCashlessDashboardData();
     }
     onGo() { 
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate')?.value, "yyyy-MM-dd") || "01/01/1900",
-            this.toDate = this.datePipe.transform(this.myformSearch.get('enddate')?.value, "yyyy-MM-dd") || "01/01/1900",
-            this.getfilterdata();
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate')?.value, "yyyy-MM-dd") || "01/01/1900",
+        this.getfilterdata();
         this.getCashlessDashboardData();
     }
 

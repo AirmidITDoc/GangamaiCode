@@ -56,7 +56,7 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
 
             this.filteredShortcutItems = this.shortcutItems;
 
-            console.log("ngoninit:",this.shortcutItems);
+            // // console.log("ngoninit:",this.shortcutItems);
         });
     }
 

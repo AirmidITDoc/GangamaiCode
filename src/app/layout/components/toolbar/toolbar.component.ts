@@ -182,7 +182,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         // Comment this if no work?
         const result = await this._DashboardserviceService.UserAccConfigSettingParam1();
         this.DashboardconfigParams = result;
-        console.log(this.DashboardconfigParams);
+        // console.log(this.DashboardconfigParams);
 
         // this.loadData()
 
@@ -288,7 +288,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         const data = await this._DashboardserviceService.UserAccConfigSettingParam1();
 
         this.DashboardconfigParams = data;
-        console.log(this.DashboardconfigParams)
+        // console.log(this.DashboardconfigParams)
     }
 
 
@@ -363,7 +363,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      */
     search(value): void {
         // Do your search here...
-        console.log(value);
+        // console.log(value);
     }
 
     /**
@@ -403,7 +403,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
 
     setDashboard() {
-        console.log(this.DashboardconfigParams)
+        // console.log(this.DashboardconfigParams)
 
         const access = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsDailyDashboard');

@@ -3,6 +3,8 @@ import { AuditlogsService } from './auditlogs.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { PageEvent } from '@angular/material/paginator';
+import { FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-auditlogs',
@@ -20,16 +22,23 @@ export class AuditlogsComponent implements OnInit {
   totalRecords = 0;
   pageSize = 10;
   pageIndex = 0;
-
-  fromDate: Date = new Date();
-  toDate: Date = new Date();
   searchText = '';
 
+  myformSearch: FormGroup;
+
+  fromDate = this.datePipe.transform(new Date, "yyyy-MM-dd");
+  toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd");
+
   constructor(
-    public _auditlogsService: AuditlogsService
-  ) {
+    public _auditlogsService: AuditlogsService,
+    public datePipe: DatePipe,
+    ) {
   }
   ngOnInit(): void {
+    this.myformSearch = this._auditlogsService.createSearchForm();
+    this.myformSearch.get('fromDate')?.setValue(this.fromDate)
+    this.myformSearch.get('enddate')?.setValue(this.toDate)
+
     this.onGetList();
     this.totalRecords = this.DSAuditlogs.data.length;
     this.loadPage();
@@ -65,10 +74,10 @@ export class AuditlogsComponent implements OnInit {
     const m =
     {
     
-      //"first": 0,
-      //"rows": 50,
-      "first": this.pageIndex * this.pageSize,
+      "first": 0,
       "rows": 50,
+      // "first": this.pageIndex * this.pageSize,
+      // "rows": 50,
       "sortField": "Id",
       "sortOrder": 0,
       "filters": [
@@ -100,7 +109,7 @@ export class AuditlogsComponent implements OnInit {
       console.log(response.data);
       this.DSAuditlogs.data = this.AuditList;
       this.totalRecords = this.DSAuditlogs.data.length;
-      this.loadPage();
+      this.loadPage();
     });
   }
 }

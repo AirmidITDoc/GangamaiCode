@@ -80,7 +80,7 @@ export class AuthenticationService {
         //     return;
         // }
         return this.http.GetData('login/get-menus').subscribe((data: any[]) => {
-            console.log(data)
+            // console.log(data)
             this.navigation = data;
             try {
                 this._fuseNavigationService.unregister('main1');
