@@ -2094,9 +2094,9 @@ export class NewFormComponent {
     debugger
     if (obj) {
       this.doctorId = obj?.value
+      this.familyDoctorName = obj?.text
       this._NewMemberService.getDoctorById(this.doctorId).subscribe((response) => {
         console.log(response)
-        this.familyDoctorName = response.firstName +' '+ response.lastName
         this.hfDoctor = response.phone
         this.personalFormGroup.get("familyDoctorContact").setValue(this.hfDoctor);
 
@@ -2133,7 +2133,7 @@ export class NewFormComponent {
     if (obj) {
       this.doctorId2 = obj?.value
       this._NewMemberService.getDoctorById(this.doctorId2).subscribe((response) => {
-        this.wfamilyDoctorName =  response.firstName +' '+ response.lastName
+        this.wfamilyDoctorName = response.firstName + ' ' + response.lastName
         this.wfDoctor = response.phone
         this.personalFormGroup.get("wfamilyDoctorContact").setValue(this.wfDoctor);
 

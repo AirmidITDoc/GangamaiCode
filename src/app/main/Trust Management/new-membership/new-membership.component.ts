@@ -119,23 +119,25 @@ export class NewMembershipComponent {
         { heading: "NATIVE PLACE", key: "nativePlace", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AGE", key: "ageY", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "MOBILE NO.", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "EMERGENCY MOBILE", key: "emrgencyMobile", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+
+        // changed emrgency number to mobile no2 as per new requirement
+        { heading: "EMERGENCY MOBILE", key: "mobileNo2", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "BLOOD GRP", key: "bloodGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "FAMILY DR", key: "familyDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "FAMILY DR NO.", key: "familyDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 120 },
 
-        { heading: "COSULTING DR", key: "hConsultDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "COSULTING Dr NO.", key: "hConsultDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "COSULTING DR", key: "hConsultDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+        { heading: "COSULTING Dr NO.", key: "hConsultDoctorContact", sort: true, align: 'left', emptySign: 'NA', width: 220 },
 
         { heading: "MEDICATION", key: "medications", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "LAST BODY CHECKING DATE", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6 },
+        { heading: "LAST BODY CHECKING DATE", key: "fullBodyCheckupDate", sort: true, align: 'left', emptySign: 'NA', width: 220, type: 6 },
         { heading: "MEDICLIAM CO.NAME", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: " SUM INSURED ", key: "mediclaimIssuanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         { heading: "POLICY NO.", key: "mediclaimPolicyNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "MEDICLAIM VALID TILL", key: "mediclaimEndDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 180 },
         { heading: "AAYUSHMAN ENROLLMENT", key: "aayushmanId", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "RESIDENCE OWN", key: "residenceType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+        { heading: "RESIDENCE OWN", key: "residenceType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
         { heading: "ADDRESS	", key: "residenceAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         { heading: "AADHAR NO. ", key: "aadhaar", sort: true, align: 'left', emptySign: 'NA', width: 120 },
