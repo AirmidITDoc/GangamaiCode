@@ -47,9 +47,9 @@ export class NewSurgeryMasterComponent implements OnInit {
         if ((this.data?.surgeryId ?? 0) > 0) {
             // this.isActive = this.data.isActive
             this.SurgeryId = this.data.surgeryId
+            this.myForm.get('gradeLevel').setValue(this.data.constantId)
             this.myForm.get('surgeryName').setValue(this.data.surgeryName)
             this.myForm.patchValue(this.data);
-            console.log("Surgery ID : ", this.data.surgeryId)
         }
     }
     onChangeOtTable(e) {
@@ -74,7 +74,7 @@ export class NewSurgeryMasterComponent implements OnInit {
     }
 
     onSubmit() {
-           
+
         if (!this.myForm.invalid) {
 
             const formValues = {
@@ -82,7 +82,7 @@ export class NewSurgeryMasterComponent implements OnInit {
                 surgeryId: this.SurgeryId
             };
 
-            console.log('Form values:', formValues);
+            // console.log('Form values:', formValues);
             // Calculate Total Duration
             const expectedSurgeryTime = Number(formValues.expectedSurgeryTime) || 0;
             const preparationTime = Number(formValues.preparationTime) || 0;
@@ -90,7 +90,7 @@ export class NewSurgeryMasterComponent implements OnInit {
 
             formValues.totalDuration = expectedSurgeryTime + preparationTime + cleaningTurnaroundTime;
 
-            console.log('API Payload:', formValues);
+            // console.log('API Payload:', formValues);
 
             this._SurgeryMasterService.surgerySave(formValues).subscribe((response) => {
                 this.onClear(true);

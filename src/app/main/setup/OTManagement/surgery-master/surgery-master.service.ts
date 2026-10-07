@@ -24,14 +24,14 @@ export class SurgeryMasterService {
 
             surgeryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            shortName: ["",Validators.pattern('^[a-zA-Z ]*$')],
-            surgeryName: ["", [Validators.required,Validators.pattern('^[a-zA-Z\s\W_]+$'), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            shortName: ["",[Validators.required,]],
+            surgeryName: ["", [Validators.required]],
             departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             subSpecialty: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeryCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeryTypeId: [0],
             surgeryAmount: [0, [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')]],
-            siteDescId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            siteDescId: [0],
             ottemplateId: [0],
             serviceId: 0,
 
