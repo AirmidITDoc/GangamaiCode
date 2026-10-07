@@ -38,8 +38,7 @@ import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tp
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
-import { NewIPDCasepaperComponent } from './new-ipdcasepaper/new-ipdcasepaper.component';
-// import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
+
 
 @Component({
     selector: 'app-admission',
