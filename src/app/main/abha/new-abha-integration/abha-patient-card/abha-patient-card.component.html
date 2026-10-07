@@ -164,6 +164,11 @@
               <mat-icon>person_outline</mat-icon> Personal Information
             </h3>
 
+            <div class="personal-photo-wrap" *ngIf="regPhotoSrc && showCard">
+              <span class="personal-photo-label">ABHA Photo</span>
+              <img class="personal-photo-img" [src]="regPhotoSrc" alt="ABHA Photo" (error)="onPhotoError()" />
+            </div>
+
             <div class="kv-grid">
               <div class="kv-row">
                 <span class="k">ABHA Number</span>

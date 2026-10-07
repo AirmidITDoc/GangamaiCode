@@ -1,6 +1,6 @@
 .modal-wrapper {
   align-items: stretch; // makes both columns equal height
-   display: flex;
+  display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 16px;
@@ -45,7 +45,7 @@
   min-height: 48px;
   padding: 4px 8px 4px 16px;
   background: #3949AB;
-  color: white;        // explicit, so a light theme color can't make it invisible
+  color: white; // explicit, so a light theme color can't make it invisible
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
 
@@ -68,10 +68,10 @@
 .abha-dialog-body {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: auto;                       // body scrolls, header stays on top
+  overflow: auto; // body scrolls, header stays on top
   display: flex;
   flex-direction: row;
-  align-items: stretch;                 // both columns equal height
+  align-items: stretch; // both columns equal height
   gap: 16px;
   padding: 16px;
 }
@@ -247,20 +247,20 @@ mat-row {
 }
 
 .abha-col .abha-action-row {
-  margin-top: auto;                 // keeps the row at the bottom of the card
+  margin-top: auto; // keeps the row at the bottom of the card
   display: flex;
-  align-items: center;              // note and button share the same vertical centre
-  justify-content: space-between;   // note on the left, button on the right
+  align-items: center; // note and button share the same vertical centre
+  justify-content: space-between; // note on the left, button on the right
   gap: 12px;
   padding-top: 16px;
-  flex-wrap: wrap;                  // on narrow screens the button drops below the note
+  flex-wrap: wrap; // on narrow screens the button drops below the note
 
   .abha-note {
-    flex: 1 1 220px;                // takes the free space and wraps its text if needed
+    flex: 1 1 220px; // takes the free space and wraps its text if needed
     display: flex;
     align-items: center;
     gap: 6px;
-    margin: 0;                      // removes the default <p> margin
+    margin: 0; // removes the default <p> margin
     font-size: 13px;
     line-height: 1.4;
     color: rgba(0, 0, 0, 0.6);
@@ -270,13 +270,13 @@ mat-row {
       font-size: 18px;
       width: 18px;
       height: 18px;
-      color: #f57c00;               // optional accent colour for the icon
+      color: #f57c00; // optional accent colour for the icon
     }
   }
 
   button {
-    flex: 0 0 auto;                 // the button never shrinks
-    margin-left: auto;              // stays at the right even when it wraps
+    flex: 0 0 auto; // the button never shrinks
+    margin-left: auto; // stays at the right even when it wraps
   }
 }
 
@@ -294,4 +294,28 @@ mat-row {
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
+}
+
+.personal-card {
+  .personal-photo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; // use flex-start to align left with the grid
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .personal-photo-label {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  .personal-photo-img {
+    display: block;
+    width: 110px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
 }
