@@ -21,16 +21,17 @@ export class IpdEmrService {
     } return this._httpClient.PostData("EMR/Insert", param);
   }
 
+  public onSaveFamilyData(param) {
+    // if (param[0].regId) {
+      return this._httpClient.PostData("EMR/SaveFamilyHistory", param);
+    // } return this._httpClient.PostData("EMR/InsertFamilyHistory", param);
+  }
+
   public getEmrId(id) {
     return this._httpClient.GetData("EMR/" + id);
   }
 
-  public getRelationshipCombo(param) {
-    return this._httpClient.PostData("RelationshipMaster/List", param);
+  public getFamilyHistory(param) {
+    return this._httpClient.PostData("EMR/FamilyMedicalHistoryList", param);
   }
-
-  public getGenderCombo(param) {
-    return this._httpClient.PostData("Gender/List", param);
-  }
-
 }

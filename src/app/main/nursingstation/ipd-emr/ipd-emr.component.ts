@@ -90,8 +90,6 @@ export class IpdEMRComponent implements OnInit {
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
   Chargelist: any[] = [];
   relationshipName: any;
-  relationshipList = new MatTableDataSource<FamilyHistoryList>();
-  genderList = new MatTableDataSource<FamilyHistoryList>();
   MyForm!: FormGroup;
   familyHistoryForm!: FormGroup;
   vitalsForm: FormGroup;
@@ -132,8 +130,6 @@ export class IpdEMRComponent implements OnInit {
     this.vitalsForm = this.createVitalsForm();
     this.vitalsForm.markAllAsTouched();
 
-    this.getRelationshipList();
-    this.getGenderList();
     this.getBMIcalculation();
   }
 
@@ -147,6 +143,8 @@ export class IpdEMRComponent implements OnInit {
       mAssignProDiagnosis: [[], [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator]],
       mAssignFinalDiagnosis: [[], [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator]],
       mAssignExamination: [[], [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator]],
+
+      tIpEmrfamilyMedicalHistories: this._formbuilder.array([]),
     });
   }
 
@@ -177,7 +175,7 @@ export class IpdEMRComponent implements OnInit {
       tIpEmrdignosisHistories: this._formbuilder.array([]),
 
       // Family Medical History
-      tIpEmrfamilyMedicalHistories: this._formbuilder.array([]),
+      // tIpEmrfamilyMedicalHistories: this._formbuilder.array([]),
 
       // Vitals
       tIpEmrVitals: this._formbuilder.array([])
@@ -229,7 +227,7 @@ export class IpdEMRComponent implements OnInit {
 
   /////////////////////////////////Family Medical History FormArray////////////////////////////
   get familyMedicalHistoriesArray(): FormArray {
-    return this.emrForm.get('tIpEmrfamilyMedicalHistories') as FormArray;
+    return this.MyForm.get('tIpEmrfamilyMedicalHistories') as FormArray;
   }
 
   createFamilyMedicalHistory(element: any = {}): FormGroup {
@@ -333,50 +331,6 @@ export class IpdEMRComponent implements OnInit {
     this.onChangeFirst();
   }
 
-  getRelationshipList(): void {
-
-    const data = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "relationshipId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "relationshipName",
-          "fieldValue": "",
-          "opType": "StartsWith"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    this._IpdEmrService.getRelationshipCombo(data).subscribe((res: any) => {
-      this.relationshipList = res;
-    });
-  }
-
-  getGenderList(): void {
-
-    const data = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "genderId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "genderName",
-          "fieldValue": "",
-          "opType": "StartsWith"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    this._IpdEmrService.getGenderCombo(data).subscribe((res: any) => {
-      this.genderList = res;
-    });
-  }
-
   getpatientDet(obj: any): void {
 
     this.isShowPrintButtons = true
@@ -395,6 +349,7 @@ export class IpdEMRComponent implements OnInit {
     this.vRegId = this.registerObj.regId ?? 0
 
     this.ClearEMRForm();
+    this.getFamilyList(this.vRegId);
     if (this.registerObj.ipdEmrId) {
       this._IpdEmrService.getEmrId(this.registerObj.ipdEmrId).subscribe((res) => {
         this.UpdateRegObj = res
@@ -501,29 +456,75 @@ export class IpdEMRComponent implements OnInit {
         /////////// All 4 dropdowns retrive end////////////////
 
         /////////// family table data retrive ////////////////
-        const history = res.tIpEmrfamilyMedicalHistories || [];
+        // const history = res.tIpEmrfamilyMedicalHistories || [];
 
-        this.Chargelist = history.map((item: any) => ({
-          fhistId: item.fhistId,
-          relationshipId: item.relationshipId,
-          relationshipName: this.relationshipList.data.find(r => r.relationshipId === item.relationshipId)?.relationshipName ?? '',
-          memberName: item.memberName,
-          age: item.age,
-          clinicalHistory: item.clinicalHistory,
-          duration: item.duration,
-          genderId: item.genderId ?? 0,
-          genderName: this.genderList.data.find(r => r.genderId === item.genderId)?.genderName ?? '',
-          summary: item.summary ?? '',
-          status: true
-        }));
+        // this.Chargelist = history.map((item: any) => ({
+        //   fhistId: item.fhistId,
+        //   relationshipId: item.relationshipId,
+        //   relationshipName: this.relationshipList.data.find(r => r.relationshipId === item.relationshipId)?.relationshipName ?? '',
+        //   memberName: item.memberName,
+        //   age: item.age,
+        //   clinicalHistory: item.clinicalHistory,
+        //   duration: item.duration,
+        //   genderId: item.genderId ?? 0,
+        //   genderName: this.genderList.data.find(r => r.genderId === item.genderId)?.genderName ?? '',
+        //   summary: item.summary ?? '',
+        //   status: true
+        // }));
 
-        this.dsFamilyHistoryList.data = [...this.Chargelist];
+        // this.dsFamilyHistoryList.data = [...this.Chargelist];
         /////////// family table data retrive end ////////////////
 
       })
     }
   }
+
+  getFamilyList(id): void {
+
+    const data = {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "FhistId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegId",
+          "fieldValue": String(id),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._IpdEmrService.getFamilyHistory(data).subscribe((res: any) => {
+      const history = res.data || [];
+
+      this.Chargelist = history.map((item: any) => ({
+        fhistId: item.fhistId,
+        relationshipId: item.relationshipId,
+        relationshipName: item.relationshipName ?? '',
+        memberName: item.memberName,
+        age: item.age,
+        clinicalHistory: item.clinicalHistory,
+        duration: item.duration,
+        genderId: item.genderId ?? 0,
+        genderName: item.genderName ?? '',
+        summary: item.summary ?? '',
+        status: true
+      }));
+
+      this.dsFamilyHistoryList.data = [...this.Chargelist];
+    });
+  }
   //////////////////////////////////////// main patient list end ////////////////////////////////////////
+
+  private buildFamilyPayload() {
+    this.familyMedicalHistoriesArray.clear();
+    this.dsFamilyHistoryList.data.forEach(item => {
+      this.familyMedicalHistoriesArray.push(this.createFamilyMedicalHistory(item));
+    });
+    return this.familyMedicalHistoriesArray.value;   // bare array, same as your sample payload
+  }
 
   onSave() {
 
@@ -615,11 +616,10 @@ export class IpdEMRComponent implements OnInit {
       const chiProFinalDiagnosis: FormGroup = this.createDiagnosisInfo(element);
       this.diagnosisInfosArray.push(chiProFinalDiagnosis);
     });
-
-    this.familyMedicalHistoriesArray.clear();
-    this.dsFamilyHistoryList.data.forEach(item => {
-      this.familyMedicalHistoriesArray.push(this.createFamilyMedicalHistory(item));
-    });
+    // this.familyMedicalHistoriesArray.clear();
+    // this.dsFamilyHistoryList.data.forEach(item => {
+    //   this.familyMedicalHistoriesArray.push(this.createFamilyMedicalHistory(item));
+    // });
 
     this.vitalsArray.clear();
     const vitals = {
@@ -634,7 +634,6 @@ export class IpdEMRComponent implements OnInit {
     };
     this.vitalsArray.push(this.createVitalsForm(vitals));
 
-
     this.emrForm.patchValue({
       opipid: this.vAdmissionId,
       chiefComplaints: this.addCheiflist.map(x => x.descriptionName).join(', '),
@@ -643,12 +642,23 @@ export class IpdEMRComponent implements OnInit {
       finalDiagnosis: this.addFinalDiagnolist.map(x => x.diagnosisName).join(', ')
     });
 
-    // console.log('Save form:', this.emrForm.value)
+    const hasFamilyData = this.dsFamilyHistoryList.data.length > 0;
+    const familyPayload = hasFamilyData ? this.buildFamilyPayload() : [];
+
+    console.log('Family form:', familyPayload)
+    console.log('Save form:', this.emrForm.value)
 
     if (!this.emrForm.invalid) {
 
       if (this.isSaving) return;      // blocks a second click or Enter key press
       this.isSaving = true;
+
+      // family save API only when the table has rows
+      if (hasFamilyData) {
+        this._IpdEmrService.onSaveFamilyData(familyPayload).subscribe({
+
+        });
+      }
 
       this._IpdEmrService.onSaveCasepaper(this.emrForm.value).subscribe(response => {
         this.resetEMRForm();
@@ -720,7 +730,7 @@ export class IpdEMRComponent implements OnInit {
   }
 
   resetEMRForm() {
-  this.isSaving = false;
+    this.isSaving = false;
     // 2. Reset the normal fields to their defaults
     this.emrForm.reset({
       ipdEmrId: 0,
