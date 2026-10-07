@@ -38,6 +38,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DietRequestComponent } from './diet-request.component';
 import { NewDietRequestComponent } from './new-diet-request/new-diet-request.component';
+import { DietReqWokflowComponent } from './diet-req-wokflow/diet-req-wokflow.component';
 
 
 const routes: Routes = [
@@ -51,7 +52,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         DietRequestComponent,
-        NewDietRequestComponent
+        NewDietRequestComponent,
+        DietReqWokflowComponent
     ],
     imports: [
         RouterModule.forChild(routes),

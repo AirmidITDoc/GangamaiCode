@@ -1,6 +1,6 @@
 <mat-drawer-container class="diet-drawer-container" [hasBackdrop]="true">
-  <mat-drawer #detailDrawer mode="over" position="end" class="detail-drawer"
-              (openedChange)="onDrawerOpenedChange($event)">
+    <mat-drawer #detailDrawer mode="over" position="end" class="detail-drawer"
+        (openedChange)="onDrawerOpenedChange($event)">
 
         <mat-toolbar class="accent" style="width: 100%; height: 50px; justify-content: space-between;">
             <div fxLayout="row" fxLayoutAlign="start center">
@@ -316,7 +316,6 @@
                                 <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                    (dateChange)="Getrequestdetailcount()"
                                     [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
                                 <mat-form-field appearance="outline" fxFlex>

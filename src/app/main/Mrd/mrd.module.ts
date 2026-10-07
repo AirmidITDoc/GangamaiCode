@@ -35,7 +35,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SharedModule } from '../shared/shared.module';
 import { MrdService } from './mrd.service';
 import { NewCertificateVersionComponent } from './new-certificate-version/new-certificate-version.component';
-
+import { MRDUploadDocumentComponent } from './mrd-upload-document/mrd-upload-document.component';
 
 
 const approutes: Routes = [
@@ -50,7 +50,9 @@ const approutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+    MRDUploadDocumentComponent
+  ],
     // declarations: [CertificateComponent, NewCertificateComponent],
     imports: [
         RouterModule.forChild(approutes),

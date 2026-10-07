@@ -28,6 +28,8 @@ import { DatePipe } from "@angular/common";
 export class NewICDEComponent implements OnInit {
   IcdUpdateForm: FormGroup
   searchFormGroup: FormGroup;
+
+
   private recognition: any = null;
   isListening = false;
   selectedLang = 'en-US';
@@ -35,8 +37,7 @@ export class NewICDEComponent implements OnInit {
   ipdiagId = 0
   registerObj: any;
   registerObj1: any
-  vcauseofdeath: any
-  vpdiagnosis: any
+
   vIcdecode: any
   vfdiagnosis: any
   vAdmissionId = 0
@@ -45,6 +46,23 @@ export class NewICDEComponent implements OnInit {
   vIPDNo = ''
   isSyncflag = false
   flagCode = 'NotSync'
+  screenFromString = 'Common-form';
+
+  Patientdetails: any;
+  DoctorName: any;
+  OPDNo: any;
+  RegNo: any;
+  IPDNo: any;
+  RegId: any = '';
+  OP_IP_Id: any = 0;
+  vSelectedOption: any = '1';
+  IPDNocheck: boolean = false;
+  OPDNoCheck: boolean = false;
+  DoctorNamecheck: boolean = false;
+  showRightSideSection: boolean = true;
+  ustatus: boolean = true;
+
+  ICDEtList: any = new MatTableDataSource<ICDEdetailList>();
   constructor(
     public _IcdUpdateService: IcdUpdateService,
     public dialogRef: MatDialogRef<NewICDEComponent>,
@@ -55,25 +73,51 @@ export class NewICDEComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     public _matDialog: MatDialog, private accountService: AuthenticationService,
   ) { }
-
-  ICDEtList: any = new MatTableDataSource<ICDEdetailList>();
-
+  UpdateRtrvDescriptionList: any = [];
+  addProDiagnolist: any = [];
+  ProdiagnosisMentionItems: Array<{ id: string | number; text: string }> = [];
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
 
     if (this.data) {
       console.log(this.data)
       this.vAdmissionId = this.data.admId
+      this.OP_IP_Id = this.data.admId
       this.ipdiagId = this.data.ipdiagId
-
+      this.ustatus = false
       if (this.ipdiagId > 0)
         this.getRtrvdiagnosisList(this.data)
+
+      // if (res && Array.isArray(res.tIpEmrdignosisHistories)) {
+      //     this.UpdateRtrvDescriptionList = res.tIpEmrdignosisHistories
+
+      const ProDiagnosis = this.UpdateRtrvDescriptionList.filter(item => item.flagCode === 'ProDiagnosis');
+      if (ProDiagnosis.length > 0) {
+        ProDiagnosis.forEach(element => {
+          this.addProDiagnolist.push(
+            {
+              id: element.ipemrdiagnId,
+              descriptionName: element.diagnosisinformation,
+              icdcode: element.icdcode || '',
+              diagnosisName: element.diagnosis,
+              icdCodeWithDignosis: element.diagnosisinformation
+            }
+          )
+        })
+        this.ProdiagnosisMentionItems = this.addProDiagnolist
+          .filter(item => item.descriptionName)
+          .map(item => ({
+            id: item.id,
+            text: item.descriptionName
+          }));
+        // this.MyForm.get('mAssignProDiagnosis').setValue(this.addProDiagnolist);
+      }
     }
 
 
     this.IcdUpdateForm = this.buildForm();
     this.IcdUpdateForm.markAllAsTouched();
-    debugger
+
     if (this.ipdiagId > 0) {
       const v = this.data.isSync;
       this.IcdUpdateForm.get('mrdDiagnosisInfoHeader.isSync')
@@ -82,8 +126,6 @@ export class NewICDEComponent implements OnInit {
 
     if ((this.vAdmissionId ?? 0) > 0) {
       setTimeout(() => {
-
-
         this._IcdUpdateService.getAdmissionById(this.vAdmissionId).subscribe((response) => {
           this.registerObj1 = response;
           console.log(this.registerObj1)
@@ -93,13 +135,27 @@ export class NewICDEComponent implements OnInit {
               this.PatientName = response.firstName + ' ' + response.middleName + ' ' + response.lastName
               this.registerObj.admissionDate = this.registerObj1.admissionDate
               this.registerObj.regNo = this.registerObj1.regNo
-              this.registerObj.admissionDate = this.registerObj1.admissionId
-              this.registerObj.admissionDate = this.registerObj1.admissionDate
+              this.registerObj.admissionId = this.registerObj1.admissionId
               this.registerObj.admissionDate = this.registerObj1.admissionDate
               console.log(this.registerObj)
             });
-          }
+          } else {
+            this._IcdUpdateService.getVisitById(this.vAdmissionId).subscribe((response) => {
+              if (response) {
+                this._IcdUpdateService.getRegistraionById(response.regId).subscribe((response) => {
+                  this.registerObj = response;
+                  console.log(response)
+                  this.PatientName = response.firstName + ' ' + response.middleName + ' ' + response.lastName
+                  this.registerObj.admissionDate = this.registerObj1.admissionDate
+                  this.registerObj.regNo = this.registerObj1.regNo
+                  this.registerObj.admissionId = this.registerObj1.visitId
+                  this.registerObj.admissionDate = this.registerObj1.admissionDate
+                  console.log(this.registerObj)
+                });
+              }
 
+            });
+          }
         });
       }, 500);
     }
@@ -107,17 +163,20 @@ export class NewICDEComponent implements OnInit {
 
   createSearchForm() {
     return this._formBuilder.group({
-      RegId: 0,
-      AppointmentDate: [(new Date()).toISOString()],
+
+      regId: [''],
+      opIpType: [0],
+
     });
   }
+
 
 
   buildForm(): FormGroup {
     return this._formBuilder.group({
       mrdDiagnosisInfoHeader: this._formBuilder.group({
         ipdiagId: [this.ipdiagId || 0],
-        admId: [this.vAdmissionId, Validators.required],
+        admId: [this.OP_IP_Id, Validators.required],
         isSync: [false],
         createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         modifiedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -139,40 +198,10 @@ export class NewICDEComponent implements OnInit {
     this.IcdUpdateForm.get('PatientDignosisMaster')?.setValue(this.addDiagnolist);
   }
 
-  getSelectedObj(obj) {
-    console.log(obj)
-    this.RegId1 = obj.regID;
-    this.registerObj = obj;
-    this.vIPDNo = obj.ipdNo
-    this.vAdmissionId = obj.admissionID
-    this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
 
-    this.IcdUpdateForm.get('mrdDiagnosisInfoHeader.admId')?.setValue(this.vAdmissionId);
-
-    console.log("this  : " + this.registerObj);
-    // this.getRtrvdiagnosisList(this.vAdmissionId)
-  }
 
   onSubmit() {
 
-    // Swal.fire({
-
-    //        title: 'Do you want to Syncrnize  ICD Code ',
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Yes, Cancel it!"
-
-
-    // }).then((flag) => {
-
-    //   if (flag.isConfirmed) {
-    //     this.isSync = true
-    //     // this.IcdUpdateForm.get('isSync').setValue(true)
-    //     this.flagCode = 'Sync'
-    //   } else
-    //     this.flagCode = ''
-    // });
     const header = this.IcdUpdateForm.get('mrdDiagnosisInfoHeader') as FormGroup;
 
     if (this.ipdiagId !== 0) {
@@ -186,20 +215,25 @@ export class NewICDEComponent implements OnInit {
     else
       this.flagCode = 'NotSync'
 
-    if (this.IcdUpdateForm.invalid) {
+
+    this.IcdUpdateForm.get('mrdDiagnosisInfoHeader.admId').setValue(this.OP_IP_Id)
+
+
+    debugger
+    if (this.IcdUpdateForm.invalid || this.OP_IP_Id == 0) {
       this.IcdUpdateForm.markAllAsTouched();
-      this.toastr.warning('Please fill all required fields');
+      this.toastr.warning('Please select Patient....');
       return;
     }
 
     const formValue = this.IcdUpdateForm.value;
     const createdBy = this.accountService.currentUserValue.userId;
 
-    debugger
+
     const mrdDiagnosisInfoDetail = (formValue.PatientDignosisMaster || []).map((chip: any) => ({
       // ipdiagDetId: chip.ipdiagDetId || 0,
       ipdiagId: chip.ipdiagId || this.ipdiagId || 0,
-      admId: this.vAdmissionId,
+      admId: this.OP_IP_Id,
       diagnosis: chip.diagnosisName || chip.diagnosis || chip.icdCodeWithDignosis || '',
       icdcode: chip.icdcode || '',
       diagnosisinformation: chip.icdCodeWithDignosis || chip.diagnosisinformation || chip.descriptionName || '',
@@ -208,7 +242,7 @@ export class NewICDEComponent implements OnInit {
     }));
 
     if (!mrdDiagnosisInfoDetail.length) {
-      this.toastr.warning('Please select at least one diagnosis');
+      this.toastr.warning('Diagnosis is required. Please select at least one');
       return;
     }
 
@@ -230,7 +264,7 @@ export class NewICDEComponent implements OnInit {
   getRtrvdiagnosisList(obj?: any): void {
 
     console.log('vAdmissionId →', this.vAdmissionId);
-    debugger
+
     const filters: any[] = [];
 
     filters.push(
@@ -258,7 +292,7 @@ export class NewICDEComponent implements OnInit {
 
       if (Diagnosis && Diagnosis.length > 0) {
         Diagnosis.forEach((element: any) => {
-          debugger
+
           const diagnosisObj = {
             id: element.ipdiagnosisId,
             ipdiagDetId: element.ipdiagDetId || 0,
@@ -287,7 +321,7 @@ export class NewICDEComponent implements OnInit {
   getRtrvProvisionaldiagnosis(obj?: any): void {
 
     console.log('vAdmissionId →', this.vAdmissionId);
-    debugger
+
     const filters: any[] = [];
 
     filters.push(
@@ -315,7 +349,7 @@ export class NewICDEComponent implements OnInit {
 
       if (Diagnosis && Diagnosis.length > 0) {
         Diagnosis.forEach((element: any) => {
-          debugger
+
           const diagnosisObj = {
             id: element.ipdiagnosisId,
             ipdiagDetId: element.ipdiagDetId || 0,
@@ -373,6 +407,75 @@ export class NewICDEComponent implements OnInit {
         };
       })
       .filter((item): item is { id: string | number; text: string } => item !== null);
+  }
+  onChangePatientType(event) {
+    if (event.value == '0') {
+      this.RegId = '';
+      this.searchFormGroup.get('regId').setValue('');
+
+    } else if (event.value == '1') {
+      this.RegId = '';
+      this.searchFormGroup.get('regId').setValue('');
+
+    }
+  }
+  getSelectedObjRegIP(obj) {
+    console.log(obj);
+    let IsDischarged = 0;
+    IsDischarged = obj.isDischarged;
+    if (IsDischarged == 1) {
+      Swal.fire('Selected Patient is already discharged');
+      this.RegId = '';
+    } else {
+      this.Patientdetails = obj;
+      this.PatientName = obj.firstName + ' ' + obj.lastName;
+      this.RegId = obj.regID;
+      this.OP_IP_Id = obj.admissionID;
+      this.IPDNo = obj.ipdNo;
+      this.DoctorName = obj.doctorName;
+      this.DoctorNamecheck = true;
+      this.IPDNocheck = true;
+      this.OPDNoCheck = false;
+      this.RegNo = obj?.regNo;
+    }
+
+
+  }
+
+  getSelectedObj(obj) {
+    console.log(obj)
+    this.RegId1 = obj.regID;
+    this.registerObj = obj;
+    this.vIPDNo = obj.ipdNo
+    this.vAdmissionId = obj.admissionID
+    this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
+    this.OP_IP_Id = obj.admissionID;
+    this.IcdUpdateForm.get('mrdDiagnosisInfoHeader.admId')?.setValue(this.OP_IP_Id);
+
+    console.log("this  : " + this.registerObj);
+
+  }
+  getSelectedObjOP(obj) {
+    debugger
+    console.log(obj);
+    this.Patientdetails = obj;
+    this.PatientName = obj.firstName + ' ' + obj.lastName;
+    this.RegId = obj.regId;
+    this.OP_IP_Id = obj.visitId;
+    this.OPDNo = obj.opdNo;
+    this.OPDNoCheck = true;
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = false;
+    this.RegNo = obj?.regNo;
+    this.registerObj.age = this.Patientdetails.ageYear
+  }
+
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
   }
   onClose(obj) {
     this._matDialog.closeAll()

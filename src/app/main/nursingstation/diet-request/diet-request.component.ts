@@ -14,6 +14,8 @@ import { NewDietRequestComponent } from './new-diet-request/new-diet-request.com
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDrawer } from '@angular/material/sidenav';
+import { DietReqWokflowComponent } from './diet-req-wokflow/diet-req-wokflow.component';
+import { result } from 'lodash';
 
 @Component({
     selector: 'app-diet-request',
@@ -72,6 +74,8 @@ export class DietRequestComponent {
 
     allcolumns = [
         { heading: "Status", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 80, type: gridColumnTypes.template },
+        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+
         { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
 
         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
@@ -360,7 +364,18 @@ export class DietRequestComponent {
         });
 
     }
+    WorkFlow() {
+        const dialogRef = this._matDialog.open(DietReqWokflowComponent,
+            {
+                width: '90%',
+                maxWidth: '95vw',
+                height: '98%',   // add this if missing — without it the dialog sizes to content and can overflow the viewport, causing the page-level scrollbar
+                autoFocus: false
+            });
+        dialogRef.afterClosed().subscribe(result => {
 
+        });
+    }
     NewRequest() {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur();

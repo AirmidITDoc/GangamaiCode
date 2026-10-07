@@ -43,4 +43,7 @@ export class IcdUpdateService {
   public getRegistraionById(Id) {
     return this._httpClient.GetData("OutPatient/" + Id);
   }
+   public getVisitById(Id) {
+        return this._httpClient.GetData("VisitDetail/" + Id);
+    }
 }

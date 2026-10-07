@@ -37,22 +37,21 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 
 import { MatTimepickerModule } from "mat-timepicker";
 import { MrdDetailsService } from "../mrd-detail-list/mrd-details.service";
-import { IcdUpdateComponent } from './icd-update.component';
-import { NewICDEComponent } from './new-icde/new-icde.component';
+import { MRDUploadDocumentComponent } from "./mrd-upload-document.component";
+
 
 
 const routes: Routes = [
     {
         path: "**",
-        component: IcdUpdateComponent,
+        component: MRDUploadDocumentComponent,
     },
 ];
 
 
 @NgModule({
     declarations: [
-        IcdUpdateComponent,
-        NewICDEComponent
+       MRDUploadDocumentComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -82,9 +81,13 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatCardModule,
         MatDialogModule,
-
+        MatDividerModule,
+        MatExpansionModule,
+        MatListModule,
         MatSlideToggleModule,
-
+        MatSnackBarModule,
+        MatStepperModule,
+        MatTabsModule,
         MatTooltipModule,
         MatButtonToggleModule,
         MatSidenavModule,
@@ -92,4 +95,4 @@ const routes: Routes = [
     ],
     providers: [DatePipe, MrdDetailsService]
 })
-export class IcdUpdateModule { }
+export class MRDDocumentuploadModule { }

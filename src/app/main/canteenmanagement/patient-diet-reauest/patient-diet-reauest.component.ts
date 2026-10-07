@@ -81,10 +81,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelled;
         this.gridConfig.columnsList.find(col => col.key === 'dietReqNo')!.template = this.doctorNameWithPopoverTemplate;
 
-        // Detail grid templates (drawer)
-        // this.gridConfig1.columnsList.find(col => col.key === 'isAccept')!.template = this.isAccept;
-        // this.gridConfig1.columnsList.find(col => col.key === 'isDelived')!.template = this.isDelived;
-        // this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     }
 
     allcolumns = [
@@ -93,9 +89,9 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         // { heading: "Not Accepted", key: "notAcceptedCount", sort: true, align: 'center', emptySign: '0', width: 70 },
         // { heading: "Delivered", key: "deliveredCount", sort: true, align: 'center', emptySign: '0', width: 70 },
         // { heading: "Not Delivered", key: "notDeliveredCount", sort: true, align: 'center', emptySign: '0', width: 70 },
+        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
 
         { heading: "Request Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        // { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 90, type: gridColumnTypes.template },
 
         { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

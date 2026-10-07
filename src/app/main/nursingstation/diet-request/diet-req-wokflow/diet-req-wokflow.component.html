@@ -1,0 +1,1111 @@
+<!-- <div class="diet-workflow">
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>
+        Diet Patient Request Workflow
+      </h2>
+
+      <p>
+        Patient review → Diet plan → Kitchen → Delivery → Reports
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="refresh-btn"
+      (click)="refresh()">
+
+      ↻ Refresh
+
+    </button>
+
+  </div>
+  <div class="filter-card">
+
+    <div class="filter-item">
+
+      <label>
+        From Date
+      </label>
+
+      <input
+        type="date"
+        [(ngModel)]="filters.fromDate">
+
+    </div>
+
+
+    <div class="filter-item">
+
+      <label>
+        To Date
+      </label>
+
+      <input
+        type="date"
+        [(ngModel)]="filters.toDate">
+
+    </div>
+
+
+    <div class="filter-item">
+
+      <label>
+        Diet Request No
+      </label>
+
+      <input
+        type="number"
+        [(ngModel)]="filters.dietReqId"
+        placeholder="All">
+
+    </div>
+
+
+    <div class="filter-buttons">
+
+      <button
+        type="button"
+        class="search-btn"
+        (click)="applyFilter()">
+
+        Search
+
+      </button>
+
+
+      <button
+        type="button"
+        class="clear-btn"
+        (click)="clearFilter()">
+
+        Clear
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="legend">
+
+    <span>
+      <i class="legend-dot completed"></i>
+      Completed
+    </span>
+
+    <span>
+      <i class="legend-dot current"></i>
+      In Progress
+    </span>
+
+    <span>
+      <i class="legend-dot pending"></i>
+      Pending
+    </span>
+
+    <span>
+      <i class="legend-dot cancelled"></i>
+      Cancelled
+    </span>
+
+  </div>
+
+  <div
+    class="loading"
+    *ngIf="loading">
+
+    <div class="spinner"></div>
+
+    <span>
+      Loading diet requests...
+    </span>
+
+  </div>
+
+
+  <div
+    class="error-message"
+    *ngIf="!loading && errorMessage">
+
+    {{ errorMessage }}
+
+    <button
+      type="button"
+      (click)="refresh()">
+
+      Retry
+
+    </button>
+
+  </div>
+
+  <div
+    class="request-list"
+    *ngIf="!loading && !errorMessage">
+<div
+      class="request-card"
+      *ngFor="let request of requests">
+
+
+      <div class="request-header">
+
+        <div class="request-info">
+
+          <div class="request-title">
+
+            <span class="request-number">
+
+              {{ request.dietReqNo }}
+
+            </span>
+
+
+            <span
+              class="status-badge"
+              [ngClass]="
+                getOverallStatusClass(request)
+              ">
+
+              {{ getOverallStatus(request) }}
+
+            </span>
+
+          </div>
+
+
+          <h3>
+
+            {{ request.dietMenuName }}
+
+          </h3>
+
+
+          <div class="request-meta">
+
+            <span>
+
+              <b>Request Date:</b>
+
+              {{ request.date | date:'dd MMM yyyy' }}
+
+            </span>
+
+
+            <span>
+
+              <b>Created:</b>
+
+              {{ request.createdDate |
+                 date:'dd MMM yyyy, hh:mm a' }}
+
+            </span>
+
+
+            <span>
+
+              <b>Created By:</b>
+
+              {{ request.createdByUser }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="summary">
+
+          <div class="summary-box">
+
+            <strong>
+              {{ request.totalDetailCount }}
+            </strong>
+
+            <small>
+              Total Meals
+            </small>
+
+          </div>
+
+
+          <div class="summary-box accepted">
+
+            <strong>
+              {{ request.acceptedCount }}
+            </strong>
+
+            <small>
+              Accepted
+            </small>
+
+          </div>
+
+
+          <div class="summary-box delivered">
+
+            <strong>
+              {{ request.deliveredCount }}
+            </strong>
+
+            <small>
+              Delivered
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="workflow">
+
+    <div
+          class="workflow-step"
+          [ngClass]="
+            getStepClass(request, 1)
+          ">
+
+          <div class="step-circle">
+
+            <span *ngIf="
+              getStepClass(request,1)
+              !== 'completed'
+            ">
+              1
+            </span>
+
+            <span *ngIf="
+              getStepClass(request,1)
+              === 'completed'
+            ">
+              ✓
+            </span>
+
+          </div>
+
+
+          <div class="step-content">
+
+            <h4>
+              Patient Review
+            </h4>
+
+            <p>
+              Patient assessment
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="connector"
+          [class.active]="
+            isStepComplete(request,1)
+          ">
+        </div>
+
+
+        <div
+          class="workflow-step"
+          [ngClass]="
+            getStepClass(request,2)
+          ">
+
+          <div class="step-circle">
+
+            <span *ngIf="
+              getStepClass(request,2)
+              !== 'completed'
+            ">
+              2
+            </span>
+
+            <span *ngIf="
+              getStepClass(request,2)
+              === 'completed'
+            ">
+              ✓
+            </span>
+
+          </div>
+
+
+          <div class="step-content">
+
+            <h4>
+              Diet Plan
+            </h4>
+
+            <p>
+              {{ request.dietMenuCode }}
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="connector"
+          [class.active]="
+            isStepComplete(request,2)
+          ">
+        </div>
+
+  <div
+          class="workflow-step"
+          [ngClass]="
+            getStepClass(request,3)
+          ">
+
+          <div class="step-circle">
+
+            <span *ngIf="
+              getStepClass(request,3)
+              !== 'completed'
+            ">
+              3
+            </span>
+
+            <span *ngIf="
+              getStepClass(request,3)
+              === 'completed'
+            ">
+              ✓
+            </span>
+
+          </div>
+
+
+          <div class="step-content">
+
+            <h4>
+              Kitchen Order
+            </h4>
+
+            <p>
+
+              {{ request.acceptedCount }}
+              /
+              {{ request.totalDetailCount }}
+
+              accepted
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="connector"
+          [class.active]="
+            isStepComplete(request,3)
+          ">
+        </div>
+    <div
+          class="workflow-step"
+          [ngClass]="
+            getStepClass(request,4)
+          ">
+
+          <div class="step-circle">
+
+            <span *ngIf="
+              getStepClass(request,4)
+              !== 'completed'
+            ">
+              4
+            </span>
+
+            <span *ngIf="
+              getStepClass(request,4)
+              === 'completed'
+            ">
+              ✓
+            </span>
+
+          </div>
+
+
+          <div class="step-content">
+
+            <h4>
+              Meal Delivery
+            </h4>
+
+            <p>
+
+              {{ request.deliveredCount }}
+              /
+              {{ request.totalDetailCount }}
+
+              delivered
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="connector"
+          [class.active]="
+            isStepComplete(request,4)
+          ">
+        </div>
+   <div
+          class="workflow-step"
+          [ngClass]="
+            getStepClass(request,5)
+          ">
+
+          <div class="step-circle">
+
+            <span *ngIf="
+              getStepClass(request,5)
+              !== 'completed'
+            ">
+              5
+            </span>
+
+            <span *ngIf="
+              getStepClass(request,5)
+              === 'completed'
+            ">
+              ✓
+            </span>
+
+          </div>
+
+
+          <div class="step-content">
+
+            <h4>
+              Reports
+            </h4>
+
+            <p>
+              Audit & Analytics
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="progress-container">
+
+        <div class="progress-header">
+
+          <span>
+            Workflow Progress
+          </span>
+
+          <strong>
+
+            {{ getProgress(request) }}%
+
+          </strong>
+
+        </div>
+
+
+        <div class="progress-track">
+
+          <div
+            class="progress-fill"
+            [style.width.%]="
+              getProgress(request)
+            ">
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="counter-area">
+
+        <div class="counter">
+
+          <span class="counter-label">
+            Kitchen Acceptance
+          </span>
+
+          <div class="mini-progress">
+
+            <div
+              class="mini-fill green"
+              [style.width.%]="
+                getAcceptedPercentage(request)
+              ">
+            </div>
+
+          </div>
+
+          <span>
+
+            {{ request.acceptedCount }}
+            /
+            {{ request.totalDetailCount }}
+
+          </span>
+
+        </div>
+
+
+        <div class="counter">
+
+          <span class="counter-label">
+            Meal Delivery
+          </span>
+
+          <div class="mini-progress">
+
+            <div
+              class="mini-fill blue"
+              [style.width.%]="
+                getDeliveredPercentage(request)
+              ">
+            </div>
+
+          </div>
+
+          <span>
+
+            {{ request.deliveredCount }}
+            /
+            {{ request.totalDetailCount }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="request-footer">
+
+        <div>
+
+          <span
+            *ngIf="!request.isCancelled">
+
+            Not Accepted:
+            <b>
+              {{ request.notAcceptedCount }}
+            </b>
+
+            &nbsp;&nbsp;
+
+            Not Delivered:
+            <b>
+              {{ request.notDeliveredCount }}
+            </b>
+
+          </span>
+
+
+          <span
+            class="cancelled-text"
+            *ngIf="request.isCancelled">
+
+            Cancelled
+
+            <span
+              *ngIf="request.cancelledUser">
+
+              by {{ request.cancelledUser }}
+
+            </span>
+
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="details-btn"
+          (click)="viewDetails(request)">
+
+          View Details
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="empty-state"
+      *ngIf="requests.length === 0">
+
+      <div class="empty-icon">
+        📋
+      </div>
+
+      <h3>
+        No Diet Requests Found
+      </h3>
+
+      <p>
+        Try changing the date range or request number.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="pagination"
+    *ngIf="
+      !loading &&
+      requests.length > 0 &&
+      totalPages > 1
+    ">
+
+    <button
+      type="button"
+      [disabled]="page === 0"
+      (click)="previousPage()">
+
+      ‹ Previous
+
+    </button>
+
+
+    <span>
+
+      Page
+      <b>{{ currentPage }}</b>
+      of
+      <b>{{ totalPages }}</b>
+
+    </span>
+
+
+    <button
+      type="button"
+      [disabled]="
+        page + 1 >= totalPages
+      "
+      (click)="nextPage()">
+
+      Next ›
+
+    </button>
+
+  </div>
+
+
+  <div
+    class="modal-overlay"
+    *ngIf="showDetails"
+    (click)="closeDetails()">
+
+
+    <div
+      class="details-modal"
+      (click)="$event.stopPropagation()">
+
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            Diet Request Details
+          </h2>
+
+          <span>
+            Request #{{ selectedRequest?.dietReqNo }}
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-btn"
+          (click)="closeDetails()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <div
+        class="modal-body"
+        *ngIf="selectedRequest">
+
+
+        <div class="modal-status">
+
+          <span>
+            Current Status
+          </span>
+
+          <strong
+            [ngClass]="
+              getOverallStatusClass(
+                selectedRequest
+              )
+            ">
+
+            {{
+              getOverallStatus(
+                selectedRequest
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+    <div class="detail-grid">
+
+          <div>
+
+            <label>
+              Diet Request No
+            </label>
+
+            <strong>
+              {{ selectedRequest.dietReqNo }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Diet Menu
+            </label>
+
+            <strong>
+              {{ selectedRequest.dietMenuName }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Diet Code
+            </label>
+
+            <strong>
+              {{ selectedRequest.dietMenuCode }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Request Date
+            </label>
+
+            <strong>
+              {{
+                selectedRequest.date |
+                date:'dd MMM yyyy'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Created By
+            </label>
+
+            <strong>
+              {{ selectedRequest.createdByUser }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Created Date
+            </label>
+
+            <strong>
+              {{
+                selectedRequest.createdDate |
+                date:'dd MMM yyyy, hh:mm a'
+              }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="detail-counts">
+
+          <div class="detail-count total">
+
+            <strong>
+              {{ selectedRequest.totalDetailCount }}
+            </strong>
+
+            <span>
+              Total
+            </span>
+
+          </div>
+
+
+          <div class="detail-count accepted">
+
+            <strong>
+              {{ selectedRequest.acceptedCount }}
+            </strong>
+
+            <span>
+              Accepted
+            </span>
+
+          </div>
+
+
+          <div class="detail-count pending">
+
+            <strong>
+              {{ selectedRequest.notAcceptedCount }}
+            </strong>
+
+            <span>
+              Not Accepted
+            </span>
+
+          </div>
+
+
+          <div class="detail-count delivered">
+
+            <strong>
+              {{ selectedRequest.deliveredCount }}
+            </strong>
+
+            <span>
+              Delivered
+            </span>
+
+          </div>
+
+
+          <div class="detail-count not-delivered">
+
+            <strong>
+              {{ selectedRequest.notDeliveredCount }}
+            </strong>
+
+            <span>
+              Not Delivered
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="timeline">
+
+          <div class="timeline-item completed">
+
+            <div class="timeline-icon">
+              ✓
+            </div>
+
+            <div>
+
+              <strong>
+                Patient Review
+              </strong>
+
+              <small>
+                Diet request created
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [ngClass]="
+              getStepClass(
+                selectedRequest,
+                2
+              )
+            ">
+
+            <div class="timeline-icon">
+              2
+            </div>
+
+            <div>
+
+              <strong>
+                Diet Plan
+              </strong>
+
+              <small>
+                {{ selectedRequest.dietMenuName }}
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [ngClass]="
+              getStepClass(
+                selectedRequest,
+                3
+              )">
+
+            <div class="timeline-icon">
+              3
+            </div>
+
+            <div>
+
+              <strong>
+                Kitchen
+              </strong>
+
+              <small>
+
+                {{
+                  selectedRequest.acceptedCount
+                }}
+                /
+                {{
+                  selectedRequest.totalDetailCount
+                }}
+                accepted
+
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [ngClass]="
+              getStepClass(
+                selectedRequest,
+                4
+              )">
+
+            <div class="timeline-icon">
+              4
+            </div>
+
+            <div>
+
+              <strong>
+                Delivery
+              </strong>
+
+              <small>
+
+                {{
+                  selectedRequest.deliveredCount
+                }}
+                /
+                {{
+                  selectedRequest.totalDetailCount
+                }}
+                delivered
+
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [ngClass]="
+              getStepClass(
+                selectedRequest,
+                5
+              )">
+
+            <div class="timeline-icon">
+              5
+            </div>
+
+            <div>
+
+              <strong>
+                Reports & Audit
+              </strong>
+
+              <small>
+                Reporting available
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="close-modal-btn"
+          (click)="closeDetails()">
+
+          Close
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div> -->

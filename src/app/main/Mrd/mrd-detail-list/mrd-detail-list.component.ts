@@ -13,6 +13,7 @@ import { MrdDetailsService } from './mrd-details.service';
 import { NewINMrdComponent } from './new-in-mrd/new-in-mrd.component';
 import { NewMrdComponent } from './new-mrd/new-mrd.component';
 import { NewOutMrdComponent } from './new-out-mrd/new-out-mrd.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 
 @Component({
     selector: 'app-mrd-detail-list',
@@ -26,7 +27,7 @@ export class MrdDetailListComponent {
     IsInout = 0
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
+    page: PageNames = PageNames.PATIENT;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 

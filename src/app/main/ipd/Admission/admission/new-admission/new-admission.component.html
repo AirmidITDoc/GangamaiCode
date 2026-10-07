@@ -198,10 +198,11 @@
                                                     </button>
                                                 </div>
 
-                                                <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
-                                                    [formGroup]="searchFormGroup" formControlName="RegId"
-                                                    *ngIf="Regflag" class="w-350" placeholderText="Enter Patient Name"
-                                                    ApiUrl="OutPatient/auto-complete?Keyword="
+                                                <!-- label="Search Reg No / Patient Name / Mobile No" -->
+                                                <airmid-autocomplete [label]="searchFormGroup.get('regRadio')?.value === 'NewbornBabyRegistration' 
+                                                             ? 'Select parent details' 
+                                                             : 'Search Reg No / Patient Name / Mobile No'" [formGroup]="searchFormGroup" formControlName="RegId"
+                                                    *ngIf="Regflag" class="w-350" placeholderText="Enter Patient Name" ApiUrl="OutPatient/auto-complete?Keyword="
                                                     (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
 
@@ -232,6 +233,49 @@
 
                                             </div>
                                         </div>
+
+<!-- <mat-expansion-panel
+    class="newborn-panel"
+    *ngIf="searchFormGroup.get('regRadio')?.value === 'NewbornBabyRegistration'"
+    [(expanded)]="isExpandedBaby">
+
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Newborn Baby Registration Details
+        </mat-panel-title>
+    </mat-expansion-panel-header> -->
+
+<div class="newborn-details"  *ngIf="searchFormGroup.get('regRadio')?.value === 'NewbornBabyRegistration'">
+
+    <div class="newborn-title">
+        Newborn Baby Registration Flow : -
+    </div>
+
+    <div class="toggle-field">
+        <mat-slide-toggle formControlName="NewoldRegister">
+            New Registration / Registered
+        </mat-slide-toggle>
+    </div>
+
+    <div class="toggle-field" *ngIf="searchFormGroup.get('NewoldRegister')?.value"> 
+        <mat-slide-toggle formControlName="RegisterisRequest" (change)="onChangeRegistration($event)">
+            Registered / IsRequest For IP
+        </mat-slide-toggle>
+    </div>
+
+    <div class="patient-search" *ngIf="
+            searchFormGroup.get('NewoldRegister')?.value && searchFormGroup.get('RegisterisRequest')?.value !== true "> 
+        <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup"
+            formControlName="RegIdBaby" placeholderText="Enter Patient Name" ApiUrl="OutPatient/auto-complete?Keyword="
+            (selectionChange)="getbabySelectedObj($event)">
+        </airmid-autocomplete> 
+    </div> 
+</div>
+
+
+<!-- </mat-expansion-panel> -->
+
+            
                                     </mat-card-content>
                                 </mat-card>
                             </form>

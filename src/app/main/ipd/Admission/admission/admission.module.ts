@@ -50,7 +50,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
-import { NewIPDCasepaperComponent } from './new-ipdcasepaper/new-ipdcasepaper.component';
+
 
 const routes: Routes = [
     {
@@ -69,8 +69,7 @@ const routes: Routes = [
         CompanyInformationComponent,
         AdmissionCancelComponent,
         InitialAccessmentComponent,
-        NewIPDCasepaperComponent
-        // AdmissionViewComponent
+     
     ],
     imports: [
         CommonModule,

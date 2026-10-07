@@ -80,22 +80,22 @@ export class NewOutMrdComponent {
             // CreatedBy: this.accountService.currentUserValue.userId,
 
 
-               outFileId: [this.data?.outFileId, [Validators.required]],
-                        opipid: [this.opipid, [Validators.required]],
-                        outNo: [this.data?.outNo || "0" ],
-                        givenUserId:[this.data?.givenUserId || 0],
-                        personName:[this.data?.personName || ''],
-            
-                        outDate: [(new Date()).toISOString()],
-                        outTime: [(new Date()).toISOString()],
-                        outReason:[this.data?.outReason || ''],
-                        inNo:[this.data?.inNo || ''],
-                        inDate: [(new Date()).toISOString()],
-                        inTime: [(new Date()).toISOString()],
-                        returnUserId: this.accountService.currentUserValue.userId,
-                        returnPersonName: ['', [Validators.required]],
-                        inReason: ['', Validators.required],
-            
+            outFileId: [this.data?.outFileId, [Validators.required]],
+            opipid: [this.opipid, [Validators.required]],
+            outNo: [this.data?.outNo || "0"],
+            givenUserId: [this.data?.givenUserId || 0],
+            personName: [this.data?.personName || ''],
+
+            outDate: [(new Date()).toISOString()],
+            outTime: [(new Date()).toISOString()],
+            outReason: [this.data?.outReason || ''],
+            inNo: [this.data?.inNo || ''],
+            inDate: [(new Date()).toISOString()],
+            inTime: [(new Date()).toISOString()],
+            returnUserId: this.accountService.currentUserValue.userId,
+            returnPersonName: ['', [Validators.required]],
+            inReason: ['', Validators.required],
+
         });
     }
 
@@ -103,15 +103,15 @@ export class NewOutMrdComponent {
 
         debugger
 
-            this.NewOutMrdForm.get('opipid').setValue(this.opipid)
+        this.NewOutMrdForm.get('opipid').setValue(this.opipid)
         this.NewOutMrdForm.get('outDate').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, 'yyyy-MM-dd'))
         this.NewOutMrdForm.get('outTime').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, "yyyy-MM-dd hh:mm"))
-     
+
         if (!this.NewOutMrdForm.invalid) {
             console.log(this.NewOutMrdForm.value)
-            // this._MrdService.MrdOutFileUpdate(this.NewOutMrdForm.value).subscribe((response) => {
-            //     this._matDialog.closeAll();
-            // });
+            this._MrdService.MrdOutFileUpdate(this.NewOutMrdForm.value).subscribe((response) => {
+                this._matDialog.closeAll();
+            });
         } else {
             const invalidFields = [];
             if (this.NewOutMrdForm.invalid) {
