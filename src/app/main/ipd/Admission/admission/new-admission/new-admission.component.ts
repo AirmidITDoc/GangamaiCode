@@ -46,10 +46,12 @@ export class NewAdmissionComponent implements OnInit {
     patienttype: any;
     AdmissionId: any = 0;
     isCompanySelected: boolean = false;
+    isExpandedBaby:boolean = false;
     Regflag: boolean = false;
     Regdisplay: boolean = false;
     ageYear = 0
     ageMonth = 0
+    vparentregId;any=0;
     ageDay = 0
     CityName = ""
 
@@ -180,7 +182,10 @@ export class NewAdmissionComponent implements OnInit {
             regRadio: ['registration'],
             tRegId: [''],
             RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
+            RegIdBaby: [{ value: '' }],
             HospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            NewoldRegister:[false],
+            RegisterisRequest:[false]
         });
     }
     FlagAdmittedCheck: any = 0;
@@ -265,6 +270,7 @@ export class NewAdmissionComponent implements OnInit {
         debugger
         console.log(obj);
         this.RegId = obj.value;
+        this.vparentregId = obj?.value;
 
         const param = {
             searchFields: [
@@ -345,7 +351,95 @@ export class NewAdmissionComponent implements OnInit {
             }
         });
     }
+   getbabySelectedObj(obj: any) {
+        debugger
+       if (!this.vparentregId) {
+           Swal.fire({
+               title: 'Parent Patient Required',
+               text: 'Please select a parent patient to link this patient as a child.',
+               icon: 'warning',
+               confirmButtonColor: '#3085d6',
+               confirmButtonText: 'OK'
+           })
+           this.searchFormGroup.get('RegIdBaby').setValue('');
+           this.searchFormGroup.get('RegIdBaby')?.reset();
+           return;
+       }
+        console.log(obj);
+        this.RegId = obj.value;
 
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "RegId",
+                    fieldValue: String(obj.value),
+                    opType: "Equals"
+                }
+            ],
+            mode: "CheckPatientAdmitted"
+        };
+
+        this._AdmissionService.getCheckAdmittedPatient(param).subscribe((response) => {
+            this.FlagAdmittedCheck = response;
+            console.log("Admitted:", this.FlagAdmittedCheck[0].Admitted);
+
+            // ✅ check inside subscribe
+            if (this.FlagAdmittedCheck[0].Admitted == 1) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: `Admission for the selected patient has already been completed.`,
+                    text: `This patient is already admitted.`,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+                return;
+            }
+
+            // ✅ continue only if not admitted
+            if ((obj.value ?? 0) > 0) {
+
+                // console.log(this.data)
+                setTimeout(() => {
+                   
+                    this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
+                        this.registerObj = response;
+                        this.value = response.dateofBirth
+                        this.vRegNo = response.regNo
+                        this.onChangeDateofBirth(response.dateofBirth)
+                        this.personalFormGroup.patchValue({
+                            FirstName: this.registerObj.firstName.trim(),
+                            MiddleName: this.registerObj.middleName.trim(),
+                            LastName: this.registerObj.lastName.trim(),
+                            MobileNo: this.registerObj.mobileNo.trim(),
+                            Address: this.registerObj.address.trim(),
+                            AreaId: this.registerObj?.areaId ?? '',
+                            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                            engAddress: this.registerObj?.engAddress ?? '',
+                            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
+                            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
+                            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+                        });
+                        this.CityName = this.registerObj?.city ?? '';
+                        // this.stateId = this.registerObj?.stateId ?? 0;
+                        // this.counryId = this.registerObj?.countryId ?? 0;
+                        this.pincode = this.registerObj?.pinNo || ''
+                    });
+
+                }, 500);
+            }
+        });
+    }
     // getSelectedObj1(obj) {
     //   // console.log(obj)
     //   debugger
@@ -483,6 +577,11 @@ export class NewAdmissionComponent implements OnInit {
             this.searchFormGroup.get('RegId').disable();
             this.isRegSearchDisabled = false;
             this.Patientnewold = 1;
+            this.isExpandedBaby = false;
+             this.vRegNo = 0;
+            this.searchFormGroup.get('RegIdBaby')?.reset();
+            this.searchFormGroup.get('NewoldRegister')?.reset();
+            this.searchFormGroup.get('RegisterisRequest')?.reset();
 
             // Instead of reassigning, update controls one by one
             const newPersonalForm = this._AdmissionService.createPesonalForm();
@@ -516,6 +615,11 @@ export class NewAdmissionComponent implements OnInit {
             this.searchFormGroup.get('RegId').reset();
             this.personalFormGroup.reset();
             this.Patientnewold = 2;
+            this.isExpandedBaby = false;
+             this.vRegNo = 0;
+            this.searchFormGroup.get('RegIdBaby')?.reset();
+            this.searchFormGroup.get('NewoldRegister')?.reset();
+            this.searchFormGroup.get('RegisterisRequest')?.reset();
 
             const newPersonalForm = this._AdmissionService.createPesonalForm();
             this.resetFilteredOptions();
@@ -549,6 +653,8 @@ export class NewAdmissionComponent implements OnInit {
             this.searchFormGroup.get('RegId').reset();
             this.personalFormGroup.reset();
             this.Patientnewold = 1;
+            this.isExpandedBaby = true; 
+            this.vRegNo = 0;
 
             const newPersonalForm = this._AdmissionService.createPesonalForm();
             this.resetFilteredOptions();
@@ -575,6 +681,27 @@ export class NewAdmissionComponent implements OnInit {
             this.Regflag = true;
             this.isRegSearchDisabled = true;
         }
+    }
+    onChangeRegistration(event){
+      if (event.checked == true) {
+        if (!this.vparentregId) {
+           Swal.fire({
+               title: 'Parent Patient Required',
+               text: 'Please select a parent patient to link this patient as a child.',
+               icon: 'warning',
+               confirmButtonColor: '#3085d6',
+               confirmButtonText: 'OK'
+           }) 
+           this.searchFormGroup.get('RegIdBaby')?.reset(); 
+           this.searchFormGroup.get('RegisterisRequest')?.reset(); 
+           return;
+       }
+           this.openPatientTable();
+            this.searchFormGroup.get('RegIdBaby').reset('');
+      }else{ 
+            this.searchFormGroup.get('RegIdBaby').reset('');
+    }
+
     }
     //   onChangeReg(event,registerObj?: any) {
     //   if (event.value === 'registration') {
@@ -945,15 +1072,16 @@ export class NewAdmissionComponent implements OnInit {
                     this._matDialog.closeAll();
                 });
             }
-            else if (this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration" && this.AdmissionId == 0) {
+            else if (this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration") {
+                debugger
+                if(!this.searchFormGroup.get('NewoldRegister')?.value){ 
                 this.admissionFormGroup.get('RegId').setValue(0)
-                this.admissionFormGroup.get('parentOpipid').setValue(this.RegId)
+                this.admissionFormGroup.get('parentOpipid').setValue(this.vparentregId)
                 const submitData = {
                     "admissionReg": this.personalFormGroup.value,
                     "admission": this.admissionFormGroup.value,
                     "patientPolicy": this.policyFormGroup.value
-                };
-                debugger
+                }; 
                 console.log(submitData);
                 this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
                     if (!this.Is9_Digit_National_Id) {
@@ -967,6 +1095,24 @@ export class NewAdmissionComponent implements OnInit {
                     this.onClear();
                     this._matDialog.closeAll();
                 });
+             }else{ 
+                this.admissionFormGroup.get('parentOpipid').setValue(this.vparentregId  || 0) 
+                const submitData = {
+                    "admission": this.admissionFormGroup.value,
+                    "patientPolicy": this.policyFormGroup.value
+                };
+                console.log(submitData);
+                this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
+                    console.log(response)
+                    if (this.EmgId > 0) {
+                        this.AddChargesFromEmg(response);
+                        return
+                    }
+                    this.getAdmittedPatientCasepaperview(response);
+                    this.onClear();
+                    this._matDialog.closeAll();
+                });
+                }
             }
             else {
                 // console.log(submitData);
@@ -1303,6 +1449,10 @@ export class NewAdmissionComponent implements OnInit {
         this.admissionFormGroup.get('SubTpaComId').updateValueAndValidity();
         this.patienttype = 1;
         this.personalFormGroup.get('CityId').reset();
+        this.vparentregId = 0;
+        this.searchFormGroup.get('RegisterisRequest').reset();
+        this.searchFormGroup.get('NewoldRegister').reset();
+        this.searchFormGroup.get('RegIdBaby').reset();
     }
     onReset() {
 
@@ -1407,7 +1557,10 @@ export class NewAdmissionComponent implements OnInit {
                             MobileNo: this.registerObj.mobileNo.trim()
                         });
                         if (this.registerObj.regId?.valueOf() > 0) {
-                            this.searchFormGroup.get('regRadio')?.setValue('registrered');
+                            this.searchFormGroup.get('regRadio')?.value === 'registrered' ? 
+                            this.searchFormGroup.get('regRadio')?.setValue('registrered') :
+                            this.searchFormGroup.get('regRadio')?.setValue('NewbornBabyRegistration');
+                            
                             this.Regflag = true;
                         } else {
                             this.searchFormGroup.get('regRadio')?.setValue('registration');
@@ -1416,12 +1569,19 @@ export class NewAdmissionComponent implements OnInit {
                         // this.selectChangedepartment(this.registerObj1)
                     });
                 }
+                if((selectedRow?.visitId || 0) === 0){
+                  this.searchFormGroup.get('regRadio')?.value === 'NewbornBabyRegistration' ? 
+                  this.searchFormGroup.get('RegisterisRequest')?.setValue(false) :
+                   this.searchFormGroup.get('RegisterisRequest')?.setValue(true)
+                }
+
+               
             }
         });
 
         const Data = {
             "first": 0,
-            "rows": 100,
+            "rows": 999,
             "sortField": "IsConvertRequestForIP",
             "sortOrder": 0,
             "filters": [],

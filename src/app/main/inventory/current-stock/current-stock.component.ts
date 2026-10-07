@@ -483,7 +483,7 @@ export class CurrentStockComponent implements OnInit {
             {
                 maxWidth: "100%",
                 height: '100%',
-                width: '85%',
+                width: '92%',
                 data: {
                     Obj: contact
                 }

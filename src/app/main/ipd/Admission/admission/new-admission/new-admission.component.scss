@@ -118,3 +118,24 @@
     }
   }
 }
+
+
+
+///
+///  for new born bay expansion
+.newborn-details {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.newborn-title {
+    font-weight: 600;
+    color: #263238;
+}
+
+.patient-search {
+    width: 350px;
+}

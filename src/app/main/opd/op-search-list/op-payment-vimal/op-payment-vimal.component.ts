@@ -213,7 +213,7 @@ export class OpPaymentVimalComponent implements OnInit {
     filteredadvlist: any = [];
     getAdvanceAmt(element, index) {
         debugger
-        this.filteredadvlist = this.selectedRow.filter(item => item.advanceDetailID == element.advanceDetailID)
+        this.filteredadvlist = this.selectedRow.filter(item => (item.advanceDetailID || item.advanceDetailId) == (element.advanceDetailID || element.advanceDetailId));
         const balAmt = this.filteredadvlist[0]?.balanceAmount
         if (element.usedAmount > this.netPayAmt)
         {
