@@ -25,6 +25,8 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-master.component';
 import { SurgeryMasterComponent } from "./surgery-master.component";
+import { MatTimepickerModule } from "mat-timepicker";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 
 const routes: Routes = [
@@ -62,6 +64,8 @@ const routes: Routes = [
         MatExpansionModule,
         MatCardModule,
         MatSlideToggleModule,
+        MatTimepickerModule,
+        MatTooltipModule,
     ],
     providers: [DatePipe]
 })

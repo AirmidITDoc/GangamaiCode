@@ -1,9 +1,11 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { SurgeryMasterService } from '../surgery-master.service';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-new-surgery-master',
@@ -20,32 +22,77 @@ export class NewSurgeryMasterComponent implements OnInit {
         public _SurgeryMasterService: SurgeryMasterService,
         public dialogRef: MatDialogRef<NewSurgeryMasterComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+        public datePipe: DatePipe,
     ) { }
+
+    @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
+    @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
 
     autocompleteModeSurgeryCategory: string = "SurgeryCategory";
     autocompleteModeDepartment: string = "Department";
     autocompleteModeSiteDescription: string = "SiteDescription";
+    autocompleteModeMOtSubSpecialty: string = "MOtSubSpecialtyMaster";
+    autocompleteModeMTypesOfOTLevel: string = "TypesOfOTLevel";
+    autocompleteModeService: string = "Service";
+
+    isDatePckrDisabled: boolean = false;
     SurgeryId = 0;
 
     ngOnInit(): void {
         this.myForm = this._SurgeryMasterService.createSurgeryForm();
         this.myForm.markAllAsTouched();
 
-        console.log(this.data)
+        console.log("Data", this.data)
         if ((this.data?.surgeryId ?? 0) > 0) {
-            this.isActive = this.data.isActive
+            // this.isActive = this.data.isActive
             this.SurgeryId = this.data.surgeryId
-            this.myForm.get('SurgeryName').setValue(this.data.surgeryName)
+            this.myForm.get('surgeryName').setValue(this.data.surgeryName)
             this.myForm.patchValue(this.data);
+            console.log("Surgery ID : ", this.data.surgeryId)
         }
     }
+    onChangeOtTable(e) {
+        this.ddlLocation.SetSelection(e.locationId);
+    }
 
+    onServiceChange(obj): void {
+        const serviceId = obj?.value ?? obj;
+        this.myForm.patchValue({
+            serviceId: serviceId
+        });
+    }
+
+    // selectedItems = [];
+    // selectChangeServiceName(row) {
+    //     const selectedData = Array.isArray(row) ? row : [row];
+    //     this.selectedItems = selectedData.map(item => ({ serviceId: item.serviceId }));
+    // }
+
+    selectChangeServiceName(event: any): void {
+        // console.log('Selected Surgery:', event);
+    }
 
     onSubmit() {
+           
         if (!this.myForm.invalid) {
-            console.log(this.myForm.value)
-            this._SurgeryMasterService.surgerySave(this.myForm.value).subscribe((response) => {
+
+            const formValues = {
+                ...this.myForm.value,
+                surgeryId: this.SurgeryId
+            };
+
+            console.log('Form values:', formValues);
+            // Calculate Total Duration
+            const expectedSurgeryTime = Number(formValues.expectedSurgeryTime) || 0;
+            const preparationTime = Number(formValues.preparationTime) || 0;
+            const cleaningTurnaroundTime = Number(formValues.cleaningTurnaroundTime) || 0;
+
+            formValues.totalDuration = expectedSurgeryTime + preparationTime + cleaningTurnaroundTime;
+
+            console.log('API Payload:', formValues);
+
+            this._SurgeryMasterService.surgerySave(formValues).subscribe((response) => {
                 this.onClear(true);
             });
         } {
@@ -65,6 +112,16 @@ export class NewSurgeryMasterComponent implements OnInit {
             }
 
         }
+    }
+
+    convertTimeToMinutes(value: any): number | null {
+        if (!value) {
+            return null;
+        }
+
+        const date = new Date(value);
+
+        return date.getHours() * 60 + date.getMinutes();
     }
 
     getValidationMessages() {

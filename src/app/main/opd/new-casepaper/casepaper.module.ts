@@ -50,6 +50,7 @@ import { PrescriptionTemplateComponent } from './prescription-template/prescript
 import { FocusNextDirective } from 'app/main/shared/directives/focus-next/focus-next.directive';
 import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { FamilyHistoryComponent } from './family-history/family-history.component';
 
 const routes: Routes = [
     {
@@ -65,7 +66,8 @@ const routes: Routes = [
         AddItemComponent,
         MedicineTableComponent,
         FocusNextDirective,
-        MedicineTableNewComponent
+        MedicineTableNewComponent,
+        FamilyHistoryComponent
     ],
     imports: [
         RouterModule.forChild(routes),

@@ -188,6 +188,7 @@ export enum permissionCodes {
     PatientAppointmentCancle = 'PatientAppointmentCancle',
     CrossConsultation = 'CrossConsultation',
     VitalInformation = 'VitalInformation',
+    FamilyHistoryInformation = 'FamilyHistoryInformation',
     EditRegistration = 'EditRegistration',
 
     //Ip Billing report

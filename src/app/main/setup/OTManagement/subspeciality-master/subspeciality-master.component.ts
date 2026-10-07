@@ -19,7 +19,8 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 })
 export class SubspecialityMasterComponent {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOTSubSpecality, permissionType.Add);
-  // grid: any;
+
+  subSpecialtyName: any ="";
   constructor(
     public permissionService: PagePermissionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -28,38 +29,10 @@ export class SubspecialityMasterComponent {
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-//   {
-//     "data": [
-//         {
-//             "subSpecialtyId": 2,
-//             "subSpecialtyName": "string",
-//             "specialtyId": 0,
-//             "isActive": false,
-//             "createdBy": 0,
-//             "createdDate": "2026-09-07T17:02:07.537",
-//             "modifiedDate": "2026-09-07T17:03:13.273",
-//             "modifiedBy": 0
-//         },
-//         {
-//             "subSpecialtyId": 1,
-//             "subSpecialtyName": "acdfg",
-//             "specialtyId": 0,
-//             "isActive": true,
-//             "createdBy": 0,
-//             "createdDate": "2026-09-07T17:01:19.743",
-//             "modifiedDate": "2026-09-07T17:01:19.743",
-//             "modifiedBy": 0
-//         }
-//     ],
-//     "recordsFiltered": 2,
-//     "recordsTotal": 2,
-//     "pageIndex": 0
-// }
 
   allColumns = [
     { heading: "Sub-Specialty Name", key: "subSpecialtyName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Specialty Id", key: "specialtyId", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Specialty Name", key: "specialtyName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -78,14 +51,14 @@ export class SubspecialityMasterComponent {
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "subSpecialtyName", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "SubSpecialtyName", fieldValue: this.subSpecialtyName, opType: OperatorComparer.Contains },
+    { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
     permissionCode: permissionCodes.SetupOtManagment,
     apiUrl: "SubSpecialtyMaster/List",
     columnsList: this.allColumns,
-    sortField: "subSpecialtyId",
+    sortField: "SubSpecialtyId",
     sortOrder: 0,
     filters: this.allFilters
     // filters:[]

@@ -346,6 +346,12 @@
                         <span style="font-size: 13px;">Vital Information</span>
                     </button>
 
+                    <button mat-menu-item (click)="OnFamilyHistoryInfo(element)" style="height: 32px; min-height: 32px;">
+                        <mat-icon
+                            style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">people</mat-icon>
+                        <span style="font-size: 13px;">Family History Information</span>
+                    </button>
+
                     <button mat-menu-item (click)="OnPrintPatientIcard(element)" [disabled]="element.IsCancelled"
                         style="height: 32px; min-height: 32px;">
                         <mat-icon

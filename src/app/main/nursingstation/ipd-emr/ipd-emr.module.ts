@@ -1,4 +1,3 @@
-import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { IpdEMRComponent } from './ipd-emr.component';
@@ -17,6 +16,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { IpdEmrService } from './ipd-emr.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   {
@@ -46,7 +47,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatTooltipModule,
     MatTableModule,
-    MatSortModule 
+    MatSortModule,
+    MatDialogModule 
   ],
   providers: [DatePipe, IpdEmrService]
 })

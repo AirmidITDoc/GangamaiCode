@@ -17,54 +17,120 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="SurgeryId" formControlName="SurgeryId" [(ngModel)]="SurgeryId">
+                <input type="hidden" name="SurgeryId" formControlName="surgeryId" [(ngModel)]="SurgeryId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-dropdown label="Department" [value]="data?.departmentId" formControlName="departmentId"
-                            [formGroup]="myForm" [validations]="getValidationMessages().departmentId"
-                            [mode]="autocompleteModeDepartment">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-dropdown label="Surgery Category" [value]="data?.surgeryCategoryId"
-                            formControlName="surgeryCategoryId" [formGroup]="myForm"
-                            [validations]="getValidationMessages().surgeryCategoryId"
-                            [mode]="autocompleteModeSurgeryCategory">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-dropdown label="Surgery Type" formControlName="siteDescId" [value]="data?.siteDescId"
-                            [formGroup]="myForm" [validations]="getValidationMessages().siteDescId"
-                            [mode]="autocompleteModeSiteDescription">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox label="Template Name" formControlName="ottemplateId"
-                            [value]="data?.ottemplateId" [formGroup]="myForm" [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox label="Surgery Name" formControlName="SurgeryName" [formGroup]="myForm"
-                            [validations]="getValidationMessages().SurgeryName" [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
 
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox label="Amount" [value]="data?.surgeryAmount"
-                            (keypress)="keyPressCharater($event)" formControlName="surgeryAmount" [formGroup]="myForm"
-                            [validations]="getValidationMessages().surgeryAmount" [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
-
-                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox label="Total Duration" [value]="data?.totalDuration"
-                            (keypress)="keyPressCharater($event)" formControlName="totalDuration" [formGroup]="myForm"
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox label="Surgery Name" formControlName="surgeryName" [formGroup]="myForm"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox label="Short Name" formControlName="shortName" [formGroup]="myForm"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Department" formControlName="departmentId" [formGroup]="myForm"
+                            [mode]="autocompleteModeDepartment">
+                        </airmid-dropdown>
+                    </div>
 
+
+
+                    <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Surgery Type" formControlName="surgeryTypeId" [formGroup]="myForm"
+                            [mode]="autocompleteModeSiteDescription">
+                        </airmid-dropdown>
+                    </div> -->
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Surgery Type" formControlName="siteDescId" [formGroup]="myForm"
+                            [mode]="autocompleteModeSiteDescription">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Surgery Category" formControlName="surgeryCategoryId"
+                            [formGroup]="myForm" [mode]="autocompleteModeSurgeryCategory">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Sub Speciality" formControlName="subSpecialty" [formGroup]="myForm"
+                            [mode]="autocompleteModeMOtSubSpecialty">
+                        </airmid-dropdown>
+                    </div>
+
+
+                   
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Service Name" formControlName="serviceId" [formGroup]="myForm"
+                            ValueField="serviceId" TextField="serviceName"
+                            [ApiUrl]="'SurgeryMaster/GetServiceListwithSurgeryWise?TariffId=1&ClassId=1&IsProcedure=true&ServiceName=%25'"
+                            [disableAutoNext]="true" (selectionChange)="selectChangeServiceName($event)">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox label="Template Name" formControlName="ottemplateId" [formGroup]="myForm"
+                            [maxLength]="50" [readonly]="true">
+                        </airmid-textbox>
+                    </div>
+                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Grade Level" formControlName="gradeLevel" [formGroup]="myForm"
+                            [mode]="autocompleteModeMTypesOfOTLevel">
+                        </airmid-dropdown>
+                    </div>
+
+
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Preferred OT Room" formControlName="preferredOtroom"
+                            [formGroup]="myForm" ValueField="ottableId" TextField="ottableName"
+                            ApiUrl="OTRequest/getlocationByOttable">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox label="Amount" [value]="data?.surgeryAmount"
+                            (keypress)="keyPressCharater($event)" formControlName="surgeryAmount" [formGroup]="myForm"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100" fxFlex.sm="30%">
+                        <airmid-textbox label="Expected Surgery Time" (keypress)="keyPressCharater($event)"
+                            formControlName="expectedSurgeryTime" [formGroup]="myForm" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    
+
+                    <div fxFlex="33%" fxFlex.xs="100" fxFlex.sm="30%">
+                        <airmid-textbox label="Preparation Time" (keypress)="keyPressCharater($event)"
+                            formControlName="preparationTime" [formGroup]="myForm" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100" fxFlex.sm="30%">
+                        <airmid-textbox label="Cleaning Turnaround Time" (keypress)="keyPressCharater($event)"
+                            formControlName="cleaningTurnaroundTime" [formGroup]="myForm" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox label="Total Duration" formControlName="totalDuration" [formGroup]="myForm"
+                            [maxLength]="50" [readonly]="true">
+                        </airmid-textbox>
+                    </div>
+
+
+                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <app-airmid-slider label="PreAnaesthesiaClearance" formControlName="preAnaesthesiaClearance"
+                                [formGroup]="myForm"></app-airmid-slider>
+                        </div>
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <app-airmid-slider label="SurgicalConsentRequired" formControlName="surgicalConsentRequired"
+                                [formGroup]="myForm"></app-airmid-slider>
+                        </div>
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <app-airmid-slider label="BloodArrangementRequired"
+                                formControlName="bloodArrangementRequired" [formGroup]="myForm"></app-airmid-slider>
+                        </div>
+                    </div>
                 </div>
-
             </form>
         </div>
     </div>

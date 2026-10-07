@@ -50,6 +50,7 @@ import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 import { FollowupListComponent } from './followup-list/followup-list.component';
 import { AppointmentCancleListComponent } from './appointment-cancle-list/appointment-cancle-list.component';
+import { FamilyHistoryComponent } from '../new-casepaper/family-history/family-history.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -80,6 +81,7 @@ export class AppointmentListComponent implements OnInit {
     IsPatientAppointmentCancle: boolean = this.permissionService.getPermission(permissionCodes.PatientAppointmentCancle, permissionType.Edit);
     IsCrossConsultation: boolean = this.permissionService.getPermission(permissionCodes.CrossConsultation, permissionType.Edit);
     IsVitalInformation: boolean = this.permissionService.getPermission(permissionCodes.VitalInformation, permissionType.Edit);
+    // IsFamilyHistoryInfo: boolean = this.permissionService.getPermission(permissionCodes.FamilyHistoryInformation, permissionType.Edit);
     IsEditRegistration1: boolean = this.permissionService.getPermission(permissionCodes.EditRegistration, permissionType.Edit);
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -872,7 +874,7 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-   
+
 
     OnBillPayment(row) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -1053,6 +1055,22 @@ export class AppointmentListComponent implements OnInit {
 
     OnVitalInfo(element) {
         const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
+            {
+                // maxWidth: '95%',
+                // height: '48%',
+                maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
+                data: element
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    OnFamilyHistoryInfo(element) {
+        const dialogRef = this._matDialog.open(FamilyHistoryComponent,
             {
                 // maxWidth: '95%',
                 // height: '48%',

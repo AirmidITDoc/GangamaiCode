@@ -26,7 +26,7 @@ export class SiteDescriptionComponent implements OnInit {
 
     allColumns = [
         { heading: "OT Surgery Type Name", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Surgery Category", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Surgery Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
@@ -46,8 +46,8 @@ export class SiteDescriptionComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
     allFilters = [
-        { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.StartsWith },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        { fieldName: "SurgerTypeName", fieldValue: this.siteDescName, opType: OperatorComparer.StartsWith },
+        { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
         permissionCode: permissionCodes.SetupOtManagment,

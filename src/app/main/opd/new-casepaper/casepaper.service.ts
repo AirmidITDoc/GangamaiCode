@@ -164,11 +164,11 @@ export class CasepaperService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
-        public getLabResultView(Param) {
+    public getLabResultView(Param) {
         return this._httpClient1.PostData("Common", Param)
     }
 
-        public getabnormalLabResultView(Param) {
+    public getabnormalLabResultView(Param) {
         return this._httpClient1.PostData("Common", Param)
     }
     public getDoctorsByDepartment(deptId) {
@@ -177,6 +177,22 @@ export class CasepaperService {
 
     public converOPtoIP(param) {
         return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
+    }
+
+    public getRelationshipCombo(param) {
+        return this._httpClient1.PostData("RelationshipMaster/List", param);
+    }
+
+    public getGenderCombo(param) {
+        return this._httpClient1.PostData("Gender/List", param);
+    }
+
+    public getFamilyHistoryByRegId(regId) {
+        return this._httpClient1.PostData("EMR/FamilyMedicalHistoryList",regId);
+    }
+
+    public saveFamilyHistory(param) {
+        return this._httpClient1.PostData("EMR/SaveFamilyHistory", param);
     }
 
 }

@@ -21,24 +21,35 @@ export class SurgeryMasterService {
 
     createSurgeryForm(): FormGroup {
         return this._formBuilder.group({
-            SurgeryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            SurgeryName: ["",
-                [
-                    Validators.required,
-                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                    this._FormvalidationserviceService.allowEmptyStringValidator()
-                ]
-            ],
-            surgeryCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+            surgeryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            shortName: ["",Validators.pattern('^[a-zA-Z ]*$')],
+            surgeryName: ["", [Validators.required,Validators.pattern('^[a-zA-Z\s\W_]+$'), this._FormvalidationserviceService.allowEmptyStringValidator()]],
             departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            surgeryAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            ottemplateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            subSpecialty: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeryCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeryTypeId: [0],
+            surgeryAmount: [0, [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')]],
             siteDescId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ottemplateId: [0],
             serviceId: 0,
-            totalDuration: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            isCancelled: false,
-            isCancelledBy: 0,
-            isCancelledDateTime: "1900-01-01"
+
+            expectedSurgeryTime: [0],
+            preparationTime: [0],
+            cleaningTurnaroundTime: [0],
+            totalDuration: [0],
+
+            preAnaesthesiaClearance: [false],
+            surgicalConsentRequired: [false],
+            bloodArrangementRequired: [false],
+
+            gradeLevel:[0],
+            preferredOtroom:[0]
+
+            // isCancelled: false,
+            // isCancelledBy: 0,
+            // isCancelledDateTime: "1900-01-01"
         });
     }
 
@@ -54,8 +65,8 @@ export class SurgeryMasterService {
     }
 
     public surgerySave(Param: any) {
-        if (Param.SurgeryId) {
-            return this._httpClient.PutData("SurgeryMaster/" + Param.SurgeryId, Param);
+        if (Param.surgeryId) {
+            return this._httpClient.PutData("SurgeryMaster/" + Param.surgeryId, Param);
         } else return this._httpClient.PostData("SurgeryMaster", Param);
     }
     public deactivateTheStatus(m_data) {
