@@ -66,12 +66,9 @@ export class DietDetailListComponent {
             type: gridColumnTypes.template, template: this.isDelived
         },
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        // { heading: "OPIPID", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-        // { heading: "Diet Name", key: "dietName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        // { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Restriction ", key: "restrictionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -110,8 +107,6 @@ export class DietDetailListComponent {
     ) { }
 
     ngOnInit(): void {
-        debugger
-        // this.CancleStatus = this.data.isCancelled;
 
         this.myFilterform = this.filterForm();
         this.HeaderCancleTaskForm = this.CreateheaderCancleForm();
@@ -157,9 +152,9 @@ export class DietDetailListComponent {
     }
 
     GetDetails(data) {
-        debugger
+
         const DietReqId = String(data.dietReqId);
-        debugger
+
         this.gridConfig1 = {
             apiUrl: "DietPatientRequest/DietPatientRequestDetailsList",
             columnsList: this.allcolumns,
@@ -307,7 +302,6 @@ export class DietDetailListComponent {
         Swal.fire({
             icon: 'question',
             title: 'Do you want to Deliver this Request?',
-            // text: count === 1 ? 'Deliver this request?' : `Deliver ${count} selected requests?`,
             confirmButtonText: 'Yes, Deliver',
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33"
@@ -385,7 +379,7 @@ export class DietDetailListComponent {
     }
 
     opendetailcancletask(contact): void {
-        debugger
+
         this.ReqDetId = contact.dietReqDetId;
         this._matDialog.open(this.DetailCancleTask, {
             width: '520px',
@@ -396,7 +390,7 @@ export class DietDetailListComponent {
     }
 
     DetailRequestCancle() {
-        debugger
+
         Swal.fire({
             title: 'Do you want to Cancle Request',
             showCancelButton: true,
@@ -622,7 +616,7 @@ export class DietDetailListComponent {
                     if (element.isAccept) {
                         this.VAcceptcount = this.VAcceptcount + 1;
                     } if (element.isDelived == true) {
-                        debugger
+
                         this.vDelived = this.vDelived + 1;
                     }
                     if (element.detIsCancelled) {

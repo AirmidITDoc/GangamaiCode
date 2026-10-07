@@ -27,7 +27,8 @@
                 <button mat-icon-button matTooltip="Edit MRD Data" (click)="OnEdit(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
-
+  <airmid-fileupload-icon [refId]="element.regNo" [refType]="page" [multiple]="true"
+                        [title]="element.patientName + ' MRD Document'"></airmid-fileupload-icon>
             </div>
         </ng-template>
 

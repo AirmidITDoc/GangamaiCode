@@ -6,22 +6,21 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { ToastrService } from 'ngx-toastr';
-import { IcdUpdateService } from './icd-update.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { NewICDEComponent } from './new-icde/new-icde.component';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { IcdUpdateService } from '../icd-update/icd-update.service';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { DatePipe } from '@angular/common';
 
+
 @Component({
-  selector: 'app-icd-update',
-  templateUrl: './icd-update.component.html',
-  styleUrls: ['./icd-update.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  selector: 'app-mrd-upload-document',
+  templateUrl: './mrd-upload-document.component.html',
+  styleUrls: ['./mrd-upload-document.component.scss']
 })
-export class IcdUpdateComponent {
+export class MRDUploadDocumentComponent {
+
   myFilterform: FormGroup;
   IcdUpdateForm: FormGroup;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -30,17 +29,17 @@ export class IcdUpdateComponent {
 
   patientDetailsObj: any = {};
 
-  vPatientName: any;
-  vDOA: any;
-  vRefDocName: any;
-  vPatientType: any;
-  vTariffName: any;
-  vCompanyName: any;
-  vRoomName: any;
-  vBedName: any;
-  vgender: any;
+  // vPatientName: any;
+  // vDOA: any;
+  // vRefDocName: any;
+  // vPatientType: any;
+  // vTariffName: any;
+  // vCompanyName: any;
+  // vRoomName: any;
+  // vBedName: any;
+  // vgender: any;
   vopIpId: any = 0;
-  vRegNo: any;
+  // vRegNo: any;
   admId = "0"
   IPDiagId = "0"
   IpFilterDisable = false;
@@ -72,7 +71,8 @@ export class IcdUpdateComponent {
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "ICD Code", key: "icdcode", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "ICD Code", key: "icdcode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
     { heading: "Diagnosis ", key: "diagnosisinformation", sort: true, align: 'left', emptySign: 'NA', width: 350 },
 
     { heading: "Created By ", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
@@ -112,49 +112,27 @@ export class IcdUpdateComponent {
     });
   }
 
-  // getSelectedObjIP(obj: any): void {
-  //   console.log("icd-update", obj)
-  //   if ((obj?.regID ?? 0) > 0) {
 
-  //     this.patientDetailsObj = obj;
-
-  //     this.vPatientName =
-  //       (obj.firstName || '') + ' ' +
-  //       (obj.middleName || '') + ' ' +
-  //       (obj.lastName || '');
-
-  //     this.vRegNo = obj.regNo
-  //     this.vgender = obj.genderName
-  //     this.vDOA = obj.admissionDate;
-  //     this.vRefDocName = obj.refDocName;
-  //     this.vPatientType = obj.patientType;
-  //     this.vTariffName = obj.tariffName;
-  //     this.vCompanyName = obj.companyName;
-  //     this.vRoomName = obj.roomName;
-  //     this.vBedName = obj.bedName;
-  //     this.vopIpId = obj.admissionID;
-
-  //     console.log('Search Patient Info:', this.patientDetailsObj);
-  //   }
-  // }
   Clearfilter(event) {
     console.log(event)
     if (event == 'AdmId')
       this.myFilterform.get('AdmId').setValue("")
-   
+
     this.onChangeFirst();
   }
 
   onChangeFirst() {
+    this.vopIpId = this.myFilterform.get('AdmId').value
+
     this.getfilterdata();
   }
 
   getfilterdata() {
-
     let fromDate1 = this.myFilterform.get("fromDate").value || "";
     let toDate1 = this.myFilterform.get("enddate").value || "";
     fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
     toDate1 = toDate1 ? this.datePipe.transform(toDate1, "yyyy-MM-dd") : "";
+
 
     let AdmId = this.myFilterform.get("AdmId").value || "";
     this.gridConfig = {
@@ -173,7 +151,7 @@ export class IcdUpdateComponent {
     this.grid.bindGridData();
 
     if (this.gridConfig) {
-      debugger
+
       setTimeout(() => {
 
       }, 500);
@@ -188,31 +166,6 @@ export class IcdUpdateComponent {
       return false;
     }
   }
-  getICDE() {
-    const dialogRef = this._matDialog.open(NewICDEComponent,
-      {
-        maxWidth: "95vw",
-        width: '100%',
-        height: "80vh",
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-    });
 
-  }
-
-  onSave(row: any = null) {
-    const that = this;
-    const dialogRef = this._matDialog.open(NewICDEComponent,
-      {
-        maxWidth: "95vw",
-        width: '100%',
-        height: "80vh",
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-
-    });
-  }
 }
+

@@ -19,10 +19,14 @@ const appRoutes: Routes = [
         loadChildren: () => import("./icd-update/icd-update.module").then((m) => m.IcdUpdateModule),
 
     },
-     {
+    {
         path: "mrdtemplate",
         loadChildren: () => import("./mrd-template/mrd-template.module").then((m) => m.MrdTemplateModule),
     },
+    {
+        path: "documentupload",
+        loadChildren: () => import("./mrd-upload-document/mrd-documentupload.module").then((m) => m.MRDDocumentuploadModule),
+    }
 ];
 
 
