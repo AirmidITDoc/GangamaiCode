@@ -45,14 +45,16 @@ export class SurgeryMasterComponent implements OnInit {
         { heading: "Surgery Type", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Sub Speciality", key: "subSpecialtyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
-        { heading: "Service Name", key: "serviceId", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Preferred OT Room", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Template Name", key: "ottemplateId", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Grade Level", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         { heading: "Expected Surgery Time", key: "expectedSurgeryTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Preparation Time", key: "preparationTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Cleaning Turnaround Time", key: "cleaningTurnaroundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Total Duration", key: "totalDuration", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
 
         {
             heading: "preAnaesthesiaClearance", key: "preAnaesthesiaClearance", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 200,
@@ -81,7 +83,7 @@ export class SurgeryMasterComponent implements OnInit {
                         });
                     }
                 }]
-        } 
+        }
     ]
     allFilters = [
         { fieldName: "SurgeryName", fieldValue: this.surgeryName, opType: OperatorComparer.StartsWith },
@@ -105,8 +107,8 @@ export class SurgeryMasterComponent implements OnInit {
     ngOnInit(): void { }
 
     onSave(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; 
-        buttonElement.blur(); 
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
 
         const that = this;
         const dialogRef = this._matDialog.open(NewSurgeryMasterComponent,
