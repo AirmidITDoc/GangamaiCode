@@ -190,9 +190,6 @@ export class DietDetailListComponent {
         return this.gridRows.filter(r => r.isDelived !== true && r.isAccept === true);
     }
 
-    // ---------------------------------------------------------------
-    // Accept — bulk (checkbox selection + "Accept Selected" button)
-    // ---------------------------------------------------------------
 
     toggleMasterCheckboxAccept(checked: boolean) {
         this.masterCheckedAccept = checked;
@@ -236,7 +233,7 @@ export class DietDetailListComponent {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Cancel it!"
+            confirmButtonText: "Yes, Accept it!"
         }).then((flag) => {
             if (!flag.isConfirmed) return;
 
@@ -299,11 +296,13 @@ export class DietDetailListComponent {
         const count = this.selectedDeliverRows.length;
 
         Swal.fire({
+
             icon: 'question',
             title: 'Do you want to Deliver this Request?',
-            confirmButtonText: 'Yes, Deliver',
+            showCancelButton: true,
             confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33"
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Deliver it!"
         }).then((flag) => {
             if (!flag.isConfirmed) return;
 
@@ -373,6 +372,8 @@ export class DietDetailListComponent {
                 this._DietRequestService.Requestcancle(submitData).subscribe(response => {
                     this._matDialog.closeAll();
                     this.grid1.bindGridData();
+
+
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
@@ -446,8 +447,10 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestAccept(submitData).subscribe(response => {
                     this.toastr.success('Request accepted');
-                    // this._matDialog.closeAll();
                     this.grid1.bindGridData();
+                    this.selectedAcceptRows = [];
+                    this.masterCheckedAccept = false;
+                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
@@ -463,8 +466,12 @@ export class DietDetailListComponent {
         }
 
         Swal.fire({
+            icon: 'question',
             title: 'Do you want to Un-Accept Request',
-            confirmButtonText: 'Yes, Un-Accept'
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Un-Accept it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
@@ -475,8 +482,10 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestAccept(submitData).subscribe(response => {
                     this.toastr.success('Request un-accepted');
-                    // this._matDialog.closeAll();
                     this.grid1.bindGridData();
+                    this.selectedAcceptRows = [];
+                    this.masterCheckedAccept = false;
+                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
@@ -513,8 +522,10 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestDeliver(submitData).subscribe(response => {
                     this.toastr.success('Request delivered');
-                    // this._matDialog.closeAll();
                     this.grid1.bindGridData();
+                    this.selectedAcceptRows = [];
+                    this.masterCheckedAccept = false;
+                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
@@ -524,8 +535,12 @@ export class DietDetailListComponent {
 
     UnDeliverRequest(element) {
         Swal.fire({
+            icon: 'question',
             title: 'Do you want to Un-Deliver Request',
-            confirmButtonText: 'Yes, Un-Deliver',
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Un-Deliver it!"
 
         }).then((flag) => {
             if (flag.isConfirmed) {
@@ -537,8 +552,10 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestDeliver(submitData).subscribe(response => {
                     this.toastr.success('Request un-delivered');
-                    // this._matDialog.closeAll();
                     this.grid1.bindGridData();
+                    this.selectedAcceptRows = [];
+                    this.masterCheckedAccept = false;
+                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
