@@ -424,9 +424,13 @@ export class DietDetailListComponent {
 
     AcceptRequest(element) {
         Swal.fire({
-            title: 'Do you want to Accept Request',
-            confirmButtonText: 'Yes,Accept'
 
+            icon: 'question',
+            title: 'Do you want to Accept Request',
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Accept it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
@@ -486,8 +490,13 @@ export class DietDetailListComponent {
 
     DeliverRequest(element) {
         Swal.fire({
-            title: 'Do you want to mark as Delivered',
-            confirmButtonText: 'Yes, Deliver',
+
+            icon: 'question',
+            title: 'Do you want to Deliver Request',
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Deliver it!"
 
         }).then((flag) => {
             if (flag.isConfirmed) {

@@ -53,7 +53,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     VNewcount = 0;
     VAcceptcount = 0;
     VPendingcount = 0;
-    @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
+    @ViewChild('ReqNopopover') ReqNopopover!: TemplateRef<any>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -70,7 +70,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
 
     private overlayRef: OverlayRef | null = null;
     private patientOverlayRef: OverlayRef | null = null;
-    private doctorOverlayRef: OverlayRef | null = null;
+    private ReqNoOverlayRef: OverlayRef | null = null;
     private hoverTimeout: any = null;
     private patientCloseTimeout: any = null;
     private doctorCloseTimeout: any = null;
@@ -79,7 +79,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         // Header/list grid templates
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelled;
-        this.gridConfig.columnsList.find(col => col.key === 'dietReqNo')!.template = this.doctorNameWithPopoverTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'dietReqNo')!.template = this.ReqNopopover;
 
     }
 
@@ -97,10 +97,9 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        // { heading: "Cancelled Date", key: "isCancelledDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
 
         {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ]
@@ -641,7 +640,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     }
     //
 
-    openDoctorDetailsPopover(event: MouseEvent, doctorData: any) {
+    openDetailsPopover(event: MouseEvent, doctorData: any) {
 
         event.stopPropagation();
 
@@ -653,9 +652,9 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         // Add small delay to prevent flickering
         this.hoverTimeout = setTimeout(() => {
             // Close any existing doctor popover
-            if (this.doctorOverlayRef) {
-                this.doctorOverlayRef.dispose();
-                this.doctorOverlayRef = null;
+            if (this.ReqNoOverlayRef) {
+                this.ReqNoOverlayRef.dispose();
+                this.ReqNoOverlayRef = null;
             }
 
             const positionStrategy = this.overlay.position()
@@ -687,46 +686,45 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
                     }
                 ]);
 
-            this.doctorOverlayRef = this.overlay.create({
+            this.ReqNoOverlayRef = this.overlay.create({
                 positionStrategy,
                 scrollStrategy: this.overlay.scrollStrategies.close(),
                 hasBackdrop: false,
             });
 
             const portal = new ComponentPortal(RequestcardpopupComponent);
-            const componentRef: ComponentRef<RequestcardpopupComponent> = this.doctorOverlayRef.attach(portal);
+            const componentRef: ComponentRef<RequestcardpopupComponent> = this.ReqNoOverlayRef.attach(portal);
             componentRef.instance.doctorData = doctorData;
 
-            // Handle mouse events on the overlay element
-            const overlayElement = this.doctorOverlayRef.overlayElement;
+            const overlayElement = this.ReqNoOverlayRef.overlayElement;
             overlayElement.addEventListener('mouseenter', () => this.keepDoctorPopoverOpen());
-            overlayElement.addEventListener('mouseleave', () => this.closeDoctorDetailsPopover());
-        }, 300); // 300ms delay before showing popover
+            overlayElement.addEventListener('mouseleave', () => this.closeDetailsPopover());
+        }, 300);
     }
 
-    closeDoctorDetailsPopover() {
-        // Clear timeout if popover hasn't opened yet
+    closeDetailsPopover() {
+
         if (this.hoverTimeout) {
             clearTimeout(this.hoverTimeout);
             this.hoverTimeout = null;
         }
 
-        // Clear any existing close timeout
+
         if (this.doctorCloseTimeout) {
             clearTimeout(this.doctorCloseTimeout);
         }
 
-        // Add delay before closing to allow moving mouse to popover
+
         this.doctorCloseTimeout = setTimeout(() => {
-            if (this.doctorOverlayRef) {
-                this.doctorOverlayRef.dispose();
-                this.doctorOverlayRef = null;
+            if (this.ReqNoOverlayRef) {
+                this.ReqNoOverlayRef.dispose();
+                this.ReqNoOverlayRef = null;
             }
         }, 200);
     }
 
     keepDoctorPopoverOpen() {
-        // Clear close timeout when hovering over popover
+
         if (this.doctorCloseTimeout) {
             clearTimeout(this.doctorCloseTimeout);
             this.doctorCloseTimeout = null;
@@ -740,8 +738,8 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         if (this.patientOverlayRef) {
             this.patientOverlayRef.dispose();
         }
-        if (this.doctorOverlayRef) {
-            this.doctorOverlayRef.dispose();
+        if (this.ReqNoOverlayRef) {
+            this.ReqNoOverlayRef.dispose();
         }
         if (this.hoverTimeout) {
             clearTimeout(this.hoverTimeout);
