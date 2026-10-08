@@ -41,7 +41,7 @@ export class FoodItemmasterComponent {
   allColumns = [
     { heading: "Food Code", key: "foodCode", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Food Category", key: "foodCategoryName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Food Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Food Item Name", key: "foodName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Local Name", key: "localName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Unit", key: "value", sort: true, align: 'left', emptySign: 'NA' },
     {

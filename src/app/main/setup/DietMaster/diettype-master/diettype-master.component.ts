@@ -53,7 +53,7 @@ export class DiettypeMasterComponent {
           action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DietTypeMaster, permissionType.Delete),
           callback: (data: any) => {
             if (data?.active === true) {
-              this._diettypeMasterService.deactivateTheStatus(data.dietTypeId).subscribe((response: any) => {
+              this._diettypeMasterService.deactivateTheStatus(data.dietTypeID).subscribe((response: any) => {
                 this.grid.bindGridData();
               });
             }

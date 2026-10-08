@@ -202,7 +202,7 @@ export class MenuMasterComponent {
       sortField: "DietMenuid",
       sortOrder: 0,
       filters: [
-        { fieldName: "DietMenuId", fieldValue: "10008", opType: OperatorComparer.Contains },
+        { fieldName: "DietMenuId", fieldValue: "10008", opType: OperatorComparer.StartsWith },
       ],
       row: 25
     };
