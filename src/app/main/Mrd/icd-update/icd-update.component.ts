@@ -206,7 +206,7 @@ export class IcdUpdateComponent {
     const dialogRef = this._matDialog.open(NewICDEComponent,
       {
         maxWidth: "95vw",
-        width: '100%',
+        width: '90%',
         height: "80vh",
         data: row
       });

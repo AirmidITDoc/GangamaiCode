@@ -1,180 +1,108 @@
-<div class="modal-wrapper grid-container">
-    <!-- Modal header -->
+<div class="modal-wrapper grid-container icd-dialog">
+
+    <!-- Header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Add ICD Code </span>
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Add ICD Code</span>
             </div>
             <div class="modal-header-right">
-                <div class="comman-date-container">
-
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Body -->
     <div class="modal-body" fusePerfectScrollbar>
-        <div fxLayout="column" fxLayoutGap="10px" class="p-6">
+        <div fxLayout="column" class="icd-body gap-8 p-6">
 
-            <div [fxFlex]="showRightSideSection ? '80%' : '100%'" *ngIf="ustatus"
-                [fxFlex.sm]="showRightSideSection ? '70%' : '100%'" fxFlex.xs="100%" class="table-left">
-                <div class="modal-body-container">
-                    <div fxLayout="column" class="gap-8 h-100-p">
-                        <div class="modal-card-container search-container">
-                            <div class="patient-search-container input-error-hidden">
-                                <mat-card fxFlex.gt-sm="100%" fxFlex class="m-0">
-                                    <mat-card-content class="p-8">
+            <!-- Patient search -->
+            <mat-card class="icd-card search-card input-error-hidden" *ngIf="ustatus">
+                <form [formGroup]="searchFormGroup" fxLayout="row" fxLayoutAlign="start center" fxLayout.xs="column"
+                    class="gap-8">
 
-                                        <form [formGroup]="searchFormGroup" class="pt-0 m-0">
-                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap"
-                                                fxLayoutAlign="space-between" class="gap-8">
-                                                <div class="radio-group-left gap-4" fxLayout="row"
-                                                    fxLayoutAlign="start center" fxFlex>
-                                                    <mat-radio-group aria-label="Select an option"
-                                                        formControlName="opIpType" [(ngModel)]="vSelectedOption"
-                                                        name="paymode" (change)="onChangePatientType($event)"
-                                                        (blur)="onChangePatientType($event)" fxLayout="row">
-                                                        <mat-radio-button value="0">OP</mat-radio-button>
-                                                        <mat-radio-button value="1">IP</mat-radio-button>
-                                                    </mat-radio-group>
+                    <mat-radio-group aria-label="Select patient type" formControlName="opIpType"
+                        [(ngModel)]="vSelectedOption" name="paymode" (change)="onChangePatientType($event)"
+                        fxLayout="row">
+                        <mat-radio-button value="0">OP</mat-radio-button>
+                        <mat-radio-button value="1">IP</mat-radio-button>
+                    </mat-radio-group>
 
-                                                    <div fxFlex="35%" fxFlex.sm="100%"
-                                                        *ngIf="searchFormGroup.get('opIpType').value != '1'">
-                                                        <airmid-autocomplete
-                                                            label="OP-RegNo / First Name / Last Name / Mobile No"
-                                                            [formGroup]="searchFormGroup" formControlName="regId"
-                                                            placeholderText="OP-RegNo / First Name / Last Name / Mobile No"
-                                                            fxFlex ApiUrl="VisitDetail/search-patient-1?Keyword="
-                                                            (selectionChange)="getSelectedObjOP($event)"
-                                                            ValueField="regId"
-                                                            TextField="formattedText"></airmid-autocomplete>
-                                                    </div>
-
-                                                    <div fxFlex="35%" fxFlex.sm="100%"
-                                                        *ngIf="searchFormGroup.get('opIpType').value != '0'">
-                                                        <airmid-autocomplete
-                                                            label="IP RegNo / First Name / Last Name / Mobile No"
-                                                            [formGroup]="searchFormGroup" formControlName="regId"
-                                                            placeholderText="IP RegNo / First Name / Last Name / Mobile No"
-                                                            fxFlex ApiUrl="Admission/Dischargesearch-patient?Keyword="
-                                                            (selectionChange)="getSelectedObj($event)"
-                                                            TextField="formattedText"
-                                                            ValueField="regId"></airmid-autocomplete>
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-                                            <!-- <div>
-                                <div class="content-card">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                                        <div fxFlex.gt-sm="100%" fxFlex>
-                                            <div fxlayout="row" style="background-color: white">
-                                              
-                                                <div class="patient-info-sales my-8">
-                                                    <app-patient-information [uhidNo]="RegNo"
-                                                        [patientName]="PatientName"
-                                                        [ipdNo]="IPDNocheck ? IPDNo : (OPDNoCheck ? OPDNo : '')"
-                                                        [doctorName]="DoctorNamecheck ? DoctorName : ''"
-                                                        [wardBedName]="Patientdetails?.roomName ? (Patientdetails?.roomName + ' | ' + Patientdetails?.bedName) : ''"
-                                                        [tariffName]="Patientdetails?.tariffName"
-                                                        [companyName]="Patientdetails?.CompanyName">
-                                                    </app-patient-information>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                                        </form>
-                                    </mat-card-content>
-                                </mat-card>
-                            </div>
-                        </div>
+                    <div class="search-field" fxFlex *ngIf="searchFormGroup.get('opIpType').value != '1'">
+                        <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
+                            placeholderText="OP-RegNo / First Name / Last Name / Mobile No"
+                            [formGroup]="searchFormGroup" formControlName="regId"
+                            ApiUrl="VisitDetail/search-patient-1?Keyword=" ValueField="regId" TextField="formattedText"
+                            (selectionChange)="getSelectedObjOP($event)">
+                        </airmid-autocomplete>
                     </div>
-                </div>
-            </div>
 
-
-            <div class="modal-card-container mt-0" style="margin-top: -4px;">
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
-                        <div class="patient-info-sales">
-                            <div class="patient-info-title border-bottom pb-1 mb-1">
-                                <span class="h1 m-0" style="line-height: normal;">Patient
-                                    Information</span>
-                            </div>
-                            <div class="Ipd-patient-info w-100-p">
-                                <app-patient-information [uhidNo]="registerObj?.regNo" [patientName]="PatientName"
-                                    [doctorName]="registerObj?.doctorName || DoctorNamecheck ? DoctorName : ''"
-                                    [departmentName]="registerObj?.departmentName" [doa]="registerObj?.admissionDate"
-                                    [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno || IPDNocheck ? IPDNo : (OPDNoCheck ? OPDNo : '')"
-                                    [ageString]="registerObj?.age != null ? registerObj.age + 'Y' : '' || Patientdetails?.ageYear"
-                                    [refDocName]="registerObj?.refDocName"
-                                    [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
-                                    [patientType]="registerObj?.patientType" [tariffName]="registerObj?.tariffName"
-                                    [companyName]="registerObj?.companyName">
-                                </app-patient-information>
-                            </div>
-                        </div>
-                    </mat-card>
-                </div>
-            </div>
-
-
-
-            <mat-card class="section-card">
-                <!-- <div class="section-label" fxLayout="row" fxLayoutAlign="start center"> -->
-                <span style="padding-right: 40px;">Provisional Diagnosis Details</span>
-                <!-- <app-airmid-diagnos-chipautocomplete fxFlex
-                                    [chips]="MyForm.get('mAssignProDiagnosis')?.value"
-                                    [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
-                                    [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
-                                    (chipsChange)="selectChangeDiagnosis($event)">
-                                </app-airmid-diagnos-chipautocomplete> -->
-                <!-- </div> -->
+                    <div class="search-field" fxFlex *ngIf="searchFormGroup.get('opIpType').value != '0'">
+                        <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
+                            placeholderText="IP RegNo / First Name / Last Name / Mobile No"
+                            [formGroup]="searchFormGroup" formControlName="regId"
+                            ApiUrl="Admission/Dischargesearch-patient?Keyword=" ValueField="regId"
+                            TextField="formattedText" (selectionChange)="getSelectedObj($event)">
+                        </airmid-autocomplete>
+                    </div>
+                </form>
             </mat-card>
 
-            <mat-card class="section-card">
-                <form [formGroup]="IcdUpdateForm" fxLayout="column" fxLayoutGap="8px">
+            <!-- Patient information -->
+            <mat-card class="icd-card patient-card">
+                <div class="section-title border-bottom">Patient Information</div>
+                <app-patient-information class="w-100-p" [uhidNo]="registerObj?.regNo" [patientName]="PatientName"
+                    [doctorName]="registerObj?.doctorName || (DoctorNamecheck ? DoctorName : '')"
+                    [departmentName]="registerObj?.departmentName" [doa]="registerObj?.admissionDate"
+                    [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno || (IPDNocheck ? IPDNo : (OPDNoCheck ? OPDNo : ''))"
+                    [ageString]="registerObj?.age != null ? registerObj.age + 'Y' : (Patientdetails?.ageYear || '')"
+                    [refDocName]="registerObj?.refDocName"
+                    [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj.roomName + ' | ' + registerObj.bedName) : ''"
+                    [patientType]="registerObj?.patientType" [tariffName]="registerObj?.tariffName"
+                    [companyName]="registerObj?.companyName">
+                </app-patient-information>
+            </mat-card>
 
-                    <!-- <div class="section-label" fxLayout="row" fxLayoutAlign="start center"> -->
-                    <span style="padding-right: 40px;">Main Diagnosis Details</span>
-                    <!-- </div> -->
+            <!-- Provisional diagnosis -->
+            <mat-card class="icd-card diagnosis-card">
+                <div class="section-title">Provisional Diagnosis Details</div>
+            </mat-card>
 
-                    <app-airmid-diagnos-chipautocomplete fxFlex
+            <!-- Main diagnosis -->
+            <mat-card class="icd-card diagnosis-card">
+                <form [formGroup]="IcdUpdateForm">
+                    <div class="section-title">Main Diagnosis Details</div>
+                    <app-airmid-diagnos-chipautocomplete class="w-100-p"
                         [chips]="IcdUpdateForm.get('PatientDignosisMaster')?.value"
                         [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
                         [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
                         (chipsChange)="selectChangeDiagnosis($event)">
                     </app-airmid-diagnos-chipautocomplete>
-
-
                 </form>
             </mat-card>
 
         </div>
     </div>
 
-    <div class="modal-footer" fxLayoutAlign="end">
-        <form [formGroup]="IcdUpdateForm" fxLayout="column" fxLayoutGap="2px">
-            <div formGroupName="mrdDiagnosisInfoHeader" fxLayout="row">
-                <app-airmid-slider label="Synchronize " formControlName="isSync"></app-airmid-slider>
+   
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <form [formGroup]="IcdUpdateForm">
+                    <div formGroupName="mrdDiagnosisInfoHeader">
+                        <app-airmid-slider label="Synchronize" formControlName="isSync"></app-airmid-slider>
+                    </div>
+                </form>
+
+                <button type="button" class="btn btn-danger-outline" (click)="onClose(false)">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
             </div>
-        </form>
-        <div class="next-div button-row-group" style="padding-right: 10px;">
-            <button class="btn btn-danger-outline" (click)="onClose(false)">Close</button>
-            <button class="btn btn-primary" color="accent" (click)="onSubmit()">
-                <span>Save</span>
-            </button>
         </div>
     </div>
-
 
 </div>

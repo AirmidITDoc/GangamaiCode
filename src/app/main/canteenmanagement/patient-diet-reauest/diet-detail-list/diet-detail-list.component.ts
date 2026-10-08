@@ -66,6 +66,8 @@ export class DietDetailListComponent {
             type: gridColumnTypes.template, template: this.isDelived
         },
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        // { heading: "UHID No", key: "regId", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
@@ -74,8 +76,6 @@ export class DietDetailListComponent {
         { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Accepted By", key: "acceptedUser", sort: true, align: 'left', emptySign: 'NA', width: 270 },
         { heading: "Delivered By", key: "deliverUser", sort: true, align: 'left', emptySign: 'NA', width: 270 },
-
-
         { heading: "Cancelled", key: "detIsCancelled", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.template },
         { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Cancelled Reason", key: "cancelledReason", sort: true, align: 'left', emptySign: 'NA', width: 140 },

@@ -61,3 +61,45 @@
      padding: 6px 16px;
      font-weight: 600;
  }
+ //
+ .icd-dialog {
+    .icd-body {
+        height: 100%;
+    }
+
+    .icd-card {
+        margin: 0;
+        padding: 8px 12px;
+        box-shadow: none;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 6px;
+    }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.2;
+        padding-bottom: 6px;
+        margin-bottom: 8px;
+    }
+
+    .patient-card .section-title {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .search-card {
+        .search-field {
+            min-width: 280px;
+        }
+    }
+
+    .modal-footer {
+        padding: 8px 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+        .button-row-group {
+            display: flex;
+            gap: 8px;
+        }
+    }
+}

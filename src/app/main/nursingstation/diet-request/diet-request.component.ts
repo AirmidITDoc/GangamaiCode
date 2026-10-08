@@ -84,7 +84,7 @@ export class DietRequestComponent {
 
     allcolumns = [
         { heading: "Status", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 80, type: gridColumnTypes.template },
-        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+        // { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
 
         { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 90, type: gridColumnTypes.template },
 
