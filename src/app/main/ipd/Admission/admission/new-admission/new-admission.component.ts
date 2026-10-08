@@ -789,7 +789,14 @@ export class NewAdmissionComponent implements OnInit {
         this.prevResults = [];
     }
     onNewSave() {
-
+        if (this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration") { 
+            if (!this.vparentregId) {
+                this.toastr.warning('Please select a parent patient to link this patient as a child.', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+        }
         if (this.Patientnewold == 2 && this.RegId == 0)
             this.toastr.warning("Please Select Registered Patient  ...");
         else {
@@ -1073,7 +1080,7 @@ export class NewAdmissionComponent implements OnInit {
                 });
             }
             else if (this.searchFormGroup.get('regRadio').value == "NewbornBabyRegistration") {
-                debugger
+                debugger 
                 if(!this.searchFormGroup.get('NewoldRegister')?.value){ 
                 this.admissionFormGroup.get('RegId').setValue(0)
                 this.admissionFormGroup.get('parentOpipid').setValue(this.vparentregId)
