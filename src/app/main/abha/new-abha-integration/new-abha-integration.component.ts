@@ -299,6 +299,39 @@ export class NewAbhaIntegrationComponent {
     });
   }
 
+  viewM3() {
+    let url: string | undefined;
+    let transactionId: string | undefined;
+    const getData = {
+      clientId: 1,
+      hospitalId: 6,
+      userName: 'atom',
+      password: 'atom',
+      requestBy: 'atom',
+      requestType: 'View',
+      callbackUrl: '',
+    };
+
+    this._RegistrationService.getAbhaURL(getData).subscribe({
+      next: (response: any) => {
+        console.log('ABHA API Response:', response);
+        url = response?.callbackUrl;
+        transactionId = response?.transactionId;
+      },
+      error: (error) => {
+        console.error('ABHA URL API Error:', error);
+      },
+      complete: () => {
+        if (!url) {
+          return;
+        }
+        setTimeout(() => {
+          this.openExternalApplication(url, transactionId);
+        }, 1000);
+      }
+    });
+  }
+
   openExternalApplication(Appurl: string, transactionId: string | undefined): void {
     const dialogRef = this._matDialog.open(AbhaDialogpageComponent, {
       panelClass: 'full-app-dialog',
