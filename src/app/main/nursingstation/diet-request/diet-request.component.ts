@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
@@ -7,7 +7,8 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ToastrService } from 'ngx-toastr';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import Swal from 'sweetalert2';
 import { DietRequestService } from './diet-request.service';
 import { NewDietRequestComponent } from './new-diet-request/new-diet-request.component';
@@ -16,6 +17,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDrawer } from '@angular/material/sidenav';
 import { DietReqWokflowComponent } from './diet-req-wokflow/diet-req-wokflow.component';
 import { result } from 'lodash';
+import { RequestcardpopupComponent } from 'app/main/canteenmanagement/patient-diet-reauest/requestcardpopup/requestcardpopup.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-diet-request',
@@ -52,7 +55,12 @@ export class DietRequestComponent {
     VNewcount = 0;
     VAcceptcount = 0;
     VPendingcount = 0;
-
+    private overlayRef: OverlayRef | null = null;
+    private patientOverlayRef: OverlayRef | null = null;
+    private ReqNoOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private patientCloseTimeout: any = null;
+    private doctorCloseTimeout: any = null;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
@@ -65,18 +73,20 @@ export class DietRequestComponent {
     @ViewChild('detIsCancelled') detIsCancelled!: TemplateRef<any>;
     @ViewChild('HeaderCancleTask') HeaderCancleTask!: TemplateRef<any>;
     @ViewChild('DetailCancleTask') DetailCancleTask!: TemplateRef<any>;
-
+    @ViewChild('ReqNopopover') ReqNopopover!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.IsCancelledBy;
+        this.gridConfig.columnsList.find(col => col.key === 'dietReqNo')!.template = this.ReqNopopover;
+
     }
 
     allcolumns = [
         { heading: "Status", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 80, type: gridColumnTypes.template },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
 
-        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
+        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 90, type: gridColumnTypes.template },
 
         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
         // { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -93,7 +103,7 @@ export class DietRequestComponent {
     ]
 
     constructor(public _DietRequestService: DietRequestService,
-        private _formBuilder: FormBuilder,
+        private _formBuilder: FormBuilder, private overlay: Overlay,
         private commonService: PrintserviceService, public _matDialog: MatDialog, private _loggedService: AuthenticationService,
         public toastr: ToastrService, public datePipe: DatePipe,
         private cdr: ChangeDetectorRef) { }
@@ -364,16 +374,12 @@ export class DietRequestComponent {
         });
 
     }
-    WorkFlow() {
-        const dialogRef = this._matDialog.open(DietReqWokflowComponent,
-            {
-                width: '90%',
-                maxWidth: '95vw',
-                height: '98%',   // add this if missing — without it the dialog sizes to content and can overflow the viewport, causing the page-level scrollbar
-                autoFocus: false
-            });
-        dialogRef.afterClosed().subscribe(result => {
-
+    WorkFlow(element: any) {
+        this._matDialog.open(DietReqWokflowComponent, {
+            width: '90vw',
+            maxWidth: '1100px',
+            maxHeight: '90vh',
+            data: { dietReqId: element.dietReqId }
         });
     }
     NewRequest() {
@@ -385,7 +391,7 @@ export class DietRequestComponent {
             {
                 width: '90%',
                 maxWidth: '95vw',
-                height: '98%',   // add this if missing — without it the dialog sizes to content and can overflow the viewport, causing the page-level scrollbar
+                height: '98%',
                 autoFocus: false
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -602,16 +608,129 @@ export class DietRequestComponent {
             this.toastr.error(error.message);
         });
     }
-    closeDetailDrawer() {
-        this.detailDrawer.close();
+    // closeDetailDrawer() {
+    //     this.detailDrawer.close();
+    // }
+
+
+    // onDrawerOpenedChange(isOpen: boolean) {
+    //     if (!isOpen) {
+    //         this.isShowDetailTable = false;
+    //     }
+    // }
+
+    openDetailsPopover(event: MouseEvent, doctorData: any) {
+
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing doctor popover
+            if (this.ReqNoOverlayRef) {
+                this.ReqNoOverlayRef.dispose();
+                this.ReqNoOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.ReqNoOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(RequestcardpopupComponent);
+            const componentRef: ComponentRef<RequestcardpopupComponent> = this.ReqNoOverlayRef.attach(portal);
+            componentRef.instance.doctorData = doctorData;
+
+            const overlayElement = this.ReqNoOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepDoctorPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeDetailsPopover());
+        }, 300);
     }
 
+    closeDetailsPopover() {
 
-    onDrawerOpenedChange(isOpen: boolean) {
-        if (!isOpen) {
-            this.isShowDetailTable = false;
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
+        }
+
+
+        this.doctorCloseTimeout = setTimeout(() => {
+            if (this.ReqNoOverlayRef) {
+                this.ReqNoOverlayRef.dispose();
+                this.ReqNoOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepDoctorPopoverOpen() {
+
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
+            this.doctorCloseTimeout = null;
         }
     }
+
+    ngOnDestroy() {
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+        }
+        if (this.patientOverlayRef) {
+            this.patientOverlayRef.dispose();
+        }
+        if (this.ReqNoOverlayRef) {
+            this.ReqNoOverlayRef.dispose();
+        }
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
+        }
+    }
+
 }
 
 
