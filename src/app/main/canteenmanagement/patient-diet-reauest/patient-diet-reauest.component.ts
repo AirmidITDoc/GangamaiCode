@@ -18,6 +18,7 @@ import { DietDetailListComponent } from './diet-detail-list/diet-detail-list.com
 import { MatTableDataSource } from '@angular/material/table';
 import { RequestcardpopupComponent } from './requestcardpopup/requestcardpopup.component';
 // TODO: update this path to wherever RequestcardpopupComponent actually lives
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @Component({
@@ -92,7 +93,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         // { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
 
         { heading: "Request Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 90, type: gridColumnTypes.template },
+        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 70, type: gridColumnTypes.template },
 
         { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
@@ -315,15 +316,16 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         }
     }
 
+
     openheadercancletask(contact): void {
         console.log(contact);
         this.ReqId = contact.dietReqId;
 
         this._matDialog.open(this.HeaderCancleTask, {
-            width: '520px',
-            maxWidth: '95vw',
+            width: '520px',          // Fixed comfortable width
+            maxWidth: '95vw',        // Responsive on small screens
             autoFocus: false,
-            disableClose: true
+            disableClose: true       // Optional: prevent closing by clicking outside
         });
     }
 
@@ -378,7 +380,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, Cancel it!"
-
         }).then((flag) => {
 
             if (flag.isConfirmed) {

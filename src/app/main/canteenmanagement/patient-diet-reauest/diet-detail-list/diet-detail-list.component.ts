@@ -233,7 +233,6 @@ export class DietDetailListComponent {
         Swal.fire({
             icon: 'question',
             title: 'Do you want to Accept this Request?',
-            // text: count === 1 ? 'Accept this request?' : `Accept ${count} selected requests?`,
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
@@ -358,9 +357,12 @@ export class DietDetailListComponent {
 
     HeaderRequestCancle() {
         Swal.fire({
+            icon: 'question',
             title: 'Do you want to Cancle Request',
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
@@ -392,9 +394,12 @@ export class DietDetailListComponent {
     DetailRequestCancle() {
 
         Swal.fire({
+            icon: 'question',
             title: 'Do you want to Cancle Request',
             showCancelButton: true,
-            confirmButtonText: 'OK',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
@@ -403,7 +408,7 @@ export class DietDetailListComponent {
                     "cancelledReason": this.DetailCancleTaskForm.get('Reason').value
                 };
                 this._DietRequestService.DetailRequestcancle(submitData).subscribe(response => {
-                    // this._matDialog.closeAll();
+                    this._matDialog.closeAll();
                     this.grid1.bindGridData();
                 }, (error) => {
                     this.toastr.error(error.message);

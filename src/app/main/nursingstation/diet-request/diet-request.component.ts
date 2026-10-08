@@ -19,6 +19,7 @@ import { DietReqWokflowComponent } from './diet-req-wokflow/diet-req-wokflow.com
 import { result } from 'lodash';
 import { RequestcardpopupComponent } from 'app/main/canteenmanagement/patient-diet-reauest/requestcardpopup/requestcardpopup.component';
 import { ToastrService } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
     selector: 'app-diet-request',

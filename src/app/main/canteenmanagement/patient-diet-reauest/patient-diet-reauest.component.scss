@@ -120,80 +120,149 @@
       color: #d99a1e;
     }
   }
-.status-box {
-  font-weight: 500;
 
-  mat-icon {
-    color: inherit; // icon takes the same color as the text
+  .status-box {
+    font-weight: 500;
+
+    mat-icon {
+      color: inherit; // icon takes the same color as the text
+    }
   }
-}
 
-.status-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  white-space: nowrap;
-  min-width: 120px;
-}
+  .status-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    min-width: 120px;
+  }
 
-.status-completed,
-.status-pending {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-  writing-mode: horizontal-tb;
-  /* force horizontal text */
-}
+  .status-completed,
+  .status-pending {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    writing-mode: horizontal-tb;
+    /* force horizontal text */
+  }
 
-.status-completed {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
+  .status-completed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
 
-.status-pending {
-  background-color: #fff8e1;
-  color: #f57f17;
-}
+  .status-pending {
+    background-color: #fff8e1;
+    color: #f57f17;
+  }
 
-.status-not-requested {
-  background-color: #ffebee;
-  /* light red */
-  color: #c62828;
-  /* dark red text */
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-weight: 600;
-}
+  .status-not-requested {
+    background-color: #ffebee;
+    /* light red */
+    color: #c62828;
+    /* dark red text */
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
 
-.status-received {
-  background-color: #e8f5e9;
-  /* light green */
-  color: #2e7d32;
-  /* dark green text */
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-weight: 600;
-}
+  .status-received {
+    background-color: #e8f5e9;
+    /* light green */
+    color: #2e7d32;
+    /* dark green text */
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
 
-.diet-drawer-container {
-  position: fixed;
-  inset: 0;              /* covers the whole screen */
-  z-index: 1000;         /* above the table and the top toolbar */
-  background: transparent;
-  pointer-events: none;  /* the page underneath stays clickable while closed */
-}
+  .diet-drawer-container {
+    position: fixed;
+    inset: 0;
+    /* covers the whole screen */
+    z-index: 1000;
+    /* above the table and the top toolbar */
+    background: transparent;
+    pointer-events: none;
+    /* the page underneath stays clickable while closed */
+  }
 
-.diet-drawer-container.mat-drawer-container-has-open {
-  pointer-events: auto;  /* takes clicks (and the backdrop) only when open */
-}
+  .diet-drawer-container.mat-drawer-container-has-open {
+    pointer-events: auto;
+    /* takes clicks (and the backdrop) only when open */
+  }
 
-.detail-drawer {
-  width: 600px;
-  max-width: 95vw;
-  height: 100%;
-}
+  .detail-drawer {
+    width: 600px;
+    max-width: 95vw;
+    height: 100%;
+  }
+
+  .dialog-header {
+    height: 56px !important;
+    /* Normal header height */
+    padding: 0 16px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dialog-content {
+    padding: 24px 20px;
+    min-height: 120px;
+  }
+
+  .dialog-footer {
+    padding: 12px 20px 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .cancel-diet-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 20px;
+    padding: 0 12px;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .cancel-diet-btn mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
+
+  .cancel-diet-btn:hover {
+    background-color: rgba(244, 67, 54, 0.08);
+    transform: scale(1.02);
+  }
+
+  .popover-icon-btn {
+    width: 24px !important;
+    height: 24px !important;
+    line-height: 24px;
+    padding: 0;
+    min-width: 24px;
+
+    mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
 }

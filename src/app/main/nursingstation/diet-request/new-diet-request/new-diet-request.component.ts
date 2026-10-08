@@ -179,7 +179,7 @@ export class NewDietRequestComponent {
     this.gridConfig5 = {
       apiUrl: "ClinicalCare/AdmisionListNursingList",
       columnsList: [
-        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
