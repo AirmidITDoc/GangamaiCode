@@ -138,6 +138,7 @@ export class FixSupplierComponent implements OnInit {
         //   msmNoControl.updateValueAndValidity();
 
         if (this.supplierForm.valid) {
+            this.supplierForm.patchValue({Freight: this.supplierForm.get("Freight")?.value || 0});
             const formData = { ...this.supplierForm.value };
 
             const transformedStores = (formData.mAssignSupplierToStores || []).map((store: any) => ({

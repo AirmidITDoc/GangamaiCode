@@ -168,10 +168,10 @@ export class SupplierMasterComponent implements OnInit {
     selectChangestoreName(obj: any) {
 
         this.storeId = obj.value;
-        this.gridConfig.filters = [
-            { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
-        ]
+        // this.gridConfig.filters = [
+        //     { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
+        //     { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
+        // ]
     }
 
     onEdit(row) {
