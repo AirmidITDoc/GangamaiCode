@@ -28,10 +28,10 @@
                     (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
                     <mat-icon>cloud_upload</mat-icon>
                 </button>
-                <button *ngIf="showDocumentActions" mat-icon-button title="View files"
+                <!-- <button *ngIf="showDocumentActions" mat-icon-button title="View files"
                     (click)="viewDocuments.emit(node.id); $event.stopPropagation()">
                     <mat-icon>visibility</mat-icon>
-                </button>
+                </button> -->
                 <button *ngIf="showDocumentActions" mat-icon-button title="Print QR Code"
                     (click)="generateQrCode.emit(node.id); $event.stopPropagation()">
                     <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
@@ -72,10 +72,10 @@
                     (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
                     <mat-icon>cloud_upload</mat-icon>
                 </button>
-                <button *ngIf="showDocumentActions" mat-icon-button title="View files"
+                <!-- <button *ngIf="showDocumentActions" mat-icon-button title="View files"
                     (click)="viewDocuments.emit(node.id); $event.stopPropagation()">
                     <mat-icon>visibility</mat-icon>
-                </button>
+                </button> -->
                 <button *ngIf="showDocumentActions" mat-icon-button title="Print QR Code"
                     (click)="generateQrCode.emit(node.id); $event.stopPropagation()">
                     <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
