@@ -87,12 +87,12 @@ export class DietRequestComponent {
         { heading: "Status", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 80, type: gridColumnTypes.template },
         // { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
 
-        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 90, type: gridColumnTypes.template },
+        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 70, type: gridColumnTypes.template },
 
         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
         // { heading: "Diet Menu Code", key: "dietMenuCode", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-        { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 220 },
 
@@ -396,6 +396,7 @@ export class DietRequestComponent {
                 autoFocus: false
             });
         dialogRef.afterClosed().subscribe(result => {
+            this.Getrequestdetail()
             this.grid.bindGridData();
             console.log('The dialog was closed - Action', result);
         });
@@ -416,6 +417,8 @@ export class DietRequestComponent {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
+            debugger
+            this.Getrequestdetail()
             this.grid.bindGridData();
             console.log('The dialog was closed - Action', result);
         });
@@ -445,13 +448,10 @@ export class DietRequestComponent {
         const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
 
         const filters: any[] = [];
-
-        // Handle date range
         if (fromDateControl && toDateControl) {
             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
         }
-
 
         filters.push(
 
@@ -482,6 +482,7 @@ export class DietRequestComponent {
             "columns": []
         };
         console.log(data)
+        debugger
         this._DietRequestService.getRequestlist(data).subscribe((response) => {
             this.dataSource.data = response.data;
             console.log(this.dataSource.data)
