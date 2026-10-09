@@ -1,0 +1,42 @@
+<div class="viewer">
+    <!-- Nothing selected -->
+    <div class="state" *ngIf="!file">
+        <mat-icon>description</mat-icon>
+        <p>Select a file from the folders to preview it here.</p>
+    </div>
+
+    <ng-container *ngIf="file">
+        <div class="viewer-header">
+            <mat-icon>{{ kind === 'pdf' ? 'picture_as_pdf' : kind === 'image' ? 'image' : 'description' }}</mat-icon>
+            <span class="title" [title]="file.docCategory">{{ file.docCategory }}</span>
+            <button mat-icon-button title="Download" (click)="download()" [disabled]="!safeUrl && kind !== 'unsupported'">
+                <mat-icon>download</mat-icon>
+            </button>
+        </div>
+
+        <div class="viewer-body">
+            <div class="state" *ngIf="loading">
+                <mat-spinner diameter="36"></mat-spinner>
+            </div>
+
+            <div class="state error" *ngIf="error && !loading">
+                <mat-icon>error_outline</mat-icon>
+                <p>Could not load this file.</p>
+            </div>
+
+            <ng-container *ngIf="!loading && !error">
+                <iframe *ngIf="kind === 'pdf' && safeUrl" class="frame" [src]="safeUrl" title="PDF preview"></iframe>
+
+                <div class="image-wrap" *ngIf="kind === 'image' && safeUrl">
+                    <img [src]="safeUrl" [alt]="file.docCategory" />
+                </div>
+
+                <div class="state" *ngIf="kind === 'unsupported'">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <p>Preview isn't available for this file type.</p>
+                    <button mat-stroked-button (click)="download()">Download</button>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>

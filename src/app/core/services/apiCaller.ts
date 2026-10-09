@@ -245,4 +245,7 @@ export class ApiCaller {
     GetImage(url: String, data: any): Observable<ArrayBuffer> {
         return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, data, { responseType: 'arraybuffer' });
     }
+    GetDocumentFile(url: String): Observable<Blob> {
+        return this._httpClient.get(`${this.config.apiBaseUrl}${url}`, { responseType: 'blob' });
+    }
 }

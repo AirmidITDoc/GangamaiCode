@@ -1,0 +1,14 @@
+<div class="split">
+    <aside class="pane left">
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        <app-category-tree [nodes]="treeNodes" [expandAll]="true" [showDocumentActions]="true"
+            [selectedFileId]="selectedFile?.id ?? null" (selectFile)="onSelectFile($event)" 
+            (uploadDocument)="uploadDocument.emit($event)" (viewDocuments)="viewDocuments.emit($event)"
+            (generateQrCode)="generateQrCode.emit($event)">
+        </app-category-tree>
+    </aside>
+
+    <section class="pane right">
+        <app-document-viewer [file]="selectedFile"></app-document-viewer>
+    </section>
+</div>

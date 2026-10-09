@@ -1,0 +1,46 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+.split {
+    display: flex;
+    height: calc(100vh - 140px); // adjust to your layout's header height
+    gap: 12px;
+}
+
+.pane {
+    min-width: 0;
+    border: 1px solid var(--divider-line);
+    border-radius: 10px;
+    background: var(--surface-card, #fff);
+}
+
+.left {
+    flex: 0 0 340px;
+    max-width: 45%;
+    overflow-y: auto;
+    padding: 8px;
+    resize: horizontal; // lets users drag-resize the folder pane
+}
+
+.right {
+    flex: 1;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .split {
+        flex-direction: column;
+        height: auto;
+    }
+    .left {
+        flex: none;
+        max-width: none;
+        max-height: 40vh;
+        resize: none;
+    }
+    .right {
+        height: 70vh;
+    }
+}

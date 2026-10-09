@@ -1,5 +1,21 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="cat-tree">
-    <!-- Leaf node -->
+
+    <!-- File node (leaf, shown inside its folder) -->
+    <mat-tree-node *matTreeNodeDef="let node; when: isFile" matTreeNodeToggle class="cat-node file">
+        <div class="node-row file-row" [class.active]="selectedFileId === node.id" (click)="onSelectFile(node)">
+            <span class="spacer-toggle"></span>
+            <mat-icon class="node-icon" [style.color]="fileColor(node)">{{ fileIcon(node) }}</mat-icon>
+            <span class="node-label" [title]="node.orgFileName">{{ node.orgFileName }}</span>
+            <span class="file-meta" *ngIf="node.size">{{ node.size | number:'1.0-0' }} B</span>
+            <span class="node-actions" *ngIf="showDocumentActions">
+                <button mat-icon-button title="Download" (click)="downloadFile.emit(node.file); $event.stopPropagation()">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </span>
+        </div>
+    </mat-tree-node>
+
+    <!-- Leaf node (category without children) -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle class="cat-node leaf">
         <div class="node-row" [class.active]="selectedId === node.id" (click)="onSelect(node)">
             <span class="spacer-toggle"></span>
@@ -38,10 +54,10 @@
         </div>
     </mat-tree-node>
 
-    <!-- Expandable / nested node -->
+    <!-- Expandable / nested node (category with sub-categories and/or files) -->
     <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" class="cat-node branch">
         <div class="node-row" [class.active]="selectedId === node.id" (click)="onSelect(node)">
-            <button mat-icon-button class="toggle-btn" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name"
+            <button mat-icon-button class="toggle-btn" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.docCategory"
                 (click)="$event.stopPropagation()">
                 <mat-icon class="toggle-icon">
                     {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
@@ -51,7 +67,6 @@
                 {{ node.icon || 'folder' }}</mat-icon>
             <span class="node-label">{{ node.docCategory }}</span>
             <span class="doc-count" *ngIf="node.documentCount">{{ node.documentCount }}</span>
-            <!-- <span class="child-count">{{ node.children.length }} sub</span> -->
             <span class="node-actions" *ngIf="manageable || showDocumentActions">
                 <button *ngIf="showDocumentActions" mat-icon-button title="Upload file"
                     (click)="uploadDocument.emit(node.id); $event.stopPropagation()">

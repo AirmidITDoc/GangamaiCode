@@ -10,6 +10,8 @@ import { PageHeaderComponent } from './components/page-header/page-header.compon
 import { CategoryTreeComponent } from './components/category-tree/category-tree.component';
 import { PreviewDialogComponent } from './components/preview-dialog/preview-dialog.component';
 import { SharedModule as MainSharedModule  } from 'app/main/shared/shared.module';
+import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
+import { PatientDocumentsComponent } from './components/patient-document/patient-documents.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,7 @@ import { SharedModule as MainSharedModule  } from 'app/main/shared/shared.module
     FileSizePipe,
     PageHeaderComponent,
     CategoryTreeComponent,
-    PreviewDialogComponent,
+    PreviewDialogComponent,DocumentViewerComponent, PatientDocumentsComponent
   ],
   imports: [MainSharedModule,CommonModule, FormsModule, ReactiveFormsModule, RouterModule, MaterialModule],
   exports: [MainSharedModule,
@@ -32,7 +34,7 @@ import { SharedModule as MainSharedModule  } from 'app/main/shared/shared.module
     FileSizePipe,
     PageHeaderComponent,
     CategoryTreeComponent,
-    PreviewDialogComponent,
+    PreviewDialogComponent,DocumentViewerComponent, PatientDocumentsComponent
   ],
 })
 export class SharedModule {}
