@@ -29,6 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     animations: fuseAnimations
 })
 export class PatientDietReauestComponent implements OnInit, OnDestroy {
+
     HeaderCancleTaskForm: FormGroup
     DetailCancleTaskForm: FormGroup
     myFilterform: FormGroup;
@@ -645,14 +646,11 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
 
         event.stopPropagation();
 
-        // Clear any existing timeout
         if (this.hoverTimeout) {
             clearTimeout(this.hoverTimeout);
         }
 
-        // Add small delay to prevent flickering
         this.hoverTimeout = setTimeout(() => {
-            // Close any existing doctor popover
             if (this.ReqNoOverlayRef) {
                 this.ReqNoOverlayRef.dispose();
                 this.ReqNoOverlayRef = null;
@@ -661,31 +659,14 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
             const positionStrategy = this.overlay.position()
                 .flexibleConnectedTo(event.target as HTMLElement)
                 .withPositions([
-                    {
-                        originX: 'start',
-                        originY: 'bottom',
-                        overlayX: 'start',
-                        overlayY: 'top',
-                    },
-                    {
-                        originX: 'start',
-                        originY: 'top',
-                        overlayX: 'start',
-                        overlayY: 'bottom',
-                    },
-                    {
-                        originX: 'end',
-                        originY: 'center',
-                        overlayX: 'start',
-                        overlayY: 'center',
-                    },
-                    {
-                        originX: 'start',
-                        originY: 'center',
-                        overlayX: 'end',
-                        overlayY: 'center',
-                    }
-                ]);
+                    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' },     // below
+                    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom' },  // above
+                    { originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center' },  // right
+                    { originX: 'start', originY: 'center', overlayX: 'end', overlayY: 'center' }   // left
+                ])
+                .withFlexibleDimensions(false)
+                .withPush(true)              // keeps it inside the screen horizontally and vertically
+                .withViewportMargin(8);
 
             this.ReqNoOverlayRef = this.overlay.create({
                 positionStrategy,
@@ -697,8 +678,13 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
             const componentRef: ComponentRef<RequestcardpopupComponent> = this.ReqNoOverlayRef.attach(portal);
             componentRef.instance.doctorData = doctorData;
 
+            // re-pick above/below once the cards have loaded and the popup has grown
+            componentRef.instance.loaded.subscribe(() => {
+                this.ReqNoOverlayRef?.updatePosition();
+            });
+
             const overlayElement = this.ReqNoOverlayRef.overlayElement;
-            overlayElement.addEventListener('mouseenter', () => this.keepDoctorPopoverOpen());
+            overlayElement.addEventListener('mouseenter', () => this.keepPopoverOpen());
             overlayElement.addEventListener('mouseleave', () => this.closeDetailsPopover());
         }, 300);
     }
@@ -724,7 +710,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         }, 200);
     }
 
-    keepDoctorPopoverOpen() {
+    keepPopoverOpen() {
 
         if (this.doctorCloseTimeout) {
             clearTimeout(this.doctorCloseTimeout);

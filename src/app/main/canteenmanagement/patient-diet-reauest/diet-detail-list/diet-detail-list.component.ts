@@ -106,27 +106,54 @@ export class DietDetailListComponent {
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) { }
 
-    ngOnInit(): void {
+    // ngOnInit(): void {
 
+    //     this.myFilterform = this.filterForm();
+    //     this.HeaderCancleTaskForm = this.CreateheaderCancleForm();
+    //     this.DetailCancleTaskForm = this.CreatdetailCancleForm();
+
+    //     console.log(this.data)
+    // }
+
+    // ngAfterViewInit() {
+    //     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+    //     this.gridConfig1.columnsList.find(col => col.key === 'isAccept')!.template = this.isAccept;
+    //     this.gridConfig1.columnsList.find(col => col.key === 'isDelived')!.template = this.isDelived;
+    //     this.gridConfig1.columnsList.find(col => col.key === 'detIsCancelled')!.template = this.detIsCancelled;
+
+    //     if (this.data.dietReqId > 0) {
+    //         this.GetDetails(this.data);
+    //         this.Getrequestdetailcount(this.data.dietReqId)
+    //     }
+    // }
+
+
+    ngOnInit(): void {
         this.myFilterform = this.filterForm();
         this.HeaderCancleTaskForm = this.CreateheaderCancleForm();
         this.DetailCancleTaskForm = this.CreatdetailCancleForm();
 
-        console.log(this.data)
+        const id = String(this.data?.dietReqId ?? 0);
+        this.gridConfig1.filters = [
+            { fieldName: "DietReqId", fieldValue: id, opType: OperatorComparer.Equals }
+        ];
     }
 
     ngAfterViewInit() {
-        this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
-        this.gridConfig1.columnsList.find(col => col.key === 'isAccept')!.template = this.isAccept;
-        this.gridConfig1.columnsList.find(col => col.key === 'isDelived')!.template = this.isDelived;
-        this.gridConfig1.columnsList.find(col => col.key === 'detIsCancelled')!.template = this.detIsCancelled;
 
-        if (this.data.dietReqId > 0) {
-            this.GetDetails(this.data);
-            this.Getrequestdetailcount(this.data.dietReqId)
-        }
+        setTimeout(() => {
+            const col = (key: string) => this.gridConfig1.columnsList.find(c => c.key === key)!;
+            col('action').template = this.actionButtonTemplate1;
+            col('isAccept').template = this.isAccept;
+            col('isDelived').template = this.isDelived;
+            col('detIsCancelled').template = this.detIsCancelled;
+
+            if (this.data?.dietReqId > 0) {
+                this.GetDetails(this.data);
+                this.Getrequestdetailcount(this.data.dietReqId);
+            }
+        });
     }
-
     CreateheaderCancleForm() {
         return this._formBuilder.group({
             AdmissionDate: [(new Date()).toISOString(), Validators.required],

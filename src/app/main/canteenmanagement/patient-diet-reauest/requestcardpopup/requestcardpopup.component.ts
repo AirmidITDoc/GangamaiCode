@@ -1,21 +1,13 @@
-import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ComponentRef, EventEmitter, Inject, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
-import { MatDrawer } from '@angular/material/sidenav';
-import { fuseAnimations } from '@fuse/animations';
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridColumnTypes } from "app/core/models/tableActions";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ComponentPortal, Overlay, OverlayRef, ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
 import { DietRequestService } from '../diet-request.service';
 import { RequestMaster } from '../patient-diet-reauest.component';
-
-
 
 @Component({
   selector: 'app-requestcardpopup',
@@ -24,22 +16,23 @@ import { RequestMaster } from '../patient-diet-reauest.component';
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class RequestcardpopupComponent {
+export class RequestcardpopupComponent implements OnInit {
   @Input() doctorData: any;
   @Output() mouseEnter = new EventEmitter<void>();
   @Output() mouseLeave = new EventEmitter<void>();
+  // emitted after the cards render, so the parent overlay can re-check above/below
+  @Output() loaded = new EventEmitter<void>();
 
   doctorDetails: any = null;
   isLoading: boolean = false;
 
-  Accepted: boolean = false
-  Delivered: boolean = false
-  Acceptedcnt = 0
-  Deliveredcnt = 0
-
+  Accepted: boolean = false;
+  Delivered: boolean = false;
+  Acceptedcnt = 0;
+  Deliveredcnt = 0;
 
   dataSource = new MatTableDataSource<RequestMaster>();
-
+  detailList: any[] = [];
 
   constructor(
     public _DietRequestService: DietRequestService,
@@ -50,21 +43,15 @@ export class RequestcardpopupComponent {
     public toastr: ToastrService
   ) { }
 
-
   ngOnInit(): void {
     if (this.doctorData) {
       this.GetDetails(this.doctorData);
-    }
-    else {
-      // Use available data from doctorData if doctorId is not available
+    } else {
       this.doctorDetails = this.doctorData;
     }
   }
 
-  detailList: any[] = [];
   GetDetails(data) {
-    console.log(data);
-
     const DietReqId = String(data.dietReqId);
 
     const requestData = {
@@ -81,12 +68,11 @@ export class RequestcardpopupComponent {
 
     this._DietRequestService.getRequestdetaillist(requestData).subscribe((response) => {
       this.detailList = response.data || [];
-      console.log(response.data)
+      setTimeout(() => this.loaded.emit()); // wait for cards to render
     }, (error) => {
       this.toastr.error(error.message);
     });
   }
-
 
   onMouseEnter() {
     this.mouseEnter.emit();

@@ -1,6 +1,9 @@
 .doctor-details-popover-container {
     width: 950px;
-    max-height: 950px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);   // never taller than the screen
+    display: flex;
+    flex-direction: column;
     padding: 0;
     background: white;
     border-radius: 8px;
@@ -12,6 +15,7 @@
         color: white;
         padding: 16px 20px;
         margin-bottom: 0;
+        flex: 0 0 auto;
 
         h3 {
             margin: 0;
@@ -31,7 +35,8 @@
 
     .popover-body {
         padding: 20px;
-        max-height: 500px;
+        flex: 1 1 auto;
+        min-height: 0;
         overflow-y: auto;
 
         .loading-container {
