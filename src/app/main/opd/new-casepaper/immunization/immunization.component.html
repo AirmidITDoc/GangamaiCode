@@ -1,0 +1,505 @@
+<div class="simple page-layout inner-scroll inner-sidebar resize-form-fields left-sidebar">
+    <mat-toolbar class="accent" style="height: 40px;width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Immunization
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card">
+                <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
+
+                        <div class="patient-info-section">
+                            <mat-card class="patient-info-card">
+                                <div class="patient-info-sales">
+                                    <div class="patient-info-title1 border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">
+                                            Patient Information
+                                        </span>
+                                    </div>
+
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="patientDetail?.regNo" [patientName]="patientDetail?.patientName ||
+            ((patientDetail?.firstName || '') +
+            (patientDetail?.middleName ? ' ' + patientDetail.middleName : '') +
+            (patientDetail?.lastName ? ' ' + patientDetail.lastName : ''))" [doctorName]="patientDetail?.doctorname"
+                                            [departmentName]="patientDetail?.departmentName"
+                                            [ipdNo]="patientDetail?.ipdNo" [ageString]="patientDetail?.ageYear?.trim() + 'Y|' +
+                     patientDetail?.ageMonth?.trim() + 'M|' +
+                     patientDetail?.ageDay?.trim() + 'D'" [patientType]="patientDetail?.patientType"
+                                            [tariffName]="patientDetail?.tariffName" [doa]="patientDetail.dateofBirth">
+                                        </app-patient-information>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </mat-card>
+                    <mat-card style="padding: 8px;">
+                        <form [formGroup]="MyFormGroup">
+
+                            <div fxLayout="column" fxLayoutGap="6px">
+                                <!-- <div fxLayout="row" fxLayoutGap="4px">
+
+                                    <div class="patient-col">
+                                        <airmid-dropdown label="Vaccine" [formGroup]="MyFormGroup"
+                                            formControlName="vaccineId" [mode]="autocompleteModevaccine"
+                                            (selectionChange)="selectChangeVaccine($event)">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Lot No.</mat-label>
+                                        <input matInput type="text" formControlName="lotNumber">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Lot Expiry Date</mat-label>
+                                        <input matInput [matDatepicker]="lotExpPicker" formControlName="lotExpDate">
+                                        <mat-datepicker-toggle matSuffix [for]="lotExpPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #lotExpPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Occurrence Date</mat-label>
+                                        <input matInput [matDatepicker]="occPicker" formControlName="occuranceDate">
+                                        <mat-datepicker-toggle matSuffix [for]="occPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #occPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Primary Source</mat-label>
+                                        <input matInput type="text" formControlName="primarySource">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Recommendation Date</mat-label>
+                                        <input matInput [matDatepicker]="recPicker"
+                                            formControlName="recommandationDate">
+                                        <mat-datepicker-toggle matSuffix [for]="recPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #recPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Series</mat-label>
+                                        <input matInput type="text" formControlName="series">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Dose Number</mat-label>
+                                        <input matInput type="number" formControlName="doseNumber">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Series Doses</mat-label>
+                                        <input matInput type="text" formControlName="seriesDoses">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Recommended Date</mat-label>
+                                        <input matInput [matDatepicker]="recdPicker" formControlName="recommendedDate">
+                                        <mat-datepicker-toggle matSuffix [for]="recdPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #recdPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>Supporting Immunization</mat-label>
+                                        <input matInput type="text" formControlName="supportingImmunization">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="50">
+                                        <mat-label>Description</mat-label>
+                                        <textarea matInput rows="2" formControlName="description"></textarea>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="50">
+                                        <mat-label>Comment</mat-label>
+                                        <textarea matInput rows="2" formControlName="comment"></textarea>
+                                    </mat-form-field>
+
+                                    <div fxFlex="25" fxLayoutAlign="start center">
+                                        <mat-checkbox formControlName="forecastStatus" color="primary">Forecast
+                                            Completed</mat-checkbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxLayoutAlign="start center">
+                                        <mat-checkbox formControlName="status" color="primary">Active</mat-checkbox>
+                                    </div>
+
+                                    <div class="input-add-button">
+                                        <div matTooltip="Select name to enable this button!!"
+                                            [matTooltipDisabled]="!MyFormGroup.invalid" matTooltipPosition="above">
+
+                                            <button mat-raised-button color="primary" type="button"
+                                                (click)="addFamilyHistory()">
+                                                <mat-icon>add</mat-icon>
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="imm-grid">
+
+                                    <div class="span-2">
+                                        <airmid-dropdown label="Vaccine" [formGroup]="MyFormGroup"
+                                            formControlName="vaccineId" [mode]="autocompleteModevaccine"
+                                            (selectionChange)="selectChangeVaccine($event)">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Lot No.</mat-label>
+                                        <input matInput type="text" formControlName="lotNumber">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Lot Expiry</mat-label>
+                                        <input matInput [matDatepicker]="lotExpPicker" formControlName="lotExpDate">
+                                        <mat-datepicker-toggle matSuffix [for]="lotExpPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #lotExpPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Occurrence Date</mat-label>
+                                        <input matInput [matDatepicker]="occPicker" formControlName="occuranceDate" [min]="minDate">
+                                        <mat-datepicker-toggle matSuffix [for]="occPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #occPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Recommendation Date</mat-label>
+                                        <input matInput [matDatepicker]="recPicker"
+                                            formControlName="recommandationDate" [min]="minDate1">
+                                        <mat-datepicker-toggle matSuffix [for]="recPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #recPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Series</mat-label>
+                                        <input matInput type="text" formControlName="series">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Dose Number</mat-label>
+                                        <input matInput type="number" formControlName="doseNumber">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Series Doses</mat-label>
+                                        <input matInput type="text" formControlName="seriesDoses">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Recommended Date</mat-label>
+                                        <input matInput [matDatepicker]="recdPicker" formControlName="recommendedDate" [min]="minDate2">
+                                        <mat-datepicker-toggle matSuffix [for]="recdPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #recdPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Supporting Immunization</mat-label>
+                                        <input matInput type="text" formControlName="supportingImmunization">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="span-2">
+                                        <mat-label>Description</mat-label>
+                                        <textarea matInput rows="1" formControlName="description"></textarea>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="span-2">
+                                        <mat-label>Comment</mat-label>
+                                        <textarea matInput rows="1" formControlName="comment"></textarea>
+                                    </mat-form-field>
+
+                                    <app-airmid-slider label="Primary Source" formControlName="primarySource"
+                                        [formGroup]="MyFormGroup"></app-airmid-slider>
+
+                                    <app-airmid-slider label="Forecast Completed" formControlName="forecastStatus"
+                                        [formGroup]="MyFormGroup"></app-airmid-slider>
+
+                                    <app-airmid-slider label="Active" formControlName="status"
+                                        [formGroup]="MyFormGroup"></app-airmid-slider>
+
+                                    <div matTooltip="Select name to enable this button!!"
+                                        [matTooltipDisabled]="!MyFormGroup.invalid" matTooltipPosition="above">
+                                        <button mat-raised-button color="primary" type="button" (click)="onADD()">
+                                            <mat-icon>add</mat-icon> Add
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="family-history-table">
+                                <mat-card>
+                                    <div class="table-scroll imm-table">
+                                        <mat-table class="h-300" matSort [dataSource]="dsImmunizationList"
+                                            [@animateStagger]="{value:'50'}" class="airmid-table">
+
+                                            <ng-container matColumnDef="VaccineName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-150">
+                                                    Vaccine Name
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-150 ellipsis">
+                                                    <span> {{element.vaccineName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="lotNumber">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-90">
+                                                    LOT No.
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-90 ellipsis">
+                                                    <span>{{ element.lotNumber }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="lotExpDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-100">
+                                                    LOT ExpDate
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-100 ellipsis">
+                                                    <span>{{ element.lotExpDate }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="occuranceDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-120">
+                                                    OccurrenceDate
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-120 ellipsis">
+                                                    <span>{{ element.occuranceDate }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="recommandationDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-150">
+                                                    RecommendationDate
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-150 ellipsis">
+                                                    <span>{{ element.recommandationDate }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="series">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-120">
+                                                    Series
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-120 ellipsis">
+                                                    <span>{{ element.series }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="description">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-150">
+                                                    Description
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-150 ellipsis">
+                                                    <span>{{ element.description }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="doseNumber">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-90">
+                                                    Dose No.
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-90 ellipsis">
+                                                    <span>{{ element.doseNumber }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="seriesDoses">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-100">
+                                                    Series Doses
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-100 ellipsis">
+                                                    <span>{{ element.seriesDoses }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="recommendedDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-150">
+                                                    RecommendedDate
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-150 ellipsis">
+                                                    <span>{{ element.recommendedDate }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="comment">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-200">
+                                                    Comment
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-200 ellipsis">
+                                                    <span>{{ element.comment }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="supportingImmunization">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-200">
+                                                    SupportingImmunization
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-200 ellipsis">
+                                                    <span>{{ element.supportingImmunization }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="primarySource">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-120">
+                                                    Primary Source
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-120 ellipsis">
+
+                                                    <mat-icon
+                                                        *ngIf="element.primarySource === true || element.primarySource === '1'"
+                                                        class="icon-yes">
+                                                        check_circle
+                                                    </mat-icon>
+
+                                                    <mat-icon
+                                                        *ngIf="element.primarySource === false || element.primarySource === '0'"
+                                                        class="icon-no">
+                                                        cancel
+                                                    </mat-icon>
+
+                                                    <span *ngIf="element.primarySource !== true &&
+                                                            element.primarySource !== false &&
+                                                            element.primarySource !== '1' &&
+                                                            element.primarySource !== '0'">
+                                                        --
+                                                    </span>
+
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="forecastStatus">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-120">
+                                                    Forecast Status
+                                                </mat-header-cell>
+
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-120 ellipsis">
+
+                                                    <mat-icon
+                                                        *ngIf="element.forecastStatus === true || element.forecastStatus === 'Completed'"
+                                                        class="icon-yes" matTooltip="Completed">
+                                                        check_circle
+                                                    </mat-icon>
+
+                                                    <mat-icon
+                                                        *ngIf="element.forecastStatus === false || element.forecastStatus === 'Recommended'"
+                                                        class="icon-no" matTooltip="Recommended">
+                                                        cancel
+                                                    </mat-icon>
+
+                                                    <span *ngIf="element.forecastStatus !== true &&
+                                                            element.forecastStatus !== false &&
+                                                            element.forecastStatus !== 'Completed' &&
+                                                            element.forecastStatus !== 'Recommended'">
+                                                        --
+                                                    </span>
+
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="status">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-120">
+                                                    Status
+                                                </mat-header-cell>
+
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                    class="w-120 ellipsis">
+
+                                                    <mat-icon
+                                                        *ngIf="element.status === true || element.status === 'Active'"
+                                                        class="icon-yes" matTooltip="Active">
+                                                        check_circle
+                                                    </mat-icon>
+
+                                                    <mat-icon
+                                                        *ngIf="element.status === false || element.status === 'InActive'"
+                                                        class="icon-no" matTooltip="InActive">
+                                                        cancel
+                                                    </mat-icon>
+
+                                                    <span *ngIf="element.status !== true &&
+                                                            element.status !== false &&
+                                                            element.status !== 'Active' &&
+                                                            element.status !== 'InActive'">
+                                                        --
+                                                    </span>
+
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <ng-container class="actions">
+                                                        <mat-icon (click)="deleteTableRow($event ,contact)"
+                                                            color="warn">
+                                                            delete
+                                                        </mat-icon>
+                                                    </ng-container>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="displayedColumns; sticky: true"
+                                                style="min-width: 2200px;"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                style="min-width: 2200px;"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        </mat-table>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </form>
+                    </mat-card>
+                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSave()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

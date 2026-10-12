@@ -39,6 +39,7 @@ import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.co
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
 import { IpdEMRComponent } from 'app/main/nursingstation/ipd-emr/ipd-emr.component';
+import { ImmunizationComponent } from 'app/main/opd/new-casepaper/immunization/immunization.component';
 
 
 @Component({
@@ -128,7 +129,7 @@ export class AdmissionComponent implements OnInit {
 
     autocompleteModeWard: string = "Room";
 
-    IsIpdEmrPage:boolean=false;
+    IsIpdEmrPage: boolean = false;
 
     ngOnInit(): void {
 
@@ -342,6 +343,23 @@ export class AdmissionComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
+
+    OnImmunizationInfo(element) {
+        const dialogRef = this._matDialog.open(ImmunizationComponent,
+            {
+                // maxWidth: '95%',
+                // height: '48%',
+                maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
+                data: element
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
     getValidationdoctorMessages() {
         return {
             searchDoctorId: [
@@ -1551,6 +1569,7 @@ export class AdmissionPersonlModel {
     pathReportID: any;
     ipdNo: any
     isReimbursement: any;
+    isCompleted: any;
     /**
   * Constructor
   *
@@ -1784,6 +1803,7 @@ export class AdmissionPersonlModel {
             this.serviceId = AdmissionPersonl.serviceId || 0
             this.pathReportID = AdmissionPersonl.pathReportID || 0
             this.ipdNo = AdmissionPersonl.ipdNo || ''
+            this.isCompleted = AdmissionPersonl.isCompleted || ''
         }
     }
 }

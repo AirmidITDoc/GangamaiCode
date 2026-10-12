@@ -64,6 +64,7 @@ import { PaAppoCancleComponent } from './pa-appo-cancle/pa-appo-cancle.component
 import { FollowupListComponent } from './followup-list/followup-list.component';
 import { AppointmentCancleListComponent } from './appointment-cancle-list/appointment-cancle-list.component';
 import { FamilyHistoryComponent } from "../new-casepaper/family-history/family-history.component";
+import { ImmunizationComponent } from "../new-casepaper/immunization/immunization.component";
 
 
 const routes: Routes = [
@@ -103,7 +104,8 @@ const routes: Routes = [
         PaAppoCancleComponent,
         FollowupListComponent,
         AppointmentCancleListComponent,
-        FamilyHistoryComponent
+        FamilyHistoryComponent,
+        ImmunizationComponent
 
     ],
     imports: [

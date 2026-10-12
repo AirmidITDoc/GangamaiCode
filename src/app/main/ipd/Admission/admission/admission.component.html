@@ -195,13 +195,13 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
-        
+
             <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
                 (click)="getMLCdetailview(element)">
                 <mat-icon>print</mat-icon>
             </button>
 
-          
+
             <!-- <ng-template #noMLC>
                 <span>--</span>
             </ng-template> -->
@@ -216,7 +216,7 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
-             <!-- <button mat-icon-button matTooltip="Iniial Accessment" (click)="getinitialAccessment(element)"
+            <!-- <button mat-icon-button matTooltip="Iniial Accessment" (click)="getinitialAccessment(element)"
                 *ngIf="!element.isCancelled">
                 <mat-icon>list_alt</mat-icon>
             </button> -->
@@ -238,7 +238,7 @@
                 <mat-icon style="color: rgb(83, 15, 15);"> cancel</mat-icon>
             </button>
 
-             <!-- Material UI Icon Button with Menu -->
+            <!-- Material UI Icon Button with Menu -->
             <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" *ngIf="!element.isCancelled"
                 matTooltipPosition="above" (click)="$event.stopPropagation();">
                 <mat-icon>more_vert</mat-icon>
@@ -250,6 +250,12 @@
                     <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">
                         list_alt</mat-icon>
                     <span style="font-size: 13px;">IPD EMR</span>
+                </button>
+
+                <button mat-menu-item (click)="OnImmunizationInfo(element)" style="height: 32px; min-height: 32px;">
+                    <mat-icon
+                        style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">local_hospital</mat-icon>
+                    <span style="font-size: 13px;">Immunization</span>
                 </button>
             </mat-menu>
 

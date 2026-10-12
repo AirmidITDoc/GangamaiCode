@@ -113,18 +113,17 @@ const appRoutes: Routes = [
         path: "item-hsncode-master",
         loadChildren: () =>
             import("./hsncode-maser/hsncode.module").then((m) => m.HsncodeModule),
-    }
-
-    
+    },
+    {
+        path: "vaccine-entry",
+        loadChildren: () =>
+            import("./vaccine-entry/vaccine-entry.module").then((m) => m.VaccineEntryModule),
+    }   
  
 ];
 
 @NgModule({
-    declarations: [ 
-     
-  
-    
-  ],
+    declarations: [ ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class InventoryModule { }

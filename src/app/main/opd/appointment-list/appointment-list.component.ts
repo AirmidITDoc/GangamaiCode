@@ -51,6 +51,7 @@ import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.componen
 import { FollowupListComponent } from './followup-list/followup-list.component';
 import { AppointmentCancleListComponent } from './appointment-cancle-list/appointment-cancle-list.component';
 import { FamilyHistoryComponent } from '../new-casepaper/family-history/family-history.component';
+import { ImmunizationComponent } from '../new-casepaper/immunization/immunization.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -1071,6 +1072,22 @@ export class AppointmentListComponent implements OnInit {
 
     OnFamilyHistoryInfo(element) {
         const dialogRef = this._matDialog.open(FamilyHistoryComponent,
+            {
+                // maxWidth: '95%',
+                // height: '48%',
+                maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
+                data: element
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    OnImmunizationInfo(element) {
+        const dialogRef = this._matDialog.open(ImmunizationComponent,
             {
                 // maxWidth: '95%',
                 // height: '48%',

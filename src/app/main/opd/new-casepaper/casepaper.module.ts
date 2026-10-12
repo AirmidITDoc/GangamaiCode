@@ -51,6 +51,7 @@ import { FocusNextDirective } from 'app/main/shared/directives/focus-next/focus-
 import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { FamilyHistoryComponent } from './family-history/family-history.component';
+import { ImmunizationComponent } from './immunization/immunization.component';
 
 const routes: Routes = [
     {
@@ -67,7 +68,8 @@ const routes: Routes = [
         MedicineTableComponent,
         FocusNextDirective,
         MedicineTableNewComponent,
-        FamilyHistoryComponent
+        FamilyHistoryComponent,
+        ImmunizationComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -121,7 +123,8 @@ const routes: Routes = [
         DatePipe
     ],
     exports: [
-        FocusNextDirective
+        FocusNextDirective,
+        MatToolbarModule
     ],
 })
 export class CasepaperModule { }

@@ -1,0 +1,156 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Vaccine Entry</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <!-- DESIGN 1 : Section cards (single scrolling page, 4 grouped cards) -->
+        <div class="vm-page resize-form-fields">
+            <form [formGroup]="myForm">
+
+                <!-- 1. Basic details -->
+                <div class="vm-card">
+                    <div class="vm-card-title"><mat-icon>local_hospital</mat-icon> Vaccine Details</div>
+                    <div class="vm-card-body vm-grid">
+                        <input type="hidden" name="vaccineId" formControlName="vaccineId">
+                        <airmid-textbox label="Vaccine Name" formControlName="vaccineName" [formGroup]="myForm"
+                            [maxLength]="100">
+                        </airmid-textbox>
+
+                        <airmid-dropdown label="Generic Name" formControlName="genericId" [formGroup]="myForm"
+                            [mode]="autocompleteModeGenericName">
+                        </airmid-dropdown>
+
+                        <airmid-textbox label="Vaccine Type" formControlName="vaccineType" [formGroup]="myForm"
+                            [maxLength]="50">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Disease / Indication" formControlName="diseaseIndication"
+                            [formGroup]="myForm" [maxLength]="150">
+                        </airmid-textbox>
+
+                        <airmid-dropdown label="Manufacturer" formControlName="manufacturer" [formGroup]="myForm"
+                            [mode]="autocompleteModeManufacturer">
+                        </airmid-dropdown>
+
+                        <airmid-textbox label="Brand Name" formControlName="brandName" [formGroup]="myForm"
+                            [maxLength]="100">
+                        </airmid-textbox>
+
+                        <airmid-dropdown label="Route" formControlName="route" [formGroup]="myForm"
+                            [mode]="autocompleteModeRoute">
+                        </airmid-dropdown>
+
+                        <airmid-textbox label="Dose" formControlName="dose" [formGroup]="myForm" [maxLength]="30">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <!-- 2. Dosage & schedule -->
+                <div class="vm-card">
+                    <div class="vm-card-title"><mat-icon>schedule</mat-icon> Dosage &amp; Schedule</div>
+                    <div class="vm-card-body vm-grid">
+                         <airmid-textbox label="Age Group" formControlName="ageGroup" [formGroup]="myForm"
+                            [maxLength]="20">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="No. of Doses" formControlName="noOfDoses" [formGroup]="myForm">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Dose Schedule" formControlName="doseSchedule" [formGroup]="myForm"
+                            [maxLength]="100">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Minimum Age" formControlName="minimumAge" [formGroup]="myForm"
+                            [maxLength]="20">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Maximum Age" formControlName="maximumAge" [formGroup]="myForm"
+                            [maxLength]="20">
+                        </airmid-textbox>
+
+                        <!-- <div> -->
+                        <app-airmid-slider class="span-2" label="Booster Required" formControlName="boosterRequired"
+                            [formGroup]="myForm"></app-airmid-slider>
+                        <!-- </div> -->
+                    </div>
+                </div>
+
+                <!-- 3. Storage & vial -->
+                <div class="vm-card">
+                    <div class="vm-card-title"><mat-icon>ac_unit</mat-icon> Storage &amp; Vial</div>
+                    <div class="vm-card-body vm-grid">
+                        <airmid-textbox label="Storage Temperature" formControlName="storageTemperature"
+                            [formGroup]="myForm" [maxLength]="30">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Vial Type" formControlName="vialType" [formGroup]="myForm"
+                            [maxLength]="50">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Vial Size" formControlName="vialSize" [formGroup]="myForm"
+                            [maxLength]="30">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Shelf Life" formControlName="shelfLife" [formGroup]="myForm"
+                            [maxLength]="30">
+                        </airmid-textbox>
+
+                        <airmid-textbox label="Diluent Volume" formControlName="diluentVolume" [formGroup]="myForm"
+                            [maxLength]="30">
+                        </airmid-textbox>
+
+                        <app-airmid-slider class="span-2" label="Diluent Required" formControlName="diluentRequired"
+                            [formGroup]="myForm"></app-airmid-slider>
+                    </div>
+                </div>
+
+                <!-- 4. Batch, status, remarks -->
+                <div class="vm-card">
+                    <div class="vm-card-title"><mat-icon>assignment_turned_in</mat-icon> Batch &amp; Status</div>
+                    <div class="vm-card-body vm-grid">
+                        <airmid-textbox label="Batch No" formControlName="batchNo" [formGroup]="myForm"
+                            [maxLength]="30">
+                        </airmid-textbox>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Expiry Date</mat-label>
+                            <input matInput [matDatepicker]="expiryPicker" formControlName="expiryDate">
+                            <mat-datepicker-toggle matSuffix [for]="expiryPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #expiryPicker></mat-datepicker>
+                        </mat-form-field>
+
+                        <app-airmid-slider class="span-2" label="Vaccine Status" formControlName="vaccineStatus"
+                            [formGroup]="myForm"></app-airmid-slider>
+
+                        <airmid-textbox class="span-full" label="Remarks" formControlName="remarks" [formGroup]="myForm"
+                            [maxLength]="250">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer vm-actions">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

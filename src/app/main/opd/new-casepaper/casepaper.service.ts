@@ -195,4 +195,15 @@ export class CasepaperService {
         return this._httpClient1.PostData("EMR/SaveFamilyHistory", param);
     }
 
+    public saveImmunization(param) {
+        return this._httpClient1.PostData("ImmunizatoinInfo/SaveImmunizationInfo", param);
+    }
+
+    public getImmunizationByRegId(regId) {
+        return this._httpClient1.PostData("ImmunizatoinInfo/ImmunizationList",regId);
+    }
+
+     public getVaccineById(Id) {
+        return this._httpClient1.GetData("VaccineInformation/" + Id);
+    }
 }
