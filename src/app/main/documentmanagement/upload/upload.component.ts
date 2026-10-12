@@ -8,6 +8,7 @@ import { Patient } from 'app/core/models/documentmanagement/patient.model';
 import { DocumentmanagementService } from '../documentmanagement.service';
 import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
 import { ZipService } from '../zip.service';
+import { PatientDocumentsComponent } from '../shared/components/patient-document/patient-documents.component';
 
 interface StagedFile {
     file: File;
@@ -25,6 +26,7 @@ export class UploadComponent {
     @ViewChild('stepper') stepper?: MatStepper;
     @ViewChild('categoryUploadInput') categoryUploadInput?: ElementRef<HTMLInputElement>;
     @ViewChild('categoryFilesDialog') categoryFilesDialog?: TemplateRef<any>;
+    @ViewChild(PatientDocumentsComponent) patientDocuments?: PatientDocumentsComponent;
 
     categories: DocumentCategory[] = [];
     allDocuments: DocumentFileModel[] = [];
@@ -58,11 +60,11 @@ export class UploadComponent {
         private zipService: ZipService,
     ) {
     }
-    bindCategories(id: number) {
-        this._service.getCategoryTree(id).subscribe((res) => {
-            this.categories = res;
-        });
-    }
+    // bindCategories(id: number) {
+    //     this._service.getCategoryTree(id).subscribe((res) => {
+    //         this.categories = res;
+    //     });
+    // }
 
     /* ---------------- Step 1 ---------------- */
     searchPatients(): void {
@@ -79,7 +81,7 @@ export class UploadComponent {
     }
     pickRegistration(r: any): void {
         this.selectedRegistration = r;
-        this.bindCategories(this.selectedRegistration?.admissionId || 0);
+        //this.bindCategories(this.selectedRegistration?.admissionId || 0);
     }
 
     pickPatient(p: Patient): void {
@@ -135,8 +137,9 @@ export class UploadComponent {
 
         this._service.saveDocument(payload).subscribe(() => {
             this.snackBar.open(`${payload.length} document(s) uploaded successfully`, 'Dismiss', { duration: 3000 });
-            this.bindCategories(this.selectedRegistration?.admissionId || 0);
-            // this.openCategoryDocuments(this.selectedCategoryId!);
+            this.patientDocuments?.reload();
+        }, () => {
+            this.snackBar.open('Document upload failed', 'Dismiss', { duration: 3000 });
         });
 
         input.value = '';

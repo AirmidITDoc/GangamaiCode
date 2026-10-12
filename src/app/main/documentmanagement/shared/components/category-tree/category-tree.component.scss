@@ -44,6 +44,25 @@
     }
 }
 
+// File rows are slightly lighter / smaller than folders
+.file-row {
+    min-height: 34px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+    .node-label {
+        font-size: 13px;
+        color: var(--text-secondary, var(--text-primary));
+    }
+}
+
+.file-meta {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+
 .spacer-toggle {
     width: 32px;
     display: inline-block;

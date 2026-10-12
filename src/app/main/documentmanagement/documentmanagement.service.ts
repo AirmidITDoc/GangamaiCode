@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { PatientFile } from 'app/core/models/documentmanagement/category.model';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -37,6 +39,15 @@ export class DocumentmanagementService {
     }
     public deleteCategory(id) {
         return this._httpClient.DeleteData("DocumentCategory?Id=" + id);
+    }
+
+    /**
+     * Fetch the file as a Blob through HttpClient so your auth interceptor
+     * (Bearer token) is applied — a plain <iframe src> / <img src> would not send it.
+     * TODO: adjust the endpoint to your backend.
+     */
+    getFileBlob(fileName: string): Observable<Blob> {
+        return this._httpClient.GetDocumentFile(`DocumentUpload/get-file?FileName=${fileName}`);
     }
 
 
