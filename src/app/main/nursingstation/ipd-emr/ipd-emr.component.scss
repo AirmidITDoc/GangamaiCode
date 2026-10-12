@@ -22,6 +22,12 @@
     box-sizing: border-box;
 }
 
+.ipd-emr-toolbar>div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .patient-list-toggle-btn1 {
     display: inline-flex;
     align-items: center;
@@ -202,7 +208,8 @@
 }
 
 .modal-footer1.drawer-open {
-    left: 340px;      /* same as .sidebar-drawer1 width */
+    left: 340px;
+    /* same as .sidebar-drawer1 width */
 }
 
 /* EMR scrollbar */
@@ -240,10 +247,9 @@
 
     margin: 0 !important;
     padding: 0 !important;
-    margin-top: 5px !important;
 }
 
-.ipdemr-scroll > form {
+.ipdemr-scroll>form {
     width: 100%;
 
     height: auto !important;
@@ -256,7 +262,7 @@
     flex-shrink: 0;
 }
 
-.ipdemr-scroll > form + form {
+.ipdemr-scroll>form+form {
     margin-top: 0 !important;
 }
 
@@ -303,7 +309,6 @@
     min-width: 110px;
 
     margin-right: 5px !important;
-    margin-top: 5px !important;
 
     box-sizing: border-box;
 }
@@ -338,10 +343,6 @@
     box-sizing: border-box;
 }
 
-.other-info-field--small {
-    flex: 0 0 150px;   /* fixed small width, doesn't grow or shrink */
-    min-width: 150px;
-}
 
 .family-history-section {
     width: 100%;
@@ -559,7 +560,24 @@
     position: fixed;
     bottom: 0;
     right: 0;
-    left: 0;                 /* full width */
+    left: 0;
+    /* full width */
+    height: 42px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    padding: 3px 16px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.modal-footer2 {
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    /* full width */
     height: 42px;
     background: #fff;
     border-top: 1px solid #ddd;
@@ -583,8 +601,8 @@
 }
 
 .modal-footer-buttons1 button {
-    height: 36px;
-    min-height: 36px;
+    height: 40px;
+    min-height: 40px;
     margin: 0;
 }
 
@@ -702,7 +720,7 @@
 }
 
 
-.sidebar-form1 > div {
+.sidebar-form1>div {
     width: 100%;
 
     height: 100%;
@@ -920,4 +938,28 @@
 :host ::ng-deep html,
 :host ::ng-deep body {
     overflow: hidden !important;
+}
+
+.ipd-emr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 42px;
+    padding: 0 8px 0 16px;
+    box-sizing: border-box;
+}
+
+.close-icon1 {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-icon1 button {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

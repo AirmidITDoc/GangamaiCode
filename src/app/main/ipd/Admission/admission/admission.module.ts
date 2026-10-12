@@ -50,6 +50,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
+import { IpdEMRModule } from 'app/main/nursingstation/ipd-emr/ipd-emr.module';
 
 
 const routes: Routes = [
@@ -115,7 +116,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatButtonToggleModule,
         MatTimepickerModule,
-
+        IpdEMRModule
 
     ],
     providers: [

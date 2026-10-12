@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+// import { RouterModule, Routes } from '@angular/router';
 import { IpdEMRComponent } from './ipd-emr.component';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,19 +19,19 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NgModule } from '@angular/core';
 
-const routes: Routes = [
-  {
-    path: "**",
-    component: IpdEMRComponent,
-  },
-];
+// const routes: Routes = [
+//   {
+//     path: "**",
+//     component: IpdEMRComponent,
+//   },
+// ];
 
 @NgModule({
   declarations: [
     IpdEMRComponent
   ],
   imports: [
-    RouterModule.forChild(routes),
+    // RouterModule.forChild(routes),
     CommonModule,
     MatIconModule,
     FormsModule,
@@ -48,7 +48,10 @@ const routes: Routes = [
     MatTooltipModule,
     MatTableModule,
     MatSortModule,
-    MatDialogModule 
+    MatDialogModule
+  ],
+  exports: [
+    IpdEMRComponent
   ],
   providers: [DatePipe, IpdEmrService]
 })

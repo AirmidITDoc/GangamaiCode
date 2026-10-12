@@ -38,6 +38,7 @@ import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tp
 import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 import { AbhaLinkComponent } from 'app/main/abha/Abha linking/abha-link.component';
 import { InitialAccessmentComponent } from './initial-accessment/initial-accessment.component';
+import { IpdEMRComponent } from 'app/main/nursingstation/ipd-emr/ipd-emr.component';
 
 
 @Component({
@@ -127,6 +128,8 @@ export class AdmissionComponent implements OnInit {
 
     autocompleteModeWard: string = "Room";
 
+    IsIpdEmrPage:boolean=false;
+
     ngOnInit(): void {
 
         this.searchFormGroup = this.createSearchForm();
@@ -193,7 +196,7 @@ export class AdmissionComponent implements OnInit {
         { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
         {
-            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 170, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ];
@@ -318,7 +321,27 @@ export class AdmissionComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
+    IpdEmrPageOpen(element) {
+        this.registerObj["doctorName"] = element.doctorname;
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement.blur();
 
+        const dialogRef = this._matDialog.open(IpdEMRComponent,
+            {
+                maxWidth: "100vw",
+                maxHeight: '100%',
+                width: '90%',
+                height: '100%',
+                data: {
+                    data: element,
+                    IsIpdEmrPage: true
+                }
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
     getValidationdoctorMessages() {
         return {
             searchDoctorId: [
@@ -934,7 +957,7 @@ export class AdmissionComponent implements OnInit {
     //
     dataSource = new MatTableDataSource<AdmissionPersonlModel>();
     GetAdmissiondetail() {
-      
+
         const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
         const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
 
@@ -1024,7 +1047,7 @@ export class AdmissionComponent implements OnInit {
 
         // API call to admission service
         this._AdmissionService.getadmissionlist(data).subscribe((response) => {
-           
+
             this.dataSource.data = response.data;
 
             if (this.dataSource.data.length > 0) {

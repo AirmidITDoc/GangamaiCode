@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { IpdEMRComponent } from './ipd-emr/ipd-emr.component';
+import { IpdEMRModule } from './ipd-emr/ipd-emr.module';
 
 const approtes: Routes = [
 
@@ -23,9 +25,13 @@ const approtes: Routes = [
         path: "dialysissms",
         loadChildren: () => import("./consent/consent.module").then((m) => m.ConsentModule),
     },
+    // {
+    //     path: "patientrefvisit",
+    //     loadChildren: () => import("./ipd-emr/ipd-emr.module").then((m) => m.IpdEMRModule),
+    // },
     {
         path: "patientrefvisit",
-        loadChildren: () => import("./ipd-emr/ipd-emr.module").then((m) => m.IpdEMRModule),
+        component: IpdEMRComponent
     },
     {
         path: "bedtransfer",
@@ -65,15 +71,16 @@ const approtes: Routes = [
 
     {
         path: "dietrequest",
-         loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
+        loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
     },
 
 ];
 @NgModule({
     declarations: [
-  ],
+    ],
     imports: [
         RouterModule.forChild(approtes),
+        IpdEMRModule
     ]
 })
 export class NursingstationModule { }

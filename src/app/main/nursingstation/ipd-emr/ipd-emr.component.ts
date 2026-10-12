@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -10,6 +10,7 @@ import { IpdEmrService } from './ipd-emr.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { PatientList } from '../clinical-care-chart/clinical-care-chart.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-ipd-emr',
@@ -82,6 +83,8 @@ export class IpdEMRComponent implements OnInit {
   FinaldiagnosisMentionItems: Array<{ id: string | number; text: string }> = [];
   isSaving = false;
 
+  IsIpdEmrPage: boolean = false;
+
   @ViewChild('chiefComplaintInput') chiefComplaintInput: AirmidChipautocompleteComponent;
 
   autocompleteModebloodGroup: string = "BloodGroupTypes";
@@ -114,23 +117,53 @@ export class IpdEMRComponent implements OnInit {
     public _IpdEmrService: IpdEmrService,
     public toastr: ToastrService,
     public _formbuilder: UntypedFormBuilder,
-    private _FormvalidationserviceService: FormvalidationserviceService
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() public dialogRef: MatDialogRef<IpdEMRComponent>
   ) { }
 
+  // ngOnInit(): void {
+  //   this.getPatientListwardWise();
+  //   this.MyForm = this.createMyForm()
+
+  //   this.createEMRForm();
+  //   this.emrForm.markAllAsTouched();
+
+  //   this.familyHistoryForm = this.createFamilyMedicalHistory();
+  //   this.familyHistoryForm.markAllAsTouched();
+
+  //   this.vitalsForm = this.createVitalsForm();
+  //   this.vitalsForm.markAllAsTouched();
+
+  //   this.getBMIcalculation();
+  // }
+
   ngOnInit(): void {
-    this.getPatientListwardWise();
-    this.MyForm = this.createMyForm()
 
+    this.MyForm = this.createMyForm();
     this.createEMRForm();
-    this.emrForm.markAllAsTouched();
-
     this.familyHistoryForm = this.createFamilyMedicalHistory();
-    this.familyHistoryForm.markAllAsTouched();
-
     this.vitalsForm = this.createVitalsForm();
-    this.vitalsForm.markAllAsTouched();
 
+    this.emrForm.markAllAsTouched();
+    this.familyHistoryForm.markAllAsTouched();
+    this.vitalsForm.markAllAsTouched();
     this.getBMIcalculation();
+
+    const dialogPatient = this.data?.data;
+    this.IsIpdEmrPage = !!(this.data?.IsIpdEmrPage && dialogPatient);
+
+    console.log("dialogPatient Info", dialogPatient)
+
+    if (this.IsIpdEmrPage) {
+      this.vDoctorname = dialogPatient.doctorName ?? dialogPatient.doctorname ?? '';
+      this.vRegNo = dialogPatient.regNo ?? dialogPatient.regno ?? '';
+      this.vRegId = dialogPatient.regId ?? dialogPatient.regID ?? 0;
+      this.vAdmissionId = dialogPatient.admissionId ?? dialogPatient.admissionID ?? 0;
+      this.getpatientDet(dialogPatient);
+    } else {
+      this.getPatientListwardWise();
+    }
   }
 
   createMyForm(): FormGroup {
@@ -275,21 +308,80 @@ export class IpdEMRComponent implements OnInit {
   /////////////////////////////////End Of Vitals FormArray////////////////////////////
 
   //////////////////////////////////////// main patient list ////////////////////////////////////////
+  // @ViewChild('grid5') grid5: AirmidTableComponent;
+  // gridConfig5: gridModel = new gridModel();
+  // pname = "%"
+  // wardid = '0'
+  // doctorid = '0'
+  // getPatientListwardWise() {
+  //   this.gridConfig5 = {
+  //     apiUrl: "ClinicalCare/AdmisionListNursingList",
+  //     columnsList: [
+  //       { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+  //       { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
+  //       { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+  //       { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
+  //       { heading: "Bed", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
+  //       { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+  //     ],
+  //     sortField: "RegNo",
+  //     sortOrder: 0,
+  //     filters: [
+  //       { fieldName: "PatientName", fieldValue: this.pname, opType: OperatorComparer.Equals },
+  //       { fieldName: "WardId", fieldValue: this.wardid, opType: OperatorComparer.Equals },
+  //       { fieldName: "DoctorId", fieldValue: this.doctorid, opType: OperatorComparer.Equals }
+  //     ]
+  //   }
+  //   setTimeout(() => {
+  //     if (this.grid5) {
+  //       this.grid5.gridConfig = this.gridConfig5;
+  //       this.grid5.bindGridData();
+  //     }
+  //   });
+  // }
+
+
   @ViewChild('grid5') grid5: AirmidTableComponent;
-  gridConfig5: gridModel = new gridModel();
-  pname = "%"
-  wardid = '0'
-  doctorid = '0'
-  getPatientListwardWise() {
+
+  pname = "%";
+  wardid = '0';
+  doctorid = '0';
+
+  // Initialize filters so they are available when the template loads,
+  // including when IPD EMR opens in a dialog.
+  gridConfig5: gridModel = {
+    apiUrl: "ClinicalCare/AdmisionListNursingList",
+
+    columnsList: [
+      { heading: "UHID No", key: "regNo", sort: true, align: "left", emptySign: "NA" },
+      { heading: "IPD No", key: "ipdNo", sort: true, align: "left", emptySign: "NA" },
+      { heading: "Patient Name", key: "patientName", sort: true, align: "left", emptySign: "NA", width: 200 },
+      { heading: "Ward Name", key: "roomName", sort: true, align: "left", emptySign: "NA" },
+      { heading: "Bed", key: "bedName", sort: true, align: "left", emptySign: "NA" },
+      { heading: "Doctor Name", key: "doctorName", sort: true, align: "left", emptySign: "NA" }
+    ],
+
+    sortField: "RegNo",
+    sortOrder: 0,
+
+    filters: [
+      { fieldName: "PatientName", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
+  } as gridModel;
+
+  getPatientListwardWise(): void {
     this.gridConfig5 = {
       apiUrl: "ClinicalCare/AdmisionListNursingList",
+
       columnsList: [
-        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Bed", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHID No", key: "regNo", sort: true, align: "left", emptySign: "NA" },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: "left", emptySign: "NA" },
+        { heading: "Patient Name", key: "patientName", sort: true, align: "left", emptySign: "NA", width: 200 },
+        { heading: "Ward Name", key: "roomName", sort: true, align: "left", emptySign: "NA" },
+        { heading: "Bed", key: "bedName", sort: true, align: "left", emptySign: "NA" },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: "left", emptySign: "NA" }
       ],
       sortField: "RegNo",
       sortOrder: 0,
@@ -298,7 +390,7 @@ export class IpdEMRComponent implements OnInit {
         { fieldName: "WardId", fieldValue: this.wardid, opType: OperatorComparer.Equals },
         { fieldName: "DoctorId", fieldValue: this.doctorid, opType: OperatorComparer.Equals }
       ]
-    }
+    } as gridModel;
     setTimeout(() => {
       if (this.grid5) {
         this.grid5.gridConfig = this.gridConfig5;
@@ -333,19 +425,21 @@ export class IpdEMRComponent implements OnInit {
 
   getpatientDet(obj: any): void {
 
+    console.log("Selected Patient Info :",obj)
+
     this.isShowPrintButtons = true
     this.painLevel = 0
 
     this.registerObj = obj;
     this.vpatientName = obj.patientName;
-    this.vDoctorname = obj.doctorName;
+    this.vDoctorname = obj.doctorName || obj.doctorname;
     this.vAgeYear = obj.ageYear;
     this.vDepartmentName = obj.departmentName
     this.vAgeMonth = obj.ageMonth;
     this.vAgeDay = obj.ageDay;
     this.vRegNo = obj.regNo;
-    this.vAdmissionId = this.registerObj.admissionID
-    this.vipdNo = this.registerObj.ipdNo
+    this.vAdmissionId = this.registerObj.admissionID ?? obj.admissionId;
+    this.vipdNo = this.registerObj.ipdNo || obj.ipdno;
     this.vRegId = this.registerObj.regId ?? 0
 
     this.ClearEMRForm();
@@ -645,8 +739,8 @@ export class IpdEMRComponent implements OnInit {
     const hasFamilyData = this.dsFamilyHistoryList.data.length > 0;
     const familyPayload = hasFamilyData ? this.buildFamilyPayload() : [];
 
-    console.log('Family form:', familyPayload)
-    console.log('Save form:', this.emrForm.value)
+    // console.log('Family form:', familyPayload)
+    // console.log('Save form:', this.emrForm.value)
 
     if (!this.emrForm.invalid) {
 
@@ -662,6 +756,7 @@ export class IpdEMRComponent implements OnInit {
 
       this._IpdEmrService.onSaveCasepaper(this.emrForm.value).subscribe(response => {
         this.resetEMRForm();
+        this.dialogRef.close();
         this.getPatientListwardWise();
       });
 
