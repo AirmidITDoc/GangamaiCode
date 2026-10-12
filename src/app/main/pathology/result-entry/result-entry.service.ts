@@ -34,11 +34,39 @@ export class ResultEntryService {
 
             PatientTypeSearch: ['3'],
             StatusSearch: ['1'],
-            CategoryId: [''],
             start: [new Date().toISOString()],
             end: [new Date().toISOString()],
             TestStatusSearch: ['1'],
-            UnitId: [this.accountService.currentUserValue.user.unitId]
+            UnitId: [this.accountService.currentUserValue.user.unitId],
+
+            patientName: ['', [
+                Validators.maxLength(50),
+                Validators.pattern('^[a-zA-Z () ]*$')
+            ]],
+            TestId: [0],
+            opiptype: ['2'],
+            CategoryId: [0],
+        });
+    }
+
+    createPendingSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            RegNoSearch: [],
+
+            PatientTypeSearch: ['3'],
+            StatusSearch: ['0'],
+            start: [new Date().toISOString()],
+            end: [new Date().toISOString()],
+            TestStatusSearch: ['1'],
+            UnitId: [this.accountService.currentUserValue.user.unitId],
+
+            patientName: ['', [
+                Validators.maxLength(50),
+                Validators.pattern('^[a-zA-Z () ]*$')
+            ]],
+            TestId: [0],
+            opiptype: ['2'],
+            CategoryId: [0],
         });
     }
 
@@ -143,7 +171,7 @@ export class ResultEntryService {
         return this._httpClient1.PostData("Pathology/PathologyTemplateSave", employee);
     }
 
-   
+
 
     public getPathTempReport(PathReportId, OP_IP_Type) {
         return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type=" + OP_IP_Type);
@@ -190,7 +218,9 @@ export class ResultEntryService {
         return this._httpClient1.PostData("Pathology/PathologyPatientTestList", employee)
     }
 
-
+    public getresultenteryDetlist(employee) {
+        return this._httpClient1.PostData("Pathology/PathologyDetailTestList", employee)
+    }
 
     public gettemplatebyService(ServiceId) {
         return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
@@ -199,12 +229,12 @@ export class ResultEntryService {
         return this._httpClient1.PostData("Report/get-report-html", Param);
     }
 
-      public pcpndtSave(employee) {
+    public pcpndtSave(employee) {
         return this._httpClient1.PostData("Pcpndprocess/Insert", employee);
     }
 
 
-     public getIndicationList(employee) {
+    public getIndicationList(employee) {
         return this._httpClient1.PostData("Common", employee);
     }
 }

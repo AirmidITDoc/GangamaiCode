@@ -1,0 +1,371 @@
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Result Entry
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-body content">
+        <div fxLayout="column" class="gap-8 result-body">
+            <!-- <div class="modal-card-container">
+                <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
+
+                    <mat-card fxFlex.gt-sm="100%" fxFlex>
+                        <div class="patient-info-sales my-8">
+                            <div class="patient-info-title border-bottom pb-2" fxLayout="row"
+                                fxLayoutAlign="space-between center">
+
+                                <span class="h1">Patient Information</span>
+
+                                <div fxLayout="row" fxLayoutALignment="end" class="gap-8">
+                                    <form [formGroup]="otherForm" class="resize-form-fields" fxFlex=50%>
+                                        <airmid-textbox label="Sample No" formControlName="vSampleNo" type="text"
+                                            [formGroup]="otherForm" (input)=ChangeSampleNo()>
+                                        </airmid-textbox>
+                                    </form>
+                                    <button mat-raised-button color="primary" (click)="onUpload()"
+                                        style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
+                                        Upload
+                                        <mat-icon class="ml-4">cloud_upload</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="Ipd-patient-info1 w-100-p">
+                                <app-patient-information [uhidNo]="selectedAdvanceObj2?.regNo"
+                                    [patientName]="patientName || ''" [doctorName]="selectedAdvanceObj2?.doctorName"
+                                    [departmentName]="selectedAdvanceObj2?.departmentName"
+                                    [ipdNo]="selectedAdvanceObj2?.oP_IP_No"
+                                    [ageString]="(selectedAdvanceObj2?.ageYear !== undefined ? selectedAdvanceObj2?.ageYear + 'Y|' + selectedAdvanceObj2?.ageMonth + 'M|' + selectedAdvanceObj2?.ageDay + 'D | ' + selectedAdvanceObj2?.genderName : '')">
+                                </app-patient-information>
+                            </div>
+
+                        </div>
+                    </mat-card>
+
+                </div>
+            </div> -->
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+
+                <span class="h1">Patient Information</span>
+
+                <div fxFlex>
+                    <app-patient-information [uhidNo]="selectedAdvanceObj2?.regNo" [patientName]="patientName || ''"
+                        [doctorName]="selectedAdvanceObj2?.doctorName"
+                        [departmentName]="selectedAdvanceObj2?.departmentName" [ipdNo]="selectedAdvanceObj2?.oP_IP_No">
+                    </app-patient-information>
+                </div>
+
+                <form [formGroup]="otherForm" class="resize-form-fields">
+                    <airmid-textbox label="Sample No" formControlName="vSampleNo" type="text" [formGroup]="otherForm"
+                        (input)="ChangeSampleNo()">
+                    </airmid-textbox>
+                </form>
+
+                <button mat-raised-button (click)="onUpload()" *ngIf="!verifyCheck">
+                    Upload
+                    <mat-icon>cloud_upload</mat-icon>
+                </button>
+
+            </div>
+
+            <div class="modal-card-container result-tables">
+                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="8px" class="result-row">
+
+                    <!-- ============ LEFT TABLE : 20% ============ -->
+                    <div fxFlex="20" fxFlex.lt-md="100" class="airmid-table-container">
+                        <mat-card style="padding: 6px;">
+                            <mat-table matSort [dataSource]="pendingDS" class="airmid-table result-table"
+                                [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
+
+                                <ng-container matColumnDef="checkbox">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                            [checked]="selection.hasValue()"
+                                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                        </mat-checkbox>
+                                    </th>
+
+                                    <td mat-cell *matCellDef="let contact">
+                                        <span *ngIf="contact.isTemplateTest != '1'; else noMLC" [matTooltip]="contact?.isRefunded == 1 ? 'Service has been refunded'
+                                                         : contact.isSampleCollection === 'False'
+                                                            ? 'Please complete sample collection first'
+                                                            : ''">
+
+                                            <!-- <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="onRowCheck($event, contact)"
+                                                *ngIf="contact.isTemplateTest != '1' else noMLC"
+                                                [checked]="selection.isSelected(contact)"
+                                                [disabled]="isCheckboxDisabled(contact)">
+                                            </mat-checkbox> -->
+
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="onRowCheck($event, contact)"
+                                                *ngIf="contact.isTemplateTest != '1' else noMLC"
+                                                [checked]="contact._locked || isTestChecked(contact)"
+                                                [disabled]="contact._locked || isCheckboxDisabled(contact)">
+                                            </mat-checkbox>
+                                        </span>
+
+                                        <ng-template #noMLC>
+                                            <div
+                                                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                                <span>----</span>
+                                            </div>
+                                        </ng-template>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TestName">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="border-right">
+                                        Test Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        {{contact.serviceName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns2;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="onRowChange(contact)">
+                                </mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                        </mat-card>
+                    </div>
+
+                    <!-- ============ RIGHT TABLE : 80% (your existing table) ============ -->
+                    <div fxFlex="80" fxFlex.lt-md="100" class="airmid-table-container">
+                        <mat-card style="padding: 6px;">
+
+                            <mat-table matSort [dataSource]="dataSource" class="airmid-table result-table"
+                                [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
+
+                                <ng-container matColumnDef="sequence">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-70">Sr.No
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
+                                        {{ i + 1 }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TestName" sticky>
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="border-right">
+                                        Test Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        {{contact.TestName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ParameterName">
+                                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md class="border-right">
+                                        Parameter Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.ParameterName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
+                                    <mat-header-cell *matHeaderCellDef class="border-right">
+                                        Result
+                                    </mat-header-cell>
+
+                                    <mat-cell *matCellDef="let contact" class="border-right">
+
+                                        <mat-form-field appearance="fill" *ngIf="!contact.IsHelpShown"
+                                            style="width: 100%;">
+                                            <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
+                                                (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
+                                                [(ngModel)]="contact.ResultValue">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="fill" *ngIf="contact.IsHelpShown"
+                                            style="width:100%">
+                                            <input type="text" matInput id="helpText_{{contact.ParameterId}}"
+                                                (keyup)="filterHelp($event, contact)" [matAutocomplete]="auto">
+                                            <mat-autocomplete #auto="matAutocomplete"
+                                                (optionSelected)="onSelectHelp($event.option.value, contact)">
+                                                <mat-option *ngFor="let option of contact.helpItems"
+                                                    [value]="option.ParameterValues">
+                                                    {{ option.ParameterValues }}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+
+                                        <mat-icon class="Help-Value" *ngIf="contact.ParaIsNumeric ==0"
+                                            matTooltip="Use Help Value" style="width: 10px;height: 10px;">
+                                            circle
+                                        </mat-icon>
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="Flag">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80 border-right">Flag
+                                    </mat-header-cell>
+                                    <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill">
+                                            <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag">
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NormalRange">
+                                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md class="border-right">
+                                        NormalRange
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                        {{contact?.NormalRange}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Formula">
+                                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md class="border-right">
+                                        Formula
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                        {{contact?.Formula}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="onRowChange(contact)">
+                                </mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+
+                        </mat-card>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer" fxLayout="column">
+        <div class="modal-card-container">
+            <form [formGroup]="otherForm">
+                <mat-card style="padding: 6px;">
+                    <div fxLayout="row" fxLayout="4px">
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Suggestion Note</mat-label>
+                            <textarea matInput rows="2" name="suggestionNotes" formControlName="suggestionNotes"
+                                [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)">
+                                    </textarea>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="column" fxLayout="row" fxLayout="4px" class="resize-form-fields">
+
+                        <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
+                            [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)" fxFlex="40%"
+                            ValueField="doctorId" TextField="doctorName"
+                            ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
+                    </div>
+
+                </mat-card>
+
+            </form>
+        </div>
+        <div class="modal-footer-buttons">
+            <button mat-raised-button color="primary" (click)="getValidatetabledata()"
+                style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
+                Validate Data
+                <mat-icon class="ml-4">sync</mat-icon>
+            </button>
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck">Save</button>
+            <button class="btn btn-success" (click)="onVerify()" *ngIf="verifyCheck">Authorization</button>
+        </div>
+    </div>
+</div>
+
+<!-- <ng-template #dateForm let-data let-dialogRef="dialogRef">
+    <mat-toolbar class="accent" style="width: 100%; height: 45px; justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span style="font-size: 16px;">Multiple Run Dates Found</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <mat-dialog-content>
+        <p>This sample has results uploaded at different times. Select which one to load:</p>
+        <mat-radio-group [(ngModel)]="selected">
+            <div *ngFor="let rd of data.runDates" class="rundate-row">
+                <mat-radio-button [value]="rd">
+                    {{ rd | date:'dd-MM-yyyy hh:mm:ss a' }}
+                </mat-radio-button>
+            </div>
+        </mat-radio-group>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="dialogRef.close()">Cancel</button>
+        <button mat-raised-button color="primary" [disabled]="!selected" (click)="dialogRef.close(selected)">
+            Load
+        </button>
+    </mat-dialog-actions>
+</ng-template> -->

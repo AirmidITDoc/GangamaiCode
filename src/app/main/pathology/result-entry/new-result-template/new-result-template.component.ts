@@ -84,7 +84,7 @@ export class NewResultTemplateComponent {
             this.verifyCheck = data.verifyCheck
             this.selectedAdvanceObj1 = this.data.data;
             console.log(this.selectedAdvanceObj1);
-            this.serviceId = this.selectedAdvanceObj1.serviceId
+            this.serviceId = this.selectedAdvanceObj1.serviceId ?? this.selectedAdvanceObj1.pathTestID
             console.log(this.selectedAdvanceObj1)
             this.OP_IPType = this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
             this.reportIdData = this.selectedAdvanceObj1.pathReportID ?? this.selectedAdvanceObj1.pathReportId
@@ -348,8 +348,9 @@ export class NewResultTemplateComponent {
 
     selectChangeService() {
 
-        if (this.selectedAdvanceObj1.serviceId) {
-            this._SampleService.gettemplatebyService(this.selectedAdvanceObj1.serviceId).subscribe((data: any) => {
+        const serviceId = this.selectedAdvanceObj1.serviceId ?? this.selectedAdvanceObj1.pathTestID
+        if (serviceId) {
+            this._SampleService.gettemplatebyService(serviceId).subscribe((data: any) => {
                 console.log(data)
                 // this.ddltemplate.options = data;
                 // this.ddltemplate.bindGridAutoComplete();

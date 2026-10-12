@@ -18,6 +18,10 @@ const appRoutes: Routes = [
         path: "report-dispatch",
         loadChildren: () => import("./report-dispatch/report-dispatch.module").then((m) => m.ReportDispatchModule),
     },
+    {
+        path: "pathology-result-pending-list",
+        loadChildren: () => import("./pending-result-entry/pending-result-entry.module").then((m) => m.PendingResultEntryModule),
+    },
 ];
 
 @NgModule({
