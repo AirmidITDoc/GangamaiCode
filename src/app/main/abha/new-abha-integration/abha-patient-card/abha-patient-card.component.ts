@@ -41,6 +41,11 @@ export class AbhaPatientCardComponent {
   day: any;
   month: any;
   year: any;
+  mobileNoSV: any;
+  pincodeSV: any;
+  districSV: any;
+  stateSV: any;
+  addressSV: any;
 
   displayedColumns = [
     'abhaLinked',
@@ -70,6 +75,10 @@ export class AbhaPatientCardComponent {
   showRegBtn = true;
   showLinkAbha = false;
   showUpdateAbha = false;
+  fname: any;
+  mname: any;
+  lname: any;
+  dobSV: any;
   profile?: AbhaProfile;
   @Output() reset = new EventEmitter<void>();
   authMethodMeta = AUTH_METHOD_LABELS;
@@ -104,8 +113,40 @@ export class AbhaPatientCardComponent {
 
       console.log("JSOn Data:", jsonData);
       this.profile = jsonData
+      this.fname = this.profile.name.trim().split(/\s+/)[0];
+      this.mname = this.profile.name.trim().split(/\s+/)[1];
+      this.lname = this.profile.name.trim().split(/\s+/)[2];
+      // this.mobileNoSV = this.profile.mobileNumber;
+      this.mobileNoSV = this.profile.mobileNumber.toString().substring(2);
+      this.pincodeSV = this.profile.pincode;
+      this.districSV = this.profile.district;
+      this.stateSV = this.profile.state;
+      this.addressSV = this.profile.address;
     }
 
+  }
+
+  formatDob(dob: any): string {
+    if (!dob) {
+      return this.dobSV || '';
+    }
+
+    // Already in dd-MM-yyyy format
+    if (/^\d{2}-\d{2}-\d{4}$/.test(dob)) {
+      return dob;
+    }
+
+    const date = new Date(dob);
+
+    if (isNaN(date.getTime())) {
+      return this.dobSV || '';
+    }
+
+    return (
+      String(date.getDate()).padStart(2, '0') + '-' +
+      String(date.getMonth() + 1).padStart(2, '0') + '-' +
+      date.getFullYear()
+    );
   }
 
   updateTableHeight(): void {
@@ -121,7 +162,9 @@ export class AbhaPatientCardComponent {
   loadPatientTable(data: any = null) {
     this.fetchGenderlist(() => {
 
-      const keyword = this.profile.firstName || this.profile.mobile;
+      const firstNameex = this.profile.name.trim().split(/\s+/)[0];
+
+      const keyword = this.profile.firstName || this.profile.mobile || firstNameex;
 
       this._AppointmentlistService
         .getSuggestions("OutPatient/auto-complete?Keyword=", keyword)
@@ -140,7 +183,7 @@ export class AbhaPatientCardComponent {
           });
 
           // First filter by your existing conditions
-          const searchName = (this.profile.firstName || '').trim().toUpperCase();
+          const searchName = (this.profile.firstName || firstNameex || '').trim().toUpperCase();
 
           const matchedRecords = this.prevResults.filter(item => {
             const patientName = (item.patientName || '').trim().toUpperCase();
@@ -171,7 +214,6 @@ export class AbhaPatientCardComponent {
   }
 
   getSelectedObj(obj) {
-    // debugger
 
     if ((obj.regId ?? 0) > 0) {
       if (!obj || !obj.regId) {
@@ -293,7 +335,8 @@ export class AbhaPatientCardComponent {
     if (!this.profile?.dob) {
       return { day: '', month: '', year: '' };
     }
-    const [year, month, day] = this.profile.dob.split('-');
+    const [day, month, year] = this.profile.dob.split('-');
+    // const [year, month, day] = this.profile.dob.split('-');
     return { day, month, year };
   }
 
