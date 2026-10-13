@@ -1,0 +1,89 @@
+// Shared styles for all 3 vaccine-master designs
+
+.vm-page { padding: 8px; }
+
+.vm-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+}
+.vm-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.vm-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.span-2 { grid-column: span 2; }
+.span-full { grid-column: 1 / -1; }
+
+@media (max-width: 992px) {
+  .vm-grid, .vm-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 576px) {
+  .vm-grid, .vm-grid.cols-3, .vm-grid.cols-2 { grid-template-columns: 1fr; }
+  .span-2 { grid-column: auto; }
+}
+
+// ---------- Design 1 : section cards ----------
+.vm-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.vm-card-title {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 16px;
+  font-weight: 600;
+  background: #f1f5fb;
+  border-bottom: 1px solid #e0e6ef;
+  mat-icon { color: #1565c0; }
+}
+.vm-card-body { padding: 10px; }
+
+// ---------- toggle tile (used in all designs) ----------
+.toggle-tile {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid #d5dbe5;
+  border-radius: 8px;
+  background: #fafbfd;
+  min-height: 48px;
+  span { font-size: 14px; color: #37474f; }
+}
+
+// ---------- Design 2 : tabs ----------
+.vm-tab-content { padding: 20px 8px; }
+
+// ---------- Design 3 : split layout ----------
+.vm-split {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+  align-items: start;
+}
+.vm-side {
+  position: sticky; top: 16px;
+  background: #fff; border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.vm-side h4 { margin: 0 0 4px; }
+@media (max-width: 992px) {
+  .vm-split { grid-template-columns: 1fr; }
+  .vm-side { position: static; }
+}
+
+// ---------- action bar ----------
+// .vm-actions {
+//   display: flex; justify-content: flex-end; gap: 12px;
+//   padding-top: 8px;
+// }
+
+.vm-actions {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 10px 16px;
+  text-align: right;
+  position: sticky;
+  bottom: 0; /* ✅ keeps footer visible if body scrolls */
+}

@@ -25,9 +25,13 @@ const approtes: Routes = [
         path: "dialysissms",
         loadChildren: () => import("./consent/consent.module").then((m) => m.ConsentModule),
     },
+    // {
+    //     path: "patientrefvisit",
+    //     loadChildren: () => import("./ipd-emr/ipd-emr.module").then((m) => m.IpdEMRModule),
+    // },
     {
         path: "patientrefvisit",
-        loadChildren: () => import("./ipd-emr/ipd-emr.module").then((m) => m.IpdEMRModule),
+        component: IpdEMRComponent
     },
     {
         path: "bedtransfer",
@@ -68,6 +72,7 @@ const approtes: Routes = [
     {
         path: "dietrequest",
         loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
+        loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
     },
     {
         path: "dietaccessment",
@@ -80,6 +85,7 @@ const approtes: Routes = [
     ],
     imports: [
         RouterModule.forChild(approtes),
+        IpdEMRModule
     ]
 })
 export class NursingstationModule { }

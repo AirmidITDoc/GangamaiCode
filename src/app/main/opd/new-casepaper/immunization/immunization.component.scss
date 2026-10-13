@@ -1,0 +1,53 @@
+.imm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0 8px;
+  align-items: center;
+
+  .span-2 {
+    grid-column: span 2;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.icon-yes {
+  color: #2e7d32;
+}
+
+// green
+.icon-no {
+  color: #c62828;
+}
+
+// red
+
+.table-scroll {
+  overflow: auto;
+  max-height: 300px;
+  width: 100%;
+}
+
+.imm-table {
+  min-width: 1800px; // 15 columns x 120px
+}
+
+.imm-table .mat-header-cell,
+.imm-table .mat-cell {
+  min-width: 120px;
+}
+
+.imm-table .mat-column-description,
+.imm-table .mat-column-comment {
+  min-width: 220px;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100px;
+}

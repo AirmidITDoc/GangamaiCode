@@ -1403,6 +1403,9 @@ export class Pthologyresult {
     SampleID: any;
     adm_Visit_docId: any;
     RUNDATE: any;
+    pathTestID:any;
+    serviceName:any;
+    ServiceID:any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
@@ -1431,6 +1434,9 @@ export class Pthologyresult {
         this.MaxValue = Pthologyresult.MaxValue || 0;
         this.SampleID = Pthologyresult.SampleID || 0;
         this.RUNDATE = Pthologyresult.RUNDATE || ''
+        this.pathTestID = Pthologyresult.pathTestID || 0;
+        this.serviceName = Pthologyresult.serviceName || 0;
+        this.ServiceID = Pthologyresult.ServiceID || 0;
     }
 
 }

@@ -1809,7 +1809,8 @@ export class SampleList {
     IsCompleted: boolean;
     CategoryId: any;
     opdipdtype: any;
-
+    total_Row:any;
+    pathTestID:any;
     pathReportId: any;
     isVerifyid: any;
     isVerifyedDate: any;
@@ -1862,6 +1863,8 @@ export class SampleList {
         this.suggestionNotes = SampleList.suggestionNotes || 0
         this.isCompleted = SampleList.isCompleted || 0
         this.pathReportID = SampleList.pathReportID || 0
+        this.total_Row = SampleList.total_Row || 0
+        this.pathTestID = SampleList.pathTestID || 0
     }
 
 }

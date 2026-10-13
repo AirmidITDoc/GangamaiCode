@@ -1,0 +1,21 @@
+.result-body {
+  height: auto;          // no more stretching to 100%
+  flex: 0 0 auto;
+}
+
+.result-tables {
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.result-row {
+  height: auto;
+  align-items: flex-start;
+}
+
+.result-table {
+  height: auto;
+  min-height: 200px;
+  max-height: calc(100vh - 400px);   // tune 420px to header + patient row + footer height
+  overflow: auto;
+}

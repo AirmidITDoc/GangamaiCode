@@ -2,7 +2,7 @@
     <mat-toolbar class="ipd-emr-toolbar">
         <div fxLayout="row" fxLayoutAlign="start center">
 
-            <button class="patient-list-toggle-btn1" (click)="drawer.toggle()" [class.is-open]="drawer.opened"
+            <button *ngIf="!IsIpdEmrPage" class="patient-list-toggle-btn1" (click)="drawer.toggle()" [class.is-open]="drawer.opened"
                 matTooltip="Toggle Patient List" matTooltipPosition="below">
 
                 <mat-icon class="toggle-icon">people_alt </mat-icon>
@@ -15,6 +15,12 @@
             <span class="logo-text h1 ml-8" [@animate]="{ value: '*',params: { delay: '100ms', x: '-25px' } }">
                 IPD EMR
             </span>
+            <div *ngIf="IsIpdEmrPage" class="close-icon1">
+                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
         </div>
     </mat-toolbar>
 
@@ -38,8 +44,8 @@
                                         (registerObj?.middleName ? ' ' + registerObj.middleName : '') +
                                         (registerObj?.lastName ? ' ' + registerObj.lastName : ''))"
                                     [doctorName]="registerObj?.doctorName || vDoctorname"
-                                    [departmentName]="registerObj?.departmentName" [ipdNo]="registerObj?.ipdNo"
-                                    [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')">
+                                    [departmentName]="registerObj?.departmentName" [ipdNo]="registerObj?.ipdNo || vipdNo"
+                                    [ageString]="(registerObj?.ageYear !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')">
                                 </app-patient-information>
                             </div>
                         </div>
@@ -165,7 +171,7 @@
 
                                     <div class="chief-complaint-wrapper">
                                         <app-airmid-chipautocomplete fxFlex #chiefComplaintInput
-                                            [chips]="MyForm.get('mAssignChiefComplaint')?.value"
+                                            [chips]="MyForm?.get('mAssignChiefComplaint')?.value || []"
                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                             (chipsChange)="selectChangeChiefComplaint($event)">
@@ -181,7 +187,7 @@
                                 </div>
 
                                 <app-airmid-chipautocomplete fxFlex #AssignExamination
-                                    [chips]="MyForm.get('mAssignExamination')?.value"
+                                    [chips]="MyForm?.get('mAssignExamination')?.value || []"
                                     [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
                                     [displayKey]="'descriptionName'" [allowCustom]="true"
                                     (chipsChange)="selectChangeExamination($event)">
@@ -207,7 +213,7 @@
                                     Provisional :
                                 </div>
                                 <app-airmid-diagnos-chipautocomplete fxFlex
-                                    [chips]="MyForm.get('mAssignProDiagnosis')?.value"
+                                    [chips]="MyForm?.get('mAssignProDiagnosis')?.value || []"
                                     [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
                                     [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
                                     (chipsChange)="selectChangeDiagnosis($event)">
@@ -221,7 +227,7 @@
                                 </div>
 
                                 <app-airmid-diagnos-chipautocomplete fxFlex
-                                    [chips]="MyForm.get('mAssignFinalDiagnosis')?.value"
+                                    [chips]="MyForm?.get('mAssignFinalDiagnosis')?.value || []"
                                     [apiUrl]="'MIcdDiagnosisMaster/search_MIcdDiagnosisMaster?Keyword='"
                                     [displayKey]="'icdCodeWithDignosis'" [allowCustom]="true"
                                     (chipsChange)="selectChangeFinalDiagnosis($event)">
@@ -246,7 +252,7 @@
 
                                 <mat-form-field appearance="outline" class="other-info-field">
                                     <mat-label>
-                                        Allergie Remark
+                                        Allergy Remark
                                     </mat-label>
                                     <input matInput type="text" formControlName="allergyRemark">
                                 </mat-form-field>
@@ -476,7 +482,7 @@
                 </mat-card>
 
                 <!--footer buttons-->
-                <div class="modal-footer1">
+                <div [ngClass]="IsIpdEmrPage ? 'modal-footer2' : 'modal-footer1'">
                     <div class="footer-navigation-container1">
                         <div class="modal-footer-buttons1">
                             <button class="btn btn-primary" color="accent" (click)="onSave()" [disabled]="isSaving">
@@ -490,7 +496,7 @@
         </div>
 
         <!-- Patient Sidebar -->
-        <mat-drawer #drawer class="example-sidenav sidebar-drawer1" mode="side" opened>
+        <mat-drawer #drawer class="example-sidenav sidebar-drawer1" mode="side" [opened]="!IsIpdEmrPage">
             <div class="sidebar-content1">
                 <form [formGroup]="MyForm" class="sidebar-form1">
                     <div class="1">
