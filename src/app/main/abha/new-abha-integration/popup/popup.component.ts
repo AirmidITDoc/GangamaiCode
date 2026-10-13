@@ -38,10 +38,11 @@ export class PopupComponent {
   RegNo: any;
   Doctorname: any;
   AgeYear: any;
-  abhaNumber: any;
-  abhaAddress: any;
+  abhaNumber: any='';
+  abhaAddress: any='';
   abhaId: any;
   DOB: any;
+  isIP = false;
 
   displayedColumns: string[] = [
     'CheckBox',
@@ -65,6 +66,10 @@ export class PopupComponent {
 
   visitdataSource = new MatTableDataSource<abhaRegInsert>();
   admissiondataSource = new MatTableDataSource<abhaRegInsert>();
+  pendingDialogRef: MatDialogRef<any>;
+
+  @ViewChild('pendingDialog') pendingDialog!: TemplateRef<any>;
+  pendingData: { fullyCompleted: string[]; incomplete: string[], optional: string[]; } | null = null;
 
   constructor(private _matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -72,7 +77,8 @@ export class PopupComponent {
     public _abhaIntegrationService: NewAbhaIntegrationService,
     public toastr: ToastrService,
     public _ConfigService: ConfigService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -203,7 +209,7 @@ export class PopupComponent {
     const row = this.selectedRow;
     return !!row && !!row.ccWorkflowId && !row.ccErrMessage;
   }
- // true = multi-select
+  // true = multi-select
 
   // Whether the number of selected elements matches the total number of (enabled) rows
   // isAllSelected1(): boolean {
@@ -314,6 +320,49 @@ export class PopupComponent {
   //   }, 1000);
   // }
 
+  // progress bar code for pending record
+  get pendingPercent(): number {
+    const c = this.pendingData?.fullyCompleted?.length || 0;
+    const i = this.pendingData?.incomplete?.length || 0;
+    return (c + i) ? Math.round((c / (c + i)) * 100) : 0;
+  }
+
+  get canProceed(): boolean {
+    return (this.pendingData?.incomplete?.length || 0) === 0;
+  }
+
+  checkOPPending() {
+    this.isIP = false;
+    const selectedVisit = this.selection.selected[0];
+    const getData = {
+      abhaNumber: String(this.abhaNumber) ?? '', //'91-7464-3370-2840', //
+      abhaAddress: String(this.abhaAddress) ?? '', //'91746433702840@sbx', //
+      hipId: 'AIRMIDABHA',
+      OpIpId: String(selectedVisit.visitId), //"536228", //
+      opIpType: "0"
+    };
+
+    this._abhaIntegrationService.getPendingRecord(getData).subscribe({
+      next: (response: any) => {
+        debugger
+        this.pendingData = {
+          fullyCompleted: response?.fullyCompleted ?? [],
+          incomplete: response?.incomplete ?? [],
+          optional: response?.optional ?? []
+        };
+        this.pendingDialogRef = this.dialog.open(this.pendingDialog, {
+          width: '450px',
+          disableClose: true,
+          panelClass: 'pv-dialog'
+        });
+      },
+      error: (error) => {
+        console.error('Patient Encounter API Error:', error);
+        this.encounterStatus = 'failed';
+      }
+    });
+  }
+
   //////// without progress /////////////
   GetPatientEncounterDetails() {
 
@@ -321,8 +370,8 @@ export class PopupComponent {
     const selectedReg = this.patientDetail.regId;
 
     const getData = {
-      abhaNumber: String(this.abhaNumber), //'91-7464-3370-2840', //
-      abhaAddress: String(this.abhaAddress), //'91746433702840@sbx', //
+      abhaNumber: String(this.abhaNumber) ?? '', //'91-7464-3370-2840', //
+      abhaAddress: String(this.abhaAddress) ?? '', //'91746433702840@sbx', //
       hipId: 'AIRMIDABHA',
       OpIpId: String(selectedVisit.visitId), //"536228", //
       opIpType: "0"
@@ -332,6 +381,11 @@ export class PopupComponent {
       next: (response: any) => {
         console.log('Patient Encounter Details:', response);
         this.encounterResponse = response;
+
+        if (this.pendingDialogRef) {
+          this.pendingDialogRef.close();
+        }
+
         // wait 1 minute before refreshing, since ABDM processing is async on their end
         this.encounterRefreshTimer = setTimeout(() => {
           this.refreshVisitGridAndReselect(selectedReg);
@@ -517,7 +571,38 @@ export class PopupComponent {
 
   ///////////////IP ///////////////////
 
-  
+  checkIPPending() {
+    this.isIP = true;
+    const selectedAddmission = this.selection1.selected[0];
+    const getData = {
+      abhaNumber: String(this.abhaNumber), //'91-7464-3370-2840', //
+      abhaAddress: String(this.abhaAddress), //'91746433702840@sbx', //
+      hipId: 'AIRMIDABHA',
+      OpIpId: String(selectedAddmission.admissionID), //"536228", //
+      opIpType: "1"
+    };
+
+    this._abhaIntegrationService.getPendingRecord(getData).subscribe({
+      next: (response: any) => {
+        debugger
+        this.pendingData = {
+          fullyCompleted: response?.fullyCompleted ?? [],
+          incomplete: response?.incomplete ?? [],
+          optional: response?.optional ?? []
+        };
+        this.pendingDialogRef = this.dialog.open(this.pendingDialog, {
+          width: '450px',
+          disableClose: true,
+          panelClass: 'pv-dialog'
+        });
+      },
+      error: (error) => {
+        console.error('Patient Encounter API Error:', error);
+        this.encounterStatus = 'failed';
+      }
+    });
+  }
+
   get IPselectedRow(): any {
     const selected = this.selection1.selected;
     return selected.length > 0 ? selected[0] : null;
@@ -531,7 +616,7 @@ export class PopupComponent {
     return !!row && !!row.ccWorkflowId && !row.ccErrMessage;
   }
 
-   onIPCheckboxChange(contact: any, checked: boolean): void {
+  onIPCheckboxChange(contact: any, checked: boolean): void {
     // Clear previously selected row
     this.selection1.clear();
 
@@ -580,6 +665,10 @@ export class PopupComponent {
       next: (response: any) => {
         console.log('IP Patient Encounter Details:', response);
         this.encounterResponse = response;
+
+        if (this.pendingDialogRef) {
+          this.pendingDialogRef.close();
+        }
         // wait 1 minute before refreshing, since ABDM processing is async on their end
         this.encounterRefreshTimer = setTimeout(() => {
           this.refreshAdmissionGridAndReselect(selectedReg);

@@ -83,4 +83,8 @@ export class NewAbhaIntegrationService {
   public getCareContextById(Id) {
     return this._httpClient1.GetData("AbhaConnects/Encounter/" + Id);
   }
+
+  public getPendingRecord(param) {
+    return this._httpClient1.PostData("AbhaConnects/ValidateHiTypesSummary", param)
+  }
 }

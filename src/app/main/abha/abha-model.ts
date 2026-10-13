@@ -224,7 +224,10 @@ export interface AbhaProfile {
     dob: any;
     photo: any;
     pinCode: any;
-    abhaAddress:any;
+    abhaAddress: any;
+    mobileNumber: any;
+    district: any;
+    state: any;
 }
 
 export interface CreateAbhaResult {

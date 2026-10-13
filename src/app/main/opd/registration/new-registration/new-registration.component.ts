@@ -232,25 +232,40 @@ export class NewRegistrationComponent implements OnInit {
             console.log('Profile data from ABHA', this.data.profile)
             this.abhaGender = this.data.profile.gender
             this.tryMapGenderAndPrefix();
-            this.onChangePincode(this.data.profile.pinCode)
+            this.onChangePincode(this.data.profile.pinCode ?? this.data.profile.pincode)
 
             const fullName = (this.data?.profile?.name || '').trim();
 
             this.personalFormGroup.patchValue({
-                FirstName: this.data.profile.firstName,
-                MiddleName: this.data.profile.middleName,
-                LastName: this.data.profile.lastName,
-                MobileNo: this.data.profile.mobile,
+                FirstName: this.data.profile.firstName ?? this.data.profile.name.trim().split(/\s+/)[0],
+                MiddleName: this.data.profile.middleName ?? this.data.profile.name.trim().split(/\s+/)[1],
+                LastName: this.data.profile.lastName ?? this.data.profile.name.trim().split(/\s+/)[2],
+                MobileNo: this.data.profile.mobile ?? this.data.profile.mobileNumber.toString().substring(2),
                 Address: this.data.profile.address,
-                PinNo: this.data.profile.pinCode
+                PinNo: this.data.profile.pinCode ?? this.data.profile.pincode
             });
+
+            const dob = this.data.profile.dob;
+            let dobUP;
+
+            if (dob.includes('-')) {
+                const parts = dob.split('-');
+
+                if (parts[0].length === 4) {
+                    // Already yyyy-MM-dd
+                    dobUP = dob;
+                } else {
+                    // Convert dd-MM-yyyy → yyyy-MM-dd
+                    dobUP = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                }
+            }
 
             this.abhaForm.patchValue({
                 abhaAddress: this.data.profile.abhaAddress,
                 abhaNumber: this.data.profile.abhaNumber,
                 abhaFullName: this.data.profile.name,
                 gender: this.data.profile.gender,
-                yearOfBirth: this.data.profile.dob
+                yearOfBirth: dobUP //this.data.profile.dob
             });
 
             if (this.data.profile.abhaNumber) {
@@ -270,12 +285,14 @@ export class NewRegistrationComponent implements OnInit {
             //     `T${String(now.getHours()).padStart(2, '0')}:` +
             //     `${String(now.getMinutes()).padStart(2, '0')}:` +
             //     `${String(now.getSeconds()).padStart(2, '0')}`;
-            const dob = new Date(this.data.profile.dob);
-            const dobString = this.formatDateToIsoMidnight(dob);
+
+
+            // const dobUP = new Date(dob);
+            const dobString = this.formatDateToIsoMidnight(dobUP);
 
             if (dobString) {
                 setTimeout(() => {
-                    this.registerObj.dateofBirth = dob;
+                    this.registerObj.dateofBirth = dobUP; //dob;
                     this.onChangeDateofBirth(this.registerObj.dateofBirth);
                 }, 1000);
             }
@@ -334,10 +351,19 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     // new abha wise dob change
-    formatDateToIsoMidnight(date: Date): string {
-        const yyyy = date.getFullYear();
-        const mm = String(date.getMonth() + 1).padStart(2, '0');
-        const dd = String(date.getDate()).padStart(2, '0');
+    // formatDateToIsoMidnight(date: Date): string {
+    //     const yyyy = date.getFullYear();
+    //     const mm = String(date.getMonth() + 1).padStart(2, '0');
+    //     const dd = String(date.getDate()).padStart(2, '0');
+
+    //     return `${yyyy}-${mm}-${dd}T00:00:00`;
+    // }
+    formatDateToIsoMidnight(date: Date | string): string {
+        const d = typeof date === 'string' ? new Date(date) : date;
+
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
 
         return `${yyyy}-${mm}-${dd}T00:00:00`;
     }

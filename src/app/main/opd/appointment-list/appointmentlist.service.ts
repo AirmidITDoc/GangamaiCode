@@ -417,7 +417,7 @@ export class AppointmentlistService {
         return this._httpClient1.PutData("VisitDetail/CheckOutProcess/", Id);
     }
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
-        debugger
+        // debugger
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
 
