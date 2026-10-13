@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PatientDietSchduleComponent } from './patient-diet-schdule/patient-diet-schdule.component';
 import { NewSchduleComponent } from './patient-diet-schdule/new-schdule/new-schdule.component';
+import { IpdEMRModule } from './ipd-emr/ipd-emr.module';
+import { IpdEMRComponent } from './ipd-emr/ipd-emr.component';
 
 const approtes: Routes = [
 
@@ -71,7 +73,6 @@ const approtes: Routes = [
 
     {
         path: "dietrequest",
-        loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
         loadChildren: () => import("./diet-request/diet-request.module").then((m) => m.DietRequestModule),
     },
     {
