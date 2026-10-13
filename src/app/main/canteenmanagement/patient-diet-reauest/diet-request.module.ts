@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PatientDietReauestComponent } from './patient-diet-reauest.component';
 import { DietDetailListComponent } from './diet-detail-list/diet-detail-list.component';
 import { RequestcardpopupComponent } from './requestcardpopup/requestcardpopup.component';
+import { MenuItemPopupComponent } from './menu-item-popup/menu-item-popup.component';
 
 
 const routes: Routes = [
@@ -51,7 +52,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PatientDietReauestComponent, DietDetailListComponent, RequestcardpopupComponent, ],
+    declarations: [PatientDietReauestComponent, DietDetailListComponent, RequestcardpopupComponent, MenuItemPopupComponent, ],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
