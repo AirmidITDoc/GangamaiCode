@@ -1,0 +1,34 @@
+<div class="menu-popup">
+  <div class="menu-popup__header">
+    <mat-icon class="menu-popup__icon">list_alt</mat-icon>
+    <div class="menu-popup__heading">
+      <span class="menu-popup__label">Diet Menu</span>
+      <span class="menu-popup__title" [title]="data.menuName">{{ data.menuName }}</span>
+    </div>
+    <button mat-icon-button mat-dialog-close aria-label="Close" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="menu-popup__body">
+    <div class="menu-popup__card" *ngIf="items.length; else noItems">
+      <table class="menu-popup__table">
+        <thead>
+          <tr><th>#</th><th>Food Item</th><th>Qty</th><th>Unit</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of items; let n = index">
+            <td>{{ n + 1 }}</td>
+            <td class="menu-popup__food">{{ i.name }}</td>
+            <td>{{ i.quantity || '-' }}</td>
+            <td>{{ i.unit || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noItems>
+      <div class="menu-popup__card menu-popup__empty">No items found for this menu.</div>
+    </ng-template>
+  </div>
+
+</div>

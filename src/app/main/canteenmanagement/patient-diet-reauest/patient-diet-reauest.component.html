@@ -114,13 +114,38 @@
                     </button>
                 </div> -->
     </mat-toolbar>
+
+    <ng-template #ItemNopopover let-element>
+        <span (mouseenter)="openMenuPopup(element, $event)" (mouseleave)="closeDetailsPopover1()"
+            style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
+            {{ element.dietMenuName }}
+        </span>
+    </ng-template>
+
+    <!-- <ng-template #dietMenuDetails let-element>
+        <div class="food-collapse-row">
+            <mat-chip-set>
+                <mat-chip
+                    *ngFor="let data of getDetailArray(element?.dietMenuDetails).slice(0, isExpanded(element) ? undefined : visibleCount)">
+                    {{ getDetailNames(data) }}
+                </mat-chip>
+                <mat-chip *ngIf="!isExpanded(element) && getDetailArray(element?.dietMenuDetails).length > visibleCount"
+                    class="more-chip"
+                    style="--mdc-chip-label-text-color: #fff; --mdc-chip-elevated-container-color: #3949AB;"
+                    (click)="expandRow(element)">
+                    +{{ getDetailArray(element?.dietMenuDetails).length - visibleCount }} more
+                </mat-chip>
+            </mat-chip-set>
+        </div>
+    </ng-template> -->
+
     <ng-template #ReqNopopover let-element>
         <span (mouseenter)="openDetailsPopover($event, element)" (mouseleave)="closeDetailsPopover()"
             style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
             {{ element.dietReqNo }}
         </span>
     </ng-template>
-     <ng-template #HeaderCancleTask>
+    <ng-template #HeaderCancleTask>
         <mat-toolbar class="accent dialog-header">
             <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -221,11 +246,7 @@
             <ng-template #actionButtonTemplate let-element>
 
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <!-- 
-                            <button mat-icon-button matTooltip="Print Diet Request"
-                                (click)="onPrint(element); $event.stopPropagation()">
-                                <mat-icon>print</mat-icon>
-                            </button> -->
+
 
                     <button mat-icon-button matTooltip="Detail Diet Request"
                         [disabled]="element.isAccept  || element.isCancelled"
@@ -304,7 +325,7 @@
                 </div>
 
             </div>
-        
+
             <!-- (onSelectRow)="onRowClick($event)" -->
             <airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowButtons="false"
                 (onSelectRow)="GetrequestdetailStatus($event)">
