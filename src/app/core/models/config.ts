@@ -136,10 +136,11 @@ export class ConfigSettingParams {
     IsClassWise: any;
     IsGroupWise: any;
     FollowUpdateSet: any;
-    IsOPCasePaperPrtWithoutPreview:any;
-    IsOPDDiscountApprovalReq:any;
-    IsIPDBillAfterSavePrint:any;
-    IsGeneralCasePaper:any;
+    IsOPCasePaperPrtWithoutPreview: any;
+    IsOPDDiscountApprovalReq: any;
+    IsIPDBillAfterSavePrint: any;
+    IsGeneralCasePaper: any;
+    IsDietRequstStatusChange: any;
     /**
         * Constructor
         *
@@ -284,8 +285,10 @@ export class ConfigSettingParams {
         this.IsChargeDateWithGroupWiseWithoutAdvance = ConfigSettingParams.IsChargeDateWithGroupWiseWithoutAdvance;
         this.FollowUpdateSet = ConfigSettingParams.FollowUpdateSet;
         this.IsOPDDiscountApprovalReq = ConfigSettingParams.IsOPDDiscountApprovalReq;
-         this.IsIPDBillAfterSavePrint = ConfigSettingParams.IsIPDBillAfterSavePrint;
+        this.IsIPDBillAfterSavePrint = ConfigSettingParams.IsIPDBillAfterSavePrint;
         this.IsGeneralCasePaper = ConfigSettingParams.IsGeneralCasePaper;
+        this.IsDietRequstStatusChange = ConfigSettingParams.IsDietRequstStatusChange;
+
     }
 
 }
@@ -399,6 +402,7 @@ export class ConfigSettingUserAccessParams {
     AccessInputValue: any;
     AccessValueName: any;
     EdiConsultDoctor: any
+    IsDietRequstStatusChange: any
     /**
         * Constructor
         *
@@ -413,6 +417,7 @@ export class ConfigSettingUserAccessParams {
         this.AccessInputValue = ConfigSettingUserAccessParams.AccessInputValue;
         this.AccessValueName = ConfigSettingUserAccessParams.AccessValueName
         this.EdiConsultDoctor = ConfigSettingUserAccessParams.EdiConsultDoctor
+        this.IsDietRequstStatusChange = ConfigSettingUserAccessParams.IsDietRequstStatusChange
     }
 
 }

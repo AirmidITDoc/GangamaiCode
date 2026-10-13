@@ -58,7 +58,8 @@ export class NewDietRequestComponent {
   registerObj: any;
   vAdmission: any;
   vipdNo: any;
-
+  DietMenuName = ''
+  dietMenuDetails = ''
 
   isShowPrintButtons: boolean = false;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
@@ -90,7 +91,7 @@ export class NewDietRequestComponent {
     this.dietmenuForm = this.createDietReqForm()
     this.MyForm = this.createMyForm()
     if (this.data) {
-      debugger
+
       this.registerObj = this.data
       this.dietReqId = this.data.dietReqId
 
@@ -103,7 +104,6 @@ export class NewDietRequestComponent {
     }
 
   }
-
 
   createMyForm() {
     return this._formbuilder.group({
@@ -121,7 +121,7 @@ export class NewDietRequestComponent {
       dietRestrictionId: [0],
       allergyId: [0],
       nutritionistId: [1],
-      // comments: [''],
+
     })
   }
 
@@ -131,7 +131,7 @@ export class NewDietRequestComponent {
       date: [this.datePipe.transform(new Date, 'yyyy-MM-dd')],
       time: [new Date()],
       unitId: [this.accountService.currentUserValue.user.unitId],
-      dietReqNo: "1", //--> auto increment
+      dietReqNo: "1",
       dietMenuId: [0],
 
       tDietPatReqDetails: this._formbuilder.array([]),
@@ -139,9 +139,9 @@ export class NewDietRequestComponent {
   }
 
   createDietDetReqDetails(item: any, dietFormValue: any): FormGroup {
-    debugger
+
     return this._formbuilder.group({
-      dietReqDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      dietReqDetId: [item.dietReqDetId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       dietReqId: [this.dietReqId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       orderDate: [this.datePipe.transform(new Date, 'yyyy-MM-dd')],
       orderTime: [new Date()],
@@ -156,12 +156,12 @@ export class NewDietRequestComponent {
       isPriority: true,
       comments: [item.comments ?? ''],
       status: 0,
-      isAccept: false,
-      isAcceptedBy: 0,
-      isAcceptedDateTime: ['1900-01-01'],
-      isDelived: false,
-      isDelivedBy: 0,
-      isDelivedDateTime: ['1900-01-01'],
+      isAccept: [!!item.isAccept],
+      isAcceptedBy: [item.isAcceptedBy ?? 0],
+      isAcceptedDateTime: [item.isAccept && item.isAcceptedDateTime ? item.isAcceptedDateTime : '1900-01-01'],
+      isDelived: [!!item.isDelivered],
+      isDelivedBy: [item.isDelivedBy ?? 0],
+      isDelivedDateTime: [item.isDelivered && item.isDelivedDateTime ? item.isDelivedDateTime : '1900-01-01'],
     });
   }
 
@@ -180,11 +180,11 @@ export class NewDietRequestComponent {
       apiUrl: "ClinicalCare/AdmisionListNursingList",
       columnsList: [
         // { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Bed", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Bed", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
       ],
       sortField: "RegNo",
       sortOrder: 0,
@@ -204,25 +204,13 @@ export class NewDietRequestComponent {
 
   // Whether the number of selected elements matches the total number of (enabled) rows
   isAllSelected(): boolean {
-    const numSelected = this.selection.selected.length;
-    const enabledRows = this.dataSource.data.filter(row => !row.disabled);
-    return numSelected === enabledRows.length && enabledRows.length > 0;
+    const toggleable = this.dataSource.data.filter(row => !this.isLocked(row));
+    return toggleable.length > 0 &&
+      toggleable.every(row => this.selection.isSelected(row));
   }
-
   // Whether some but not all rows are selected (for indeterminate state)
   isSomeSelected(): boolean {
     return this.selection.hasValue() && !this.isAllSelected();
-  }
-
-  // Selects all rows if not all selected; otherwise clears selection
-  masterToggle(): void {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.dataSource.data
-        .filter(row => !row.disabled)
-        .forEach(row => this.selection.select(row));
-    }
   }
 
   areAllRowsDisabled(): boolean {
@@ -230,47 +218,19 @@ export class NewDietRequestComponent {
   }
 
   removeChip(contact: any): void {
-    this.selection.toggle(contact); // deselect — this also unchecks the row's mat-checkbox automatically
+    if (contact.isAccept) return;
+    this.selection.deselect(contact);
+  }
+  remove(row: any) {
+    if (row.isAccept) return;
   }
 
-  // GetPatientdetail() {
+  editComment(row: any) {
+    if (row.isAccept) return;
 
-  //   const filters: any[] = [];
+  }
 
-  //   filters.push(
 
-  //     {
-  //       "fieldName": "PatientName",
-  //       "fieldValue": this.pname,
-  //       "opType": "Equals"
-  //     },
-  //     {
-  //       "fieldName": "WardId",
-  //       "fieldValue": String(this.wardid),
-  //       "opType": "Equals"
-  //     },
-  //     {
-  //       "fieldName": "DoctorId",
-  //       "fieldValue": String(this.doctorid),
-  //       "opType": "Equals"
-  //     }
-  //   );
-
-  //   const data = {
-  //     "first": 0,
-  //     "rows": 999999,
-  //     "sortField": "RegNo",
-  //     "sortOrder": 0,
-  //     "filters": filters,
-  //     "exportType": "JSON",
-  //     "columns": []
-  //   };
-  //   console.log(data)
-  //   this._ClinicalcareService.getSampleRecivedlist(data).subscribe((response) => {
-  //     this.dataSource.data = response.data;
-  //     console.log(this.dataSource.data)
-  //   });
-  // }
   GetPatientdetail(onLoaded?: () => void) {
     const filters: any[] = [];
 
@@ -296,7 +256,7 @@ export class NewDietRequestComponent {
     });
   }
   onChangeFirst() {
-    debugger
+
     this.pname = this.MyForm.get('PatientName').value + '%'
     this.wardid = this.MyForm.get('WardName').value
 
@@ -389,6 +349,37 @@ export class NewDietRequestComponent {
     }
   }
 
+  GetMenu($event) {
+
+    console.log($event)
+
+    this.DietMenuName = $event.text
+    const filters: any[] = [];
+
+    filters.push(
+      { fieldName: "DietMenuName", fieldValue: this.DietMenuName, opType: OperatorComparer.StartsWith },
+      { fieldName: "MealName", fieldValue: "0", opType: OperatorComparer.StartsWith },
+      { fieldName: "DietName", fieldValue: "0", opType: OperatorComparer.StartsWith }
+    );
+
+    const data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "DietMenuid",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+
+    this._ClinicalcareService.getMenuItem(data).subscribe((response) => {
+
+      const ItemDetails = response.data || [];
+      this.dietMenuDetails = response.data[0].dietMenuDetails
+
+      console.log(response.data)
+    })
+  }
 
   GetDetails() {
     const filters: any[] = [];
@@ -410,7 +401,7 @@ export class NewDietRequestComponent {
     this._ClinicalcareService.getdetaillist(data).subscribe((response) => {
       const existingDetails = response.data || [];
       console.log(response)
-      debugger
+
       if (existingDetails.length) {
         this.DietForm.get('mealTypeId').setValue(existingDetails[0].mealTypeId);
         this.DietForm.get('dietTypeId').setValue(existingDetails[0].dietTypeId);
@@ -418,17 +409,37 @@ export class NewDietRequestComponent {
 
       existingDetails.forEach((detail: any) => {
         const matchedRow = this.dataSource.data.find(
-          row => row.admissionID === detail.opipid
+          row => Number(row.admissionID) === Number(detail.opipid)
         );
         if (matchedRow) {
-          matchedRow.comments = detail.comments ?? '';   // <-- set comment onto the row BEFORE selecting
+          matchedRow.comments = detail.comments ?? '';
+          matchedRow.dietReqDetId = detail.dietReqDetId;
+          matchedRow.isAccept = !!detail.isAccept;
+          matchedRow.isAcceptedBy = detail.isAcceptedBy ?? 0;
+          matchedRow.isAcceptedDateTime = detail.isAcceptedDateTime;   // check the exact field name in your response
+          matchedRow.isDelivered = !!detail.isDelivered;
+          matchedRow.isDelivedBy = detail.isDelivedBy ?? 0;
+          matchedRow.isDelivedDateTime = detail.isDelivedDateTime;     // check the exact field name in your response
           this.selection.select(matchedRow);
         }
       });
     });
   }
+  masterToggle(): void {
+    const toggleable = this.dataSource.data.filter(row => !this.isLocked(row));
+    if (this.isAllSelected()) {
+      toggleable.forEach(row => this.selection.deselect(row));
+    } else {
+      toggleable.forEach(row => this.selection.select(row));
+    }
+  }
+
+  //
+  private isLocked(row: any): boolean {
+    return !!(row.disabled || row.isAccept);
+  }
   onCommentChange(item: any, value: string) {
-    debugger
+
     item.comments = value;
     console.log('Updated comment for', item.patientName, '→', item.comments, item);
   }
