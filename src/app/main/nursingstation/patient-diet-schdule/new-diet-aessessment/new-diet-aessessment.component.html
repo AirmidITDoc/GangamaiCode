@@ -1,0 +1,167 @@
+<div class="modal-wrapper grid-container resize-form-fields padding-fix">
+
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Diet Assessment for Patient</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" >
+        <div class="modal-body-container">
+            <div fxLayout="column" fxLayoutGap="12px">
+                <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
+
+                        <div fxLayout="row" fxLayoutGap="8px">
+                            <div fxFlex="90%" fxFlex.sm="100%">
+                                <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" fxFlex="50%"
+                                    formControlName="RegID" placeholderText="IP-RegNo/FirstName/LastName"
+                                    label="Search UHID / Patient Name / Mobile No"
+                                    ApiUrl="Admission/search-patient?Keyword="
+                                    (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                    TextField="formattedText">
+                                </airmid-autocomplete>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <mat-card class="patient-card">
+                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                    </div>
+                    <div class="Ipd-patient-info w-100-p">
+                        <app-patient-information [uhidNo]="data?.regNo"
+                            [patientName]="(data?.firstName || '') + (data?.middleName ? ' ' + data.middleName : '') + (data?.lastName ? ' ' + data.lastName : '') || data?.patientName"
+                            [doctorName]="data?.doctorname" [departmentName]="data?.departmentName"
+                            [doa]="data?.admissionDate" [ipdNo]="data?.ipdno"
+                            [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
+                            [refDocName]="data?.refDocName"
+                            [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
+                            [patientType]="data?.patientType" [tariffName]="data?.tariffName"
+                            [companyName]="data?.companyName"></app-patient-information>
+                    </div>
+                </mat-card>
+
+                <!-- Assessment form -->
+                <mat-card class="form-card">
+                    <form [formGroup]="DietForm" class="assessment-form">
+
+                        <h4 class="group-title">Vitals &amp; Anthropometry</h4>
+                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                            <div fxFlex="25" fxFlex.lt-md="50">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Height</mat-label>
+                                    <input matInput formControlName="height" placeholder="Height in cm" [maxLength]="20"
+                                        (keydown)="onEnter($event, 'weightField')" OnlyNumber
+                                        (keyup)="getBMIcalculation()" [(ngModel)]="vHeight"
+                                        (keypress)="keyPressNumeric($event)">
+                                    <span matSuffix style="font-size: x-large;">|</span>
+                                    <span matSuffix style="margin-right: 10px; font-size: x-large;">cm</span>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="25" fxFlex.lt-md="50">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Weight</mat-label>
+                                    <input matInput formControlName="weight" id="weightField" placeholder="Weight in Kg"
+                                        [maxLength]="20" (keydown)="onEnter($event, 'bmiField')" OnlyNumber
+                                        (keyup)="getBMIcalculation()" [(ngModel)]="vWeight"
+                                        (keypress)="keyPressNumeric($event)">
+                                    <span matSuffix style="font-size: x-large;">|</span>
+                                    <span matSuffix style="margin-right: 10px; font-size: x-large;">kg</span>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="25" fxFlex.lt-md="50">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>BMI</mat-label>
+                                    <input matInput formControlName="bmi" placeholder="BMI" readonly [(ngModel)]="vBMI"
+                                        id="bmiField" (keydown)="onEnter($event, 'bslField')"
+                                        [style.color]="getVitalColorClass('BMI', vBMI)" [style.fontWeight]="'500'" />
+                                </mat-form-field>
+
+                            </div>
+                            <div fxFlex>
+                                <airmid-dropdown label="Nutrition Risk" formControlName="nutritionRisk"
+                                    [formGroup]="DietForm" [validations]="getValidationMessages().nutritionRisk"
+                                    [mode]="autocompleteModeSeverity" (SelectionChange)="ChangedietType($event)">
+                                </airmid-dropdown>
+                            </div>
+                        </div>
+
+                        <h4 class="group-title">Assessment Details</h4>
+                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                            <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="50">
+                                <mat-label>Assessment Date</mat-label>
+                                <input matInput [matDatepicker]="assessmentDate" formControlName="assessmentDate" />
+                                <mat-datepicker-toggle matSuffix [for]="assessmentDate"></mat-datepicker-toggle>
+                                <mat-datepicker #assessmentDate></mat-datepicker>
+                            </mat-form-field>
+
+                            <airmid-dropdown label="Assessed By" formControlName="assessedBy" [formGroup]="DietForm"
+                                fxFlex="25" fxFlex.lt-md="50" [value]="data?.assessedBy"
+                                [validations]="getValidationMessages().assessedBy"
+                                [mode]="autocompleteModedeptdoc"></airmid-dropdown>
+
+                            <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="50">
+                                <mat-label>Food Preference</mat-label>
+                                <mat-select formControlName="foodPreference">
+                                    <mat-option *ngFor="let f of foodPreferenceList" [value]="f">{{ f }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="50">
+                                <mat-label>Nutritional Status</mat-label>
+                                <mat-select formControlName="nutritionalStatus">
+                                    <mat-option *ngFor="let s of nutritionalStatusList" [value]="s">{{ s }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                            <div fxFlex="50" fxFlex.lt-md="100">
+                                <airmid-textbox label="Allergies" formControlName="allergies" [formGroup]="DietForm"
+                                    [validations]="getValidationMessages().allergies"
+                                    [maxLength]="100"></airmid-textbox>
+                            </div>
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="100">
+                                <mat-label>Special Instructions</mat-label>
+                                <textarea matInput rows="2" formControlName="specialInstructions"></textarea>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Dietitian Notes</mat-label>
+                                <textarea matInput rows="3" formControlName="dietitianNotes"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </mat-card>
+
+            </div>
+        </div>
+    </div>
+
+
+   <div class="modal-footer">
+    <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="12px"
+        style="margin-bottom:10px;">
+        <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"> Cancel </button>
+        <button type="button" class="btn btn-primary" (click)="onSave()"> Save </button>
+    </div>
+</div>
+</div>

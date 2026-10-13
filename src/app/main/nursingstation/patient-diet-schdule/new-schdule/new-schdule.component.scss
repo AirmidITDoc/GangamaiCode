@@ -1,0 +1,108 @@
+.da-page { padding: 16px; background: #f5f7fb; font-family: inherit; }
+
+.da-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+  h2 { margin: 0; font-size: 22px; }
+  p  { margin: 2px 0 0; color: #6b7280; font-size: 13px; }
+}
+
+.risk-pill {
+  padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 13px;
+  &.low    { background: #e6f6ea; color: #1b7f3b; }
+  &.medium { background: #fff4de; color: #b26a00; }
+  &.high   { background: #fde7e7; color: #c62828; }
+}
+
+.patient-card {
+  display: flex; gap: 16px; align-items: center; padding: 14px 16px; margin-bottom: 14px;
+  background: #fff; border: 1px solid #e3e8ef; border-left: 5px solid #3b82f6; border-radius: 10px;
+  .avatar {
+    width: 48px; height: 48px; border-radius: 50%; background: #e8f1fd; color: #2563eb;
+    display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700;
+  }
+  .p-grid {
+    flex: 1; display: grid; gap: 10px 16px;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    label { display: block; font-size: 11px; color: #6b7280; }
+    strong { font-size: 13.5px; }
+  }
+}
+
+.da-grid {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.card {
+  background: #fff; border: 1px solid #e3e8ef; border-radius: 10px;
+  padding: 14px 16px; box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  h3 { margin: 0 0 12px; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+}
+
+.num {
+  width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 13px;
+  display: inline-flex; align-items: center; justify-content: center;
+  &.blue { background: #3b82f6; } &.green { background: #4caf50; }
+  &.orange { background: #f57c00; } &.purple { background: #6b46c1; }
+  &.teal { background: #1da1a8; } &.red { background: #e53935; }
+}
+
+.fields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 12px; }
+
+.f {
+  display: flex; flex-direction: column; gap: 4px; margin-bottom: 4px;
+  label { font-size: 12px; color: #4b5563; font-weight: 500; }
+  input, select, textarea {
+    height: 34px; padding: 0 10px; font-size: 13px; border: 1px solid #cfd6e0;
+    border-radius: 6px; background: #fff; outline: none;
+    &:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,.15); }
+  }
+}
+textarea { width: 100%; height: auto; padding: 8px 10px; font-size: 13px;
+  border: 1px solid #cfd6e0; border-radius: 6px; resize: vertical; box-sizing: border-box; }
+
+.lbl { display: block; margin: 10px 0 6px; font-size: 12px; color: #4b5563; font-weight: 500; }
+
+.bmi-box {
+  height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 10px;
+  border-radius: 6px; background: #f1f5f9;
+  small { font-size: 11px; }
+  &.good { background: #e6f6ea; color: #1b7f3b; }
+  &.warn { background: #fff4de; color: #b26a00; }
+  &.bad  { background: #fde7e7; color: #c62828; }
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 4px 12px; font-size: 12px; border: 1px solid #cfd6e0; border-radius: 16px;
+  cursor: pointer; user-select: none; background: #fff;
+  &.on { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+}
+
+.q {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px dashed #e3e8ef; font-size: 13px;
+}
+.seg {
+  display: inline-flex;
+  button {
+    padding: 4px 14px; font-size: 12px; border: 1px solid #cfd6e0; background: #fff; cursor: pointer;
+    &:first-child { border-radius: 6px 0 0 6px; } &:last-child { border-radius: 0 6px 6px 0; border-left: 0; }
+    &.on { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+  }
+}
+.score {
+  margin-top: 12px; padding: 8px 12px; border-radius: 6px; font-size: 13px;
+  &.low { background: #e6f6ea; } &.medium { background: #fff4de; } &.high { background: #fde7e7; }
+}
+
+.notes { margin-top: 14px; }
+
+.actions {
+  display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;
+  button { padding: 8px 22px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+  .btn-clear { background: #fff; border: 1px solid #cfd6e0; }
+  .btn-save  { background: #4caf50; border: 0; color: #fff; font-weight: 600; }
+}
+
+@media (max-width: 600px) { .fields { grid-template-columns: 1fr; } }

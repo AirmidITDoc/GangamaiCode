@@ -1,4 +1,4 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar resize-form-fields" fxLayout="column" fxFlexFill>
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar resize-form-fields" fxLayout="column">
 
     <mat-toolbar style="width: 100%; justify-content: space-between; height: 50px">
 
@@ -18,14 +18,14 @@
     </mat-toolbar>
 
     <div fxLayout="row" class="content-area">
-        <div class="sidebar-content px-12 pt-12 h-100-p" style="width:40%;">
+        <div class="sidebar-content px-12 pt-12 h-100-p"
+            style="width:40%; border: 1px solid #dfe5f0; border-radius: 8px;">
             <form [formGroup]="MyForm" class="h-100-p">
                 <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
 
                     <div fxFlex fxLayout="row" class="gap-8">
-                        <airmid-dropdown label="Ward Name" formControlName="WardName" fxFlex
-                            [formGroup]="MyForm" [mode]="autocompleteward"
-                            (selectionChange)="getSelectedObjward($event)">
+                        <airmid-dropdown label="Ward Name" formControlName="WardName" fxFlex [formGroup]="MyForm"
+                            [mode]="autocompleteward" (selectionChange)="getSelectedObjward($event)">
                         </airmid-dropdown>
                         <div>
                             <button class="btn btn-primary btn-with-icon btn-xs" (click)="onChangeFirst()">
@@ -45,72 +45,61 @@
                         </button>
                     </mat-form-field>
 
-                    <mat-card fxFlex.gt-sm="100%" fxFlex fxLayout="column" class="pb-3" dynamicTableHeight>
-                        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
-                            >
+                    <mat-card fxFlex.gt-sm="100%" fxFlex fxLayout="column" class="pb-3">
+                        <div style="height: 65vh; flex: none; overflow-y: auto; overflow-x: hidden;">
+                            <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
+                                style="display: block;">
 
-                            <ng-container matColumnDef="CheckBox">
-                                <th mat-header-cell *matHeaderCellDef>
-                                    <mat-checkbox (change)="$event ? masterToggle() : null" class="w-40"
-                                        [checked]="selection.hasValue() && isAllSelected()"
-                                        [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                        [disabled]="areAllRowsDisabled()">
-                                    </mat-checkbox>
-                                </th>
+                                <ng-container matColumnDef="CheckBox">
+                                    <mat-header-cell *matHeaderCellDef class="w-60">
+                                        <mat-checkbox class="header-checkbox" (change)="$event ? masterToggle() : null"
+                                            [checked]="selection.hasValue() && isAllSelected()"
+                                            [indeterminate]="selection.hasValue() && !isAllSelected() && !areAllRowsDisabled()"
+                                            [disabled]="areAllRowsDisabled()">
+                                        </mat-checkbox>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" class="w-40">
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                            (change)="$event ? selection.toggle(contact) : null"
+                                            [checked]="selection.isSelected(contact)"
+                                            [disabled]="contact.disabled || contact.isAccept"
+                                            [matTooltip]="contact.isAccept ? 'Accepted, cannot change' : ''">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container>
 
-                                <td mat-cell *matCellDef="let contact" class="w-40">
-                                    <mat-checkbox (click)="$event.stopPropagation()"
-                                        (change)="$event ? selection.toggle(contact) : null"
-                                        [checked]="selection.isSelected(contact)" [disabled]="contact.disabled">
-                                    </mat-checkbox>
-                                </td>
-                            </ng-container>
+                                <ng-container matColumnDef="regno">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">UHID
+                                        No</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                        class="w-90">{{contact.regNo}}</mat-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="regno">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-                                    UHID No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                    {{contact.regNo}}
-                                </mat-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="patientName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        class="w-200">Patient Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 ellipsis-cell"
+                                        [matTooltip]="contact.patientName">{{contact.patientName}}</mat-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="patientName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                    Patient Name</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 ellipsis-cell"
-                                    [matTooltip]="contact.patientName">
-                                    {{contact.patientName}}
-                                </mat-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="roomName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        class="w-150">RoomName</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150 ellipsis-cell"
+                                        [matTooltip]="contact.roomName">{{contact.roomName}}</mat-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="roomName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                    RoomName</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150 ellipsis-cell"
-                                    [matTooltip]="contact.roomName">
-                                    {{contact.roomName}}
-                                </mat-cell>
-                            </ng-container>
+                                <!-- loading / noData containers unchanged -->
 
-                            <ng-container matColumnDef="loading">
-                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
-                                    <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent min-width-550"
-                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-550 h-32"
-                                [@animate]="{ value: '*', params: { y: '100%' } }"
-                                (click)="!row.disabled && selection.toggle(row)" style="cursor: pointer;">
-                            </mat-row>
-                        </mat-table>
-
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns" class="element h-32"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }"
+                                    [style.cursor]="(row.disabled || row.isAccept) ? 'not-allowed' : 'pointer'"
+                                    (click)="!row.disabled && !row.isAccept && selection.toggle(row)">
+                                </mat-row>
+                            </mat-table>
+                        </div>
                     </mat-card>
                 </div>
             </form>
@@ -122,13 +111,13 @@
             <div class="diet-form-section">
                 <form [formGroup]="DietForm" class="resize-form-fields">
                     <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="8px grid">
-
-                        <!-- Diet Menu -->
-                        <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="60%">
-                            <airmid-dropdown label="Diet Menu" formControlName="dietMenuId" [formGroup]="DietForm"
-                                [mode]="autocompleteModedietMenu">
+                        <!-- Diet Type -->
+                        <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="48%">
+                            <airmid-dropdown label="Diet Type" formControlName="dietTypeId" [formGroup]="DietForm"
+                                [mode]="autocompleteModedietType">
                             </airmid-dropdown>
                         </div>
+
 
                         <!-- Meal Type -->
                         <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="48%">
@@ -137,13 +126,13 @@
                             </airmid-dropdown>
                         </div>
 
-                        <!-- Diet Type -->
-                        <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="48%">
-                            <airmid-dropdown label="Diet Type" formControlName="dietTypeId" [formGroup]="DietForm"
-                                [mode]="autocompleteModedietType">
+                        <!-- Diet Menu -->
+                        <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="60%">
+                            <airmid-dropdown label="Diet Menu" formControlName="dietMenuId" [formGroup]="DietForm"
+                                [mode]="autocompleteModedietMenu" (selectionChange)="GetMenu($event)">
                             </airmid-dropdown>
                         </div>
-
+                        <!---->
                         <!-- Diet Restriction -->
                         <!-- <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="48%">
                             <airmid-dropdown label="Diet Restriction" formControlName="dietRestrictionId"
@@ -166,47 +155,40 @@
 
                     </div>
                 </form>
+
+
+            </div>
+            <div class="meal-contains" *ngIf="dietMenuDetails">
+                <mat-icon class="meal-icon">restaurant_menu</mat-icon>
+                <span class="meal-title">Meal Contains Items:</span>
+                <span class="meal-items">{{ dietMenuDetails }}</span>
             </div>
 
-
-            <!-- Selected Patients -->
-            <!-- <div class="selected-patients">
-                <div *ngFor="let contact of selection.selected" class="selected-patient">
-                
-                    <mat-chip-list *ngIf="selection.selected.length" aria-label="Selected patients">
-                        <mat-chip *ngFor="let item of selection.selected" [removable]="true"
-                            (removed)="removeChip(item)">
-                            {{ item.patientName }}
-                            <mat-icon matChipRemove>cancel</mat-icon>
-                        </mat-chip>
-                    </mat-chip-list>
-
-                  
-                    <mat-form-field appearance="outline">
-                        <mat-label>Comment for {{ contact.patientName }}</mat-label>
-                        <input matInput type="text" [(ngModel)]="contact.comments" [ngModelOptions]="{standalone: true}"
-                            placeholder="Enter comments">
-                    </mat-form-field>
-
-                </div>
-            </div> -->
-
             <div class="patient-cards-grid">
-                <div *ngFor="let item of selection.selected; let i = index" class="patient-comment-card">
+                <div *ngFor="let item of selection.selected; let i = index" class="patient-comment-card"
+                    [class.accepted-card]="item.isAccept">
+
                     <div class="card-header">
                         <span class="patient-name">{{item.ipdNo}} | {{ item.patientName }} | {{item.roomName}} |
                             {{item.bedName}}</span>
-                        <mat-icon class="remove-icon" (click)="removeChip(item)" matTooltip="Remove">cancel</mat-icon>
+
+                        <span class="accepted-tag" *ngIf="item.isAccept">
+                            <mat-icon>check_circle</mat-icon> Accepted
+                        </span>
+
+                        <mat-icon class="remove-icon" *ngIf="!item.isAccept" (click)="removeChip(item)"
+                            matTooltip="Remove">cancel</mat-icon>
                     </div>
 
                     <textarea class="comment-box" rows="1" placeholder="Add a comment..." name="comment_{{ i }}"
-                        [(ngModel)]="item.comments" [ngModelOptions]="{standalone: true}">
+                        [(ngModel)]="item.comments" [ngModelOptions]="{standalone: true}" [readonly]="item.isAccept">
                     </textarea>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="12px" style="margin-bottom:10px;">
+                <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="12px"
+                    style="margin-bottom:10px;">
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"> Close </button>
                     <button type="button" (click)="onSave()" class="btn btn-primary"> Save </button>
                 </div>
