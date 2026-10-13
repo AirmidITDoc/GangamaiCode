@@ -143,7 +143,11 @@ export class DietRequestService {
     public getRequestlist(employee) {
         return this._httpClient1.PostData("DietPatientRequest/DietPatientRequestHeaderList", employee)
     }
-     public getRequestdetaillist(employee) {
+    public getRequestdetaillist(employee) {
         return this._httpClient1.PostData("DietPatientRequest/DietPatientRequestDetailsList", employee)
+    }
+
+    public getMenuItem(employee) {
+        return this._httpClient1.PostData("DietMenuMaster/DietmenumasterList", employee)
     }
 }

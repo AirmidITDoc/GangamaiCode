@@ -133,6 +133,12 @@
             <button class="btn btn-primary" (click)="HeaderRequestCancle()">Save</button>
         </div>
     </ng-template>
+    <ng-template #ItemNopopover let-element>
+        <span (mouseenter)="openMenuPopup(element, $event)" (mouseleave)="closeDetailsPopover1()"
+            style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
+            {{ element.dietMenuName }}
+        </span>
+    </ng-template>
     <ng-template #ReqNopopover let-element>
         <span (mouseenter)="openDetailsPopover($event, element)" (mouseleave)="closeDetailsPopover()"
             style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
@@ -211,18 +217,20 @@
             <ng-template #actionButtonTemplate let-element>
 
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button color="primary" [disabled]="element.isAccept  || element.isCancelled"
-                        (click)="Edit(element)" matTooltip="Edit Diet Request">
+                    <button mat-icon-button color="primary"
+                        [disabled]="!element.isCancelled && element.allAccepted === 1" (click)="Edit(element)"
+                        matTooltip="Edit Diet Request">
                         <mat-icon>edit</mat-icon>
                     </button>
 
 
                     <button mat-stroked-button color="warn" class="cancel-diet-btn"
                         (click)="openheadercancletask(element)" matTooltip="Cancel Diet Request"
-                        *ngIf="!element.isCancelled && !element.allAccepted">
-
+                        *ngIf="canCancel(element)">
                         <span>Cancel</span>
                     </button>
+
+
                     <!-- <button mat-icon-button (click)="WorkFlow(element)" aria-label="Work Flow" matTooltip="Work Flow">
                         <mat-icon style="background-color: rgb(155, 155, 235);">view</mat-icon>
                     </button> -->
@@ -298,7 +306,7 @@
                             [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
                         <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>DietReqId</mat-label>
+                            <mat-label>Diet Request No</mat-label>
                             <input matInput placeholder="Search Diet Req No" autocomplete="off"
                                 (keypress)="keyPressAlphanumeric($event)" [formGroup]="myFilterform"
                                 formControlName="DietReqId" (input)="onChangeFirst()" />
