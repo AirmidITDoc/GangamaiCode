@@ -239,10 +239,10 @@ export class CurrentStockComponent implements OnInit {
     // }
 
     alldayWiseColumn = [
-        { heading: "LedgerDate", key: "ledgerDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "LedgerDate", key: "ledgerDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
         { heading: "Unit MRP", key: "unitMrp", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "PurUnit Rate", key: "purUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -253,10 +253,11 @@ export class CurrentStockComponent implements OnInit {
     alldayWiseFilter = [
         {
             fieldName: "LedgerDate",
-            fieldValue: (() => {
-                const now = new Date();
-                return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}`;
-            })(),
+            fieldValue: String(this.onlyStart),
+            // fieldValue: (() => {
+            //     const now = new Date();
+            //     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}`;
+            // })(),
             opType: OperatorComparer.StartsWith
         },
         { fieldName: "StoreId", fieldValue: String(this.storeDayWise), opType: OperatorComparer.Equals },
@@ -272,9 +273,8 @@ export class CurrentStockComponent implements OnInit {
         filters: this.alldayWiseFilter
     }
 
-    onChangedayWise() {
-        
-        // this.onlyStart = this.formattedDate
+    onChangedayWise() { 
+         this.onlyStart =  this.datePipe.transform(this._CurrentStockService.dayWiseForm.get('start').value, "yyyy-MM-dd 00:00:00.000")
         this.getfilterdayWise();
     }
 
@@ -286,7 +286,7 @@ export class CurrentStockComponent implements OnInit {
             sortField: "SalesNo",
             sortOrder: 0,
             filters: [
-                { fieldName: "LedgerDate", fieldValue: this.formattedDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "LedgerDate", fieldValue: this.onlyStart, opType: OperatorComparer.StartsWith },
                 { fieldName: "StoreId", fieldValue: String(this.storeDayWise), opType: OperatorComparer.Equals },
                 { fieldName: "ItemId", fieldValue: String(this.DaywiseitemName), opType: OperatorComparer.Equals },
             ]

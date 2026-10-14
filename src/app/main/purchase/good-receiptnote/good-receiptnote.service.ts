@@ -259,4 +259,8 @@ export class GoodReceiptnoteService {
         }
         return this._httpClient1.PostData("GRN/Podetaillist", Param);
     }
+ 
+        public getReportHtml(Param) {
+        return this._httpClient1.PostData("Report/get-report-html", Param);
+    }
 }

@@ -29,6 +29,8 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -51,7 +53,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     Filepath: any;
     currentDate = new Date();
     IsLoading: boolean = false;
-
+    vstickgrnid:any=0;
     fromDate: any = "";
     toDate: any = "";
     StoreId: any = "0";
@@ -70,14 +72,16 @@ export class GoodReceiptnoteComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateIsClose') actionButtonTemplateIsClose!: TemplateRef<any>;
-    @ViewChild('actionButtonTemplateIscheck') actionButtonTemplateIscheck!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateEditsupplier') actionButtonTemplateEditsupplier!: TemplateRef<any>;
+    @ViewChild('actionButtonSticker') actionButtonSticker!: TemplateRef<any>;
+
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus;
         this.gridConfig.columnsList.find(col => col.key === 'isClosed')!.template = this.actionButtonTemplateIsClose;
         this.gridConfig.columnsList.find(col => col.key === 'editSupplier')!.template = this.actionButtonTemplateEditsupplier;
-        this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateIscheck;
+        this.gridConfig1.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonSticker;
+
 
     }
     AllColumns = [
@@ -115,9 +119,10 @@ export class GoodReceiptnoteComponent implements OnInit {
     ]
 
     AllDetailsColumns = [
+      
         {
-            heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA', width: 60, type: gridColumnTypes.template,
-            template: this.actionButtonTemplateIscheck
+            heading: "-", key: "Status", align: "right", width: 90, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonSticker
         },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UMO", key: "umo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -178,13 +183,14 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     getSelectedRow(event) {
         console.log(event)
+        this.vstickgrnid= event?.grnid || 0;
         this.isShowDetailTable = true;
         this.gridConfig1 = {
             apiUrl: "GRN/GRNDetailsList",
             columnsList: [
                 {
-                    heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA', width: 60, type: gridColumnTypes.template,
-                    template: this.actionButtonTemplateIscheck
+                    heading: "-", key: "Status", align: "right", width: 90, sticky: true, type: gridColumnTypes.template,
+                    template: this.actionButtonSticker
                 },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "UMO", key: "umo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -867,6 +873,35 @@ export class GoodReceiptnoteComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
         });
+    }
+
+        
+    OnItemStickerstPrint(element) {
+        if (this.vstickgrnid && element?.itemId) {
+            setTimeout(() => {
+                const param = {
+                    "searchFields": [
+                        { "fieldName": "GrnId", "fieldValue": String(this.vstickgrnid), "opType": "13" },
+                        { "fieldName": "ItemId", "fieldValue": String(element?.itemId), "opType": "13" }
+                    ],
+                    "mode": "GRNStickerPrint"
+                }
+                this._GRNService.getReportHtml(param).subscribe(res => {
+                     const matDialog = this._matDialog.open(HtmlviewerComponent,
+                                       {
+                                           maxWidth: "85vw",
+                                           height: '750px',
+                                           width: '100%',
+                                           data: {
+                                               html: res["html"] as string,
+                                               title: res["title"]
+                                           }
+                                       });
+                    matDialog.afterClosed().subscribe(result => {
+                    });
+                });
+            }, 100);
+        }
     }
 }
 
