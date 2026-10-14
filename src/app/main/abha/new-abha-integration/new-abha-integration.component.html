@@ -33,7 +33,8 @@
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)" *ngIf="element.abhaTranId > 0">
+                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
+                    <!--  *ngIf="element.abhaTranId > 0" -->
                     <mat-icon>edit</mat-icon>
                 </button>
             </div>

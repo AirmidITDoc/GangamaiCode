@@ -1,199 +1,289 @@
 .doctor-details-popover-container {
-    width: 950px;
+    width: 1100px;
     max-width: calc(100vw - 16px);
-    max-height: calc(100vh - 16px);   // never taller than the screen
+    max-height: calc(100vh - 16px);
     display: flex;
     flex-direction: column;
     padding: 0;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    background: #F1F5F9;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.14);
     overflow: hidden;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 
-    .popover-header {
-        background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-        color: white;
-        padding: 16px 20px;
-        margin-bottom: 0;
-        flex: 0 0 auto;
+    /* Header */
+    mat-toolbar {
+        flex: 0 0 50px;
+        height: 50px;
+        min-height: 50px;
+        padding: 0 16px;
+        background: linear-gradient(135deg, #155E75 0%, #164E63 100%);
+        color: #FFFFFF;
+        border-bottom: 1px solid #134E4A;
+        font-size: 16px;
+        font-weight: 500;
 
-        h3 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-
-            .header-icon {
-                font-size: 24px;
-                width: 24px;
-                height: 24px;
-            }
+        mat-icon {
+            color: #FFFFFF;
         }
     }
 
-    .popover-body {
-        padding: 20px;
+    /* Main content */
+    .p-12 {
+        padding: 12px;
         flex: 1 1 auto;
         min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: #F1F5F9;
+    }
+
+    /* Three cards per row */
+    .diet-detail-grid {
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: 400px;
         overflow-y: auto;
+        overflow-x: hidden;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        align-content: start;
+        padding: 2px 5px 5px 2px;
+    }
 
-        .loading-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            gap: 16px;
+    /* Individual patient card */
+    .diet-detail-card {
+        margin: 0;
+        min-width: 0;
+        background: #FFFFFF;
+        border: 1px solid #D9E2EC;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+        transition: border-color 0.2s ease,
+            box-shadow 0.2s ease;
 
-            p {
-                margin: 0;
-                color: #666;
-                font-size: 14px;
-            }
+        &:hover {
+            border-color: #7DD3D7;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.10);
         }
 
-        .no-data {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            gap: 12px;
-            color: #999;
-
-            mat-icon {
-                font-size: 48px;
-                width: 48px;
-                height: 48px;
-                color: #ccc;
-            }
-
-            p {
-                margin: 0;
-                font-size: 14px;
-            }
+        mat-card-content {
+            padding: 12px;
+            margin-bottom: 0;
+            color: #334155;
         }
+    }
 
-        .details-content {
-            .detail-section {
-                margin-bottom: 24px;
+    /* Patient name */
+    .patient-name {
+        display: block;
+        min-width: 0;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.45;
+        color: #0F172A;
+        overflow-wrap: anywhere;
+    }
 
-                &:last-child {
-                    margin-bottom: 0;
-                }
+    /* Room name */
+    .room-name {
+        margin-top: 5px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #64748B;
+        overflow-wrap: anywhere;
+    }
 
-                .section-title {
-                    margin: 0 0 12px 0;
-                    font-size: 15px;
-                    font-weight: 600;
-                    color: #4CAF50;
-                    padding-bottom: 8px;
-                    border-bottom: 2px solid #e0e0e0;
-                }
+    /* Meal and diet */
+    .meal-name {
+        margin-top: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.5;
+        color: #0F766E;
+        overflow-wrap: anywhere;
+    }
 
-                .detail-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 8px;
+    /* Accepted/delivered status rows */
+    .status-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 10px;
+        min-width: 0;
+    }
 
-                    .detail-item {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 4px;
+    /* Username */
+    .status-user {
+        min-width: 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #475569;
+        overflow-wrap: anywhere;
+    }
 
-                        &.full-width {
-                            grid-column: 1 / -1;
-                        }
+    /* Comments */
+    .comments {
+        margin-top: 10px;
+        padding-top: 9px;
+        border-top: 1px solid #E2E8F0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #475569;
+        overflow-wrap: anywhere;
+    }
 
-                        .detail-label {
-                            font-size: 12px;
-                            font-weight: 600;
-                            color: #041d2b;
-                            text-transform: uppercase;
-                            letter-spacing: 0.5px;
-                        }
+    /* Cancellation details */
+    .cancel-details {
+        margin-top: 8px;
+        padding: 8px;
+        background: #FEF2F2;
+        border: 1px solid #FECACA;
+        border-radius: 6px;
+        font-size: 11px;
+        line-height: 1.5;
+        color: #991B1B;
+        overflow-wrap: anywhere;
+    }
 
-                        .detail-value {
-                            font-size: 14px;
-                            color: #333;
-                            font-weight: 500;
-                            word-break: break-word;
-                        }
-                    }
-                }
-            }
-        }
+    /* Empty list message */
+    .no-data {
+        padding: 30px 12px;
+        text-align: center;
+        font-size: 13px;
+        color: #64748B;
     }
 }
 
-// Scrollbar styling
-.doctor-details-popover-container .popover-body::-webkit-scrollbar {
+/* Status badges */
+.status-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    max-width: 100%;
+    min-width: 0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+
+    mat-icon {
+        flex-shrink: 0;
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+    }
+}
+
+/* Accepted */
+.status-completed {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+/* Pending acceptance */
+.status-pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+/* Delivered */
+.status-received {
+    background: #DCFCE7;
+    color: #166534;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Pending delivery / Cancelled */
+.status-not-requested {
+    background: #FEE2E2;
+    color: #991B1B;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Scrollbar */
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar {
     width: 6px;
 }
 
-.doctor-details-popover-container .popover-body::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.doctor-details-popover-container .popover-body::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 8px;
+}
 
-    &:hover {
-        background: #555;
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+.time-required {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    padding: 5px 9px;
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 6px;
+    color: #1D4ED8;
+    font-size: 12px;
+    font-weight: 600;
+
+    mat-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
     }
 }
 
-.status-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  white-space: nowrap;
-  min-width: 120px;
+/* Tablet: two cards per row */
+@media (max-width: 850px) {
+    .doctor-details-popover-container {
+        width: calc(100vw - 16px);
+
+        .diet-detail-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
 }
 
-.status-completed,
-.status-pending {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-  writing-mode: horizontal-tb;
-  /* force horizontal text */
-}
+/* Mobile: one card per row */
+@media (max-width: 520px) {
+    .doctor-details-popover-container {
+        width: calc(100vw - 16px);
+        max-height: calc(100vh - 16px);
 
-.status-completed {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
+        .p-12 {
+            padding: 8px;
+        }
 
-.status-pending {
-  background-color: #fff8e1;
-  color: #f57f17;
-}
+        .diet-detail-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 8px;
+            max-height: 400px;
+        }
 
-.status-not-requested {
-  background-color: #ffebee;
-  /* light red */
-  color: #c62828;
-  /* dark red text */
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-weight: 600;
-}
-
-.status-received {
-  background-color: #e8f5e9;
-  /* light green */
-  color: #2e7d32;
-  /* dark green text */
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-weight: 600;
+        .diet-detail-card mat-card-content {
+            padding: 10px;
+        }
+    }
 }

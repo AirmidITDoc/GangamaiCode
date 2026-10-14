@@ -38,23 +38,27 @@
               </div>
               <div class="kv-row">
                 <span class="k">First Name</span>
-                <span class="v">{{ profile.firstName || '—' }}</span>
+                <span class="v">{{ profile.firstName || fname || '—' }}</span>
               </div>
               <div class="kv-row">
                 <span class="k">Middle Name</span>
-                <span class="v">{{ profile.middleName || '—' }}</span>
+                <span class="v">{{ profile.middleName || mname || '—' }}</span>
               </div>
               <div class="kv-row">
                 <span class="k">Last Name</span>
-                <span class="v">{{ profile.lastName || '—' }}</span>
+                <span class="v">{{ profile.lastName || lname || '—' }}</span>
               </div>
               <div class="kv-row">
                 <span class="k">Full Name</span>
                 <span class="v">{{ profile.name ?? '—' }}</span>
               </div>
+              <!-- <div class="kv-row">
+                <span class="k">Date of Birth</span>
+                <span class="v">{{ profile.dob | date:'dd-MM-yyyy'}}</span>
+              </div> -->
               <div class="kv-row">
                 <span class="k">Date of Birth</span>
-                <span class="v">{{ profile.dob | date:'dd-MM-yyyy' }}</span>
+                <span class="v">{{ formatDob(profile.dob) }}</span>
               </div>
               <div class="kv-row">
                 <span class="k">Day / Month / Year</span>
@@ -66,19 +70,19 @@
               </div>
               <div class="kv-row">
                 <span class="k">Mobile</span>
-                <span class="v mono">{{ profile.mobile || '—' }}</span>
+                <span class="v mono">{{ profile.mobile || mobileNoSV || '—' }}</span>
               </div>
               <div class="kv-row">
                 <span class="k">Pincode</span>
-                <span class="v mono">{{ profile.pinCode || '—' }}</span>
+                <span class="v mono">{{ profile.pinCode || pincodeSV || '—' }}</span>
               </div>
               <div class="kv-row">
                 <span class="k">District</span>
-                <span class="v mono">{{ profile.districtName || '—' }}</span>
+                <span class="v mono">{{ profile.districtName || districSV || '—' }}</span>
               </div>
               <div class="kv-row">
                 <span class="k">State</span>
-                <span class="v mono">{{ profile.stateName || '—' }}</span>
+                <span class="v mono">{{ profile.stateName || stateSV || '—' }}</span>
               </div>
               <div class="kv-row full-width">
                 <span class="k">Address</span>

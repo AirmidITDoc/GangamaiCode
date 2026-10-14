@@ -48,11 +48,17 @@
 
                                     <div class="gap-8" fxLayout="row">
 
-                                        <button mat-raised-button color="primary" (click)="GetPatientEncounterDetails()"
+                                        <button mat-raised-button color="primary" (click)="checkOPPending()"
+                                            *ngIf="selection.hasValue()"
+                                            [disabled]="isEncounterCompleted || isEncounterInProgress">
+                                            Patient Encounter
+                                        </button>
+
+                                        <!-- <button mat-raised-button color="primary" (click)="GetPatientEncounterDetails()"
                                             *ngIf="selection.hasValue()"
                                             [disabled]="isEncounterCompleted || isEncounterInProgress">
                                             {{ isEncounterInProgress ? 'Processing...' : 'GetPatientEncounterDetails' }}
-                                        </button>
+                                        </button> -->
 
                                         <button mat-raised-button color="accent" (click)="GetCarecontextDetails()"
                                             *ngIf="selection.hasValue()"
@@ -201,12 +207,18 @@
 
                                     <div class="gap-8" fxLayout="row">
 
-                                        <button mat-raised-button color="primary"
+                                        <button mat-raised-button color="primary" (click)="checkIPPending()"
+                                            *ngIf="selection1.hasValue()"
+                                            [disabled]="isIPEncounterCompleted || isEncounterInProgress">
+                                            Patient Encounter
+                                        </button>
+
+                                        <!-- <button mat-raised-button color="primary"
                                             (click)="GetIPPatientEncounterDetails()" *ngIf="selection1.hasValue()"
                                             [disabled]="isIPEncounterCompleted || isEncounterInProgress">
                                             {{ isEncounterInProgress ? 'Processing...' : 'GetIPPatientEncounterDetails'
                                             }}
-                                        </button>
+                                        </button> -->
 
                                         <button mat-raised-button color="accent" (click)="GetIPCarecontextDetails()"
                                             *ngIf="selection1.hasValue()"
@@ -271,7 +283,8 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="doctorName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="20">DoctorName
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                fxFlex="20">DoctorName
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm fxFlex="20">
                                                 <span> {{contact.doctorName || '-'}}</span>
@@ -279,14 +292,15 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="opdNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="15">IPD No
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                fxFlex="15">IPD No
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm fxFlex="15">
                                                 <span> {{contact.ipdNo || '-'}}</span>
                                             </mat-cell>
                                         </ng-container>
 
-                                         <ng-container matColumnDef="peEncounterStatus">
+                                        <ng-container matColumnDef="peEncounterStatus">
                                             <mat-header-cell *matHeaderCellDef fxFlex="20" fxShow.gt-sm>
                                                 Encounter Status
                                             </mat-header-cell>
@@ -533,3 +547,121 @@
         </div>
     </div>
 </div>
+
+<!-- <ng-template #pendingDialog>
+  <div class="pv-header">
+    <mat-icon>fact_check</mat-icon>
+    <h2 mat-dialog-title>Record Validation Summary</h2>
+  </div>
+
+  <mat-dialog-content class="pv-content">
+
+    <div class="pv-card pv-completed">
+      <div class="pv-card-title">
+        <mat-icon>check_circle</mat-icon>
+        <span class="pv-title-text">Fully Completed</span>
+        <span class="pv-count">{{ pendingData?.fullyCompleted?.length || 0 }}</span>
+      </div>
+      <div class="pv-chips" *ngIf="pendingData?.fullyCompleted?.length; else noCompleted">
+        <span class="pv-chip" *ngFor="let item of pendingData.fullyCompleted">{{ item }}</span>
+      </div>
+      <ng-template #noCompleted><div class="pv-empty">No completed records</div></ng-template>
+    </div>
+
+    <div class="pv-card pv-incomplete">
+      <div class="pv-card-title">
+        <mat-icon>error</mat-icon>
+        <span class="pv-title-text">Incomplete</span>
+        <span class="pv-count">{{ pendingData?.incomplete?.length || 0 }}</span>
+      </div>
+      <div class="pv-chips" *ngIf="pendingData?.incomplete?.length; else noIncomplete">
+        <span class="pv-chip" *ngFor="let item of pendingData.incomplete">{{ item }}</span>
+      </div>
+      <ng-template #noIncomplete><div class="pv-empty">No incomplete records</div></ng-template>
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="pv-actions">
+    <button mat-raised-button color="primary" mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</ng-template> -->
+
+<ng-template #pendingDialog>
+    <h2 mat-dialog-title class="d2-title">Record Validation Summary</h2>
+
+    <mat-dialog-content class="d2-body">
+        <div class="d2-progress">
+            <div class="d2-progress-top">
+                <span>Overall completion</span>
+                <b>{{ pendingPercent }}%</b>
+            </div>
+            <div class="d2-bar">
+                <div class="d2-fill" [style.width.%]="pendingPercent"></div>
+            </div>
+        </div>
+
+        <div class="d2-list">
+            <div class="d2-row done" *ngFor="let item of pendingData?.fullyCompleted">
+                <mat-icon>check_circle</mat-icon>
+                <span class="d2-name">{{ item }}</span>
+                <span class="d2-badge">Completed</span>
+            </div>
+
+            <div class="d2-row pending" *ngFor="let item of pendingData?.incomplete">
+                <mat-icon>schedule</mat-icon>
+                <span class="d2-name">{{ item }}</span>
+                <span class="d2-badge">Incomplete</span>
+            </div>
+
+            <div class="d2-row optional" *ngFor="let item of pendingData?.optional">
+                <mat-icon>info</mat-icon>
+                <span class="d2-name">{{ item }}</span>
+                <span class="d2-badge">Skippable</span>
+                <!-- Not required,  -->
+            </div>
+        </div>
+
+        <div class="d2-note">
+            <div class="d2-note-title">
+                <mat-icon>lightbulb</mat-icon> Note
+            </div>
+
+            <div class="d2-note-row">
+                <span class="d2-badge done">Completed</span>
+                <span class="d2-note-text">Good to proceed for encounter.</span>
+            </div>
+
+            <div class="d2-note-row">
+                <span class="d2-badge pending">Incomplete</span>
+                <span class="d2-note-text">Complete all of these first. The button will be enabled only after
+                    that.</span>
+            </div>
+
+            <div class="d2-note-row">
+                <span class="d2-badge optional">Skippable</span>
+                <span class="d2-note-text">Not important. You can skip these.</span>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <!-- <button mat-raised-button color="primary" [disabled]="!canProceed" *ngIf="!isIP"
+            (click)="GetPatientEncounterDetails()">Encounter</button> -->
+        <button mat-raised-button color="primary" (click)="GetPatientEncounterDetails()"
+            *ngIf="selection.hasValue() && !isIP"
+            [disabled]="isEncounterCompleted || isEncounterInProgress || !canProceed">
+            {{ isEncounterInProgress ? 'Processing...' : 'OP-Encounter' }}
+        </button>
+
+        <!-- <button mat-raised-button color="primary" [disabled]="!canProceed" *ngIf="isIP"
+            (click)="GetIPPatientEncounterDetails()">Encounter</button> -->
+        <button mat-raised-button color="primary" (click)="GetIPPatientEncounterDetails()"
+            *ngIf="selection1.hasValue() && isIP"
+            [disabled]="isIPEncounterCompleted || isEncounterInProgress || !canProceed">
+            {{ isEncounterInProgress ? 'Processing...' : 'IP-Encounter' }}
+        </button>
+
+        <button mat-raised-button color="primary" mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+</ng-template>

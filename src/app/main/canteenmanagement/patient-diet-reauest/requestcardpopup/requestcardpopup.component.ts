@@ -18,6 +18,7 @@ import { RequestMaster } from '../patient-diet-reauest.component';
 })
 export class RequestcardpopupComponent implements OnInit {
   @Input() doctorData: any;
+
   @Output() mouseEnter = new EventEmitter<void>();
   @Output() mouseLeave = new EventEmitter<void>();
   // emitted after the cards render, so the parent overlay can re-check above/below
@@ -68,6 +69,7 @@ export class RequestcardpopupComponent implements OnInit {
 
     this._DietRequestService.getRequestdetaillist(requestData).subscribe((response) => {
       this.detailList = response.data || [];
+      console.log(this.detailList)
       setTimeout(() => this.loaded.emit()); // wait for cards to render
     }, (error) => {
       this.toastr.error(error.message);

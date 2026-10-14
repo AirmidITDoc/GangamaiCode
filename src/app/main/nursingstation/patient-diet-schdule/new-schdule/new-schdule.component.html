@@ -1,0 +1,201 @@
+<div class="da-page">
+
+    <div class="da-header">
+        <div>
+            <h2>Diet Assessment</h2>
+            <p>Nutritional assessment for admitted patient</p>
+        </div>
+        <span class="risk-pill" [ngClass]="riskLevel.toLowerCase()">
+            Nutrition Risk: {{ riskLevel }}
+        </span>
+    </div>
+
+    <!-- Patient banner -->
+    <div class="patient-card">
+        <div class="avatar">{{ patient.name.charAt(4) }}</div>
+        <div class="p-grid">
+            <div><label>Patient</label><strong>{{ patient.name }}</strong></div>
+            <div><label>UHID</label><strong>{{ patient.uhid }}</strong></div>
+            <div><label>IP No</label><strong>{{ patient.ipNo }}</strong></div>
+            <div><label>Age / Gender</label><strong>{{ patient.age }} / {{ patient.gender }}</strong></div>
+            <div><label>Ward / Bed</label><strong>{{ patient.ward }} / {{ patient.bed }}</strong></div>
+            <div><label>Doctor</label><strong>{{ patient.doctor }}</strong></div>
+            <div><label>Admitted</label><strong>{{ patient.admitDate | date:'dd MMM yyyy' }}</strong></div>
+        </div>
+    </div>
+
+    <div class="da-grid">
+
+        <!-- 1. Anthropometry -->
+        <section class="card">
+            <h3><span class="num blue">1</span> Anthropometry</h3>
+            <div class="fields">
+                <div class="f"><label>Height (cm)</label>
+                    <input type="number" [(ngModel)]="a.heightCm">
+                </div>
+                <div class="f"><label>Current Weight (kg)</label>
+                    <input type="number" [(ngModel)]="a.weightKg">
+                </div>
+                <div class="f"><label>Usual Weight (kg)</label>
+                    <input type="number" [(ngModel)]="a.usualWeightKg">
+                </div>
+                <div class="f"><label>BMI</label>
+                    <div class="bmi-box" [ngClass]="bmiClass">
+                        <strong>{{ bmi || '-' }}</strong>
+                        <small>{{ bmiCategory }}</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Clinical -->
+        <section class="card">
+            <h3><span class="num green">2</span> Clinical Details</h3>
+            <div class="f"><label>Diagnosis</label>
+                <input type="text" [(ngModel)]="a.diagnosis" placeholder="Primary diagnosis">
+            </div>
+            <label class="lbl">Comorbidities</label>
+            <div class="chips">
+                <span class="chip" *ngFor="let c of comorbidityList" [class.on]="a.comorbidities.includes(c)"
+                    (click)="toggle(a.comorbidities, c)">{{ c }}</span>
+            </div>
+        </section>
+
+        <!-- 3. Screening -->
+        <section class="card">
+            <h3><span class="num orange">3</span> Nutrition Screening</h3>
+
+            <div class="q">
+                <span>Unintentional weight loss in last 3 months?</span>
+                <div class="seg">
+                    <button type="button" [class.on]="a.recentWeightLoss==='Yes'"
+                        (click)="a.recentWeightLoss='Yes'">Yes</button>
+                    <button type="button" [class.on]="a.recentWeightLoss==='No'"
+                        (click)="a.recentWeightLoss='No'">No</button>
+                </div>
+            </div>
+
+            <div class="q">
+                <span>Reduced food intake in last week?</span>
+                <div class="seg">
+                    <button type="button" [class.on]="a.reducedIntake==='Yes'"
+                        (click)="a.reducedIntake='Yes'">Yes</button>
+                    <button type="button" [class.on]="a.reducedIntake==='No'" (click)="a.reducedIntake='No'">No</button>
+                </div>
+            </div>
+
+            <div class="q">
+                <span>Severely ill (ICU / major surgery / sepsis)?</span>
+                <div class="seg">
+                    <button type="button" [class.on]="a.severelyIll==='Yes'" (click)="a.severelyIll='Yes'">Yes</button>
+                    <button type="button" [class.on]="a.severelyIll==='No'" (click)="a.severelyIll='No'">No</button>
+                </div>
+            </div>
+
+            <div class="score" [ngClass]="riskLevel.toLowerCase()">
+                Score: <b>{{ riskScore }}</b> &nbsp;|&nbsp; Risk: <b>{{ riskLevel }}</b>
+            </div>
+        </section>
+
+        <!-- 4. Dietary history -->
+        <section class="card">
+            <h3><span class="num purple">4</span> Dietary History</h3>
+            <div class="fields">
+                <div class="f"><label>Appetite</label>
+                    <select [(ngModel)]="a.appetite">
+                        <option>Good</option>
+                        <option>Fair</option>
+                        <option>Poor</option>
+                    </select>
+                </div>
+                <div class="f"><label>Meals / Day</label>
+                    <input type="number" [(ngModel)]="a.mealsPerDay">
+                </div>
+                <div class="f"><label>Food Habit</label>
+                    <select [(ngModel)]="a.foodHabit">
+                        <option>Veg</option>
+                        <option>Non-Veg</option>
+                        <option>Eggetarian</option>
+                        <option>Vegan</option>
+                    </select>
+                </div>
+                <div class="f"><label>Swallowing</label>
+                    <select [(ngModel)]="a.swallowing">
+                        <option>Normal</option>
+                        <option>Difficulty</option>
+                        <option>Unable</option>
+                    </select>
+                </div>
+                <div class="f"><label>Food Allergies</label>
+                    <input type="text" [(ngModel)]="a.allergies" placeholder="e.g. Peanuts">
+                </div>
+                <div class="f"><label>Intolerances</label>
+                    <input type="text" [(ngModel)]="a.intolerances" placeholder="e.g. Lactose">
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Labs -->
+        <section class="card">
+            <h3><span class="num teal">5</span> Biochemical Data</h3>
+            <div class="fields">
+                <div class="f"><label>Albumin (g/dL)</label><input type="number" [(ngModel)]="a.albumin"></div>
+                <div class="f"><label>Hb (g/dL)</label><input type="number" [(ngModel)]="a.hb"></div>
+                <div class="f"><label>Sodium (mmol/L)</label><input type="number" [(ngModel)]="a.sodium"></div>
+                <div class="f"><label>Potassium (mmol/L)</label><input type="number" [(ngModel)]="a.potassium"></div>
+                <div class="f"><label>Creatinine (mg/dL)</label><input type="number" [(ngModel)]="a.creatinine"></div>
+                <div class="f"><label>Blood Sugar (mg/dL)</label><input type="number" [(ngModel)]="a.bloodSugar"></div>
+            </div>
+        </section>
+
+        <!-- 6. Prescription -->
+        <section class="card">
+            <h3><span class="num red">6</span> Diet Prescription</h3>
+            <div class="fields">
+                <div class="f"><label>Diet Type</label>
+                    <select [(ngModel)]="a.dietType">
+                        <option value="">Select</option>
+                        <option *ngFor="let d of dietTypes">{{ d }}</option>
+                    </select>
+                </div>
+                <div class="f"><label>Texture</label>
+                    <select [(ngModel)]="a.texture">
+                        <option>Normal</option>
+                        <option>Soft</option>
+                        <option>Minced</option>
+                        <option>Pureed</option>
+                        <option>Liquid</option>
+                    </select>
+                </div>
+                <div class="f"><label>Route</label>
+                    <select [(ngModel)]="a.route">
+                        <option>Oral</option>
+                        <option>Ryles Tube</option>
+                        <option>PEG</option>
+                        <option>Parenteral</option>
+                    </select>
+                </div>
+                <div class="f"><label>Calories (kcal/day)</label><input type="number" [(ngModel)]="a.calories"></div>
+                <div class="f"><label>Protein (g/day)</label><input type="number" [(ngModel)]="a.proteinG"></div>
+                <div class="f"><label>Fluid (ml/day)</label><input type="number" [(ngModel)]="a.fluidMl"></div>
+            </div>
+
+            <label class="lbl">Restrictions</label>
+            <div class="chips">
+                <span class="chip" *ngFor="let r of restrictionList" [class.on]="a.restrictions.includes(r)"
+                    (click)="toggle(a.restrictions, r)">{{ r }}</span>
+            </div>
+        </section>
+
+    </div>
+
+    <section class="card notes">
+        <h3>Dietitian Notes</h3>
+        <textarea rows="3" [(ngModel)]="a.notes" placeholder="Additional remarks..."></textarea>
+    </section>
+
+    <div class="actions">
+        <button type="button" class="btn-clear" (click)="reset()">Clear</button>
+        <button type="button" class="btn-save" (click)="save()">Save Assessment</button>
+    </div>
+</div>

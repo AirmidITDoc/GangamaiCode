@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
@@ -15,6 +15,7 @@ import { DietRequestService } from '../diet-request.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { RequestMaster } from '../patient-diet-reauest.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-diet-detail-list',
@@ -24,7 +25,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
     animations: fuseAnimations
 })
 export class DietDetailListComponent {
-    HeaderCancleTaskForm: FormGroup;
+    // HeaderCancleTaskForm: FormGroup;
     DetailCancleTaskForm: FormGroup;
     myFilterform: FormGroup;
 
@@ -39,7 +40,10 @@ export class DietDetailListComponent {
     ReqId = 0;
     ReqDetId = 0;
     CancleStatus: boolean = false;
+    StausChangeFlg: any;
 
+    // reference of the "detail cancel" dialog only (not the dialog this component lives in)
+    private cancelDialogRef: MatDialogRef<any>;
 
     selectedAcceptRows: any[] = [];
     masterCheckedAccept: boolean = false;
@@ -53,16 +57,16 @@ export class DietDetailListComponent {
     @ViewChild('detIsCancelled') detIsCancelled!: TemplateRef<any>;
     @ViewChild('isAccept') isAccept!: TemplateRef<any>;
     @ViewChild('isDelived') isDelived!: TemplateRef<any>;
-    @ViewChild('HeaderCancleTask') HeaderCancleTask!: TemplateRef<any>;
+    // @ViewChild('HeaderCancleTask') HeaderCancleTask!: TemplateRef<any>;
     @ViewChild('DetailCancleTask') DetailCancleTask!: TemplateRef<any>;
 
     allcolumns = [
         {
-            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 180,
+            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 150,
             type: gridColumnTypes.template, template: this.isAccept
         },
         {
-            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 180,
+            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 150,
             type: gridColumnTypes.template, template: this.isDelived
         },
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
@@ -102,45 +106,26 @@ export class DietDetailListComponent {
         public _matDialog: MatDialog,
         private _loggedService: AuthenticationService,
         public toastr: ToastrService,
-        public datePipe: DatePipe,
+        public datePipe: DatePipe, private _configue: ConfigService,
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) { }
-
-    // ngOnInit(): void {
-
-    //     this.myFilterform = this.filterForm();
-    //     this.HeaderCancleTaskForm = this.CreateheaderCancleForm();
-    //     this.DetailCancleTaskForm = this.CreatdetailCancleForm();
-
-    //     console.log(this.data)
-    // }
-
-    // ngAfterViewInit() {
-    //     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
-    //     this.gridConfig1.columnsList.find(col => col.key === 'isAccept')!.template = this.isAccept;
-    //     this.gridConfig1.columnsList.find(col => col.key === 'isDelived')!.template = this.isDelived;
-    //     this.gridConfig1.columnsList.find(col => col.key === 'detIsCancelled')!.template = this.detIsCancelled;
-
-    //     if (this.data.dietReqId > 0) {
-    //         this.GetDetails(this.data);
-    //         this.Getrequestdetailcount(this.data.dietReqId)
-    //     }
-    // }
 
 
     ngOnInit(): void {
         this.myFilterform = this.filterForm();
-        this.HeaderCancleTaskForm = this.CreateheaderCancleForm();
+        // this.HeaderCancleTaskForm = this.CreateheaderCancleForm();
         this.DetailCancleTaskForm = this.CreatdetailCancleForm();
 
         const id = String(this.data?.dietReqId ?? 0);
         this.gridConfig1.filters = [
             { fieldName: "DietReqId", fieldValue: id, opType: OperatorComparer.Equals }
         ];
+        debugger
+        const access = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsDietRequstStatusChange');
+        this.StausChangeFlg = Number(access?.AccessValue ?? false);
     }
 
     ngAfterViewInit() {
-
         setTimeout(() => {
             const col = (key: string) => this.gridConfig1.columnsList.find(c => c.key === key)!;
             col('action').template = this.actionButtonTemplate1;
@@ -154,6 +139,7 @@ export class DietDetailListComponent {
             }
         });
     }
+
     CreateheaderCancleForm() {
         return this._formBuilder.group({
             AdmissionDate: [(new Date()).toISOString(), Validators.required],
@@ -164,8 +150,6 @@ export class DietDetailListComponent {
 
     CreatdetailCancleForm() {
         return this._formBuilder.group({
-            AdmissionDate: [(new Date()).toISOString(), Validators.required],
-            AdmissionTime: [''],
             Reason: ['', Validators.required]
         });
     }
@@ -179,7 +163,6 @@ export class DietDetailListComponent {
     }
 
     GetDetails(data) {
-
         const DietReqId = String(data.dietReqId);
 
         this.gridConfig1 = {
@@ -195,12 +178,12 @@ export class DietDetailListComponent {
         this.grid1.gridConfig = this.gridConfig1;
         this.grid1.bindGridData();
 
-        this.selectedAcceptRows = [];
-        this.masterCheckedAccept = false;
-        this.selectedDeliverRows = [];
-        this.masterCheckedDeliver = false;
+        this.clearSelections();
     }
 
+    // ------------------------------------------------------------------
+    //  helpers
+    // ------------------------------------------------------------------
 
     private get gridRows(): any[] {
         return (this.grid1 as any)?.data
@@ -209,44 +192,69 @@ export class DietDetailListComponent {
             ?? [];
     }
 
+    /** Rows that can still be accepted (not accepted, not cancelled). */
     get pendingAcceptRows(): any[] {
-        return this.gridRows.filter(r => r.isAccept !== true);
+        return this.gridRows.filter(r => r.isAccept !== true && !r.detIsCancelled);
     }
 
+    /** Rows that can still be delivered (accepted, not delivered, not cancelled). */
     get pendingDeliverRows(): any[] {
-        return this.gridRows.filter(r => r.isDelived !== true && r.isAccept === true);
+        return this.gridRows.filter(r => r.isDelived !== true && r.isAccept === true && !r.detIsCancelled);
     }
 
+    private clearSelections(): void {
+        this.selectedAcceptRows = [];
+        this.masterCheckedAccept = false;
+        this.selectedDeliverRows = [];
+        this.masterCheckedDeliver = false;
+    }
 
-    toggleMasterCheckboxAccept(checked: boolean) {
+    /** Refresh grid, clear selections and reload the counts after any successful change. */
+    private refreshAfterChange(): void {
+        this.grid1.bindGridData();
+        this.clearSelections();
+        this.Getrequestdetailcount(this.data.dietReqId);
+    }
+
+    /** Shows a warning and returns false when the user is not allowed to change the status. */
+    private canChangeStatus(action: string): boolean {
+        debugger
+        if (!this.StausChangeFlg) {
+            this.toastr.warning(`You do not have permission to ${action}.`);
+            return false;
+        }
+        return true;
+    }
+
+ 
+    /** "Select All Pending Accept" – ticks / clears every pending row checkbox. */
+    toggleMasterCheckboxAccept(checked: boolean): void {
         this.masterCheckedAccept = checked;
         this.selectedAcceptRows = checked ? [...this.pendingAcceptRows] : [];
-
-
     }
 
-    toggleAcceptRowCheckbox(element: any, checked: boolean) {
+    /** Row checkbox – only selects / deselects the row (no API call). */
+    onAcceptRowCheck(element: any, checked: boolean): void {
+        this.selectedAcceptRows = this.selectedAcceptRows
+            .filter(r => r.dietReqDetId !== element.dietReqDetId);
+
         if (checked) {
-            if (!this.selectedAcceptRows.includes(element)) {
-                this.selectedAcceptRows.push(element);
-            }
-            this.masterCheckedAccept = this.pendingAcceptRows.length > 0
-                && this.selectedAcceptRows.length === this.pendingAcceptRows.length;
-
-            this.AcceptSelectedRequests();
-        } else {
-            this.selectedAcceptRows = this.selectedAcceptRows.filter(r => r !== element);
-            this.masterCheckedAccept = this.pendingAcceptRows.length > 0
-                && this.selectedAcceptRows.length === this.pendingAcceptRows.length;
+            this.selectedAcceptRows.push(element);
         }
+
+        this.masterCheckedAccept = this.pendingAcceptRows.length > 0
+            && this.selectedAcceptRows.length === this.pendingAcceptRows.length;
     }
 
+    /** Compared by id so the tick survives the grid re-creating its row objects. */
     isAcceptRowSelected(element: any): boolean {
-        return this.selectedAcceptRows.includes(element);
+        return this.selectedAcceptRows.some(r => r.dietReqDetId === element.dietReqDetId);
     }
-
 
     AcceptSelectedRequests() {
+        debugger
+        if (!this.canChangeStatus('accept requests')) { return; }
+
         if (!this.selectedAcceptRows.length) {
             this.toastr.warning('Please select at least one request');
             return;
@@ -274,47 +282,43 @@ export class DietDetailListComponent {
                 return this._DietRequestService.RequestAccept(submitData);
             });
 
-            forkJoin(calls).subscribe(
-                () => {
+            forkJoin(calls).subscribe({
+                next: () => {
                     this.toastr.success(count === 1 ? 'Request accepted' : 'Selected requests accepted');
-                    this.grid1.bindGridData();
-                    this.selectedAcceptRows = [];
-                    this.masterCheckedAccept = false;
-                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
+                    this.refreshAfterChange();
                 },
-                (error) => {
-                    this.toastr.error(error.message);
-                }
-            );
+                error: (error) => this.toastr.error(error.message)
+            });
         });
     }
 
-    toggleMasterCheckboxDeliver(checked: boolean) {
+ 
+    /** "Select All Pending Deliver" – ticks / clears every deliverable row checkbox. */
+    toggleMasterCheckboxDeliver(checked: boolean): void {
         this.masterCheckedDeliver = checked;
         this.selectedDeliverRows = checked ? [...this.pendingDeliverRows] : [];
     }
 
-    toggleDeliverRowCheckbox(element: any, checked: boolean) {
-        if (checked) {
-            if (!this.selectedDeliverRows.includes(element)) {
-                this.selectedDeliverRows.push(element);
-            }
-            this.masterCheckedDeliver = this.pendingDeliverRows.length > 0
-                && this.selectedDeliverRows.length === this.pendingDeliverRows.length;
+    /** Row checkbox – only selects / deselects the row (no API call). */
+    onDeliverRowCheck(element: any, checked: boolean): void {
+        this.selectedDeliverRows = this.selectedDeliverRows
+            .filter(r => r.dietReqDetId !== element.dietReqDetId);
 
-            this.DeliverSelectedRequests();
-        } else {
-            this.selectedDeliverRows = this.selectedDeliverRows.filter(r => r !== element);
-            this.masterCheckedDeliver = this.pendingDeliverRows.length > 0
-                && this.selectedDeliverRows.length === this.pendingDeliverRows.length;
+        if (checked) {
+            this.selectedDeliverRows.push(element);
         }
+
+        this.masterCheckedDeliver = this.pendingDeliverRows.length > 0
+            && this.selectedDeliverRows.length === this.pendingDeliverRows.length;
     }
 
     isDeliverRowSelected(element: any): boolean {
-        return this.selectedDeliverRows.includes(element);
+        return this.selectedDeliverRows.some(r => r.dietReqDetId === element.dietReqDetId);
     }
 
     DeliverSelectedRequests() {
+        if (!this.canChangeStatus('deliver requests')) { return; }
+
         if (!this.selectedDeliverRows.length) {
             this.toastr.warning('Please select at least one request');
             return;
@@ -323,7 +327,6 @@ export class DietDetailListComponent {
         const count = this.selectedDeliverRows.length;
 
         Swal.fire({
-
             icon: 'question',
             title: 'Do you want to Deliver this Request?',
             showCancelButton: true,
@@ -343,20 +346,17 @@ export class DietDetailListComponent {
                 return this._DietRequestService.RequestDeliver(submitData);
             });
 
-            forkJoin(calls).subscribe(
-                () => {
+            forkJoin(calls).subscribe({
+                next: () => {
                     this.toastr.success(count === 1 ? 'Request delivered' : 'Selected requests delivered');
-                    this.grid1.bindGridData();
-                    this.selectedDeliverRows = [];
-                    this.masterCheckedDeliver = false;
-                    this.Getrequestdetailcount(this.data.dietReqId); // moved into success callback
+                    this.refreshAfterChange();
                 },
-                (error) => {
-                    this.toastr.error(error.message);
-                }
-            );
+                error: (error) => this.toastr.error(error.message)
+            });
         });
     }
+
+    
     onPrint(element) {
         this.commonService.Onprint("ReqId", element.reqId, "CanteenRequestprint");
     }
@@ -371,47 +371,42 @@ export class DietDetailListComponent {
         }
     }
 
-    openheadercancletask(contact): void {
-        this.ReqId = contact.dietReqId;
-        this._matDialog.open(this.HeaderCancleTask, {
-            width: '520px',
-            maxWidth: '95vw',
-            autoFocus: false,
-            disableClose: true
-        });
-    }
+  
+   
 
-    HeaderRequestCancle() {
-        Swal.fire({
-            icon: 'question',
-            title: 'Do you want to Cancle Request',
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Cancel it!"
-        }).then((flag) => {
-            if (flag.isConfirmed) {
-                const submitData = {
-                    "dietReqId": this.ReqId,
-                    "isCancelledBy": this._loggedService.currentUserValue.userId,
-                    "cancelledReason": this.HeaderCancleTaskForm.get('Reason').value
-                };
-                this._DietRequestService.Requestcancle(submitData).subscribe(response => {
-                    this._matDialog.closeAll();
-                    this.grid1.bindGridData();
-
-
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            }
-        });
-    }
+    // HeaderRequestCancle() {
+    //     Swal.fire({
+    //         icon: 'question',
+    //         title: 'Do you want to Cancle Request',
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Yes, Cancel it!"
+    //     }).then((flag) => {
+    //         if (flag.isConfirmed) {
+    //             const submitData = {
+    //                 "dietReqId": this.ReqId,
+    //                 "isCancelledBy": this._loggedService.currentUserValue.userId,
+    //                 "cancelledReason": this.HeaderCancleTaskForm.get('Reason').value
+    //             };
+    //             this._DietRequestService.Requestcancle(submitData).subscribe(response => {
+    //                 this._matDialog.closeAll();
+    //                 this.grid1.bindGridData();
+    //             }, (error) => {
+    //                 this.toastr.error(error.message);
+    //             });
+    //         }
+    //     });
+    // }
 
     opendetailcancletask(contact): void {
+          if (!this.canChangeStatus('Cancel requests')) { return; }
+
 
         this.ReqDetId = contact.dietReqDetId;
-        this._matDialog.open(this.DetailCancleTask, {
+        this.DetailCancleTaskForm.reset();   // clear the previous reason
+
+        this.cancelDialogRef = this._matDialog.open(this.DetailCancleTask, {
             width: '520px',
             maxWidth: '95vw',
             autoFocus: false,
@@ -420,44 +415,56 @@ export class DietDetailListComponent {
     }
 
     DetailRequestCancle() {
+        if (this.DetailCancleTaskForm.invalid) {
+            this.DetailCancleTaskForm.markAllAsTouched();
+            this.toastr.warning('Please enter a reason');
+            return;
+        }
 
         Swal.fire({
             icon: 'question',
-            title: 'Do you want to Cancle Request',
+            title: 'Do you want to cancel this request?',
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Cancel it!"
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Cancel it!'
         }).then((flag) => {
-            if (flag.isConfirmed) {
-                const submitData = {
-                    "dietReqDetId": this.ReqDetId,
-                    "isCancelledBy": this._loggedService.currentUserValue.userId,
-                    "cancelledReason": this.DetailCancleTaskForm.get('Reason').value
-                };
-                this._DietRequestService.DetailRequestcancle(submitData).subscribe(response => {
-                    this._matDialog.closeAll();
-                    this.grid1.bindGridData();
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            }
+            if (!flag.isConfirmed) { return; }
+
+            const submitData = {
+                dietReqDetId: this.ReqDetId,
+                isCancelledBy: this._loggedService.currentUserValue.userId,
+                cancelledReason: this.DetailCancleTaskForm.get('Reason').value
+            };
+
+            this._DietRequestService.DetailRequestcancle(submitData).subscribe({
+                next: () => {
+                    this.toastr.success('Request cancelled successfully');
+                    this.cancelDialogRef?.close(true);
+                    this.refreshAfterChange();
+                },
+                error: (error) => this.toastr.error(error.message)
+            });
         });
     }
 
-    onAcceptCheck(element: any, event: MatCheckboxChange) {
-        event.source.checked = false;      // stays as it was until the API succeeds
-        this.AcceptRequest(element);       // your existing method
+    onCancelDialogClose(): void {
+        this.cancelDialogRef?.close();
     }
 
+    // ------------------------------------------------------------------
+    //  single-row ACCEPT / UN-ACCEPT
+    // ------------------------------------------------------------------
+
     onUnAcceptCheck(element: any, event: MatCheckboxChange) {
-        event.source.checked = true;
+        event.source.checked = true;       // stays ticked until the API succeeds
         this.UnAcceptRequest(element);
     }
 
     AcceptRequest(element) {
-        Swal.fire({
+        if (!this.canChangeStatus('accept requests')) { return; }
 
+        Swal.fire({
             icon: 'question',
             title: 'Do you want to Accept Request',
             showCancelButton: true,
@@ -474,10 +481,7 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestAccept(submitData).subscribe(response => {
                     this.toastr.success('Request accepted');
-                    this.grid1.bindGridData();
-                    this.selectedAcceptRows = [];
-                    this.masterCheckedAccept = false;
-                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
+                    this.refreshAfterChange();
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
@@ -486,6 +490,7 @@ export class DietDetailListComponent {
     }
 
     UnAcceptRequest(element) {
+        if (!this.canChangeStatus('un-accept requests')) { return; }
 
         if (element.isDelived) {
             this.toastr.warning('Delivered request cannot be un-accepted');
@@ -509,36 +514,33 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestAccept(submitData).subscribe(response => {
                     this.toastr.success('Request un-accepted');
-                    this.grid1.bindGridData();
-                    this.selectedAcceptRows = [];
-                    this.masterCheckedAccept = false;
-                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
+                    this.refreshAfterChange();
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
             }
         });
     }
-    onDeliverCheck(element: any, event: MatCheckboxChange) {
-        event.source.checked = false;
-        this.DeliverRequest(element);
-    }
+
+    // ------------------------------------------------------------------
+    //  single-row DELIVER / UN-DELIVER
+    // ------------------------------------------------------------------
 
     onUnDeliverCheck(element: any, event: MatCheckboxChange) {
-        event.source.checked = true;
+        event.source.checked = true;       // stays ticked until the API succeeds
         this.UnDeliverRequest(element);
     }
 
     DeliverRequest(element) {
-        Swal.fire({
+        if (!this.canChangeStatus('deliver requests')) { return; }
 
+        Swal.fire({
             icon: 'question',
             title: 'Do you want to Deliver Request',
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, Deliver it!"
-
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
@@ -549,10 +551,7 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestDeliver(submitData).subscribe(response => {
                     this.toastr.success('Request delivered');
-                    this.grid1.bindGridData();
-                    this.selectedAcceptRows = [];
-                    this.masterCheckedAccept = false;
-                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
+                    this.refreshAfterChange();
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
@@ -561,6 +560,8 @@ export class DietDetailListComponent {
     }
 
     UnDeliverRequest(element) {
+        if (!this.canChangeStatus('un-deliver requests')) { return; }
+
         Swal.fire({
             icon: 'question',
             title: 'Do you want to Un-Deliver Request',
@@ -568,7 +569,6 @@ export class DietDetailListComponent {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, Un-Deliver it!"
-
         }).then((flag) => {
             if (flag.isConfirmed) {
                 const submitData = {
@@ -579,10 +579,7 @@ export class DietDetailListComponent {
                 };
                 this._DietRequestService.RequestDeliver(submitData).subscribe(response => {
                     this.toastr.success('Request un-delivered');
-                    this.grid1.bindGridData();
-                    this.selectedAcceptRows = [];
-                    this.masterCheckedAccept = false;
-                    this.Getrequestdetailcount(this.data.dietReqId); // moved here
+                    this.refreshAfterChange();
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
@@ -590,6 +587,9 @@ export class DietDetailListComponent {
         });
     }
 
+    // ------------------------------------------------------------------
+    //  dialog helpers
+    // ------------------------------------------------------------------
 
     onEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement;
@@ -616,6 +616,11 @@ export class DietDetailListComponent {
             WardName: [],
         };
     }
+
+    // ------------------------------------------------------------------
+    //  counts for the dashboard cards
+    // ------------------------------------------------------------------
+
     dataSource = new MatTableDataSource<RequestMaster>();
 
     VCancelcount = 0;
@@ -624,7 +629,8 @@ export class DietDetailListComponent {
     VaccPendingcount = 0;
     VdelPendingcount = 0;
     vDelived = 0;
-    DietReqId = 0
+    DietReqId = 0;
+
     Getrequestdetailcount(dietReqId) {
         this.VTotalcount = 0;
         this.vDelived = 0;
@@ -636,22 +642,18 @@ export class DietDetailListComponent {
         const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
         const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
 
-        const filters: any[] = [];
-
         if (fromDateControl && toDateControl) {
             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
         }
 
-
-        filters.push(
-
+        const filters: any[] = [
             {
                 "fieldName": "DietReqId",
                 "fieldValue": String(dietReqId),
                 "opType": "Equals"
             }
-        );
+        ];
 
         const data = {
             "first": 0,
@@ -662,30 +664,27 @@ export class DietDetailListComponent {
             "exportType": "JSON",
             "columns": []
         };
-        console.log(data)
+
         this._DietRequestService.getRequestdetaillist(data).subscribe((response) => {
             this.dataSource.data = response.data;
+
             if (this.dataSource.data.length > 0) {
-                this.VTotalcount = this.dataSource.data.length
-                this.VCancelcount = 0;
+                this.VTotalcount = this.dataSource.data.length;
 
                 this.dataSource.data.forEach(element => {
-
                     if (element.isAccept) {
-                        this.VAcceptcount = this.VAcceptcount + 1;
-                    } if (element.isDelived == true) {
-
-                        this.vDelived = this.vDelived + 1;
+                        this.VAcceptcount++;
+                    }
+                    if (element.isDelived == true) {
+                        this.vDelived++;
                     }
                     if (element.detIsCancelled) {
-                        this.VCancelcount = this.VCancelcount + 1;
+                        this.VCancelcount++;
                     }
-
-                    this.VaccPendingcount = this.VTotalcount - this.VAcceptcount
-                    this.VdelPendingcount = this.VTotalcount - this.vDelived
-
                 });
-                console.log(this.dataSource.data)
+
+                this.VaccPendingcount = this.VTotalcount - this.VAcceptcount;
+                this.VdelPendingcount = this.VTotalcount - this.vDelived;
             }
         });
     }

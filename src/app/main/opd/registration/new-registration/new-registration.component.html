@@ -50,7 +50,6 @@
                                                         [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
                                                         [validations]="getValidationMessages().prefixId"
                                                         ValueField="prefixId" TextField="prefixName"
-                                                        [readonly]="isProfileData"
                                                         (selectionChange)="onChangePrefix($event)"
                                                         ApiUrl="Prefix/get-prefixs">
                                                     </airmid-dropdown>
@@ -175,7 +174,6 @@
                                                         [value]="pincode" [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().PinNo" [maxLength]="6"
                                                         (keypress)="keyPressAlphanumeric($event)"
-                                                        [readonly]="isProfileData"
                                                         (keyup)="onChangePincode($event.target.value)">
                                                     </airmid-textbox>
 
@@ -188,7 +186,7 @@
                                                         [validations]="getValidationMessages().cityId"
                                                         ValueField="cityId" TextField="cityName"
                                                         (selectionChange)="onChangecity($event)"
-                                                        [readonly]="isProfileData" ApiUrl="CityMaster/get-cities">
+                                                        ApiUrl="CityMaster/get-cities">
                                                     </airmid-dropdown>
                                                 </div>
 

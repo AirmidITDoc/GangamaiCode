@@ -234,7 +234,7 @@ export class ImmunizationComponent {
       occuranceDate: item.occuranceDate, //date
       primarySource: item.primarySource == true ? '1' : '0',
       recommandationDate: item.recommandationDate, //date
-      forecastStatus: item.forecastStatus == true ? 'Completed' : 'Recommended',
+      forecastStatus: item.forecastStatus == true ? 'Due' : 'OverDue',
       series: item.series,
       description: item.description,
       doseNumber: item.doseNumber,
@@ -242,7 +242,7 @@ export class ImmunizationComponent {
       recommendedDate: item.recommendedDate, //date
       comment: item.comment,
       supportingImmunization: item.supportingImmunization,
-      status: item.status == true ? 'Active' : 'InActive'
+      status: item.status == true ? 'Completed' : 'Pending'
     }));
 
     this._CasepaperService.saveImmunization(formValue).subscribe({

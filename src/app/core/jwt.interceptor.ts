@@ -47,7 +47,13 @@ export class JwtInterceptor implements HttpInterceptor {
                     },
                 });
         }
-        this._ls.show();
+        // this._ls.show();
+
+        // stoped the loader for abha api calling 13-10-2026
+        if (!request.url.includes('/AbhaConnects/')) {
+            this._ls.show();
+        }
+
         return next.handle(request).pipe(
             catchError((err: HttpErrorResponse) => { // Type the error as HttpErrorResponse
                 if (err.status == 401) {
@@ -98,8 +104,15 @@ export class JwtInterceptor implements HttpInterceptor {
                 }
                 return throwError(() => err); // Return an Observable using throwError
             }),
+            // finalize(() => { // Use finalize for cleanup, even after errors
+            //     this._ls.hide();
+            // })
+
+            // changed for abha 13-10-2026
             finalize(() => { // Use finalize for cleanup, even after errors
-                this._ls.hide();
+                if (!request.url.includes('/AbhaConnects/')) {
+                    this._ls.hide();
+                }
             })
         );
 

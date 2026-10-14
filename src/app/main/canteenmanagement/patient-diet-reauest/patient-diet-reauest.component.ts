@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ComponentRef, OnDestroy, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentRef, Injector, OnDestroy, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatDrawer } from '@angular/material/sidenav';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -19,6 +19,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RequestcardpopupComponent } from './requestcardpopup/requestcardpopup.component';
 // TODO: update this path to wherever RequestcardpopupComponent actually lives
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MenuItemPopupComponent } from './menu-item-popup/menu-item-popup.component';
 
 
 @Component({
@@ -49,13 +50,16 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     Deliveredcnt = 0
     NotAcceptedcnt = 0
     NotDeliveredcnt = 0
-    dataSource = new MatTableDataSource<RequestMaster>();
-
     VCancelcount = 0;
     VNewcount = 0;
     VAcceptcount = 0;
     VPendingcount = 0;
+    dataSource = new MatTableDataSource<RequestMaster>();
+    private closeTimer: any = null;
+
     @ViewChild('ReqNopopover') ReqNopopover!: TemplateRef<any>;
+    @ViewChild('ItemNopopover') ItemNopopover!: TemplateRef<any>;
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -82,21 +86,27 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelled;
         this.gridConfig.columnsList.find(col => col.key === 'dietReqNo')!.template = this.ReqNopopover;
+        this.gridConfig.columnsList.find(col => col.key === 'dietMenuName')!.template = this.ItemNopopover;
+
+        this.gridConfig.columnsList.find(col => col.key === 'dietMenuDetails')!.template = this.dietMenuDetails;
 
     }
 
+    @ViewChild('dietMenuDetails') dietMenuDetails!: TemplateRef<any>;
     allcolumns = [
         { heading: "Status", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 80, type: gridColumnTypes.template },
-        // { heading: "Accepted", key: "acceptedCount", sort: true, align: 'center', emptySign: '0', width: 70 },
-        // { heading: "Not Accepted", key: "notAcceptedCount", sort: true, align: 'center', emptySign: '0', width: 70 },
-        // { heading: "Delivered", key: "deliveredCount", sort: true, align: 'center', emptySign: '0', width: 70 },
-        // { heading: "Not Delivered", key: "notDeliveredCount", sort: true, align: 'center', emptySign: '0', width: 70 },
-        // { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
 
         { heading: "Request Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        { heading: "Req No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 70, type: gridColumnTypes.template },
+        { heading: "Request No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 70, type: gridColumnTypes.template },
 
-        { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.template },
+
+        // { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+
+        // {
+        //     heading: "Menu Details", key: "dietMenuDetails", sort: true, align: "left", width: 250, type: gridColumnTypes.template,
+        //     template: this.dietMenuDetails
+        // },
         { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 250 },
 
@@ -108,11 +118,11 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
 
     detailColumns = [
         {
-            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 130,
+            heading: "Status", key: "isAccept", sort: true, align: 'left', emptySign: 'NA', width: 150,
             type: gridColumnTypes.template, template: this.isAccept
         },
         {
-            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 130,
+            heading: "IsDelived", key: "isDelived", sort: true, align: 'left', emptySign: 'NA', width: 150,
             type: gridColumnTypes.template, template: this.isDelived
         },
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
@@ -133,9 +143,9 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     ];
 
     constructor(public _DietRequestService: DietRequestService,
-        private _formBuilder: FormBuilder, private overlay: Overlay,
+        private _formBuilder: FormBuilder, private overlay: Overlay, private dialog: MatDialog,
         private commonService: PrintserviceService, public _matDialog: MatDialog, private _loggedService: AuthenticationService,
-        public toastr: ToastrService, public datePipe: DatePipe,
+        public toastr: ToastrService, public datePipe: DatePipe, private injector: Injector,
         private cdr: ChangeDetectorRef) { }
 
     ngOnInit(): void {
@@ -548,13 +558,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
             if (this.dataSource.data.length > 0) {
                 this.VNewcount = this.dataSource.data.length
                 this.VCancelcount = 0;
-                // this.Accepted = this.dataSource.data[0].allAccepted
-                // this.Delivered = this.dataSource.data[0].allDelivered
-
-                // this.Acceptedcnt = this.dataSource.data[0].acceptedCount
-                // this.Deliveredcnt = this.dataSource.data[0].deliveredCount
-                // this.NotAcceptedcnt = this.dataSource.data[0].notAcceptedCount
-                // this.NotDeliveredcnt = this.dataSource.data[0].notDeliveredCount
 
                 this.dataSource.data.forEach(element => {
 
@@ -717,6 +720,8 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
             this.doctorCloseTimeout = null;
         }
     }
+    //
+
 
     ngOnDestroy() {
         if (this.overlayRef) {
@@ -739,6 +744,90 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         }
     }
 
+    // chip design
+    getDetailArray(data: string): string[] {
+        if (!data) {
+            return [];
+        }
+        return data.split('|')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+    }
+
+    getDetailNames(data: string): string {
+        const parts = data.split('~');
+        const foodName = parts[0]?.trim() ?? '';
+        const quantity = parts[1]?.trim() ?? '';
+        const unit = parts[2]?.trim() ?? '';
+        return `${foodName} - ${quantity} ${unit}`.trim();
+    }
+
+    expandedRows = new Set<any>();
+
+    isExpanded(element: any): boolean {
+        return this.expandedRows.has(element);
+    }
+
+    expandRow(element: any): void {
+        this.expandedRows.add(element);
+    }
+    openMenuPopup(element: any, event: MouseEvent): void {
+        const target = event.currentTarget as HTMLElement;
+
+        clearTimeout(this.closeTimer);
+        this.disposeReqNoPopover();         // close the Req No popup if it is open
+        this.disposeMenuPopover();          // replace any menu popup that is already open
+
+        this.overlayRef = this.overlay.create({
+            panelClass: 'menu-popover',
+            positionStrategy: this.overlay.position()
+                .flexibleConnectedTo(target)
+                .withPositions([
+                    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },     // below
+                    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 },    // above if no room
+                ])
+                .withFlexibleDimensions(false)
+                .withPush(true)
+                .withViewportMargin(8),
+            scrollStrategy: this.overlay.scrollStrategies.close(),
+        });
+
+        // MenuItemPopupComponent is a dialog component: it reads MAT_DIALOG_DATA
+        // and may inject MatDialogRef, so provide both.
+        const injector = Injector.create({
+            parent: this.injector,
+            providers: [
+                { provide: MAT_DIALOG_DATA, useValue: { menuName: element.dietMenuName, detail: element.dietMenuDetails } },
+                { provide: MatDialogRef, useValue: { close: () => this.disposeMenuPopover() } },
+            ],
+        });
+
+        this.overlayRef.attach(new ComponentPortal(MenuItemPopupComponent, null, injector));
+
+        // keep it open while the mouse is over the popup itself
+        const el = this.overlayRef.overlayElement;
+        el.addEventListener('mouseenter', () => clearTimeout(this.closeTimer));
+        el.addEventListener('mouseleave', () => this.closeDetailsPopover1());
+    }
+
+    closeDetailsPopover1(): void {
+        clearTimeout(this.closeTimer);
+        this.closeTimer = setTimeout(() => this.disposeMenuPopover(), 150);   // lets the mouse travel into the popup
+    }
+
+    private disposeMenuPopover(): void {
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+            this.overlayRef = null;
+        }
+    }
+
+    private disposeReqNoPopover(): void {
+        if (this.ReqNoOverlayRef) {
+            this.ReqNoOverlayRef.dispose();
+            this.ReqNoOverlayRef = null;
+        }
+    }
 }
 
 

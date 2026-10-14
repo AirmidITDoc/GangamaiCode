@@ -1,0 +1,174 @@
+
+/* =========================================================
+   GLOBAL COMPACT GRID
+   Angular 16 + Angular Material
+   Applies to Material tables throughout the application.
+   No changes required in individual component HTML files.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. Table typography
+   --------------------------------------------------------- */
+
+.mat-mdc-table,
+.mat-table {
+  font-size: 12px !important;
+}
+
+/* ---------------------------------------------------------
+   2. Compact header cells
+   --------------------------------------------------------- */
+
+.mat-mdc-header-cell,
+.mat-header-cell {
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 18px !important;
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------
+   3. Compact data cells
+   --------------------------------------------------------- */
+
+.mat-mdc-cell,
+.mat-cell {
+  padding: 3px 8px !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------
+   4. Compact table rows
+   --------------------------------------------------------- */
+
+.mat-mdc-row,
+.mat-mdc-header-row,
+.mat-row,
+.mat-header-row {
+  min-height: 34px !important;
+  height: 34px !important;
+}
+
+/* ---------------------------------------------------------
+   5. Keep cell content vertically aligned
+   --------------------------------------------------------- */
+
+.mat-mdc-cell,
+.mat-mdc-header-cell,
+.mat-cell,
+.mat-header-cell {
+  align-items: center;
+  vertical-align: middle;
+}
+
+/* ---------------------------------------------------------
+   6. Compact buttons inside table cells
+   --------------------------------------------------------- */
+
+.mat-mdc-cell button[mat-icon-button],
+.mat-cell button[mat-icon-button] {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  padding: 4px !important;
+  line-height: 20px !important;
+}
+
+/* ---------------------------------------------------------
+   7. Compact icons inside table cells
+   --------------------------------------------------------- */
+
+.mat-mdc-cell button[mat-icon-button] .mat-icon,
+.mat-cell button[mat-icon-button] .mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+/* ---------------------------------------------------------
+   8. Compact images inside action buttons
+   --------------------------------------------------------- */
+
+.mat-mdc-cell button[mat-icon-button] img,
+.mat-cell button[mat-icon-button] img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+/* ---------------------------------------------------------
+   9. Compact status labels
+   Works with existing application status classes.
+   --------------------------------------------------------- */
+
+.status-completed,
+.status-pending {
+  padding: 2px 7px !important;
+  font-size: 11px !important;
+  line-height: 18px !important;
+  border-radius: 7px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* ---------------------------------------------------------
+   10. Compact table checkboxes
+   --------------------------------------------------------- */
+
+.mat-mdc-cell .mat-mdc-checkbox,
+.mat-mdc-header-cell .mat-mdc-checkbox {
+  transform: scale(0.85);
+  transform-origin: center;
+}
+
+/* ---------------------------------------------------------
+   11. Compact paginator
+   --------------------------------------------------------- */
+
+.mat-mdc-paginator {
+  font-size: 12px !important;
+}
+
+.mat-mdc-paginator-container {
+  min-height: 44px !important;
+  padding: 0 8px !important;
+}
+
+/* ---------------------------------------------------------
+   12. Avoid wrapping table header text
+   --------------------------------------------------------- */
+
+.mat-mdc-header-cell,
+.mat-header-cell {
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------
+   13. Prevent oversized default text inside table cells
+   --------------------------------------------------------- */
+
+.mat-mdc-cell,
+.mat-cell {
+  p {
+    margin: 0;
+    line-height: 18px;
+  }
+}
+
+/* ---------------------------------------------------------
+   14. Compact legacy Material table rows
+   --------------------------------------------------------- */
+
+.mat-row,
+.mat-header-row {
+  min-height: 34px !important;
+}
+
+.mat-cell,
+.mat-header-cell {
+  line-height: 18px !important;
+}

@@ -417,21 +417,21 @@
                                                     class="w-120 ellipsis">
 
                                                     <mat-icon
-                                                        *ngIf="element.forecastStatus === true || element.forecastStatus === 'Completed'"
-                                                        class="icon-yes" matTooltip="Completed">
+                                                        *ngIf="element.forecastStatus === true || element.forecastStatus === 'Due'"
+                                                        class="icon-yes" matTooltip="Due">
                                                         check_circle
                                                     </mat-icon>
 
                                                     <mat-icon
-                                                        *ngIf="element.forecastStatus === false || element.forecastStatus === 'Recommended'"
-                                                        class="icon-no" matTooltip="Recommended">
+                                                        *ngIf="element.forecastStatus === false || element.forecastStatus === 'OverDue'"
+                                                        class="icon-no" matTooltip="OverDue">
                                                         cancel
                                                     </mat-icon>
 
                                                     <span *ngIf="element.forecastStatus !== true &&
                                                             element.forecastStatus !== false &&
-                                                            element.forecastStatus !== 'Completed' &&
-                                                            element.forecastStatus !== 'Recommended'">
+                                                            element.forecastStatus !== 'Due' &&
+                                                            element.forecastStatus !== 'OverDue'">
                                                         --
                                                     </span>
 
@@ -448,21 +448,21 @@
                                                     class="w-120 ellipsis">
 
                                                     <mat-icon
-                                                        *ngIf="element.status === true || element.status === 'Active'"
-                                                        class="icon-yes" matTooltip="Active">
+                                                        *ngIf="element.status === true || element.status === 'Completed'"
+                                                        class="icon-yes" matTooltip="Completed">
                                                         check_circle
                                                     </mat-icon>
 
                                                     <mat-icon
-                                                        *ngIf="element.status === false || element.status === 'InActive'"
-                                                        class="icon-no" matTooltip="InActive">
+                                                        *ngIf="element.status === false || element.status === 'Pending'"
+                                                        class="icon-no" matTooltip="Pending">
                                                         cancel
                                                     </mat-icon>
 
                                                     <span *ngIf="element.status !== true &&
                                                             element.status !== false &&
-                                                            element.status !== 'Active' &&
-                                                            element.status !== 'InActive'">
+                                                            element.status !== 'Completed' &&
+                                                            element.status !== 'Pending'">
                                                         --
                                                     </span>
 

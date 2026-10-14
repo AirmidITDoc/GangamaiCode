@@ -1,0 +1,104 @@
+$primary: #0b5ed7;
+$text: #1f2a44;
+$muted: #6b7690;
+$border: #dfe5f0;
+
+/* ---------- Dialog layout ---------- */
+.modal-body {
+  overflow-x: hidden;
+}
+
+.modal-body-container {
+  padding: 8px 12px;
+  box-sizing: border-box;
+}
+
+.modal-body-container .mat-card {
+  padding: 12px 16px;
+  border: 1px solid $border;
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.patient-card {
+  padding: 4px 10px !important;
+}
+
+/* ---------- Form ---------- */
+.assessment-form {
+  padding: 4px 6px 0;
+
+  .group-title {
+    display: flex;
+    align-items: center;
+    margin: 14px 0 12px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: $text;
+    border-bottom: 1px solid $border;
+
+    &::before {
+      content: '';
+      width: 3px;
+      height: 14px;
+      margin-right: 8px;
+      border-radius: 2px;
+      background: $primary;
+    }
+
+    &:first-child { margin-top: 0; }
+  }
+
+  /* Angular Material overrides (legacy, non-MDC) */
+  ::ng-deep {
+    .mat-form-field {
+      width: 100%;
+      font-size: 13px;
+    }
+    .mat-form-field-wrapper { padding-bottom: 0.9em; }
+    .mat-form-field-appearance-outline .mat-form-field-outline { color: $border; }
+    .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick { color: $primary; }
+    .mat-form-field-label { color: $muted; }
+    textarea.mat-input-element { line-height: 1.4; resize: vertical; }
+  }
+
+  /* Nutrition risk chip */
+  .risk-chip {
+    display: inline-block;
+    min-width: 90px;
+    padding: 8px 18px;
+    margin-bottom: 0.9em;
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+
+    &.risk-low    { background: #dff5e6; color: #1b7a3d; }
+    &.risk-medium { background: #fdebc2; color: #b26a00; }
+    &.risk-high   { background: #fddede; color: #b42318; }
+  }
+}
+
+/* ---------- Footer ---------- */
+.modal-footer {
+  border-top: 1px solid $border;
+  padding: 10px 16px;
+  background: #fff;
+
+  .dialog-footer { width: 100%; }
+
+  .btn {
+    min-width: 96px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+
+    &:disabled { opacity: 0.55; cursor: not-allowed; }
+  }
+  .btn-primary { background: $primary; color: #fff; border: 1px solid $primary; }
+  .btn-danger-outline { background: #fff; color: #b42318; border: 1px solid #b42318; }
+}
