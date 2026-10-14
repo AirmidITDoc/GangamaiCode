@@ -199,7 +199,7 @@
                                                                         <input matInput [matDatepicker]="hdeathDate"
                                                                             placeholder="hdeathDate"
                                                                             formControlName="hdeathDate"
-                                                                            [value]="vhdeathDate" />
+                                                                            [value]="vhdeathDate"/>
                                                                         <mat-datepicker-toggle matSuffix
                                                                             [for]="hdeathDate"></mat-datepicker-toggle>
                                                                         <mat-datepicker #hdeathDate></mat-datepicker>
@@ -214,7 +214,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
+                                                            <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
                                                                 <div class="photo-capture  border border-radius-4 gap-4"
                                                                     fxLayout="column" style="padding: 4px;">
                                                                     <div class="photp-capture-image"
@@ -230,6 +230,27 @@
                                                                                 <mat-icon>camera_enhance</mat-icon>
                                                                             </span>
                                                                             <span>Capture image</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
+
+                                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
+                                                                <div class="photo-capture  border border-radius-4 gap-4"
+                                                                    fxLayout="column" style="padding: 4px;">
+                                                                    <div class="photp-capture-image"
+                                                                        style="padding: 4px;" fxLayoutAlign="center">
+                                                                        <img class="h-100-p w-90-p border-radius-4"
+                                                                            [src]="imagePreviewH ? imagePreviewH:'/assets/images/default.jpg'" />
+                                                                    </div>
+                                                                    <div class="photo-capture-button ">
+                                                                        <label
+                                                                            class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
+                                                                            (click)="uploadHusbandImage()">
+                                                                            <span class="btn-icon">
+                                                                                <mat-icon>cloud_upload</mat-icon>
+                                                                            </span>
+                                                                            <span>Upload image</span>
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -426,7 +447,8 @@
                                                                 </div>
 
                                                             </div>
-                                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
+
+                                                            <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
                                                                 <div class="photo-capture  border border-radius-4 gap-4"
                                                                     fxLayout="column" style="padding: 4px;">
                                                                     <div class="photp-capture-image"
@@ -445,7 +467,29 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
+                                                            </div> -->
+
+                                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33.33%">
+                                                                <div class="photo-capture  border border-radius-4 gap-4"
+                                                                    fxLayout="column" style="padding: 4px;">
+                                                                    <div class="photp-capture-image"
+                                                                        style="padding: 4px;" fxLayoutAlign="center">
+                                                                        <img class="h-100-p w-90-p border-radius-4"
+                                                                            [src]="imagePreviewW ? imagePreviewW:'/assets/images/default.jpg'" />
+                                                                    </div>
+                                                                    <div class="photo-capture-button ">
+                                                                        <label
+                                                                            class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
+                                                                            (click)="uploadWifeImage()">
+                                                                            <span class="btn-icon">
+                                                                                <mat-icon>cloud_upload</mat-icon>
+                                                                            </span>
+                                                                            <span>Upload image</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+
                                                         </div>
                                                     </form>
                                                 </mat-card-content>

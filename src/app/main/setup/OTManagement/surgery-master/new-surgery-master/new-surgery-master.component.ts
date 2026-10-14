@@ -63,14 +63,30 @@ export class NewSurgeryMasterComponent implements OnInit {
         });
     }
 
-    // selectedItems = [];
-    // selectChangeServiceName(row) {
-    //     const selectedData = Array.isArray(row) ? row : [row];
-    //     this.selectedItems = selectedData.map(item => ({ serviceId: item.serviceId }));
-    // }
-
     selectChangeServiceName(event: any): void {
-        // console.log('Selected Surgery:', event);
+        console.log("service event", event)
+        // const serviceId = event?.value ?? event;
+        const serviceId = event?.serviceId ?? event;
+        this.myForm.patchValue({
+            serviceId: serviceId
+        });
+    }
+
+    selectChangeSubs(event: any): void {
+        console.log("sub specialty event", event)
+    }
+
+    calculateTotalDuration(): void {
+
+        const expectedSurgeryTime = Number(this.myForm.get('expectedSurgeryTime')?.value) || 0;
+        const preparationTime = Number(this.myForm.get('preparationTime')?.value) || 0;
+        const cleaningTurnaroundTime = Number(this.myForm.get('cleaningTurnaroundTime')?.value) || 0;
+
+        const totalDuration = expectedSurgeryTime + preparationTime + cleaningTurnaroundTime;
+
+        this.myForm.get('totalDuration')?.setValue(totalDuration, {
+            emitEvent: false
+        });
     }
 
     onSubmit() {
@@ -79,38 +95,30 @@ export class NewSurgeryMasterComponent implements OnInit {
 
             const formValues = {
                 ...this.myForm.value,
-                surgeryId: this.SurgeryId
+                surgeryId: this.SurgeryId,
+                expectedSurgeryTime: this.myForm.value.expectedSurgeryTime || 0,
+                preparationTime: this.myForm.value.preparationTime || 0,
+                cleaningTurnaroundTime: this.myForm.value.cleaningTurnaroundTime || 0,
             };
-
-            // console.log('Form values:', formValues);
-            // Calculate Total Duration
-            const expectedSurgeryTime = Number(formValues.expectedSurgeryTime) || 0;
-            const preparationTime = Number(formValues.preparationTime) || 0;
-            const cleaningTurnaroundTime = Number(formValues.cleaningTurnaroundTime) || 0;
-
-            formValues.totalDuration = expectedSurgeryTime + preparationTime + cleaningTurnaroundTime;
-
-            // console.log('API Payload:', formValues);
 
             this._SurgeryMasterService.surgerySave(formValues).subscribe((response) => {
                 this.onClear(true);
             });
-        } {
+        } else {
             const invalidFields = [];
-            if (this.myForm.invalid) {
-                for (const controlName in this.myForm.controls) {
-                    if (this.myForm.controls[controlName].invalid) {
-                        invalidFields.push(`Surgery Form: ${controlName}`);
-                    }
+
+            for (const controlName in this.myForm.controls) {
+                if (this.myForm.controls[controlName].invalid) {
+                    invalidFields.push(`Surgery Form: ${controlName}`);
                 }
             }
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
-                });
-            }
 
+            invalidFields.forEach(field => {
+                this.toastr.warning(
+                    `Field "${field}" is invalid.`,
+                    'Warning'
+                );
+            });
         }
     }
 
@@ -127,29 +135,23 @@ export class NewSurgeryMasterComponent implements OnInit {
     getValidationMessages() {
         return {
             SurgeryName: [
-                { name: "required", Message: "surgery Name is required" }
+                // { name: "required", Message: "surgery Name is required" }
             ],
-            surgeryCategoryId: [
-                { name: "required", Message: "surgeryCategory is required" }
+            ShortName: [
+                // { name: "required", Message: "Short Name is required" }
             ],
             departmentId: [
-                { name: "required", Message: "department is required" }
+                // { name: "required", Message: "Department is required" }
             ],
-            surgeryAmount: [
-                { name: "required", Message: "amount is required" }
+
+            SurgeryType: [
+                // { name: "required", Message: "Surgery Type is required" }
             ],
-            ottemplateId: [
-                { name: "required", Message: "Table is required" }
+            SurgeryCategory: [
+                // { name: "required", Message: "surgery Category is required" }
             ],
-            siteDescId: [
-                { name: "required", Message: "Surgery Type is required" }
-            ],
-            departmentName: [
-                {
-                    name: "required", Message: "department Name is required"
-                },
-                { name: "maxlength", Message: "department Name should not be greater than 50 char." },
-                { name: "pattern", Message: "Only char allowed." }
+            Subspecialty: [
+                // { name: "required", Message: "Subspecialty is required" }
             ]
         };
     }

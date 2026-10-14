@@ -1,0 +1,50 @@
+<div class="image-view-section">
+    <div fxLayout="row" fxLayoutAlign="start center" class="accent image-view-header">
+        <div class="logo px-12 py-8" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+            <div class="logo-text">
+                <span class="h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"> Upload Image</span>
+            </div>
+            <div class="close-icon">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
+                        close
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="webcam-container">
+        <mat-card class="p-16">
+            <div class="section">
+                <div class="my-8">Select File</div>
+                <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+                    <div class="photp-capture-image">
+                        <img class="h-100-p w-100-p border-radius-4" style="height: 250px !important;"
+                            [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
+                    </div>
+                    <div class="img-container">
+                        <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple
+                            name="file" id="file" class="inputfile" (change)="onImageChange($event)"
+                            style="margin-right: 10px;display: none;" />
+
+                        <label class="button-label" for="file">
+                            <mat-icon>cloud_upload</mat-icon>
+                            Browse
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-actions mt-16 gap-4" fxLayout="row" fxLayoutAlign="end center">
+                <button mat-raised-button color="warn" (click)="removeFile()" *ngIf="isFileUpload">
+                    Clear
+                </button>
+
+                <button mat-raised-button color="primary" (click)="OnSubmit()">
+                    Submit
+                </button>
+            </div>
+        </mat-card>
+
+    </div>
+</div>
