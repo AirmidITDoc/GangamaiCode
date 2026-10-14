@@ -52,9 +52,9 @@ export class SurgeryMasterComponent implements OnInit {
 
         { heading: "surgeryAmount", key: "surgeryAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
-        { heading: "Expected Surgery Time", key: "expectedSurgeryTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Preparation Time", key: "preparationTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Cleaning Turnaround Time", key: "cleaningTurnaroundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Expected Surgery Time(min)", key: "expectedSurgeryTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Preparation Time(min)", key: "preparationTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Cleaning Turnaround Time(min)", key: "cleaningTurnaroundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Total Duration", key: "totalDuration", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
 
@@ -119,8 +119,12 @@ export class SurgeryMasterComponent implements OnInit {
         const that = this;
         const dialogRef = this._matDialog.open(NewSurgeryMasterComponent,
             {
-                maxWidth: "85vw",
-                height: 'auto',
+                // maxWidth: "85vw",
+                // height: 'auto',
+                // width: '70%',
+
+                maxWidth: "80vw",
+                maxHeight: '75%',
                 width: '70%',
                 data: row
             });

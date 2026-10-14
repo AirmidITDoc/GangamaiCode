@@ -76,19 +76,56 @@ export class NewSurgeryMasterComponent implements OnInit {
         console.log("sub specialty event", event)
     }
 
+    // calculateTotalDuration(): void {
+
+    //     const expectedSurgeryTime = Number(this.myForm.get('expectedSurgeryTime')?.value) || 0;
+    //     const preparationTime = Number(this.myForm.get('preparationTime')?.value) || 0;
+    //     const cleaningTurnaroundTime = Number(this.myForm.get('cleaningTurnaroundTime')?.value) || 0;
+
+    //     const totalDuration = expectedSurgeryTime + preparationTime + cleaningTurnaroundTime;
+
+    //     this.myForm.get('totalDuration')?.setValue(totalDuration, {
+    //         emitEvent: false
+    //     });
+    // }
+
+    totalDurationLabel = 'Total Duration(min)';
+
     calculateTotalDuration(): void {
 
-        const expectedSurgeryTime = Number(this.myForm.get('expectedSurgeryTime')?.value) || 0;
-        const preparationTime = Number(this.myForm.get('preparationTime')?.value) || 0;
-        const cleaningTurnaroundTime = Number(this.myForm.get('cleaningTurnaroundTime')?.value) || 0;
+        const expectedSurgeryTime =
+            Number(this.myForm.get('expectedSurgeryTime')?.value) || 0;
 
-        const totalDuration = expectedSurgeryTime + preparationTime + cleaningTurnaroundTime;
+        const preparationTime =
+            Number(this.myForm.get('preparationTime')?.value) || 0;
 
-        this.myForm.get('totalDuration')?.setValue(totalDuration, {
-            emitEvent: false
-        });
+        const cleaningTurnaroundTime =
+            Number(this.myForm.get('cleaningTurnaroundTime')?.value) || 0;
+
+        const totalMinutes =
+            expectedSurgeryTime +
+            preparationTime +
+            cleaningTurnaroundTime;
+
+        if (totalMinutes > 60) {
+
+            const totalHours = Number((totalMinutes / 60).toFixed(2));
+
+            this.totalDurationLabel = 'Total Duration(hr)';
+
+            this.myForm.get('totalDuration')?.setValue(totalHours, {
+                emitEvent: false
+            });
+
+        } else {
+
+            this.totalDurationLabel = 'Total Duration(min)';
+
+            this.myForm.get('totalDuration')?.setValue(totalMinutes, {
+                emitEvent: false
+            });
+        }
     }
-
     onSubmit() {
 
         if (!this.myForm.invalid) {
