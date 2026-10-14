@@ -22,17 +22,17 @@
 
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox label="Surgery Name" formControlName="surgeryName" [formGroup]="myForm"
-                            [maxLength]="50">
+                            [maxLength]="50" [validations]="getValidationMessages().SurgeryName">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox label="Short Name" formControlName="shortName" [formGroup]="myForm"
-                            [maxLength]="50">
+                            [maxLength]="50" [validations]="getValidationMessages().ShortName">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown label="Department" formControlName="departmentId" [formGroup]="myForm"
-                            [mode]="autocompleteModeDepartment">
+                            [mode]="autocompleteModeDepartment" [validations]="getValidationMessages().SurgeryName">
                         </airmid-dropdown>
                     </div>
 
@@ -55,12 +55,12 @@
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown label="Sub Speciality" formControlName="subSpecialty" [formGroup]="myForm"
-                            [mode]="autocompleteModeMOtSubSpecialty">
+                            [mode]="autocompleteModeMOtSubSpecialty" (selectionChange)="selectChangeSubs($event)">
                         </airmid-dropdown>
                     </div>
 
 
-                   
+
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown label="Service Name" formControlName="serviceId" [formGroup]="myForm"
                             ValueField="serviceId" TextField="serviceName"
@@ -73,7 +73,7 @@
                             [maxLength]="50" [readonly]="true">
                         </airmid-textbox>
                     </div>
-                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown label="Grade Level" formControlName="gradeLevel" [formGroup]="myForm"
                             [mode]="autocompleteModeMTypesOfOTLevel">
                         </airmid-dropdown>
@@ -93,24 +93,27 @@
                         </airmid-textbox>
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100" fxFlex.sm="30%">
-                        <airmid-textbox label="Expected Surgery Time" (keypress)="keyPressCharater($event)"
-                            formControlName="expectedSurgeryTime" [formGroup]="myForm" [maxLength]="50">
+                        <airmid-textbox label="Expected Surgery Time(min)" (keypress)="keyPressCharater($event)"
+                            formControlName="expectedSurgeryTime" [formGroup]="myForm" [maxLength]="5"
+                            (input)="calculateTotalDuration()">
                         </airmid-textbox>
                     </div>
-                    
+
 
                     <div fxFlex="33%" fxFlex.xs="100" fxFlex.sm="30%">
-                        <airmid-textbox label="Preparation Time" (keypress)="keyPressCharater($event)"
-                            formControlName="preparationTime" [formGroup]="myForm" [maxLength]="50">
+                        <airmid-textbox label="Preparation Time(min)" (keypress)="keyPressCharater($event)"
+                            formControlName="preparationTime" [formGroup]="myForm" [maxLength]="5"
+                            (input)="calculateTotalDuration()">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100" fxFlex.sm="30%">
-                        <airmid-textbox label="Cleaning Turnaround Time" (keypress)="keyPressCharater($event)"
-                            formControlName="cleaningTurnaroundTime" [formGroup]="myForm" [maxLength]="50">
+                        <airmid-textbox label="Cleaning Turnaround Time(min)" (keypress)="keyPressCharater($event)"
+                            formControlName="cleaningTurnaroundTime" [formGroup]="myForm" [maxLength]="5"
+                            (input)="calculateTotalDuration()">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox label="Total Duration" formControlName="totalDuration" [formGroup]="myForm"
+                        <airmid-textbox [label]="totalDurationLabel" formControlName="totalDuration" [formGroup]="myForm"
                             [maxLength]="50" [readonly]="true">
                         </airmid-textbox>
                     </div>

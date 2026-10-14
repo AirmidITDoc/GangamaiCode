@@ -29,6 +29,7 @@ import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { MatSelectChange } from '@angular/material/select';
 import { NewCompanyMasterComponent } from 'app/main/setup/billing/company-master-list/new-company-master/new-company-master.component';
+import { UploadImageComponent } from '../upload-image/upload-image.component';
 
 @Component({
   selector: 'app-new-form',
@@ -87,6 +88,8 @@ export class NewFormComponent {
   vpcpndtprocessId = 0
   registerObj1 = new RegInsert({});
   dateofBirth = new Date()
+
+  minDate1: Date = new Date();
 
   isExpanded1 = false;
   isExpanded2 = false;
@@ -214,11 +217,11 @@ export class NewFormComponent {
     private apiCaller: ApiCaller, private router: Router,
     private commonService: PrintserviceService, private advanceDataStored: AdvanceDataStored,
     private _configue: ConfigService, private accountService: AuthenticationService,
-    public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
-
+    public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any,
+    private _service: ApiCaller,
   ) { }
 
-
+  isFileUpload: boolean = false;
   ngOnInit(): void {
     this.today = new Date();
 
@@ -332,6 +335,26 @@ export class NewFormComponent {
 
       // console.log(this.personalFormGroup.get('membershipvalidDate').value);
       // console.log(this.personalFormGroup.get('wmembershipvalidDate').value);
+    }
+
+    // Load existing image only when a reference ID is available.
+    if (this.data?.membershipId > 0) {
+
+      // Get Husband Photo
+      this._service.GetData('Files/get-signature?RefId=' + this.data.membershipId + '&RefType=TrustHusband_Photo').subscribe((response: any) => {
+        if (response?.data) {
+          this.imagePreviewH = response.data;
+          this.isFileUpload = true;
+        }
+      });
+
+      // Get Wife Photo
+      this._service.GetData('Files/get-signature?RefId=' + this.data.membershipId + '&RefType=TrustWife_Photo').subscribe((response: any) => {
+        if (response?.data) {
+          this.imagePreviewW = response.data;
+          this.isFileUpload = true;
+        }
+      });
     }
   }
 
@@ -671,6 +694,56 @@ export class NewFormComponent {
 
   }
 
+  imagePreviewH: string | null = null;
+  uploadHusbandImage() {
+    const dialogRef = this._matDialog.open(
+      UploadImageComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "70vh",
+        width: "100%",
+        data: { membershipId: this.vmembershipId, refType: 'TrustHusband_Photo' }
+        //  TrustHusbandPhoto='TrustHusband_Photo',TrustWifePhoto='TrustWife_Photo'
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((image: string | null) => {
+      // console.log(image)
+      // if (image) {
+      //   this.imagePreviewH = image;
+      // }
+      if (image) {
+        this.imagePreviewH = image;
+      } else {
+        this.imagePreviewH = null;
+      }
+    });
+  }
+
+  imagePreviewW: string | null = null;
+  uploadWifeImage() {
+    const dialogRef = this._matDialog.open(
+      UploadImageComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "70vh",
+        width: "100%",
+        data: { membershipId: this.vmembershipId, refType: 'TrustWife_Photo' }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((image: string | null) => {
+      // console.log(image)
+      // if (image) {
+      //   this.imagePreviewW = image;
+      // }
+      if (image) {
+        this.imagePreviewW = image;
+      } else {
+        this.imagePreviewW = null;
+      }
+    });
+  }
 
   autocompleteModeprefix: string = "Prefix";
 
@@ -968,10 +1041,54 @@ export class NewFormComponent {
 
       console.log(this.personalFormGroup.value)
 
-      this._NewMemberService.MembershipSave(this.personalFormGroup.value).subscribe(response => {
-        console.log(response)
-        // this.getMembershipview(response)
-        this._matDialog.closeAll();
+      this._NewMemberService.MembershipSave(this.personalFormGroup.value).subscribe((response: any) => {
+
+        // // this.getMembershipview(response)
+        // this._matDialog.closeAll();
+
+        const membershipId = response;
+        this.vmembershipId = membershipId
+        console.log("membershipId", membershipId)
+        console.log("imagePreviewH", this.imagePreviewH)
+        console.log("imagePreviewW", this.imagePreviewW)
+        if (membershipId && this.imagePreviewH) {
+
+          const objFile = {
+            srNo: 1,
+            id: 0,
+            docName: 'TrustHusbandPhoto' + '_Signature',
+            docSavedName: '',
+            Document: null,
+            isDelete: false,
+            base64: this.imagePreviewH,
+            refId: membershipId,
+            refType: 'TrustHusband_Photo'
+          };
+
+          this._service.PostFromData('Files/save-signature', { objSignature: objFile }).subscribe(() => {
+            this._matDialog.closeAll();
+          });
+
+        }
+        if (membershipId && this.imagePreviewW) {
+          const objFile = {
+            srNo: 1,
+            id: 0,
+            docName: 'TrustWifePhoto' + '_Signature',
+            docSavedName: '',
+            Document: null,
+            isDelete: false,
+            base64: this.imagePreviewW,
+            refId: membershipId,
+            refType: 'TrustWife_Photo'
+          };
+
+          this._service.PostFromData('Files/save-signature', { objSignature: objFile }).subscribe(() => {
+            this._matDialog.closeAll();
+          });
+        } else {
+          this._matDialog.closeAll();
+        }
 
       });
     } else {

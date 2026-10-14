@@ -48,6 +48,7 @@ import { WebcamModule } from 'ngx-webcam';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSliderModule } from '@angular/material/slider';
+import { UploadImageComponent } from './upload-image/upload-image.component';
 
 const routes: Routes = [
 
@@ -60,7 +61,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         NewMembershipComponent,
-        NewFormComponent
+        NewFormComponent,
+        UploadImageComponent
     ],
     imports: [
         RouterModule.forChild(routes),

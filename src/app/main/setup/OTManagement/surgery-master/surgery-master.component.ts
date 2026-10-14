@@ -36,9 +36,9 @@ export class SurgeryMasterComponent implements OnInit {
 
     allColumns = [
 
-        { heading: "Surgery Code", key: "surgeryCode", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Surgery Code", key: "surgeryCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Short Name", key: "shortName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Surgery Category", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -50,10 +50,12 @@ export class SurgeryMasterComponent implements OnInit {
         { heading: "Template Name", key: "ottemplateId", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Grade Level", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
-        { heading: "Expected Surgery Time", key: "expectedSurgeryTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Preparation Time", key: "preparationTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Cleaning Turnaround Time", key: "cleaningTurnaroundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Total Duration", key: "totalDuration", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "surgeryAmount", key: "surgeryAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+        { heading: "Expected Surgery Time(min)", key: "expectedSurgeryTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Preparation Time(min)", key: "preparationTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Cleaning Turnaround Time(min)", key: "cleaningTurnaroundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Total Duration", key: "totalDuration", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
 
         {
@@ -74,13 +76,17 @@ export class SurgeryMasterComponent implements OnInit {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Edit), callback: (data: any) => {
-                        this.onSave(data);
+                        if (data?.isActive === true) {
+                            this.onSave(data);
+                        }
                     }
                 }, {
                     action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Delete), callback: (data: any) => {
-                        this._SurgeryMasterService.deactivateTheStatus(data.surgeryId).subscribe((response: any) => {
-                            this.grid.bindGridData();
-                        });
+                        if (data?.isActive === true) {
+                            this._SurgeryMasterService.deactivateTheStatus(data.surgeryId).subscribe((response: any) => {
+                                this.grid.bindGridData();
+                            });
+                        }
                     }
                 }]
         }
@@ -113,8 +119,12 @@ export class SurgeryMasterComponent implements OnInit {
         const that = this;
         const dialogRef = this._matDialog.open(NewSurgeryMasterComponent,
             {
-                maxWidth: "85vw",
-                height: 'auto',
+                // maxWidth: "85vw",
+                // height: 'auto',
+                // width: '70%',
+
+                maxWidth: "80vw",
+                maxHeight: '75%',
                 width: '70%',
                 data: row
             });

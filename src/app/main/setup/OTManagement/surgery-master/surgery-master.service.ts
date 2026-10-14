@@ -31,7 +31,7 @@ export class SurgeryMasterService {
             surgeryCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeryTypeId: [0],
             surgeryAmount: [0, [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')]],
-            siteDescId: [0],
+            siteDescId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             ottemplateId: [0],
             serviceId: 0,
 
@@ -44,7 +44,7 @@ export class SurgeryMasterService {
             surgicalConsentRequired: [false],
             bloodArrangementRequired: [false],
 
-            gradeLevel:[0],
+            gradeLevel:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             preferredOtroom:[0]
 
             // isCancelled: false,
