@@ -115,6 +115,19 @@
             </div>
         </ng-template>
 
+        <ng-template #actionButtonSticker let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <!-- <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox> -->
+                <button mat-icon-button matTooltip="Sticker" (click)="OnItemStickerstPrint(element)">
+                <mat-icon>pages</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Barcode" (click)="Onbarcode(element)">
+                <mat-icon>filter_b_and_w</mat-icon>
+                </button>
+
+            </div>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" #grid>
             <ng-container filters>
                 <form [formGroup]="_GRNService.GRNSearchGroup" fxLayout="column">
@@ -157,19 +170,14 @@
             </div>
         </ng-template> -->
 
-        <ng-template #actionButtonTemplateIscheck let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox>
-
-            </div>
-        </ng-template>
 
         <button mat-raised-button *ngIf="selection?.selected?.length>0" (click)="printBulkQrCode()">
             Print QrCode
         </button>
 
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false"
-            (onSelectRow)="Onbarcode($event)">
+            >
+            <!-- (onSelectRow)="Onbarcode($event)" -->
         </airmid-table>
     </div>
 </div>

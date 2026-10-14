@@ -1026,8 +1026,11 @@
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
-                    <button type="button" class="btn btn-primary" [disabled]="!chargeList.length"
+                    <button type="button" class="btn btn-primary" 
+                     [disabled]="IsOPDDiscountApprovalReq
+                     ? (!OPFooterForm.get('concessionAmt')?.value || !chargeList.length) : !chargeList.length"
                         (click)="DraftbillSave()">Draft</button>
+                        
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
                         aria-label="Close dialog" matTooltip="Close">Close</button>
                     <button type="button" class="btn btn-primary" [disabled]="!chargeList.length"
