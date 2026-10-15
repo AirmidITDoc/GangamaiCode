@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { mergeFilesIntoTree, PatientFile, TreeNode } from 'app/core/models/documentmanagement/category.model';
 import { DocumentmanagementService } from 'app/main/documentmanagement/documentmanagement.service';
 import { forkJoin } from 'rxjs';
@@ -34,8 +34,8 @@ export class PatientDocumentsComponent implements OnChanges {
         // private categories: CategoryService,
     ) { }
 
-    ngOnChanges(): void {
-        if (this.patientId != null) this.reload();
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['patientId'] && this.patientId != null) this.reload();
     }
 
     reload(): void {

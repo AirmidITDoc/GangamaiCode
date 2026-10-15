@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { isFileNode, PatientFile, TreeNode } from 'app/core/models/documentmanagement/category.model';
@@ -30,10 +30,12 @@ export class CategoryTreeComponent implements OnChanges {
     treeControl = new NestedTreeControl<TreeNode>((node) => node.children as TreeNode[]);
     dataSource = new MatTreeNestedDataSource<TreeNode>();
 
-    ngOnChanges(): void {
-        this.dataSource.data = this.nodes;
-        if (this.expandAll) {
-            queueMicrotask(() => this.expandAllNodes(this.nodes));
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['nodes']) {
+            this.dataSource.data = this.nodes;
+            if (this.expandAll) {
+                queueMicrotask(() => this.expandAllNodes(this.nodes));
+            }
         }
     }
 

@@ -166,9 +166,10 @@
         display: grid;
         grid-template-columns: minmax(240px, 32%) minmax(0, 1fr);
         gap: 5px;
-        height: calc(100vh - 250px);
-        min-height: 320px;
-        flex: 1;
+        height: max(420px, calc(100vh - 250px));
+        min-height: 420px;
+        flex: 0 0 auto;
+        align-items: stretch;
     }
 
     .admissions-pane,
@@ -189,6 +190,7 @@
     }
 
     .document-pane {
+        height: 100%;
         overflow: hidden;
     }
 
