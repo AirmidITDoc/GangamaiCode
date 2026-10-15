@@ -49,6 +49,9 @@ export class DocumentmanagementService {
     getFileBlob(fileName: string): Observable<Blob> {
         return this._httpClient.GetDocumentFile(`DocumentUpload/get-file?FileName=${fileName}`);
     }
+    getMergeFileBlob(AdmissionId: number, CategoryId: number): Observable<Blob> {
+        return this._httpClient.GetDocumentFile(`DocumentUpload/merged-pdf?AdmissionId=${AdmissionId}&CategoryId=${CategoryId}`);
+    }
 
 
 

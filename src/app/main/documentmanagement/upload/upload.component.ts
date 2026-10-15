@@ -148,15 +148,28 @@ export class UploadComponent {
     openCategoryDocuments(categoryId: number): void {
         this.selectedCategoryId = categoryId;
         this.categoryPopupTitle = this.selectedCategoryPath.length ? this.selectedCategoryPath.join(' / ') : 'Category files';
-        this._service.getAdmissionDocuments(this.selectedRegistration?.admissionId || 0, categoryId).subscribe((res) => {
-            this.categoryDocuments = (res || []);
-            if (this.categoryFilesDialog) {
-                this.dialog.open(this.categoryFilesDialog, {
-                    width: '460px',
-                    maxWidth: '90vw',
-                    disableClose: false,
-                });
-            }
+        // this._service.getAdmissionDocuments(this.selectedRegistration?.admissionId || 0, categoryId).subscribe((res) => {
+        //     this.categoryDocuments = (res || []);
+        //     if (this.categoryFilesDialog) {
+        //         this.dialog.open(this.categoryFilesDialog, {
+        //             width: '460px',
+        //             maxWidth: '90vw',
+        //             disableClose: false,
+        //         });
+        //     }
+        // });
+        this._service.getMergeFileBlob(this.selectedRegistration?.admissionId || 0, categoryId).subscribe({
+            next: (blob) => {
+                if (!blob) return;
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = this.categoryPopupTitle + "_merged.pdf";
+                a.click();
+                URL.revokeObjectURL(url);
+            },
+            error: () => {
+            },
         });
     }
 

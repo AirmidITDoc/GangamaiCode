@@ -71,11 +71,11 @@
                 <button *ngIf="showDocumentActions" mat-icon-button title="Upload file"
                     (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
                     <mat-icon>cloud_upload</mat-icon>
-                </button>
-                <!-- <button *ngIf="showDocumentActions" mat-icon-button title="View files"
+                </button> 
+                <button *ngIf="showDocumentActions" mat-icon-button title="View files" matTooltip="Merged All files into single pdf"
                     (click)="viewDocuments.emit(node.id); $event.stopPropagation()">
                     <mat-icon>visibility</mat-icon>
-                </button> -->
+                </button>
                 <button *ngIf="showDocumentActions" mat-icon-button title="Print QR Code"
                     (click)="generateQrCode.emit(node.id); $event.stopPropagation()">
                     <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
