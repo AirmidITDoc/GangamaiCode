@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnChanges, Output } from '@angular/core';
 import { mergeFilesIntoTree, PatientFile, TreeNode } from 'app/core/models/documentmanagement/category.model';
 import { DocumentmanagementService } from 'app/main/documentmanagement/documentmanagement.service';
 import { forkJoin } from 'rxjs';
@@ -12,10 +12,18 @@ import { forkJoin } from 'rxjs';
 })
 export class PatientDocumentsComponent implements OnChanges {
     @Input() patientId!: number;
+    @Input() showViewer = true;
+    @Input() selectedFileId: number | null = null;
 
     @Output() uploadDocument = new EventEmitter<number>();
     @Output() viewDocuments = new EventEmitter<number>();
     @Output() generateQrCode = new EventEmitter<number>();
+    @Output() fileSelected = new EventEmitter<PatientFile | null>();
+
+    @HostBinding('class.tree-only')
+    get treeOnly(): boolean {
+        return !this.showViewer;
+    }
 
     treeNodes: TreeNode[] = [];
     selectedFile: PatientFile | null = null;
@@ -42,6 +50,7 @@ export class PatientDocumentsComponent implements OnChanges {
                 // keep selection only if that file still exists
                 if (this.selectedFile && !files.some((f) => f.id === this.selectedFile!.id)) {
                     this.selectedFile = null;
+                    this.fileSelected.emit(null);
                 }
                 this.loading = false;
             },
@@ -51,6 +60,7 @@ export class PatientDocumentsComponent implements OnChanges {
 
     onSelectFile(file: PatientFile): void {
         this.selectedFile = file;
+        this.fileSelected.emit(file);
     }
 
     private getCategories() {

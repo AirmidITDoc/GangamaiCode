@@ -59,22 +59,38 @@
                             No admissions found for this patient.
                         </p>
 
-                        <article class="admission-card" *ngFor="let admission of registrations">
-                            <header class="admission-header">
-                                <mat-icon [matTooltip]="admission.patientTypeID == '1' ? 'Patient Category Self' : 'Patient Category Company'">
-                                    {{ admission.patientTypeID == '1' ? 'account_box' : 'business' }}
-                                </mat-icon>
-                                <strong>{{ admission.ipdno }}</strong>
-                                <span class="admission-meta mono">
-                                    {{ admission.admissionDate | date:'d/MM/y' }} &middot; {{ admission.regId }}
-                                </span>
-                            </header>
+                        <div class="admissions-layout" *ngIf="registrations.length">
+                            <aside class="admissions-pane">
+                                <article class="admission-card" *ngFor="let admission of registrations">
+                                    <button type="button" class="admission-header"
+                                        [attr.aria-expanded]="isAdmissionExpanded(admission.admissionId)"
+                                        (click)="toggleAdmission(admission.admissionId)">
+                                        <mat-icon [matTooltip]="admission.patientTypeID == '1' ? 'Patient Category Self' : 'Patient Category Company'">
+                                            {{ admission.patientTypeID == '1' ? 'account_box' : 'business' }}
+                                        </mat-icon>
+                                        <strong>{{ admission.ipdno }}</strong>
+                                        <span class="admission-meta mono">
+                                            {{ admission.admissionDate | date:'d/MM/y' }} &middot; {{ admission.regId }}
+                                        </span>
+                                        <mat-icon class="admission-toggle">
+                                            {{ isAdmissionExpanded(admission.admissionId) ? 'expand_less' : 'expand_more' }}
+                                        </mat-icon>
+                                    </button>
 
-                            <app-patient-documents [patientId]="admission.admissionId"
-                                (uploadDocument)="openCategoryUploadPicker($event, admission.admissionId)"
-                                (viewDocuments)="openCategoryDocuments($event, admission.admissionId)"
-                                (generateQrCode)="printQrCode($event)"></app-patient-documents>
-                        </article>
+                                    <app-patient-documents *ngIf="isAdmissionExpanded(admission.admissionId)"
+                                        [patientId]="admission.admissionId" [showViewer]="false"
+                                        [selectedFileId]="selectedFile?.id ?? null"
+                                        (fileSelected)="onSelectDocument($event)"
+                                        (uploadDocument)="openCategoryUploadPicker($event, admission.admissionId)"
+                                        (viewDocuments)="openCategoryDocuments($event, admission.admissionId)"
+                                        (generateQrCode)="printQrCode($event)"></app-patient-documents>
+                                </article>
+                            </aside>
+
+                            <section class="document-pane">
+                                <app-document-viewer [file]="selectedFile"></app-document-viewer>
+                            </section>
+                        </div>
                     </section>
 
                     <input #categoryUploadInput type="file" multiple hidden (change)="onCategoryFileInput($event)" />

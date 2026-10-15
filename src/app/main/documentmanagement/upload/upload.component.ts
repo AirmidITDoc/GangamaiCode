@@ -2,7 +2,7 @@ import { Component, ElementRef, QueryList, TemplateRef, ViewChild, ViewChildren 
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
-import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
+import { DocumentCategory, PatientFile } from 'app/core/models/documentmanagement/category.model';
 import { Patient } from 'app/core/models/documentmanagement/patient.model';
 import { DocumentmanagementService } from '../documentmanagement.service';
 import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
@@ -34,8 +34,10 @@ export class UploadComponent {
     patientQuery = '';
     patientResults: Patient[] = [];
     registrations: any[] = [];
+    expandedAdmissionIds = new Set<number>();
     selectedPatient: Patient | null = null;
     selectedAdmissionId: number | null = null;
+    selectedFile: PatientFile | null = null;
     showNewPatientForm = false;
     newPatient: Partial<Patient> = { gender: 'Female' };
 
@@ -78,17 +80,37 @@ export class UploadComponent {
         this.patientResults = [];
         this.patientQuery = '';
         this.registrations = [];
+        this.expandedAdmissionIds.clear();
         this.selectedAdmissionId = null;
+        this.selectedFile = null;
         this.getAdmissions();
     }
 
     clearPatient(): void {
         this.selectedPatient = null;
         this.registrations = [];
+        this.expandedAdmissionIds.clear();
         this.patientResults = [];
         this.patientQuery = '';
         this.selectedAdmissionId = null;
+        this.selectedFile = null;
         this.selectedCategoryId = null;
+    }
+
+    onSelectDocument(file: PatientFile | null): void {
+        this.selectedFile = file;
+    }
+
+    toggleAdmission(admissionId: number): void {
+        if (this.expandedAdmissionIds.has(admissionId)) {
+            this.expandedAdmissionIds.delete(admissionId);
+        } else {
+            this.expandedAdmissionIds.add(admissionId);
+        }
+    }
+
+    isAdmissionExpanded(admissionId: number): boolean {
+        return this.expandedAdmissionIds.has(admissionId);
     }
 
     onCategorySelect(id: number): void {
@@ -290,8 +312,10 @@ export class UploadComponent {
         this.selectedPatient = null;
         this.patientResults = [];
         this.registrations = [];
+        this.expandedAdmissionIds.clear();
         this.patientQuery = '';
         this.selectedAdmissionId = null;
+        this.selectedFile = null;
         this.selectedCategoryId = null;
         this.staged = [];
         this.submitted = false;

@@ -150,42 +150,96 @@
     .section-heading {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 4px 2px 6px;
+        gap: 6px;
+        padding: 2px 1px 4px;
         font-size: 13px;
     }
 
     .admissions-section {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 8px;
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        flex-direction: column;
     }
 
-    .section-heading,
-    .empty-admissions {
-        grid-column: 1 / -1;
+    .admissions-layout {
+        display: grid;
+        grid-template-columns: minmax(240px, 32%) minmax(0, 1fr);
+        gap: 5px;
+        height: calc(100vh - 250px);
+        min-height: 320px;
+        flex: 1;
+    }
+
+    .admissions-pane,
+    .document-pane {
+        min-width: 0;
+        min-height: 0;
+        overflow: auto;
+        border: 1px solid var(--divider-line);
+        border-radius: 8px;
+        background: var(--surface-card, #fff);
+    }
+
+    .admissions-pane {
+        padding: 2px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+    }
+
+    .document-pane {
+        overflow: hidden;
+    }
+
+    .document-pane app-document-viewer {
+        display: block;
+        height: 100%;
     }
 
     .admission-card {
         border: 1px solid var(--divider-line);
-        border-radius: 8px;
-        padding: 6px;
+        border-radius: 5px;
+        padding: 1px 3px;
+        margin-bottom: 3px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 
     .admission-header {
         display: flex;
         align-items: center;
-        gap: 6px;
-        min-height: 28px;
-        padding: 0 2px 4px;
+        width: 100%;
+        gap: 4px;
+        min-height: 25px;
+        padding: 1px 2px;
+        border: 0;
+        background: transparent;
+        color: var(--text-primary);
+        text-align: left;
+        cursor: pointer;
         font-size: 12px;
 
         mat-icon {
-            width: 18px;
-            height: 18px;
-            font-size: 18px;
+            width: 16px;
+            height: 16px;
+            font-size: 16px;
             color: var(--accent-teal);
         }
+
+        &:hover {
+            background: var(--surface-hover);
+        }
+
+        strong {
+            flex-shrink: 0;
+        }
+    }
+
+    .admission-toggle {
+        margin-left: auto;
     }
 
     .admission-meta {
@@ -197,9 +251,15 @@
         margin: 4px 2px 8px;
     }
 
-    @media (min-width: 1200px) {
-        .admissions-section {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (max-width: 768px) {
+        .admissions-layout {
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: minmax(180px, 42%) minmax(280px, 1fr);
+            height: calc(100vh - 220px);
+        }
+
+        .admissions-pane {
+            min-height: 0;
         }
     }
 

@@ -3,10 +3,19 @@
     height: 100%;
 }
 
+:host(.tree-only) {
+    height: auto;
+}
+
 .split {
     display: flex;
     height: 300px;
     gap: 6px;
+}
+
+.split.tree-only {
+    display: block;
+    height: auto;
 }
 
 .pane {
@@ -24,6 +33,51 @@
     resize: horizontal; // lets users drag-resize the folder pane
 }
 
+.tree-only .left {
+    max-width: none;
+    overflow: visible;
+    padding: 0;
+    resize: none;
+}
+
+.tree-only ::ng-deep .cat-tree .node-row {
+    min-height: 28px;
+    gap: 2px;
+    padding: 1px 3px;
+    border-radius: 4px;
+}
+
+.tree-only ::ng-deep .cat-tree .file-row {
+    min-height: 25px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.tree-only ::ng-deep .cat-tree .toggle-btn {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.tree-only ::ng-deep .cat-tree .spacer-toggle {
+    width: 24px;
+}
+
+.tree-only ::ng-deep .cat-tree .node-icon {
+    margin-right: 2px;
+}
+
+.tree-only ::ng-deep .cat-tree .children-wrapper {
+    margin-left: 20px;
+    padding-left: 3px;
+}
+
+.tree-only ::ng-deep .cat-tree .node-actions button {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+}
+
 .right {
     flex: 1;
     overflow: hidden;
@@ -39,6 +93,9 @@
         max-width: none;
         max-height: 32vh;
         resize: none;
+    }
+    .tree-only .left {
+        max-height: none;
     }
     .right {
         height: 42vh;
