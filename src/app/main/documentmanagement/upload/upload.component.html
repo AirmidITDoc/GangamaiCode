@@ -13,130 +13,71 @@
             <div class="docmed-theme">
 
                 <mat-card class="wizard-card">
-                    <mat-stepper #stepper linear labelPosition="bottom">
-                        <!-- STEP 1: PATIENT -->
-                        <mat-step [completed]="!!selectedPatient">
-                            <ng-template matStepLabel>Patient</ng-template>
+                    <section class="patient-section">
+                        <div class="search-row" *ngIf="!selectedPatient">
+                            <mat-icon>person_search</mat-icon>
+                            <input type="text" placeholder="Search UHID / Patient Name / Mobile No"
+                                [(ngModel)]="patientQuery" (ngModelChange)="searchPatients()" />
+                        </div>
 
-                            <div class="step-body" *ngIf="!selectedPatient">
-                                <div class="search-row">
-                                    <mat-icon>person_search</mat-icon>
-                                    <input type="text" placeholder="Search UHID / Patient Name / Mobile No"
-                                        [(ngModel)]="patientQuery" (ngModelChange)="searchPatients()" />
-                                </div>
-
-                                <div class="patient-results" *ngIf="patientResults.length">
-                                    <button class="patient-row" *ngFor="let p of patientResults"
-                                        (click)="pickPatient(p)">
-                                        <span class="avatar">{{ p.photoInitials }}</span>
-                                        <span class="patient-main">
-                                            <span class="patient-name">
-                                                {{ p.firstName+' '+p.middleName+' '+p.lastName }}</span>
-                                            <span class="patient-sub mono">
-                                                RegNo : {{ p.regNo }} &middot; Gender : {{ p.gender }}, Year: {{
-                                                p.ageYear }} &middot; Mobile: {{ p.mobileNo }}
-                                            </span>
-                                        </span>
-                                        <mat-icon>chevron_right</mat-icon>
-                                    </button>
-                                </div>
-
-                            </div>
-
-                            <div class="selected-summary" *ngIf="selectedPatient">
-                                <span class="avatar big">{{ selectedPatient.photoInitials }}</span>
-                                <div class="summary-main">
-                                    <span class="summary-title">{{ selectedPatient.firstName+'
-                                        '+selectedPatient.middleName+' '+selectedPatient.lastName }}</span>
-                                    <span class="summary-sub mono">
-                                        RegNo : {{ selectedPatient.regNo }} &middot; Gender : {{ selectedPatient.gender
-                                        }}, Year : {{ selectedPatient.ageYear }} &middot; Mobile : {{
-                                        selectedPatient.mobileNo }}
+                        <div class="patient-results" *ngIf="!selectedPatient && patientResults.length">
+                            <button class="patient-row" *ngFor="let p of patientResults" (click)="pickPatient(p)">
+                                <span class="avatar">{{ p.photoInitials }}</span>
+                                <span class="patient-main">
+                                    <span class="patient-name">{{ p.firstName }} {{ p.middleName }} {{ p.lastName }}</span>
+                                    <span class="patient-sub mono">
+                                        RegNo: {{ p.regNo }} &middot; Gender: {{ p.gender }}, Year: {{ p.ageYear }}
+                                        &middot; Mobile: {{ p.mobileNo }}
                                     </span>
-                                </div>
-                                <button mat-button (click)="clearPatient()">Change</button>
-                            </div>
-                            <div class="step-body" *ngIf="selectedPatient">
-                                <p class="step-hint">Choose the visit / registration this document belongs to.</p>
+                                </span>
+                                <mat-icon>chevron_right</mat-icon>
+                            </button>
+                        </div>
 
-                                <div class="patient-results" *ngIf="registrations.length">
-                                    <button class="patient-row" *ngFor="let r of registrations"
-                                        (click)="pickRegistration(r)">
-                                        <mat-icon *ngIf="r.patientTypeID =='1'"
-                                            matTooltip="Patient Category Self">account_box
-                                        </mat-icon>
-                                        <mat-icon *ngIf="r.patientTypeID != '1'"
-                                            matTooltip="Patient Category Company">business
-                                        </mat-icon>
-                                        <span class="patient-main">
-                                            <span class="patient-name">{{ r.ipdno }}</span>
-                                            <span class="patient-sub mono">{{ r.admissionDate | date:'d/MM/y' }}
-                                                &middot; {{
-                                                r.regId }}</span>
-                                        </span>
-                                        <mat-icon>chevron_right</mat-icon>
-                                    </button>
-                                </div>
-
-                                <p class="muted small" *ngIf="!registrations.length && selectedPatient">
-                                    No registrations found for this patient.
-                                </p>
-                            </div>
-
-                            <div class="selected-summary" *ngIf="selectedRegistration">
-                                <mat-icon *ngIf="selectedRegistration.patientTypeID =='1'"
-                                    matTooltip="Patient Category Self">account_box
-                                </mat-icon>
-                                <mat-icon *ngIf="selectedRegistration.patientTypeID != '1'"
-                                    matTooltip="Patient Category Company">business
-                                </mat-icon>
-                                <div class="summary-main">
-                                    <span class="summary-title">{{ selectedRegistration.ipdno }}</span>
-                                    <span class="summary-sub mono">
-                                        {{ selectedRegistration.admissionDate | date:'d/MM/y' }}
-                                        &middot; {{ selectedRegistration.regId }}</span>
-                                </div>
-                                <button mat-button (click)="clearRegistration()">Change</button>
-                            </div>
-                            <div class="step-actions">
-                                <button mat-flat-button color="primary" matStepperNext
-                                    [disabled]="!selectedPatient || !selectedRegistration">Continue</button>
-                            </div>
-                        </mat-step>
-
-                        <!-- STEP 2: CATEGORY -->
-                        <mat-step [completed]="!!selectedCategoryId">
-                            <ng-template matStepLabel>Category</ng-template>
-                            <div class="category-picker">
-                                <!-- <app-category-tree [nodes]="categories" [manageable]="false" [selectable]="true"
-                                    [selectedId]="selectedCategoryId" [showDocumentActions]="true"
-                                    (select)="onCategorySelect($event)"
-                                    (uploadDocument)="openCategoryUploadPicker($event)"
-                                    (viewDocuments)="openCategoryDocuments($event)"
-                                    (generateQrCode)="printQrCode($event)"></app-category-tree> -->
-                                <app-patient-documents [patientId]="selectedRegistration?.admissionId"
-                                    (uploadDocument)="openCategoryUploadPicker($event)"
-                                    (viewDocuments)="openCategoryDocuments($event)"
-                                    (generateQrCode)="printQrCode($event)"></app-patient-documents>
-                            </div>
-
-                            <div class="path-banner" *ngIf="selectedCategoryPath.length">
-                                <mat-icon>alt_route</mat-icon>
-                                <span *ngFor="let seg of selectedCategoryPath; let last = last">
-                                    {{ seg }}<mat-icon *ngIf="!last" class="sep">chevron_right</mat-icon>
+                        <div class="selected-summary" *ngIf="selectedPatient">
+                            <span class="avatar">{{ selectedPatient.photoInitials }}</span>
+                            <div class="summary-main">
+                                <span class="summary-title">
+                                    {{ selectedPatient.firstName }} {{ selectedPatient.middleName }} {{ selectedPatient.lastName }}
+                                </span>
+                                <span class="summary-sub mono">
+                                    RegNo: {{ selectedPatient.regNo }} &middot; Gender: {{ selectedPatient.gender }},
+                                    Year: {{ selectedPatient.ageYear }} &middot; Mobile: {{ selectedPatient.mobileNo }}
                                 </span>
                             </div>
+                            <button mat-button (click)="clearPatient()">Change patient</button>
+                        </div>
+                    </section>
 
-                            <input #categoryUploadInput type="file" multiple hidden
-                                (change)="onCategoryFileInput($event)" />
+                    <section class="admissions-section" *ngIf="selectedPatient">
+                        <div class="section-heading">
+                            <strong>Admissions</strong>
+                            <span class="muted small">{{ registrations.length }} found</span>
+                        </div>
 
-                            <div class="step-actions">
-                                <button mat-button matStepperPrevious>Back</button>
-                                <!-- <button mat-flat-button color="primary" matStepperNext
-                                    [disabled]="!selectedCategoryId">Finish</button> -->
-                            </div>
-                        </mat-step>
-                    </mat-stepper>
+                        <p class="muted small empty-admissions" *ngIf="!registrations.length">
+                            No admissions found for this patient.
+                        </p>
+
+                        <article class="admission-card" *ngFor="let admission of registrations">
+                            <header class="admission-header">
+                                <mat-icon [matTooltip]="admission.patientTypeID == '1' ? 'Patient Category Self' : 'Patient Category Company'">
+                                    {{ admission.patientTypeID == '1' ? 'account_box' : 'business' }}
+                                </mat-icon>
+                                <strong>{{ admission.ipdno }}</strong>
+                                <span class="admission-meta mono">
+                                    {{ admission.admissionDate | date:'d/MM/y' }} &middot; {{ admission.regId }}
+                                </span>
+                            </header>
+
+                            <app-patient-documents [patientId]="admission.admissionId"
+                                (uploadDocument)="openCategoryUploadPicker($event, admission.admissionId)"
+                                (viewDocuments)="openCategoryDocuments($event, admission.admissionId)"
+                                (generateQrCode)="printQrCode($event)"></app-patient-documents>
+                        </article>
+                    </section>
+
+                    <input #categoryUploadInput type="file" multiple hidden (change)="onCategoryFileInput($event)" />
                 </mat-card>
 
                 <ng-template #categoryFilesDialog>

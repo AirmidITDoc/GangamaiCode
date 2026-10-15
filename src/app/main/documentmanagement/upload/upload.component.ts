@@ -1,6 +1,5 @@
-import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileKind, DocumentFileModel } from 'app/core/models/documentmanagement/document.model';
 import { DocumentCategory } from 'app/core/models/documentmanagement/category.model';
@@ -23,33 +22,28 @@ interface StagedFile {
     styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent {
-    @ViewChild('stepper') stepper?: MatStepper;
+    @ViewChildren(PatientDocumentsComponent) patientDocuments?: QueryList<PatientDocumentsComponent>;
     @ViewChild('categoryUploadInput') categoryUploadInput?: ElementRef<HTMLInputElement>;
     @ViewChild('categoryFilesDialog') categoryFilesDialog?: TemplateRef<any>;
-    @ViewChild(PatientDocumentsComponent) patientDocuments?: PatientDocumentsComponent;
 
     categories: DocumentCategory[] = [];
     allDocuments: DocumentFileModel[] = [];
     categoryDocuments: DocumentFileModel[] = [];
     categoryPopupTitle = 'Category files';
 
-    /* Step 1 — patient */
     patientQuery = '';
     patientResults: Patient[] = [];
     registrations: any[] = [];
     selectedPatient: Patient | null = null;
-    selectedRegistration: any | null = null;
+    selectedAdmissionId: number | null = null;
     showNewPatientForm = false;
     newPatient: Partial<Patient> = { gender: 'Female' };
 
-    /* Step 2 — category */
     selectedCategoryId: number | null = null;
 
-    /* Step 3 — files */
     staged: StagedFile[] = [];
     isDragging = false;
 
-    /* Step 4 */
     submitted = false;
     lastSubmittedCount = 0;
 
@@ -66,7 +60,6 @@ export class UploadComponent {
     //     });
     // }
 
-    /* ---------------- Step 1 ---------------- */
     searchPatients(): void {
         this._service.searchPatient(this.patientQuery).subscribe((res) => {
             this.patientResults = res;
@@ -75,38 +68,36 @@ export class UploadComponent {
     getAdmissions(): void {
         if (this.selectedPatient) {
             this._service.getAdmissions(this.selectedPatient.id).subscribe((res) => {
-                this.registrations = res;
+                this.registrations = res || [];
             });
         }
-    }
-    pickRegistration(r: any): void {
-        this.selectedRegistration = r;
-        //this.bindCategories(this.selectedRegistration?.admissionId || 0);
     }
 
     pickPatient(p: Patient): void {
         this.selectedPatient = p;
         this.patientResults = [];
         this.patientQuery = '';
+        this.registrations = [];
+        this.selectedAdmissionId = null;
         this.getAdmissions();
     }
 
     clearPatient(): void {
         this.selectedPatient = null;
-        this.selectedRegistration = null;
+        this.registrations = [];
+        this.patientResults = [];
+        this.patientQuery = '';
+        this.selectedAdmissionId = null;
+        this.selectedCategoryId = null;
     }
 
-    clearRegistration(): void {
-        this.selectedRegistration = null;
-    }
-
-    /* ---------------- Step 2 ---------------- */
     onCategorySelect(id: number): void {
         this.selectedCategoryId = id;
     }
 
-    openCategoryUploadPicker(categoryId: number): void {
+    openCategoryUploadPicker(categoryId: number, admissionId: number): void {
         this.selectedCategoryId = categoryId;
+        this.selectedAdmissionId = admissionId;
         if (this.categoryUploadInput) {
             setTimeout(() => this.categoryUploadInput?.nativeElement.click());
         }
@@ -114,15 +105,16 @@ export class UploadComponent {
 
     onCategoryFileInput(e: Event): void {
         const input = e.target as HTMLInputElement;
-        if (!this.selectedCategoryId || !input.files || !input.files.length) {
+        if (this.selectedCategoryId === null || this.selectedAdmissionId === null || !input.files || !input.files.length) {
             input.value = '';
             return;
         }
 
         const files = Array.from(input.files);
+        const admissionId = this.selectedAdmissionId;
         const payload: DocumentFileModel[] = files.map((file) => ({
             id: 0,
-            admissionId: this.selectedRegistration?.admissionId || 0,
+            admissionId,
             docCatId: this.selectedCategoryId!,
             document: file,
             orgFileName: file.name,
@@ -137,7 +129,7 @@ export class UploadComponent {
 
         this._service.saveDocument(payload).subscribe(() => {
             this.snackBar.open(`${payload.length} document(s) uploaded successfully`, 'Dismiss', { duration: 3000 });
-            this.patientDocuments?.reload();
+            this.patientDocuments?.find((documents) => documents.patientId === admissionId)?.reload();
         }, () => {
             this.snackBar.open('Document upload failed', 'Dismiss', { duration: 3000 });
         });
@@ -145,10 +137,11 @@ export class UploadComponent {
         input.value = '';
     }
 
-    openCategoryDocuments(categoryId: number): void {
+    openCategoryDocuments(categoryId: number, admissionId: number): void {
         this.selectedCategoryId = categoryId;
+        this.selectedAdmissionId = admissionId;
         this.categoryPopupTitle = this.selectedCategoryPath.length ? this.selectedCategoryPath.join(' / ') : 'Category files';
-        // this._service.getAdmissionDocuments(this.selectedRegistration?.admissionId || 0, categoryId).subscribe((res) => {
+        // this._service.getAdmissionDocuments(admissionId, categoryId).subscribe((res) => {
         //     this.categoryDocuments = (res || []);
         //     if (this.categoryFilesDialog) {
         //         this.dialog.open(this.categoryFilesDialog, {
@@ -158,7 +151,7 @@ export class UploadComponent {
         //         });
         //     }
         // });
-        this._service.getMergeFileBlob(this.selectedRegistration?.admissionId || 0, categoryId).subscribe({
+        this._service.getMergeFileBlob(admissionId, categoryId).subscribe({
             next: (blob) => {
                 if (!blob) return;
                 const url = URL.createObjectURL(blob);
@@ -268,11 +261,11 @@ export class UploadComponent {
     /* ---------------- Step 4 ---------------- */
     submit(): void {
         const data: DocumentFileModel[] = [];
-        if (!this.selectedPatient || !this.selectedCategoryId || !this.staged.length) return;
+        if (!this.selectedPatient || this.selectedAdmissionId === null || !this.selectedCategoryId || !this.staged.length) return;
         this.staged.forEach((s) => {
             const doc: DocumentFileModel = {
                 id: 0,
-                admissionId: this.selectedRegistration?.admissionId || 0,
+                admissionId: this.selectedAdmissionId!,
                 docCatId: this.selectedCategoryId!,
                 document: s.file,
                 orgFileName: s.title || s.file.name,
@@ -295,10 +288,12 @@ export class UploadComponent {
 
     startOver(): void {
         this.selectedPatient = null;
-        this.selectedRegistration = null;
+        this.patientResults = [];
+        this.registrations = [];
+        this.patientQuery = '';
+        this.selectedAdmissionId = null;
         this.selectedCategoryId = null;
         this.staged = [];
         this.submitted = false;
-        this.stepper?.reset();
     }
 }
