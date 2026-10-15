@@ -184,6 +184,10 @@ const appRoutes: Routes = [
         loadChildren: () => import("./main/Approval Management/approval-management.module").then(m => m.ApprovalManagementModule)
     },
     {
+        path: "diet",
+        loadChildren: () => import("./main/Diet Menu/dietrouting.module").then(m => m.DietroutingModule)
+    },
+    {
         path: '',
         redirectTo: 'auth/login',
         pathMatch: 'full'
