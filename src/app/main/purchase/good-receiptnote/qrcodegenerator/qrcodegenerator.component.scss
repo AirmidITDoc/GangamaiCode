@@ -1,1 +1,112 @@
-.aclass{display: inline;}
+.qr-generator {
+    display: block;
+    min-width: min(680px, 90vw);
+    color: #303030;
+
+    .header-content,
+    .generator-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .header-content {
+        justify-content: space-between;
+
+        .title {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        button {
+            color: #fff;
+        }
+    }
+
+    .generator-content {
+        padding: 20px;
+    }
+
+    .generator-item {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 16px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .code-preview {
+        display: flex;
+        min-width: 140px;
+        min-height: 110px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .code-value,
+    .code-placeholder {
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .code-placeholder,
+    .empty-message {
+        color: #666;
+    }
+
+    .code-settings {
+        display: grid;
+        flex: 1;
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
+        gap: 0 12px;
+    }
+
+    .generator-actions {
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .action-spacer {
+        flex: 1;
+    }
+
+    .print-section {
+        position: fixed;
+        top: 0;
+        left: -10000px;
+        pointer-events: none;
+    }
+
+    .print-item {
+        display: block;
+        width: 100mm;
+    }
+
+    .qr-print-copy,
+    .barcode-print-copy {
+        display: inline-block;
+        vertical-align: top;
+    }
+}
+
+@media (max-width: 600px) {
+    .qr-generator {
+        min-width: 0;
+
+        .generator-item {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .code-settings {
+            grid-template-columns: 1fr;
+        }
+
+        .action-spacer {
+            display: none;
+        }
+    }
+}

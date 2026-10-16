@@ -17,12 +17,9 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GoodReceiptnoteComponent } from '../good-receiptnote/good-receiptnote.component';
 import { GrnemailComponent } from './grnemail/grnemail.component';
-import { QrcodegeneratorComponent } from './qrcodegenerator/qrcodegenerator.component';
+import { QrcodegeneratorModule } from './qrcodegenerator/qrcodegenerator.module';
 import { PurchaseorderComponent } from './update-grn/purchaseorder/purchaseorder.component';
 import { UpdateGRNComponent } from './update-grn/update-grn.component';
-//import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
-//import {NgxPrintModule} from 'ngx-print';
-//import { NgxBarcodeModule } from 'ngx-barcode';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -64,7 +61,6 @@ const routes: Routes = [
         UpdateGRNComponent,
         PurchaseorderComponent,
         GrnemailComponent,
-        QrcodegeneratorComponent,
         NewGrnComponent,
         CreateBarcodeComponent,
         POtoGRNComponent,
@@ -109,11 +105,9 @@ const routes: Routes = [
         MatSelectModule,
         MatSelectModule,
         MatChipsModule,
+        QrcodegeneratorModule,
         // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule,
-        // NgxQRCodeModule,
-        //NgxPrintModule,
-        //NgxBarcodeModule,
         FormsModule
         //MatGridListModule
     ],

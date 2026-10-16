@@ -1,95 +1,92 @@
-<div id="contacts" fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size: 20px;width: 70%; font-weight: 400;">
-                {{Title}}
-            </span>
-            <div fxLayout="column" fxLayout.gt-xs="row">
-                <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
-                    (click)="onClose()">
-                    close
-                </span>
+<div class="qr-generator">
+    <div class="header accent">
+        <div class="header-content">
+            <span class="title">{{ Title }}</span>
+            <button mat-icon-button type="button" aria-label="Close" (click)="onClose()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="generator-content">
+        <div class="generator-items" *ngIf="QrData.length; else noData">
+            <div class="generator-item" *ngFor="let item of QrData">
+                <div class="code-preview">
+                    <img *ngIf="generatedType === 'qr' && item.qrDataUrl" [src]="item.qrDataUrl"
+                        [width]="qrWidth(item)" [height]="qrWidth(item)" [alt]="'QR code for ' + item.QrCodeData">
+                    <img *ngIf="generatedType === 'barcode' && item.barcodeDataUrl" [src]="item.barcodeDataUrl"
+                        [style.width.mm]="item.Width"
+                        [alt]="'Barcode for ' + item.QrCodeData">
+                    <span class="code-value" *ngIf="generatedType">{{ item.QrCodeData }}</span>
+                    <span class="code-placeholder" *ngIf="!generatedType">
+                        Choose a code type to generate a preview.
+                    </span>
+                </div>
+
+                <div class="code-settings">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Quantity</mat-label>
+                        <input [(ngModel)]="item.Qty" matInput type="number" min="1" autocomplete="off">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Width (mm)</mat-label>
+                        <input [(ngModel)]="item.Width" matInput type="number" min="1" autocomplete="off">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Space between codes (mm)</mat-label>
+                        <input [(ngModel)]="item.Between" matInput type="number" min="0" autocomplete="off">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Bottom margin (mm)</mat-label>
+                        <input [(ngModel)]="item.Margin" matInput type="number" min="0" autocomplete="off">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #noData>
+            <p class="empty-message">There is no data to generate a code.</p>
+        </ng-template>
+
+        <div class="generator-actions">
+            <button mat-raised-button color="primary" type="button" [disabled]="!QrData.length"
+                (click)="generate('qr')">
+                Generate QR Code
+            </button>
+            <button mat-raised-button color="primary" type="button" [disabled]="!QrData.length"
+                (click)="generate('barcode')">
+                Generate Barcode
+            </button>
+            <span class="action-spacer"></span>
+            <button mat-stroked-button type="button" printSectionId="dvPrintQr" ngxPrint
+                [disabled]="!qrGenerated">
+                Print QR Code
+            </button>
+            <button mat-stroked-button type="button" printSectionId="dvPrintBarcode" ngxPrint
+                [disabled]="!barcodeGenerated">
+                Print Barcode
+            </button>
+        </div>
+    </div>
+
+    <div id="dvPrintQr" class="print-section">
+        <div *ngFor="let item of QrData" class="print-item">
+            <div *ngFor="let copy of copies(item)" class="qr-print-copy"
+                [style.width.mm]="item.Width" [style.height.mm]="item.Width"
+                [style.margin-left.mm]="item.Between" [style.margin-bottom.mm]="item.Margin + 1">
+                <img *ngIf="item.qrDataUrl" [src]="item.qrDataUrl"
+                    [width]="qrWidth(item)" [height]="qrWidth(item)" [alt]="'QR code for ' + item.QrCodeData">
             </div>
         </div>
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <div class="content">
-            <div class="center p-12 pb-56" fxFlexAlign="start center">
-                <div class="content-card" style="border-radius:4px;">
-                    <div class="nav material2">
-                        <div fxLayout="row" fxLayoutAlign="start none">
-                            <div *ngFor="let item of QrData" fxLayout="column">
-                                <ngx-qrcode elementType="url" [value]="item.QrCodeData" [width]="80"
-                                    errorCorrectionLevel="L" [alt]="item.QrCodeData">
-                                </ngx-qrcode>
-                                <div
-                                    style="text-align: center;font-size: 15px;margin-bottom: 10px;">
-                                    ||{{item.QrCodeData}}||</div>
-                                <ngx-barcode [bc-value]="item.QrCodeData" [bc-display-value]="true"
-                                    width="100" height="60"></ngx-barcode>
-                                <div fxLayout="row">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Qty</mat-label>
-                                        <input [(ngModel)]="item.Qty" value="{{item.Qty}}" matInput type="number"
-                                            autocomplete="off" required>
-                                    </mat-form-field>
-                                </div>
-                                <div fxLayout="row">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Width </mat-label>
-                                        <input [(ngModel)]="item.Width" value="{{item.Width}}" matInput type="number"
-                                            autocomplete="off" required>
-                                    </mat-form-field>
-                                </div>
-                                <div fxLayout="row">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Between Space (Space between 2 qr code in mm) </mat-label>
-                                        <input [(ngModel)]="item.Between" value="{{item.Between}}" matInput
-                                            type="number" autocomplete="off" required>
-                                    </mat-form-field>
-                                </div>
-                                <div fxLayout="row">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Margin Bottom </mat-label>
-                                        <input [(ngModel)]="item.Margin" value="{{item.Margin}}" matInput type="number"
-                                            autocomplete="off" required>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-                        <div fxLayout="row">
-                            <button class="next-btn" style="border-radius: 14px;height:45px;width:125px;"
-                                printSectionId="dvPrint" ngxPrint>Print Qr Code</button>
-                            <br>
-                            <button class="next-btn" style="border-radius: 14px;height:45px;width:125px;"
-                                printSectionId="dvPrint1" ngxPrint>Print Barcode</button>
-                        </div>
-                        <div id="dvPrint" style="display: none;">
-                            <div *ngFor="let obj of QrData" style="display: block;width: 100mm;">
-                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index"
-                                    style="display: inline-block;width: {{obj.Width}}mm;height: {{obj.Width}}mm;margin-left: {{obj.Between}}mm;margin-bottom: {{obj.Margin+1}}mm;">
-                                    <ngx-qrcode elementType="url" [value]="obj.QrCodeData"
-                                        width="{{(obj.Width*3.78).toFixed(0)}}" errorCorrectionLevel="L">
-                                    </ngx-qrcode>
-                                    <!-- <div
-                                        style="text-align: left;margin-left: 2mm;font-size: 10px;margin-bottom: {{obj.Margin}}mm;">
-                                        ||{{obj.QrCodeData}}||</div> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div id="dvPrint1" style="display: none;">
-                            <div *ngFor="let obj of QrData" style="display: block;width: 100mm;">
-                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index"
-                                    style="display: inline-block;margin-left: {{obj.Between}}mm;margin-bottom: {{obj.Margin+1}}mm;">
-                                    <ngx-barcode [bc-value]="obj.QrCodeData" [bc-display-value]="true"
-                                        width="{{(obj.Width*3.78).toFixed(0)}}"></ngx-barcode>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+    <div id="dvPrintBarcode" class="print-section">
+        <div *ngFor="let item of QrData" class="print-item">
+            <div *ngFor="let copy of copies(item)" class="barcode-print-copy"
+                [style.margin-left.mm]="item.Between" [style.margin-bottom.mm]="item.Margin + 1">
+                <img *ngIf="item.barcodeDataUrl" [src]="item.barcodeDataUrl"
+                    [style.width.mm]="item.Width"
+                    [alt]="'Barcode for ' + item.QrCodeData">
             </div>
         </div>
     </div>
