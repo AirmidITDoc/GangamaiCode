@@ -150,6 +150,16 @@ export class NewRegistrationComponent implements OnInit {
                                 this._registerService.getAbhaByNumber(this.abhaNumber).subscribe((response) => {
                                     this.abhaList = response
                                     console.log("ABHA List:", this.abhaList)
+
+                                    debugger
+                                    // Make sure the default address is present in the dropdown options
+                                    const exists = this.abhaList?.some(x => x.abhaAddress === response.abhaAddress);
+                                    if (!exists && response.abhaAddress) {
+                                        this.abhaList = [{ abhaAddress: response.abhaAddress }, ...(this.abhaList || [])];
+                                    }
+
+                                    // Re-apply the default so mat-select picks it up
+                                    this.abhaForm.get('abhaAddress')?.setValue(response.abhaAddress);
                                 });
                             }
                         });
@@ -227,6 +237,7 @@ export class NewRegistrationComponent implements OnInit {
         // }
 
         // new abha integration
+
         if (this.data?.profile) {
             this.isProfileData = true;
             console.log('Profile data from ABHA', this.data.profile)
@@ -307,6 +318,12 @@ export class NewRegistrationComponent implements OnInit {
                     console.log("Reg Data:", response)
                     this.regNo = response.regNo
                     this.personalFormGroup.get("RegId").setValue(response.regId)
+                    this.ABHAId = response.abhaTranId
+                    if (this.ABHAId > 0) {
+                        this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
+                            this.abhaForm.get('abhaAddress')?.setValue(response.abhaAddress);
+                        });
+                    }
                 });
             }, 500);
         }
@@ -864,7 +881,7 @@ export class NewRegistrationComponent implements OnInit {
                     this.onChangecityDD(data[0].cityId);
                     this.registerObj.cityId = data[0].cityId;
                 } else {
-                    Swal.fire("Pincode does not exist.")
+                    // Swal.fire("Pincode does not exist.")
                 }
             });
         }

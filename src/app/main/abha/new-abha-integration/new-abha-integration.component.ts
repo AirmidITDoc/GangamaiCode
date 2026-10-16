@@ -41,6 +41,11 @@ export class NewAbhaIntegrationComponent {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   autocompleteModearea: string = "Area";
+  visibleCountAbhanum = 2;
+  expandedabhaNumberRows = new Set<any>();
+
+  visibleCountAbhaaddre = 2;
+  expandedabhaAddressRows = new Set<any>();
 
   constructor(
     public _RegistrationService: NewAbhaIntegrationService, public permissionService: PagePermissionService,
@@ -61,9 +66,13 @@ export class NewAbhaIntegrationComponent {
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'abhaTranId')!.template = this.abhaIcon;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'abhaNumber')!.template = this.abhaNumber;
+    this.gridConfig.columnsList.find(col => col.key === 'abhaAddress')!.template = this.abhaAddress;
   }
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('abhaIcon') abhaIcon!: TemplateRef<any>;
+  @ViewChild('abhaNumber') abhaNumber!: TemplateRef<any>;
+  @ViewChild('abhaAddress') abhaAddress!: TemplateRef<any>;
 
   allcolumns = [
     { heading: "-", key: "abhaTranId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -78,11 +87,19 @@ export class NewAbhaIntegrationComponent {
     { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "AbhaNumber", key: "abhaNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "AbhaAddress", key: "abhaAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "AbhaFullName", key: "abhaFullName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "AbhaDOB", key: "yearOfBirth", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "AbhaGender", key: "gender", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    {
+      heading: "ABHA Number", key: "abhaNumber", sort: true, align: "left", width: 350, type: gridColumnTypes.template,
+      template: this.abhaNumber
+    },
+    {
+      heading: "ABHA Address", key: "abhaAddress", sort: true, align: "left", width: 650, type: gridColumnTypes.template,
+      template: this.abhaAddress
+    },
+    // { heading: "ABHA Number", key: "abhaNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "ABHA Address", key: "abhaAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "ABHA FullName", key: "abhaFullName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+    { heading: "ABHA DOB", key: "yearOfBirth", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "ABHA Gender", key: "gender", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
     { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -92,6 +109,34 @@ export class NewAbhaIntegrationComponent {
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
+
+  getAbhaNumberArray(abhaNumber: string | null | undefined): string[] {
+    return abhaNumber
+      ? abhaNumber.split('|').map(abhaNumber => abhaNumber.trim()).filter(Boolean)
+      : [];
+  }
+
+  isExpandedAbhaNum(element: any): boolean {
+    return this.expandedabhaNumberRows.has(element);
+  }
+
+  expandAbhaNumRow(element: any): void {
+    this.expandedabhaNumberRows.add(element);
+  }
+
+  getAbhaAddressArray(abhaAddress: string | null | undefined): string[] {
+    return abhaAddress
+      ? abhaAddress.split('|').map(abhaAddress => abhaAddress.trim()).filter(Boolean)
+      : [];
+  }
+
+  isExpandedAbhaAddress(element: any): boolean {
+    return this.expandedabhaAddressRows.has(element);
+  }
+
+  expandAbhaAddressRow(element: any): void {
+    this.expandedabhaAddressRows.add(element);
+  }
 
   gridConfig: gridModel = {
     permissionCode: permissionCodes.Registration,
@@ -112,10 +157,10 @@ export class NewAbhaIntegrationComponent {
   }
 
   onChangeFirst() {
-    debugger
+    // debugger
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900",
-    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900",
-    this.f_name = this.myFilterform.get('FirstName').value + "%"
+      this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900",
+      this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.regNo = this.myFilterform.get('RegNo').value || "0"
     this.mobileno = this.myFilterform.get('MobileNo').value + "%" || "%"
@@ -477,9 +522,9 @@ export class abhaRegInsert {
   husbandDob: Date;
   wifeDob: Date;
   disabled: any;
-  regID:any;
-  peErrMessage:any;
-  ccErrMessage:any;
+  regID: any;
+  peErrMessage: any;
+  ccErrMessage: any;
   /**
    * Constructor
    *

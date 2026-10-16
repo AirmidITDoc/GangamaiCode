@@ -87,4 +87,24 @@ export class NewAbhaIntegrationService {
   public getPendingRecord(param) {
     return this._httpClient1.PostData("AbhaConnects/ValidateHiTypesSummary", param)
   }
+
+  //  public opFileUpload(param) {
+  //   return this._httpClient1.PostData("AbhaConnects/UploadReportFiles", param)
+  // }
+  // public opFileUpload(regNo: any, visitNo: any, OpIpId: any, opipType: any, files: any[]) {
+  //   return this._httpClient1.PostData(
+  //     `AbhaConnects/UploadReportFiles?patientRegistrationNumber=${regNo}&visitNumber=${visitNo}&OpIpId=${OpIpId}&opipType=${opipType}`,
+  //     files
+  //   );
+  // }
+  public opFileUpload(regNo: any, visitNo: any, OpIpId:any, opipType: any, formData: FormData) {
+    return this._httpClient1.PostRawFormData(
+      `AbhaConnects/UploadReportFiles?patientRegistrationNumber=${regNo}&visitNumber=${visitNo}&OpIpId=${OpIpId}&opipType=${opipType}`,
+      formData
+    );
+  }
+
+  public getfilelist(param) {
+    return this._httpClient1.PostData("AbhaConnects/FileUploadList", param)
+  }
 }

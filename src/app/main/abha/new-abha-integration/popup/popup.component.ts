@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Optional, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +18,7 @@ import { NewAbhaIntegrationService } from '../new-abha-integration.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { abhaRegInsert } from '../new-abha-integration.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @Component({
   selector: 'app-popup',
@@ -38,11 +39,12 @@ export class PopupComponent {
   RegNo: any;
   Doctorname: any;
   AgeYear: any;
-  abhaNumber: any='';
-  abhaAddress: any='';
+  abhaNumber: any = '';
+  abhaAddress: any = '';
   abhaId: any;
   DOB: any;
   isIP = false;
+  @Output() onCloseDialog = new EventEmitter<any>();
 
   displayedColumns: string[] = [
     'CheckBox',
@@ -51,7 +53,8 @@ export class PopupComponent {
     'departmentName',
     'doctorName',
     'peEncounterStatus',
-    'CareContextStatus'
+    'CareContextStatus',
+    'upload'
   ]
 
   displayedColumns1: string[] = [
@@ -61,7 +64,8 @@ export class PopupComponent {
     'departmentName',
     'doctorName',
     'peEncounterStatus',
-    'CareContextStatus'
+    'CareContextStatus',
+    'upload'
   ]
 
   visitdataSource = new MatTableDataSource<abhaRegInsert>();
@@ -569,7 +573,61 @@ export class PopupComponent {
     }
   }
 
+  OPupload(data: any) {
+    const dialogRef = this._matDialog.open(
+      FileUploadComponent,
+      {
+        maxWidth: "40vw",
+        maxHeight: "60vh",
+        width: "100%",
+        data: {
+          data: data,
+          regNo: this.RegNo
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.onCloseDialog.emit(result);
+    });
+  }
+
+  onFileSelected(event: any, contact: any) {
+
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('files', file, file.name);
+
+    const cleanVisitNo = String(contact.opdNo).replace(/\//g, '');
+    // return;
+
+    this._abhaIntegrationService.opFileUpload(this.RegNo, cleanVisitNo, contact.visitId, 0, formData).subscribe((data) => {
+      // this.dialogRef.close();
+    });
+  }
+
   ///////////////IP ///////////////////
+
+  IPupload(data: any) {
+    const dialogRef = this._matDialog.open(
+      FileUploadComponent,
+      {
+        maxWidth: "40vw",
+        maxHeight: "60vh",
+        width: "100%",
+        data: {
+          data: data,
+          regNo: this.RegNo
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.onCloseDialog.emit(result);
+    });
+  }
 
   checkIPPending() {
     this.isIP = true;
@@ -804,5 +862,20 @@ export class PopupComponent {
         confirmButtonText: 'OK'
       });
     }
+  }
+}
+
+export class ABHAFileModel {
+  // regNo: any;
+  // visitNo: any;
+  // OpIpId: any;
+  // opipType: any;
+  base64: string;
+  constructor(ABHAFileModel: { regNo: any, visitNo: any; OpIpId: any; base64: string, opipType: any; document: File }) {
+    // this.regNo = ABHAFileModel.regNo || 0;
+    // this.visitNo = ABHAFileModel.visitNo || 0;
+    // this.OpIpId = ABHAFileModel.OpIpId || 0;
+    // this.opipType = ABHAFileModel.opipType || 0;
+    this.base64 = ABHAFileModel.base64 || '';
   }
 }

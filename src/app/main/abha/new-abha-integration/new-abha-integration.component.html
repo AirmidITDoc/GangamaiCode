@@ -40,6 +40,36 @@
             </div>
         </ng-template>
 
+        <ng-template #abhaNumber let-element>
+            <mat-chip-set>
+                <mat-chip *ngFor="let abhanumber of getAbhaNumberArray(element?.abhaNumber)
+                .slice(0, isExpandedAbhaNum(element) ? undefined : visibleCountAbhanum)">
+                    {{ abhanumber }}
+                </mat-chip>
+
+                <mat-chip *ngIf="!isExpandedAbhaNum(element) &&
+            getAbhaNumberArray(element?.abhaNumber).length > visibleCountAbhanum" class="more-chip" style="--mdc-chip-label-text-color: #fff;
+                   --mdc-chip-elevated-container-color: #3949AB;" (click)="expandAbhaNumRow(element)">
+                    +{{ getAbhaNumberArray(element?.abhaNumber).length - visibleCountAbhanum }} more
+                </mat-chip>
+            </mat-chip-set>
+        </ng-template>
+
+        <ng-template #abhaAddress let-element>
+            <mat-chip-set>
+                <mat-chip *ngFor="let abhaaddress of getAbhaAddressArray(element?.abhaAddress)
+                .slice(0, isExpandedAbhaAddress(element) ? undefined : visibleCountAbhaaddre)">
+                    {{ abhaaddress }}
+                </mat-chip>
+
+                <mat-chip *ngIf="!isExpandedAbhaAddress(element) &&
+            getAbhaAddressArray(element?.abhaAddress).length > visibleCountAbhaaddre" class="more-chip" style="--mdc-chip-label-text-color: #fff;
+                   --mdc-chip-elevated-container-color: #3949AB;" (click)="expandAbhaAddressRow(element)">
+                    +{{ getAbhaAddressArray(element?.abhaAddress).length - visibleCountAbhaaddre }} more
+                </mat-chip>
+            </mat-chip-set>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">
@@ -47,17 +77,17 @@
                     <!-- <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
                         [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker> -->
-                        <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="fromDate" placeholder="Start date"
-                                    (dateChange)="onChangeFirst()">
-                                <input matEndDate formControlName="enddate" placeholder="End date"
-                                    (dateChange)="onChangeFirst()">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Enter a date range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                (dateChange)="onChangeFirst()">
+                            <input matEndDate formControlName="enddate" placeholder="End date"
+                                (dateChange)="onChangeFirst()">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>UHID</mat-label>

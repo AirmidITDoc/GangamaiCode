@@ -450,10 +450,18 @@
 
                             <input type="hidden" formControlName="abhaTranId">
                             <input type="hidden" formControlName="regId" [(ngModel)]="registerObj.regId">
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="ABHA Address" formControlName="abhaAddress"
-                                    [readonly]="isProfileData" [formGroup]="abhaForm"></airmid-textbox>
-                            </div>
+                            <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
+                                <!-- <airmid-textbox label="ABHA Address" formControlName="abhaAddress"
+                                    [readonly]="isProfileData" [formGroup]="abhaForm"></airmid-textbox> -->
+                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-label>ABHA Address</mat-label>
+                                    <mat-select formControlName="abhaAddress">
+                                        <mat-option *ngFor="let item of abhaList" [value]="item.abhaAddress">
+                                            {{ item.abhaAddress }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            <!-- </div> -->
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="ABHA Number" formControlName="abhaNumber"

@@ -1,0 +1,73 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Upload Document</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" aria-label="Close dialog" (click)="onClose()"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body overflow-hidden">
+        <div class="modal-body-container">
+            <div class="personal-panel fix-panel">
+                <button mat-raised-button color="primary" (click)="onClick($event)">
+                    <mat-icon>add</mat-icon>
+                    {{chooseLabel}}</button>
+
+                <input #fileUpload type="file" hidden (change)="onFileSelected($event)" [multiple]="multiple"
+                    [accept]="accept">
+
+                <div class="file-list" *ngIf="selectedFile">
+                    <div class="file-item" style="display:flex; align-items:center; gap:8px;">
+                        <mat-icon class="file-icon">insert_drive_file</mat-icon>
+                        <span class="file-name">{{ selectedFile.name }}</span>
+                        <div class="file-actions" style="display:flex; align-items:center; margin-left:auto;">
+                            <button mat-icon-button color="warn" (click)="selectedFile = null" title="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="file-list" *ngIf="savedFiles.length > 0">
+                    <div class="file-item" *ngFor="let f of savedFiles"
+                        style="display:flex; align-items:center; gap:8px;">
+                        <mat-icon class="file-icon">insert_drive_file</mat-icon>
+                        <span class="file-name"
+                            style="font-family: inherit; font-size: 14px; font-weight: 500; color: #333;">
+                            {{ f.fileName }}
+                        </span>
+
+                        <!-- <div class="file-actions" style="display:flex; align-items:center; margin-left:auto;">
+                            <button mat-icon-button (click)="openSavedFile(f)" title="Open">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteSavedFile(f)" title="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

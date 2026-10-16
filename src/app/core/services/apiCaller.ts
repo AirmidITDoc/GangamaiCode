@@ -248,4 +248,20 @@ export class ApiCaller {
     GetDocumentFile(url: String): Observable<Blob> {
         return this._httpClient.get(`${this.config.apiBaseUrl}${url}`, { responseType: 'blob' });
     }
+
+    // abha
+    PostRawFormData(url: string, formData: FormData) {
+        return this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, formData).pipe(
+            map((data: apiResponse) => {
+                if (data.statusCode == 200) {
+                    if (data.message)
+                        this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success' });
+                    return data?.data || data;
+                } else {
+                    this.toastr.error(data.message, 'Error !', { toastClass: 'tostr-tost custom-toast-error' });
+                    return null;
+                }
+            })
+        );
+    }
 }

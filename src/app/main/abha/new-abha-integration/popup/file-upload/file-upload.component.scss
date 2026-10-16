@@ -1,0 +1,11 @@
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;   // pushes the delete icon to the right end
+}

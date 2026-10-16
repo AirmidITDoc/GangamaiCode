@@ -170,6 +170,26 @@
                                             </mat-cell>
                                         </ng-container>
 
+                                        <ng-container matColumnDef="upload">
+                                            <mat-header-cell *matHeaderCellDef fxFlex="15" fxShow.gt-sm>
+                                                File Upload
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxFlex="15">
+                                                <ng-container class="actions">
+                                                    <mat-icon (click)="OPupload(contact)">
+                                                        cloud_upload
+                                                    </mat-icon>
+                                                </ng-container>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <!-- <ng-container matColumnDef="upload">
+                                            <mat-header-cell *matHeaderCellDef fxFlex="15" fxShow.gt-sm>File
+                                                Upload</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxFlex="15">
+                                                <input type="file" (change)="onFileSelected($event, contact)">
+                                            </mat-cell>
+                                        </ng-container> -->
+
                                         <ng-container matColumnDef="loading">
                                             <mat-footer-cell *matFooterCellDef colspan="6">
                                                 loading data...
@@ -183,10 +203,12 @@
                                         </ng-container>
 
                                         <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns; sticky: true">
+                                            *matHeaderRowDef="displayedColumns; sticky: true"
+                                            style="min-width: 1000px;">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            [@animate]="{value:'*',params:{y:'100%'}}"
+                                            style="min-width: 1000px;"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':visitdataSource!=null}">
                                         </mat-footer-row>
@@ -327,6 +349,19 @@
                                                     <span class="status-dot"></span>
                                                     {{ !row.ccErrMessage ? 'Completed' : 'Pending' }}
                                                 </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="upload">
+                                            <mat-header-cell *matHeaderCellDef fxFlex="15" fxShow.gt-sm>
+                                                File Upload
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxFlex="15">
+                                                <ng-container class="actions">
+                                                    <mat-icon (click)="IPupload(contact)">
+                                                        cloud_upload
+                                                    </mat-icon>
+                                                </ng-container>
                                             </mat-cell>
                                         </ng-container>
 
