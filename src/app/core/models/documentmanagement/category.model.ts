@@ -51,6 +51,21 @@ export function isFileNode(node: any): node is FileTreeNode {
     return node?.nodeType === 'file';
 }
 
+export function addDescendantDocumentCounts(nodes: TreeNode[]): TreeNode[] {
+    return (nodes ?? []).map((node) => {
+        const children = (node.children ?? []) as TreeNode[];
+        const fileCount = children.filter(isFileNode).length;
+        const categoryChildren = addDescendantDocumentCounts(children.filter((child) => !isFileNode(child)));
+        const ownCount = fileCount || node.documentCount || 0;
+
+        return {
+            ...node,
+            documentCount: ownCount + categoryChildren.reduce((total, child) => total + (child.documentCount || 0), 0),
+            children: [...categoryChildren, ...children.filter(isFileNode)] as DocumentCategory[],
+        } as TreeNode;
+    });
+}
+
 export function mergeFilesIntoTree(categories: DocumentCategory[], files: PatientFile[]): TreeNode[] {
     const byCategory = new Map<number, PatientFile[]>();
     for (const f of files ?? []) {

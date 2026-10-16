@@ -22,7 +22,9 @@
             <mat-icon class="node-icon" [style.color]="node.color || 'var(--accent-teal)'">
                 {{ node.icon || 'label' }}</mat-icon>
             <span class="node-label">{{ node.docCategory }}</span>
-            <span class="doc-count" *ngIf="node.documentCount">{{ node.documentCount }}</span>
+            <span class="doc-count" *ngIf="node.documentCount !== undefined && node.documentCount !== null">
+                {{ node.documentCount }}
+            </span>
             <span class="node-actions" *ngIf="manageable || showDocumentActions">
                 <button *ngIf="showDocumentActions" mat-icon-button title="Upload file"
                     (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
@@ -66,7 +68,9 @@
             <mat-icon class="node-icon" [style.color]="node.color || 'var(--accent-teal)'">
                 {{ node.icon || 'folder' }}</mat-icon>
             <span class="node-label">{{ node.docCategory }}</span>
-            <span class="doc-count" *ngIf="node.documentCount">{{ node.documentCount }}</span>
+            <span class="doc-count" *ngIf="node.documentCount !== undefined && node.documentCount !== null">
+                {{ node.documentCount }}
+            </span>
             <span class="node-actions" *ngIf="manageable || showDocumentActions">
                 <button *ngIf="showDocumentActions" mat-icon-button title="Upload file"
                     (click)="uploadDocument.emit(node.id); $event.stopPropagation()">
