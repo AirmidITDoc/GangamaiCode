@@ -244,6 +244,12 @@ export class NewFormComponent {
         this.regObj = res;
         console.log("Membership Data:", this.regObj);
 
+        // Added this code because if a doctor is inactive, they should not be visible in the dropdown.
+        this.checkDoctorStatus(this.regObj?.hconsultDoctorId, 'hconsultDoctorId', 'hConsultDoctorContact');
+        this.checkDoctorStatus(this.regObj?.wconsultDoctorId, 'wconsultDoctorId', 'wConsultDoctorContact');
+        this.checkDoctorStatus(this.regObj?.familyDoctorId, 'familyDoctorId', 'familyDoctorContact');
+        this.checkDoctorStatus(this.regObj?.wfamilyDoctorId, 'wfamilyDoctorId', 'wfamilyDoctorContact');
+
         // Everything depending on regObj now goes HERE
 
         // if ((this.regObj?.membershipId ?? 0) > 0) {
@@ -303,7 +309,11 @@ export class NewFormComponent {
               this.onChangeDateofBirth1(this.registerObj1.wifeDob);
             }, 500);
           }
-
+          
+          /////////////
+          this.familyDoctorName = this.regObj.familyDoctorName
+          this.wfamilyDoctorName = this.regObj.wfamilyDoctorName
+          ///////////////////
           this.vmediclaimenddate = this.regObj.mediclaimenddate;
           this.vhusbandFullBodyCheckupDate = this.regObj.husbandFullBodyCheckupDate;
           this.vmediclaimstartdate = this.regObj.mediclaimstartdate;
@@ -358,6 +368,26 @@ export class NewFormComponent {
     }
   }
 
+  private checkDoctorStatus(doctorId: any, doctorControl: string, contactControl: string): void {
+
+    if (!doctorId || doctorId <= 0) {
+      return;
+    }
+
+    this._NewMemberService.getDoctorById(doctorId).subscribe(
+      (response: any) => {
+
+        if (response?.isActive === false) {
+          this.personalFormGroup.get(doctorControl)?.setValue(0);
+          this.personalFormGroup.get(contactControl)?.setValue('');
+        }
+
+      },
+      (error) => {
+        console.log(`Error checking doctor ${doctorId}`, error);
+      }
+    );
+  }
   setMembershipEndDate(): void {
     const fixedDate = new Date(2031, 2, 31); // year, month(0-indexed → 2=March), day → March 31, 2031, local time
     const safeDateStr = formatDate(fixedDate, 'yyyy-MM-dd', 'en-US'); // local-safe, no UTC shift
@@ -707,15 +737,14 @@ export class NewFormComponent {
       }
     );
 
-    dialogRef.afterClosed().subscribe((image: string | null) => {
-      // console.log(image)
-      // if (image) {
-      //   this.imagePreviewH = image;
-      // }
+    dialogRef.afterClosed().subscribe((image: any) => {
+      if (image?.isDelete) {
+        this.imagePreviewH = null;
+        return;
+      }
+
       if (image) {
         this.imagePreviewH = image;
-      } else {
-        this.imagePreviewH = null;
       }
     });
   }
@@ -732,15 +761,14 @@ export class NewFormComponent {
       }
     );
 
-    dialogRef.afterClosed().subscribe((image: string | null) => {
-      // console.log(image)
-      // if (image) {
-      //   this.imagePreviewW = image;
-      // }
+    dialogRef.afterClosed().subscribe((image: any) => {
+      if (image?.isDelete) {
+        this.imagePreviewW = null;
+        return;
+      }
+
       if (image) {
         this.imagePreviewW = image;
-      } else {
-        this.imagePreviewW = null;
       }
     });
   }
@@ -1031,26 +1059,110 @@ export class NewFormComponent {
     this.personalFormGroup.get("wmediclaimEndDate").setValue(this.datePipe.transform(this.personalFormGroup.get("wmediclaimEndDate").value, "yyyy-MM-dd") || this.regObj.wmediclaimEndDate || null)
     this.personalFormGroup.get("declarationDate").setValue(this.datePipe.transform(this.personalFormGroup.get("declarationDate").value, "yyyy-MM-dd"))
     this.personalFormGroup.get("receiptDate").setValue(this.datePipe.transform(this.personalFormGroup.get("receiptDate").value, "yyyy-MM-dd"))
-    this.personalFormGroup.get("familyDoctorName").setValue(this.familyDoctorName)
-    this.personalFormGroup.get("wfamilyDoctorName").setValue(this.wfamilyDoctorName)
+
+    // Don't use these anymore
+    // this.personalFormGroup.get("familyDoctorName").setValue(this.familyDoctorName)
+    // this.personalFormGroup.get("wfamilyDoctorName").setValue(this.wfamilyDoctorName)
+
+    /////////////////////////////////////////////////////////////
+    // Added this code because doctor name is still appearing////
+    // in the list even though it is removed from the form.//////
+    // Clear doctor details when doctor is removed from dropdown/
+    /////////////////////////////////////////////////////////////
+
+    // ================= FAMILY DOCTOR =================
+    const familyDoctorId = this.personalFormGroup.get('familyDoctorId')?.value || 0;
+    const wfamilyDoctorId = this.personalFormGroup.get('wfamilyDoctorId')?.value || 0;
+
+    // Husband Family Doctor
+    if (familyDoctorId <= 0) {
+      this.personalFormGroup.get('familyDoctorId')?.setValue(0);
+      this.personalFormGroup.get('familyDoctorName')?.setValue('');
+      this.personalFormGroup.get('familyDoctorContact')?.setValue('');
+      this.familyDoctorName = '';
+    } else {
+      this.personalFormGroup.get('familyDoctorName')?.setValue(this.familyDoctorName);
+    }
+
+    // Wife Family Doctor
+    if (wfamilyDoctorId <= 0) {
+      this.personalFormGroup.get('wfamilyDoctorId')?.setValue(0);
+      this.personalFormGroup.get('wfamilyDoctorName')?.setValue('');
+      this.personalFormGroup.get('wfamilyDoctorContact')?.setValue('');
+      this.wfamilyDoctorName = '';
+    } else {
+      this.personalFormGroup.get('wfamilyDoctorName')?.setValue(this.wfamilyDoctorName);
+    }
+
+
+    // ================= CONSULTING DOCTOR =================
+    const hconsultDoctorId = this.personalFormGroup.get('hconsultDoctorId')?.value || 0;
+    const wconsultDoctorId = this.personalFormGroup.get('wconsultDoctorId')?.value || 0;
+
+    // Husband Consulting Doctor
+    if (hconsultDoctorId <= 0) {
+      this.personalFormGroup.get('hconsultDoctorId')?.setValue(0);
+      this.personalFormGroup.get('hconsultDoctorName')?.setValue('');
+      this.personalFormGroup.get('hConsultDoctorContact')?.setValue('');
+    } else {
+      // Keep existing consulting doctor name only if the doctor is selected
+      if (this.regObj?.hconsultDoctorId === hconsultDoctorId) {
+        this.personalFormGroup.get('hconsultDoctorName')?.setValue(this.regObj?.hconsultDoctorName || '');
+      }
+    }
+
+    // Wife Consulting Doctor
+    if (wconsultDoctorId <= 0) {
+      this.personalFormGroup.get('wconsultDoctorId')?.setValue(0);
+      this.personalFormGroup.get('wconsultDoctorName')?.setValue('');
+      this.personalFormGroup.get('wConsultDoctorContact')?.setValue('');
+    } else {
+      // Keep existing consulting doctor name only if the doctor is selected
+      if (this.regObj?.wconsultDoctorId === wconsultDoctorId) {
+        this.personalFormGroup.get('wconsultDoctorName')?.setValue(this.regObj?.wconsultDoctorName || '');
+      }
+    }
+
+    ///////////////////////////////////////////////////////////
 
     console.log(this.personalFormGroup.value)
 
 
     if (!this.personalFormGroup.invalid) {
 
-      console.log(this.personalFormGroup.value)
+      ///////////////// added these code bcoz death date taking one day earlier ///////////
+      const formValues = { ...this.personalFormGroup.value };
 
-      this._NewMemberService.MembershipSave(this.personalFormGroup.value).subscribe((response: any) => {
+      const hdeathDate = this.personalFormGroup.get('hdeathDate')?.value;
+      const wdeathDate = this.personalFormGroup.get('wdeathDate')?.value;
+
+      if (hdeathDate instanceof Date) {
+        const year = hdeathDate.getFullYear();
+        const month = String(hdeathDate.getMonth() + 1).padStart(2, '0');
+        const day = String(hdeathDate.getDate()).padStart(2, '0');
+
+        formValues.hdeathDate = `${year}-${month}-${day}`;
+      }
+
+      if (wdeathDate instanceof Date) {
+        const year = wdeathDate.getFullYear();
+        const month = String(wdeathDate.getMonth() + 1).padStart(2, '0');
+        const day = String(wdeathDate.getDate()).padStart(2, '0');
+
+        formValues.wdeathDate = `${year}-${month}-${day}`;
+      }
+
+      console.log('API Payload:', formValues);
+      //////////////////////////////////////////////////////////////////////////////////////
+
+      this._NewMemberService.MembershipSave(formValues).subscribe((response: any) => {
 
         // // this.getMembershipview(response)
         // this._matDialog.closeAll();
 
         const membershipId = response;
         this.vmembershipId = membershipId
-        console.log("membershipId", membershipId)
-        console.log("imagePreviewH", this.imagePreviewH)
-        console.log("imagePreviewW", this.imagePreviewW)
+
         if (membershipId && this.imagePreviewH) {
 
           const objFile = {
@@ -1604,7 +1716,7 @@ export class NewFormComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (place == "photo") {
-          this.imagePreview = result.url;
+          this.imagePreviewH = result.url;
         }
         else {
 
@@ -1628,7 +1740,7 @@ export class NewFormComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (place == "photo") {
-          this.imagePreview1 = result.url;
+          this.imagePreviewW = result.url;
         }
         else {
 
@@ -2086,12 +2198,14 @@ export class NewFormComponent {
       this.hFeesstatus = true
       this.personalFormGroup.get('feeAmount').setValidators([Validators.required]);
       this.personalFormGroup.get('feeAmount').enable();
+      // this.personalFormGroup.get('membershipNo').setValidators([Validators.required])
     } else {
       this.hFeesstatus = false
       this.personalFormGroup.get('feeAmount').clearValidators();
       this.personalFormGroup.get('feeAmount').updateValueAndValidity();
       this.personalFormGroup.get('feeAmount').setValue('0')
-
+      this.personalFormGroup.get('membershipNo').setValue('')
+      // this.personalFormGroup.get('membershipNo').clearValidators();
     }
   }
 
@@ -2102,10 +2216,11 @@ export class NewFormComponent {
       this.personalFormGroup.get('wfeeAmount').enable();
     } else {
       this.WFeesstatus = false
-
+      
       this.personalFormGroup.get('wfeeAmount').clearValidators();
       this.personalFormGroup.get('wfeeAmount').updateValueAndValidity();
       this.personalFormGroup.get('wfeeAmount').setValue('0')
+      this.personalFormGroup.get('femalemembershipNo').setValue('')
     }
   }
 
