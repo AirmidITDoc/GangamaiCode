@@ -5,19 +5,54 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
     providedIn: 'root'
-})
+}) 
 export class OpRefundOfAdvanceService {
 
     myFilterform: FormGroup;
-    myRefundAdvanceForm: FormGroup;
-
+    UserFormGroup: FormGroup;
+    AdvanceOfRefund: FormGroup;
     constructor(
         public _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _loaderService: LoaderService,
     ) {
         this.myFilterform = this.filterForm();
-        this.myRefundAdvanceForm = this.refundAdvanceForm();
+        this.UserFormGroup = this.createUserFormGroup()
+        this.AdvanceOfRefund = this.createAdvacneofRefundForm()
+    }
+
+
+    createUserFormGroup() {
+        return this._formBuilder.group({
+            FirstName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            LastName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            PBillNo: '',
+            RegNo: '',
+            fromDate: [(new Date()).toISOString()],
+            enddate: [(new Date()).toISOString()],
+        })
+    }
+
+    createAdvacneofRefundForm() {
+        return this._formBuilder.group({
+            FirstName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            LastName: ['', [
+                Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            RegNo: '',
+            fromDate: [(new Date()).toISOString()],
+            enddate: [(new Date()).toISOString()],
+        })
+    }
+
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
     }
 
     filterForm(): FormGroup {
@@ -36,65 +71,21 @@ export class OpRefundOfAdvanceService {
             fromDate: [],
             enddate: [],
             DischargeId: [''],
+
         });
     }
+ 
 
-    refundAdvanceForm(): FormGroup {
-        return this._formBuilder.group({
-            AdmissionId: '',
-            RegNo: '',
-            PatientName: '',
-            DOA: '',
-            DOT: '',
-            BedNo: '',
-            DoctorId: '0',
-            DoctorName: '',
-            WardId: '0',
-            RoomName: '',
-            DischargeSummaryId: '',
-            DischargeId: '',
-            History: '',
-            Diagnosis: '',
-            Investigation: '',
-            ClinicalFinding: '',
-            OpertiveNotes: '',
-            TreatmentGiven: '',
-            TreatmentAdvisedAfterDischarge: '',
-            Followupdate: '',
-            Remark: '',
-            DischargeSummaryDate: '',
-            OPDate: '',
-            OPTime: '',
-            DischargeDoctor1: '',
-            DischargeDoctor2: '',
-            DischargeDoctor3: '',
-            DischargeSummaryTime: '',
-            DoctorAssistantName: '',
-            ClaimNumber: '',
-            PreOthNumber: '',
-            AddedBy: '',
-            AddedByDate: '',
-            SurgeryProcDone: '',
-            ICD10CODE: '',
-            ClinicalConditionOnAdmisssion: '',
-            OtherConDrOpinions: '',
-            ConditionAtTheTimeOfDischarge: '',
-            PainManagementTechnique: '',
-            LifeStyle: '',
-            WarningSymptoms: '',
-            Radiology: '',
-            IsNormalOrDeath: '',
-            DoctorName1: '',
-            DoctorIdOne: '',
-            DoctorIdTwo: ''
-        });
+        public getuserwisecashcounterlist(vUserID, Type) {
+        return this._httpClient.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
     }
-
-    public getRefundofAdvanceList(Id) {
+        public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReportFromDB", Param);
+    }
+        public insertIPRefundOfAdvance(employee) {
+        return this._httpClient.PostData("Advance/IPRefundofAdvanceInsert", employee)
+    }
+        public getRefundofAdvanceList(Id) {
         return this._httpClient.PostData("Advance/PatientRefundOfAdvancesList", Id);
-    }
-
-    public getRegistraionById(Id) {
-        return this._httpClient.GetData("OutPatient/" + Id);
     }
 }

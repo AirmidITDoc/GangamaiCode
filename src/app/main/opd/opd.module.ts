@@ -70,13 +70,17 @@ const appRoutes: Routes = [
         path: "op-advance-browse",
         loadChildren: () => import("./browse-op-advance/browse-op-advance.module").then((m) => m.BrowseOpAdvanceModule)
     },
-    {
-        path: "op-refund-browse",
-        loadChildren: () => import("./op-refund-of-advance/op-refund-of-advance.module").then((m) => m.OpRefundOfAdvanceModule)
-    },
+    // {
+    //     path: "op-refund-browse",
+    //     loadChildren: () => import("./op-refund-of-advance/op-refund-of-advance.module").then((m) => m.OpRefundOfAdvanceModule)
+    // },
     {
         path: "appoinmentwithbill",
         loadChildren: () => import("./appointment-list/new-appointmentwith-bill/new-appwihbill.module").then((m) => m.NewAppwihbillModule)
+    },
+     {
+        path: "op-reund-of-advance",
+        loadChildren: () => import("./op-refund-of-advance/op-refund-of-advance.module").then((m) => m.OpRefundOfAdvanceModule)
     }
 
 ];

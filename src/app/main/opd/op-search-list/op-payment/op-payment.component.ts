@@ -316,7 +316,8 @@ export class OpPaymentComponent implements OnInit {
             this.DepartmentName = this.advanceData.DepartmentName;
             this.Paymentobj['transactionType'] = 0;
         }
-        if (this.data.FromName == "OP-RefundOfBill") {
+        if (this.data.FromName == "OP-RefundOfBill"  || this.data.FromName == "OP-Advance" ||
+            this.data.FromName == "OP-RefundOfAdvance") {
             this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
             this.amount1 = parseInt(this.advanceData.NetPayAmount);
             this.PatientName = this.advanceData.PatientName;
@@ -696,14 +697,15 @@ export class OpPaymentComponent implements OnInit {
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
             this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
         }
-        else if (this.data.FromName == "OP-RefundOfBill") {
-            transactionType = 2
+        else if (this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "OP-Advance" ||
+            this.data.FromName == "OP-RefundOfAdvance"
+        ) { 
             this.Paymentobj['BillNo'] = this.advanceData.billNo || 0; //this.data?.billNo;
             this.Paymentobj['ReceiptNo'] = '';
             this.Paymentobj['PaymentId'] = 0;
             this.Paymentobj['PaymentDate'] = formattedDate,
-                this.Paymentobj['PaymentTime'] = formattedTime,
-                this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
+            this.Paymentobj['PaymentTime'] = formattedTime,
+            this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
             this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
             this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.RefNo ?? "0";
             this.Paymentobj['BankName'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.BankName ?? "";
@@ -715,7 +717,14 @@ export class OpPaymentComponent implements OnInit {
             this.Paymentobj['AdvanceUsedAmount'] = 0;
             this.Paymentobj['AdvanceId'] = 0;
             this.Paymentobj['RefundId'] = 0;
-            this.Paymentobj['TransactionType'] = 2;
+              if (this.data.FromName == "OP-Advance") {
+                this.Paymentobj['TransactionType'] = 1;
+                transactionType = 1
+            } else {
+                 this.Paymentobj['TransactionType'] = 2;
+                transactionType = 2
+            }
+            //this.Paymentobj['TransactionType'] = 2;
             this.Paymentobj['Remark'] = '';
             this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
                 this.Paymentobj['IsCancelled'] = false;

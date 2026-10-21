@@ -19,6 +19,7 @@ import { RegInsert } from '../../registration/registration.component';
 import { AppointmentBillService } from './appointment-bill.service';
 import { PackageDetailsComponent } from './package-details/package-details.component';
 import { ApprovalUserNameListComponent } from 'app/main/Approval Management/approval-list/approval-user-name-list/approval-user-name-list.component';
+import { OpPaymentVimalComponent } from '../../op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 @Component({
     selector: 'app-appointment-billing',
@@ -89,6 +90,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public isDoctor = false;
     public isUpdating = false;
     Is9_Digit_National_Id: boolean = false
+    OpdAdvanceWorkFLowId: boolean = false
     IsOPDDiscountApprovalReq: boolean = false
     serviceSelct = false
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
@@ -96,6 +98,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     SetCashbydefault: any = 0
     CashCounterType:any = 'OP_BILL';
     vUserID:any=0;
+    RegId:any=0;
     UserDiscApplyPer:boolean =false;
     UserWsieCashcounterId:boolean =false;
 
@@ -154,6 +157,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.vhospitalId = this.patientDetail.hospitalId;
                 this.vClassId = this.patientDetail.classId
                 this.RegNo = this.patientDetail.regNo
+                this.RegId= this.patientDetail.regId || 0;
 
             }
         }
@@ -176,6 +180,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.vClassId = this.patientDetail.classId
             this.RegNo = this.patientDetail.regNo
             this.savebtn = false
+            this.RegId= this.patientDetail.regId || 0;
             this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
             this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
             this.patientDetail.mobileNo
@@ -236,6 +241,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
         
             this.getuserwisecashcounterlist();
+
+            
+        //this is for set bydefault cash  
+        const [OpdAdvanceWorkFLowId, OpdAdvanceWorkFLowVal] = this._ConfigService.configParams.OpdAdvanceWorkFLow.split(":");
+        this.OpdAdvanceWorkFLowId = OpdAdvanceWorkFLowId === "1";
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -652,7 +662,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 drbno: [0],
                 isCancelled: [0],
                 pBillNo: ['0'],
-            })
+            }),
+            // Advacne header update
+            advancesHeaderupdate: this.formBuilder.group({
+                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            }),
+            // Advance details update in array
+            advancesupdate: this.formBuilder.array([])
+ 
         });
     }
     CreateAddchargeform(item: any): FormGroup {
@@ -701,6 +720,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+    // IP Adv UP
+    createAdvanceUpdate(item: any): FormGroup {
+        return this.formBuilder.group({
+            advanceDetailId: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
     createBillDetails(item: any): FormGroup {
@@ -801,7 +828,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     get ModeOfPaymentsArray(): FormArray {
         return this.OpBillForm.get('tPayments') as FormArray;
     }
-
+    get AdvacnedetUpdateArray(): FormArray {
+        return this.OpBillForm.get('advancesupdate') as FormArray;
+    }
     getdocdetail(event) {
         this.doctorName = event.text
     }
@@ -1361,6 +1390,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         console.log(obj) 
        this.getcleardata();
         this.patientDetail = obj
+        this.RegId = this.patientDetail?.regId
         this.patientDetail.doctorId = obj.consultantDocId
         this.patientDetail.doctorname = obj.doctorName
         this.PatientName = obj.formattedText
@@ -1421,11 +1451,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
         }
 
-        // const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
-        // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
-        // this.OpBillForm.get('billDate').setValue(formattedDate);
-        // this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
-
         debugger
         const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
         const formattedTime = this.dateTimeObj?.time || '00:00';
@@ -1479,64 +1504,144 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
 
             if (this.OPFooterForm.get('paymentType').value == 'PayOption' && (this.OPFooterForm.get('netPayableAmt')?.value || 0)>0) {
-                const PatientHeaderObj = {};
-                PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+                if (this.OpdAdvanceWorkFLowId) {
+                    const PatientHeaderObj = {};
+                    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                     PatientHeaderObj['PatientName'] = this.PatientName;
-                PatientHeaderObj['RegNo'] = this.RegNo || 0;
-                PatientHeaderObj['DoctorName'] = this.Doctorname || '';
-                PatientHeaderObj['CompanyName'] = this.patientDetail?.companyName || '';
-                PatientHeaderObj['DepartmentName'] = this.DepartmentName || '';
-                PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
-                PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
-                PatientHeaderObj['CashCounterId'] = this.searchForm.get('CashCounterID')?.value || 0;
-                PatientHeaderObj['Age'] = this.AgeYear || 0;
-                PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
-                PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
-                const dialogRef = this._matDialog.open(OpPaymentComponent,
-                    {
-                        maxWidth: "80vw",
-                        height: '750px',
-                        width: '80%',
-                        data: {
-                            vPatientHeaderObj: PatientHeaderObj,
-                            FromName: "OP-Bill",
-                            advanceObj: PatientHeaderObj,
-                        }
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    if (result && result.IsSubmitFlag == true) {
-                        console.log(this.OpBillForm.value)
-                        console.log(result.submitDataPay.ipPaymentInsert)
-                        console.log(result.BillBalanceAmount)
-
-                        debugger
-                        this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
-                        this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
-
-                        this.ModeOfPaymentsArray.clear();
-                        result.submitDataPay.ipModePaymentInsert.forEach(item => {
-                            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
-                        });
-
-                        console.log(this.OpBillForm.value)
-                        this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                            this.resetform();
-                            this._matDialog.closeAll();
-                            this.savebtn = true
-                            if (ThermalPrint != 1) {
-                                if (response)
-                                    this.viewgetOPBillReportPdf(response)
-                            } else {
-                                if (this.data?.FormName != 'Appointment-OPBill') {
-                                    if (response)
-                                        this.viewgetOPBillThermalReportPdf(response)
-                                } else {
-                                    this.dialogRef.close(response)
-                                }
+                    PatientHeaderObj['RegNo'] = this.RegNo || 0;
+                    PatientHeaderObj['DoctorName'] = this.Doctorname || '';
+                    PatientHeaderObj['CompanyName'] = this.patientDetail?.companyName || '';
+                    PatientHeaderObj['DepartmentName'] = this.DepartmentName || '';
+                    PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
+                    PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
+                    PatientHeaderObj['CashCounterId'] = this.searchForm.get('CashCounterID')?.value || 0;
+                    PatientHeaderObj['Age'] = this.AgeYear || 0;
+                    PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
+                    PatientHeaderObj['BillNo'] = 0;
+                    PatientHeaderObj['OPDNo'] = this.patientDetail?.opdNo || '';
+                    PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
+                    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+                        {
+                            maxWidth: "80vw",
+                            height: '750px',
+                            width: '80%',
+                            data: {
+                                vPatientHeaderObj: PatientHeaderObj,
+                                FromName: "OP-Bill",
+                                advanceObj: PatientHeaderObj,
                             }
                         });
-                    }
-                });
+                    dialogRef.afterClosed().subscribe(result => {
+                        console.log(result);
+                        if (result && result.IsSubmitFlag) {
+
+                            this.OpBillForm.get('paidAmt')?.setValue(result?.PaidAmt ?? 0)
+                            this.OpBillForm.get('balanceAmt')?.setValue(result?.BalAmt ?? 0)
+                            this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
+
+                            this.ModeOfPaymentsArray.clear();
+                            result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                            });
+                     
+                            let UpdateAdvanceDetailarr1 = [];
+                            UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+
+                            if (UpdateAdvanceDetailarr1.length > 0) {
+                                let AdvanceBalAmt = 0;
+                                let AdvanceUsedAmt = 0;
+                                UpdateAdvanceDetailarr1.forEach(element => {
+                                    this.OpBillForm.get('advancesHeaderupdate.advanceId')?.setValue(element.AdvanceId)
+                                    debugger
+                                    AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+                                    AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+                                    this.OpBillForm.get('advancesHeaderupdate.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+                                    this.OpBillForm.get('advancesHeaderupdate.balanceAmount')?.setValue(AdvanceBalAmt)
+                                })
+                            }
+                        
+                            this.AdvacnedetUpdateArray.clear();
+                            UpdateAdvanceDetailarr1.forEach(item => {
+                                this.AdvacnedetUpdateArray.push(this.createAdvanceUpdate(item));
+                            });  
+                            this._AppointmentlistService.InsertOPBillingwithAdvance(this.OpBillForm.value).subscribe(response => {
+                                this.resetform();
+                                this._matDialog.closeAll();
+                                this.savebtn = true
+                                if (ThermalPrint != 1) {
+                                    if (response)
+                                        this.viewgetOPBillReportPdf(response)
+                                } else {
+                                    if (this.data?.FormName != 'Appointment-OPBill') {
+                                        if (response)
+                                            this.viewgetOPBillThermalReportPdf(response)
+                                    } else {
+                                        this.dialogRef.close(response)
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    const PatientHeaderObj = {};
+                    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+                    PatientHeaderObj['PatientName'] = this.PatientName;
+                    PatientHeaderObj['RegNo'] = this.RegNo || 0;
+                    PatientHeaderObj['DoctorName'] = this.Doctorname || '';
+                    PatientHeaderObj['CompanyName'] = this.patientDetail?.companyName || '';
+                    PatientHeaderObj['DepartmentName'] = this.DepartmentName || '';
+                    PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
+                    PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
+                    PatientHeaderObj['CashCounterId'] = this.searchForm.get('CashCounterID')?.value || 0;
+                    PatientHeaderObj['Age'] = this.AgeYear || 0;
+                    PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
+                    PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
+                    const dialogRef = this._matDialog.open(OpPaymentComponent,
+                        {
+                            maxWidth: "80vw",
+                            height: '750px',
+                            width: '80%',
+                            data: {
+                                vPatientHeaderObj: PatientHeaderObj,
+                                FromName: "OP-Bill",
+                                advanceObj: PatientHeaderObj,
+                            }
+                        });
+                    dialogRef.afterClosed().subscribe(result => {
+                        if (result && result.IsSubmitFlag == true) {
+                            console.log(this.OpBillForm.value)
+                            console.log(result.submitDataPay.ipPaymentInsert)
+                            console.log(result.BillBalanceAmount)
+
+                            debugger
+                            this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
+                            this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
+
+                            this.ModeOfPaymentsArray.clear();
+                            result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                            });
+
+                            console.log(this.OpBillForm.value)
+                            this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
+                                this.resetform();
+                                this._matDialog.closeAll();
+                                this.savebtn = true
+                                if (ThermalPrint != 1) {
+                                    if (response)
+                                        this.viewgetOPBillReportPdf(response)
+                                } else {
+                                    if (this.data?.FormName != 'Appointment-OPBill') {
+                                        if (response)
+                                            this.viewgetOPBillThermalReportPdf(response)
+                                    } else {
+                                        this.dialogRef.close(response)
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CashPay' && (this.OPFooterForm.get('netPayableAmt')?.value || 0)>0) {//Cash pay  
                 const ModePaymentObj = [];

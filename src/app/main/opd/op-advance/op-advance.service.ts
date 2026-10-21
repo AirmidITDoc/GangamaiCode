@@ -86,4 +86,20 @@ export class OpAdvanceService {
 
         return this._httpClient.PutData("Advance/Edit", employee)
     }
+
+        public AdvanceHeaderlist(Id) {
+        return this._httpClient.PostData("Advance/PatientWiseAdvanceList", Id);
+    }
+        public getuserwisecashcounterlist(vUserID, Type) {
+        return this._httpClient.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
+    }
+        public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReportFromDB", Param);
+    }
+        public insertIPRefundOfAdvance(employee) {
+        return this._httpClient.PostData("Advance/IPRefundofAdvanceInsert", employee)
+    }
+        public getRefundofAdvanceList(Id) {
+        return this._httpClient.PostData("Advance/PatientRefundOfAdvancesList", Id);
+    }
 }

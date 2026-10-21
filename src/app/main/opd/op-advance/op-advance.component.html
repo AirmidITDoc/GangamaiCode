@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+<!-- <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
 
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-                        <button mat-raised-button (click)="onNew1()">New Advance
+                        <button mat-raised-button (click)="onAdvance()">New Advance
                         </button>
                     </div>
                 </div>
@@ -33,16 +33,7 @@
                                     [(fromValue)]="gridConfig.filters[2].fieldValue"
                                     [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Advance No</mat-label>
-                                    <input matInput placeholder="Search Advance No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[5].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field> -->
-
+                                 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Advance No</mat-label>
                                     <input matInput placeholder="Search Advance No" autocomplete="off"
@@ -54,15 +45,7 @@
                                     </button>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Registration No</mat-label>
-                                    <input matInput placeholder="Search Registration No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[4].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field> -->
+                              
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>UHID</mat-label>
@@ -122,7 +105,7 @@
                     </div>
 
                     <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-                        <button mat-raised-button (click)="onNew2()">New Refund
+                        <button mat-raised-button (click)="onNewRefund()">New Refund
                         </button>
                     </div>
                 </div>
@@ -173,35 +156,7 @@
                                     </button>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Registration No</mat-label>
-                                <input matInput placeholder="Search Registration No" autocomplete="off"
-                                    [(ngModel)]="gridConfig1.filters[4].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig1.filters[4].fieldValue='0'">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig1.filters[0].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig1.filters[0].fieldValue='%'">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig1.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig1.filters[1].fieldValue='%'">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>                             -->
+                               
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -212,4 +167,183 @@
         </mat-tab>
 
     </mat-tab-group>
+</div> -->
+
+
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container resize-form-fields padding-fix">
+
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">OP Advacne</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <div class="comman-date">
+                            <app-common-date [screenFrom]="screenFromString"
+                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        </div>
+                        <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close"> <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body content">
+            <div fxLayout="column" class="gap-8 h-100-p">
+                <div class="modal-card-container">
+                    <div fxLayout="column" fxLayoutGap="6px">
+                        <form [formGroup]="searchFormGroup" class="input-container gap-8" fxFlex>
+                            <!-- <airmid-autocomplete label="Search UHID / Patient Name / Mobile No"
+                                                [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
+                                                placeholderText="Search UHID / Patient Name / Mobile No"
+                                                 ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                                (selectionChange)="getSelectedObjOP($event)"></airmid-autocomplete> -->
+
+                            <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
+                                [formGroup]="searchFormGroup" formControlName="RegId"
+                                placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
+                                ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                (selectionChange)="getSelectedObjReg($event)" ValueField="regId"
+                                TextField="formattedText"></airmid-autocomplete>
+                        </form>
+                        <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
+                            <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;
+                                            box-sizing: border-box; border: 1px solid rgba(0,0,0,.12);">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
+                                        </div>
+                                        <div class="Ipd-patient-info w-100-p">
+                                            <app-patient-information [uhidNo]="registerObj?.regNo"
+                                                [patientName]=" (registerObj?.firstName || '') +
+                                          (registerObj?.middleName ? ' ' + registerObj.middleName : '') + (registerObj?.lastName ? ' ' + registerObj.lastName : '')
+                                                                        || registerObj?.patientName                                                           "
+                                                [doctorName]="registerObj?.doctorName"
+                                                [departmentName]="registerObj?.departmentName"
+                                                [doa]="registerObj?.admissionDate"
+                                                [ageString]="(registerObj?.ageYear !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                                [mobileNo]="registerObj?.mobileNo"
+                                                [refDocName]="registerObj?.refDocName"
+                                                [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
+                                                [patientType]="registerObj?.patientType"
+                                                [tariffName]="registerObj?.tariffName"
+                                                [companyName]="registerObj?.companyName"></app-patient-information>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+
+                            <mat-card fxFlex.gt-sm="26%" fxFlex
+                                style="padding: 6px;
+                                                                        box-sizing: border-box; border: 1px solid rgba(0,0,0,.12);">
+                                <div class="bill-summary px-12">
+                                    <div class="bill-summary-title py-8 border-bottom">
+                                        <span class="h3 font-weight-600">Advance Summary </span>
+                                    </div>
+                                    <div class="bil-summary-list px-4 mt-8">
+                                        <ul class="gap-4 list-basic" fxLayout="column">
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Advance Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{TotalAdvanceAmt | currency:'INR'}}</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Advance Used Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{TotalAdvUsedAmt | currency:'INR'}}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Balance Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{TotalAdvaBalAmt | currency:'INR'}}</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="list-item">
+                                                    <span class="list-item-key">Refund Amount :</span>
+                                                    <span class="list-item-value">
+                                                        {{TotalAdvRefAmt | currency:'INR'}}</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-card-container  h-100-p">
+                    <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">
+                        <ng-template #actionButtonTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <button mat-icon-button matTooltip="Advance Print"
+                                    (click)="viewgetAdvanceReceiptReportPdf(element)">
+                                    <mat-icon>print</mat-icon>
+                                </button>
+                            </div>
+                        </ng-template>
+
+                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                        </airmid-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" fxLayout="column">
+            <div class="modal-card-container">
+                <form [formGroup]="AdvFormGroup" class="mat-error-fix">
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
+
+                        <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Advance Amount" formControlName="advanceAmount"
+                                [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt"
+                                [maxLength]="12" (keypress)="keyPressCharater($event)">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Reason Of Advacne" formControlName="reason"
+                                [formGroup]="AdvFormGroup" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="Cash Counter"
+                                formControlName="CashCounterID" [formGroup]="AdvFormGroup"
+                                [mode]="autocompleteModeCashCounter"
+                                [validations]="getValidationMessages().CashCounterID">
+                            </airmid-dropdown>
+
+                            <!--   [selectFirstByDefault]="true" -->
+                            <airmid-dropdown *ngIf="UserWsieCashcounterId" label="Select Cash Counter"
+                                formControlName="CashCounterID" [formGroup]="AdvFormGroup" TextField="cashCounterName"
+                                ValueField="cashCounterId"
+                                [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IPD_ADVANCE'"></airmid-dropdown>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer-buttons">
+                <!-- <button class="btn btn-primary" (click)="getStatementPrint()">Statement</button> -->
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
+        </div>
+    </div>
 </div>

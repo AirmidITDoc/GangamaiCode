@@ -31,6 +31,9 @@ export class AppointmentBillService {
     public InsertOPBilling(param) {
         return this._httpClient1.PostData("OPBill/OPBillingInsert", param)
     }
+        public InsertOPBillingwithAdvance(param) {
+        return this._httpClient1.PostData("OPBill/OPBillingInsertWithAdvance", param)
+    }
     public InsertOPDraftBilling(param) {
         return this._httpClient1.PostData("OPBill/OPDraftBillInsert", param)
     }

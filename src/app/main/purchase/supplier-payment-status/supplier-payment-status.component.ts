@@ -138,18 +138,26 @@ export class SupplierPaymentStatusComponent implements OnInit {
         } else {
             this.supplierid = obj.value;
         }
-        this.getSupplierPayStatusList();
+      
+        this.getSupplierPayStatusList(); 
     }
 
     getSupplierPayStatusList() {
-        // debugger
+        // debugger 
+        if (this._SupplierPaymentStatusService.SearchFormGroup.get("SupplierId").value?.value) {
+            this.supplierid = this._SupplierPaymentStatusService.SearchFormGroup.get("SupplierId")?.value?.value || '0';
+        } else if (this._SupplierPaymentStatusService.SearchFormGroup.get("SupplierId").value) {
+            this.supplierid = this._SupplierPaymentStatusService.SearchFormGroup.get("SupplierId")?.value || '0';
+        } else {
+            this.supplierid = "0";
+        }
         let fromDate = this._SupplierPaymentStatusService.SearchFormGroup.get("start").value || "";
         let toDate = this._SupplierPaymentStatusService.SearchFormGroup.get("end").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
         const vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "Supplier_Id",
             "sortOrder": 0,
             "filters": [

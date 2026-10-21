@@ -21,6 +21,7 @@ import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.comp
 import { RegInsert } from '../registration/registration.component';
 import { CompanysettlementService } from './companysettlement.service';
 import { ConfigService } from 'app/core/services/config.service';
+import { OpPaymentVimalComponent } from '../op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 @Component({
     selector: 'app-companysettlement',
@@ -81,7 +82,8 @@ export class CompanysettlementComponent implements OnInit {
     vTDSAmount: any = 0;
     vBalanceAmount: any = 0;
     isSearchTriggered = false;
-     UserDiscApplyPer:boolean = false;
+    UserDiscApplyPer:boolean = false;
+    OpdAdvanceWorkFLowId:boolean = false;
     vUPINO: any;
     autocompleteModebank: string = "Bank";
 
@@ -185,6 +187,10 @@ export class CompanysettlementComponent implements OnInit {
         // this.getmultiplePaymentList(true);
         const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'DiscApplyPer');
         this.UserDiscApplyPer = access?.AccessValue;
+
+        //this is for set bydefault cash  
+        const [OpdAdvanceWorkFLowId, OpdAdvanceWorkFLowVal] = this._ConfigService.configParams.OpdAdvanceWorkFLow.split(":");
+        this.OpdAdvanceWorkFLowId = OpdAdvanceWorkFLowId === "1";
     }
 
     createSearchForm() {
@@ -267,6 +273,15 @@ export class CompanysettlementComponent implements OnInit {
             //New Payments
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([]),
+
+                        // Advacne header update
+            advancesHeaderupdate: this.formBuilder.group({
+                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            }),
+            // Advance details update in array
+            advancesupdate: this.formBuilder.array([])
         })
     }
     CreateModePaymentform(item: any): FormGroup {
@@ -300,6 +315,9 @@ export class CompanysettlementComponent implements OnInit {
     get ModeOfPaymentsArray(): FormArray {
         return this.OpSettlementForm.get('tPayments') as FormArray;
     }
+    get AdvacnedetUpdateArray(): FormArray {
+        return this.OpSettlementForm.get('advancesupdate') as FormArray;
+    }
     CreateOPMultipleSettlInsertForm() {
         return this.formBuilder.group({
             opCreditPayment: this.formBuilder.array([]),
@@ -307,6 +325,7 @@ export class CompanysettlementComponent implements OnInit {
             billUpdate: this.formBuilder.array([]),
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([]),
+
         })
     }
 
@@ -392,12 +411,21 @@ export class CompanysettlementComponent implements OnInit {
             transactionLabel: ['OP_SETTLEMENT', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         });
     }
+    // IP Adv UP
+    createAdvanceUpdate(item: any): FormGroup {
+        return this.formBuilder.group({
+            advanceDetailId: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        });
+    }
     get OPMulSetLoopArray(): FormArray {
         return this.OPMultipleSettlLoopInsertForm.get('opCreditPayment') as FormArray;
     }
     get ModeOfPaymentsMultipleArray(): FormArray {
         return this.OPMultipleSettlLoopInsertForm.get('tPayments') as FormArray;
     }
+
     CreateOPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
         return this.formBuilder.group({
             // billUpdate: this.formBuilder.group({
@@ -421,76 +449,169 @@ export class CompanysettlementComponent implements OnInit {
         this.registerObj = obj
         this.getmultiplePaymentList();
     }
-    openPaymentpopup(contact) {
-        const PatientHeaderObj = {};
-        PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
-        PatientHeaderObj['PatientName'] = this.registerObj?.patientName || ''
-        PatientHeaderObj['OPD_IPD_Id'] = contact.opdNo || '';
-        PatientHeaderObj['Age'] = this.registerObj?.ageYear || 0
-        PatientHeaderObj['DepartmentName'] = contact.departmentName || '';
-        PatientHeaderObj['billNo'] = contact.billNo || 0;
-        PatientHeaderObj['CompanyName'] = contact.companyName || '';
-        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
-        PatientHeaderObj['CompanyId'] = contact.companyId || 0;
-        PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
+    openPaymentpopup(contact) { 
+debugger
+        if (this.OpdAdvanceWorkFLowId) {
+            const PatientHeaderObj = {};
+            PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
+                PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
+            PatientHeaderObj['PatientName'] = this.registerObj?.patientName || ''
+            PatientHeaderObj['OPD_IPD_Id'] = contact.regID || '';
+            PatientHeaderObj['Age'] = this.registerObj?.ageYear || 0
+            PatientHeaderObj['DepartmentName'] = contact.departmentName || '';
+            PatientHeaderObj['BillNo'] = contact.billNo || 0;
+            PatientHeaderObj['CompanyName'] = contact.companyName || '';
+            PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
+            PatientHeaderObj['CompanyId'] = contact.companyId || 0;
+            PatientHeaderObj['OPDNo'] = contact.opdNo || '';
+            PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
 
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-            {
-                maxWidth: "80vw",
-                height: '750px',
-                width: '80%',
-                data: {
-                    vPatientHeaderObj: PatientHeaderObj,
-                    FromName: "OP-SETTLEMENT"
-                }
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result && result.IsSubmitFlag == true) {
-                this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
-                this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result.BillBalanceAmount)
-                this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
-
-                this.ModeOfPaymentsArray.clear();
-                result.submitDataPay.ipModePaymentInsert.forEach(item => {
-                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+            const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+                {
+                    maxWidth: "80vw",
+                    height: '750px',
+                    width: '80%',
+                    data: {
+                        vPatientHeaderObj: PatientHeaderObj,
+                        FromName: "OP-SETTLEMENT"
+                    }
                 });
-
+            dialogRef.afterClosed().subscribe(result => {
                 debugger
-                if (this.OpSettlementForm.valid) {
-                    console.log(this.OpSettlementForm.value)
-                    console.log(result.submitDataPay.ipPaymentInsert)
+                if (result && result.IsSubmitFlag) {
+                      this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
+                    this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result?.BalAmt ?? 0)
+                    this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
 
-                    this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
-                        this.GetDetails(this.RegId1)
-                        this.viewgetOPPayemntPdf(response, true);
-                    });
-                } else {
-                    const invalidFields = []
-                    if (this.OpSettlementForm.invalid) {
-                        for (const controlName in this.OpSettlementForm.controls) {
-                            const control = this.OpSettlementForm.get(controlName);
-                            if (control instanceof FormGroup || control instanceof FormArray) {
-                                for (const nestedKey in control.controls) {
-                                    if (control.get(nestedKey)?.invalid) {
-                                        invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
+                    this.ModeOfPaymentsArray.clear();
+                    result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                    }); 
+
+                    let UpdateAdvanceDetailarr1 = [];
+                    UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+
+                    if (UpdateAdvanceDetailarr1.length > 0) {
+                        let AdvanceBalAmt = 0;
+                        let AdvanceUsedAmt = 0;
+                        UpdateAdvanceDetailarr1.forEach(element => {
+                            this.OpSettlementForm.get('advancesHeaderupdate.advanceId')?.setValue(element.AdvanceId)
+                            debugger
+                            AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+                            AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+                            this.OpSettlementForm.get('advancesHeaderupdate.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+                            this.OpSettlementForm.get('advancesHeaderupdate.balanceAmount')?.setValue(AdvanceBalAmt)
+                        })
+                    }
+
+                    this.AdvacnedetUpdateArray.clear();
+                    UpdateAdvanceDetailarr1.forEach(item => {
+                        this.AdvacnedetUpdateArray.push(this.createAdvanceUpdate(item));
+                    }); 
+                    if (this.OpSettlementForm.valid) {
+                        console.log(this.OpSettlementForm.value)
+                        console.log(result.submitDataPay.ipPaymentInsert)
+
+                        this._CompanysettlementService.InsertOPBillingsettlementwithAdvance(this.OpSettlementForm.value).subscribe(response => {
+                            this.GetDetails(this.RegId1)
+                            this.viewgetOPPayemntPdf(response, true);
+                        });
+                    } else {
+                        const invalidFields = []
+                        if (this.OpSettlementForm.invalid) {
+                            for (const controlName in this.OpSettlementForm.controls) {
+                                const control = this.OpSettlementForm.get(controlName);
+                                if (control instanceof FormGroup || control instanceof FormArray) {
+                                    for (const nestedKey in control.controls) {
+                                        if (control.get(nestedKey)?.invalid) {
+                                            invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
+                                        }
                                     }
+                                } else if (control?.invalid) {
+                                    invalidFields.push(`OPSettlement From: ${controlName}`);
                                 }
-                            } else if (control?.invalid) {
-                                invalidFields.push(`OPSettlement From: ${controlName}`);
                             }
                         }
-                    }
-                    if (invalidFields.length > 0) {
-                        invalidFields.forEach(field => {
-                            this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-                            );
-                        });
-                        return
+                        if (invalidFields.length > 0) {
+                            invalidFields.forEach(field => {
+                                this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                                );
+                            });
+                            return
+                        }
                     }
                 }
-            }
-        });
+            });
+        } else {
+            const PatientHeaderObj = {};
+            PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
+                PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
+            PatientHeaderObj['PatientName'] = this.registerObj?.patientName || ''
+            PatientHeaderObj['OPD_IPD_Id'] = contact.opdNo || '';
+            PatientHeaderObj['Age'] = this.registerObj?.ageYear || 0
+            PatientHeaderObj['DepartmentName'] = contact.departmentName || '';
+            PatientHeaderObj['billNo'] = contact.billNo || 0;
+            PatientHeaderObj['CompanyName'] = contact.companyName || '';
+            PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
+            PatientHeaderObj['CompanyId'] = contact.companyId || 0;
+            PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
+            const dialogRef = this._matDialog.open(OpPaymentComponent,
+                {
+                    maxWidth: "80vw",
+                    height: '750px',
+                    width: '80%',
+                    data: {
+                        vPatientHeaderObj: PatientHeaderObj,
+                        FromName: "OP-SETTLEMENT"
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result && result.IsSubmitFlag == true) {
+                    this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
+                    this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result.BillBalanceAmount)
+                    this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
+
+                    this.ModeOfPaymentsArray.clear();
+                    result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                    });
+
+                    debugger
+                    if (this.OpSettlementForm.valid) {
+                        console.log(this.OpSettlementForm.value)
+                        console.log(result.submitDataPay.ipPaymentInsert)
+
+                        this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
+                            this.GetDetails(this.RegId1)
+                            this.viewgetOPPayemntPdf(response, true);
+                        });
+                    } else {
+                        const invalidFields = []
+                        if (this.OpSettlementForm.invalid) {
+                            for (const controlName in this.OpSettlementForm.controls) {
+                                const control = this.OpSettlementForm.get(controlName);
+                                if (control instanceof FormGroup || control instanceof FormArray) {
+                                    for (const nestedKey in control.controls) {
+                                        if (control.get(nestedKey)?.invalid) {
+                                            invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
+                                        }
+                                    }
+                                } else if (control?.invalid) {
+                                    invalidFields.push(`OPSettlement From: ${controlName}`);
+                                }
+                            }
+                        }
+                        if (invalidFields.length > 0) {
+                            invalidFields.forEach(field => {
+                                this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                                );
+                            });
+                            return
+                        }
+                    }
+                }
+            });
+        }
         this.searchFormGroup.get('RegId').setValue('')
     }
     viewgetOPPayemntPdf(data, status) {

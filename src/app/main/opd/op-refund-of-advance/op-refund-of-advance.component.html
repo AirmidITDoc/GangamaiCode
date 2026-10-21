@@ -1,193 +1,219 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    OP Search List
-                </span>
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container resize-form-fields padding-fix">
+        <!-- Modal header -->
+        <div class=" modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> Refund Of Advance</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <div class="comman-date">
+                            <app-common-date [screenFrom]="screenFromString"
+                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        </div>
+                        <!-- <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close"> <mat-icon>close</mat-icon>
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onNew()">New Refund
-            </button>
+        <!-- Modal body -->
+        <div class="modal-body content">
+            <div fxLayout="column" class="gap-8 h-100-p">
+                <div class="modal-card-container">
+                    <div fxLayout="column" fxLayoutGap="6px">
+                        <form [formGroup]="searchFormGroup" class="input-container gap-8" fxFlex>
+                            <!-- <airmid-autocomplete label="Search UHID / Patient Name / Mobile No"
+                                                [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
+                                                placeholderText="Search UHID / Patient Name / Mobile No"
+                                                 ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                                (selectionChange)="getSelectedObjOP($event)"></airmid-autocomplete> -->
+
+                            <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
+                                [formGroup]="searchFormGroup" formControlName="RegId"
+                                placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
+                                ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                (selectionChange)="getSelectedObjReg($event)" ValueField="regId"
+                                TextField="formattedText"></airmid-autocomplete>
+                        </form>
+                        <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;
+                                            box-sizing: border-box; border: 1px solid rgba(0,0,0,.12);">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
+                                        </div>
+                                        <div class="Ipd-patient-info w-100-p">
+                                            <app-patient-information [uhidNo]="registerObj?.regNo"
+                                                [patientName]=" (registerObj?.firstName || '') +
+                                          (registerObj?.middleName ? ' ' + registerObj.middleName : '') + (registerObj?.lastName ? ' ' + registerObj.lastName : '')
+                                                                        || registerObj?.patientName                                                           "
+                                                [doctorName]="registerObj?.doctorName"
+                                                [departmentName]="registerObj?.departmentName"
+                                                [doa]="registerObj?.admissionDate"
+                                                [ageString]="(registerObj?.ageYear !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                                [mobileNo]="registerObj?.mobileNo"
+                                                [refDocName]="registerObj?.refDocName"
+                                                [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
+                                                [patientType]="registerObj?.patientType"
+                                                [tariffName]="registerObj?.tariffName"
+                                                [companyName]="registerObj?.companyName"></app-patient-information>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-card-container  h-100-p">
+                    <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">
+                        <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%">
+                            <div class="airmid-table-container">
+                                <mat-table matSort [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}"
+                                    class="airmid-table">
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                            class="w-130">Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-130">
+                                            <span> {{element.date}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AdvanceAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Advance Amt </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.advanceAmount | currency: currency:'symbol'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="UsedAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Used Amt </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.usedAmount | currency: currency:'symbol'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="BalanceAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Balance Amt </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span *ngIf="!element.isCancelled">
+                                                {{element.balanceAmount | currency: currency:'symbol'}}
+                                            </span>
+                                            <span *ngIf="element.isCancelled">
+                                                {{0 | currency: currency:'symbol'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="RefundAmt">
+                                        <mat-header-cell *matHeaderCellDef>Refund Amt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element">
+                                            <mat-form-field appearance="fill" *ngIf="!element.isCancelled">
+                                                <input matInput placeholder="RefundAmt" type="text"
+                                                    [(ngModel)]="element.refundAmt"
+                                                    (keypress)="keyPressCharater($event)"
+                                                    (keyup)="getCellCalculation(element,element.refundAmt)">
+                                            </mat-form-field>
+                                            <ng-container *ngIf="element.isCancelled">
+                                                <span>--</span>
+                                            </ng-container>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PreRefundAmt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prev.Refund Amt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.refundAmount | currency: currency:'symbol'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <!-- no data found... -->
+                                            <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                            </mat-spinner>
+                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent min-width-900"
+                                        *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                        class="element min-width-900" [@animate]="{value:'*',params:{y:'100%'}}"
+                                        [ngClass]="{'red-row': row.isCancelled == true}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dsrefundlist!=null}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsrefundlist!=null && dsrefundlist.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="modal-footer" fxLayout="column">
+            <div class="modal-card-container">
+                <form [formGroup]="RefundOfAdvanceFormGroup">
+                    <div fxLayout="row" fxLayoutGap="6px">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Total Balance Amount" formControlName="balanceAmount"
+                                [formGroup]="RefundOfAdvanceFormGroup"
+                                [validations]="getValidationMessages().BalanceAdvance" [maxLength]="12"
+                                [readonly]="true">
+                            </airmid-textbox>
+                        </div>
 
-    <div class="content">
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Refund Amount" formControlName="refundAmount"
+                                [formGroup]="RefundOfAdvanceFormGroup"
+                                [validations]="getValidationMessages().NewRefundAmount" [maxLength]="12"
+                                [readonly]="true">
+                            </airmid-textbox>
+                        </div>
 
-            <!-- <ng-template #iconPatientCategory let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <mat-icon *ngIf="element.patientType =='Self'" matTooltip="Patient Category Self">account_box
-                    </mat-icon>
-
-                    <mat-icon *ngIf="element.patientType !== 'Self'" matTooltip="Patient Category Company">business
-                    </mat-icon>
-
-                </div>
-            </ng-template> -->
-
-            <!-- <ng-template #iconBillCancle let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isBillGenerated=='1'; else noMLC " matTooltip="Bill Generated"
-                        class="pill green-600 s-16">
-                    </mat-icon>
-                    <ng-template #noMLC>
-                        <span>--</span>
-                    </ng-template>
-
-                </div>
-            </ng-template> -->
-
-            <!-- <ng-template #iconMlc let-element>
-                <div>
-
-                    <button mat-icon-button *ngIf="element.isMLC==1; else noMLC" matTooltip="IsMLC"
-                        (click)="NewMLc(element)">
-                        <mat-icon>edit</mat-icon>
-
-                    </button>
-                    <ng-template #noMLC>
-                        <span>--</span>
-                    </ng-template>
-                    <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
-                        (click)="getMLCdetailview(element.amissionId)">
-                        <mat-icon>print</mat-icon>
-                    </button>
-                </div>
-            </ng-template> -->
-
-
-            <!-- <ng-template #actionButtonTemplate let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <button mat-icon-button (click)="printDischargeslip(element)" *ngIf="element.isDischarged"
-                        matTooltip="Discharge Slip Print">
-                        <mat-icon>
-                            <img width="20px" height="6px" src="assets/images/logos/dischargesummary.jpeg"
-                                style="background:-moz-linear-gradient(00,9,22);">
-                        </mat-icon>
-                    </button>
-
-
-                    <button mat-icon-button (click)="printDischargesummary(element)" *ngIf="element.isDischarged"
-                        matTooltip="Discharge Summary Print">
-                        <mat-icon>
-                            <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg"
-                                style="background-color: transparent;">
-                        </mat-icon>
-
-                    </button>
-
-
-                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
-                        *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
-                        <mat-icon>
-                            <img width="14px" height="4px" src="assets/images/logos/withoutLetterHead.png"
-                                style="background-color: transparent;">
-                        </mat-icon>
-                    </button>
-
-                    <button mat-icon-button (click)="getfeedback(element)" matTooltip="NewFeedback">
-                        <mat-icon style="color: black;">feedback</mat-icon>
-                    </button>
-
-                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                        (click)="$event.stopPropagation();">
-                        <mat-icon class="secondary-text">more_vert</mat-icon>
-                    </button>
-                    <mat-menu #moreMenu="matMenu">
-                        <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                            <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                <span>{{m}}</span>
-                            </button>
-                        </ng-container>
-                    </mat-menu>
-                </div>
-            </ng-template> -->
-
-            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
-                <ng-container filters>
-                    <form [formGroup]="myFilterform">
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="fromDate" placeholder="Start date">
-                                <input matEndDate formControlName="enddate" placeholder="End date"
-                                    (dateChange)="onChangeFirst($event)">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>UHID No</mat-label>
-                            <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="RegNo" (input)="onChangeFirst($event)" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput placeholder="Search First Name" autocomplete="off"
-                                [formGroup]="myFilterform" formControlName="FirstName"
-                                (input)="onChangeFirst($event)" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Middle Name</mat-label>
-                            <input matInput placeholder="Search Middle Name" autocomplete="off"
-                                [formGroup]="myFilterform" formControlName="MiddleName"
-                                (input)="onChangeFirst($event)" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MiddleName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="LastName" (input)="onChangeFirst($event)" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
-                            [mode]="autocompleteModedeptdoc">
+                        <airmid-dropdown *ngIf="!UserWsieCashcounterId" label="Select Cash Counter "
+                            formControlName="CashCounterID" class="w-300" [formGroup]="RefundOfAdvanceFormGroup"
+                            [validations]="getValidationMessages().cashCounterId" [mode]="autocompleteModeCashcounter">
                         </airmid-dropdown>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>OPDNo</mat-label>
-                            <input matInput placeholder="Search OPDNo" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="OPDNo" (input)="onChangeFirst($event)" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('OPDNo')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
+                        <!--    [selectFirstByDefault]="true" -->
+                        <airmid-dropdown *ngIf="UserWsieCashcounterId" class="w-300" label="Select Cash Counter"
+                            formControlName="CashCounterID" [formGroup]="RefundOfAdvanceFormGroup"
+                            TextField="cashCounterName" ValueField="cashCounterId"
+                            [ApiUrl]="'VisitDetail/SearchUserWiseCashCounterList?LoginId=' + vUserID + '&CCType=IP_REFUND_ADV_BILL'"></airmid-dropdown>
 
-                        <!-- <mat-slide-toggle name="IsDischarge" (change)="onChangeFirst($event)"
-                            formControlName="IsDischarge" [(ngModel)]="IsDischarge">
-                            IsDischarge
-                        </mat-slide-toggle> -->
-
-                    </form>
-                </ng-container>
-            </airmid-table>
+                        <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Reason Of Refund Of Advacne" formControlName="remark"
+                                [formGroup]="RefundOfAdvanceFormGroup" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
         </div>
     </div>
-
 </div>

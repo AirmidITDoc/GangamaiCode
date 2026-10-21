@@ -145,6 +145,7 @@ export class ConfigSettingParams {
     IsIpTally: any;
     IsSalesTally: any;
     IsOpTally: any;
+    OpdAdvanceWorkFLow:any;
     /**
         * Constructor
         *
@@ -296,6 +297,8 @@ export class ConfigSettingParams {
         this.IsIpTally = ConfigSettingParams.IsIpTally;
         this.IsSalesTally = ConfigSettingParams.IsSalesTally;
         this.IsOpTally = ConfigSettingParams.IsOpTally;
+        this.OpdAdvanceWorkFLow = ConfigSettingParams.OpdAdvanceWorkFLow;
+
 
     }
 

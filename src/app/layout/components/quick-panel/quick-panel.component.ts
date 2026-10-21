@@ -36,9 +36,9 @@ export class QuickPanelComponent {
     }
 
     ngOnInit() {
-        this.accountService.getDBInfo().subscribe((data) => {
-            this.dbInfo = data;
-        });
+        // this.accountService.getDBInfo().subscribe((data) => {
+        //     this.dbInfo = data;
+        // });
     }
 
     getOrdinalSuffix(currentDate: Date): string {
