@@ -78,7 +78,7 @@ export class NewAbhaIntegrationService {
         this._FormvalidationserviceService.noWhitespaceValidator()
       ]],
 
-      Address: ['', [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
+      Address: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
       // aadharCardNo: ['', [
       //     Validators.minLength(maxLen),
       //     Validators.maxLength(maxLen),
@@ -130,7 +130,7 @@ export class NewAbhaIntegrationService {
       RegDate: ['', Validators.required],
       RegTime: ['', Validators.required],
       Photo: [''],
-      PinNo: ['',[Validators.required]],
+      PinNo: ['', [Validators.required]],
 
       //emergency form
       emgContactPersonName: ['', [
@@ -220,8 +220,14 @@ export class NewAbhaIntegrationService {
   public getAbhaById(Id) {
     return this._httpClient1.GetData("PatientAbhaInformation/" + Id);
   }
+  // public getAbhaByNumber(Id) {
+  //   return this._httpClient1.GetData("PatientAbhaInformation/ByAbhaNumber/" + Id);
+  // }
   public getAbhaByNumber(Id) {
-    return this._httpClient1.GetData("PatientAbhaInformation/ByAbhaNumber/" + Id);
+    return this._httpClient1.PostData(
+      "AbhaConnects/AbhaAddressList?abhaNumber=" + encodeURIComponent(Id),
+      {}
+    );
   }
   public getCareContextById(Id) {
     return this._httpClient1.GetData("AbhaConnects/Encounter/" + Id);
