@@ -39,6 +39,7 @@ import { PopupComponent } from './popup/popup.component';
 import { AbhaDialogpageComponent } from './abha-dialogpage/abha-dialogpage.component';
 import { AbhaPatientCardComponent } from './abha-patient-card/abha-patient-card.component';
 import { FileUploadComponent } from './popup/file-upload/file-upload.component';
+import { AbhaRegistrationComponent } from './abha-registration/abha-registration.component';
 
 const routes: Routes = [
   {
@@ -48,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [NewAbhaIntegrationComponent, PopupComponent, AbhaDialogpageComponent, AbhaPatientCardComponent, FileUploadComponent],
+  declarations: [NewAbhaIntegrationComponent, PopupComponent, AbhaDialogpageComponent, AbhaPatientCardComponent, FileUploadComponent, AbhaRegistrationComponent],
   imports: [
     RouterModule.forChild(routes),
     //  MatTableExporterModule,

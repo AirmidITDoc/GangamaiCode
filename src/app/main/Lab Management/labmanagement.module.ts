@@ -40,12 +40,15 @@ import { DiscountApprovalComponent } from './discount-approval/discount-approval
 import { HomeCollectionComponent } from './home-collection/home-collection.component';
 import { LabRadApprovallistComponent } from './lab-rad-approvallist/lab-rad-approvallist.component';
 import { LabRadiologyComponent } from './lab-radiology/lab-radiology.component';
+import { LatestHomecollectionComponent } from './latest-homecollection/latest-homecollection.component';
 
 
 const appRoutes: Routes = [
     {
         path: "home-collection",
-        loadChildren: () => import("./home-collection/home-collection.module").then((m) => m.HomeCollectionModule),
+        loadChildren: () => import("./latest-homecollection/latest-homecollection.module").then((m) => m.LatestHomecollectionModule),
+        // loadChildren: () => import("./home-collection/home-collection.module").then((m) => m.HomeCollectionModule),
+
     },
     {
         path: "lab-appointment",

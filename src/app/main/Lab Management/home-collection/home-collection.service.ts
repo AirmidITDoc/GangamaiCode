@@ -29,7 +29,10 @@ export class HomeCollectionService {
             LastName: [''],
             PBillNo: [''],
             DoctorID: [''],
-            UnitId: [this.accountService.currentUserValue.user.unitId]
+            UnitId: [this.accountService.currentUserValue.user.unitId],
+            mobileNo: [''],
+            PhlebotomistId: [0],
+            StatusSearch: ['0'],
         })
     }
 
@@ -72,5 +75,23 @@ export class HomeCollectionService {
         if (Param.homeCollectionId) {
             return this._httpClient.PutData("HomeCollection/updatePhlebotomist" + Param.homeCollectionId, Param);
         }
+    }
+
+    public getHomeCollectionlist(employee) {
+        return this._httpClient.PostData("HomeCollection/HomeCollectionRegistrationInfoList", employee)
+    }
+
+    public getCollectionDet(param) {
+        return this._httpClient.PostData("HomeCollection/homeCollectionDetList", param);
+    }
+
+    public gethomeCollDashBoardById(p: any) {
+        return this._httpClient.GetData(
+            `HomeCollectionDashBoard/HomeCollectionDashBoard?UnitId=${p.UnitId}&PhlebotomistId=${p.PhlebotomistId}&FromDate=${p.FromDate}&ToDate=${p.ToDate}`
+        );
+    }
+
+    public getPhlebotomistList() {
+        return this._httpClient.GetData("HomeCollection/PhlebotomistCombo?Keyword=%");
     }
 }

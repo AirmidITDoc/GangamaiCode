@@ -498,7 +498,7 @@ export class NewCollectionComponent {
     }
 
     getSelectedObjPhlebotomist(obj) {
-        this.myForm.get('phlebotomist').setValue(obj.executiveId)
+        this.myForm.get('phlebotomist').setValue(obj.phlebotomistId)
     }
 
     OnSave() {

@@ -411,6 +411,7 @@ getCashcounterDetail(row) {
             IsPharmacyBalClearnace: false,
             employeId: [0],
             isEmployee: false,
+            isPhlebotomist:false,
             receiptCashCounterId:[0]
 
         });

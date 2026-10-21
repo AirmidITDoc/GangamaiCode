@@ -399,6 +399,7 @@ export class RegInsert {
     regTime: any;
     husbandDob: Date;
     wifeDob: Date;
+    districtId:any;
     /**
      * Constructor
      *
@@ -512,9 +513,7 @@ export class RegInsert {
             this.tariffName = RegInsert.tariffName || ''
             this.husbandDob = RegInsert.husbandDob || ''
             this.wifeDob = RegInsert.wifeDob || ''
-
-
-
+            this.districtId = RegInsert.districtId || 0
         }
     }
 }

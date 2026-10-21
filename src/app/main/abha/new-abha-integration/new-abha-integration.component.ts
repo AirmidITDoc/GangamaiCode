@@ -18,6 +18,7 @@ import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.
 import { PopupComponent } from './popup/popup.component';
 import { AbhaDialogpageComponent } from './abha-dialogpage/abha-dialogpage.component';
 import { AbhaPatientCardComponent } from './abha-patient-card/abha-patient-card.component';
+import { AbhaRegistrationComponent } from './abha-registration/abha-registration.component';
 
 
 @Component({
@@ -88,7 +89,7 @@ export class NewAbhaIntegrationComponent {
     { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
-      heading: "ABHA Number", key: "abhaNumber", sort: true, align: "left", width: 350, type: gridColumnTypes.template,
+      heading: "ABHA Number", key: "abhaNumber", sort: true, align: "left", width: 650, type: gridColumnTypes.template,
       template: this.abhaNumber
     },
     {

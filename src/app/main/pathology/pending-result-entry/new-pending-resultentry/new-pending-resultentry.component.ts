@@ -43,6 +43,7 @@ export class NewPendingResultentryComponent {
   displayedColumns2: string[] = [
     'checkbox',
     'TestName',
+    'category'
   ];
 
   displayedColumns: string[] = [
@@ -515,7 +516,7 @@ export class NewPendingResultentryComponent {
         },
         {
           "fieldName": "CategoryId",
-          "fieldValue": "0",
+          "fieldValue": String(obj.categoryId),
           "opType": "Equals"
         },
       ],

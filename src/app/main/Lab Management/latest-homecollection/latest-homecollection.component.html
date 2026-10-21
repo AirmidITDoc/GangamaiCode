@@ -1,0 +1,401 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Home Collection List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onnew()">+ Add Collection
+            </button>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+
+        <!-- KPI Cards -->
+        <div class="stats-grid">
+
+            <div class="stat-card blue-card">
+                <div class="icon blue-icon">
+                    <mat-icon>home</mat-icon>
+                </div>
+                <div>
+                    <span>Total Requests</span>
+                    <h2>{{Vtotalcount}}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card green-card">
+                <div class="icon green-icon">
+                    <mat-icon>event</mat-icon>
+                </div>
+                <div>
+                    <span>Scheduled Today</span>
+                    <h2>{{ VScheduledTodayCount }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card orange-card">
+                <div class="icon orange-icon">
+                    <mat-icon>local_shipping</mat-icon>
+                </div>
+                <div>
+                    <span>Collected Today</span>
+                    <h2>{{ VCollectedTodayCount }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card red-card">
+                <div class="icon red-icon">
+                    <mat-icon>schedule</mat-icon>
+                </div>
+                <div>
+                    <span>Pending</span>
+                    <h2>{{Vpendingcount}}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card purple-card">
+                <div class="icon purple-icon">
+                    <mat-icon>assignment_ind</mat-icon>
+                </div>
+                <div>
+                    <span>Assigned</span>
+                    <h2>{{ VAssignedCount }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card teal-card">
+                <div class="icon teal-icon">
+                    <mat-icon>assignment_late</mat-icon>
+                </div>
+                <div>
+                    <span>Assigned Pending</span>
+                    <h2>{{ VAssignedPendingCount }}</h2>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-grid">
+
+            <!-- Left -->
+            <div class="table-section">
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <form [formGroup]="myFilterform">
+
+                            <div class="filters resize-form-fields">
+
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="true"
+                                    (selectionChange)="ListView1($event)" [formGroup]="myFilterform"
+                                    [mode]="autocompleteModeunit">
+                                </airmid-dropdown>
+
+                                <mat-form-field appearance="outline" class="date-range">
+                                    <mat-label>Date Range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="fromDate">
+                                        <input matEndDate formControlName="enddate">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput formControlName="FirstName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput formControlName="LastName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Mobile No</mat-label>
+                                    <input matInput formControlName="mobileNo">
+                                </mat-form-field>
+
+                                <airmid-dropdown label="Phlebotomist" formControlName="PhlebotomistId"
+                                    (selectionChange)="ListView2($event)" [formGroup]="myFilterform"
+                                    ApiUrl="HomeCollection/PhlebotomistCombo?Keyword=%" ValueField="phlebotomistId"
+                                    TextField="phlebotomistName">
+                                </airmid-dropdown>
+
+                            </div>
+
+                            <div class="filter-actions">
+
+                                <mat-radio-group formControlName="StatusSearch">
+                                    <mat-radio-button value="2">In Progress</mat-radio-button>
+                                    <mat-radio-button value="1">Completed</mat-radio-button>
+                                    <mat-radio-button value="0">Pending</mat-radio-button>
+                                </mat-radio-group>
+
+                                <button mat-raised-button color="primary" class="search-button"
+                                    (click)="getfilterdata()">
+                                    <mat-icon>search</mat-icon>
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="table-section">
+
+                        <mat-sidenav-container class="table-sidenav-container" [hasBackdrop]="true">
+                            <!-- Right side panel -->
+                            <mat-sidenav #viewDrawer position="end" mode="over" class="view-drawer" [autoFocus]="false"
+                                (closedStart)="selectedRow = null; detailData = []">
+
+                                <!-- Header -->
+                                <div class="vd-header">
+                                    <div class="vd-title">
+                                        <div>
+                                            <h3>Collection Details</h3>
+                                        </div>
+                                    </div>
+                                    <button mat-icon-button (click)="closeView()">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+
+                                <!-- Table -->
+                                <div class="vd-body">
+                                    <table mat-table [dataSource]="detailData" class="vd-table">
+
+                                        <ng-container matColumnDef="sr">
+                                            <th mat-header-cell *matHeaderCellDef class="c-sr">#</th>
+                                            <td mat-cell *matCellDef="let r; let i = index" class="c-sr">{{ i + 1 }}
+                                            </td>
+                                            <td mat-footer-cell *matFooterCellDef></td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="testName">
+                                            <th mat-header-cell *matHeaderCellDef>Test</th>
+                                            <td mat-cell *matCellDef="let r">{{ r.serviceName }}</td>
+                                            <td mat-footer-cell *matFooterCellDef class="total-lbl">Total</td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="amount">
+                                            <th mat-header-cell *matHeaderCellDef class="c-num">Amount</th>
+                                            <td mat-cell *matCellDef="let r" class="c-num">{{ r.totalAmount |
+                                                number:'1.2-2' }}</td>
+                                            <td mat-footer-cell *matFooterCellDef class="c-num total-val">
+                                                {{ getTotal() | number:'1.2-2' }}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="status">
+                                            <th mat-header-cell *matHeaderCellDef class="c-center">Type</th>
+                                            <td mat-cell *matCellDef="let r" class="c-center">
+                                                <div class="status-icons">
+                                                    <div *ngIf="r.isRadiology == 1 || r.IsRadiology == 1"
+                                                        class="status-badge radiology-badge" matTooltip="Radiology">
+                                                        <img width="14" height="14"
+                                                            src="/assets/images/logos/radiology.png">
+                                                    </div>
+                                                    <div *ngIf="r.isPathology == 1 || r.IsPathology == 1"
+                                                        class="status-badge pathology-badge" matTooltip="Pathology">
+                                                        <img width="14" height="14"
+                                                            src="/assets/images/logos/pathology.png">
+                                                    </div>
+                                                    <div *ngIf="r.isPackage == 1 || r.IsPackage == 1"
+                                                        class="status-badge package-badge" matTooltip="Package">
+                                                        <img width="14" height="14"
+                                                            src="/assets/images/logos/package.png">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td mat-footer-cell *matFooterCellDef></td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="detailColumns"></tr>
+                                        <tr mat-row *matRowDef="let r; columns: detailColumns"></tr>
+                                        <tr mat-footer-row *matFooterRowDef="detailColumns"
+                                            [hidden]="!detailData.length"></tr>
+                                    </table>
+
+                                    <div class="vd-empty" *ngIf="!detailData.length">
+                                        <mat-icon>inbox</mat-icon>
+                                        <p>No details found</p>
+                                    </div>
+                                </div>
+                            </mat-sidenav>
+
+                            <!-- left side -->
+                            <mat-sidenav-content>
+                                <div class="table-wrapper">
+                                    <table mat-table [dataSource]="dataSource" class="hc-table">
+
+                                        <ng-container matColumnDef="srNo">
+                                            <th mat-header-cell *matHeaderCellDef>Sr. No.</th>
+                                            <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="unit">
+                                            <th mat-header-cell *matHeaderCellDef>Unit/Branch Name</th>
+                                            <td mat-cell *matCellDef="let row">{{ row.hospitalName }}</td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="datetime">
+                                            <th mat-header-cell *matHeaderCellDef>Date-Time</th>
+                                            <td mat-cell *matCellDef="let row">{{ row.collectionTime }}</td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="patientName">
+                                            <th mat-header-cell *matHeaderCellDef>Patient Name</th>
+                                            <td mat-cell *matCellDef="let row">{{ row.firstName }}</td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="mobileNo">
+                                            <th mat-header-cell *matHeaderCellDef>Mobile No.</th>
+                                            <td mat-cell *matCellDef="let row">{{ row.mobileNo }}</td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="phlebotomist">
+                                            <th mat-header-cell *matHeaderCellDef>Phlebotomist</th>
+                                            <td mat-cell *matCellDef="let row">{{ row.phlebotomist }}</td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="status">
+                                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                <span class="status-chip" [ngClass]="getStatusClass(row.status)">
+                                                    {{ getStatusText(row.status) }}
+                                                </span>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="action">
+                                            <th mat-header-cell *matHeaderCellDef>Action</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                <div class="row-actions">
+
+                                                    <button mat-icon-button matTooltip="Process Bill" class="act-blue"
+                                                        (click)="onBillProcess(row)"
+                                                        [style.visibility]="!row.isCancel ? 'visible' : 'hidden'">
+                                                        <mat-icon>replay</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button matTooltip="Update Phlebotomist"
+                                                        class="act-teal" (click)="openStatus(row)"
+                                                        [style.visibility]="!row.isCancel ? 'visible' : 'hidden'">
+                                                        <mat-icon>update</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button matTooltip="Print" class="act-report"
+                                                        [style.visibility]="!row.isCancel ? 'visible' : 'hidden'">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button matTooltip="Cancel Collection"
+                                                        class="act-red" (click)="OnCancel(row)"
+                                                        [style.visibility]="!row.isCancel ? 'visible' : 'hidden'">
+                                                        <mat-icon>cancel</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button matTooltip="View" class="act-view"
+                                                        (click)="openView(row)">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
+
+                                                </div>
+                                            </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns"
+                                            [ngClass]="{ 'cancelled-row': row.isCancel }"></tr>
+
+                                        <tr class="mat-row" *matNoDataRow>
+                                            <td class="no-data" [attr.colspan]="displayedColumns.length">No records
+                                                found</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </mat-sidenav-content>
+
+                        </mat-sidenav-container>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+
+                <div class="card">
+                    <h4>Test Category Summary</h4>
+
+                    <div class="summary-row" *ngFor="let c of categorySummary">
+                        <div class="summary-top">
+                            <span>{{ c.groupName }}</span>
+                            <span class="summary-count">{{ c.categoryWiseCount }}</span>
+                        </div>
+                        <div class="progress">
+                            <div class="bar" [ngClass]="getBarClass(c.groupName)"
+                                [style.width.%]="getPercent(c.categoryWiseCount)"></div>
+                        </div>
+                    </div>
+
+                    <p class="summary-empty" *ngIf="!categorySummary.length">No data</p>
+                </div>
+
+                <div class="card">
+                    <h4>Center Wise Collection</h4>
+
+                    <div class="donut-wrap" *ngIf="donutSegments.length">
+                        <svg viewBox="0 0 200 200" class="donut-svg">
+                            <circle cx="100" cy="100" r="70" fill="none" stroke="#edf1f5" stroke-width="30"></circle>
+
+                            <circle *ngFor="let s of donutSegments" cx="100" cy="100" r="70" fill="none"
+                                [attr.stroke]="s.color" stroke-width="30" [attr.stroke-dasharray]="s.dash"
+                                [attr.stroke-dashoffset]="s.offset" transform="rotate(-90 100 100)">
+                                <title>{{ s.name }}: {{ s.count }}</title>
+                            </circle>
+
+                            <ng-container *ngFor="let s of donutSegments">
+                                <text *ngIf="s.percent >= 5" [attr.x]="s.lx" [attr.y]="s.ly" class="donut-pct"
+                                    text-anchor="middle" dominant-baseline="middle">
+                                    {{ s.percent }}%
+                                </text>
+                            </ng-container>
+
+                            <text x="100" y="97" class="donut-total" text-anchor="middle">{{ donutTotal }}</text>
+                            <text x="100" y="115" class="donut-sub" text-anchor="middle">Total Requests</text>
+                        </svg>
+
+                        <div class="donut-legend">
+                            <div class="legend-item" *ngFor="let s of donutSegments">
+                                <span class="dot" [style.background]="s.color"></span>
+                                <span class="legend-name">{{ s.name }}</span>
+                                <span class="legend-count">{{ s.count }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="summary-empty" *ngIf="!donutSegments.length">No data</p>
+                </div>
+
+                <!-- action -->
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

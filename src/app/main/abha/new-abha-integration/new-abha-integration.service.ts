@@ -47,6 +47,149 @@ export class NewAbhaIntegrationService {
     });
   }
 
+  createPesonalForm1() {
+    //this code for Mediforte 9 digit national id
+    const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+    const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+    this.Is9_Digit_National_Id = id === "1";
+    const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+    const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+    return this._formBuilder.group({
+      RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      FirstName: ['', [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(100),
+        Validators.pattern("^[A-Za-z/() ]*$"),
+        this._FormvalidationserviceService.noWhitespaceValidator()
+      ]],
+      MiddleName: ['', [
+        Validators.maxLength(100),
+        Validators.pattern("^[A-Za-z/() ]*$"),
+        this._FormvalidationserviceService.allowEmptyStringValidator()
+      ]],
+      LastName: ['', [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(100),
+        Validators.pattern("^[A-Za-z/() ]*$"),
+        this._FormvalidationserviceService.noWhitespaceValidator()
+      ]],
+
+      Address: ['', [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
+      // aadharCardNo: ['', [
+      //     Validators.minLength(maxLen),
+      //     Validators.maxLength(maxLen),
+      //      Validators.pattern("^[0-9]*$")
+      //     // this._FormvalidationserviceService.onlyNumberValidator()
+      // ]], // Validators.pattern("^[0-9]*$"),Validators.pattern(/^[xX]{8}\d{4}$/),
+      aadharCardNo: ['', [
+        // Validators.minLength(minLen),
+        // Validators.maxLength(maxLen),
+        // Validators.pattern("^[0-9]*$")
+      ]],
+
+      GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      Age: ['0'],
+      AgeYear: ['0', [
+        Validators.maxLength(3),
+        Validators.pattern("^[0-9]*$")]],
+      AgeMonth: ['0', [Validators.pattern("^[0-9]*$")]],
+      AgeDay: ['0', [Validators.pattern("^[0-9]*$")]],
+      PhoneNo: ['', [Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+      this._FormvalidationserviceService.onlyNumberValidator()
+      ]],
+      MobileNo: ['', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+      this._FormvalidationserviceService.onlyNumberValidator()
+      ]],
+      panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], //changed by raksha
+      ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      CityId: [0],
+      // CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      City: [''],
+      // StateId: [0],
+      // CountryId: [0],
+      StateId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CountryId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      districtId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      IsCharity: false,
+      IsSeniorCitizen: false,
+      AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+      // updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+      RegDate: ['', Validators.required],
+      RegTime: ['', Validators.required],
+      Photo: [''],
+      PinNo: ['',[Validators.required]],
+
+      //emergency form
+      emgContactPersonName: ['', [
+        Validators.minLength(1),
+        Validators.maxLength(50),
+        Validators.pattern("^[A-Za-z/() ]*$")
+      ]],
+      emgRelationshipId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      emgMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+      emgLandlineNo: ['', [Validators.minLength(10), Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+      engAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+      emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
+        // this._FormvalidationserviceService.onlyNumberValidator(),Validators.pattern("^[0-9]*$")
+      ]],
+      emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
+      Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]],
+      //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH14-20210001234
+
+      // medical tourisum
+      medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8), Validators.pattern(/^[A-Z][0-9]{7}$/)]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
+      medTourismVisaIssueDate: [''], //"2025-10-25",
+      medTourismVisaValidityDate: [''], //"2025-10-25",
+      medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]],
+      medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
+      medTourismDateOfEntry: [''], //"2025-10-25",
+      medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+      medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+
+      // extra field
+      IsNRI: [false],
+      emailId: ['', [Validators.email]],
+
+      membershipId: 0,
+      tPatientAbhaInformations: this._formBuilder.array([]),
+      isMember: false,
+      abhaTranId: 0
+    });
+
+  }
+
+  createAbhaform() {
+    return this._formBuilder.group({
+      abhaTranId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      abhaNumber: [''],
+      abhaFullName: [''],
+      abhaAddress: [''],
+      gender: [''],
+      yearOfBirth: [''],
+      verified: [0],
+      isActive: [0],
+      verifiedDateTime: [new Date()],
+      createdBy: this.accountService.currentUserValue.userId
+    });
+  }
+
   public getDoctorsByDepartment(deptId) {
     return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
   }
@@ -97,7 +240,7 @@ export class NewAbhaIntegrationService {
   //     files
   //   );
   // }
-  public opFileUpload(regNo: any, visitNo: any, OpIpId:any, opipType: any, formData: FormData) {
+  public opFileUpload(regNo: any, visitNo: any, OpIpId: any, opipType: any, formData: FormData) {
     return this._httpClient1.PostRawFormData(
       `AbhaConnects/UploadReportFiles?patientRegistrationNumber=${regNo}&visitNumber=${visitNo}&OpIpId=${OpIpId}&opipType=${opipType}`,
       formData
@@ -106,5 +249,40 @@ export class NewAbhaIntegrationService {
 
   public getfilelist(param) {
     return this._httpClient1.PostData("AbhaConnects/FileUploadList", param)
+  }
+
+  //// abha registration api///
+  public getRegistraionById(Id) {
+    return this._httpClient1.GetData("OutPatient/" + Id);
+  }
+
+  public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+
+    return this._httpClient1.GetData(apiUrl + inputValue);
+  }
+
+  public GenderList(param) {
+    return this._httpClient1.PostData("Gender/List", param);
+  }
+  public PrefixList(param) {
+    return this._httpClient1.PostData("Prefix/List", param);
+  }
+
+  public getbypincode(pin) {
+    return this._httpClient1.GetData("AreaMaster/search_AreaMaster?Keyword=" + pin)
+  }
+
+  public getstatebypincode(obj) {
+    return this._httpClient1.GetData("CityMaster/" + obj)
+  }
+
+  public getstateId(Id) {
+    return this._httpClient1.GetData("StateMaster/" + Id);
+  }
+
+  public RegstrationtSaveData(Param: any) {
+    if (Param.RegId) {
+      return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param);
+    } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param);
   }
 }

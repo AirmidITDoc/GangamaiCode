@@ -8,11 +8,11 @@ import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmen
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { MatDrawer } from '@angular/material/sidenav';
-import { NewRegistrationComponent } from 'app/main/opd/registration/new-registration/new-registration.component';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { profile } from 'console';
 import { NewAbhaIntegrationService } from '../new-abha-integration.service';
 import { fuseAnimations } from '@fuse/animations';
+import { AbhaRegistrationComponent } from '../abha-registration/abha-registration.component';
 
 
 @Component({
@@ -380,7 +380,7 @@ export class AbhaPatientCardComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
     const that = this;
-    const dialogRef = this._matDialog.open(NewRegistrationComponent,
+    const dialogRef = this._matDialog.open(AbhaRegistrationComponent,
       {
         maxWidth: "95vw",
         maxHeight: '95%',
@@ -396,7 +396,7 @@ export class AbhaPatientCardComponent {
 
   OnEditRegistration() {
     const dialogRef = this._matDialog.open(
-      NewRegistrationComponent,
+      AbhaRegistrationComponent,
       {
         maxWidth: "95vw",
         maxHeight: '95%',
@@ -414,7 +414,7 @@ export class AbhaPatientCardComponent {
 
   OnContinueAbha() {
     const dialogRef = this._matDialog.open(
-      NewRegistrationComponent,
+      AbhaRegistrationComponent,
       {
         maxWidth: "95vw",
         maxHeight: '95%',

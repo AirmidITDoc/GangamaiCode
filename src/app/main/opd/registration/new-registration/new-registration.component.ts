@@ -146,20 +146,43 @@ export class NewRegistrationComponent implements OnInit {
                                 yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
                             });
 
+                            // if (this.abhaNumber) {
+                            //     this._registerService.getAbhaByNumber(this.abhaNumber).subscribe((response) => {
+                            //         this.abhaList = response
+                            //         console.log("ABHA List:", this.abhaList)
+
+                            //         debugger
+                            //         // Make sure the default address is present in the dropdown options
+                            //         const exists = this.abhaList?.some(x => x.abhaAddress === response.abhaAddress);
+                            //         if (!exists && response.abhaAddress) {
+                            //             this.abhaList = [{ abhaAddress: response.abhaAddress }, ...(this.abhaList || [])];
+                            //         }
+
+                            //         // Re-apply the default so mat-select picks it up
+                            //         this.abhaForm.get('abhaAddress')?.setValue(response.abhaAddress);
+                            //     });
+                            // }
                             if (this.abhaNumber) {
-                                this._registerService.getAbhaByNumber(this.abhaNumber).subscribe((response) => {
-                                    this.abhaList = response
-                                    console.log("ABHA List:", this.abhaList)
+                                // before calling getAbhaByNumber, from the OUTER response (your profile/ABHA lookup)
+                                const defaultAddress = response.abhaAddress;   // adjust to your outer field name
 
-                                    debugger
-                                    // Make sure the default address is present in the dropdown options
-                                    const exists = this.abhaList?.some(x => x.abhaAddress === response.abhaAddress);
-                                    if (!exists && response.abhaAddress) {
-                                        this.abhaList = [{ abhaAddress: response.abhaAddress }, ...(this.abhaList || [])];
-                                    }
+                                this._registerService.getAbhaByNumber(this.abhaNumber).subscribe({
+                                    next: (res) => {
+                                        let list = res?.data ?? [];
 
-                                    // Re-apply the default so mat-select picks it up
-                                    this.abhaForm.get('abhaAddress')?.setValue(response.abhaAddress);
+                                        // remove duplicate addresses
+                                        list = list.filter((x, i, arr) =>
+                                            arr.findIndex(y => y.abhaAddress === x.abhaAddress) === i);
+
+                                        // make sure the default address is in the options
+                                        if (defaultAddress && !list.some(x => x.abhaAddress === defaultAddress)) {
+                                            list = [{ abhaAddress: defaultAddress }, ...list];
+                                        }
+
+                                        this.abhaList = list;
+                                        this.abhaForm.get('abhaAddress')?.setValue(defaultAddress ?? null);
+                                    },
+                                    error: (err) => console.error('ABHA address list failed', err)
                                 });
                             }
                         });

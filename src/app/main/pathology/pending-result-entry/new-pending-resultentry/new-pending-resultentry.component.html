@@ -145,6 +145,15 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="category">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="border-right">
+                                        Category Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        {{contact.categoryName}}
+                                    </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                     </mat-header-cell>

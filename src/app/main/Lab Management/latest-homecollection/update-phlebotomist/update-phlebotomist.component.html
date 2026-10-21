@@ -1,0 +1,124 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Phlebotomist Assignments
+                </span>
+            </div>
+        </div>
+
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="ph-page">
+
+        <!-- Header -->
+        <!-- <div class="ph-header">
+            <div>
+                <h1 class="ph-title">Phlebotomist Assignments</h1>
+                <p class="ph-subtitle">Select a phlebotomist to see the patients assigned to them.</p>
+            </div>
+            <div class="ph-total">
+                <span>Total phlebotomists</span>
+                <strong>{{ phlebotomists.length }}</strong>
+            </div>
+        </div> -->
+
+        <!-- Phlebotomist cards -->
+        <div class="ph-cards">
+            <button type="button" class="ph-card" *ngFor="let p of phlebotomists"
+                [class.selected]="p.id === selectedPhlebotomist?.id"
+                [attr.aria-pressed]="p.id === selectedPhlebotomist?.id" (click)="selectPhlebotomist(p)">
+
+                <span class="ph-card-top">
+                    <span class="ph-avatar">{{ p.initials }}</span>
+                    <mat-icon class="ph-check" *ngIf="p.id === selectedPhlebotomist?.id">check</mat-icon>
+                </span>
+
+                <span class="ph-card-body">
+                    <span class="ph-card-name">{{ p.name }}</span>
+                    <span class="ph-card-label">Total assigned patients</span>
+                </span>
+
+                <span class="ph-card-count">
+                    <span class="ph-count-num">{{ p.totalPatients }}</span>
+                    <span class="ph-count-unit">patients</span>
+                </span>
+            </button>
+        </div>
+
+        <!-- Patient table for selected phlebotomist -->
+        <section class="ph-panel" *ngIf="selectedPhlebotomist" aria-label="Assigned patients">
+
+            <div class="ph-panel-head">
+                <div class="ph-panel-person">
+                    <span class="ph-avatar ph-avatar-lg">{{ selectedPhlebotomist.initials }}</span>
+                    <div>
+                        <h2 class="ph-panel-name">{{ selectedPhlebotomist.name }}</h2>
+                        <span class="ph-panel-role">Phlebotomist</span>
+                    </div>
+                </div>
+                <div class="ph-pill">{{ dataSource.data.length }} patients assigned</div>
+            </div>
+
+            <div class="ph-table-wrap">
+                <table mat-table [dataSource]="dataSource" class="ph-table">
+
+                    <ng-container matColumnDef="srNo">
+                        <th mat-header-cell *matHeaderCellDef>Sr No</th>
+                        <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateTime">
+                        <th mat-header-cell *matHeaderCellDef>Date &amp; Time</th>
+                        <td mat-cell *matCellDef="let row">{{ row.dateTime | date: 'dd MMM yyyy, hh:mm a' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="patientName">
+                        <th mat-header-cell *matHeaderCellDef>Patient Name</th>
+                        <td mat-cell *matCellDef="let row" class="ph-strong">{{ row.patientName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mobileNo">
+                        <th mat-header-cell *matHeaderCellDef>Mobile No</th>
+                        <td mat-cell *matCellDef="let row">{{ row.mobileNo }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="unit">
+                        <th mat-header-cell *matHeaderCellDef>Unit</th>
+                        <td mat-cell *matCellDef="let row">{{ row.unitName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="phlebotomist">
+                        <th mat-header-cell *matHeaderCellDef>Phlebotomist</th>
+                        <td mat-cell *matCellDef="let row">{{ row.phlebotomistName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="ph-chip" [ngClass]="'ph-chip-' + (row.status | lowercase)">{{ row.status
+                                }}</span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="ph-empty" [attr.colspan]="displayedColumns.length">No patients assigned.</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </div>
+
+</div>

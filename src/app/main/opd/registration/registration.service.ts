@@ -114,13 +114,11 @@ export class RegistrationService {
             MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], //changed by raksha
             ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            CityId: [0],
-            // CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId: [0],
-            CountryId: [0],
-            // StateId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            // CountryId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            StateId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CountryId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            districtId: [0],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
@@ -223,8 +221,14 @@ export class RegistrationService {
     public getAbhaById(Id) {
         return this._httpClient1.GetData("PatientAbhaInformation/" + Id);
     }
+    // public getAbhaByNumber(Id) {
+    //     return this._httpClient1.GetData("PatientAbhaInformation/ByAbhaNumber/" + Id);
+    // }
     public getAbhaByNumber(Id) {
-        return this._httpClient1.GetData("PatientAbhaInformation/ByAbhaNumber/" + Id);
+        return this._httpClient1.PostData(
+            "AbhaConnects/AbhaAddressList?abhaNumber=" + encodeURIComponent(Id),
+            {}
+        );
     }
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
 
