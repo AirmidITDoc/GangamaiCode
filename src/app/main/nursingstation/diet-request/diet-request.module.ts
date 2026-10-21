@@ -39,6 +39,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DietRequestComponent } from './diet-request.component';
 import { NewDietRequestComponent } from './new-diet-request/new-diet-request.component';
 import { DietReqWokflowComponent } from './diet-req-wokflow/diet-req-wokflow.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatBadgeModule } from '@angular/material/badge';
 
 
 const routes: Routes = [
@@ -56,8 +58,12 @@ const routes: Routes = [
         DietReqWokflowComponent
     ],
     imports: [
+        CommonModule,
         RouterModule.forChild(routes),
         CommonModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatListModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -79,24 +85,24 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatChipsModule,
-        MatProgressSpinnerModule,
         ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSidenavModule,
-        MatExpansionModule,
-        MatGridListModule,
         MatSnackBarModule,
-        MatSlideToggleModule,
-        MatListModule,
-        SharedModule,
         MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
         NgxMatSelectSearchModule,
-        MatDatepickerModule,
-        //  NgMultiSelectDropDownModule.forRoot(),
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        MatChipsModule,
         MatTooltipModule,
         MatSliderModule,
-        FormsModule   
+        FormsModule,
+        MatSidenavModule,
+        MatCardModule,
+
+        MatButtonToggleModule
     ],
     providers: [
         DatePipe,

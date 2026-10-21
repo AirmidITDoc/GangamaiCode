@@ -20,6 +20,7 @@ import { RequestcardpopupComponent } from './requestcardpopup/requestcardpopup.c
 // TODO: update this path to wherever RequestcardpopupComponent actually lives
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuItemPopupComponent } from './menu-item-popup/menu-item-popup.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -56,7 +57,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     VPendingcount = 0;
     dataSource = new MatTableDataSource<RequestMaster>();
     private closeTimer: any = null;
-
+    StausChangeFlg: any;
     @ViewChild('ReqNopopover') ReqNopopover!: TemplateRef<any>;
     @ViewChild('ItemNopopover') ItemNopopover!: TemplateRef<any>;
 
@@ -145,7 +146,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     constructor(public _DietRequestService: DietRequestService,
         private _formBuilder: FormBuilder, private overlay: Overlay, private dialog: MatDialog,
         private commonService: PrintserviceService, public _matDialog: MatDialog, private _loggedService: AuthenticationService,
-        public toastr: ToastrService, public datePipe: DatePipe, private injector: Injector,
+        public toastr: ToastrService, public datePipe: DatePipe, private injector: Injector, private _configue: ConfigService,
         private cdr: ChangeDetectorRef) { }
 
     ngOnInit(): void {
@@ -154,7 +155,9 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         this.HeaderCancleTaskForm = this.CreateheaderCancleForm()
         this.DetailCancleTaskForm = this.CreatdetailCancleForm()
         this.Getrequestdetailcount()
-
+        debugger
+        const access = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsDietRequstStatusChange');
+        this.StausChangeFlg = Number(access?.AccessValue ?? false);
     }
 
 
@@ -491,7 +494,9 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
 
         });
     }
+    onprint() {
 
+    }
     onClose() {
         this._matDialog.closeAll()
     }

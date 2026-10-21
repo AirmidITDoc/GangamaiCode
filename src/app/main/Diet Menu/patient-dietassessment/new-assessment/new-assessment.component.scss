@@ -1,0 +1,103 @@
+.history-container {
+    height: 100%;
+    background: transparent;
+}
+
+/* Search box + history icon on one line */
+.search-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .search-field {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+.history-btn {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    flex-shrink: 0;
+    padding: 0;
+    border-radius: 50%;
+    color: #1976d2;
+    background: #e3f2fd;
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: #bbdefb;
+    }
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+    }
+}
+
+/* Drawer: fixed to full height, no vertical scroll */
+.history-drawer {
+    width: 50vw;
+    max-width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    ::ng-deep .mat-drawer-inner-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 0 0 auto;
+        height: 48px;
+        padding: 0 16px;
+        background: linear-gradient(90deg, #3219d2, #1f595b);
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+        .drawer-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+
+            mat-icon {
+                font-size: 20px;
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .close-btn {
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            padding: 0;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
+    }
+
+    .drawer-body {
+        flex: 1 1 auto;
+        min-height: 0;          /* lets flex child shrink so no page-level scroll */
+        padding: 8px;
+        overflow-x: auto;       /* keep horizontal scroll only if the table is wide */
+        overflow-y: hidden;     /* vertical scroll removed */
+    }
+}

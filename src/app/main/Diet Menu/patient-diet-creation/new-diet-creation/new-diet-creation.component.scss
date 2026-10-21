@@ -1,0 +1,429 @@
+// ---------- Theme tokens (change colours / font here only) ----------
+$primary: #3949ab; // same indigo as the dialog toolbar / Save button
+$primary-dark: #283593;
+$primary-light: #e8eaf6; // header / filter strip tint
+$row-alt: #f7f8fc; // zebra stripe
+$row-hover: #eef0fb;
+$border: #dfe2ee;
+$text: #2b2f3a;
+$text-muted: #6b7280;
+$danger: #c62828;
+
+// column widths (sticky offset must equal the Action column width)
+$col-cancel-w: 80px;
+$col-meal-w: 150px;
+$col-date-w: 240px;
+
+// ---------- Filter row: Schedule Date | Diet Type | Meal Type ----------
+.filter-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 2fr 2fr;
+  gap: 16px;
+  align-items: start;
+  padding: 12px 20px 0;
+  font-family: inherit;
+
+  .filter-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .filter-label {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: $primary-dark;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+
+  .filter-value {
+    border: 1px solid $border;
+    padding: 6px 8px;
+    border-radius: 6px;
+  }
+
+  .date-range-field {
+    width: 100%;
+  }
+}
+
+// ---------- Notes row (Special Instructions / Dietitian Notes) ----------
+.notes-row {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10 10px;
+  margin-top: 20px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+// ---------- Diet type title ----------
+.diet-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: $primary;
+  padding: 10px 0 6px;
+  min-height: 20px;
+  font-family: inherit;
+}
+
+// ---------- Schedule grid (fixed column widths + horizontal scroll) ----------
+.schedule-scroll {
+  // the scroller owns the border, so sticky header / columns stick to it
+  width: auto;
+  margin: 0 20px 12px;
+  overflow-x: auto; // scroll sideways when date columns go off screen
+  overflow-y: auto;
+  max-height: 55vh; // vertical scroll if many meal rows
+  box-sizing: border-box;
+  border: 1px solid $border;
+  border-radius: 6px;
+  font-family: inherit;
+
+  .schedule-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed; // columns keep the widths set below
+    width: max-content; // table grows with the number of date columns
+    min-width: 100%;
+    font-family: inherit;
+    font-size: 13px;
+    color: $text;
+
+    th,
+    td {
+      border-right: 1px solid $border;
+      border-bottom: 1px solid $border;
+      padding: 6px 8px;
+      box-sizing: border-box;
+      vertical-align: middle;
+      font-family: inherit;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    // ----- fixed widths -----
+    .col-cancel {
+      width: $col-cancel-w;
+      min-width: $col-cancel-w;
+      max-width: $col-cancel-w;
+      text-align: center;
+    }
+
+    .col-meal {
+      width: $col-meal-w;
+      min-width: $col-meal-w;
+      max-width: $col-meal-w;
+    }
+
+    .col-date {
+      width: $col-date-w;
+      min-width: $col-date-w;
+      max-width: $col-date-w;
+    }
+
+    td.col-date {
+      overflow: hidden;
+
+      airmid-dropdown {
+        display: block;
+        width: 100%;
+      }
+
+      input,
+      .mat-select-value,
+      .mat-mdc-select-value {
+        font-family: inherit;
+        font-size: 13px;
+        color: $text;
+      }
+    }
+
+    // ----- header row (sticky on vertical scroll) -----
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: $primary-light;
+      color: $primary-dark;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border-bottom: 2px solid $primary;
+    }
+
+    // ----- body rows -----
+    tbody tr {
+      background: #fff;
+      transition: background 0.15s ease;
+
+      &:nth-child(even) {
+        background: $row-alt;
+      }
+
+      &:hover {
+        background: $row-hover;
+      }
+    }
+
+    // ----- sticky first two columns (stay visible on horizontal scroll) -----
+    th.col-cancel,
+    td.col-cancel {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: inherit; // keeps zebra / hover colour
+    }
+
+    th.col-meal,
+    td.col-meal {
+      position: sticky;
+      left: $col-cancel-w; // must equal .col-cancel width
+      z-index: 2;
+      background: inherit;
+      font-size: 15px;
+      font-weight: bold;
+      color: $primary-dark;
+      border-right: 2px solid $border;
+    }
+
+    thead th.col-cancel,
+    thead th.col-meal {
+      z-index: 4; // corner cells sit above both axes
+      background: $primary-light;
+    }
+
+    // ----- delete / cancel button -----
+    .cancel-btn {
+      color: $danger;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      padding: 0 8px;
+      min-width: 0;
+
+      &:hover {
+        background: rgba($danger, 0.08);
+      }
+    }
+
+    // ----- empty state -----
+    .no-data {
+      text-align: center;
+      padding: 24px;
+      color: $text-muted;
+      font-style: italic;
+    }
+  }
+}
+
+// ---------- Footer: Close + Save at bottom right ----------
+.diet-footer {
+  margin-top: auto; // pins the footer to the dialog bottom
+  width: 100%;
+  border-top: 1px solid #e0e0e0;
+
+  .footer-navigation-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 20px;
+  }
+}
+
+// stronger selector in case a global .footer-navigation-container rule overrides the above
+.simple.page-layout .modal-footer.diet-footer .footer-navigation-container {
+  justify-content: flex-end;
+}
+
+// ---------- Single card holding filters + notes + schedule grid ----------
+.diet-plan-card {
+  padding: 8px 0 0;
+  margin: 12px 20px;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: calc(100% - 40px);
+
+  // the card provides the outer spacing; keep inner spacing even
+  .filter-grid {
+    padding: 12px 16px 0;
+  }
+
+  .notes-row {
+    padding: 0 16px;
+  }
+
+  .schedule-scroll {
+    margin: 0 16px 12px;
+  }
+}
+
+.filter-card {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.2fr) minmax(170px, 0.8fr) 1.5fr 1.5fr;
+  gap: 16px;
+  align-items: start;
+  margin: 12px 16px 0;
+  padding: 8px 12px 4px;
+  border: 1px solid $border;
+  border-radius: 6px;
+  font-family: inherit;
+
+  .filter-card-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    mat-form-field,
+    .date-range-field {
+      width: 100%;
+    }
+  }
+
+  .filter-label {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: $primary-dark;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+}
+
+// 2 per row on medium screens
+@media (max-width: 1200px) {
+  .filter-card {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// stack on narrow screens
+@media (max-width: 768px) {
+  .filter-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.history-container {
+  height: 100%;
+  background: transparent;
+}
+
+/* Search box + history icon on one line */
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .search-field {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.history-btn {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 50%;
+  color: #1976d2;
+  background: #e3f2fd;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #bbdefb;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+  }
+}
+
+/* Drawer: fixed to full height, no vertical scroll */
+.history-drawer {
+  width: 50vw;
+  max-width: 500px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  ::ng-deep .mat-drawer-inner-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 0 0 auto;
+    height: 48px;
+    padding: 0 16px;
+    background: linear-gradient(90deg, #3219d2, #1f595b);
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+    .drawer-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .close-btn {
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      padding: 0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  .drawer-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    /* lets flex child shrink so no page-level scroll */
+    padding: 8px;
+    overflow-x: auto;
+    /* keep horizontal scroll only if the table is wide */
+    overflow-y: hidden;
+    /* vertical scroll removed */
+  }
+}

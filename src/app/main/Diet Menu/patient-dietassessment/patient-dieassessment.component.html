@@ -1,0 +1,116 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Patient List for Diet Assessment
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="NewDietPlanAessessment()">New Assessment
+            </button>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+            <!--  -->
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button color="primary" (click)="Edit(element)" matTooltip="Edit Assessment"
+                        [disabled]="element.isCancelled">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+
+                    <button mat-stroked-button color="warn" class="cancel-diet-btn" (click)="AssessmentCancel(element)"
+                        [disabled]="element.isCancelled" matTooltip="Cancel Assessment">
+                        <span>Cancel</span>
+                    </button>
+
+
+                </div>
+            </ng-template>
+            <airmid-table [gridConfig]="gridConfig" class="content" #grid>
+                <ng-container filters>
+                    <form [formGroup]="myFilterform">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                    (dateChange)="onDateChange()">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="onDateChange()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Assessment Id</mat-label>
+                            <input matInput placeholder="Search Diet Assessment Id" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="DietAssessmentId"
+                                (input)="getfilterdata()" />
+                            <button matSuffix mat-icon-button aria-label="Clear"
+                                (click)="Clearfilter('DietAssessmentId')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field> -->
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>User</mat-label>
+                            <input type="text" placeholder="Select User" matInput formControlName="DietAssessmentId"
+                                [matAutocomplete]="autoUser">
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close" (click)="clearUser()">close</mat-icon>
+                                <mat-icon>search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autoUser="matAutocomplete"
+                                (optionSelected)="getSelectedObj($event.option.value)"
+                                [displayWith]="getOptionTextUser">
+                                <mat-option *ngFor="let option of filteredOptionsUser | async" [value]="option">
+                                    {{ option.UserId }} | {{ option.UserName }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field> -->
+
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="FirstName" (input)="getfilterdata()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="LastName" (input)="getfilterdata()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+                        <airmid-dropdown label="Assessed By" formControlName="assessmentById" [formGroup]="myFilterform"
+                            fxFlex.lt-md="50" [validations]="getValidationMessages().assessedBy"
+                            [mode]="autocompleteModedeptdoc"></airmid-dropdown>
+
+                    </form>
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div>
+
+</div>

@@ -240,4 +240,10 @@ export enum permissionCodes {
     MRDCertificate = 'MRDCertificate',
 
     VaccineEntry = 'VaccineEntry',
+
+    //Tally 
+    IsAdvanceTally = 'IsAdvanceTally',
+    IsIpTally = 'IsIpTally',
+    IsSalesTally = 'IsSalesTally',
+    IsOpTally='IsOpTally'
 }

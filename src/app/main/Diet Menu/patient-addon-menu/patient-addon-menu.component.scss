@@ -1,0 +1,357 @@
+.mat-form-field-wrapper {
+  padding-bottom: 0.34375em;
+}
+
+@import "src/@fuse/scss/fuse";
+
+.mat-row,
+.mat-footer-row {
+  min-height: 28px;
+  height: 35px;
+}
+
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.active-icon {
+  border-radius: 50%;
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.status-completed,
+.status-pending {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  writing-mode: horizontal-tb;
+  /* force horizontal text */
+}
+
+.status-completed {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-pending {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.status-not-requested {
+  background-color: #ffebee;
+  /* light red */
+  color: #c62828;
+  /* dark red text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status-received {
+  background-color: #e8f5e9;
+  /* light green */
+  color: #2e7d32;
+  /* dark green text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.accept-btn {
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  border-radius: 50% !important;
+  background-color: #e8f5e9 !important;
+  /* light green background */
+  color: #2e7d32 !important;
+  /* dark green icon */
+  border: 1px solid #a5d6a7 !important;
+  transition: all 0.2s ease;
+}
+
+.accept-btn:hover {
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+  border-color: #2e7d32 !important;
+}
+
+.accept-btn mat-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: inherit !important;
+}
+
+.accept-checkbox {
+  margin-left: 6px;
+}
+
+.accept-checkbox .mdc-checkbox__background {
+  border-color: #2e7d32 !important;
+}
+
+.accept-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: #2e7d32 !important;
+  border-color: #2e7d32 !important;
+}
+
+//popup
+.dialog-header {
+  height: 56px !important;
+  /* Normal header height */
+  padding: 0 16px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-content {
+  padding: 24px 20px;
+  min-height: 120px;
+}
+
+.dialog-footer {
+  padding: 12px 20px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.cancel-diet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 20px;
+  padding: 0 12px;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.cancel-diet-btn mat-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.cancel-diet-btn:hover {
+  background-color: rgba(244, 67, 54, 0.08);
+  transform: scale(1.02);
+}
+
+.popover-icon-btn {
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px;
+  padding: 0;
+  min-width: 24px;
+
+  mat-icon {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.info-badge-top {
+  .dashboard-card {
+    min-width: 155px;
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    color: black;
+    position: relative;
+    border-left: 4px solid transparent; // color set per variant below
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .card-label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .card-value {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: #1a1a1a;
+    }
+
+    .card-icon {
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      font-size: 26px;
+      opacity: 0.3;
+    }
+
+    & .card-value div {
+      font-size: 15px;
+    }
+
+    // ===== Color variants =====
+
+    &.registrations {
+      background: #e4e3fc;
+      border-left-color: #5c5ce0;
+
+      .card-value {
+        color: #4341b0;
+      }
+
+      .card-icon {
+        color: #5c5ce0;
+      }
+    }
+
+    &.appointments {
+      background: #d3ebfc;
+      border-left-color: #2b8fd6;
+
+      .card-value {
+        color: #1565a8;
+      }
+
+      .card-icon {
+        color: #2b8fd6;
+      }
+    }
+
+    &.pending {
+      background: #fdedcb;
+      border-left-color: #d99a1e;
+
+      .card-value {
+        color: #a86a00;
+      }
+
+      .card-icon {
+        color: #d99a1e;
+      }
+    }
+
+    &.app-Cancel {
+      background: #fbdcdc;
+      border-left-color: #d9534f;
+
+      .card-value {
+        color: #b23a3a;
+      }
+
+      .card-icon {
+        color: #d9534f;
+      }
+    }
+
+    &.app-accept {
+      background: #d7f5e7;
+      border-left-color: #2e9e6e;
+
+      .card-value {
+        color: #1e7e51;
+      }
+
+      .card-icon {
+        color: #2e9e6e;
+      }
+    }
+
+    &.app-notaccept {
+      background: #fce0e0;
+      border-left-color: #d95c5c;
+
+      .card-value {
+        color: #b23a3a;
+      }
+
+      .card-icon {
+        color: #d95c5c;
+      }
+    }
+
+    &.app-deliver {
+      background: #d3ebfc;
+      border-left-color: #2b8fd6;
+
+      .card-value {
+        color: #1565a8;
+      }
+
+      .card-icon {
+        color: #2b8fd6;
+      }
+    }
+
+    &.app-notdeliver {
+      background: #fdedcb;
+      border-left-color: #d99a1e;
+
+      .card-value {
+        color: #a86a00;
+      }
+
+      .card-icon {
+        color: #d99a1e;
+      }
+    }
+  }
+
+  .popover-icon-btn {
+    width: 24px !important;
+    height: 24px !important;
+    line-height: 24px;
+    padding: 0;
+    min-width: 24px;
+
+    mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .menu-popover {
+    background: #fff;
+    border: 1px solid #dfe5f0;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(20, 40, 90, 0.18);
+    width: 480px;
+    max-width: 95vw;
+  }
+}

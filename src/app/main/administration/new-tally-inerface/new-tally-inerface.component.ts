@@ -8,7 +8,7 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
@@ -25,7 +25,10 @@ import { Observable } from 'rxjs';
   animations: fuseAnimations
 })
 export class NewTallyInerfaceComponent {
-
+  IsAdvanceTally = false;
+  IsIpTally = false;
+  IsSalesTally = false;
+  IsOpTally = false;
   myFilteropcashcounerform: FormGroup;
 
   myFilterIpBillform: FormGroup;
@@ -37,7 +40,7 @@ export class NewTallyInerfaceComponent {
   hasSelectedContacts: boolean;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  
+
   modeOPbill: string = '';
   modeOPbillrefund: string = '';
 
@@ -56,12 +59,10 @@ export class NewTallyInerfaceComponent {
     public toastr: ToastrService, public datePipe: DatePipe,
     private commonService: PrintserviceService,
     public _ConfigService: ConfigService,
-    public _accountService: AuthenticationService, public permissionService: PagePermissionService,
+    public _accountService: AuthenticationService, private _configue: ConfigService,
     public _whatsppService: WhatsAppEmailService,
     private overlay: Overlay
   ) {
-    // this.fromDate = "2026-01-01"
-    // this.toDate = "2026-08-01"
   }
   filtersop: any
   filtersIP: any
@@ -69,6 +70,25 @@ export class NewTallyInerfaceComponent {
   filterssales: any
 
   ngOnInit(): void {
+
+debugger
+    const rawValue = this?._configue?.configParams?.IsAdvanceTally || "";
+    const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+    this.IsAdvanceTally = id === "1";
+
+    const rawValue1 = this?._configue?.configParams?.IsIpTally || "";
+    const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
+    this.IsIpTally = id1 === "1";
+
+    const rawValue2 = this?._configue?.configParams?.IsSalesTally || "";
+    const [id2, val2] = rawValue2.includes(":") ? rawValue2.split(":") : [null, null];
+    this.IsSalesTally = id2 === "1";
+
+    const rawValue3 = this?._configue?.configParams?.IsOpTally || "";
+    const [id3, val3] = rawValue3.includes(":") ? rawValue3.split(":") : [null, null];
+    this.IsOpTally = id3 === "1";
+
+
 
     this.myFilteropcashcounerform = this._tallyService.myFilterOpcashcounerform();
 
@@ -91,11 +111,9 @@ export class NewTallyInerfaceComponent {
     this.onChangePhSalesreurn()
   }
 
-
-
   //OP
   onChangeOpBill() {
-    debugger
+    
     this.fromDate = this.datePipe.transform(this.myFilteropcashcounerform.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilteropcashcounerform.get('enddate').value, "yyyy-MM-dd")
     this.filtersop = [
@@ -114,9 +132,7 @@ export class NewTallyInerfaceComponent {
     this.modeOPbill = "OPPayment";
   }
   onChangeOPBillRefund() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filtersop = [
       {
         fieldName: "Fromdate",
@@ -133,9 +149,7 @@ export class NewTallyInerfaceComponent {
     this.modeOPbillrefund = "OPBillRefundPayment";
   }
   onChangeIPBill() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -153,9 +167,7 @@ export class NewTallyInerfaceComponent {
   }
   // IP?
   onChangeIPBillPatientwise() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -173,9 +185,7 @@ export class NewTallyInerfaceComponent {
   }
 
   onChangeIPBillDetail() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -192,9 +202,7 @@ export class NewTallyInerfaceComponent {
     this.modeIPbilldetail = "IPBillDetailList";
   }
   onChangeIPBillRefundPay() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -213,9 +221,7 @@ export class NewTallyInerfaceComponent {
   //IP Advance
 
   onChangeIPAdvancePay() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filtersAdv = [
       {
         fieldName: "Fromdate",
@@ -232,9 +238,7 @@ export class NewTallyInerfaceComponent {
     this.modeIPadv = "IPAdvancePayment";
   }
   onChangeAdvanceRefund() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filtersAdv = [
       {
         fieldName: "Fromdate",
@@ -252,9 +256,7 @@ export class NewTallyInerfaceComponent {
   }
   //Sales
   onChangePhSalesPayDetail() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filterssales = [
       {
         fieldName: "Fromdate",
@@ -271,9 +273,7 @@ export class NewTallyInerfaceComponent {
     this.modeSalesPaydetail = "OPIPSalsePayment";
   }
   onChangePhSalesDetail() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filterssales = [
       {
         fieldName: "Fromdate",
@@ -291,9 +291,7 @@ export class NewTallyInerfaceComponent {
   }
 
   onChangePhSalesreurn() {
-    debugger
-    // this.fromDate = this.datePipe.transform(this.myFilterIpBillform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterIpBillform.get('enddate').value, "yyyy-MM-dd")
+    
     this.filterssales = [
       {
         fieldName: "Fromdate",

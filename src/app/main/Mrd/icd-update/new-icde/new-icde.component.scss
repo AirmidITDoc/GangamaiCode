@@ -61,6 +61,13 @@
      padding: 6px 16px;
      font-weight: 600;
  }
+
+   .patient-type-chips {
+    .mat-mdc-chip-option {
+      min-height: 30px;
+      font-size: 13px;
+    }
+  }
  //
  .icd-dialog {
     .icd-body {

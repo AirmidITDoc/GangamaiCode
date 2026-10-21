@@ -1,0 +1,96 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Patient List for Diet Plan
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="NewDietPlan()">New Diet Plan
+            </button>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+            <!-- [disabled]="!element.isCancelled"  -->
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button color="primary" (click)="Edit(element)" matTooltip="Edit Assessment">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <!-- 
+                    <button mat-stroked-button color="warn" class="cancel-diet-btn" (click)="AssessmentCancel(element)"
+                        matTooltip="Cancel Assessment">
+                        <span>Cancel</span>
+                    </button> -->
+
+
+                </div>
+            </ng-template>
+            <airmid-table [gridConfig]="gridConfig" class="content" #grid>
+                <ng-container filters>
+                    <form [formGroup]="myFilterform">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="getfilterdata()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+                        <!-- 
+                        <mat-form-field appearance="outline">
+                            <mat-label>DietPlanId</mat-label>
+                            <input matInput placeholder="Search DietPlan Id" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="DietPlanId" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('DietPlanId')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="FirstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="LastName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+                        <airmid-dropdown label="Diet Type Name" formControlName="dietTypeId" [formGroup]="myFilterform"
+                            [(ngModel)]="gridConfig.filters[3].fieldValue"
+                            [validations]="getValidationdoctorMessages().dietTypeId" [mode]="autocompleteModedietType"
+                            (selectionChange)="ListView($event)" (keyup)="ListView($event)">
+                        </airmid-dropdown>
+                    </form>
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div>
+
+</div>

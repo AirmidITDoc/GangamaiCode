@@ -141,6 +141,10 @@ export class ConfigSettingParams {
     IsIPDBillAfterSavePrint: any;
     IsGeneralCasePaper: any;
     IsDietRequstStatusChange: any;
+    IsAdvanceTally: any;
+    IsIpTally: any;
+    IsSalesTally: any;
+    IsOpTally: any;
     /**
         * Constructor
         *
@@ -288,6 +292,10 @@ export class ConfigSettingParams {
         this.IsIPDBillAfterSavePrint = ConfigSettingParams.IsIPDBillAfterSavePrint;
         this.IsGeneralCasePaper = ConfigSettingParams.IsGeneralCasePaper;
         this.IsDietRequstStatusChange = ConfigSettingParams.IsDietRequstStatusChange;
+        this.IsAdvanceTally = ConfigSettingParams.IsAdvanceTally;
+        this.IsIpTally = ConfigSettingParams.IsIpTally;
+        this.IsSalesTally = ConfigSettingParams.IsSalesTally;
+        this.IsOpTally = ConfigSettingParams.IsOpTally;
 
     }
 

@@ -1,0 +1,345 @@
+.ellipsis-cell {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  /* match your w-150 width */
+}
+
+.right-panel {
+  width: 75%;
+  height: calc(100vh - 50px);
+  margin-top: 5px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+  min-height: 0;
+}
+
+.diet-form-section {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.selected-patients {
+  flex: 0 1 auto;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  max-height: 100%;
+  padding: 4px;
+}
+
+.selected-patient {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.selected-patient mat-form-field {
+  width: 100%;
+}
+
+.modal-footer {
+  flex: 0 0 auto;
+  width: 100%;
+  margin-top: auto;
+  background: white;
+}
+
+.footer-navigation-container {
+  padding: 5px;
+}
+
+.content-area {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.patient-chip-row {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+// SINGLE, top-level definition — merged, with flex/scroll rules included
+.patient-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  flex: 1 1 auto; // takes remaining space in .right-panel's flex column
+  min-height: 0; // critical: lets it shrink and scroll instead of overflowing siblings
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px;
+  align-content: start;
+
+  // hide the scrollbar but keep scrolling functional
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // legacy Edge/IE
+
+  &::-webkit-scrollbar {
+    display: none; // Chrome/Safari/Edge
+  }
+}
+
+.patient-comment-card {
+  background: #ffffff;
+  border-left: 4px solid #1e88e5;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(30, 136, 229, 0.15);
+  padding: 10px 12px;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 3px 10px rgba(30, 136, 229, 0.25);
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.patient-name {
+  font-size: 18px;
+  color: #144c59;
+  font-weight: bold;
+}
+
+.remove-icon {
+  color: #1e88e5;
+  opacity: 0.75;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    opacity: 1;
+    color: #d32f2f;
+  }
+}
+
+.comment-box {
+  width: 100%;
+  border: 1px solid #bbdefb;
+  background: #f5faff;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-size: 12px;
+  resize: vertical;
+  min-height: 26px;
+
+  &:focus {
+    outline: none;
+    border-color: #1e88e5;
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+  }
+
+  .w-40 {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+  }
+
+  ::ng-deep .header-checkbox {
+    .mdc-checkbox__background {
+      border-color: #fff !important;
+      border-width: 2px !important;
+    }
+
+    .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
+    .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background {
+      background-color: #fff !important;
+      border-color: #fff !important;
+    }
+
+    .mdc-checkbox__checkmark {
+      color: #3949ab !important;
+    }
+
+    .mdc-checkbox__mixedmark {
+      border-color: #3949ab !important;
+    }
+  }
+
+  // Angular Material < 15 (legacy)
+  ::ng-deep .header-checkbox {
+    .mat-checkbox-frame {
+      border-color: #fff !important;
+      border-width: 2px;
+    }
+
+    .mat-checkbox-checked .mat-checkbox-background,
+    .mat-checkbox-indeterminate .mat-checkbox-background {
+      background-color: #fff !important;
+    }
+
+    .mat-checkbox-checkmark-path {
+      stroke: #3949ab !important;
+    }
+
+    .mat-checkbox-mixedmark {
+      background-color: #3949ab !important;
+    }
+  }
+
+  .w-90 {
+    flex: 0 0 90px;
+  }
+
+  .w-200 {
+    flex: 0 0 200px;
+  }
+
+  .w-150 {
+    flex: 1 1 150px;
+  }
+
+  ::ng-deep .mat-mdc-dialog-content,
+  // Material 15+
+  ::ng-deep .mat-dialog-content {
+    // Material < 15
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  mat-header-cell.w-40,
+  mat-cell.w-40 {
+    justify-content: flex-start;
+    padding-left: 0;
+    overflow: visible;
+  }
+
+  ::ng-deep .chk-cell {
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    padding: 0 0 0 8px !important;
+    overflow: visible !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+
+}
+
+//Menu
+.meal-contains {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 10px;
+  padding: 8px 12px;
+
+  background: #F0F7FF;
+  border: 1px solid #BFDBFE;
+  border-left: 4px solid #2563EB;
+  border-radius: 6px;
+  box-sizing: border-box;
+
+  .meal-icon {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    color: #2563EB;
+  }
+
+  .meal-title {
+    flex-shrink: 0;
+    color: #1E40AF;
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .meal-items {
+    min-width: 0;
+    color: #334155;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .accepted-card {
+    opacity: 0.6;
+    pointer-events: none; // blocks all clicks inside the card
+  }
+
+  .patient-comment-card.accepted-card {
+    opacity: 0.65;
+    background: #f5f5f5;
+  }
+
+  .remove-icon.disabled-icon {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .comment-box[readonly] {
+    cursor: not-allowed;
+    background: transparent;
+  }
+
+  .sidebar-content {
+    border: 1px solid #dfe5f0;
+    border-radius: 8px;
+    box-sizing: border-box; // keeps the 40% width from growing by the border
+  }
+}
+
+.patient-comment-card.accepted-card {
+  background: #f1faf4;
+  border-left: 4px solid #22b35a; // replaces the blue accent
+  box-shadow: 0 1px 6px rgba(34, 179, 90, 0.15);
+
+  .patient-name {
+    color: #1b7a3d;
+  }
+
+  .comment-box {
+    background: #e8f5ec;
+    border-color: #bfe3cb;
+    color: #4a5a50;
+    cursor: not-allowed;
+    resize: none; // hides the drag handle, since it can't be edited
+  }
+
+  .accepted-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px 2px 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1b7a3d;
+    background: #d6f0df;
+    border-radius: 12px;
+    white-space: nowrap;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: #22b35a;
+    }
+  }
+}

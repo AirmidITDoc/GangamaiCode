@@ -248,11 +248,13 @@
                 <div fxLayout="row" fxLayoutAlign="center center">
 
 
-                    <button mat-icon-button matTooltip="Detail Diet Request"
-                        [disabled]="element.isAccept  || element.isCancelled"
+                    <button mat-icon-button
+                        [matTooltip]="StausChangeFlg ? 'Detail Diet Request' : 'You do not have permission to edit status'"
+                        [disabled]="element.isAccept || element.isCancelled" [class.no-permission]="!StausChangeFlg"
                         (click)="onEdit(element); $event.stopPropagation()">
                         <mat-icon>edit</mat-icon>
                     </button>
+
 
 
                     <button mat-stroked-button color="warn" class="cancel-diet-btn"
@@ -346,6 +348,9 @@
                             </button>
                         </mat-form-field>
 
+                        <button mat-icon-button (click)="onprint()">
+                            <mat-icon>print</mat-icon>
+                        </button>
                     </form>
                 </ng-container>
             </airmid-table>

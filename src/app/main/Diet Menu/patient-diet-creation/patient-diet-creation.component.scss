@@ -1,0 +1,17 @@
+.modal-card-container {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.schedule-scroll {
+  max-width: 100%;
+  overflow-x: auto;      // horizontal scrollbar for the date columns
+  overflow-y: auto;
+}
+
+// if the dialog body clips sideways
+.modal-body,
+.modal-body-container {
+  min-width: 0;
+  overflow-x: hidden;    // keep the scroll on .schedule-scroll only
+}
