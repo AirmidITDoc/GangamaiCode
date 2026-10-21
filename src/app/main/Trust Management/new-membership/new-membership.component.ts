@@ -46,7 +46,7 @@ export class NewMembershipComponent {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     // @ViewChild('hasMediclaim') hasMediclaim!: TemplateRef<any>;
-    // @ViewChild('ayushmanEnrolled') ayushmanEnrolled!: TemplateRef<any>;
+    @ViewChild('ayushmanEnrolled') ayushmanEnrolled!: TemplateRef<any>;
     @ViewChild('residenceType') residenceType!: TemplateRef<any>;
 
 
@@ -59,7 +59,7 @@ export class NewMembershipComponent {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         // this.gridConfig.columnsList.find(col => col.key === 'hasMediclaim')!.template = this.hasMediclaim;
-        // this.gridConfig.columnsList.find(col => col.key === 'ayushmanEnrolled')!.template = this.hasMediclaim;
+        this.gridConfig.columnsList.find(col => col.key === 'ayushmanEnrolled')!.template = this.ayushmanEnrolled;
         this.gridConfig.columnsList.find(col => col.key === 'residenceType')!.template = this.residenceType;
 
     }
@@ -148,7 +148,7 @@ export class NewMembershipComponent {
         //  { heading: "Mediclaim StartDate", key: "mediclaimStartDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
         // { heading: "PreviousMemberId ", key: "previousMemberId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         //  { heading: "Mediclaim", key: "hasMediclaim", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-        // { heading: "Ayushman", key: "ayushmanEnrolled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        { heading: "Ayushman", key: "ayushmanEnrolled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
 
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,

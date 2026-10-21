@@ -199,7 +199,7 @@
                                                                         <input matInput [matDatepicker]="hdeathDate"
                                                                             placeholder="hdeathDate"
                                                                             formControlName="hdeathDate"
-                                                                            [value]="vhdeathDate"/>
+                                                                            [value]="vhdeathDate"  [max]="today"/>
                                                                         <mat-datepicker-toggle matSuffix
                                                                             [for]="hdeathDate"></mat-datepicker-toggle>
                                                                         <mat-datepicker #hdeathDate></mat-datepicker>
@@ -240,7 +240,7 @@
                                                                     fxLayout="column" style="padding: 4px;">
                                                                     <div class="photp-capture-image"
                                                                         style="padding: 4px;" fxLayoutAlign="center">
-                                                                        <img class="h-100-p w-90-p border-radius-4"
+                                                                        <img style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;"
                                                                             [src]="imagePreviewH ? imagePreviewH:'/assets/images/default.jpg'" />
                                                                     </div>
                                                                     <div class="photo-capture-button ">
@@ -251,6 +251,16 @@
                                                                                 <mat-icon>cloud_upload</mat-icon>
                                                                             </span>
                                                                             <span>Upload image</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="photo-capture-button ">
+                                                                        <label
+                                                                            class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
+                                                                            (click)="openCamera('camera','photo')">
+                                                                            <span class="btn-icon">
+                                                                                <mat-icon>camera_enhance</mat-icon>
+                                                                            </span>
+                                                                            <span>Capture image</span>
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -428,7 +438,7 @@
                                                                         <input matInput [matDatepicker]="WdeathDate"
                                                                             placeholder="WdeathDate"
                                                                             formControlName="wdeathDate"
-                                                                            [value]="vwdeathDate" />
+                                                                            [value]="vwdeathDate"  [max]="today"/>
                                                                         <mat-datepicker-toggle matSuffix
                                                                             [for]="WdeathDate"></mat-datepicker-toggle>
                                                                         <mat-datepicker #WdeathDate></mat-datepicker>
@@ -474,7 +484,7 @@
                                                                     fxLayout="column" style="padding: 4px;">
                                                                     <div class="photp-capture-image"
                                                                         style="padding: 4px;" fxLayoutAlign="center">
-                                                                        <img class="h-100-p w-90-p border-radius-4"
+                                                                        <img style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;"
                                                                             [src]="imagePreviewW ? imagePreviewW:'/assets/images/default.jpg'" />
                                                                     </div>
                                                                     <div class="photo-capture-button ">
@@ -485,6 +495,16 @@
                                                                                 <mat-icon>cloud_upload</mat-icon>
                                                                             </span>
                                                                             <span>Upload image</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="photo-capture-button ">
+                                                                        <label
+                                                                            class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
+                                                                            (click)="openCamera1('camera','photo')">
+                                                                            <span class="btn-icon">
+                                                                                <mat-icon>camera_enhance</mat-icon>
+                                                                            </span>
+                                                                            <span>Capture image</span>
                                                                         </label>
                                                                     </div>
                                                                 </div>

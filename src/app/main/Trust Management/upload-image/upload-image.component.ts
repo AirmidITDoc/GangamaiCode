@@ -57,7 +57,7 @@ export class UploadImageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((croppedBase64) => {
-      console.log("Dialog closed. Received:", croppedBase64);
+      // console.log("Dialog closed. Received:", croppedBase64);
       if (croppedBase64) {
         this.sanitizeImagePreview = croppedBase64;
       } else {
@@ -104,7 +104,7 @@ export class UploadImageComponent implements OnInit {
     if (this.objFile?.isDelete) {
       this._service.PostFromData("Files/save-signature", { objSignature: this.objFile })
         .subscribe(() => {
-          this.dialogRef.close(null);
+          this.dialogRef.close({ isDelete: true });
         });
       return;
     }
