@@ -1,1 +1,741 @@
-<p>diet-dashboard works!</p>
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">restaurant
+                    </mat-icon>
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Diet And Kitchen Dashboard
+                    </span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <app-common-date [screenFrom]="'OP-billing'"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="column" fusePerfectScrollbar>
+
+            <!-- Summary Cards -->
+            <div class="diet-summary-grid">
+
+                <div class="diet-summary-card">
+                    <div class="summary-card-icon">
+                        <mat-icon>people</mat-icon>
+                    </div>
+
+                    <div class="summary-card-content">
+                        <span class="summary-card-count">250</span>
+                        <span class="summary-card-title">Total Patients</span>
+                        <span class="card-description">
+                            Patients currently on diet plan
+                        </span>
+                    </div>
+
+                    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+                </div>
+
+                <div class="diet-summary-card">
+                    <div class="summary-card-icon">
+                        <mat-icon>restaurant_menu</mat-icon>
+                    </div>
+
+                    <div class="summary-card-content">
+                        <span class="summary-card-count">124</span>
+                        <span class="summary-card-title">Diet Orders Today</span>
+                        <span class="card-description">
+                            Diet orders scheduled for today
+                        </span>
+                    </div>
+
+                    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+                </div>
+
+                <div class="diet-summary-card">
+                    <div class="summary-card-icon">
+                        <mat-icon>schedule</mat-icon>
+                    </div>
+
+                    <div class="summary-card-content">
+                        <span class="summary-card-count">18</span>
+                        <span class="summary-card-title">Kitchen Pending</span>
+                        <span class="card-description">
+                            Diet orders pending in kitchen
+                        </span>
+                    </div>
+
+                    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+                </div>
+
+                <div class="diet-summary-card">
+                    <div class="summary-card-icon">
+                        <mat-icon>cancel</mat-icon>
+                    </div>
+
+                    <div class="summary-card-content">
+                        <span class="summary-card-count">2</span>
+                        <span class="summary-card-title">Cancelled Orders</span>
+                        <span class="card-description">
+                            Total cancelled orders
+                        </span>
+                    </div>
+
+                    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+                </div>
+
+                <div class="diet-summary-card">
+                    <div class="summary-card-icon">
+                        <mat-icon>done_all</mat-icon>
+                    </div>
+
+                    <div class="summary-card-content">
+                        <span class="summary-card-count">12</span>
+                        <span class="summary-card-title">Meals Dispatched</span>
+                        <span class="card-description">
+                            Meals dispatched to patients
+                        </span>
+                    </div>
+
+                    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+                </div>
+
+                <div class="diet-summary-card">
+                    <div class="summary-card-icon">
+                        <mat-icon>list_alt</mat-icon>
+                    </div>
+
+                    <div class="summary-card-content">
+                        <span class="summary-card-count">20</span>
+                        <span class="summary-card-title">Diet Menus</span>
+                        <span class="card-description">
+                            Active diet menus available
+                        </span>
+                    </div>
+
+                    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+                </div>
+
+                <div class="diet-summary-card">
+                    <div class="summary-card-icon">
+                        <mat-icon>warning_amber</mat-icon>
+                    </div>
+
+                    <div class="summary-card-content">
+                        <span class="summary-card-count">6</span>
+                        <span class="summary-card-title">Allergy Records</span>
+                        <span class="card-description">
+                            Active food allergies &amp; restrictions
+                        </span>
+                    </div>
+
+                    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+                </div>
+
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="16px" style="margin: 0px 10px;">
+                <div fxLayout="column" fxFlex="75%">
+                    <div fxLayout="row" fxLayoutGap="16px">
+
+                        <!-- Donut - Diet Orders by Meal Type -->
+                        <div class="meal-type-card" fxFlex="33%">
+
+                            <div class="card-title">
+                                Diet Orders by Meal Type
+                            </div>
+
+                            <div class="meal-chart-container">
+
+                                <!-- Donut Chart -->
+                                <div class="donut-chart">
+
+                                    <div class="donut-center">
+                                        <span class="total-count">232</span>
+                                        <span class="total-label">Total Orders</span>
+                                    </div>
+
+                                </div>
+
+                                <!-- Legend -->
+                                <div class="meal-legend">
+
+                                    <div class="legend-item">
+                                        <span class="legend-color breakfast"></span>
+                                        <span class="meal-name">Breakfast</span>
+                                        <span class="meal-value">62 (26.7%)</span>
+                                    </div>
+
+                                    <div class="legend-item">
+                                        <span class="legend-color mid-morning"></span>
+                                        <span class="meal-name">Mid Morning</span>
+                                        <span class="meal-value">28 (12.1%)</span>
+                                    </div>
+
+                                    <div class="legend-item">
+                                        <span class="legend-color lunch"></span>
+                                        <span class="meal-name">Lunch</span>
+                                        <span class="meal-value">78 (33.6%)</span>
+                                    </div>
+
+                                    <div class="legend-item">
+                                        <span class="legend-color evening"></span>
+                                        <span class="meal-name">Evening</span>
+                                        <span class="meal-value">32 (13.8%)</span>
+                                    </div>
+
+                                    <div class="legend-item">
+                                        <span class="legend-color dinner"></span>
+                                        <span class="meal-name">Dinner</span>
+                                        <span class="meal-value">32 (13.8%)</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Bar Chart - Diet Type Wise Orders -->
+                        <div class="diet-type-card" fxFlex="33%">
+
+                            <div class="diet-type-title">
+                                Diet Type Wise Orders
+                            </div>
+
+                            <div class="diet-chart">
+
+                                <!-- Y Axis -->
+                                <div class="y-axis">
+                                    <span>8</span>
+                                    <span>6</span>
+                                    <span>4</span>
+                                    <span>2</span>
+                                    <span>0</span>
+                                </div>
+
+                                <!-- Chart Area -->
+                                <div class="chart-area">
+
+                                    <div class="grid-line line-8"></div>
+                                    <div class="grid-line line-6"></div>
+                                    <div class="grid-line line-4"></div>
+                                    <div class="grid-line line-2"></div>
+                                    <div class="grid-line line-0"></div>
+
+
+                                    <!-- Breakfast -->
+                                    <div class="bar-item">
+                                        <span class="bar-value">5</span>
+
+                                        <div class="bar breakfast-bar" style="height: 62.5%;"></div>
+
+                                        <span class="bar-label">
+                                            Breakfast
+                                            <small>(08:00)</small>
+                                        </span>
+                                    </div>
+
+
+                                    <!-- Mid Morning -->
+                                    <div class="bar-item">
+                                        <span class="bar-value">3</span>
+
+                                        <div class="bar midmorning-bar" style="height: 37.5%;"></div>
+
+                                        <span class="bar-label">
+                                            Mid Morning
+                                            <small>(10:00)</small>
+                                        </span>
+                                    </div>
+
+
+                                    <!-- Lunch -->
+                                    <div class="bar-item">
+                                        <span class="bar-value">7</span>
+
+                                        <div class="bar lunch-bar" style="height: 87.5%;"></div>
+
+                                        <span class="bar-label">
+                                            Lunch
+                                            <small>(13:00)</small>
+                                        </span>
+                                    </div>
+
+
+                                    <!-- Evening -->
+                                    <div class="bar-item">
+                                        <span class="bar-value">2</span>
+
+                                        <div class="bar evening-bar" style="height: 25%;"></div>
+
+                                        <span class="bar-label">
+                                            Evening
+                                            <small>(16:00)</small>
+                                        </span>
+                                    </div>
+
+
+                                    <!-- Dinner -->
+                                    <div class="bar-item">
+                                        <span class="bar-value">4</span>
+
+                                        <div class="bar dinner-bar" style="height: 50%;"></div>
+
+                                        <span class="bar-label">
+                                            Dinner
+                                            <small>(19:00)</small>
+                                        </span>
+                                    </div>
+
+
+                                    <!-- Night Feed -->
+                                    <div class="bar-item">
+                                        <span class="bar-value">1</span>
+
+                                        <div class="bar nightfeed-bar" style="height: 12.5%;"></div>
+
+                                        <span class="bar-label">
+                                            Night Feed
+                                            <small>(22:00)</small>
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Graph Chart - Diet Orders Trend -->
+                        <div class="graph-card" fxFlex="33%">
+                            <h3>Diet Orders Trend</h3>
+
+                            <div class="chart">
+                                <div class="y-labels">
+                                    <span>250</span>
+                                    <span>200</span>
+                                    <span>150</span>
+                                    <span>100</span>
+                                    <span>50</span>
+                                    <span>0</span>
+                                </div>
+
+                                <div class="chart-area">
+                                    <div class="grid-lines">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+
+                                    <svg viewBox="0 0 252 145" preserveAspectRatio="none" class="chart-svg">
+
+                                        <defs>
+                                            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#3989ff" stop-opacity="0.22" />
+                                                <stop offset="100%" stop-color="#3989ff" stop-opacity="0.02" />
+                                            </linearGradient>
+                                        </defs>
+
+                                        <polygon points="0,98 42,76 84,55 126,66 168,61 210,40 252,25 252,145 0,145"
+                                            fill="url(#areaFill)" />
+
+                                        <polyline points="0,98 42,76 84,55 126,66 168,61 210,40 252,25" fill="none"
+                                            stroke="#3989ff" stroke-width="2" stroke-linejoin="round"
+                                            stroke-linecap="round" />
+
+                                        <g fill="#3989ff">
+                                            <circle cx="0" cy="98" r="3" />
+                                            <circle cx="42" cy="76" r="3" />
+                                            <circle cx="84" cy="55" r="3" />
+                                            <circle cx="126" cy="66" r="3" />
+                                            <circle cx="168" cy="61" r="3" />
+                                            <circle cx="210" cy="40" r="3" />
+                                            <circle cx="252" cy="25" r="3" />
+                                        </g>
+                                    </svg>
+
+                                    <div class="x-labels">
+                                        <span>8 Oct</span>
+                                        <span>9 Oct</span>
+                                        <span>10 Oct</span>
+                                        <span>11 Oct</span>
+                                        <span>12 Oct</span>
+                                        <span>13 Oct</span>
+                                        <span>14 Oct</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--Patient Order Table-->
+                    <div fxLayout="row" fxLayoutGap="16px" style="margin-top: 10px;">
+                        <div class="orders-card">
+
+                            <h2>Today's Diet Orders</h2>
+
+                            <!-- Filters -->
+                            <div class="patient-filters">
+
+                                <div class="patient-search-box">
+                                    <span class="search-icon">⌕</span>
+                                    <input type="text" placeholder="Search by Patient Name / MRD">
+                                    <span class="search-icon right">⌕</span>
+                                </div>
+
+                                <select aria-label="Filter by ward">
+                                    <option>All Wards</option>
+                                    <option>General Ward</option>
+                                    <option>ICU</option>
+                                    <option>Surgical Ward</option>
+                                    <option>Maternity Ward</option>
+                                    <option>Orthopedics</option>
+                                    <option>Pediatrics</option>
+                                </select>
+
+                                <select aria-label="Filter by diet type">
+                                    <option>All Diet Types</option>
+                                    <option>Normal</option>
+                                    <option>Diabetic</option>
+                                    <option>Low Salt</option>
+                                    <option>High Protein</option>
+                                    <option>Renal</option>
+                                    <option>Child Diet</option>
+                                </select>
+
+                                <div class="patient-date-filter">
+                                    <span>▦</span>
+                                    <input type="text" value="14 Oct 2026" aria-label="Selected date">
+                                    <span class="dropdown-arrow">⌄</span>
+                                </div>
+
+                            </div>
+
+                            <!-- Orders Table -->
+                            <!-- <div class="patient-table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="check-column">
+                                            <input type="checkbox" aria-label="Select all orders">
+                                        </th>
+                                        <th>Patient Name</th>
+                                        <th>MRD No.</th>
+                                        <th>Ward / Bed</th>
+                                        <th>Diet Type</th>
+                                        <th>Meal Type</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" aria-label="Select Suresh Patil"></td>
+                                        <td>Suresh Patil</td>
+                                        <td>MRD000123</td>
+                                        <td>General Ward / 101</td>
+                                        <td><span class="patient-badge diet-normal">Normal</span></td>
+                                        <td>Breakfast</td>
+                                        <td><span class="patient-badge status-dispatched">Dispatched</span></td>
+                                        <td>-</td>
+                                        <td><button class="view-btn">View</button></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><input type="checkbox" aria-label="Select Anita Deshmukh"></td>
+                                        <td>Anita Deshmukh</td>
+                                        <td>MRD000234</td>
+                                        <td>ICU / 12</td>
+                                        <td><span class="patient-badge diet-diabetic">Diabetic</span></td>
+                                        <td>Lunch</td>
+                                        <td><span class="patient-badge patient-status-pending">Pending</span></td>
+                                        <td>Low sugar</td>
+                                        <td><button class="view-btn">View</button></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><input type="checkbox" aria-label="Select Rohit Sharma"></td>
+                                        <td>Rohit Sharma</td>
+                                        <td>MRD000345</td>
+                                        <td>Surgical Ward / 203</td>
+                                        <td><span class="patient-badge diet-low-salt">Low Salt</span></td>
+                                        <td>Dinner</td>
+                                        <td><span class="patient-badge status-dispatched">Dispatched</span></td>
+                                        <td>-</td>
+                                        <td><button class="view-btn">View</button></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><input type="checkbox" aria-label="Select Rohit Sharma"></td>
+                                        <td>Rohit Sharma</td>
+                                        <td>MRD000345</td>
+                                        <td>Surgical Ward / 203</td>
+                                        <td><span class="patient-badge diet-low-salt">Low Salt</span></td>
+                                        <td>Dinner</td>
+                                        <td><span class="patient-badge status-dispatched">Dispatched</span></td>
+                                        <td>-</td>
+                                        <td><button class="view-btn">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" aria-label="Select Rohit Sharma"></td>
+                                        <td>Rohit Sharma</td>
+                                        <td>MRD000345</td>
+                                        <td>Surgical Ward / 203</td>
+                                        <td><span class="patient-badge diet-low-salt">Low Salt</span></td>
+                                        <td>Dinner</td>
+                                        <td><span class="patient-badge patient-status-progress">Progress</span></td>
+                                        <td>-</td>
+                                        <td><button class="view-btn">View</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> -->
+
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="column" fxFlex="25%" fxLayoutGap="10px">
+
+                    <!-- Food Preference Distribution - Pie chart-->
+                    <div class="food-preference-card">
+
+                        <div class="card-title">
+                            Food Preference Distribution
+                        </div>
+
+                        <div class="food-preference-content">
+
+                            <!-- Pie Chart -->
+                            <div class="food-preference-pie">
+
+                            </div>
+
+                            <!-- Legend -->
+                            <div class="food-preference-legend">
+
+                                <div class="preference-item">
+                                    <span class="preference-dot vegetarian"></span>
+                                    <span>Vegetarian</span>
+                                    <span>48</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot non-vegetarian"></span>
+                                    <span>Non-Vegetarian</span>
+                                    <span>32</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot vegan"></span>
+                                    <span>Vegan</span>
+                                    <span>18</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot jain"></span>
+                                    <span>Jain</span>
+                                    <span>16</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot egg"></span>
+                                    <span>Egg</span>
+                                    <span>14</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot no-onion"></span>
+                                    <span>No Onion</span>
+                                    <span>10</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot no-garlic"></span>
+                                    <span>No Garlic</span>
+                                    <span>8</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot halal"></span>
+                                    <span>Halal</span>
+                                    <span>6</span>
+                                </div>
+
+                                <div class="preference-item">
+                                    <span class="preference-dot other"></span>
+                                    <span>Other</span>
+                                    <span>4</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Progress Bar - Meal Preparation Status -->
+                    <div class="meal-preparation-card">
+
+                        <div class="preparation-title">
+                            Meal Preparation Status
+                        </div>
+
+
+                        <!-- Breakfast -->
+                        <div class="meal-status">
+
+                            <div class="meal-status-header">
+                                <span>Breakfast</span>
+                                <span>62 / 68</span>
+                            </div>
+
+                            <div class="meal-progress-row">
+                                <div class="meal-progress-track">
+                                    <div class="meal-progress-bar breakfast-progress" style="width: 91%;">
+                                    </div>
+                                </div>
+
+                                <span class="meal-progress-percent">91%</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Mid Morning -->
+                        <div class="meal-status">
+
+                            <div class="meal-status-header">
+                                <span>Mid Morning</span>
+                                <span>28 / 32</span>
+                            </div>
+
+                            <div class="meal-progress-row">
+                                <div class="meal-progress-track">
+                                    <div class="meal-progress-bar midmorning-progress" style="width: 88%;">
+                                    </div>
+                                </div>
+
+                                <span class="meal-progress-percent">88%</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Lunch -->
+                        <div class="meal-status">
+
+                            <div class="meal-status-header">
+                                <span>Lunch</span>
+                                <span>78 / 86</span>
+                            </div>
+
+                            <div class="meal-progress-row">
+                                <div class="meal-progress-track">
+                                    <div class="meal-progress-bar lunch-progress" style="width: 91%;">
+                                    </div>
+                                </div>
+
+                                <span class="meal-progress-percent">91%</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Evening -->
+                        <div class="meal-status">
+
+                            <div class="meal-status-header">
+                                <span>Evening</span>
+                                <span>32 / 36</span>
+                            </div>
+
+                            <div class="meal-progress-row">
+                                <div class="meal-progress-track">
+                                    <div class="meal-progress-bar evening-progress" style="width: 89%;">
+                                    </div>
+                                </div>
+
+                                <span class="meal-progress-percent">89%</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Dinner -->
+                        <div class="meal-status">
+
+                            <div class="meal-status-header">
+                                <span>Dinner</span>
+                                <span>32 / 38</span>
+                            </div>
+
+                            <div class="meal-progress-row">
+                                <div class="meal-progress-track">
+                                    <div class="meal-progress-bar dinner-progress" style="width: 84%;">
+                                    </div>
+                                </div>
+
+                                <span class="meal-progress-percent">84%</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- quick-actions - Add items -->
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+
+                        <div class="quick-action-list">
+                            <div class="quick-action-item" (click)="openDietPlan()">
+                                <div class="action-icon green">
+                                    <mat-icon>note_add</mat-icon>
+                                </div>
+                                <span>Create Diet Plan</span>
+                            </div>
+
+                            <div class="quick-action-item">
+                                <div class="action-icon blue">
+                                    <mat-icon>add_shopping_cart</mat-icon>
+                                </div>
+                                <span>New Diet Order</span>
+                            </div>
+
+                            <div class="quick-action-item" (click)="openMealMaster()">
+                                <div class="action-icon orange">
+                                    <mat-icon>restaurant_menu</mat-icon>
+                                </div>
+                                <span>Meal Master</span>
+                            </div>
+
+                            <div class="quick-action-item" (click)="openKitchenOrder()">
+                                <div class="action-icon purple">
+                                    <mat-icon>soup_kitchen</mat-icon>
+                                </div>
+                                <span>Kitchen Order</span>
+                            </div>
+
+                            <div class="quick-action-item" (click)="openDietMenu()">
+                                <div class="action-icon cyan">
+                                    <mat-icon>restaurant</mat-icon>
+                                </div>
+                                <span>Diet Menu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

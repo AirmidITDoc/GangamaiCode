@@ -1,0 +1,818 @@
+/**********************Summary Card CSS********************/
+.diet-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin: 10px;
+}
+
+.diet-summary-card {
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(31, 55, 88, 0.08);
+    }
+
+    .summary-card-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .action-item mat-icon {
+            font-size: 26px;
+            width: 26px;
+            height: 26px;
+        }
+    }
+
+    .summary-card-content {
+        display: flex;
+        flex-direction: column;
+        padding-right: 20px;
+    }
+
+    .summary-card-count {
+        font-size: 27px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: black;
+    }
+
+    .summary-card-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 4px;
+    }
+
+    .card-description {
+        font-size: 12px;
+        color: black;
+        margin-top: 7px;
+        line-height: 1.4;
+    }
+
+    .card-arrow {
+        position: absolute;
+        right: 16px;
+        bottom: 18px;
+    }
+}
+
+.diet-summary-card:nth-child(odd) {
+    background: #eaf4ff;
+    .summary-card-icon {  background: #d7eaff;  color: #1976d2;  }
+    .card-arrow { color: #1976d2; }
+}
+
+.diet-summary-card:nth-child(even) {
+    background: #eafaf5;
+    .summary-card-icon { background: #d5f3e7; color: #16a085; }
+    .card-arrow { color: #16a085; }
+}
+
+/************************ Donut - Diet Orders by Meal Type CSS****************/
+.meal-type-card {
+    width: 100%;
+    height: 250px;
+    background: #ffffff;
+    border: 1px solid #dfe6ee;
+    border-radius: 6px;
+    padding: 14px 16px;
+    box-sizing: border-box;
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #172b4d;
+        margin-bottom: 12px;
+    }
+}
+
+.meal-chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.donut-chart {
+    width: 145px;
+    height: 145px;
+    min-width: 145px;
+    border-radius: 50%;
+
+    background: conic-gradient(#4285f4 0deg 96.12deg,
+            #27ae60 96.12deg 139.68deg,
+            #f5a623 139.68deg 260.76deg,
+            #8e5de7 260.76deg 310.44deg,
+            #e83e8c 310.44deg 360deg);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut-center {
+    width: 82px;
+    height: 82px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.total-count {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #344563;
+}
+
+.total-label {
+    font-size: 9px;
+    color: #8995a5;
+    margin-top: 2px;
+}
+
+.meal-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.legend-item {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    align-items: center;
+    column-gap: 8px;
+    font-size: 11px;
+    color: #526173;
+}
+
+.legend-color {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.breakfast { background: #4285f4; }
+.mid-morning { background: #27ae60; }
+.lunch { background: #f5a623; }
+.evening { background: #8e5de7;}
+.dinner { background: #e83e8c;}
+
+.meal-name {white-space: nowrap;}
+
+.meal-value { white-space: nowrap; color: #526173;}
+
+/*****************************Bar Chart- Diet Type Wise Orders CSS********************/
+.diet-type-card {
+    width: 100%;
+    height: 250px;
+    background: #ffffff;
+    border: 1px solid #dfe5ec;
+    border-radius: 6px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+}
+
+.diet-type-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #172b4d;
+    margin-bottom: 8px;
+}
+
+.diet-chart { height: 205px; display: flex;}
+
+.y-axis {
+    width: 18px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-right: 5px;
+
+    span {
+        font-size: 12px;
+        color: #526173;
+        line-height: 1;
+    }
+}
+
+.chart-area {
+    position: relative;
+    flex: 1;
+    height: 160px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    border-left: 1px solid #d9e0e8;
+    border-bottom: 1px solid #d9e0e8;
+}
+
+.grid-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #edf1f5;
+    pointer-events: none;
+}
+
+.line-8 {top: 0;}
+.line-6 {top: 25%;}
+.line-4 {top: 50%;}
+.line-2 {top: 75%;}
+.line-0 {bottom: 0;}
+
+.bar-item {
+    height: 160px;
+    width: 48px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.bar-value {
+    position: absolute;
+    bottom: calc(var(--bar-height) + 4px);
+    font-size: 12px;
+    font-weight: 600;
+    color: #344563;
+}
+
+.bar {
+    width: 28px;
+    min-height: 3px;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    z-index: 2;
+}
+
+.breakfast-bar {background: #4285f4;}
+.midmorning-bar {background: #35b7b5;}
+.lunch-bar {background: #fbc34a;}
+.evening-bar {background: #ff963b;}
+.dinner-bar {background: #9560df;}
+.nightfeed-bar {background: #ef5c89;}
+
+.bar-label {
+    position: absolute;
+    top: 166px;
+    width: 70px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 10px;
+    color: #344563;
+    white-space: nowrap;
+    left: 50%;
+    transform: translateX(-50%);
+
+    small {
+        display: block;
+        font-size: 10px;
+        color: #718096;
+        line-height: 15px;
+        margin-top: 2px;
+    }
+}
+
+
+/********************************* Graph Chart - Diet Orders Trend *********************************/
+.graph-card {
+  width: 310px;
+  max-width: 100%;
+  height: 250px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #dce6f2;
+  border-radius: 7px;
+}
+
+.graph-card h3 {
+  margin: 0 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #19345e;
+}
+
+.chart {
+  display: flex;
+  height: 170px;
+  gap: 8px;
+}
+
+.y-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 145px;
+  font-size: 10px;
+  color: #536b91;
+  text-align: right;
+}
+
+.chart-area {
+  position: relative;
+  flex: 1;
+  height: 145px;
+  border-left: 1px solid #dce6f2;
+  border-bottom: 1px solid #dce6f2;
+}
+
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.grid-lines span {width: 100%;border-top: 1px solid #e6eef8;}
+
+.chart-area::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(16.666% - 1px),
+    #e6eef8 calc(16.666% - 1px),
+    #e6eef8 16.666%
+  );
+}
+
+.chart-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.x-labels {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+  font-size: 10px;
+  color: #536b91;
+}
+
+.x-labels span { transform: translateX(-50%);}
+.x-labels span:first-child { transform: translateX(0);}
+.x-labels span:last-child { transform: translateX(0);}
+
+/*****************************************Patient Order Table CSS***********************/
+.orders-card {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #dce8f7;
+    border-radius: 7px;
+    padding: 11px 10px;
+    box-shadow: 0 1px 3px rgba(30, 70, 120, 0.03);
+}
+
+.orders-card h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #20385f;
+    margin-bottom: 9px;
+}
+
+/* Filter section */
+.patient-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.patient-search-box{
+    height: 29px;
+    width: 243px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #d8e4f3;
+    border-radius: 5px;
+    padding: 0 8px;
+    background: #fff;
+}
+
+.search-icon {
+    font-size: 19px;
+    color: #5e7da8;
+    line-height: 1;
+}
+
+.patient-search-box input {
+    width: 100%;
+    min-width: 0;
+    border: none;
+    outline: none;
+    font-size: 10px;
+    color: #344d72;
+    padding: 0 7px;
+    background: transparent;
+}
+
+.patient-search-box input::placeholder {color: #7890b3;}
+
+.search-icon.right {font-size: 17px; font-weight: bold;}
+
+.patient-filters select {
+    height: 29px;
+    width: 115px;
+    padding: 0 9px;
+    border: 1px solid #d8e4f3;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #354d71;
+    font-size: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+.patient-filters select:nth-of-type(2) { width: 116px;}
+
+.patient-date-filter {
+    width: 120px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 9px;
+    border: 1px solid #d8e4f3;
+    border-radius: 5px;
+    background: #fff;
+    color: #344d72;
+}
+
+.patient-date-filter > span:first-child {
+    font-size: 14px;
+    color: #405b81;
+}
+
+.patient-date-filter input {
+    width: 100%;
+    min-width: 0;
+    border: none;
+    outline: none;
+    font-size: 10px;
+    color: #344d72;
+    background: transparent;
+}
+
+.dropdown-arrow {
+    color: #6680a4;
+    font-size: 15px;
+}
+
+/* Table container */
+// .patient-table-wrapper {
+//     width: 100%;
+//     overflow-x: auto;
+//     border-radius: 5px;
+// }
+
+// table {
+//     width: 100%;
+//     min-width: 850px;
+//     border-collapse: collapse;
+//     table-layout: auto;
+//     text-align: left;
+// }
+
+// /* Table header */
+// thead { background: #f1f6fc;}
+
+// th {
+//     height: 39px;
+//     padding: 0 10px;
+//     font-size: 10px;
+//     font-weight: 700;
+//     color: #29456d;
+//     border-bottom: 1px solid #e4edf8;
+//     white-space: nowrap;
+// }
+
+// th:first-child {
+//     border-top-left-radius: 5px;
+// }
+
+// th:last-child {
+//     border-top-right-radius: 5px;
+// }
+
+// /* Table body */
+// td {
+//     height: 39px;
+//     padding: 5px 10px;
+//     font-size: 10px;
+//     color: #344d72;
+//     border-bottom: 1px solid #e9f0f8;
+//     white-space: nowrap;
+// }
+
+// tbody tr:last-child td {border-bottom: none;}
+
+// tbody tr:hover {background: #f8fbff;}
+
+// /* Checkbox */
+// input[type="checkbox"] {
+//     width: 13px;
+//     height: 13px;
+//     accent-color: #3984ff;
+//     cursor: pointer;
+//     vertical-align: middle;
+// }
+
+// .check-column {width: 36px;}
+
+// td:first-child,
+// th:first-child {
+//     padding-left: 9px;
+//     padding-right: 5px;
+// }
+
+// /* Badges */
+// .patient-badge {
+//     display: inline-block;
+//     padding: 5px 9px;
+//     border-radius: 9px;
+//     font-size: 10px;
+//     font-weight: 600;
+//     line-height: 1;
+//     white-space: nowrap;
+// }
+
+// /* Diet types */
+// .diet-normal {background: #d9f6e5; color: #07863d;}
+// .diet-diabetic {background: #dceaff; color: #0961e8;}
+// .diet-low-salt { background: #eedfff; color: #8429ce;}
+// .diet-protein {background: #ffead7;color: #f16a0b;}
+// .diet-renal {background: #ffe0e5; color: #e52e49;}
+// .diet-child {background: #cef7f7; color: #07979d;}
+
+// /* Order status */
+// .status-dispatched {background: #d7f5e4; color: #078a43;}
+// .patient-status-pending { background: #ffedd5; color: #e76a08;}
+// .patient-status-progress { background: #dceaff; color: #1469ed;}
+
+// /* View button */
+// .view-btn {
+//     min-width: 51px;
+//     height: 24px;
+//     padding: 0 12px;
+//     background: #ffffff;
+//     border: 1px solid #5595ff;
+//     border-radius: 4px;
+//     color: #1766e9;
+//     font-size: 10px;
+//     cursor: pointer;
+//     transition: background 0.2s, color 0.2s;
+// }
+
+// .view-btn:hover { background: #3984ff; color: #ffffff;}
+
+/**********************************************Food Preference Distribution - Pie chart CSS***********************************/
+.food-preference-card {
+    width: 100%;
+    height: 250px;
+    background: #fff;
+    border: 1px solid #dce3eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    .card-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #172b4d;
+        margin-bottom: 12px;
+    }
+}
+
+.food-preference-content {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    height: calc(100% - 30px);
+}
+
+.food-preference-pie {
+    width: 150px;
+    height: 150px;
+    min-width: 150px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #4285f4 0deg 110.77deg,
+        #27ae60 110.77deg 184.62deg,
+        #f5a623 184.62deg 226.15deg,
+        #8e5de7 226.15deg 263.08deg,
+        #e83e8c 263.08deg 295.38deg,
+        #00a8a8 295.38deg 318.46deg,
+        #ff7043 318.46deg 336.92deg,
+        #795548 336.92deg 350.77deg,
+        #9e9e9e 350.77deg 360deg
+    );
+}
+
+.food-preference-legend {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.preference-item {
+    display: grid;
+    grid-template-columns: 8px 1fr auto;
+    align-items: center;
+    column-gap: 7px;
+    font-size: 10px;
+    color: #526173;
+}
+
+.preference-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Colors */
+.vegetarian {background: #4285f4;}
+.non-vegetarian {background: #27ae60;}
+.vegan {background: #f5a623;}
+.jain {background: #8e5de7;}
+.egg {background: #e83e8c;}
+.no-onion {background: #00a8a8;}
+.no-garlic {background: #ff7043;}
+.halal {background: #795548;}
+.other {background: #9e9e9e;}
+
+/***************************** Progress Bar - Meal Preparation Status CSS********************/
+.meal-preparation-card {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #dce3eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+    box-sizing: border-box;
+}
+
+.preparation-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #172b4d;
+    margin-bottom: 10px;
+}
+
+.meal-status {
+    margin-bottom: 14px;
+    &:last-child { margin-bottom: 0;}
+}
+
+.meal-status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #344563;
+
+    span:last-child {
+        color: #526173;
+        font-weight: 400;
+    }
+}
+
+.meal-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.meal-progress-track {
+    flex: 1;
+    height: 7px;
+    background: #e9eef4;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.meal-progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.breakfast-progress {background: #25b66f;}
+.midmorning-progress {background: #4285f4;}
+.lunch-progress {background: #ff9f1c;}
+.evening-progress {background: #8b5de8;}
+.dinner-progress {background: #e83e8c;}
+
+.meal-progress-percent {
+    width: 30px;
+    text-align: right;
+    font-size: 10px;
+    font-weight: 500;
+    color: #526173;
+}
+
+
+/****************************************** quick-actions - Add items CSS **************************************************/
+.quick-actions {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dce3eb;
+  border-radius: 6px;
+  padding: 14px 16px;
+  box-sizing: border-box;
+}
+
+.quick-actions h3 {
+  margin: 0 0 15px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #183b70;
+}
+
+.quick-action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.quick-action-item {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  min-height: 31px;
+  cursor: pointer;
+}
+
+.action-icon {
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  
+  font-size: 23px;
+  font-weight: 400;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.action-icon mat-icon{
+  color: #fff;
+}
+
+.quick-action-item span {
+  font-size: 12px;
+  font-weight: 500;
+  color: #183b70;
+}
+
+.green {  color: #fff; background: linear-gradient(135deg, #39d9a1, #13b87e);}
+.blue {  color: #fff; background: linear-gradient(135deg, #56a5ff, #287af5);}
+.orange {  color: #fff; background: linear-gradient(135deg, #ffad48, #ff8610);}
+.purple {  color: #fff; background: linear-gradient(135deg, #b18aff, #8b4dff);}
+.cyan {  color: #fff; background: linear-gradient(135deg, #24d9df, #08b4c2);}
+
+.quick-action-item:hover .action-icon {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
