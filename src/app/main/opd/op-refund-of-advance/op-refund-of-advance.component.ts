@@ -267,12 +267,14 @@ export class OpRefundOfAdvanceComponent implements OnInit {
         this.vPatientName = '';
         this.RegId = 0;
         this.OP_IP_Id = 0;
-        this.RefundOfAdvanceFormGroup.reset();
+        this.RefundOfAdvanceFormGroup.get('refundAmount').setValue(0);
+        this.RefundOfAdvanceFormGroup.get('refundAmount').setValidators(Validators.required)
+        this.RefundOfAdvanceFormGroup.get('CashCounterID').setValue(this.hospitalConfigservice.HospitalconfigParams.IPD_Refund_of_Advance_Receipt_CounterId);
+        this.RefundOfAdvanceFormGroup.get('remark').setValue('');
+        this.RefundOfAdvanceFormGroup.get('balanceAmount').setValue(0);
         this.searchFormGroup.reset();
-        this.dsrefundlist.data = []
-        this.RefundOfAdvanceFormGroup.markAllAsTouched();
-        this.RefundOfAdvanceFormGroup.get('CashCounterID').setValue(this.hospitalConfigservice.HospitalconfigParams?.IPD_Refund_of_Advance_Receipt_CounterId)
-        this._matDialog.closeAll();
+        this.dsrefundlist.data = [] 
+        this._matDialog.closeAll(); 
     }
     viewgetRefundofAdvanceReportPdf(RefundId) {
         this.commonService.Onprint("RefundId", RefundId, "IpAdvanceRefundReceipt");

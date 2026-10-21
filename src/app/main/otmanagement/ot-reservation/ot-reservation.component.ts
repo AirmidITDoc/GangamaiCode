@@ -1041,6 +1041,7 @@ export class OtReserInsert {
     checkOutTime: any;
     toDepartment: any;
     refDocName: any;
+    discAmt:any;
     /**
      * Constructor
      *

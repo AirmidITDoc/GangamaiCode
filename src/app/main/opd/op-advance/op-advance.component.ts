@@ -355,12 +355,14 @@ export class OpAdvanceComponent implements OnInit {
         this.TotalAdvRefAmt = 0;
         this.RegId = 0;
         this.regNo = 0
-        this.selectedAdvanceObj = [];
-        this.AdvFormGroup.reset();
+        this.selectedAdvanceObj = []; 
+        this.AdvFormGroup.get('advanceAmount').setValue(0);
+        this.AdvFormGroup.get('advanceAmount').setValidators(Validators.required)
+        this.AdvFormGroup.get('CashCounterID').setValue(this.hospitalconfigservice.HospitalconfigParams.IPD_Advance_CounterId);
+        this.AdvFormGroup.get('reason').setValue('');
         this.getdata(this.RegId);
         this.searchFormGroup.reset();
-        this.AdvFormGroup.get('CashCounterID').setValue(this.hospitalconfigservice.HospitalconfigParams?.IPD_Refund_of_Advance_Receipt_CounterId)
-        this._matDialog.closeAll();
+         this._matDialog.closeAll();
     }
 
     viewgetAdvanceReceiptReportPdf(element) {

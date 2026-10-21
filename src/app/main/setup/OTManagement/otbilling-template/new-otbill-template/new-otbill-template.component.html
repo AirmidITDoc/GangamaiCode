@@ -1,0 +1,120 @@
+<div class="modal-page page-layout inner-scroll resize-form-fields padding-fix" fxLayout="column" fxFlexFill >
+    <!-- Header -->
+    <div class="modal-header accent" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column"
+        style="padding: 8px 16px; color: white;">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+            <button mat-icon-button style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="logo-text h1">New OT Bill Template</span>
+        </div>
+
+        <button mat-icon-button [mat-dialog-close]="true" aria-label="Close">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body" fxFlex fxLayout="column" fxLayoutGap="16px" style="padding: 12px;">
+        <!-- Search Form -->
+        <mat-card fxFlex="none" style="padding: 6px 6px 0 !important; margin-bottom: 0 !important;">
+            <form [formGroup]="myForm" fxLayout="column" fxLayoutGap="4px" fxLayout.lt-md="row" fxLayoutAlign="start stretch">
+        
+                <div fxFlex>
+                    <airmid-textbox label="Template Name" formControlName="otBillTemplateName"
+                     [formGroup]="myForm">
+                    </airmid-textbox>
+                </div>
+        
+                <div fxLayout="row" fxLayoutGap="12px" fxLayout.lt-md="column" fxLayoutAlign="start stretch">
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Service Name" formControlName="serviceId" [formGroup]="myForm"
+                            ValueField="serviceId" TextField="serviceName" name="serviceName"
+                            [ApiUrl]="'SurgeryMaster/GetServiceListwithSurgeryWise?TariffId=1&ClassId=1&IsProcedure=true&ServiceName=%25'"
+                            [disableAutoNext]="true" (selectionChange)="selectChangeServiceName($event)">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox label="Percentage %" formControlName="percentage" [formGroup]="myForm" [maxLength]="50"
+                            (keypress)="keyPressDigitDecimalOnly($event)"  (click)="percentageValidate()">
+                        </airmid-textbox>
+                    </div>
+        
+                    <div class="input-add-button">
+                        <button class="btn btn-primary" (click)="onAdd()" style="padding: 6px">
+                            <mat-icon> add </mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </mat-card>
+
+        <!-- Table -->
+        <mat-card fxFlex fxLayout="column">
+            <div fxFlex class="table-scroll" style="overflow-x: auto;">
+                <div class="airmid-table-container">
+                    <mat-table #table class="airmid-table" matSort [dataSource]="dsServicelist" style="width: 100%; min-width: 500px;"
+                        class="airmid-table table">
+                        <ng-container matColumnDef="srNo">
+                            <mat-header-cell *matHeaderCellDef class="w-80">
+                                Sr. No.
+                            </mat-header-cell>
+                
+                            <mat-cell *matCellDef="let contact; let i = index" class="w-80">
+                                {{ i + 1 }}
+                            </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="Serviceid">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-130">Code</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" class="w-130">
+                                {{contact.serviceId}}
+                            </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="serviceName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Service Name
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.serviceName}}
+                            </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="percentage">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Percentage
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <!-- {{contact.percentage}} -->
+                                <mat-form-field floatLabel="never" appearance="fill">
+                                    <input matInput placeholder="Enter %" [(ngModel)]="contact.percentage" type="text" [min]="0"
+                                        [max]="100" (keypress)="keyPressDigitDecimalOnly($event)">
+                                </mat-form-field>
+                            </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                            <mat-cell *matCellDef="let contact">
+                                <mat-icon color="warn" (click)="deleteTableRow(contact)">delete</mat-icon>
+                            </mat-cell>
+                        </ng-container>
+                        <!-- Header & Rows -->
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+        </mat-card>
+    </div>
+    <div class="modal-footer"  style="padding: 8px;">
+        <div class="modal-footer-buttons" fxLayoutAlign="end" fxLayoutGap="6px">
+            <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+            <button  class="btn btn-primary" (click)="onSubmit()">Save</button>
+        </div> 
+    </div>
+</div>
+ 

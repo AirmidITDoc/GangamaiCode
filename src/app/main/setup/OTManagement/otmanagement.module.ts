@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { OTBillingTemplateComponent } from './otbilling-template/otbilling-template.component';
 
 const appRoutes: Routes = [
     {
@@ -68,10 +69,19 @@ const appRoutes: Routes = [
             import("./patient-position-master/patient-position-master.module").then((m) => m.PatientPositionMasterModule
             ),
     },
+
+    {
+        path: "otbilltemplate",
+        loadChildren: () =>
+            import("./otbilling-template/otbilling-template.module").then((m) => m.OTBillingTemplateModule
+            ),
+    },
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+    
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class OTManagementModule { }
