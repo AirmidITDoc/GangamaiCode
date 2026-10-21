@@ -5,7 +5,7 @@
 
 
 
-        <mat-tab label="OP Tally ">
+        <mat-tab label="OP Tally " *ngIf="IsOpTally">
             <div fusePerfectScrollbar>
 
                 <div fxLayout="column" class="gap-4 h-10-p">
@@ -31,8 +31,8 @@
 
                                             <div class="action-buttons" style="padding: 10px;">
 
-                                                <button mat-raised-button class="search-button" (click)="onChangeDateOP()"
-                                                    matTooltip="search">
+                                                <button mat-raised-button class="search-button"
+                                                    (click)="onChangeDateOP()" matTooltip="search">
                                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                                 </button>
                                             </div>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
- <!-- OP Bill  -->
+                <!-- OP Bill  -->
                 <div fusePerfectScrollbar>
                     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-               
+
                 <div fusePerfectScrollbar>
                     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
@@ -87,7 +87,7 @@
 
             </div>
         </mat-tab>
-        <mat-tab label="IP Tally ">
+        <mat-tab label="IP Tally " *ngIf="IsIpTally">
             <div fusePerfectScrollbar>
 
                 <div fxLayout="column" class="gap-4 h-10-p">
@@ -113,8 +113,8 @@
 
                                             <div class="action-buttons" style="padding: 10px;">
 
-                                                <button mat-raised-button class="search-button" (click)="onChangeDateIP()"
-                                                    matTooltip="search">
+                                                <button mat-raised-button class="search-button"
+                                                    (click)="onChangeDateIP()" matTooltip="search">
                                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                                 </button>
                                             </div>
@@ -209,7 +209,7 @@
 
             </div>
         </mat-tab>
-        <mat-tab label="IP Advance Tally ">
+        <mat-tab label="IP Advance Tally " *ngIf="IsAdvanceTally">
             <div fusePerfectScrollbar>
 
                 <div fxLayout="column" class="gap-4 h-10-p">
@@ -235,8 +235,8 @@
 
                                             <div class="action-buttons" style="padding: 10px;">
 
-                                                <button mat-raised-button class="search-button" (click)="onChangeDateAdv()"
-                                                    matTooltip="search">
+                                                <button mat-raised-button class="search-button"
+                                                    (click)="onChangeDateAdv()" matTooltip="search">
                                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                                 </button>
                                             </div>
@@ -292,7 +292,7 @@
 
             </div>
         </mat-tab>
-        <mat-tab label="Pharmacy Sales Tally ">
+        <mat-tab label="Pharmacy Sales Tally " *ngIf="IsSalesTally">
             <div fusePerfectScrollbar>
 
                 <div fxLayout="column" class="gap-4 h-10-p">
@@ -318,8 +318,8 @@
 
                                             <div class="action-buttons" style="padding: 10px;">
 
-                                                <button mat-raised-button class="search-button" (click)="onChangeDatesales()"
-                                                    matTooltip="search">
+                                                <button mat-raised-button class="search-button"
+                                                    (click)="onChangeDatesales()" matTooltip="search">
                                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                                 </button>
                                             </div>
@@ -367,7 +367,8 @@
 
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
-                        <airmid-common-table [mode]="modeSalesdetail" [filters]="filterssales" *ngIf="modeSalesdetail!=''"></airmid-common-table>
+                        <airmid-common-table [mode]="modeSalesdetail" [filters]="filterssales"
+                            *ngIf="modeSalesdetail!=''"></airmid-common-table>
                     </div>
                 </div>
                 <!-- //IP Advance -->
@@ -390,7 +391,7 @@
                     </div>
                 </div>
 
-               
+
 
             </div>
         </mat-tab>
