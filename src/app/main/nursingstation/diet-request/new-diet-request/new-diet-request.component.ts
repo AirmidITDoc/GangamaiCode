@@ -416,10 +416,10 @@ export class NewDietRequestComponent {
           matchedRow.dietReqDetId = detail.dietReqDetId;
           matchedRow.isAccept = !!detail.isAccept;
           matchedRow.isAcceptedBy = detail.isAcceptedBy ?? 0;
-          matchedRow.isAcceptedDateTime = detail.isAcceptedDateTime;   // check the exact field name in your response
+          matchedRow.isAcceptedDateTime = detail.isAcceptedDateTime;   
           matchedRow.isDelivered = !!detail.isDelivered;
           matchedRow.isDelivedBy = detail.isDelivedBy ?? 0;
-          matchedRow.isDelivedDateTime = detail.isDelivedDateTime;     // check the exact field name in your response
+          matchedRow.isDelivedDateTime = detail.isDelivedDateTime;    
           this.selection.select(matchedRow);
         }
       });
