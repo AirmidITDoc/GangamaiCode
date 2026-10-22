@@ -35,6 +35,7 @@ export class PatientvitalInformationComponent {
     RefDocName: any;
     advanceObj: any;
     MyFormGroup: FormGroup
+    WellnessFormGroup: FormGroup
 
     vHeight = 0;
     vWeight = 0;
@@ -45,8 +46,18 @@ export class PatientvitalInformationComponent {
     vTemp = "0";
     vSpO2 = "0";
     vPulse = "0";
-    registerObj1 = new VisitMaster1({});
+
+    vDoctorName: any;
+    vRefDocName: any;
+    vRegId: any;
+
+    // registerObj1 = new VisitMaster1({});
     patientDetail1 = new VisitMaster1({});
+
+    registerObj1: any = {};
+
+    autocompleteModeActivityLevel: string = "ActivityLevel";
+    autocompleteModeSmokingStatus: string = "SmokingStatus";
 
     constructor(
         public _OpAppointmentService: AppointmentlistService,
@@ -63,9 +74,23 @@ export class PatientvitalInformationComponent {
 
         this.MyFormGroup = this.createMyForm();
         this.MyFormGroup.markAllAsTouched();
+
+        this.WellnessFormGroup = this.createWellness();
+        this.WellnessFormGroup.markAllAsTouched();
+
+        // Set VisitId in Wellness form
+        this.WellnessFormGroup.patchValue({
+            opipid: this.VisitId
+        });
+
         if (this.data) {
-            console.log(this.data)
+            console.log("Patient Details", this.data)
+            this.registerObj1 = this.data
             this.VisitId = this.data.visitId
+
+
+            this.vDoctorName = this.data.doctorname;
+            this.vRefDocName = this.data.refDocName
 
             setTimeout(() => {
                 this._OpAppointmentService.getVisitById(this.VisitId).subscribe(data => {
@@ -80,8 +105,45 @@ export class PatientvitalInformationComponent {
                     this.vSpO2 = data.spO2
                     this.vPulse = data.pulse
                 });
+
+                this._OpAppointmentService.getWellnessDetailsById(this.VisitId).subscribe(data => {
+                    if (data) {
+
+                        this.WellnessFormGroup.patchValue({
+
+                            wlsId: data.wlsId ?? 0,
+                            opipid: data.opipid ?? this.VisitId,
+                            opiptype: data.opiptype ?? 0,
+
+                            stepCount: data.stepCount ?? 0,
+                            caloriesBurned: data.caloriesBurned ?? 0,
+                            sleepDuration: data.sleepDuration ?? 0,
+                            activityLevel: data.activityLevel ?? 0,
+
+                            bloodGlucose: data.bloodGlucose ?? 0,
+                            fluidIntake: data.fluidIntake ?? 0,
+                            mentalStatus: data.mentalStatus ?? '',
+                            generalWellbeing: data.generalWellbeing ?? '',
+
+                            lastMenstrualPeriod: data.lastMenstrualPeriod ?? null,
+                            numberOfMenstrualPeriodsPerYear: data.numberOfMenstrualPeriodsPerYear ?? 0,
+                            ageOfMenarche: data.ageOfMenarche ?? '',
+                            ageOfMenopause: data.ageOfMenopause ?? '',
+
+                            tobaccoSmokingStatus: data.tobaccoSmokingStatus ?? 0,
+                            tobaccoChewingStatus: data.tobaccoChewingStatus ?? 0,
+                            alcoholDrinkingStatus: data.alcoholDrinkingStatus ?? 0,
+                            dietType: data.dietType ?? ''
+                        });
+                    }
+                });
             }, 1000);
         }
+    }
+
+    pageTitle: string = 'Patient Vital Information';
+    onTabChange(event: any): void {
+        this.pageTitle = event.tab.textLabel === 'Vitals Information' ? 'Patient Vital Information': 'Patient Wellness Information';
     }
 
     // showing color for vitals
@@ -132,6 +194,34 @@ export class PatientvitalInformationComponent {
             temp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
             pulse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
             bp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+        });
+    }
+
+    createWellness(): FormGroup {
+        return this._formBuilder.group({
+            wlsId: 0,
+            opipid: [this.VisitId ?? 0],
+            opiptype: [0],
+
+            stepCount: [0],
+            caloriesBurned: [0],
+            sleepDuration: [0],
+            activityLevel: [0],
+
+            bloodGlucose: [0],
+            fluidIntake: [0],
+            mentalStatus: [''],
+            generalWellbeing: [''],
+
+            lastMenstrualPeriod: [],
+            numberOfMenstrualPeriodsPerYear: [0],
+            ageOfMenarche: [''],
+            ageOfMenopause: [''],
+
+            tobaccoSmokingStatus: [0],
+            tobaccoChewingStatus: [0],
+            alcoholDrinkingStatus: [0],
+            dietType: ['']
         });
     }
 
@@ -186,9 +276,63 @@ export class PatientvitalInformationComponent {
 
     }
 
+    onWellnessSave() {
+
+        this.VisitId = this.data.visitId;
+
+        // Set Visit ID
+        this.WellnessFormGroup.patchValue({ opipid: this.VisitId });
+
+        // Get form value
+        const formValue = this.WellnessFormGroup.value;
+
+        // Format Last Menstrual Period (added these code bcoz date taking one day earlier )
+        const lastMenstrualPeriod = formValue.lastMenstrualPeriod;
+
+        let formattedLastMenstrualPeriod = null;
+
+        if (lastMenstrualPeriod instanceof Date) {
+
+            const year = lastMenstrualPeriod.getFullYear();
+            const month = String(lastMenstrualPeriod.getMonth() + 1).padStart(2, '0');
+
+            const day = String(lastMenstrualPeriod.getDate()).padStart(2, '0');
+
+            formattedLastMenstrualPeriod = `${year}-${month}-${day}`;
+        }
+
+        // Create API payload
+        const formData = {
+            ...formValue,
+            lastMenstrualPeriod: formattedLastMenstrualPeriod
+        };
+
+        if (!this.WellnessFormGroup.invalid) {
+            this._OpAppointmentService.InsertWellnessInfo(formData).subscribe(response => {
+                this._matDialog.closeAll();
+            });
+        } else {
+
+            const invalidFields: string[] = [];
+            for (const controlName in this.WellnessFormGroup.controls) {
+                if (this.WellnessFormGroup.controls[controlName].invalid) {
+                    invalidFields.push(`Wellness Form: ${controlName}`);
+                }
+            }
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+                });
+            }
+        }
+    }
+
+
     onClose() {
 
         this.MyFormGroup.reset();
+        this.WellnessFormGroup.reset();
         this._matDialog.closeAll();
     }
 

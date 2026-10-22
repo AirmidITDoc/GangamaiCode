@@ -494,4 +494,14 @@ export class AppointmentlistService {
     getDiagnosisList(descriptionType: string) {
     return this._httpClient1.GetData('OPDPrescriptionMedical/GetDiagnosisList?descriptionType=' + descriptionType);
     }
+
+    public InsertWellnessInfo(Param) {
+        if (Param.wlsId) {
+            return this._httpClient1.PutData("WellnessRecord/Edit/" + Param.wlsId, Param);
+        } else return this._httpClient1.PostData("WellnessRecord/Insert", Param)
+    }
+
+    public getWellnessDetailsById(Id) {
+        return this._httpClient1.GetData("WellnessRecord/" + Id);
+    }
 }
