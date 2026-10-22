@@ -372,7 +372,7 @@ export class OpAdvanceComponent implements OnInit {
                     { "fieldName": "AdvanceDetailID", "fieldValue": String(element.advanceDetailID || element), "opType": "13" },
                     { "fieldName": "UserId", "fieldValue": String(this.accountService.currentUserValue.userId), "opType": "13" }
                 ],
-                "mode": "IpAdvanceReceipt"
+                "mode": "OpAdvanceReceipt"
             }
             this._OpAdvanceService.getReportView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -390,7 +390,7 @@ export class OpAdvanceComponent implements OnInit {
             });
         }, 100);
     }
-
+ 
     getStatementPrint() {
         this.commonService.Onprint("AdmissionID", this.registerObj.admissionId, "IpAdvanceStatement");
     }

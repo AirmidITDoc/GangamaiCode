@@ -277,7 +277,7 @@ export class OpRefundOfAdvanceComponent implements OnInit {
         this._matDialog.closeAll(); 
     }
     viewgetRefundofAdvanceReportPdf(RefundId) {
-        this.commonService.Onprint("RefundId", RefundId, "IpAdvanceRefundReceipt");
+        this.commonService.Onprint("RefundId", RefundId, "OpAdvanceRefundReceipt");
     }
     getRefundofAdvanceListRegIdwise() {
         var m_data = {
