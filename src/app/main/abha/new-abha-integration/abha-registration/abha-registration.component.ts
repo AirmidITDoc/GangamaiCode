@@ -124,79 +124,63 @@ export class AbhaRegistrationComponent {
 
     this.abhaForm = this._registerService.createAbhaform();
 
-    if ((this.data?.regId ?? 0) > 0) {
-      setTimeout(() => {
-        this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-          this.isEditMode = true;
-          this.ABHAId = response.abhaTranId
-          if (this.ABHAId > 0) {
-            this.isProfileData = true;
-            this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
-              this.abhaNumber = response.abhaNumber
+    // if ((this.data?.regId ?? 0) > 0) {
+    //   setTimeout(() => {
+    //     this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
+    //       this.registerObj = response;
+    //       console.log(this.registerObj)
+    //       this.isEditMode = true;
+    //       this.ABHAId = response.abhaTranId
+    //       if (this.ABHAId > 0) {
+    //         this.isProfileData = true;
+    //         this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
+    //           this.abhaNumber = response.abhaNumber
 
-              this.abhaForm.patchValue({
-                abhaAddress: response.abhaAddress,
-                abhaNumber: response.abhaNumber,
-                abhaFullName: response.abhaFullName,
-                gender: response.gender,
-                yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
-              });
+    //           this.abhaForm.patchValue({
+    //             abhaAddress: response.abhaAddress,
+    //             abhaNumber: response.abhaNumber,
+    //             abhaFullName: response.abhaFullName,
+    //             gender: response.gender,
+    //             yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
+    //           });
 
-              // if (this.abhaNumber) {
-              //     this._registerService.getAbhaByNumber(this.abhaNumber).subscribe((response) => {
-              //         this.abhaList = response
-              //         console.log("ABHA List:", this.abhaList)
+    //           if (this.abhaNumber) {
+    //             // before calling getAbhaByNumber, from the OUTER response (your profile/ABHA lookup)
+    //             const defaultAddress = response.abhaAddress;   // adjust to your outer field name
 
-              //         debugger
-              //         // Make sure the default address is present in the dropdown options
-              //         const exists = this.abhaList?.some(x => x.abhaAddress === response.abhaAddress);
-              //         if (!exists && response.abhaAddress) {
-              //             this.abhaList = [{ abhaAddress: response.abhaAddress }, ...(this.abhaList || [])];
-              //         }
+    //             this._registerService.getAbhaByNumber(this.abhaNumber).subscribe({
+    //               next: (res) => {
+    //                 let list = res?.data ?? [];
 
-              //         // Re-apply the default so mat-select picks it up
-              //         this.abhaForm.get('abhaAddress')?.setValue(response.abhaAddress);
-              //     });
-              // }
-              if (this.abhaNumber) {
-                // before calling getAbhaByNumber, from the OUTER response (your profile/ABHA lookup)
-                const defaultAddress = response.abhaAddress;   // adjust to your outer field name
+    //                 // remove duplicate addresses
+    //                 list = list.filter((x, i, arr) =>
+    //                   arr.findIndex(y => y.abhaAddress === x.abhaAddress) === i);
 
-                this._registerService.getAbhaByNumber(this.abhaNumber).subscribe({
-                  next: (res) => {
-                    let list = res?.data ?? [];
+    //                 // make sure the default address is in the options
+    //                 if (defaultAddress && !list.some(x => x.abhaAddress === defaultAddress)) {
+    //                   list = [{ abhaAddress: defaultAddress }, ...list];
+    //                 }
 
-                    // remove duplicate addresses
-                    list = list.filter((x, i, arr) =>
-                      arr.findIndex(y => y.abhaAddress === x.abhaAddress) === i);
+    //                 this.abhaList = list;
+    //                 this.abhaForm.get('abhaAddress')?.setValue(defaultAddress ?? null);
+    //               },
+    //               error: (err) => console.error('ABHA address list failed', err)
+    //             });
+    //           }
+    //         });
+    //       } else {
+    //         this.isProfileData = false;
+    //       }
 
-                    // make sure the default address is in the options
-                    if (defaultAddress && !list.some(x => x.abhaAddress === defaultAddress)) {
-                      list = [{ abhaAddress: defaultAddress }, ...list];
-                    }
-
-                    this.abhaList = list;
-                    this.abhaForm.get('abhaAddress')?.setValue(defaultAddress ?? null);
-                  },
-                  error: (err) => console.error('ABHA address list failed', err)
-                });
-              }
-            });
-          } else {
-            this.isProfileData = false;
-          }
-
-          this.regNo = this.registerObj.regNo
-          this.pincode = this.registerObj.pinNo
-          this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-          this.value = this.registerObj.dateofBirth
-          this.onChangeDateofBirth(this.registerObj.dateofBirth)
-          this.onChangePincode(this.pincode)
-        });
-      }, 500);
-    }
+    //       this.regNo = this.registerObj.regNo
+    //       this.pincode = this.registerObj.pinNo
+    //       this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+    //       this.value = this.registerObj.dateofBirth
+    //       this.onChangeDateofBirth(this.registerObj.dateofBirth)
+    //       this.onChangePincode(this.pincode)
+    //     });
+    //   }, 500);
+    // }
 
     if ((this.data?.abhaTranId ?? 0) > 0) {
       this.isProfileData = true;
@@ -215,47 +199,6 @@ export class AbhaRegistrationComponent {
         });
       }, 500);
     }
-
-    // this data will be common every time when reg form will open from abha dont delete
-    // if (this.data?.profile) {
-    //     this.isProfileData = true;
-    //     console.log('Profile data from ABHA', this.data.profile)
-    //     this.abhaGender = this.data.profile.gender
-    //     this.tryMapGenderAndPrefix();
-    //     this.onChangePincode(this.data.profile.pincode)
-
-    //     this.personalFormGroup.patchValue({
-    //         FirstName: this.data.profile.firstName,
-    //         MiddleName: this.data.profile.middleName,
-    //         LastName: this.data.profile.lastName,
-    //         MobileNo: this.data.profile.mobile,
-    //         Address: this.data.profile.address,
-    //         PinNo: this.data.profile.pincode
-    //     });
-
-    //     this.abhaForm.patchValue({
-    //         abhaAddress: this.data.profile.preferredAbhaAddress,
-    //         abhaNumber: this.data.profile.abhaNumber,
-    //         abhaFullName: this.data.profile.name,
-    //         gender: this.data.profile.gender,
-    //         yearOfBirth: `${this.data.profile.dayOfBirth}-${this.data.profile.monthOfBirth}-${this.data.profile.yearOfBirth}`
-    //     });
-
-    //     const now = new Date();
-
-    //     const dobString =
-    //         `${this.data.profile.yearOfBirth}-${String(this.data.profile.monthOfBirth).padStart(2, '0')}-${String(this.data.profile.dayOfBirth).padStart(2, '0')}` +
-    //         `T${String(now.getHours()).padStart(2, '0')}:` +
-    //         `${String(now.getMinutes()).padStart(2, '0')}:` +
-    //         `${String(now.getSeconds()).padStart(2, '0')}`;
-
-    //     if (dobString) {
-    //         setTimeout(() => {
-    //             this.registerObj.dateofBirth = new Date(dobString)
-    //             this.onChangeDateofBirth(this.registerObj.dateofBirth);
-    //         }, 1000);
-    //     }
-    // }
 
     // new abha integration
 
@@ -302,7 +245,9 @@ export class AbhaRegistrationComponent {
 
       if (this.data.profile.abhaNumber) {
         this._registerService.getAbhaByNumber(this.data.profile.abhaNumber).subscribe((response) => {
-          this.abhaList = response
+          console.log('ABHA Response:', response);
+          console.log('Is Array:', Array.isArray(response));
+          this.abhaList = response.data
           console.log("ABHA List:", this.abhaList)
         });
       }

@@ -160,7 +160,8 @@ export class AdmissionService {
             emailId: ['', [Validators.email]],
 
             isMember: false,
-            abhaTranId: 0
+            abhaTranId: 0,
+            districtId:0
         });
     }
     // this.accountService.currentUserValue.user.unitId

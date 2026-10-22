@@ -1719,7 +1719,8 @@ export class NewAppointmentComponent implements OnInit {
 
             membershipId: [this.MembershipId],
             isMember: false,
-            abhaTranId: 0
+            abhaTranId: 0,
+            districtId:0
         });
     }
 
