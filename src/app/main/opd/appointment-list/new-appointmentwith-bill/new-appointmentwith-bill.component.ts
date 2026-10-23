@@ -503,7 +503,7 @@ export class NewAppointmentwithBillComponent {
             membershipId: 0,
             isMember: false,
             abhaTranId: 0,
-
+            districtId:0
         })
     }
 
