@@ -36,9 +36,9 @@
                             <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
                                 [formGroup]="searchFormGroup" formControlName="RegId"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
-                                ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                ApiUrl="OutPatient/auto-complete?Keyword="
                                 (selectionChange)="getSelectedObjReg($event)" ValueField="regId"
-                                TextField="formattedText"></airmid-autocomplete>
+                                ></airmid-autocomplete>
                         </form>
                         <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
                             <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;
@@ -52,17 +52,9 @@
                                             <app-patient-information [uhidNo]="registerObj?.regNo"
                                                 [patientName]=" (registerObj?.firstName || '') +
                                           (registerObj?.middleName ? ' ' + registerObj.middleName : '') + (registerObj?.lastName ? ' ' + registerObj.lastName : '')
-                                                                        || registerObj?.patientName                                                           "
-                                                [doctorName]="registerObj?.doctorName"
-                                                [departmentName]="registerObj?.departmentName"
-                                                [doa]="registerObj?.admissionDate"
+                                                                        || registerObj?.patientName"
                                                 [ageString]="(registerObj?.ageYear !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
-                                                [mobileNo]="registerObj?.mobileNo"
-                                                [refDocName]="registerObj?.refDocName"
-                                                [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
-                                                [patientType]="registerObj?.patientType"
-                                                [tariffName]="registerObj?.tariffName"
-                                                [companyName]="registerObj?.companyName"></app-patient-information>
+                                                [mobileNo]="registerObj?.mobileNo" ></app-patient-information>
                                         </div>
                                     </div>
                                 </div>
