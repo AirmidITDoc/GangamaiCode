@@ -213,20 +213,29 @@ export class AbhaRegistrationComponent {
     // this data will be used only to featch patientid
     if (this.data?.patient) {
       console.log('Patient data from ABHA', this.data?.patient)
+
+      this.regNo = this.data?.patient.regNo
+      this.personalFormGroup.get("RegId").setValue(this.data?.patient.regId)
+
+      this.personalFormGroup.patchValue({
+        PrefixId: this.data?.patient.prefixId,
+        GenderId: this.data?.patient.genderId,
+        FirstName: this.data?.patient.firstName,
+        MiddleName: this.data.patient.middleName,
+        LastName: this.data.patient.lastName,
+        MobileNo: this.data.patient.mobileNo,
+        Address: this.data.patient.address,
+        PinNo: this.data.patient.pinNo,
+        CityId: this.data.patient.cityId,
+        districtId: this.data.patient.cityId,
+        StateId: this.data.patient.stateId,
+      });
+
       setTimeout(() => {
-        this._registerService.getRegistraionById(this.data?.patient?.regId).subscribe((response) => {
-          // this.registerObj = response;
-          console.log("Reg Data:", response)
-          this.regNo = response.regNo
-          this.personalFormGroup.get("RegId").setValue(response.regId)
-          this.ABHAId = response.abhaTranId
-          if (this.ABHAId > 0) {
-            this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
-              this.abhaForm.get('abhaAddress')?.setValue(response.abhaAddress);
-            });
-          }
-        });
-      }, 500);
+        this.registerObj.dateofBirth = this.data.patient.dateofBirth;
+        this.onChangeDateofBirth(this.registerObj.dateofBirth);
+      }, 1000);
+
     }
 
     this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
@@ -327,14 +336,14 @@ export class AbhaRegistrationComponent {
 
     const Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
     this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-  
+
     this.personalFormGroup.get('CityId').setValue(this.districtList.cityId)
     this.personalFormGroup.get('City').setValue(this.districtList.cityName)
 
     // i am passing here districtLgdcode so in comparision screen i get cityname & statename from that code
     this.personalFormGroup.get('districtId').setValue(this.districtList.districtLgdcode)
     this.personalFormGroup.get('StateId').setValue(this.districtList.stateId)
-    
+
     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))

@@ -389,7 +389,8 @@ export class AbhaPatientCardComponent {
         maxHeight: '95%',
         width: '90%',
         data: {
-          profile: this.data
+          profile: this.profile
+          // profile: this.data
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -405,8 +406,8 @@ export class AbhaPatientCardComponent {
         maxHeight: '95%',
         width: '94%',
         data: {
-          patient: this.registerObj,
-          profile: this.profile
+          patient: this.registerObj
+          // profile: this.profile
         }
       }
     );

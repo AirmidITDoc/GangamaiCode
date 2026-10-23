@@ -93,12 +93,13 @@
             <div class="form-btn action-row">
               <p class="abha-note">
                 <mat-icon class="abha-note__icon">info_outline</mat-icon>
-                <span>Patient registered details will be updated as per ABHA details</span>
+                <span>Patient will be new registered as per ABHA details</span>
               </p>
-              <button mat-raised-button color="primary" (click)="OnContinueAbha()">
-                Link & Continue
+              <button mat-raised-button color="primary" (click)="onNewregistration()">
+                New Registration
               </button>
             </div>
+
           </mat-card-content>
         </mat-card>
       </form>
@@ -168,7 +169,7 @@
               <mat-icon>person_outline</mat-icon> Personal Information
             </h3>
 
-            <div class="personal-photo-wrap" *ngIf="regPhotoSrc && showCard">
+            <div class="personal-photo-wrap" *ngIf="abhaNumber && regPhotoSrc && showCard">
               <span class="personal-photo-label">ABHA Photo</span>
               <img class="personal-photo-img" [src]="regPhotoSrc" alt="ABHA Photo" (error)="onPhotoError()" />
             </div>
@@ -233,12 +234,37 @@
             </div>
 
             <div class="form-btn action-row">
+              <p class="abha-note">
+                <mat-icon class="abha-note__icon">info_outline</mat-icon>
+                <span>Patient registered details will be updated as per ABHA details</span>
+              </p>
+              <button mat-raised-button color="primary" type="button" (click)="OnContinueAbha()">
+                Link &amp; Continue
+              </button>
+            </div>
+
+            <div class="form-btn action-row">
+              <button mat-raised-button type="button" (click)="OnEditRegistration()">
+                Continue without link
+              </button>
+            </div>
+            <!-- <div class="form-btn action-row">
+              <p class="abha-note">
+                <mat-icon class="abha-note__icon">info_outline</mat-icon>
+                <span>Patient registered details will be updated as per ABHA details</span>
+              </p>
+              <button mat-raised-button color="primary" (click)="OnContinueAbha()">
+                Link & Continue
+              </button>
+            </div>
+
+            <div class="form-btn action-row">
               <ng-container>
                 <button mat-raised-button color="primary" (click)="OnEditRegistration()">
-                  Continue
+                  Continue without link
                 </button>
               </ng-container>
-            </div>
+            </div> -->
           </mat-card-content>
         </mat-card>
 

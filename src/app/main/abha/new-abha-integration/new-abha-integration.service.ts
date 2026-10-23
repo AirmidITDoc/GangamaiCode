@@ -78,7 +78,8 @@ export class NewAbhaIntegrationService {
         this._FormvalidationserviceService.noWhitespaceValidator()
       ]],
 
-      Address: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
+      Address: [''],
+      // Address: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
       // aadharCardNo: ['', [
       //     Validators.minLength(maxLen),
       //     Validators.maxLength(maxLen),
@@ -130,7 +131,8 @@ export class NewAbhaIntegrationService {
       RegDate: ['', Validators.required],
       RegTime: ['', Validators.required],
       Photo: [''],
-      PinNo: ['', [Validators.required]],
+      PinNo: [''],
+      // PinNo: ['', [Validators.required]],
 
       //emergency form
       emgContactPersonName: ['', [
