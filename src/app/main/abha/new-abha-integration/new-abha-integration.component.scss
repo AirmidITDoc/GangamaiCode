@@ -10,3 +10,25 @@
   min-height: 24px !important;
   height: 24px !important;
 }
+
+.abha-readonly-panel .mat-mdc-option {
+  pointer-events: none;      /* clicks do nothing */
+  cursor: default;
+}
+
+/* keep the list scrollable if there are many addresses */
+.abha-readonly-panel {
+  pointer-events: auto;
+}
+
+.abha-select {
+  width: 100%;
+  min-width: 200px;
+  margin: 2px 0;
+}
+
+.abha-empty {
+  display: inline-block;
+  padding-left: 8px;
+  color: rgba(0, 0, 0, 0.45);
+}

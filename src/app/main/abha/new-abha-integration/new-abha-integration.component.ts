@@ -89,11 +89,11 @@ export class NewAbhaIntegrationComponent {
     { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
-      heading: "ABHA Number", key: "abhaNumber", sort: true, align: "left", width: 650, type: gridColumnTypes.template,
+      heading: "ABHA Number", key: "abhaNumber", sort: true, align: "left", width: 250, type: gridColumnTypes.template,
       template: this.abhaNumber
     },
     {
-      heading: "ABHA Address", key: "abhaAddress", sort: true, align: "left", width: 650, type: gridColumnTypes.template,
+      heading: "ABHA Address", key: "abhaAddress", sort: true, align: "left", width: 250, type: gridColumnTypes.template,
       template: this.abhaAddress
     },
     // { heading: "ABHA Number", key: "abhaNumber", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -125,10 +125,28 @@ export class NewAbhaIntegrationComponent {
     this.expandedabhaNumberRows.add(element);
   }
 
+  getSelectedAbha(element: any): string | null {
+    return element.selectedAbhaAddress
+      ?? this.getAbhaAddressArray(element?.abhaAddress)[0]
+      ?? null;
+  }
+
+  onAbhaSelect(element: any, value: string) {
+    element.selectedAbhaAddress = value;   // use this when you match or save the patient
+  }
+
   getAbhaAddressArray(abhaAddress: string | null | undefined): string[] {
     return abhaAddress
       ? abhaAddress.split('|').map(abhaAddress => abhaAddress.trim()).filter(Boolean)
       : [];
+  }
+
+  getCleanAbhaList(value: any): string[] {
+    return Array.from(new Set(
+      this.getAbhaAddressArray(value)
+        .map(a => (a ?? '').toString().trim())
+        .filter(a => a && a !== '...' && a !== '-')
+    ));
   }
 
   isExpandedAbhaAddress(element: any): boolean {

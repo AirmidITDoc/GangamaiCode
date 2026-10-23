@@ -134,7 +134,7 @@
 
                                                 </div>
 
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                     <airmid-dropdown label="City" formControlName="CityId"
                                                         [formGroup]="personalFormGroup" [value]="registerObj?.cityId"
@@ -143,12 +143,19 @@
                                                         (selectionChange)="onChangecity($event)"
                                                         ApiUrl="CityMaster/get-cities">
                                                     </airmid-dropdown>
+                                                </div> -->
+
+                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="District" formControlName="districtId"
+                                                        [formGroup]="personalFormGroup"
+                                                        [mode]="autocompleteModedistirct" (optionSelected)="onChangedistirct($event)">
+                                                    </airmid-dropdown>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-dropdown label="State" formControlName="StateId"
-                                                        [value]="registerObj?.stateId" [formGroup]="personalFormGroup"
-                                                        #ddlState [mode]="autocompleteModestate"
+                                                        [formGroup]="personalFormGroup"
+                                                        [mode]="autocompleteModestate"
                                                         (optionSelected)="onChangestate($event)">
                                                     </airmid-dropdown>
                                                 </div>
@@ -160,12 +167,12 @@
                                                     </airmid-dropdown>
                                                 </div>
 
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-dropdown label="District" formControlName="districtId"
                                                         [formGroup]="personalFormGroup" [value]="registerObj?.districtId"
                                                         [mode]="autocompleteModedistirct">
                                                     </airmid-dropdown>
-                                                </div>
+                                                </div> -->
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <div fxLayout="row" class="gap-4" style="margin-left: 5px;">

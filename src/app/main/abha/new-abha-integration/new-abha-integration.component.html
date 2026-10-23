@@ -55,7 +55,7 @@
             </mat-chip-set>
         </ng-template>
 
-        <ng-template #abhaAddress let-element>
+        <!-- <ng-template #abhaAddress let-element>
             <mat-chip-set>
                 <mat-chip *ngFor="let abhaaddress of getAbhaAddressArray(element?.abhaAddress)
                 .slice(0, isExpandedAbhaAddress(element) ? undefined : visibleCountAbhaaddre)">
@@ -68,6 +68,24 @@
                     +{{ getAbhaAddressArray(element?.abhaAddress).length - visibleCountAbhaaddre }} more
                 </mat-chip>
             </mat-chip-set>
+        </ng-template> -->
+
+        <ng-template #abhaAddress let-element>
+            <ng-container *ngIf="getCleanAbhaList(element?.abhaAddress) as list">
+
+                <!-- no address: one plain line -->
+                <span *ngIf="list.length === 0" class="abha-empty">—</span>
+
+                <!-- has address: readonly dropdown, last address selected -->
+                <mat-form-field *ngIf="list.length > 0" appearance="outline" class="abha-select">
+                    <mat-select [value]="list[list.length - 1]" panelClass="abha-readonly-panel"
+                        (selectionChange)="$event.source.writeValue(list[list.length - 1])"
+                        (click)="$event.stopPropagation()">
+                        <mat-option *ngFor="let addr of list" [value]="addr">{{ addr }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </ng-container>
         </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content">

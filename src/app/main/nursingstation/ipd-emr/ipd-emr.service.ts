@@ -23,7 +23,7 @@ export class IpdEmrService {
 
   public onSaveFamilyData(param) {
     // if (param[0].regId) {
-      return this._httpClient.PostData("EMR/SaveFamilyHistory", param);
+    return this._httpClient.PostData("EMR/SaveFamilyHistory", param);
     // } return this._httpClient.PostData("EMR/InsertFamilyHistory", param);
   }
 
@@ -33,5 +33,15 @@ export class IpdEmrService {
 
   public getFamilyHistory(param) {
     return this._httpClient.PostData("EMR/FamilyMedicalHistoryList", param);
+  }
+
+  public wellnessSave(Param: any) {
+    if (Param.wlsId) {
+      return this._httpClient.PutData("WellnessRecord/Edit/" + Param.wlsId, Param);
+    } else return this._httpClient.PostData("WellnessRecord/Insert", Param);
+  }
+
+  public getWellnessId(id) {
+    return this._httpClient.GetData("WellnessRecord/" + id);
   }
 }

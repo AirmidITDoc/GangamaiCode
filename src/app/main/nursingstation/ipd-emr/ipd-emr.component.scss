@@ -1,3 +1,31 @@
+.emr-tabs {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.emr-tabs ::ng-deep .mat-mdc-tab-body-wrapper,
+.emr-tabs ::ng-deep .mat-tab-body-wrapper {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+}
+
+.emr-tabs ::ng-deep .mat-mdc-tab-body-content,
+.emr-tabs ::ng-deep .mat-tab-body-content {
+    height: 100%;
+    overflow: hidden;
+    padding: 0 !important;
+}
+
+/* the scroll card must fill the tab and do the scrolling itself */
+.emr-tabs .ipdemr-scroll {
+    height: 100% !important;
+    flex: none !important;
+    overflow-y: auto !important;
+}
+
+
 .ipd-emr-page {
     width: 100%;
     height: 100vh !important;
@@ -381,7 +409,6 @@
     margin-right: 5px !important;
 }
 
-
 /* Relationship */
 .relationship-field {
     width: 10%;
@@ -390,6 +417,24 @@
     min-width: 0;
 
     margin-right: 5px !important;
+}
+
+/// wellness
+.wellness-field {
+    flex: 1 1 0; // each field grows to fill the row equally
+    min-width: 120px;
+    width: auto; // remove the fixed 23%
+    margin-right: 5px !important;
+    box-sizing: border-box;
+}
+
+/* dd */
+.wellness-dd-field {
+    flex: 1 1 0; // grow equally with the other fields
+    min-width: 120px; // a 10% width is too small for the dropdown text
+    width: auto; // remove the fixed 10%
+    margin-right: 5px !important;
+    box-sizing: border-box;
 }
 
 .relationship-field airmid-dropdown,
@@ -528,6 +573,10 @@
     margin: 5px 5px 0 0 !important;
 }
 
+/* keep the sticky footer from shrinking */
+.ipd-main-content>.modal-footer2 {
+    flex: 0 0 42px;
+}
 
 // .ipd-main-content > .modal-footer1 {
 //     /*

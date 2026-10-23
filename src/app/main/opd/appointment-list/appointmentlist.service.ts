@@ -150,7 +150,7 @@ export class AppointmentlistService {
             campId: [0],
             followupDate: [(new Date()).toISOString()],
             // HealthcardDate: [  [
-                // new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()],
+            // new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()],
             crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
@@ -206,7 +206,7 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("VisitDetail/Update", Param);
     }
 
-     public getuserwisecashcounterlist(vUserID,Type) {
+    public getuserwisecashcounterlist(vUserID, Type) {
         return this._httpClient1.GetData("VisitDetail/SearchUserWiseCashCounterList?LoginId=" + vUserID + "&CCType=" + Type);
     }
 
@@ -334,9 +334,9 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("Report/ViewReport", Param);
     }
 
- 
 
-      public getNewReportView(Param) {
+
+    public getNewReportView(Param) {
         return this._httpClient1.PostData("Report/NewViewReport", Param);
     }
     public getReportView(Param) {
@@ -357,21 +357,21 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
     }
 
-    
 
 
-     public getfollowuplist(employee) {
+
+    public getfollowuplist(employee) {
         return this._httpClient1.PostData("VisitDetail/Follow_up_List", employee)
     }
 
-  public getFollowupList(employee) {
+    public getFollowupList(employee) {
         return this._httpClient1.PostData("VisitDetail/Follow_up_List", employee)
     }
 
- public getCanclelist(employee) {
+    public getCanclelist(employee) {
         return this._httpClient1.PostData("VisitDetail/AppointmentCancelList", employee)
     }
-    
+
     public getBillingServiceList(employee) {
         return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)
     }
@@ -441,7 +441,7 @@ export class AppointmentlistService {
     }
     ///
     public UpdateFollowupdate(param) {
-        return this._httpClient1.PutData("VisitDetail/FollowupDateUpdate/"+param.visitId, param);
+        return this._httpClient1.PutData("VisitDetail/FollowupDateUpdate/" + param.visitId, param);
     }
     public InsertRegistrationBilling(Param: any) {
 
@@ -480,19 +480,19 @@ export class AppointmentlistService {
     }
 
 
-      public getbypincode(pin) {
+    public getbypincode(pin) {
         return this._httpClient1.GetData("AreaMaster/search_AreaMaster?Keyword=" + pin)
     }
- public getstatebypincode(obj) {
+    public getstatebypincode(obj) {
         return this._httpClient1.GetData("CityMaster/" + obj)
     }
 
-     public getDocServicelist(Param) {
+    public getDocServicelist(Param) {
         return this._httpClient1.PostData("Common", Param)
     }
 
     getDiagnosisList(descriptionType: string) {
-    return this._httpClient1.GetData('OPDPrescriptionMedical/GetDiagnosisList?descriptionType=' + descriptionType);
+        return this._httpClient1.GetData('OPDPrescriptionMedical/GetDiagnosisList?descriptionType=' + descriptionType);
     }
 
     public InsertWellnessInfo(Param) {
@@ -503,5 +503,9 @@ export class AppointmentlistService {
 
     public getWellnessDetailsById(Id) {
         return this._httpClient1.GetData("WellnessRecord/" + Id);
+    }
+
+    public getDistrictId(param) {
+        return this._httpClient1.PostData("CityMaster/DistrictLgdcode", param);
     }
 }

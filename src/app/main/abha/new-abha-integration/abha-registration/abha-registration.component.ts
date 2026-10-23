@@ -65,6 +65,7 @@ export class AbhaRegistrationComponent {
   isExpanded1 = false;
   abhaNumber: any;
   abhaList: any = [];
+  districtList: any = [];
   options: string[]
   filteredOptions: Observable<string[]>;
   Is9_Digit_National_Id: boolean = false;
@@ -73,9 +74,10 @@ export class AbhaRegistrationComponent {
   autocompleteModegender: string = "Gender";
   autocompleteModearea: string = "Area";
   autocompleteModecity: string = "City";
-  autocompleteModestate: string = "State";
+  autocompleteModestate: string = "AbhaState";
+  // autocompleteModestate: string = "State";
   autocompleteModecountry: string = "Country";
-  autocompleteModedistirct: string = "Taluka";
+  autocompleteModedistirct: string = "AbhaCity";
   autocompleteModemstatus: string = "MaritalStatus";
   autocompleteModereligion: string = "Religion";
   autocompleteModerelationship: string = "Relationship";
@@ -124,81 +126,23 @@ export class AbhaRegistrationComponent {
 
     this.abhaForm = this._registerService.createAbhaform();
 
-    // if ((this.data?.regId ?? 0) > 0) {
+    // if ((this.data?.abhaTranId ?? 0) > 0) {
+    //   this.isProfileData = true;
     //   setTimeout(() => {
-    //     this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
-    //       this.registerObj = response;
-    //       console.log(this.registerObj)
-    //       this.isEditMode = true;
-    //       this.ABHAId = response.abhaTranId
-    //       if (this.ABHAId > 0) {
-    //         this.isProfileData = true;
-    //         this._registerService.getAbhaById(this.ABHAId).subscribe((response) => {
-    //           this.abhaNumber = response.abhaNumber
-
-    //           this.abhaForm.patchValue({
-    //             abhaAddress: response.abhaAddress,
-    //             abhaNumber: response.abhaNumber,
-    //             abhaFullName: response.abhaFullName,
-    //             gender: response.gender,
-    //             yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
-    //           });
-
-    //           if (this.abhaNumber) {
-    //             // before calling getAbhaByNumber, from the OUTER response (your profile/ABHA lookup)
-    //             const defaultAddress = response.abhaAddress;   // adjust to your outer field name
-
-    //             this._registerService.getAbhaByNumber(this.abhaNumber).subscribe({
-    //               next: (res) => {
-    //                 let list = res?.data ?? [];
-
-    //                 // remove duplicate addresses
-    //                 list = list.filter((x, i, arr) =>
-    //                   arr.findIndex(y => y.abhaAddress === x.abhaAddress) === i);
-
-    //                 // make sure the default address is in the options
-    //                 if (defaultAddress && !list.some(x => x.abhaAddress === defaultAddress)) {
-    //                   list = [{ abhaAddress: defaultAddress }, ...list];
-    //                 }
-
-    //                 this.abhaList = list;
-    //                 this.abhaForm.get('abhaAddress')?.setValue(defaultAddress ?? null);
-    //               },
-    //               error: (err) => console.error('ABHA address list failed', err)
-    //             });
-    //           }
-    //         });
-    //       } else {
-    //         this.isProfileData = false;
-    //       }
-
-    //       this.regNo = this.registerObj.regNo
-    //       this.pincode = this.registerObj.pinNo
-    //       this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-    //       this.value = this.registerObj.dateofBirth
-    //       this.onChangeDateofBirth(this.registerObj.dateofBirth)
-    //       this.onChangePincode(this.pincode)
+    //     this._registerService.getAbhaById(this.data.abhaTranId).subscribe((response) => {
+    //       console.log('Get ABHA DATA', response)
+    //       this.abhaGender = response.gender
+    //       this.tryMapGenderAndPrefix();
+    //       this.abhaForm.patchValue({
+    //         abhaAddress: response.abhaAddress,
+    //         abhaNumber: response.abhaNumber,
+    //         abhaFullName: response.abhaFullName,
+    //         gender: response.gender,
+    //         yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
+    //       });
     //     });
     //   }, 500);
     // }
-
-    if ((this.data?.abhaTranId ?? 0) > 0) {
-      this.isProfileData = true;
-      setTimeout(() => {
-        this._registerService.getAbhaById(this.data.abhaTranId).subscribe((response) => {
-          console.log('Get ABHA DATA', response)
-          this.abhaGender = response.gender
-          this.tryMapGenderAndPrefix();
-          this.abhaForm.patchValue({
-            abhaAddress: response.abhaAddress,
-            abhaNumber: response.abhaNumber,
-            abhaFullName: response.abhaFullName,
-            gender: response.gender,
-            yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
-          });
-        });
-      }, 500);
-    }
 
     // new abha integration
 
@@ -217,8 +161,13 @@ export class AbhaRegistrationComponent {
         LastName: this.data.profile.lastName ?? this.data.profile.name.trim().split(/\s+/)[2],
         MobileNo: this.data.profile.mobile ?? this.data.profile.mobileNumber.toString().substring(2),
         Address: this.data.profile.address,
-        PinNo: this.data.profile.pinCode ?? this.data.profile.pincode
+        PinNo: this.data.profile.pinCode ?? this.data.profile.pincode,
+        // CityId: this.data.profile.districtCode,
+        districtId: this.data.profile.districtCode,
+        StateId: this.data.profile.stateCode,
       });
+
+      this.onChangedistirct(this.data.profile.districtCode)
 
       const dob = this.data.profile.dob;
       let dobUP;
@@ -245,8 +194,6 @@ export class AbhaRegistrationComponent {
 
       if (this.data.profile.abhaNumber) {
         this._registerService.getAbhaByNumber(this.data.profile.abhaNumber).subscribe((response) => {
-          console.log('ABHA Response:', response);
-          console.log('Is Array:', Array.isArray(response));
           this.abhaList = response.data
           console.log("ABHA List:", this.abhaList)
         });
@@ -380,8 +327,14 @@ export class AbhaRegistrationComponent {
 
     const Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
     this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-    this.personalFormGroup.get('City').setValue(this.CityName)
+  
+    this.personalFormGroup.get('CityId').setValue(this.districtList.cityId)
+    this.personalFormGroup.get('City').setValue(this.districtList.cityName)
 
+    // i am passing here districtLgdcode so in comparision screen i get cityname & statename from that code
+    this.personalFormGroup.get('districtId').setValue(this.districtList.districtLgdcode)
+    this.personalFormGroup.get('StateId').setValue(this.districtList.stateId)
+    
     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
@@ -547,6 +500,30 @@ export class AbhaRegistrationComponent {
   }
 
   onChangestate(e) {
+  }
+
+  onChangedistirct(e) {
+
+    const m_data =
+    {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "CityId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "DistrictLGDCode",
+          "fieldValue": String(e),
+          "opType": "Contains"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+
+    this._registerService.getDistrictId(m_data).subscribe(list => {
+      this.districtList = list.data[0]
+    });
   }
 
   onChangecity(e) {
@@ -820,9 +797,9 @@ export class AbhaRegistrationComponent {
       console.log(data)
 
       this.registerObj.stateId = data.stateId
-      this._registerService.getstateId(data.stateId).subscribe((Response) => {
-        this.ddlCountry.SetSelection(Response.countryId);
-      });
+      // this._registerService.getstateId(data.stateId).subscribe((Response) => {
+      //   this.ddlCountry.SetSelection(Response.countryId);
+      // });
     });
   }
 

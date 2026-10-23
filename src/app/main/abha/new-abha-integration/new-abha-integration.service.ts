@@ -121,7 +121,7 @@ export class NewAbhaIntegrationService {
       // StateId: [0],
       // CountryId: [0],
       StateId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      CountryId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CountryId: [1, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       districtId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       IsCharity: false,
       IsSeniorCitizen: false,
@@ -291,4 +291,8 @@ export class NewAbhaIntegrationService {
       return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param);
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param);
   }
+
+   public getDistrictId(param) {
+        return this._httpClient1.PostData("CityMaster/DistrictLgdcode", param);
+    }
 }

@@ -119,8 +119,8 @@ export class AbhaPatientCardComponent {
       // this.mobileNoSV = this.profile.mobileNumber;
       this.mobileNoSV = this.profile.mobileNumber.toString().substring(2);
       this.pincodeSV = this.profile.pincode;
-      this.districSV = this.profile.district;
-      this.stateSV = this.profile.state;
+      this.districSV = this.profile.district ?? this.profile.districtName;
+      this.stateSV = this.profile.state ?? this.profile.stateName;
       this.addressSV = this.profile.address;
     }
 
@@ -228,29 +228,6 @@ export class AbhaPatientCardComponent {
       this.showRegBtn = true;
       this.fullname = obj.patientName
 
-      // this.abhaService.getAbhaTransactionIdList(this.data?.transactionId).subscribe({
-      //   next: (response: any) => {
-      //     console.log('GET RESPONSE:', response);
-      //     // this.abhaNumber = response.abhaNumber
-      //     // this.abhaAddress = response.sbxId
-
-      //     if (this.data.abhaNumber === this.abhaNumber) {
-      //       // Same ABHA -> Show Update button only
-      //       this.showUpdateAbha = true;
-      //       this.showLinkAbha = false;
-      //       this.showRegBtn = false
-      //     } else {
-      //       // Different ABHA -> Show Link ABHA
-      //       this.showUpdateAbha = false;
-      //       this.showLinkAbha = true;
-      //       this.showRegBtn = true;
-      //     }
-      //   },
-      //   error: (error) => {
-      //     console.error('Get API Error:', error);
-      //   }
-      // })
-
       this._AppointmentlistService.getAbhaById(obj.abhaTranId).subscribe((response) => {
         this.abhaNumber = response.abhaNumber
         this.abhaAddress = response.abhaAddress
@@ -285,17 +262,43 @@ export class AbhaPatientCardComponent {
             this.genderN = response.genderName;
           });
 
-          this._AppointmentlistService.getCityId(this.registerObj.cityId).subscribe((response) => {
-            this.cityN = response.cityName;
-          });
+          this.fetchDistrictData(this.registerObj.districtId)
 
-          this._AppointmentlistService.getstateId(this.registerObj.stateId).subscribe((response) => {
-            this.stateN = response.stateName;
-          });
+          // this._AppointmentlistService.getCityId(this.registerObj.cityId).subscribe((response) => {
+          //   this.cityN = response.cityName;
+          // });
+
+          // this._AppointmentlistService.getstateId(this.registerObj.stateId).subscribe((response) => {
+          //   this.stateN = response.stateName;
+          // });
 
         });
       }, 100);
     }
+  }
+
+  fetchDistrictData(id: any = null) {
+    const m_data =
+    {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "CityId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "DistrictLGDCode",
+          "fieldValue": String(id),
+          "opType": "Contains"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+
+    this._AppointmentlistService.getDistrictId(m_data).subscribe(list => {
+      this.cityN = list.data[0].cityName;
+      this.stateN = list.data[0].stateName;
+    });
   }
 
   fetchGenderlist(callback?: () => void) {

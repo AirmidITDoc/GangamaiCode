@@ -11,6 +11,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PatientList } from '../clinical-care-chart/clinical-care-chart.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ipd-emr',
@@ -88,6 +90,8 @@ export class IpdEMRComponent implements OnInit {
   @ViewChild('chiefComplaintInput') chiefComplaintInput: AirmidChipautocompleteComponent;
 
   autocompleteModebloodGroup: string = "BloodGroupTypes";
+  autocompleteModeActive: string = "ActivityLevel";
+  autocompleteModeSmoking: string = "SmokingStatus";
 
   dsFamilyHistoryList = new MatTableDataSource<FamilyHistoryList>();
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
@@ -95,6 +99,7 @@ export class IpdEMRComponent implements OnInit {
   relationshipName: any;
   MyForm!: FormGroup;
   familyHistoryForm!: FormGroup;
+  wellnessForm: FormGroup;
   vitalsForm: FormGroup;
   emrForm!: FormGroup;
   AllCompExmDescription: any = []
@@ -118,25 +123,10 @@ export class IpdEMRComponent implements OnInit {
     public toastr: ToastrService,
     public _formbuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
+    private datePipe: DatePipe,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     @Optional() public dialogRef: MatDialogRef<IpdEMRComponent>
   ) { }
-
-  // ngOnInit(): void {
-  //   this.getPatientListwardWise();
-  //   this.MyForm = this.createMyForm()
-
-  //   this.createEMRForm();
-  //   this.emrForm.markAllAsTouched();
-
-  //   this.familyHistoryForm = this.createFamilyMedicalHistory();
-  //   this.familyHistoryForm.markAllAsTouched();
-
-  //   this.vitalsForm = this.createVitalsForm();
-  //   this.vitalsForm.markAllAsTouched();
-
-  //   this.getBMIcalculation();
-  // }
 
   ngOnInit(): void {
 
@@ -148,6 +138,10 @@ export class IpdEMRComponent implements OnInit {
     this.emrForm.markAllAsTouched();
     this.familyHistoryForm.markAllAsTouched();
     this.vitalsForm.markAllAsTouched();
+
+    this.wellnessForm = this.createWellness();
+    this.wellnessForm.markAllAsTouched();
+
     this.getBMIcalculation();
 
     const dialogPatient = this.data?.data;
@@ -164,6 +158,7 @@ export class IpdEMRComponent implements OnInit {
     } else {
       this.getPatientListwardWise();
     }
+
   }
 
   createMyForm(): FormGroup {
@@ -307,39 +302,42 @@ export class IpdEMRComponent implements OnInit {
 
   /////////////////////////////////End Of Vitals FormArray////////////////////////////
 
-  //////////////////////////////////////// main patient list ////////////////////////////////////////
-  // @ViewChild('grid5') grid5: AirmidTableComponent;
-  // gridConfig5: gridModel = new gridModel();
-  // pname = "%"
-  // wardid = '0'
-  // doctorid = '0'
-  // getPatientListwardWise() {
-  //   this.gridConfig5 = {
-  //     apiUrl: "ClinicalCare/AdmisionListNursingList",
-  //     columnsList: [
-  //       { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-  //       { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
-  //       { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-  //       { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
-  //       { heading: "Bed", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
-  //       { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-  //     ],
-  //     sortField: "RegNo",
-  //     sortOrder: 0,
-  //     filters: [
-  //       { fieldName: "PatientName", fieldValue: this.pname, opType: OperatorComparer.Equals },
-  //       { fieldName: "WardId", fieldValue: this.wardid, opType: OperatorComparer.Equals },
-  //       { fieldName: "DoctorId", fieldValue: this.doctorid, opType: OperatorComparer.Equals }
-  //     ]
-  //   }
-  //   setTimeout(() => {
-  //     if (this.grid5) {
-  //       this.grid5.gridConfig = this.gridConfig5;
-  //       this.grid5.bindGridData();
-  //     }
-  //   });
-  // }
+  ////////////// wellness form ////////////////////
 
+  createWellness(): FormGroup {
+    return this._formbuilder.group({
+
+      wlsId: [0],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      opiptype: [1],
+
+      stepCount: [0],
+      caloriesBurned: [0],
+      sleepDuration: [0],
+      activityLevel: [0],
+
+      bloodGlucose: [0],
+      fluidIntake: [0],
+      mentalStatus: [''],
+      generalWellbeing: [''],
+
+      lastMenstrualPeriod: [new Date()],
+      numberOfMenstrualPeriodsPerYear: [0],
+      ageOfMenarche: [''],
+      ageOfMenopause: [''],
+
+      tobaccoSmokingStatus: [0],
+      tobaccoChewingStatus: [0],
+      alcoholDrinkingStatus: [0],
+      dietType: ['']
+
+    });
+  }
+
+  ////////////// wellness end ///////////////////
+
+
+  //////////////////////////////////////// main patient list ////////////////////////////////////////
 
   @ViewChild('grid5') grid5: AirmidTableComponent;
 
@@ -425,7 +423,7 @@ export class IpdEMRComponent implements OnInit {
 
   getpatientDet(obj: any): void {
 
-    console.log("Selected Patient Info :",obj)
+    console.log("Selected Patient Info :", obj)
 
     this.isShowPrintButtons = true
     this.painLevel = 0
@@ -548,28 +546,14 @@ export class IpdEMRComponent implements OnInit {
           }
         }
         /////////// All 4 dropdowns retrive end////////////////
-
-        /////////// family table data retrive ////////////////
-        // const history = res.tIpEmrfamilyMedicalHistories || [];
-
-        // this.Chargelist = history.map((item: any) => ({
-        //   fhistId: item.fhistId,
-        //   relationshipId: item.relationshipId,
-        //   relationshipName: this.relationshipList.data.find(r => r.relationshipId === item.relationshipId)?.relationshipName ?? '',
-        //   memberName: item.memberName,
-        //   age: item.age,
-        //   clinicalHistory: item.clinicalHistory,
-        //   duration: item.duration,
-        //   genderId: item.genderId ?? 0,
-        //   genderName: this.genderList.data.find(r => r.genderId === item.genderId)?.genderName ?? '',
-        //   summary: item.summary ?? '',
-        //   status: true
-        // }));
-
-        // this.dsFamilyHistoryList.data = [...this.Chargelist];
-        /////////// family table data retrive end ////////////////
-
       })
+    }
+
+    if (this.vAdmissionId > 0) {
+      this._IpdEmrService.getWellnessId(this.vAdmissionId).subscribe((res) => {
+        console.log(res)
+        this.wellnessForm.patchValue(res)
+      });
     }
   }
 
@@ -620,7 +604,61 @@ export class IpdEMRComponent implements OnInit {
     return this.familyMedicalHistoriesArray.value;   // bare array, same as your sample payload
   }
 
+
+  selectedTabIndex = 0;
+  // isSaving = false;
+
+  onTabChange(event: MatTabChangeEvent) {
+    this.selectedTabIndex = event.index;
+  }
+
   onSave() {
+    if (this.selectedTabIndex === 0) {
+      this.saveEmr();
+    } else {
+      this.saveWellness();
+    }
+  }
+
+  saveWellness() {
+
+    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      })
+      return;
+    }
+
+    this.wellnessForm.get('opipid').setValue(this.vAdmissionId)
+    if (!this.wellnessForm.invalid) {
+
+      const payload = {
+        ...this.wellnessForm.value,
+        lastMenstrualPeriod: this.datePipe.transform(
+          this.wellnessForm.get('lastMenstrualPeriod')?.value, 'yyyy-MM-dd'
+        ),
+      };
+
+      console.log(payload)
+
+      this.isSaving = true;
+      this._IpdEmrService.wellnessSave(payload).subscribe(response => {
+        this.wellnessForm.reset();
+        this.isSaving = false;
+      });
+
+    } else {
+      const invalidFields = this.collectErrors(this.wellnessForm);
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+        });
+        return;
+      }
+    }
+  }
+
+  saveEmr() {
 
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -822,6 +860,28 @@ export class IpdEMRComponent implements OnInit {
       mAssignExamination: [],
     });
     this.vitalsForm.reset();
+
+    this.wellnessForm.reset({
+      wlsId: 0,
+      opipid: 0,
+      opiptype: 1,
+      stepCount: 0,
+      caloriesBurned: 0,
+      sleepDuration: 0,
+      activityLevel: 0,
+      bloodGlucose: 0,
+      fluidIntake: 0,
+      mentalStatus: '',
+      generalWellbeing: '',
+      lastMenstrualPeriod: new Date(),
+      numberOfMenstrualPeriodsPerYear: 0,
+      ageOfMenarche: '',
+      ageOfMenopause: '',
+      tobaccoSmokingStatus: 0,
+      tobaccoChewingStatus: 0,
+      alcoholDrinkingStatus: 0,
+      dietType: ''
+    });
   }
 
   resetEMRForm() {
@@ -1000,20 +1060,6 @@ export class IpdEMRComponent implements OnInit {
     }
   }
 
-  // getBMIcalculation() {
-  //   const height = this.vitalsForm.get('height')?.value;
-  //   const weight = this.vitalsForm.get('weight')?.value;
-
-  //   if (height > 0 && weight > 0) {
-  //     const heightInMeters = height / 100;
-  //     const bmi = weight / (heightInMeters * heightInMeters);
-  //     this.vitalsForm.get('bmi')?.setValue(Math.round(bmi));
-
-  //   } else {
-  //     this.vitalsForm.get('bmi')?.setValue(0);
-  //     // this.toastr.warning('Please enter valid height (above 30 cm) and weight.');
-  //   }
-  // }
   getBMIcalculation(): void {
     const height = Number(this.vitalsForm.get('height')?.value);
     const weight = Number(this.vitalsForm.get('weight')?.value);
@@ -1094,6 +1140,7 @@ export class IpdEMRComponent implements OnInit {
         return '';
     }
   }
+
 }
 export class FamilyHistoryList {
   fhistId = 0;
