@@ -79,7 +79,8 @@ export class ImmunizationComponent {
       this.patientDetail = this.data;
       this.opiptype = this.data.visitId ? 0 : 1;
       console.log("this.data", this.patientDetail);
-      this.getImmunizationDet(this.vRegId)
+      this.getImmunizationDet(this.opipId)
+      // this.getImmunizationDet(this.vRegId)
     }
   }
 

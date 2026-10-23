@@ -148,7 +148,7 @@
                                                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-dropdown label="District" formControlName="districtId"
                                                         [formGroup]="personalFormGroup"
-                                                        [mode]="autocompleteModedistirct" (optionSelected)="onChangedistirct($event)">
+                                                        [mode]="autocompleteModedistirct" (selectionChange)="onChangedistirct($event)">
                                                     </airmid-dropdown>
                                                 </div>
 
@@ -156,7 +156,7 @@
                                                     <airmid-dropdown label="State" formControlName="StateId"
                                                         [formGroup]="personalFormGroup"
                                                         [mode]="autocompleteModestate"
-                                                        (optionSelected)="onChangestate($event)">
+                                                        (selectionChange)="onChangestate($event)">
                                                     </airmid-dropdown>
                                                 </div>
 

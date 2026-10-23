@@ -215,9 +215,10 @@ export class AbhaRegistrationComponent {
       console.log('Patient data from ABHA', this.data?.patient)
 
       this.regNo = this.data?.patient.regNo
-      this.personalFormGroup.get("RegId").setValue(this.data?.patient.regId)
+      this.RegID=this.data?.patient.regId
 
       this.personalFormGroup.patchValue({
+        RegId: this.data?.patient.regId,
         PrefixId: this.data?.patient.prefixId,
         GenderId: this.data?.patient.genderId,
         FirstName: this.data?.patient.firstName,
@@ -227,8 +228,10 @@ export class AbhaRegistrationComponent {
         Address: this.data.patient.address,
         PinNo: this.data.patient.pinNo,
         CityId: this.data.patient.cityId,
-        districtId: this.data.patient.cityId,
-        StateId: this.data.patient.stateId,
+        // districtId: this.data.patient.cityId,
+        // StateId: this.data.patient.stateId,
+        // districtId: this.data.profile.districtCode,
+        // StateId: this.data.profile.stateCode,
       });
 
       setTimeout(() => {
@@ -236,6 +239,22 @@ export class AbhaRegistrationComponent {
         this.onChangeDateofBirth(this.registerObj.dateofBirth);
       }, 1000);
 
+      if ((this.data.patient?.abhaTranId ?? 0) > 0) {
+        setTimeout(() => {
+          this._registerService.getAbhaById(this.data.patient.abhaTranId).subscribe((response) => {
+            // console.log('Get ABHA DATA', response)
+            // this.abhaGender = response.gender
+            // this.tryMapGenderAndPrefix();
+            this.abhaForm.patchValue({
+              abhaAddress: response.abhaAddress,
+              abhaNumber: response.abhaNumber,
+              abhaFullName: response.abhaFullName,
+              gender: response.gender,
+              yearOfBirth: this.datePipe.transform(response.yearOfBirth, 'yyyy-MM-dd')
+            });
+          });
+        }, 500);
+      }
     }
 
     this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
@@ -343,6 +362,7 @@ export class AbhaRegistrationComponent {
     // i am passing here districtLgdcode so in comparision screen i get cityname & statename from that code
     this.personalFormGroup.get('districtId').setValue(this.districtList.districtLgdcode)
     this.personalFormGroup.get('StateId').setValue(this.districtList.stateId)
+    this.personalFormGroup.get('RegId').setValue(this.RegID)
 
     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
@@ -386,7 +406,7 @@ export class AbhaRegistrationComponent {
     this.getAbhaInfo.push(
       this._formBuilder.group({
         abhaTranId: [this.abhaForm.get('abhaTranId')?.value],
-        regId: [this.abhaForm.get('regId')?.value],
+        regId: [this.RegID],
         abhaAddress: [this.abhaForm.get('abhaAddress')?.value],
         abhaNumber: [this.abhaForm.get('abhaNumber')?.value],
         abhaFullName: [this.abhaForm.get('abhaFullName')?.value],
@@ -512,6 +532,7 @@ export class AbhaRegistrationComponent {
   }
 
   onChangedistirct(e) {
+    const code = e.value ?? e
 
     const m_data =
     {
@@ -522,7 +543,7 @@ export class AbhaRegistrationComponent {
       "filters": [
         {
           "fieldName": "DistrictLGDCode",
-          "fieldValue": String(e),
+          "fieldValue": String(code),
           "opType": "Contains"
         }
       ],
