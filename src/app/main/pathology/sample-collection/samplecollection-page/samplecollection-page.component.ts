@@ -54,7 +54,7 @@ export class SamplecollectionPageComponent {
         'ServiceName',
         'SampleCollectionTime',
         'editSampleCollectionTime',
-        'approval'
+      //  'approval'
     ];
 
     selectedAdvanceObj: AdvanceDetailObj;
@@ -237,9 +237,9 @@ export class SamplecollectionPageComponent {
       if (contact.isRefunded == 1) {
             return   true
         }
-        if (contact.patientTypeId > 1) {
-            return !contact.isApprovedByCamp;
-        } 
+        // if (contact.patientTypeId > 1) {
+        //     return !contact.isApprovedByCamp;
+        // } 
    
         return false; // Self patient → always enabled
     }
