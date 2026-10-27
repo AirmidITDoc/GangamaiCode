@@ -1,0 +1,89 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Diet &amp; Kitchen Management</h1>
+    <span class="sp"></span>
+    <a mat-stroked-button routerLink="view"><mat-icon>table_view</mat-icon>View Diet Chart</a>
+  </div>
+
+  <mat-card class="patient-bar">
+    <mat-icon class="avatar">account_circle</mat-icon>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="pick">
+      <mat-label>Patient</mat-label>
+      <mat-select [(ngModel)]="patient" (selectionChange)="onPatient()">
+        <mat-option *ngFor="let p of patients" [value]="p">{{ p.name }} · {{ p.regNo }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="f"><label>OP/IP Type</label><b>{{ patient.type }}</b></div>
+    <div class="f"><label>Admission No</label><b>{{ patient.admissionNo }}</b></div>
+    <div class="f"><label>Ward / Bed</label><b>{{ patient.ward }}</b></div>
+    <div class="f"><label>Age / Gender</label><b>{{ patient.age }} Y / {{ patient.gender }}</b></div>
+    <div class="f"><label>Diet Type</label><span class="pill">{{ patient.dietType }}</span></div>
+  </mat-card>
+
+  <div class="layout">
+    <mat-card class="planner">
+      <div class="planner-head">
+        <h2>Weekly Meal Planner</h2>
+        <span class="sp"></span>
+        <button mat-icon-button (click)="shift(-1)"><mat-icon>chevron_left</mat-icon></button>
+        <span class="range"><mat-icon>event</mat-icon>{{ weekStart | date:'d MMM y' }} – {{ weekEnd | date:'d MMM y' }}</span>
+        <button mat-icon-button (click)="shift(1)"><mat-icon>chevron_right</mat-icon></button>
+        <button mat-flat-button color="primary" (click)="goToday()">Today</button>
+      </div>
+
+      <div class="scroll">
+        <div class="grid">
+          <div class="cell corner">Meal Type</div>
+          <div class="cell dayhead" *ngFor="let d of days; let i = index" [style.background]="colors[i]">
+            {{ d | date:'EEE' }}<small>{{ d | date:'d MMM' }}</small>
+          </div>
+          <ng-container *ngFor="let s of slots">
+            <div class="cell meal"><mat-icon>{{ s.icon }}</mat-icon><div><b>{{ s.label }}</b><small>{{ s.time }}</small></div></div>
+            <div class="cell slot" *ngFor="let d of days" [class.sel]="isSelected(d, s)" (click)="select(d, s)">
+              <ng-container *ngIf="entry(d, s) as e; else empty">
+                <div class="item" *ngFor="let it of e.items">{{ it.name }} <span>({{ it.qty }})</span></div>
+                <span class="status st-{{ e.status }}">{{ e.status }}</span>
+              </ng-container>
+              <ng-template #empty>
+                <button mat-button class="add" (click)="edit(d, s); $event.stopPropagation()"><mat-icon>add</mat-icon>Add items</button>
+              </ng-template>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="legend"><span class="lbl">Status:</span>
+        <span *ngFor="let s of statuses" class="lg"><i class="dot st-{{ s }}"></i>{{ s }}</span></div>
+    </mat-card>
+
+    <mat-card class="details">
+      <ng-container *ngIf="selected; else hint">
+        <div class="d-head"><mat-icon>{{ selected.slot.icon }}</mat-icon>
+          <div><b>{{ selected.slot.label }}</b><small>{{ selected.date | date:'d MMM y (EEEE)' }} · {{ selected.slot.time }}</small></div></div>
+
+        <ng-container *ngIf="selEntry as e; else noEntry">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="st"><mat-label>Status</mat-label>
+            <mat-select [value]="e.status" (selectionChange)="setStatus($event.value)">
+              <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option></mat-select></mat-form-field>
+          <h4>Food Items</h4>
+          <table>
+            <thead><tr><th>Item</th><th>Qty</th><th>Instruction</th></tr></thead>
+            <tbody><tr *ngFor="let it of e.items"><td>{{ it.name }}</td><td>{{ it.qty }}</td><td>{{ it.instruction || '-' }}</td></tr></tbody>
+          </table>
+          <div class="box info" *ngIf="e.notes"><mat-icon>info</mat-icon><div><b>Special Instructions</b><p>{{ e.notes }}</p></div></div>
+          <div class="box warn"><mat-icon>warning</mat-icon>
+            <div><b>Patient Restrictions</b><p>Allergies: {{ patient.allergies }}<br />Diet Type: {{ patient.dietType }}</p></div></div>
+          <div class="actions">
+            <button mat-stroked-button (click)="edit(selected.date, selected.slot)"><mat-icon>edit</mat-icon>Edit</button>
+            <button mat-stroked-button color="warn" (click)="clear()"><mat-icon>delete_outline</mat-icon>Clear</button>
+          </div>
+        </ng-container>
+        <ng-template #noEntry>
+          <p class="muted">No items planned for this meal.</p>
+          <button mat-flat-button color="primary" (click)="edit(selected.date, selected.slot)"><mat-icon>add</mat-icon>Add items</button>
+        </ng-template>
+      </ng-container>
+      <ng-template #hint><div class="hint"><mat-icon>touch_app</mat-icon>Select a meal cell to see details.</div></ng-template>
+    </mat-card>
+  </div>
+</div>

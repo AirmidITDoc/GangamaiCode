@@ -1,0 +1,52 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Queue Management</h1><span class="sp"></span>
+    <button mat-stroked-button (click)="openDisplay()"><mat-icon>tv</mat-icon>Open LED Display</button>
+    <button mat-stroked-button color="warn" (click)="q.reset()"><mat-icon>restart_alt</mat-icon>Reset Queue</button>
+  </div>
+
+  <mat-card class="reg">
+    <h3><mat-icon>person_add</mat-icon>Add Patient to Queue</h3>
+    <div class="row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Patient name</mat-label><input matInput [(ngModel)]="form.name" (keyup.enter)="register()" /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>UHID / Reg No</mat-label><input matInput [(ngModel)]="form.uhid" /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Department</mat-label>
+        <mat-select [(ngModel)]="form.department"><mat-option *ngFor="let d of departments" [value]="d">{{ d }}</mat-option></mat-select></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Doctor</mat-label><input matInput [(ngModel)]="form.doctor" /></mat-form-field>
+      <button mat-flat-button color="primary" (click)="register()" [disabled]="!form.name.trim()"><mat-icon>add</mat-icon>Add</button>
+    </div>
+  </mat-card>
+
+  <div class="cols">
+    <section>
+      <div class="col-head waiting"><mat-icon>hourglass_top</mat-icon>Waiting<span class="count">{{ (waiting$ | async)?.length }}</span></div>
+      <mat-card class="entry" *ngFor="let e of waiting$ | async; trackBy: trackId">
+        <div class="token">{{ e.token }}</div>
+        <div class="info"><b>{{ e.name }}</b><small>{{ e.department }}<ng-container *ngIf="e.doctor"> · {{ e.doctor }}</ng-container></small><small class="wait">Waiting {{ mins(e.createdAt) }} min</small></div>
+        <button mat-flat-button color="primary" (click)="q.callIn(e.id)"><mat-icon>login</mat-icon>In</button>
+        <button mat-icon-button matTooltip="Remove" (click)="q.remove(e.id)"><mat-icon>close</mat-icon></button>
+      </mat-card>
+      <div class="empty" *ngIf="!(waiting$ | async)?.length">No patients waiting</div>
+    </section>
+
+    <section>
+      <div class="col-head inside"><mat-icon>meeting_room</mat-icon>Inside / In Consultation<span class="count">{{ (inRoom$ | async)?.length }}</span></div>
+      <mat-card class="entry active" *ngFor="let e of inRoom$ | async; trackBy: trackId">
+        <div class="token">{{ e.token }}</div>
+        <div class="info"><b>{{ e.name }}</b><small>{{ e.department }}<ng-container *ngIf="e.doctor"> · {{ e.doctor }}</ng-container></small><small class="wait">Inside {{ mins(e.inAt) }} min</small></div>
+        <button mat-flat-button color="accent" (click)="q.markOut(e.id)"><mat-icon>logout</mat-icon>Out</button>
+        <button mat-icon-button matTooltip="Move back to waiting" (click)="q.backToWaiting(e.id)"><mat-icon>undo</mat-icon></button>
+      </mat-card>
+      <div class="empty" *ngIf="!(inRoom$ | async)?.length">No one inside</div>
+    </section>
+
+    <section>
+      <div class="col-head done"><mat-icon>task_alt</mat-icon>Completed (recent)</div>
+      <mat-card class="entry done" *ngFor="let e of done$ | async; trackBy: trackId">
+        <div class="token">{{ e.token }}</div>
+        <div class="info"><b>{{ e.name }}</b><small>{{ e.department }}</small><small class="wait">Out at {{ e.outAt | date:'shortTime' }}</small></div>
+      </mat-card>
+      <div class="empty" *ngIf="!(done$ | async)?.length">Nothing yet</div>
+    </section>
+  </div>
+</div>

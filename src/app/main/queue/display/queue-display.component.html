@@ -1,0 +1,27 @@
+<div class="screen">
+  <header>
+    <div class="brand"><mat-icon>local_hospital</mat-icon><div><h1>{{ hospitalName }}</h1><span>Patient Queue</span></div></div>
+    <div class="clock" *ngIf="now$ | async as n"><b>{{ n | date:'hh:mm:ss a' }}</b><span>{{ n | date:'EEEE, d MMMM y' }}</span></div>
+  </header>
+  <main>
+    <section class="now">
+      <h2><span class="live"></span>NOW IN</h2>
+      <div class="now-grid">
+        <div class="now-card" *ngFor="let e of inRoom$ | async; trackBy: trackId">
+          <div class="tk">{{ e.token }}</div>
+          <div class="nm"><b>{{ e.name }}</b><span>{{ e.department }}<ng-container *ngIf="e.doctor"> · {{ e.doctor }}</ng-container></span></div>
+        </div>
+      </div>
+      <div class="none" *ngIf="!(inRoom$ | async)?.length">Please wait for your turn</div>
+    </section>
+    <section class="next">
+      <h2>WAITING <span class="cnt">{{ waitingCount$ | async }}</span></h2>
+      <div class="row" *ngFor="let e of waiting$ | async; let i = index; trackBy: trackId" [class.first]="i === 0">
+        <span class="tk">{{ e.token }}</span><span class="nm">{{ e.name }}</span><span class="dp">{{ e.department }}</span>
+        <span class="tag" *ngIf="i === 0">NEXT</span>
+      </div>
+      <div class="none" *ngIf="!(waiting$ | async)?.length">No patients waiting</div>
+    </section>
+  </main>
+  <footer>Please keep your token number ready · Maintain silence in the waiting area</footer>
+</div>

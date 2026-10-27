@@ -117,6 +117,15 @@ const appRoutes: Routes = [
             import("./main/documentmanagement/documentmanagement.module").then((m) => m.DocumentmanagementModule),
     },
     {
+        path: "diet",
+        loadChildren: () =>
+            import("./main/diet/diet.module").then((m) => m.DietModule),
+    }, {
+        path: "queue",
+        loadChildren: () =>
+            import("./main/queue/queue.module").then((m) => m.QueueModule),
+    },
+    {
         path: "otmanagement",
         loadChildren: () =>
             import("./main/otmanagement/ot-management.module").then((m) => m.OTManagementModule),

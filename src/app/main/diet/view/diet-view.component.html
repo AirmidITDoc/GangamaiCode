@@ -1,0 +1,35 @@
+<div class="page">
+  <div class="page-head no-print">
+    <h1>Diet Chart</h1><span class="sp"></span>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="pick"><mat-label>Patient</mat-label>
+      <mat-select [(ngModel)]="patient"><mat-option *ngFor="let p of patients" [value]="p">{{ p.name }} · {{ p.regNo }}</mat-option></mat-select></mat-form-field>
+    <button mat-icon-button (click)="shift(-1)"><mat-icon>chevron_left</mat-icon></button>
+    <span class="range">{{ weekStart | date:'d MMM' }} – {{ weekEnd | date:'d MMM y' }}</span>
+    <button mat-icon-button (click)="shift(1)"><mat-icon>chevron_right</mat-icon></button>
+    <button mat-stroked-button (click)="print()"><mat-icon>print</mat-icon>Print</button>
+    <a mat-flat-button color="primary" routerLink=".."><mat-icon>edit_calendar</mat-icon>Edit Plan</a>
+  </div>
+
+  <mat-card class="chart">
+    <div class="title">
+      <div><h2>Weekly Menu — {{ patient.dietType }}</h2>
+        <small>(If your Doctor has ordered a special diet, some items on the menu may be changed)</small></div>
+      <div class="pt"><b>{{ patient.name }}</b><span>{{ patient.regNo }} · {{ patient.ward }}</span>
+        <span class="allergy" *ngIf="patient.allergies !== 'None'"><mat-icon>warning</mat-icon>Allergy: {{ patient.allergies }}</span></div>
+    </div>
+    <div class="scroll"><div class="grid">
+      <div class="cell corner"></div>
+      <div class="cell dayhead" *ngFor="let d of days; let i = index" [style.background]="colors[i]">{{ d | date:'EEEE' }}<small>{{ d | date:'d MMM' }}</small></div>
+      <ng-container *ngFor="let s of slots">
+        <div class="cell meal"><b>{{ s.label }}</b><small>{{ s.time }}</small></div>
+        <div class="cell slot" *ngFor="let d of days" [class.today]="isToday(d)">
+          <ng-container *ngIf="entry(d, s) as e; else dash">
+            <div class="line" *ngFor="let it of e.items">{{ it.name }}<span *ngIf="it.qty"> ({{ it.qty }})</span><em *ngIf="it.instruction"> – {{ it.instruction }}</em></div>
+            <div class="note" *ngIf="e.notes">{{ e.notes }}</div>
+          </ng-container>
+          <ng-template #dash><span class="dash">—</span></ng-template>
+        </div>
+      </ng-container>
+    </div></div>
+  </mat-card>
+</div>

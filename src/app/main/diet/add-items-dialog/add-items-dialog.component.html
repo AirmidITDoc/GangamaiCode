@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>
+  <mat-icon>{{ data.slot.icon }}</mat-icon>
+  {{ data.slot.label }} <span class="sub">· {{ data.date | date:'EEEE, d MMM y' }} · {{ data.patient.name }}</span>
+</h2>
+<mat-dialog-content>
+  <div class="add-row">
+    <mat-form-field appearance="outline" class="name">
+      <mat-label>Food item</mat-label>
+      <input matInput [(ngModel)]="name" [matAutocomplete]="auto" (keyup.enter)="add()" />
+      <mat-autocomplete #auto="matAutocomplete"><mat-option *ngFor="let f of suggestions" [value]="f">{{ f }}</mat-option></mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="qty"><mat-label>Quantity</mat-label>
+      <input matInput [(ngModel)]="qty" placeholder="1 bowl" (keyup.enter)="add()" /></mat-form-field>
+    <mat-form-field appearance="outline" class="ins"><mat-label>Instruction</mat-label>
+      <input matInput [(ngModel)]="instruction" placeholder="Low salt" (keyup.enter)="add()" /></mat-form-field>
+    <button mat-flat-button color="primary" (click)="add()" [disabled]="!name.trim()"><mat-icon>add</mat-icon>Add</button>
+  </div>
+
+  <table class="items" *ngIf="items.length; else none">
+    <thead><tr><th>Item</th><th>Quantity</th><th>Instruction</th><th></th></tr></thead>
+    <tbody>
+      <tr *ngFor="let it of items; let i = index">
+        <td>{{ it.name }}</td><td>{{ it.qty }}</td><td>{{ it.instruction || '-' }}</td>
+        <td class="act"><button mat-icon-button (click)="remove(i)" matTooltip="Remove"><mat-icon>delete_outline</mat-icon></button></td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #none><div class="empty">No items added yet for this meal.</div></ng-template>
+
+  <mat-form-field appearance="outline" class="full"><mat-label>Special instructions</mat-label>
+    <textarea matInput rows="2" [(ngModel)]="notes" placeholder="e.g. Low salt diet. Avoid spicy food."></textarea></mat-form-field>
+  <mat-checkbox [(ngModel)]="applyAll">Apply to all days of this week</mat-checkbox>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()"><mat-icon>save</mat-icon>Save</button>
+</mat-dialog-actions>

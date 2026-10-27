@@ -1,0 +1,9 @@
+h2 { display: flex; align-items: center; gap: 8px; .sub { font-size: 14px; font-weight: 400; color: #64748b; } }
+mat-dialog-content { min-width: min(760px, 80vw); padding-top: 8px !important; }
+.add-row { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap;
+  .name { flex: 2 1 200px; } .qty { flex: 1 1 110px; } .ins { flex: 1.5 1 150px; } button { height: 56px; } }
+.full { width: 100%; }
+.empty { padding: 24px; text-align: center; color: #94a3b8; border: 1px dashed #cbd5e1; border-radius: 8px; margin-bottom: 16px; }
+table.items { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 14px;
+  th { text-align: left; background: #f1f5f9; color: #475569; padding: 8px 12px; font-weight: 600; }
+  td { padding: 4px 12px; border-bottom: 1px solid #e2e8f0; } td.act { text-align: right; width: 48px; } }
