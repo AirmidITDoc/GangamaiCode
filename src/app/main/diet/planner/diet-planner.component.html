@@ -34,14 +34,14 @@
       <div class="scroll">
         <div class="grid">
           <div class="cell corner">Meal Type</div>
-          <div class="cell dayhead" *ngFor="let d of days; let i = index" [style.background]="colors[i]">
+          <div class="cell dayhead" *ngFor="let d of days; let i = index;trackBy: trackByDay" [style.background]="colors[i]">
             {{ d | date:'EEE' }}<small>{{ d | date:'d MMM' }}</small>
           </div>
-          <ng-container *ngFor="let s of slots">
+          <ng-container *ngFor="let s of slots;trackBy: trackByDay">
             <div class="cell meal"><mat-icon>{{ s.icon }}</mat-icon><div><b>{{ s.label }}</b><small>{{ s.time }}</small></div></div>
-            <div class="cell slot" *ngFor="let d of days" [class.sel]="isSelected(d, s)" (click)="select(d, s)">
+            <div class="cell slot" *ngFor="let d of days;trackBy: trackByDay" [class.sel]="isSelected(d, s)" (click)="select(d, s)">
               <ng-container *ngIf="entry(d, s) as e; else empty">
-                <div class="item" *ngFor="let it of e.items">{{ it.name }} <span>({{ it.qty }})</span></div>
+                <div class="item" *ngFor="let it of e.items;trackBy: trackByDay">{{ it.name }} <span>({{ it.qty }})</span></div>
                 <span class="status st-{{ e.status }}">{{ e.status }}</span>
               </ng-container>
               <ng-template #empty>

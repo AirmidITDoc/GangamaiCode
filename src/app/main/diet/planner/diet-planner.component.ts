@@ -15,8 +15,15 @@ export class DietPlannerComponent {
   weekStart = startOfWeek(new Date());
   selected: { date: Date; slot: MealSlot } | null = null;
 
-  constructor(private diet: DietService, private dialog: MatDialog, private snack: MatSnackBar) {}
+  constructor(private diet: DietService, private dialog: MatDialog, private snack: MatSnackBar) { }
+  trackByDay(index: number, date: Date): number {
+    if (!(date instanceof Date)) {
+      console.error('trackByDay expected a Date but received:', date);
+      return index;
+    }
 
+    return date.getTime();
+  }
   get days() { return Array.from({ length: 7 }, (_, i) => addDays(this.weekStart, i)); }
   get weekEnd() { return addDays(this.weekStart, 6); }
   get selEntry() { return this.selected ? this.entry(this.selected.date, this.selected.slot) : undefined; }
@@ -29,7 +36,6 @@ export class DietPlannerComponent {
   onPatient() { this.selected = null; }
 
   edit(date: Date, slot: MealSlot) {
-    debugger
     this.select(date, slot);
     this.dialog.open<AddItemsDialogComponent, any, AddItemsResult>(AddItemsDialogComponent, {
       width: '820px', maxWidth: '95vw', data: { patient: this.patient, slot, date, entry: this.entry(date, slot) },
