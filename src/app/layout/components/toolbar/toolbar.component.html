@@ -98,7 +98,7 @@
                                         *ngIf="Investigationdashflag">
                                         <span>Investigation Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToCashlessDashboard()">
+                                    <button mat-menu-item class="" (click)="navigateToCashlessDashboard()" *ngIf="Cashlessdashflag">
                                         <span>CashLess Dashboard</span>
                                     </button>
                                     <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()"
