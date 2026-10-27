@@ -199,7 +199,9 @@ export class BrowsSalesBillService {
         return this._httpClient1.PostData("Sales/salesbrowselist", Param);
     }
 
-
+  public getAllSalesBillPrint(Param){
+         return this._httpClient1.PostData("Report/ViewMultipleReportFromDB", Param);
+    }
     public getSalesReturnBrowseList(Param) {
         return this._httpClient1.PostData("SalesReturn/SalesReturnBrowseList", Param);
     }

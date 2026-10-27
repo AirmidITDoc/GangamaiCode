@@ -72,7 +72,7 @@ export class DietDetailListComponent {
         { heading: "Order Time", key: "orderTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         // { heading: "UHID No", key: "regId", sort: true, align: 'left', emptySign: 'NA', width: 70 },
 
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
         { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Meal Name", key: "mealName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -226,7 +226,7 @@ export class DietDetailListComponent {
         return true;
     }
 
- 
+
     /** "Select All Pending Accept" – ticks / clears every pending row checkbox. */
     toggleMasterCheckboxAccept(checked: boolean): void {
         this.masterCheckedAccept = checked;
@@ -292,7 +292,7 @@ export class DietDetailListComponent {
         });
     }
 
- 
+
     /** "Select All Pending Deliver" – ticks / clears every deliverable row checkbox. */
     toggleMasterCheckboxDeliver(checked: boolean): void {
         this.masterCheckedDeliver = checked;
@@ -356,7 +356,7 @@ export class DietDetailListComponent {
         });
     }
 
-    
+
     onPrint(element) {
         this.commonService.Onprint("ReqId", element.reqId, "CanteenRequestprint");
     }
@@ -371,8 +371,8 @@ export class DietDetailListComponent {
         }
     }
 
-  
-   
+
+
 
     // HeaderRequestCancle() {
     //     Swal.fire({
@@ -400,7 +400,7 @@ export class DietDetailListComponent {
     // }
 
     opendetailcancletask(contact): void {
-          if (!this.canChangeStatus('Cancel requests')) { return; }
+        if (!this.canChangeStatus('Cancel requests')) { return; }
 
 
         this.ReqDetId = contact.dietReqDetId;
@@ -586,10 +586,6 @@ export class DietDetailListComponent {
             }
         });
     }
-
-    // ------------------------------------------------------------------
-    //  dialog helpers
-    // ------------------------------------------------------------------
 
     onEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement;

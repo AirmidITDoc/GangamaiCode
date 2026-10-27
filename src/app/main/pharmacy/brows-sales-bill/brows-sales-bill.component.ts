@@ -107,6 +107,11 @@ export class BrowsSalesBillComponent implements OnInit {
     middle_N: any = "%";
     ipdno: any = "0";
     status: any = "0";
+    finalTotalAmt: any = 0;
+    finalDiscAmt: any = 0;
+    finalNetAmt: any = 0;
+    finalPaidAmt: any = 0;
+    finalBalanceAmt: any = 0;
     salesForm: FormGroup;
     constructor(
         public _AdmissionService: IPSearchListService,
@@ -134,18 +139,18 @@ export class BrowsSalesBillComponent implements OnInit {
         }
 
         this.salesForm = this._BrowsSalesBillService.SearchFilter();
-        
+
         //  this.getsaleslist();
         //  this.getsalesreturnlist()
-       // this.onChangeFirst();
-       // this.onChangeFirst_Retrun();
-debugger
+        // this.onChangeFirst();
+        // this.onChangeFirst_Retrun();
+        
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
 
-         this.getsaleslist();
-         this.getsalesreturnlist()
+        this.getsaleslist();
+        this.getsalesreturnlist()
     }
 
     autocompletestore: string = "Store";
@@ -275,7 +280,7 @@ debugger
     }
 
     onChangeFirst() {
-        debugger
+        
         this.isShowDetailTable = false;
         this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value + "%"
         this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value + "%"
@@ -291,7 +296,7 @@ debugger
         }
     }
     getSaleslistdata() {
-        debugger
+        
         this.gridConfig = {
             apiUrl: "Sales/salesbrowselist",
             columnsList: this.BrowseHColumns,
@@ -314,8 +319,9 @@ debugger
         // this.getsaleslist();
     }
     chargelist: any = [];
+    salesDb: any = [];
     getsaleslist() {
-        debugger
+        
         const vdata = {
             "first": 0,
             "rows": 500,
@@ -336,19 +342,21 @@ debugger
         }
         this._BrowsSalesBillService.getSalesBrowseList(vdata).subscribe(response => {
             this.chargelist = response.data
+
             console.log(this.chargelist)
 
-            if (this.chargelist.length) {
+            if (this.chargelist.length > 0) {
+                this.salesDb = this.chargelist.map(ele => ({
+                    salesId: ele.salesId,
+                    oP_IP_Type: ele.oP_IP_Type
+                }));
+                console.log(this.salesDb)
                 this.gettotalshowingonPage(this.chargelist);
             }
         })
 
     }
-    finalTotalAmt: any = 0;
-    finalDiscAmt: any = 0;
-    finalNetAmt: any = 0;
-    finalPaidAmt: any = 0;
-    finalBalanceAmt: any = 0;
+
     gettotalshowingonPage(element) {
         this.finalTotalAmt = (element.reduce((sum, { totalAmount }) => sum += +(totalAmount || 0), 0)).toFixed(2);
         this.finalDiscAmt = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
@@ -392,7 +400,7 @@ debugger
         row.isEditing = true;
     }
     savePatientName(row: any) {
-        debugger
+        
         row.isEditing = false;
         const vadat = {
             "extMobileNo": row?.extMobileNo || 0,
@@ -526,7 +534,7 @@ debugger
         this.getsalesreturnlist()
     }
     getSalesRetrunlistdata() {
-        debugger
+        
         this.gridConfig2 = {
             apiUrl: "SalesReturn/SalesReturnBrowseList",
             columnsList: this.SalesReturnHColumns,
@@ -544,16 +552,16 @@ debugger
             ],
         }
         setTimeout(() => {
-               this.grid2.gridConfig = this.gridConfig2;
-        this.grid2.bindGridData();  
-        }, 500); 
+            this.grid2.gridConfig = this.gridConfig2;
+            this.grid2.bindGridData();
+        }, 500);
     }
 
 
     //Sales return
     retchargelist: any = [];
     getsalesreturnlist() {
-        debugger
+        
         const vdata = {
             "first": 0,
             "rows": 500,
@@ -623,7 +631,7 @@ debugger
     /// Patient list  
     apiUrl: any = '';
     onChangeFirstPatient() {
-        debugger
+        
         this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%"
         this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%"
         this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%"
@@ -648,7 +656,7 @@ debugger
     }
 
     getPatientlistdata() {
-        debugger
+        
         this.gridConfig4 = {
             // permissionCode: permissionCodes.Sales,
             // apiUrl: this.apiUrl,
@@ -675,7 +683,7 @@ debugger
     }
 
     getPatientlistdata1() {
-        debugger
+        
         this.gridConfig4 = {
             // permissionCode: permissionCodes.Sales,
             // apiUrl: this.apiUrl,
@@ -701,7 +709,7 @@ debugger
         this.grid4.bindGridData();
     }
     getchangeDate() {
-        debugger
+        
         if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value != false) {
             // this.apiUrl = "Admission/AdmissionDischargeList"
             this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
@@ -721,7 +729,7 @@ debugger
     }
 
     onChangeDiscahrge(event) {
-        debugger
+        
         if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
             this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('')
             this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('')
@@ -905,7 +913,7 @@ debugger
         return this.PharmaSettlementfrom.get('payment') as FormArray;
     }
     OnPayment(contact) {
-        debugger
+        
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -941,7 +949,7 @@ debugger
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log(result)
-            debugger
+            
             if (result && result.IsSubmitFlag) {
                 let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
                 UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
@@ -1161,7 +1169,7 @@ debugger
 
     viewgetSalesreturnBillReportPdf(response) {
         console.log(response)
-        debugger
+        
         setTimeout(() => {
             const param = {
                 "searchFields": [
@@ -2025,7 +2033,7 @@ debugger
 
     }
     printsalesDetails(contact) {
-        debugger
+        
         setTimeout(() => {
             const param = {
                 "searchFields": [
@@ -2232,7 +2240,7 @@ debugger
             const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
             const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
 
-            debugger
+            
             console.log(patientData)
             patientData.billNo = patientData.salesId
 
@@ -2462,7 +2470,7 @@ debugger
 
     getWhatsappshareSalesBill(el) {
         console.log(el);
-        debugger
+        
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
@@ -2492,7 +2500,7 @@ debugger
 
     getWhatsappsharesalesrefund(el) {
         console.log(el);
-        debugger
+        
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
@@ -2516,6 +2524,45 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
         });
+    }
+
+    OnPrintBill() {
+        var Param = {
+            reports: this.salesDb.map(ele => ({
+                searchFields: [
+                    {
+                        fieldName: 'SalesID',
+                        fieldValue: String(ele.salesId),
+                        opType: 'Equals'
+                    },
+                    {
+                        fieldName: 'OP_IP_Type',
+                        fieldValue: String(ele.oP_IP_Type),
+                        opType: 'Equals'
+                    }
+                ],
+                mode: 'PharamcySalesBill'
+            }))
+        }
+        console.log(Param)
+        this._BrowsSalesBillService.getAllSalesBillPrint(Param).subscribe(res => {
+
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Pharma sales bill viewer"
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.AdList = false;
+                this.sIsLoading = '';
+            });
+        });
+
     }
 }
 

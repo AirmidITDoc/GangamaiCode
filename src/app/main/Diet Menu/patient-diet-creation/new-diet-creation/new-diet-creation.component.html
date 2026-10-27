@@ -11,9 +11,21 @@
             </button>
         </div>
         <div class="drawer-body">
-            <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" #grid1Ref
-                (dataLoaded)="Statement = $event > 0" style="width:100%; height:100%;"></airmid-table>
+            <div class="assess-card" *ngFor="let a of assessmentList; trackBy: trackByAssess">
+                <div class="ac-row"><b>{{a.patientName || 'NA'}}</b><span>OPIPID: {{a.opipId || 'NA'}}</span><span>DOA:
+                        {{(a.admissionTime | date:'dd/MM/yyyy hh:mm a') || 'NA'}}</span><span>Assessment:
+                        {{(a.assessmentDate | date:'dd/MM/yyyy') || 'NA'}}</span><span>By: {{a.assessByName ||
+                        'NA'}}</span></div>
+                <div class="ac-row"><span>Height: {{a.height || 'NA'}}</span><span>Weight: {{a.weight ||
+                        'NA'}}</span><span>Food Preference: {{a.foodPreferenceName || 'NA'}}</span><span>Nutrition:
+                        {{a.nutritionStatusName || 'NA'}}</span></div>
+                <div class="ac-row"><b>Allergies:</b> {{a.allergies || 'NA'}}</div>
+                <div class="ac-row" *ngIf="a.specialInstructions"><b>Special Instructions:</b> {{a.specialInstructions}}
+                </div>
+                <div class="ac-row" *ngIf="a.dietitionNotes"><b>Dietitian Notes:</b> {{a.dietitionNotes}}</div>
+            </div>
 
+            <div class="ac-empty" *ngIf="!assessmentList.length">No assessment history</div>
         </div>
     </mat-drawer>
 
@@ -44,7 +56,7 @@
                         <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                             <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
                                 <div fxLayout="row" fxLayoutGap="8px">
-                                    <div fxFlex="90%" fxFlex.sm="100%">
+                                    <div fxFlex="90%" fxFlex.sm="100%" *ngIf="InsertStatus">
                                         <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" fxFlex="50%"
                                             formControlName="RegID" placeholderText="IP-RegNo/FirstName/LastName"
                                             label="Search UHID / Patient Name / Mobile No"
@@ -55,8 +67,8 @@
                                     </div>
 
                                     <span *ngIf="Statement" style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px;
-             background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7;
-             border-radius:4px; font-size:12px; font-weight:500;">
+                                       background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7;
+                                          border-radius:4px; font-size:12px; font-weight:500;">
                                         Patient Assessment Done. Check details
                                         <button *ngIf="Statement" mat-mini-fab color="white" type="button"
                                             class="history-btn" matTooltip="View assessment history"
@@ -90,13 +102,11 @@
                 <div class="modal-body-container">
                     <mat-card class="diet-plan-card input-error-hidden resize-form-fields">
 
-                        <!-- Schedule Date | Diet Type | Meal Type -->
+                        <!-- Plan Date | Schedule Date | Diet Type -->
                         <form [formGroup]="myFilterform">
 
                             <!-- Row 1: filters -->
-                            <!-- Schedule Date + Diet Type + Meal Type in ONE card -->
                             <div class="filter-card">
-
 
                                 <div class="filter-card-item">
                                     <div class="filter-label">Diet Plan Date</div>
@@ -123,72 +133,70 @@
                                             (closed)="onDateRangeChange()"></mat-date-range-picker>
                                     </mat-form-field>
                                 </div>
+
                                 <div class="filter-card-item">
                                     <div class="filter-label">Diet Type</div>
                                     <airmid-dropdown formControlName="dietTypeId" [formGroup]="myFilterform"
                                         [mode]="autocompleteModedietType"></airmid-dropdown>
                                 </div>
 
-                                <!-- selecting a Meal Type adds a row to the grid below -->
-                                <div class="filter-card-item">
-                                    <div class="filter-label">Meal Type</div>
-                                    <airmid-dropdown formControlName="mealTypeId" [formGroup]="myFilterform"
-                                        [mode]="autocompleteModemealType"></airmid-dropdown>
-                                </div>
-
                             </div>
 
                             <!-- Row 2: notes -->
                             <div fxLayout="row wrap" fxLayoutGap="8px grid" class="notes-row">
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Special Instructions</mat-label>
-                            <textarea matInput rows="2" formControlName="instruction"></textarea>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Dietitian Notes</mat-label>
-                            <textarea matInput rows="2" formControlName="comment"></textarea>
-                        </mat-form-field> -->
 
                                 <airmid-textbox label="Instruction" formControlName="instruction"
                                     [formGroup]="myFilterform" [maxLength]="500" fxFlex></airmid-textbox>
-
 
                                 <airmid-textbox label="Comment" formControlName="comment" [formGroup]="myFilterform"
                                     [maxLength]="500" fxFlex></airmid-textbox>
                             </div>
                         </form>
 
-                        <!-- Diet type title  MenuName:- {{dietMenuName}}-->
+                        <!-- Diet type title -->
                         <div class="diet-title" *ngIf="dietMenuName!=''">{{ dietTypeName }}</div>
 
-                        <!-- Schedule grid: rows = selected meal types, columns = dates -->
+                        <!-- Schedule grid: rows = all meal types (loaded on init), columns = dates -->
                         <div class="schedule-scroll">
-                            <table class="schedule-table">
+                            <table class="schedule-table" [class.fixed-cols]="dateColumns.length > fitLimit"
+                                [style.width.px]="dateColumns.length > fitLimit ? tableWidth : null">
                                 <thead>
                                     <tr>
-                                        <th class="col-cancel">Action</th>
+                                        <th class="col-action">Action</th>
                                         <th class="col-meal">Meal Type</th>
+
                                         <th *ngFor="let d of dateColumns; trackBy: trackByDate" class="col-date">
                                             Date {{ d.date | date:'dd-MMM' }}
                                         </th>
+
+
                                     </tr>
                                 </thead>
+
                                 <tbody>
-                                    <tr *ngFor="let row of mealRows; trackBy: trackByMeal">
-                                        <td class="col-cancel">
-                                            <button mat-button type="button" class="cancel-btn"
-                                                (click)="onCancelRow(row)"><mat-icon>delete</mat-icon></button>
+                                    <tr *ngFor="let row of mealRows; let i = index; trackBy: trackByMeal"
+                                        [formGroup]="row.form">
+                                        <td class="col-action">
+                                            <button mat-icon-button type="button" color="warn" matTooltip="Delete meal"
+                                                (click)="deleteMealRow(i)">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
                                         </td>
                                         <td class="col-meal">{{ row.mealName }}</td>
+
                                         <td *ngFor="let d of dateColumns; trackBy: trackByDate" class="col-date">
-                                            <!-- each cell has its own control: row.form[d.key] -->
                                             <airmid-dropdown [formGroup]="row.form" [formControlName]="d.key"
-                                                [mode]="autocompleteModedietMenu"></airmid-dropdown>
+                                                [mode]="autocompleteModedietMenu">
+                                            </airmid-dropdown>
+
                                         </td>
+
+
                                     </tr>
+
                                     <tr *ngIf="!mealRows?.length">
                                         <td [attr.colspan]="dateColumns.length + 2" class="no-data">
-                                            Select a Meal Type to add rows
+                                            No meal types found
                                         </td>
                                     </tr>
                                 </tbody>
@@ -201,6 +209,13 @@
 
             <div class="modal-footer diet-footer">
                 <div class="footer-navigation-container">
+                    <!-- <button type="button" (click)="onSaveDraft()" class="btn btn-primary">Draft Request</button> -->
+                    <!-- <button type="button" (click)="onSaveFinal()" class="btn btn-primary">Canteen Request</button> -->
+                    <form [formGroup]="myFilterform">
+                        <mat-slide-toggle name="draftOrFinal" formControlName="draftOrFinal">
+                            Final Canteen Request
+                        </mat-slide-toggle>
+                    </form>
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true">Close</button>
                     <button type="button" (click)="onSave()" class="btn btn-primary">Save</button>
                 </div>
@@ -208,3 +223,4 @@
 
         </div>
     </mat-drawer-content>
+</mat-drawer-container>

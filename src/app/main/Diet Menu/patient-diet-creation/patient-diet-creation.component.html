@@ -6,33 +6,116 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Patient List for Diet Plan
+                    Diet Plan Schduled List for Patient
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="NewDietPlan()">New Diet Plan
+            <button mat-raised-button (click)="NewDietPlan()">New Diet Schdule Plan
             </button>
 
         </div>
     </div>
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+        class="px-12 py-4 border-bottom gap-8">
+        <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
 
+            <!-- LEFT side: existing cards -->
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+
+
+                <div class="dashboard-card registrations">
+                    <div class="card-label">Total Diet Schdule </div>
+                    <div class="card-value">{{VTotalcount}}</div>
+                    <mat-icon class="card-icon">receipt_long</mat-icon>
+                </div>
+                <div class="dashboard-card pending">
+                    <div class="card-label">Draft Diet Schdule </div>
+                    <div class="card-value">{{VdraftNewcount}}</div>
+                    <mat-icon class="card-icon">receipt_long</mat-icon>
+                </div>
+
+                <div class="dashboard-card app-accept">
+                    <div class="card-label">Final Diet Schdule </div>
+                    <div class="card-value">{{VfinalNewcount}}</div>
+                    <mat-icon class="card-icon">cancel</mat-icon>
+                </div>
+
+                <div class="dashboard-card app-Cancel">
+                    <div class="card-label">Cancelled Diet Schdule </div>
+                    <div class="card-value">{{VCancelcount}}</div>
+                    <mat-icon class="card-icon">cancel</mat-icon>
+                </div>
+
+            </div>
+
+            <!-- <span
+                                style="font-size: large;color: rgb(36, 84, 98);margin-left: 400px;font-weight: bold;margin-right: 20px;">
+                                Selected Request Details Status
+                            </span> -->
+
+            <!-- RIGHT side: new cards, each visually distinct -->
+            <!-- <div fxLayout="row" fxLayoutAlign="end center" class="gap-8">
+
+                                <div class="dashboard-card app-accept">
+                                    <div class="card-label">Accepted</div>
+                                    <div class="card-value">{{Acceptedcnt}}</div>
+                                    <mat-icon class="card-icon">thumb_up</mat-icon>
+                                </div>
+
+                                <div class="dashboard-card app-notaccept">
+                                    <div class="card-label">Not Accepted</div>
+                                    <div class="card-value">{{NotAcceptedcnt}}</div>
+                                    <mat-icon class="card-icon">hourglass_empty</mat-icon>
+                                </div>
+
+                                <div class="dashboard-card app-deliver">
+                                    <div class="card-label">Delivered</div>
+                                    <div class="card-value">{{Deliveredcnt}}</div>
+                                    <mat-icon class="card-icon">local_shipping</mat-icon>
+                                </div>
+
+                                <div class="dashboard-card app-notdeliver">
+                                    <div class="card-label">Not Delivered</div>
+                                    <div class="card-value">{{NotDeliveredcnt}}</div>
+                                    <mat-icon class="card-icon">local_shipping</mat-icon>
+                                </div>
+
+                            </div> -->
+
+        </div>
+
+    </div>
     <div class="content">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
+            <ng-template #ItemNopopover let-element>
+                <span (mouseenter)="openMenuPopup(element, $event)" (mouseleave)="closeDetailsPopover1()"
+                    style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
+                    {{ element.patient }}
+                </span>
+            </ng-template>
 
-            <!-- [disabled]="!element.isCancelled"  -->
+            <ng-template #draftorFinal let-element>
+                <button type="button" class="status-chip" [ngClass]="element.draftorFinal ? 'is-final' : 'is-draft'"
+                    [matTooltip]="element.draftorFinal ? 'Final: click to revert to Draft' : 'Draft: click to mark Final'"
+                    (click)="$event.stopPropagation(); Changefinal(element)">
+                    <mat-icon class="chip-icon">{{ element.draftorFinal ? 'check_circle' : 'edit' }}</mat-icon>
+                    <span class="chip-text">{{ element.draftorFinal ? 'Final' : 'Draft' }}</span>
+                </button>
+            </ng-template>
+            <!--    [disabled]="!element.isCancelled" -->
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button color="primary" (click)="Edit(element)" matTooltip="Edit Assessment">
+                    <button mat-icon-button color="primary" (click)="Edit(element)" matTooltip="Edit Schdule">
                         <mat-icon>edit</mat-icon>
                     </button>
 
-                    <!-- 
-                    <button mat-stroked-button color="warn" class="cancel-diet-btn" (click)="AssessmentCancel(element)"
-                        matTooltip="Cancel Assessment">
+
+                    <button mat-stroked-button color="warn" class="cancel-diet-btn" (click)="DietplanCancel(element)"
+                        matTooltip="Cancel Schdule">
                         <span>Cancel</span>
-                    </button> -->
+                    </button>
 
 
                 </div>

@@ -49,13 +49,15 @@ export class PatientDieassessmentComponent {
 
     allcolumns = [
         { heading: 'Assessment Date', key: 'assessmentDate', sort: true, align: 'left', emptySign: 'NA', type: 6, width: 110 },
-        { heading: 'UHID', key: 'regNo', sort: true, align: 'left', emptySign: 'NA', width: 90 },
-        { heading: 'OPIPID', key: 'opipId', sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: 'Patient Name', key: 'patientName', sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: 'DOA', key: 'admissionTime', sort: true, align: 'left', emptySign: 'NA', type: 8, width: 160 },
-        { heading: 'Height(cm)', key: 'height', sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: 'Weight(kg)', key: 'weight', sort: true, align: 'left', emptySign: 'NA', width: 80 },
+
+        // { heading: 'UHID', key: 'regNo', sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        // { heading: 'OPIPID', key: 'opipId', sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: 'Patient Name', key: 'patientName', sort: true, align: 'left', emptySign: 'NA', width: 500 },
+        { heading: 'Height(cm)', key: 'height', sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        // { heading: 'Weight(kg)', key: 'weight', sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: 'Allergies', key: 'allergies', sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        // { heading: 'NutritionStatus', key: 'nutritionStatusName', sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: 'Special Instructions', key: 'specialInstructions', sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: 'Dietition Notes', key: 'dietitionNotes', sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: 'Assess By', key: 'assessByName', sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -169,37 +171,37 @@ export class PatientDieassessmentComponent {
         }
         this.getfilterdata();
     }
- onChangeFirst(): void {
-    this.getfilterdata();
-}
+    onChangeFirst(): void {
+        this.getfilterdata();
+    }
 
-getfilterdata(): void {
-    const f = this.myFilterform.value;
+    getfilterdata(): void {
+        const f = this.myFilterform.value;
 
-    // use whichever date controls your form actually has
-    const from = f.start ?? f.fromDate;
-    const to = f.end ?? f.enddate;
+        // use whichever date controls your form actually has
+        const from = f.start ?? f.fromDate;
+        const to = f.end ?? f.enddate;
 
-    this.fromDate = this.datePipe.transform(from, 'yyyy-MM-dd') || this.fromDate;
-    this.toDate = this.datePipe.transform(to, 'yyyy-MM-dd') || this.toDate;
-    this.f_name = (f.FirstName ?? '').trim() + '%';
-    this.l_name = (f.LastName ?? '').trim() + '%';
+        this.fromDate = this.datePipe.transform(from, 'yyyy-MM-dd') || this.fromDate;
+        this.toDate = this.datePipe.transform(to, 'yyyy-MM-dd') || this.toDate;
+        this.f_name = (f.FirstName ?? '').trim() + '%';
+        this.l_name = (f.LastName ?? '').trim() + '%';
 
-    this.gridConfig = {
-        ...this.gridConfig,
-        filters: [
-            { fieldName: 'From_Dt', fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: 'To_Date', fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: 'DietAssessmentId', fieldValue: '0', opType: OperatorComparer.Equals },
-            { fieldName: 'AssessbyId', fieldValue: this.AssessbyId, opType: OperatorComparer.Equals },
-            { fieldName: 'FirstName', fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-            { fieldName: 'LastName', fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
-        ]
-    };
+        this.gridConfig = {
+            ...this.gridConfig,
+            filters: [
+                { fieldName: 'From_Dt', fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: 'To_Date', fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: 'DietAssessmentId', fieldValue: '0', opType: OperatorComparer.Equals },
+                { fieldName: 'AssessbyId', fieldValue: this.AssessbyId, opType: OperatorComparer.Equals },
+                { fieldName: 'FirstName', fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: 'LastName', fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
+            ]
+        };
 
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-}
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
 
     // ===== Dialogs / actions =====
 

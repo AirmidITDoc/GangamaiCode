@@ -37,6 +37,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { DietCreationService } from './diet-creation.service';
 import { NewDietCreationComponent } from './new-diet-creation/new-diet-creation.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { SchdulepopupComponent } from './schdulepopup/schdulepopup.component';
 
 
 
@@ -51,7 +52,8 @@ const approutes: Routes = [
 @NgModule({
     declarations: [
     PatientDietCreationComponent,
-    NewDietCreationComponent
+    NewDietCreationComponent,
+    SchdulepopupComponent
   ],
  
     imports: [

@@ -1,0 +1,88 @@
+<div class="doctor-details-popover-container" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+    <mat-toolbar class="accent" style="width: 100%; height: 50px; justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="mr-16" style="color: white;">list_alt</mat-icon>
+            <span style="color: white;">Diet Schdule Detail </span>
+        </div>
+    </mat-toolbar>
+
+    <div class="p-12" style="height: calc(100% - 50px); display: flex; flex-direction: column; overflow: hidden;">
+
+        <div class="diet-detail-grid">
+            <mat-card *ngFor="let item of detailList" class="diet-detail-card">
+                <mat-card-content>
+
+                    <!-- Date and meal -->
+                    <div class="patient-name">Plan Date:
+                        {{ item.planDate | date:'dd MMM yyyy' }} <span class="meal-sep">|</span> <span
+                            *ngIf="item.dietName"> {{ item.dietName
+                            }}</span>
+                    </div>
+                    <div class="meal-line">
+                        <span class="meal-name">{{ item.mealName || 'NA' }}</span>
+                        <span class="meal-sep">|</span>
+                        <span class="room-name"
+                            [title]="(item.dietMenuName || 'No menu') + (item.dietName ? ' | ' + item.dietName : '')">
+                            {{ item.dietMenuName || 'No menu' }}
+                        </span>
+
+
+                    </div>
+
+                    <!-- Cancelled -->
+                    <div *ngIf="item.isCancelled" class="mt-8">
+                        <span class="status-box status-not-requested"
+                            style="padding: 3px 5px; border-radius: 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                            <mat-icon style="font-size: 15px; height: 15px; width: 15px;">cancel</mat-icon>
+                            Cancelled
+                        </span>
+                        <div style="font-size: 11px; color: rgba(0,0,0,0.5); word-break: break-word;">
+                            {{ item.cancleuser }}<span *ngIf="item.cancelledReason"> — {{ item.cancelledReason }}</span>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="!item.isCancelled">
+
+                        <!-- Accepted -->
+                        <div class="status-list">
+                            <span class="status-pill" [ngClass]="item.acceptuser ? 'is-done' : 'is-pending'"
+                                [title]="item.acceptuser">
+                                <mat-icon>{{ item.acceptuser ? 'check_circle' : 'hourglass_empty' }}</mat-icon>
+                                {{ item.acceptuser ? 'Accepted' : 'Accept Pending' }}
+                            </span>
+
+                            <span class="status-pill" [ngClass]="item.progressuser ? 'is-done' : 'is-pending'"
+                                [title]="item.progressuser">
+                                <mat-icon>{{ item.progressuser ? 'restaurant' : 'hourglass_empty' }}</mat-icon>
+                                {{ item.progressuser ? 'Prepared' : 'Prepare Pending' }}
+                            </span>
+
+                            <span class="status-pill" [ngClass]="item.deliveruser ? 'is-done' : 'is-pending'"
+                                [title]="item.deliveruser">
+                                <mat-icon>{{ item.deliveruser ? 'local_shipping' : 'schedule' }}</mat-icon>
+                                {{ item.deliveruser ? 'Delivered' : 'Delivery Pending' }}
+                            </span>
+                        </div>
+                    </ng-container>
+
+                    <div class="mt-8" *ngIf="item.instruction"
+                        style="font-size: 12px; color: rgba(0,0,0,0.6); word-break: break-word;">
+                        <b>Instruction:</b> {{ item.instruction }}
+                    </div>
+                    <div class="mt-4" *ngIf="item.comment"
+                        style="font-size: 12px; color: rgba(0,0,0,0.6); word-break: break-word;">
+                        <b>Comment:</b> {{ item.comment }}
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+
+        </div>
+
+        <div *ngIf="!detailList || detailList.length === 0"
+            style="text-align:center; color: rgba(0,0,0,0.5); margin-top: 40px;">
+            No records found
+        </div>
+
+    </div>
+</div>
