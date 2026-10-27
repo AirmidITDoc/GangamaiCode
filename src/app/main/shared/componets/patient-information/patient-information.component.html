@@ -108,6 +108,12 @@
             <span class="patient-col-key">ABHA DOB:</span>
             <span class="patient-col-value">{{abhaDOB | date:'dd/MM/yyyy'}}</span>
         </div>
+
+        <div class="patient-info-chip" *ngIf="phlebotomist">
+            <mat-icon>local_hospital</mat-icon>
+            <span class="patient-col-key">Phlebotomist:</span>
+            <span class="patient-col-value">{{phlebotomist}}</span>
+        </div>
     </ng-container>
 
     <ng-template #noPatient>

@@ -96,10 +96,10 @@
 
                             <div class="filters resize-form-fields">
 
-                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="true"
+                                <!-- <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="true"
                                     (selectionChange)="ListView1($event)" [formGroup]="myFilterform"
                                     [mode]="autocompleteModeunit">
-                                </airmid-dropdown>
+                                </airmid-dropdown> -->
 
                                 <mat-form-field appearance="outline" class="date-range">
                                     <mat-label>Date Range</mat-label>
@@ -112,11 +112,17 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline">
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput formControlName="FirstName">
+                                    <mat-label>Search Patient Name / Mobile No</mat-label>
+                                    <input matInput formControlName="FirstName"
+                                        placeholder="Search Patient Name / Mobile No">
+                                    <button mat-icon-button matSuffix type="button"
+                                        *ngIf="myFilterform.get('FirstName')?.value"
+                                        (click)="myFilterform.get('FirstName')?.setValue('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline">
+                                <!-- <mat-form-field appearance="outline">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput formControlName="LastName">
                                 </mat-form-field>
@@ -124,23 +130,23 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Mobile No</mat-label>
                                     <input matInput formControlName="mobileNo">
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <airmid-dropdown label="Phlebotomist" formControlName="PhlebotomistId"
                                     (selectionChange)="ListView2($event)" [formGroup]="myFilterform"
                                     ApiUrl="HomeCollection/PhlebotomistCombo?Keyword=%" ValueField="phlebotomistId"
-                                    TextField="phlebotomistName">
+                                    TextField="phlebotomistName" [readonly]="isPhlebotomist">
                                 </airmid-dropdown>
 
                             </div>
 
                             <div class="filter-actions">
 
-                                <mat-radio-group formControlName="StatusSearch">
+                                <!-- <mat-radio-group formControlName="StatusSearch">
                                     <mat-radio-button value="2">In Progress</mat-radio-button>
                                     <mat-radio-button value="1">Completed</mat-radio-button>
                                     <mat-radio-button value="0">Pending</mat-radio-button>
-                                </mat-radio-group>
+                                </mat-radio-group> -->
 
                                 <button mat-raised-button color="primary" class="search-button"
                                     (click)="getfilterdata()">
@@ -245,6 +251,16 @@
                                             <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
                                         </ng-container>
 
+                                        <ng-container matColumnDef="billed">
+                                            <th mat-header-cell *matHeaderCellDef>Bill</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                <span class="status-chip"
+                                                    [ngClass]="isBilled(row) ? 'chip-billed' : 'chip-unbilled'">
+                                                    {{ isBilled(row) ? 'Billed' : 'Not Billed' }}
+                                                </span>
+                                            </td>
+                                        </ng-container>
+
                                         <ng-container matColumnDef="unit">
                                             <th mat-header-cell *matHeaderCellDef>Unit/Branch Name</th>
                                             <td mat-cell *matCellDef="let row">{{ row.hospitalName }}</td>
@@ -279,7 +295,7 @@
                                             </td>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="action">
+                                        <!-- <ng-container matColumnDef="action">
                                             <th mat-header-cell *matHeaderCellDef>Action</th>
                                             <td mat-cell *matCellDef="let row">
                                                 <div class="row-actions">
@@ -307,6 +323,57 @@
                                                         <mat-icon>cancel</mat-icon>
                                                     </button>
 
+                                                    <button mat-icon-button matTooltip="View" class="act-view"
+                                                        (click)="openView(row)">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
+
+                                                </div>
+                                            </td>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="action">
+                                            <th mat-header-cell *matHeaderCellDef>Action</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                <div class="row-actions">
+
+                                                    <!-- Process Bill: only if not cancelled and not billed -->
+                                                    <button mat-icon-button matTooltip="Process Bill" class="act-blue"
+                                                        (click)="onBillProcess(row)"
+                                                        [style.visibility]="canProcessBill(row) ? 'visible' : 'hidden'">
+                                                        <mat-icon>replay</mat-icon>
+                                                    </button>
+
+                                                    <!-- Update Phlebotomist: only if not cancelled and not billed -->
+                                                    <!-- <button mat-icon-button matTooltip="Update Phlebotomist"
+                                                        class="act-teal" (click)="openStatus(row)"
+                                                        [style.visibility]="canUpdatePhlebotomist(row) ? 'visible' : 'hidden'">
+                                                        <mat-icon>update</mat-icon>
+                                                    </button> -->
+                                                     <button mat-icon-button matTooltip="Update Phlebotomist"
+                                                        class="act-teal" (click)="openStatus(row)"
+                                                        [style.visibility]="!row.isCancel ? 'visible' : 'hidden'">
+                                                        <mat-icon>update</mat-icon>
+                                                    </button>
+
+                                                    <!-- Print: only if not cancelled and billed -->
+                                                     <button mat-icon-button matTooltip="Print" class="act-report"
+                                                        [style.visibility]="!row.isCancel ? 'visible' : 'hidden'">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
+                                                    <!-- <button mat-icon-button matTooltip="Print" class="act-report"
+                                                        [style.visibility]="canPrint(row) ? 'visible' : 'hidden'">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button> -->
+
+                                                    <!-- Cancel: only if not cancelled and not billed -->
+                                                    <button mat-icon-button matTooltip="Cancel Collection"
+                                                        class="act-red" (click)="OnCancel(row)"
+                                                        [style.visibility]="canCancel(row) ? 'visible' : 'hidden'">
+                                                        <mat-icon>cancel</mat-icon>
+                                                    </button>
+
+                                                    <!-- View: always -->
                                                     <button mat-icon-button matTooltip="View" class="act-view"
                                                         (click)="openView(row)">
                                                         <mat-icon>visibility</mat-icon>
@@ -389,6 +456,42 @@
                     </div>
 
                     <p class="summary-empty" *ngIf="!donutSegments.length">No data</p>
+                </div>
+
+                <div class="card">
+                    <h4>Phlebotomist Status</h4>
+
+                    <div class="ph-list">
+                    <div class="ph-row" *ngFor="let p of phlebotomistStatus">
+                        <div class="ph-head">
+                            <div class="ph-avatar" [class.unassigned]="isUnassigned(p.phlebotomistName)">
+                                <mat-icon *ngIf="isUnassigned(p.phlebotomistName); else initials">person_off</mat-icon>
+                                <ng-template #initials>{{ getInitials(p.phlebotomistName) }}</ng-template>
+                            </div>
+
+                            <span class="ph-name">{{ p.phlebotomistName }}</span>
+
+                            <span class="ph-total">{{ p.totalCount }}
+                                <small>Total</small>
+                            </span>
+                        </div>
+
+                        <div class="ph-stack">
+                            <div class="seg seg-assigned" [style.width.%]="segPercent(p.assigned, p.totalCount)"></div>
+                            <div class="seg seg-pending" [style.width.%]="segPercent(p.pending, p.totalCount)"></div>
+                            <div class="seg seg-billed" [style.width.%]="segPercent(p.billCompleted, p.totalCount)">
+                            </div>
+                        </div>
+
+                        <div class="ph-chips">
+                            <span class="chip chip-assigned"><i></i>Assigned {{ p.assigned }}</span>
+                            <span class="chip chip-pending"><i></i>Pending {{ p.pending }}</span>
+                            <span class="chip chip-billed"><i></i>Billed {{ p.billCompleted }}</span>
+                        </div>
+                    </div>
+                    </div>
+
+                    <p class="summary-empty" *ngIf="!phlebotomistStatus.length">No data</p>
                 </div>
 
                 <!-- action -->
