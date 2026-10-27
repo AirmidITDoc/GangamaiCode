@@ -1000,7 +1000,8 @@
                                             <mat-radio-button value="OnlinePay">Online Payment</mat-radio-button>
                                             <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
                                             <!-- <mat-radio-button value="Mpesa">MPesa</mat-radio-button> -->
-
+                                            <span *ngIf="IsOPDDiscountApprovalReq" style="font-size: large; font-weight: bold; color: #038745; margin-left: auto;">
+                                                Discount approval workflow is on</span>
                                         </mat-radio-group>
                                         <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4"
                                             *ngIf="Is9_Digit_National_Id">
@@ -1026,7 +1027,7 @@
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
-                    <button type="button" class="btn btn-primary" 
+                    <!-- <button type="button" class="btn btn-primary" 
                      [disabled]="IsOPDDiscountApprovalReq
                      ? (!OPFooterForm.get('concessionAmt')?.value || !chargeList.length) : !chargeList.length"
                         (click)="DraftbillSave()">Draft</button>
@@ -1034,7 +1035,27 @@
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
                         aria-label="Close dialog" matTooltip="Close">Close</button>
                     <button type="button" class="btn btn-primary" [disabled]="!chargeList.length"
-                        (click)="BillSave()">Save</button>
+                        (click)="BillSave()">Save</button> -->
+
+                    <!-- Draft / Send for Approval -->
+                    <button type="button" class="btn btn-primary" [disabled]="!chargeList.length" (click)="DraftbillSave()">
+                        {{ IsOPDDiscountApprovalReq &&
+                        OPFooterForm.get('concessionAmt')?.value > 0
+                        ? 'Send for Approval'
+                        : 'Draft' }}
+                    </button>
+                    
+                    <!-- Close -->
+                    <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        Close
+                    </button>
+                    
+                    <!-- Save -->
+                    <button type="button" class="btn btn-primary" [disabled]="!chargeList.length" *ngIf="!(IsOPDDiscountApprovalReq &&
+                                 OPFooterForm.get('concessionAmt')?.value > 0)" (click)="BillSave()">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>

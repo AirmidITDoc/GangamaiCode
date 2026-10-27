@@ -56,7 +56,7 @@ export class MrdDetailListComponent {
         { heading: "Patient Name | Age", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "DOA", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 160 },
         // { heading: "DOD", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
-        { heading: "IPNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IPNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "InFile Info", key: "inFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "OutFile Info", key: "outFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Location", key: "location", sort: true, align: 'left', emptySign: 'NA', width: 150 },

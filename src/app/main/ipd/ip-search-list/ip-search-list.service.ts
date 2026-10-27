@@ -1141,6 +1141,9 @@ export class IPSearchListService {
     public getDiscounttransactionlist(employee) {
         return this._httpClient1.PostData("IPBill/DiscountTransactionHistoryList", employee)
     }
+    public getProvisionalDiagnosisById(Param) {
+        return this._httpClient1.PostData("DischargeSummary/DischargeSummaryProvisionalDiagnosisList", Param);
+    }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

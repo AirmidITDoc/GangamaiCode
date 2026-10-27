@@ -49,7 +49,7 @@ export class MrdTemplateComponent {
   ]
 
   allFilters = [
-    { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.StartsWith }
   ]
 
   gridConfig: gridModel = {
@@ -81,7 +81,7 @@ export class MrdTemplateComponent {
       sortField: "",
       sortOrder: 0,
       filters: [
-        { fieldName: "TemplateName", fieldValue: this.TemplateName , opType: OperatorComparer.Contains }
+        { fieldName: "TemplateName", fieldValue: this.TemplateName , opType: OperatorComparer.StartsWith }
       ]
     }
     console.log(this.gridConfig)

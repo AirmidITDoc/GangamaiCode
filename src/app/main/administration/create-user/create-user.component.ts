@@ -91,7 +91,7 @@ export class CreateUserComponent implements OnInit {
         { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 60 },
         {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ];
@@ -128,6 +128,7 @@ export class CreateUserComponent implements OnInit {
         } else if (event.action === 'edit') {
             this.onEdit(event.item);
         } else if (event.action === 'delete') {
+            this.Usercancle(event.item);
         }
     }
     onCardExport(type: string) {

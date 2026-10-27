@@ -50,6 +50,21 @@
       <mat-tab-group class="dynamic-table-wrapper">
         <mat-tab>
           <div style="margin-bottom: 10px;" fxLayout="column">
+            <span style="font-weight: 700;">Provisional Diagnosis :</span>
+            <div fxFlex class="readonly-diagnosis">
+              <mat-chip-listbox *ngIf="addProDiagnolist?.length > 0">
+                <mat-chip *ngFor="let diagnosis of addProDiagnolist">
+                  {{ diagnosis }}
+                </mat-chip>
+              </mat-chip-listbox>
+              
+              <span *ngIf="!addProDiagnolist || addProDiagnolist.length === 0" 
+              style="color: gray;margin-left:10px">
+                No provisional diagnosis available
+              </span>
+            </div>
+          </div>
+          <div style="margin-bottom: 10px;" fxLayout="column">
             <span style="font-weight: 700;">Final Diagnosis :</span>
             <form [formGroup]="DischargesumForm" fxLayout="column" fxLayoutGap="8px">
 

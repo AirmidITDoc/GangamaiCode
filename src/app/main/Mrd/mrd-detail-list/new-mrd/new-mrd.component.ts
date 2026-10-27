@@ -47,6 +47,7 @@ export class NewMrdComponent {
     autocompleteModedeptdoc: string = "ConDoctor";
 
 
+    isEditForm: boolean = false;
     f_name: any = "%"
     regNo: any = "0"
     l_name: any = "%"
@@ -130,6 +131,10 @@ export class NewMrdComponent {
             console.log(this.data)
             this.rmdrecordId = this.data.rmdRecordId
             this.OPIPID = this.data.opipid
+
+            console.log("Edit mrd data", this.data)
+            this.isEditForm = true
+            this.registerObj = this.data
             this.NewMrdForm.patchValue(this.data)
         }
 
@@ -161,6 +166,16 @@ export class NewMrdComponent {
     }
 
     getSelectedRow(row: any): void {
+        if (this.isEditForm) {
+        this.toastr.warning(
+            '',
+            'Patient Already Selected!',
+            {
+                toastClass: 'tostr-tost custom-toast-success',
+            }
+        );
+        return;
+    }
 
         if (row.mrdInFileStatus) {
             this.toastr.warning('Selected Patinet File Already Received.', 'Save !', {

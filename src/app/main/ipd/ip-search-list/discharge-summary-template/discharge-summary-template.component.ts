@@ -45,6 +45,7 @@ export class DischargeSummaryTemplateComponent {
     doseName = ""
     days = 1
     addDiagnolist: any = [];
+    addProDiagnolist: any[] = [];
     autocompleteModetemplate: string = "DischargeTemplate";
     DischargeSummaryId: any = 0;
     // Chargeslist: any = [];
@@ -116,6 +117,7 @@ export class DischargeSummaryTemplateComponent {
             this.DischargesumForm.get("discharge.admissionId")?.setValue(this.data.admissionId)
             this.getDischargeSummaryData(this.vAdmissionId)
             this.getPrescription(this.vAdmissionId)
+            this.getRtrvProvisionalDiagnosisList();
 
         }
 
@@ -1346,6 +1348,41 @@ export class DischargeSummaryTemplateComponent {
                     );
                 }
             });
+    }
+
+    getRtrvProvisionalDiagnosisList(): void {
+
+        if (!this.vAdmissionId) { return; }
+
+        const param =
+        {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "AdmissionId",
+            "sortOrder": 0,
+            "filters": [{ fieldName: 'AdmissionId', fieldValue: String(this.vAdmissionId), opType: 'Contains' }],
+            "exportType": "JSON",
+            "columns": [
+            ]
+        }
+
+
+        this._IpSearchListService.getProvisionalDiagnosisById(param).subscribe((res) => {
+            console.log("Provisional data", res);
+
+            this.addProDiagnolist = [];
+
+            res.data.forEach(item => {
+                const provisionalList = item.provisional
+                    ? item.provisional.split(',').map(x => x.trim())
+                    : [];
+
+                this.addProDiagnolist.push(...provisionalList);
+            });
+
+            console.log("addProDiagnolist", this.addProDiagnolist);
+        });
+
     }
 
     getDiagnosisList() {
