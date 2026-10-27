@@ -157,6 +157,7 @@ export class PendingResultEntryComponent {
   selectedItem: any;
   CompletdFlag = 1
   OPIPID: any = 0;
+  sampleNo:any=''
 
   hasSelectedContacts: boolean;
   IsSampleCollectionCheckon: boolean = false;
@@ -257,6 +258,9 @@ export class PendingResultEntryComponent {
     if (event == 'patientName')
       this.myformSearch.get('patientName').setValue("")
 
+    if (event == 'SampleNo')
+    this.myformSearch.get('SampleNo').setValue("");
+
     this.GetResultdetail();
   }
 
@@ -296,6 +300,7 @@ export class PendingResultEntryComponent {
     this.status = this.myformSearch.get('StatusSearch').value
     this.opipType = this.myformSearch.get('opiptype').value ?? '2'                // CHANGED: || to ??
     this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
+    this.sampleNo = this.myformSearch.get('SampleNo').value || ""
     this.vCategoryId = this.myformSearch.get('CategoryId').value || 0
 
     const data =
@@ -345,6 +350,11 @@ export class PendingResultEntryComponent {
           "fieldValue": String(this.vCategoryId || "0"),
           "opType": "Equals"
         },
+        {
+          "fieldName": "SampleNo",
+          "fieldValue": String(this.sampleNo || ""),
+          "opType": "Equals"
+        },
       ],
       "exportType": "JSON",
       "columns": []
@@ -381,6 +391,7 @@ export class PendingResultEntryComponent {
     this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
     this._SampleService.myformSearch.get('StatusSearch').setValue("0");
     this._SampleService.myformSearch.get('opiptype').setValue("2");
+    this._SampleService.myformSearch.get('SampleNo').setValue("");
   }
 
   masterToggle() {

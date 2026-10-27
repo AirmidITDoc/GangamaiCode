@@ -30,7 +30,8 @@ export class LatestHomecollectionComponent {
   f_name: any = ""
   l_name: any = ""
   UnitId: any = this._loggedService.currentUserValue.user.unitId;
-  phlebotomistId = 0
+  isPhlebotomist: any = this._loggedService.currentUserValue.user.isPhlebotomist
+  phlebotomistId: any = this.isPhlebotomist ? this._loggedService.currentUserValue.userId : 0
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -47,7 +48,7 @@ export class LatestHomecollectionComponent {
   dataSource = new MatTableDataSource<any>();
 
   displayedColumns: string[] = [
-    'srNo', 'unit', 'datetime', 'patientName', 'mobileNo', 'phlebotomist',
+    'srNo', 'unit','billed', 'datetime', 'patientName', 'mobileNo', 'phlebotomist',
     'status', 'action'
   ];
 
@@ -65,6 +66,8 @@ export class LatestHomecollectionComponent {
   donutTotal = 0;
 
   dashbordCount: any[] = [];
+
+  phlebotomistStatus: any[] = [];
 
   readonly donutR = 70;
   readonly donutC = 2 * Math.PI * 70;
@@ -85,6 +88,7 @@ export class LatestHomecollectionComponent {
   ngOnInit(): void {
     this.myFilterform = this._homeCollectionService.CreateSearchGroup();
     // this.statusFormFinal = this.CreateForm();
+    this.myFilterform.get('PhlebotomistId').setValue(this.phlebotomistId)
     this.getfilterdata();
   }
 
@@ -192,10 +196,10 @@ export class LatestHomecollectionComponent {
     this.VAssignedCount = 0;
     this.VAssignedPendingCount = 0;
     this.f_name = (this.myFilterform.get('FirstName').value ?? '') + "%"   // CHANGED
-    this.l_name = (this.myFilterform.get('LastName').value ?? '') + "%"
+    // this.l_name = (this.myFilterform.get('LastName').value ?? '') + "%"
     this.UnitId = this.myFilterform.get('UnitId').value
-    this.mobileNo = (this.myFilterform.get('mobileNo').value ?? '') + "%"
-    this.phlebotomistId = this.myFilterform.get('PhlebotomistId').value
+    // this.mobileNo = (this.myFilterform.get('mobileNo').value ?? '') + "%"
+    // this.phlebotomistId = this.myFilterform.get('PhlebotomistId').value
     // this.regNo = this.myFilterform.get('RegNoSearch').value || "0"
     // debugger
     const filters: any[] = [];
@@ -217,25 +221,25 @@ export class LatestHomecollectionComponent {
         "opType": "StartsWith"
       },
       {
-        "fieldName": "FirstName",
+        "fieldName": "PatientName",
         "fieldValue": String(this.f_name),
         "opType": "StartsWith"
       },
-      {
-        "fieldName": "LastName",
-        "fieldValue": String(this.l_name),
-        "opType": "StartsWith"
-      },
-      {
-        "fieldName": "UnitId",
-        "fieldValue": String(this.UnitId),
-        "opType": "Equals"
-      },
-      {
-        "fieldName": "MobileNo",
-        "fieldValue": String(this.mobileNo),
-        "opType": "Equals"
-      },
+      // {
+      //   "fieldName": "LastName",
+      //   "fieldValue": String(this.l_name),
+      //   "opType": "StartsWith"
+      // },
+      // {
+      //   "fieldName": "UnitId",
+      //   "fieldValue": String(this.UnitId),
+      //   "opType": "Equals"
+      // },
+      // {
+      //   "fieldName": "MobileNo",
+      //   "fieldValue": String(this.mobileNo),
+      //   "opType": "Equals"
+      // },
       {
         "fieldName": "PhlebotomistId",
         "fieldValue": String(this.phlebotomistId),
@@ -284,9 +288,26 @@ export class LatestHomecollectionComponent {
 
       /// dashbord count
       this.dashbordCount = data?.phlebotomistCountListModel ?? [];
-      this.VAssignedCount=this.dashbordCount[0].assigned
-      this.VAssignedPendingCount=this.dashbordCount[0].pending
+      this.VAssignedCount = this.dashbordCount[0].assigned
+      this.VAssignedPendingCount = this.dashbordCount[0].pending
+
+      ////////// phlebotomist Status
+      this.phlebotomistStatus = data?.homeCollectionBillingStatusModel ?? [];
     });
+  }
+
+  getInitials(name: string): string {
+    if (!name) return '?';
+    const parts = name.trim().split(/\s+/);
+    return (parts[0][0] + (parts[1]?.[0] ?? '')).toUpperCase();
+  }
+
+  isUnassigned(name: string): boolean {
+    return name?.toLowerCase() === 'yet to assign';
+  }
+
+  segPercent(value: number, total: number): number {
+    return total ? (value / total) * 100 : 0;
   }
 
   getPercent(count: number): number {
@@ -421,5 +442,26 @@ export class LatestHomecollectionComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.getfilterdata()
     });
+  }
+
+  // handles 0/1, true/false, "0"/"1"
+  isBilled(row: any): boolean {
+    return Number(row?.isBilled) > 0;
+  }
+
+  canProcessBill(row: any): boolean {
+    return !row.isCancel && !this.isBilled(row);
+  }
+
+  canUpdatePhlebotomist(row: any): boolean {
+    return !row.isCancel && !this.isBilled(row);
+  }
+
+  canCancel(row: any): boolean {
+    return !row.isCancel && !this.isBilled(row);
+  }
+
+  canPrint(row: any): boolean {
+    return !row.isCancel && this.isBilled(row);
   }
 }

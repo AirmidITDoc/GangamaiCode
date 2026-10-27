@@ -305,33 +305,11 @@ export class NewPendingResultentryComponent {
     return false; // Self patient → always enabled
   }
 
-  // onRowCheck(event: any, contact: any) {
-  //   this.selection.toggle(contact);
-
-  //   if (event.checked) {
-
-  //     if (this.ServiceIdData.some(id => id == contact.pathTestID)) {
-  //       event.source.checked = false;
-  //       this.toastr.warning('This Test is already selected');
-  //       return;
-  //     }
-  //     // ticked: keep the old list and add this row
-  //     if (this.ServiceIdData.includes(contact.pathTestID)) return;   // already in the list
-  //     this.loadResultList([contact], true);                          // true = append
-  //   } else {
-  //     // unticked: remove only this row
-  //     this.dataSource.data = this.dataSource.data.filter(
-  //       (x: any) => x.PathTestID != contact.pathTestID                // use your real test id field
-  //     );
-  //     this.ServiceIdData = this.ServiceIdData.filter(id => id != contact.pathTestID);
-  //     this.reportIdData = this.reportIdData.filter(id => id != contact.pathReportID);
-  //   }
+  // working code
+  // // true if this test is already in the loaded result list
+  // isTestChecked(contact: any): boolean {
+  //   return this.ServiceIdData.some(id => id == contact.pathTestID);
   // }
-
-  // true if this test is already in the loaded result list
-  isTestChecked(contact: any): boolean {
-    return this.ServiceIdData.some(id => id == contact.pathTestID);
-  }
 
   // true if the test came from the main list (cannot be unticked here)
   initialTestIds: any[] = [];
@@ -341,42 +319,69 @@ export class NewPendingResultentryComponent {
     return this.initialTestIds.includes(contact.pathTestID);
   }
 
-  onRowCheck(event: any, contact: any) {
-    if (event.checked) {
-      if (this.isTestChecked(contact)) {
-        event.source.checked = true;          // already there, keep it ticked
-        return;
-      }
-      this.loadResultList([contact], true);   // append
+  ///////////////////////////////////////////////////////// /////////////////////////////////////////////////////////
+  private selectedKeys = new Set<string>();
 
+  private rowKey(testId: any, reportId: any): string {
+    return `${testId}_${reportId}`;
+  }
+
+  // the box is ticked if its key is in the set
+  isTestChecked(contact: any): boolean {
+    return this.selectedKeys.has(this.rowKey(contact.pathTestID, contact.pathReportID));
+  }
+
+  // matches a row in dataSource, whichever field names it uses
+  private isSameRow(x: any, contact: any): boolean {
+    const testId = x._testId ?? x.PathTestID ?? x.testId;
+    const reportId = x._reportId ?? x.PathReportID ?? x.reportId;
+    return testId == contact.pathTestID && reportId == contact.pathReportID;
+  }
+
+  // call ONCE after the test list is loaded (see note below)
+  applyDefaultChecks(list: any[]) {
+    const defaults = list.filter((c: any) => c._locked);   // your default rows
+    defaults.forEach((c: any) => {
+      c._locked = false;                                    // no longer fixed
+      this.selectedKeys.add(this.rowKey(c.pathTestID, c.pathReportID));
+    });
+    if (defaults.length) {
+      this.loadResultList(defaults, true);                  // put them in the result list
+    }
+  }
+
+  onRowCheck(event: any, contact: any) {
+    const key = this.rowKey(contact.pathTestID, contact.pathReportID);
+
+    if (event.checked) {
+      if (this.selectedKeys.has(key)) return;
+      this.selectedKeys.add(key);
+      this.loadResultList([contact], true);                 // append
     } else {
-      // only rows ticked in this dialog can be removed
+      this.selectedKeys.delete(key);
       this.dataSource.data = this.dataSource.data.filter(
-        (x: any) => !(x._testId == contact.pathTestID && x._reportId == contact.pathReportID)
+        (x: any) => !this.isSameRow(x, contact)
       );
       this.ServiceIdData = this.ServiceIdData.filter(id => id != contact.pathTestID);
       this.reportIdData = this.reportIdData.filter(id => id != contact.pathReportID);
     }
   }
+  ///////////////////////////////////////////////////////// /////////////////////////////////////////////////////////
+
+  // working code
 
   // onRowCheck(event: any, contact: any) {
   //   if (event.checked) {
-  //     // 1. check first, before touching the selection
-  //     if (this.ServiceIdData.some(id => id == contact.pathTestID)) {
-  //       event.source.checked = false;
-  //       this.toastr.warning('This Test is already selected');
-  //       return;                        // selection is NOT toggled
+  //     if (this.isTestChecked(contact)) {
+  //       event.source.checked = true;          // already there, keep it ticked
+  //       return;
   //     }
-
-  //     // 2. allowed: add to selection and append to the old list
-  //     this.selection.toggle(contact);
-  //     this.loadResultList([contact], true);
+  //     this.loadResultList([contact], true);   // append
 
   //   } else {
-  //     // unticked: remove only this row
-  //     // this.selection.toggle(contact);
+  //     // only rows ticked in this dialog can be removed
   //     this.dataSource.data = this.dataSource.data.filter(
-  //       (x: any) => x.PathTestID != contact.pathTestID                // use your real test id field
+  //       (x: any) => !(x._testId == contact.pathTestID && x._reportId == contact.pathReportID)
   //     );
   //     this.ServiceIdData = this.ServiceIdData.filter(id => id != contact.pathTestID);
   //     this.reportIdData = this.reportIdData.filter(id => id != contact.pathReportID);
@@ -469,6 +474,7 @@ export class NewPendingResultentryComponent {
 
   }
 
+  private defaultsApplied = false;
   GetPendingdetailList(obj: any = null) {
     const fromDate = this.datePipe.transform(obj.pathDate, "yyyy-MM-dd")
     const toDate = this.datePipe.transform(obj.pathDate, "yyyy-MM-dd")
@@ -533,6 +539,12 @@ export class NewPendingResultentryComponent {
         _locked: rows.some((r: any) =>
           r.pathTestID == p.pathTestID && r.pathReportID == p.pathReportID)
       }));
+
+      // tick the default rows only the first time, so a reload doesn't bring back rows the user unticked
+      if (!this.defaultsApplied) {
+        this.defaultsApplied = true;
+        this.applyDefaultChecks(this.pendingDS.data);
+      }
     });
   }
 

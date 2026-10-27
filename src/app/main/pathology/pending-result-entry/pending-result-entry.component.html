@@ -70,7 +70,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                <div fxFlex="7%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>UHID</mat-label>
                                         <input matInput placeholder="Search UHID" autocomplete="off"
@@ -82,6 +82,20 @@
                                         </button>
                                     </mat-form-field>
                                 </div>
+
+                                 <div fxFlex="7%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>SampleNo</mat-label>
+                                        <input matInput placeholder="Search SampleNo" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="SampleNo"
+                                            (input)="GetResultdetail()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('SampleNo')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Patient Name</mat-label>

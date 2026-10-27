@@ -1,85 +1,58 @@
+/* Fill the dialog / page area */
 :host {
-  --ph-accent: #0f766e;
-  --ph-accent-tint: rgba(15, 118, 110, 0.08);
-  --ph-ink: #10242b;
-  --ph-muted: #4a5f66;
-  --ph-line: #d5e0e3;
-  --ph-line-soft: #e3ebed;
-  --ph-bg: #f2f6f7;
-  --ph-surface: #ffffff;
   display: block;
+  width: 100%;
+  min-height: 100%;
 }
 
+/* Variables live on .ph-page (not :host) so they work with any view encapsulation */
 .ph-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 24px 48px;
+  --ph-accent: #3f51b5;
+  --ph-accent-tint: #e8eaf6;
+  --ph-ink: #1c2240;
+  --ph-muted: #565d7c;
+  --ph-line: #d3d7ee;
+  --ph-line-soft: #e4e7f6;
+  --ph-bg: #ffffff; //#f3f4fb;
+  --ph-surface: #ffffff;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100vh - 110px);
+  margin: 0;
+  padding: 20px 24px 32px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
   background: var(--ph-bg);
   color: var(--ph-ink);
+   position: relative;
+    padding-bottom: 72px;
 }
-
-/* Header */
-// .ph-header {
-//   display: flex;
-//   flex-wrap: wrap;
-//   align-items: flex-end;
-//   justify-content: space-between;
-//   gap: 12px;
-// }
-// .ph-title {
-//   margin: 0;
-//   font-size: 28px;
-//   line-height: 1.2;
-//   font-weight: 700;
-//   letter-spacing: -0.01em;
-// }
-// .ph-subtitle {
-//   margin: 4px 0 0;
-//   font-size: 15px;
-//   color: var(--ph-muted);
-// }
-// .ph-total {
-//   display: flex;
-//   align-items: center;
-//   gap: 8px;
-//   padding: 8px 14px;
-//   background: var(--ph-surface);
-//   border: 1px solid var(--ph-line);
-//   border-radius: 999px;
-//   font-size: 14px;
-//   color: var(--ph-muted);
-// }
-// .ph-total strong {
-//   font-size: 16px;
-//   color: var(--ph-ink);
-// }
 
 /* Cards */
 .ph-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
 }
 .ph-card {
-  flex: 1 1 220px;
-  min-width: 200px;
-  max-width: 380px;
+  flex: 0 0 180px;
+  width: 180px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 16px;
-  padding: 20px;
+  gap: 8px;
+  padding: 12px;
+  margin: 0;
   text-align: left;
   font-family: inherit;
-  color: inherit;
+  color: var(--ph-ink);
   cursor: pointer;
   background: var(--ph-surface);
   border: 2px solid var(--ph-line);
-  border-radius: 16px;
+  border-radius: 12px;
   transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
 }
 .ph-card:hover {
@@ -108,11 +81,12 @@
   gap: 2px;
 }
 .ph-card-name {
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 600;
+  color: var(--ph-ink);
 }
 .ph-card-label {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--ph-muted);
 }
 .ph-card-count {
@@ -121,24 +95,26 @@
   gap: 6px;
 }
 .ph-count-num {
-  font-size: 36px;
+  font-size: 22px;
   line-height: 1;
   font-weight: 700;
+  color: var(--ph-ink);
 }
 .ph-count-unit {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--ph-muted);
 }
 
 /* Avatar */
 .ph-avatar {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   background: var(--ph-line-soft);
   color: var(--ph-ink);
@@ -179,6 +155,7 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
+  color: var(--ph-ink);
 }
 .ph-panel-role {
   font-size: 14px;
@@ -187,8 +164,8 @@
 .ph-pill {
   padding: 6px 14px;
   border-radius: 999px;
-  background: #e6f2f1;
-  color: #0b4f49;
+  background: var(--ph-accent-tint);
+  color: #283593;
   font-size: 14px;
   font-weight: 600;
 }
@@ -199,24 +176,26 @@
 .ph-table {
   width: 100%;
   min-width: 880px;
+  background: var(--ph-surface);
 }
-.ph-table th.mat-header-cell {
-  background: var(--ph-bg);
-  color: #34484f;
+/* attribute selectors work for both old (.mat-header-cell) and new (.mat-mdc-header-cell) Material */
+.ph-table th[mat-header-cell] {
+  background: var(--ph-accent-tint);
+  color: #283593;
   font-size: 14px;
   font-weight: 600;
 }
-.ph-table td.mat-cell {
+.ph-table td[mat-cell] {
   font-size: 14px;
   color: var(--ph-ink);
 }
-.ph-table th.mat-header-cell:first-of-type,
-.ph-table td.mat-cell:first-of-type {
+.ph-table th[mat-header-cell]:first-of-type,
+.ph-table td[mat-cell]:first-of-type {
   padding-left: 24px;
   width: 64px;
 }
-.ph-table th.mat-header-cell:last-of-type,
-.ph-table td.mat-cell:last-of-type {
+.ph-table th[mat-header-cell]:last-of-type,
+.ph-table td[mat-cell]:last-of-type {
   padding-right: 24px;
 }
 .ph-strong {
@@ -237,11 +216,59 @@
   font-weight: 600;
 }
 .ph-chip-pending   { background: #fff1cc; color: #6b4200; }
-.ph-chip-collected { background: #d6f0ea; color: #0a4d46; }
+.ph-chip-completed { background: #dcefe0; color: #1b5e20; }
 .ph-chip-cancelled { background: #f3e1e1; color: #7f2323; }
 
 /* Phone width */
 @media (max-width: 600px) {
-  .ph-page { padding: 20px 16px 32px; }
-  .ph-card { max-width: none; }
+  .ph-page { padding: 16px 16px 32px; }
+  .ph-card { flex: 1 1 150px; width: auto; }
+}
+
+
+// /* Unassigned patients + assign action */
+// .ph-actions {
+//   display: flex;
+//   flex-wrap: wrap;
+//   align-items: center;
+//   gap: 12px;
+// }
+// .ph-save {
+//   background: #3f51b5;
+//   color: #ffffff;
+//   border-radius: 8px;
+// }
+// .ph-save[disabled] {
+//   background: var(--ph-line-soft);
+//   color: var(--ph-muted);
+// }
+// .ph-table tr[mat-row].ph-row-click {
+//   cursor: pointer;
+// }
+// .ph-table tr[mat-row].ph-row-click:hover {
+//   background: #f3f4fb;
+// }
+// .ph-table tr[mat-row].ph-row-selected {
+//   background: var(--ph-accent-tint);
+// }
+// .ph-table th[mat-header-cell].ph-col-check,
+// .ph-table td[mat-cell].ph-col-check {
+//   width: 56px;
+//   padding-left: 16px;
+// }
+// .ph-unassigned-scroll {
+//   max-height: 260px;
+//   overflow: auto;
+// }
+
+.ph-footer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;   // bottom-right corner
+    padding: 12px 16px;
+    margin-top: 16px;
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    z-index: 2;
 }
