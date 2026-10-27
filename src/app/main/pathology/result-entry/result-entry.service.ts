@@ -52,7 +52,7 @@ export class ResultEntryService {
     createPendingSearchForm(): FormGroup {
         return this._formBuilder.group({
             RegNoSearch: [],
-
+            SampleNo:[],
             PatientTypeSearch: ['3'],
             StatusSearch: ['0'],
             start: [new Date().toISOString()],

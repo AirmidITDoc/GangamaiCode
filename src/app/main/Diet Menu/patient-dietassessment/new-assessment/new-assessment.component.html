@@ -11,9 +11,21 @@
             </button>
         </div>
         <div class="drawer-body">
-            <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" #grid1Ref
-                (dataLoaded)="Statement = $event > 0" style="width:100%; height:100%;"></airmid-table>
+            <div class="assess-card" *ngFor="let a of assessmentList; trackBy: trackByAssess">
+                <div class="ac-row"><b>{{a.patientName || 'NA'}}</b><span>OPIPID: {{a.opipId || 'NA'}}</span><span>DOA:
+                        {{(a.admissionTime | date:'dd/MM/yyyy hh:mm a') || 'NA'}}</span><span>Assessment:
+                        {{(a.assessmentDate | date:'dd/MM/yyyy') || 'NA'}}</span><span>By: {{a.assessByName ||
+                        'NA'}}</span></div>
+                <div class="ac-row"><span>Height: {{a.height || 'NA'}}</span><span>Weight: {{a.weight ||
+                        'NA'}}</span><span>Food Preference: {{a.foodPreferenceName || 'NA'}}</span><span>Nutrition:
+                        {{a.nutritionStatusName || 'NA'}}</span></div>
+                <div class="ac-row"><b>Allergies:</b> {{a.allergies || 'NA'}}</div>
+                <div class="ac-row" *ngIf="a.specialInstructions"><b>Special Instructions:</b> {{a.specialInstructions}}
+                </div>
+                <div class="ac-row" *ngIf="a.dietitionNotes"><b>Dietitian Notes:</b> {{a.dietitionNotes}}</div>
+            </div>
 
+            <div class="ac-empty" *ngIf="!assessmentList.length">No assessment history</div>
         </div>
     </mat-drawer>
 
@@ -52,7 +64,7 @@
                             <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
 
                                 <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
-                                    <div fxFlex="90%" fxFlex.sm="100%">
+                                    <div fxFlex="90%" fxFlex.sm="100%" *ngIf="InsertStatus">
                                         <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" fxFlex="50%"
                                             formControlName="RegID" placeholderText="IP-RegNo/FirstName/LastName"
                                             label="Search UHID / Patient Name / Mobile No"

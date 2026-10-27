@@ -25,6 +25,7 @@ export class PatientInformationComponent implements OnInit {
   @Input() abhaFullName: string = '';
   @Input() abhaGender: any;
   @Input() abhaDOB: any;
+  @Input() phlebotomist:any;
 
   constructor() { }
 

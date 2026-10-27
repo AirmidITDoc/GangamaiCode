@@ -79,9 +79,15 @@ const approtes: Routes = [
         path: "dietaccessment",
         loadChildren: () => import("./patient-diet-schdule/dietw-schdule.module").then((m) => m.DietwSchduleModule),
     },
+    // {
+    //     path: "schduledlistforcanteen",
+    //     loadChildren: () => import("./schdulelist-for-canteen/schdulelist-forcanteen.module").then((m) => m.SchdulelistForcanteenModule),
+    // }
 ];
 @NgModule({
     declarations: [
+
+
 
     ],
     imports: [

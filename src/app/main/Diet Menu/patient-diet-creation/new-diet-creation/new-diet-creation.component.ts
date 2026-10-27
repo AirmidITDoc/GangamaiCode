@@ -22,6 +22,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { DietCreationService } from '../diet-creation.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { MatDrawer } from '@angular/material/sidenav';
+import Swal from 'sweetalert2';
 
 interface MealRow {
   mealTypeId: number;
@@ -42,17 +43,19 @@ export class NewDietCreationComponent {
   dietTypeName = '';
   dietMenuName = '';
   autocompleteModedietMenu = 'MDietMenuMaster';
-  autocompleteModemealType = 'MMealTypeMaster';
   autocompleteModedietType = 'MDietTypeMaster';
-  Statement: boolean = false
+  Statement: boolean = false;
   readonly MAX_DAYS = 31;
 
   dateColumns: { key: string; date: Date }[] = [];
   mealRows: MealRow[] = [];
+  InsertStatus: boolean = true;
+
+  // "mealTypeId|yyyy-MM-dd" -> dietPlanDetId (so save can update / clear existing rows)
+  private savedCells = new Map<string, number>();
+
   @ViewChild('historyDrawer') historyDrawer: MatDrawer;
   @ViewChild('grid1Ref') grid1: AirmidTableComponent;
-  // optional: fill from the MMealTypeMaster API so meal names can be looked up by id
-  mealTypeList: { value: number; text: string }[] = [];
 
   searchFormGroup: FormGroup;
   myFilterform: FormGroup;
@@ -61,15 +64,14 @@ export class NewDietCreationComponent {
   vPatientName = '';
   vAdmissionId = 0;
   registerObj: any;
-  //Assessment
+  registerObj1: any;
+  assessmentList: any[] = [];
+  fitLimit = 4;
 
+  // ---------- Assessment history grid ----------
 
   allcolumns = [
-
     { heading: "Assessment Date", key: "assessmentDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
-
-    // { heading: "UHID", key: "RegId", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-
     { heading: "OPIPID", key: "opipId", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150 },
@@ -79,16 +81,10 @@ export class NewDietCreationComponent {
     { heading: "Allergies", key: "allergies", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Nutrition Status", key: "nutritionStatus", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Special Instructions", key: "specialInstructions", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
     { heading: "Dietition Notes", key: "dietitionNotes", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
     { heading: "Assess By", key: "assessByName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+  ];
 
-  ]
-
-  allfilters = [
-    { fieldName: "AdmissionId", fieldValue: this.vAdmissionId, opType: OperatorComparer.Equals }
-  ]
   gridConfig: gridModel = {
     apiUrl: "DietAssessmentInfo/PatientAssessmentList",
     columnsList: this.allcolumns,
@@ -97,7 +93,6 @@ export class NewDietCreationComponent {
     filters: [{ fieldName: "AdmissionId", fieldValue: String(this.vAdmissionId), opType: OperatorComparer.Equals }],
     row: 25
   };
-
 
   constructor(
     public _DietCreationService: DietCreationService,
@@ -110,21 +105,19 @@ export class NewDietCreationComponent {
   ) {
     this.myFilterform = this._formBuilder.group({
       dietTypeId: [0],
-      mealTypeId: [0],
       dietMenuId: [0],
       instruction: [''],
       comment: [''],
       fromDate: [new Date()],
       endDate: [new Date()],
       planDate: [new Date()],
+      draftOrFinal: false
     });
   }
 
   ngOnInit(): void {
     this.patientName = this.data?.patientName || this.data?.firstName || '';
 
-    // Diet type title: update only when the user picks or clears a value.
-    // A plain id (written by loadPlan / the dropdown's init) keeps the name already set.
     this.myFilterform.get('dietTypeId')?.valueChanges.subscribe(v => {
       if (v && typeof v === 'object') {
         this.dietTypeName = v.text || '';
@@ -133,25 +126,101 @@ export class NewDietCreationComponent {
       }
     });
 
-    // add a row each time a meal type is selected
-    this.myFilterform.get('mealTypeId')?.valueChanges.subscribe(v => this.onMealTypeChange(v));
-
     this.searchFormGroup = this.createSearchForm();
 
-    this.mealRows = [];         // rows are generated from Meal Type selection
     this.onDateRangeChange();   // date columns
 
-    // edit mode: only when a saved plan was passed in
     if (this.data?.dietPlanId) {
+      debugger
+      this.InsertStatus = false;
       this.registerObj = this.data;
       this.dietPlanId = this.data.dietPlanId;
       this.vAdmissionId = this.data.admissionId || this.data.opipid || this.data.opipId || 0;
+
+      // patch the header fields from the grid row
+      const d = this.data;
+      const patch: any = {
+        instruction: d.instruction || '',
+        comment: d.comment || ''
+      };
+      if (d.planStartDate) patch.fromDate = new Date(d.planStartDate);
+      if (d.planEndDate) patch.endDate = new Date(d.planEndDate);
+      if (d.planDate) patch.planDate = new Date(d.planDate);
+      if (d.dietTypeId != null) patch.dietTypeId = d.dietTypeId;
+
+      this.myFilterform.patchValue(patch, { emitEvent: false });
+      this.dietTypeName = d.dietName || '';
       this.GetdietplanbyId();
+      this.onDateRangeChange();   // rebuild the date columns for the patched range
     }
+
+    this.loadMealTypes();
+
+    if ((this.vAdmissionId ?? 0) > 0) {
+      setTimeout(() => {
+        this._DietCreationService.getAdmissionById(this.vAdmissionId).subscribe((response) => {
+          this.registerObj1 = response;
+          if (response) {
+            this._DietCreationService.getRegistraionById(response.regId).subscribe((reg) => {
+              this.registerObj = reg;
+              this.data = reg;
+            });
+          }
+        });
+      }, 500);
+    }
+  }
+
+  ngAfterViewInit() {
+    this.checkHistory();   // shows the history icon in edit mode; skipped when no patient yet
   }
 
   createSearchForm() {
     return this._formBuilder.group({ RegID: 0 });
+  }
+
+  // ---------- Meal rows (all meal types, loaded on init) ----------
+
+  private loadMealTypes() {
+    const data = {
+      first: 0,
+      rows: 15,
+      sortField: 'mealId',
+      sortOrder: 0,
+      filters: [
+        { fieldName: "mealName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "active", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+      exportType: 'JSON',
+      columns: []
+    };
+
+    this._DietCreationService.getMealTypeList(data).subscribe((res: any) => {
+      const list: any[] = Array.isArray(res) ? res : (res?.data ?? []);
+
+      const seen = new Set<number>();
+      this.mealRows = [];
+
+      list.forEach(m => {
+        const id = m.value ?? m.mealId ?? m.id;
+        const name = m.text ?? m.mealName;
+        if (id == null || seen.has(id)) return;   // one row per meal type
+        seen.add(id);
+        this.mealRows.push({
+          mealTypeId: id,
+          mealName: name,
+          form: new FormGroup({})
+        });
+      });
+
+      this.syncControls();
+      this.cdr.detectChanges();
+
+      // edit mode: meal rows exist now, so the plan can be placed into them
+      if (this.dietPlanId) {
+        this.GetdietplanbyId();
+      }
+    });
   }
 
   // ---------- Patient details (edit mode) ----------
@@ -173,188 +242,125 @@ export class NewDietCreationComponent {
   // ---------- Edit mode: fetch + fill ----------
 
   GetdietplanbyId() {
-    const param = {
-      first: 0, rows: 20, sortField: 'DietPlanId', sortOrder: 0,
-      filters: [{ fieldName: 'dietPlanId', fieldValue: String(this.dietPlanId), opType: 'Equals' }],
-      exportType: 'JSON',
+    console.log('1 GetdietplanbyId called, dietPlanId =', this.dietPlanId);
+
+    const requestData = {
+      first: 0,
+      rows: 999,
+      sortField: "DietPlanId",
+      sortOrder: 0,
+      filters: [{ fieldName: "DietPlanId", fieldValue: String(this.dietPlanId), opType: "Equals" }],
+      exportType: "JSON",
       columns: []
     };
 
-    this._DietCreationService.getdietplanById(param).subscribe((res: any) => {
-      this.loadPlan(res);
+    this._DietCreationService.getRequestdetaillist(requestData).subscribe({
+      next: (res: any) => {
+        console.log('2 API response', res);
+        try {
+          this.loadPlan(res);
+          console.log('3 loadPlan finished, meals =', this.mealRows.length, 'cols =', this.dateColumns.length);
+        } catch (e) {
+          console.error('3 loadPlan THREW', e);
+        }
+      },
+      error: (e) => console.error('2 API ERROR', e)
     });
   }
 
   loadPlan(res: any) {
     const list: any[] = Array.isArray(res) ? res : (res?.data ?? [res]);
     if (!list.length) return;
-
+    debugger
     const first = list[0];
-    const toDate = (s: string) => new Date(s);   // no-timezone ISO string parses as local time
-    const key = (s: string) => this.datePipe.transform(toDate(s), 'yyyy-MM-dd')!;
+    const toDate = (s: any) => (s ? new Date(s) : null);
+    const key = (s: any) => this.datePipe.transform(toDate(s), 'yyyy-MM-dd')!;
+    const mealIdOf = (r: any) => r.dietMealTypeId ?? r.mealTypeId ?? r.mealId;
 
-    // patient id for Save (edit mode) + patient card
-    this.vAdmissionId = this.vAdmissionId || first.opipid || 0;
+    // ---------- 1. Only the dates / meals that exist in the data ----------
+    const dateKeys = Array.from(new Set(list.map(r => key(r.planDate)))).sort();
+
+    const mealMap = new Map<number, string>();
+    list.forEach(r => {
+      const id = mealIdOf(r);
+      if (id != null && !mealMap.has(id)) {
+        mealMap.set(id, r.mealName || r.dietMealTypeName || `Meal ${id}`);
+      }
+    });
+    const mealEntries = Array.from(mealMap.entries()).sort((a, b) => a[0] - b[0]);
+
+    // ---------- 2. Patient / header ----------
+    this.vAdmissionId = this.vAdmissionId || first.opipid || first.opipId || 0;
     this.loadPatient();
 
-    // 1. Filters. emitEvent:false so the subscriptions don't fire.
-    //    mealTypeId is NOT patched: it is only the "add a row" picker.
-    this.myFilterform.patchValue({
-      fromDate: toDate(first.planStartDate),
-      endDate: toDate(first.planEndDate),
-      dietTypeId: first.dietTypeId,
-      instruction: first.instruction,
-      comment: first.comment
-    }, { emitEvent: false });
-    this.dietTypeName = first.dietName || '';
-    this.dietMenuName = first.dietMenuName || '';
+    const patch: any = {
+      fromDate: new Date(dateKeys[0] + 'T00:00:00'),
+      endDate: new Date(dateKeys[dateKeys.length - 1] + 'T00:00:00'),
+      planDate: first.planDate ? toDate(first.planDate) : new Date(),
+      instruction: first.instruction || '',
+      comment: first.comment || ''
+    };
+    if (first.dietTypeId != null) {
+      patch.dietTypeId = first.dietTypeId;   // plain id - airmid-dropdown resolves the text
+    }
+    this.myFilterform.patchValue(patch, { emitEvent: false });
+    this.dietTypeName = first.dietName || first.dietTypeName || '';
 
-    // 2. Date columns from the plan range
-    this.onDateRangeChange();
+    // ---------- 3. Destroy old rows first so every dropdown is re-created with its new FormGroup ----------
+    this.mealRows = [];
+    this.dateColumns = [];
+    this.cdr.detectChanges();
 
-    // 3. One row per meal type
-    const rows = new Map<number, MealRow>();
-    list.forEach(r => {
-      if (!rows.has(r.dietMealTypeId)) {
-        rows.set(r.dietMealTypeId, {
-          mealTypeId: r.dietMealTypeId,
-          mealName: r.mealName,   // "Lunch"
-          form: new FormGroup({})
-        });
-      }
-    });
-    this.mealRows = Array.from(rows.values());
-
-    // 4. Add a control per date to every row
+    // ---------- 4. Build columns + rows from data only ----------
+    this.dateColumns = dateKeys.map(k => ({ key: k, date: new Date(k + 'T00:00:00') }));
+    this.mealRows = mealEntries.map(([id, name]) => ({
+      mealTypeId: id,
+      mealName: name,
+      form: new FormGroup({})
+    }));
     this.syncControls();
 
-    // 5. Set cell values BEFORE the dropdowns render, so each
-    //    airmid-dropdown gets its id in the first writeValue
-    const cellValues = new Map<string, { value: number; text: string }>();
-    list.forEach(r =>
-      cellValues.set(`${r.dietMealTypeId}|${key(r.planDate)}`,
-        { value: r.dietMenuId, text: r.dietMenuName })   // { value: 3, text: 'Maharashtrian Mutton Thali' }
-    );
+    // ---------- 5. Cell map: "mealId|yyyy-MM-dd" -> menu id ----------
+    this.savedCells.clear();
+    const cellValues = new Map<string, number>();
 
-    this.mealRows.forEach(row => {
-      this.dateColumns.forEach(d => {
-        const cell = cellValues.get(`${row.mealTypeId}|${d.key}`);
-        if (cell) {
-          row.form.get(d.key)?.setValue(cell, { emitEvent: false });
-        }
-      });
-    });
-
-    // plan rows whose date is outside the generated range
     list.forEach(r => {
-      if (!rows.get(r.dietMealTypeId)?.form.get(key(r.planDate))) {
-        console.warn('No cell for', r.dietMealTypeId, key(r.planDate));
+      const mealId = mealIdOf(r);
+      if (mealId == null) return;
+
+      const cellKey = `${mealId}|${key(r.planDate)}`;
+      const menuId = Number(r.dietMenuId ?? r.menuId ?? 0);
+
+      if (menuId > 0) {
+        cellValues.set(cellKey, menuId);   // plain id, same as dietTypeId
       }
+      this.savedCells.set(cellKey, r.dietPlanDetId ?? r.dietPlanDetailId ?? 0);
     });
 
-    this.cdr.detectChanges();   // renders the cell dropdowns
+    // ---------- 6. Render, then set values ----------
+    this.cdr.detectChanges();
 
-    setTimeout(() => {
+    const applyValues = () => {
       this.mealRows.forEach(row => {
         this.dateColumns.forEach(d => {
-          const cell = cellValues.get(`${row.mealTypeId}|${d.key}`);
-          if (cell) {
-            row.form.get(d.key)?.setValue(cell);   // no emitEvent:false, so the dropdown reacts
-          }
+          const id = cellValues.get(`${row.mealTypeId}|${d.key}`);
+          row.form.get(d.key)?.setValue(id ?? null);
         });
       });
       this.cdr.detectChanges();
-    }, 1000);
+      console.log('cols', this.dateColumns.map(c => c.key), 'meals', this.mealRows.length,
+        'values', JSON.stringify(this.mealRows.map(r => r.form.value)));
+    };
 
-
-  }
-  dietMenuList: { value: number; text: string }[] = [];
-
-  private addMenus(items: { value: number; text: string }[]) {
-    const seen = new Set(this.dietMenuList.map(m => m.value));
-    items.forEach(m => {
-      if (m.value && !seen.has(m.value)) {
-        this.dietMenuList.push(m);
-        seen.add(m.value);
-      }
-    });
-    this.dietMenuList = [...this.dietMenuList];
-  }
-
-
-  private mealNameOf(id: number, r?: any): string {
-    return r?.mealName
-      || r?.dietMealTypeName
-      || r?.mealTypeName
-      || this.mealTypeList?.find(m => m.value === id)?.text
-      || `Meal ${id}`;
+    applyValues();
+    setTimeout(applyValues, 300);   // second pass in case dropdown options load late
   }
 
   // ---------- Grid ----------
 
   trackByMeal = (_: number, r: MealRow) => r.mealTypeId;
   trackByDate = (_: number, c: { key: string }) => c.key;
-
-  // Meal Type dropdown -> add a row (no duplicates)
-  private onMealTypeChange(v: any) {
-    const id = (v && typeof v === 'object') ? v.value : v;
-    const name = (v && typeof v === 'object') ? (v.text || '') : '';
-    if (!id || !name) return;
-
-    // 1. already in the table? (match by id OR by name)
-    const cleanName = name.trim().toLowerCase();
-    const exists = this.mealRows.some(r =>
-      String(r.mealTypeId) === String(id) ||
-      r.mealName.trim().toLowerCase() === cleanName
-    );
-    if (exists) {
-      this.toastr.warning(`${name} is already added`);
-      return;
-    }
-
-    // 2. patient must be selected
-    if (!this.vAdmissionId) {
-      this.toastr.warning('Please select a patient first');
-      return;
-    }
-
-    // 3. diet type must be selected
-    if (!this.getId(this.myFilterform.get('dietTypeId')?.value)) {
-      this.toastr.warning('Please select a diet type first');
-      return;
-    }
-
-    // 4. date range must be valid (at least one date column)
-    if (!this.dateColumns.length) {
-      this.toastr.warning('Please select a valid schedule date range');
-      return;
-    }
-
-    // all checks passed -> add the row
-    this.mealRows = [
-      ...this.mealRows,
-      { mealTypeId: id, mealName: name, form: new FormGroup({}) }   // new group per row, never shared
-    ];
-    this.syncControls();   // add a control for every date column to the new row
-    this.clearMealType();
-  }
-  private clearMealType() {
-    // reset after the current change event finishes, so the dropdown doesn't fight its own emit
-    setTimeout(() => {
-      this.myFilterform.get('mealTypeId')?.reset(null);   // use your actual control name
-    });
-  }
-  // Delete -> remove the row
-  onCancelRow(row: MealRow) {
-    this.mealRows = this.mealRows.filter(r => r !== row);
-
-    // clear the Meal Type filter if it still shows the deleted meal,
-    // otherwise picking the same meal again wouldn't add the row back
-    const ctrl = this.myFilterform.get('mealTypeId');
-    if (this.getId(ctrl?.value) === row.mealTypeId) {
-      ctrl?.setValue(0, { emitEvent: false });
-    }
-  }
+  trackByAssess = (_: number, a: any) => a.dietAssessmentId ?? a.assessmentDate;
 
   onDateRangeChange() {
     const from = this.myFilterform.get('fromDate').value;
@@ -388,6 +394,8 @@ export class NewDietCreationComponent {
     });
   }
 
+  // ---------- Patient selection + assessment history ----------
+
   getSelectedObjIP(obj) {
     this.vAdmissionId = obj.admissionID;
     if ((obj.regID ?? 0) > 0) {
@@ -398,71 +406,108 @@ export class NewDietCreationComponent {
     if (this.vAdmissionId)
       this.checkHistory();
   }
-  registerObj1: any
-  checkHistory(): void {
 
+  checkHistory(): void {
     const param = {
-      first: 0, rows: 20, sortField: 'DietAssessmentId', sortOrder: 0,
+      first: 0, rows: 50, sortField: 'DietAssessmentId', sortOrder: 0,
       filters: [{ fieldName: 'AdmissionId', fieldValue: String(this.vAdmissionId), opType: 'Equals' }],
       exportType: 'JSON',
       columns: [{ data: 'DietAssessmentId', name: 'DietAssessmentId' }]
     };
 
-    this._DietCreationService.getassessmentById(param).subscribe((res) => {
+    this._DietCreationService.getassessmentById(param).subscribe((res: any) => {
       this.registerObj1 = res;
-      this.Statement = (res?.data ?? []).length > 0;
+      this.assessmentList = res?.data ?? [];
+      this.Statement = this.assessmentList.length > 0;
       if (!this.Statement) { this.historyDrawer?.close(); }
+      this.cdr.detectChanges();
     });
   }
 
+  onHistoryDrawerChange(opened: boolean) {
+    if (!opened) { return; }
+    setTimeout(() => {
+      if (!this.grid1) { return; }
+      this.grid1.gridConfig = {
+        ...this.gridConfig,
+        filters: [{ fieldName: 'AdmissionId', fieldValue: String(this.vAdmissionId), opType: OperatorComparer.Equals }]
+      };
+      this.grid1.bindGridData();
+    });
+  }
 
   // ---------- Save ----------
 
   // read a dropdown value: object { value, text } or a plain id
   private getId(v: any): number {
-    return (v && typeof v === 'object') ? (v.value ?? 0) : (v ?? 0);
+    const raw = (v && typeof v === 'object') ? v.value : v;
+    const n = Number(raw);
+    return isNaN(n) ? 0 : n;
   }
 
-  // local calendar date -> "2026-10-13T00:00:00.000Z" (no timezone shift)
-  private toIso(d: Date): string {
-    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString();
+  // local calendar date -> "2026-10-24T00:00:00" (matches the API payload, no timezone)
+  private toLocalIso(d: Date): string {
+    return this.datePipe.transform(d, "yyyy-MM-dd'T'00:00:00")!;
   }
 
-  // one flat object per meal row x date cell that has a menu selected
-  private buildPayload() {
-    debugger
+  // header object + one detail row per meal row x date cell that has a menu selected
+  // (or a cell that was saved earlier and may now be cleared, so the backend can remove it)
+  private buildPayload(isFinal: boolean) {
     const f = this.myFilterform.value;
-    const planStartDate = this.toIso(new Date(f.fromDate));
-    const planEndDate = this.toIso(new Date(f.endDate));
+    const planStartDate = this.toLocalIso(new Date(f.fromDate));
+    const planEndDate = this.toLocalIso(new Date(f.endDate));
     const dietTypeId = this.getId(f.dietTypeId);
+    const instruction = f.instruction || '';
+    const comment = f.comment || '';
+    const planDate = this.toLocalIso(new Date(f.planDate));
 
-    const payload: any[] = [];
+    const details: any[] = [];
 
     this.mealRows.forEach(row => {
       this.dateColumns.forEach(col => {
+        const cellKey = `${row.mealTypeId}|${col.key}`;
         const dietMenuId = this.getId(row.form.get(col.key)?.value);
-        if (dietMenuId > 0 || this.dietPlanId) {
-          payload.push({
+        const wasSaved = this.savedCells.has(cellKey);
+
+        if (dietMenuId > 0 || wasSaved) {
+          details.push({
+            dietPlanDetId: this.savedCells.get(cellKey) ?? 0,
             dietPlanId: this.dietPlanId,
             opipid: this.vAdmissionId,
             opiptype: 1,
-            planStartDate: planStartDate,
-            planEndDate: planEndDate,
-            planDate: f.planDate,// this.toIso(col.date),     // the date column of this cell
+            planStartDate,
+            planEndDate,
+            planDate: this.toLocalIso(col.date),
             dietTypeId,
-            dietMealTypeId: row.mealTypeId,     // the meal row
-            dietMenuId,                         // the selected menu in the cell
-            instruction: f.instruction || '',
-            comment: f.comment || ''
+            dietMealTypeId: row.mealTypeId,
+            dietMenuId,
+            instruction,
+            comment
           });
         }
       });
     });
 
-    return payload;
+    const first = details[0];
+
+    return {
+      dietPlanId: this.dietPlanId,
+      opipid: this.vAdmissionId,
+      opiptype: 1,
+      planStartDate,
+      planEndDate,
+      planDate,
+      dietTypeId,
+      dietMealTypeId: first?.dietMealTypeId ?? 0,
+      dietMenuId: first?.dietMenuId ?? 0,
+      instruction,
+      comment,
+      draftOrFinal: this.myFilterform.get('draftOrFinal').value ? true : false,
+      tDietPlanScheduleDetails: details
+    };
   }
 
-  onSave() {
+  onSave(isFinal: boolean = false) {
     if (!this.vAdmissionId) {
       this.toastr.warning('Please select a patient');
       return;
@@ -472,32 +517,112 @@ export class NewDietCreationComponent {
       return;
     }
     if (!this.mealRows.length) {
-      this.toastr.warning('Please add at least one meal type');
+      this.toastr.warning('No meal types available');
       return;
     }
 
-    const payload = this.buildPayload();
-    if (!payload.length) {
+    const payload = this.buildPayload(isFinal);
+    if (!payload.tDietPlanScheduleDetails.length) {
       this.toastr.warning('Please select a diet menu for at least one date');
       return;
     }
 
-    console.log(payload);
-
+    // SaveDietCreation in diet-creation.service.ts must accept `any` (an object), not any[]
     this._DietCreationService.SaveDietCreation(payload).subscribe(() => {
+      if (this.myFilterform.get('draftOrFinal').value)
+        this.onSaveFinal();
       this._matDialog.closeAll();
     });
   }
 
-  onHistoryDrawerChange(opened: boolean) {
-    if (!opened) { return; }
-    setTimeout(() => {
-      this.grid1.gridConfig = {
-        ...this.gridConfig,
-        filters: [{ fieldName: 'AdmissionId', fieldValue: String(this.vAdmissionId), opType: OperatorComparer.Equals }]
-      };
-      this.grid1.bindGridData();
+  private buildCanteenPayload() {
+    const f = this.myFilterform.value;
+    const now = new Date();
+    const date = this.datePipe.transform(now, 'yyyy-MM-dd')!;
+    const time = now.toISOString();
+    const dietTypeId = this.getId(f.dietTypeId);
+
+    const tDietPatReqDetails: any[] = [];
+
+    this.mealRows.forEach(row => {
+      this.dateColumns.forEach(col => {
+        const dietMenuId = this.getId(row.form.get(col.key)?.value);
+        if (dietMenuId <= 0) return;   // skip empty cells
+
+        tDietPatReqDetails.push({
+          dietReqDetId: 0,
+          dietReqId: 0,
+          orderDate: col.key,
+          orderTime: time,
+          opipid: this.vAdmissionId,
+          opiptype: 1,
+          dietMenuId: String(dietMenuId),
+          mealTypeId: row.mealTypeId,
+          dietTypeId,
+          dietRestrictionId: 0,
+          allergyId: 0,
+          nutritionistId: 1,   // replace with the logged-in user id if needed
+          isPriority: true,
+          comments: f.comment || '',
+          status: 0,
+          isAccept: false,
+          isAcceptedBy: 0,
+          isAcceptedDateTime: '1900-01-01',
+          isDelived: false,
+          isDelivedBy: 0,
+          isDelivedDateTime: '1900-01-01'
+        });
+      });
+    });
+
+    return {
+      dietReqId: 0,
+      date,
+      time,
+      unitId: 1,
+      dietReqNo: '1',
+      dietMenuId: tDietPatReqDetails[0]?.dietMenuId ?? '0',
+      tDietPatReqDetails
+    };
+  }
+
+  onSaveFinal() {
+    if (!this.vAdmissionId) {
+      this.toastr.warning('Please select a patient');
+      return;
+    }
+
+    const payload = this.buildCanteenPayload();
+    if (!payload.tDietPatReqDetails.length) {
+      this.toastr.warning('Please select a diet menu for at least one date');
+      return;
+    }
+
+    Swal.fire({
+      icon: 'question',
+      title: 'Do you want to Send Canteen Request',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Send it!'
+    }).then((flag) => {
+      if (!flag.isConfirmed) return;   // Cancel does nothing
+
+      this._DietCreationService.CanteenRequest(payload).subscribe({
+        next: () => {
+          this.toastr.success('Canteen Request Final');
+          this._matDialog.closeAll();
+        },
+        error: (error) => this.toastr.error(error.message)
+      });
     });
   }
 
+  deleteMealRow(index: number): void {
+    this.mealRows = this.mealRows.filter((_, i) => i !== index);
+  }
+
+  get tableWidth(): number {
+    return 80 + 150 + (this.dateColumns?.length || 0) * 240;   // keep in sync with SCSS
+  }
 }

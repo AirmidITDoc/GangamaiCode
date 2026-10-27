@@ -68,7 +68,7 @@ export class NewAddonDietComponent {
   autocompleteModeallergy: string = "Allergy";
 
   constructor(
-    public _ClinicalcareService: AddonMenuService,
+    public _DietRequestService: AddonMenuService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
@@ -246,7 +246,7 @@ export class NewAddonDietComponent {
       "columns": []
     };
 
-    this._ClinicalcareService.getSampleRecivedlist(data).subscribe((response) => {
+    this._DietRequestService.getSampleRecivedlist(data).subscribe((response) => {
       this.dataSource.data = response.data;
       if (onLoaded) onLoaded();
     });
@@ -321,7 +321,7 @@ export class NewAddonDietComponent {
     console.log('Final payload:', payload);
 
     if (!this.DietForm.invalid) {
-      this._ClinicalcareService.SaveDietReq(payload).subscribe(() => {
+      this._DietRequestService.SaveDietReq(payload).subscribe(() => {
         this._matDialog.closeAll();
       });
     }
@@ -368,7 +368,7 @@ export class NewAddonDietComponent {
       "columns": []
     };
 
-    this._ClinicalcareService.getMenuItem(data).subscribe((response) => {
+    this._DietRequestService.getMenuItem(data).subscribe((response) => {
 
       const ItemDetails = response.data || [];
       this.dietMenuDetails = response.data[0].dietMenuDetails
@@ -394,7 +394,7 @@ export class NewAddonDietComponent {
       "columns": []
     };
 
-    this._ClinicalcareService.getdetaillist(data).subscribe((response) => {
+    this._DietRequestService.getdetaillist(data).subscribe((response) => {
       const existingDetails = response.data || [];
       console.log(response)
 

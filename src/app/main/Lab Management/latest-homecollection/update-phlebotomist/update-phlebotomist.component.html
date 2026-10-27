@@ -20,17 +20,10 @@
 
     <div class="ph-page">
 
-        <!-- Header -->
-        <!-- <div class="ph-header">
-            <div>
-                <h1 class="ph-title">Phlebotomist Assignments</h1>
-                <p class="ph-subtitle">Select a phlebotomist to see the patients assigned to them.</p>
-            </div>
-            <div class="ph-total">
-                <span>Total phlebotomists</span>
-                <strong>{{ phlebotomists.length }}</strong>
-            </div>
-        </div> -->
+        <app-patient-information [patientName]="patientName || ''" [mobileNo]="regObj.mobileNo"
+            [ageString]="regObj?.ageY != null ? regObj.ageY + 'Y|' + regObj.ageM + 'M|' + regObj.ageD + 'D|': ''"
+            [phlebotomist]="regObj?.phlebotomist">
+        </app-patient-information>
 
         <!-- Phlebotomist cards -->
         <div class="ph-cards">
@@ -99,7 +92,7 @@
 
                     <ng-container matColumnDef="phlebotomist">
                         <th mat-header-cell *matHeaderCellDef>Phlebotomist</th>
-                        <td mat-cell *matCellDef="let row">{{ row.phlebotomistName }}</td>
+                        <td mat-cell *matCellDef="let row">{{ row.phlebotomist }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="status">
@@ -118,7 +111,100 @@
                     </tr>
                 </table>
             </div>
+
+            <div class="ph-footer">
+                <button class="btn btn-primary" [disabled]="!selectedPhlebotomist" (click)="onSave()"
+                style="margin-right: 5px;">
+                    Save</button>
+
+                <button class="btn btn-danger-outline" tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">Close</button>
+            </div>
         </section>
+
+        <!-- ------------------------------------------------------------------------------------------- -->
+
+        <!-- PASTE between the .ph-cards block and the "Patient table for selected phlebotomist" section -->
+        <!-- <section class="ph-panel" aria-label="Unassigned patients">
+
+            <div class="ph-panel-head">
+                <div>
+                    <h2 class="ph-panel-name">Pending - Phlebotomist not assigned</h2>
+                    <span class="ph-panel-role">Tick patient(s), click a phlebotomist card above, then Assign</span>
+                </div>
+                <div class="ph-actions">
+                    <span class="ph-pill">{{ unassignedSource.data.length }} unassigned</span>
+                    <button mat-flat-button type="button" class="ph-save" [disabled]="!canSave" (click)="onAssign()">
+                        {{ selectedPhlebotomist ? 'Assign to ' + selectedPhlebotomist.name : 'Select a phlebotomist' }}
+                        <span *ngIf="selection.selected.length"> ({{ selection.selected.length }})</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="ph-table-wrap ph-unassigned-scroll">
+                <table mat-table [dataSource]="unassignedSource" class="ph-table">
+
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef class="ph-col-check">
+                            <mat-checkbox (change)="$event ? toggleAll() : null" [checked]="isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()" aria-label="Select all">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="ph-col-check">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                                aria-label="Select patient">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="srNo">
+                        <th mat-header-cell *matHeaderCellDef>Sr No</th>
+                        <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateTime">
+                        <th mat-header-cell *matHeaderCellDef>Date &amp; Time</th>
+                        <td mat-cell *matCellDef="let row">{{ row.dateTime | date: 'dd MMM yyyy, hh:mm a' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="patientName">
+                        <th mat-header-cell *matHeaderCellDef>Patient Name</th>
+                        <td mat-cell *matCellDef="let row" class="ph-strong">{{ row.patientName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mobileNo">
+                        <th mat-header-cell *matHeaderCellDef>Mobile No</th>
+                        <td mat-cell *matCellDef="let row">{{ row.mobileNo }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="unit">
+                        <th mat-header-cell *matHeaderCellDef>Unit</th>
+                        <td mat-cell *matCellDef="let row">{{ row.hospitalName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="phlebotomist">
+                        <th mat-header-cell *matHeaderCellDef>Phlebotomist</th>
+                        <td mat-cell *matCellDef="let row">
+                            <span *ngIf="row.phlebotomistName; else notAssigned">{{ row.phlebotomistName }}</span>
+                            <ng-template #notAssigned><span class="ph-chip ph-chip-pending">Not
+                                    assigned</span></ng-template>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="unassignedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: unassignedColumns" class="ph-row-click"
+                        [class.ph-row-selected]="selection.isSelected(row)" (click)="selection.toggle(row)"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="ph-empty" [attr.colspan]="unassignedColumns.length">All patients have a phlebotomist.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section> -->
+
+        <!-- ------------------------------------------------------------------------------------------- -->
     </div>
 
 </div>

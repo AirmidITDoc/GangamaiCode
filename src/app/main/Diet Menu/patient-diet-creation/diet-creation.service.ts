@@ -34,8 +34,8 @@ export class DietCreationService {
   }
   public SaveDietCreation(Param) {
     debugger
-    if (Param[0].dietPlanId) {
-      return this._httpClient1.PutData(`DietPlanSchedule/Edit/${Param[0].dietPlanId}`, Param[0]);
+    if (Param.dietPlanId) {
+      return this._httpClient1.PutData(`DietPlanSchedule/Edit/${Param.dietPlanId}`, Param);
     } else {
       return this._httpClient1.PostData("DietPlanSchedule/Insert", Param);
     }
@@ -43,10 +43,10 @@ export class DietCreationService {
   }
 
   public dietplancancle(param) {
-    return this._httpClient1.PostData('ClinicalCare/TNursingPainAssessmentCancel', param)
+    return this._httpClient1.PostData('DietPlanSchedule/DietPlanScheduleCancel', param)
   }
 
-  public getdietplanById(param) {
+  public getdietplanByPlanId(param) {
     return this._httpClient1.PostData('DietPlanSchedule/DietplandetailsList', param)
   }
   public getRegistraionById(Id) {
@@ -58,4 +58,24 @@ export class DietCreationService {
   public getassessmentById(Param) {
     return this._httpClient1.PostData("DietAssessmentInfo/PatientAssessmentList", Param);
   }
+
+  getMealTypeList(Param) {
+    return this._httpClient1.PostData("MealTypeMaster/List", Param);
+  }
+
+
+  public CanteenRequest(param) {
+    return this._httpClient1.PostData('DietPatientRequest/Insert', param)
+  }
+  public getRequestdetaillist(employee) {
+    return this._httpClient1.PostData("DietPlanSchedule/DietplandetailsList", employee)
+  }
+
+  public DietPlanConvert(param) {
+    return this._httpClient1.PostData('DietPatientRequest/Insert', param)
+  }
+  public getDietplanlist(employee) {
+    return this._httpClient1.PostData("DietPlanSchedule/List", employee)
+  }
+
 }

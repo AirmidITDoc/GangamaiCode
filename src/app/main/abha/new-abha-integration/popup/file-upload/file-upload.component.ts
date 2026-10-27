@@ -90,7 +90,7 @@ export class FileUploadComponent {
     const formData = new FormData();
     formData.append('files', this.selectedFile, this.selectedFile.name);
 
-    const cleanVisitNo = String(this.opipNumber).replace(/\//g, '');
+    const cleanVisitNo = String(this.opipNumber).replace(/[-/]/g, '');
 
     this._abhaIntegrationService.opFileUpload(this.regno, cleanVisitNo, this.opipid, this.opipType, formData).subscribe((data) => {
       // this.selectedFile = null;

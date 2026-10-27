@@ -266,3 +266,9 @@
     }
   }
 }
+
+.pie-box { text-align: center; }
+.pie-title { font-weight: 500; margin-bottom: 8px; }
+.pie-circle { width: 220px; height: 220px; border-radius: 50%; margin: 0 auto 12px; }
+.pie-legend { font-size: 13px; line-height: 20px; }
+.pie-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }

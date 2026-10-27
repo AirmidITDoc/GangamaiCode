@@ -32,8 +32,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   animations: fuseAnimations
 })
 export class NewDietRequestComponent {
-
-  DietForm: FormGroup;
+DietForm: FormGroup;
   dietmenuForm: FormGroup;
   MyForm: FormGroup;
   displayedColumns = [
@@ -72,7 +71,7 @@ export class NewDietRequestComponent {
   autocompleteModeallergy: string = "Allergy";
 
   constructor(
-    public _ClinicalcareService: DietRequestService,
+    public _DietRequestService: DietRequestService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
@@ -250,7 +249,7 @@ export class NewDietRequestComponent {
       "columns": []
     };
 
-    this._ClinicalcareService.getSampleRecivedlist(data).subscribe((response) => {
+    this._DietRequestService.getSampleRecivedlist(data).subscribe((response) => {
       this.dataSource.data = response.data;
       if (onLoaded) onLoaded();
     });
@@ -325,7 +324,7 @@ export class NewDietRequestComponent {
     console.log('Final payload:', payload);
 
     if (!this.DietForm.invalid) {
-      this._ClinicalcareService.SaveDietReq(payload).subscribe(() => {
+      this._DietRequestService.SaveDietReq(payload).subscribe(() => {
         this._matDialog.closeAll();
       });
     }
@@ -372,7 +371,7 @@ export class NewDietRequestComponent {
       "columns": []
     };
 
-    this._ClinicalcareService.getMenuItem(data).subscribe((response) => {
+    this._DietRequestService.getMenuItem(data).subscribe((response) => {
 
       const ItemDetails = response.data || [];
       this.dietMenuDetails = response.data[0].dietMenuDetails
@@ -398,7 +397,7 @@ export class NewDietRequestComponent {
       "columns": []
     };
 
-    this._ClinicalcareService.getdetaillist(data).subscribe((response) => {
+    this._DietRequestService.getdetaillist(data).subscribe((response) => {
       const existingDetails = response.data || [];
       console.log(response)
 
@@ -416,10 +415,10 @@ export class NewDietRequestComponent {
           matchedRow.dietReqDetId = detail.dietReqDetId;
           matchedRow.isAccept = !!detail.isAccept;
           matchedRow.isAcceptedBy = detail.isAcceptedBy ?? 0;
-          matchedRow.isAcceptedDateTime = detail.isAcceptedDateTime;   
+          matchedRow.isAcceptedDateTime = detail.isAcceptedDateTime;   // check the exact field name in your response
           matchedRow.isDelivered = !!detail.isDelivered;
           matchedRow.isDelivedBy = detail.isDelivedBy ?? 0;
-          matchedRow.isDelivedDateTime = detail.isDelivedDateTime;    
+          matchedRow.isDelivedDateTime = detail.isDelivedDateTime;     // check the exact field name in your response
           this.selection.select(matchedRow);
         }
       });

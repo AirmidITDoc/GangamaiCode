@@ -17,12 +17,23 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DietDetailListComponent } from './diet-detail-list/diet-detail-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { RequestcardpopupComponent } from './requestcardpopup/requestcardpopup.component';
-// TODO: update this path to wherever RequestcardpopupComponent actually lives
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuItemPopupComponent } from './menu-item-popup/menu-item-popup.component';
 import { ConfigService } from 'app/core/services/config.service';
 
 
+interface PieRow {
+    label: string;
+    value: number;
+    color: string;
+    pct?: number;
+}
+
+interface PieData {
+    total: number;
+    bg: string;
+    rows: PieRow[];
+}
 @Component({
     selector: 'app-patient-diet-reauest',
     templateUrl: './patient-diet-reauest.component.html',
@@ -31,6 +42,7 @@ import { ConfigService } from 'app/core/services/config.service';
     animations: fuseAnimations
 })
 export class PatientDietReauestComponent implements OnInit, OnDestroy {
+
 
     HeaderCancleTaskForm: FormGroup
     DetailCancleTaskForm: FormGroup
@@ -45,8 +57,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
 
     ReqId = 0
     ReqDetId = 0
-    Accepted: boolean = false
-    Delivered: boolean = false
     Acceptedcnt = 0
     Deliveredcnt = 0
     NotAcceptedcnt = 0
@@ -58,8 +68,16 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     dataSource = new MatTableDataSource<RequestMaster>();
     private closeTimer: any = null;
     StausChangeFlg: any;
+    Accepted: boolean = false
+    Delivered: boolean = false
+    Dblength: boolean = false
+    requestList: any[] = [];
+    detailList: any[] = [];
+    statusPie: PieData = { total: 0, bg: '#e0e0e0', rows: [] };
+
     @ViewChild('ReqNopopover') ReqNopopover!: TemplateRef<any>;
     @ViewChild('ItemNopopover') ItemNopopover!: TemplateRef<any>;
+    @ViewChild('GraphDialog') GraphDialog!: TemplateRef<any>;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
@@ -83,14 +101,16 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
     private doctorCloseTimeout: any = null;
 
     ngAfterViewInit() {
-        // Header/list grid templates
+
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelled;
         this.gridConfig.columnsList.find(col => col.key === 'dietReqNo')!.template = this.ReqNopopover;
         this.gridConfig.columnsList.find(col => col.key === 'dietMenuName')!.template = this.ItemNopopover;
 
-        this.gridConfig.columnsList.find(col => col.key === 'dietMenuDetails')!.template = this.dietMenuDetails;
-
+        const detailsCol = this.gridConfig.columnsList.find(col => col.key === 'dietMenuDetails');
+        if (detailsCol) {
+            detailsCol.template = this.dietMenuDetails;
+        }
     }
 
     @ViewChild('dietMenuDetails') dietMenuDetails!: TemplateRef<any>;
@@ -101,13 +121,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         { heading: "Request No", key: "dietReqNo", sort: true, align: 'left', emptySign: 'NA', width: 70, type: gridColumnTypes.template },
 
         { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.template },
-
-        // { heading: "Diet Menu Name", key: "dietMenuName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-
-        // {
-        //     heading: "Menu Details", key: "dietMenuDetails", sort: true, align: "left", width: 250, type: gridColumnTypes.template,
-        //     template: this.dietMenuDetails
-        // },
         { heading: "Created By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Cancelled By", key: "cancelledUser", sort: true, align: 'left', emptySign: 'NA', width: 250 },
 
@@ -155,7 +168,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         this.HeaderCancleTaskForm = this.CreateheaderCancleForm()
         this.DetailCancleTaskForm = this.CreatdetailCancleForm()
         this.Getrequestdetailcount()
-        debugger
         const access = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsDietRequstStatusChange');
         this.StausChangeFlg = Number(access?.AccessValue ?? false);
     }
@@ -197,8 +209,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         ]
     }
 
-    // DETAIL grid config — a persistent class field (previously rebuilt from
-    // scratch inside GetDetails on every click). Only its filter value changes now.
     gridConfig1: gridModel = {
         apiUrl: "DietPatientRequest/DietPatientRequestDetailsList",
         columnsList: this.detailColumns,
@@ -264,11 +274,6 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
             }, 500);
         }
     }
-
-
-    // NEW: plain array backing the card list in the drawer
-    detailList: any[] = [];
-
 
     GetDetails(data) {
         console.log(data);
@@ -509,7 +514,8 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         }
     }
 
-    Getrequestdetailcount() {
+    // done: optional callback that runs after the list has loaded (used by the pie chart)
+    Getrequestdetailcount(done?: () => void) {
 
         this.VNewcount = 0;
         this.VAcceptcount = 0;
@@ -558,6 +564,7 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
         };
         console.log(data)
         this._DietRequestService.getRequestlist(data).subscribe((response) => {
+            this.requestList = response.data || [];     // full list for the pie chart
             this.dataSource.data = response.data;
             console.log(this.dataSource.data)
             if (this.dataSource.data.length > 0) {
@@ -573,6 +580,8 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
                 });
 
             }
+
+            done?.();     // runs after the list has loaded
         });
     }
 
@@ -832,6 +841,53 @@ export class PatientDietReauestComponent implements OnInit, OnDestroy {
             this.ReqNoOverlayRef.dispose();
             this.ReqNoOverlayRef = null;
         }
+    }
+
+    // ---------- Pie chart (one pie, four statuses, no library) ----------
+
+    private makePie(rows: PieRow[]): PieData {
+        const total = rows.reduce((s, r) => s + r.value, 0);
+        let acc = 0;
+        const stops = rows.filter(r => r.value > 0).map(r => {
+            const from = (acc / total) * 100;
+            acc += r.value;
+            return `${r.color} ${from}% ${(acc / total) * 100}%`;
+        });
+        return {
+            total,
+            bg: total ? `conic-gradient(${stops.join(', ')})` : '#e0e0e0',
+            rows: rows.map(r => ({ ...r, pct: total ? Math.round((r.value / total) * 100) : 0 }))
+        };
+    }
+
+    onShowgraph() {
+        
+        // reload for the current date range and request-no filter, so the pie matches the grid
+        this.Getrequestdetailcount(() => {
+            const list = this.requestList || [];
+            const active = list.filter(r => !r.isCancelled);
+            const cancelledReqs = list.filter(r => r.isCancelled);
+            const sum = (arr: any[], key: string) =>
+                arr.reduce((s, r) => s + (Number(r[key]) || 0), 0);
+
+            const delivered = sum(active, 'deliveredCount');
+            const accepted = Math.max(sum(active, 'acceptedCount') - delivered, 0);   // accepted, not yet delivered
+            const notAccepted = sum(active, 'notAcceptedCount');
+            const cancelled = sum(cancelledReqs, 'totalDetailCount');
+
+            this.statusPie = this.makePie([
+                { label: 'Not accepted', value: notAccepted, color: '#276f91' },   // yellow
+                { label: 'Accepted', value: accepted, color: '#e785ee' },   // teal
+                { label: 'Delivered', value: delivered, color: '#42f4cd' },   // blue
+                { label: 'Cancelled', value: cancelled, color: '#ef5a8a' }    // pink
+            ]);
+
+            this._matDialog.open(this.GraphDialog, {
+                width: '460px',
+                maxWidth: '95vw',
+                autoFocus: false
+            });
+        });
     }
 }
 

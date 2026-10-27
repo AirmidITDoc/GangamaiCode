@@ -95,9 +95,100 @@
 
     .drawer-body {
         flex: 1 1 auto;
-        min-height: 0;          /* lets flex child shrink so no page-level scroll */
+        min-height: 0;
+        /* lets flex child shrink so no page-level scroll */
         padding: 8px;
-        overflow-x: auto;       /* keep horizontal scroll only if the table is wide */
-        overflow-y: hidden;     /* vertical scroll removed */
+        overflow-x: auto;
+        /* keep horizontal scroll only if the table is wide */
+        overflow-y: auto;
+        /* CHANGED: was hidden; cards now scroll vertically */
+        display: flex;
+        /* NEW */
+        flex-direction: column;
+        /* NEW */
+        gap: 8px;
+        /* NEW */
+        background: #f7f8fc;
+        /* NEW */
+
+        /* ---------- NEW: assessment history cards ---------- */
+        .assess-card {
+            flex: 0 0 auto;
+            padding: 12px 16px;
+            background: #fff;
+            border: 1px solid #d8e2ee;
+            border-left: 5px solid #315f91;
+            border-radius: 7px;
+            color: #334155;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(36, 59, 83, 0.06);
+            transition: background 0.15s ease;
+
+            &:hover {
+                background: #eef0fb;
+            }
+        }
+
+        .ac-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px 22px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8edf4;
+            font-size: 14px;
+            line-height: 1.5;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            b {
+                color: #24476b;
+                font-size: 15px;
+                font-weight: 700;
+            }
+
+            span {
+                overflow-wrap: anywhere;
+            }
+
+            /* first row: patient name / OPIPID / DOA header strip */
+            &:first-child {
+                background: #f3f7fc;
+                padding: 10px;
+                border-radius: 5px;
+
+                span {
+                    color: #405671;
+                    font-weight: 500;
+                }
+            }
+
+            /* third row: Allergies highlight */
+            &:nth-child(3) {
+                color: #8b493c;
+            }
+        }
+
+        .ac-empty {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            font-size: 12px;
+            padding: 16px;
+        }
+    }
+
+    /* NEW: mobile */
+    @media (max-width: 600px) {
+        .drawer-body .assess-card {
+            padding: 9px;
+        }
+
+        .drawer-body .ac-row {
+            gap: 7px 14px;
+            font-size: 13px;
+        }
     }
 }

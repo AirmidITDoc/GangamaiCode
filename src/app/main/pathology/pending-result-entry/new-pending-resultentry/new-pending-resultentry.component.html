@@ -112,18 +112,19 @@
                                                             ? 'Please complete sample collection first'
                                                             : ''">
 
+                                            <!-- working code -->
                                             <!-- <mat-checkbox (click)="$event.stopPropagation()"
-                                                (change)="onRowCheck($event, contact)"
-                                                *ngIf="contact.isTemplateTest != '1' else noMLC"
-                                                [checked]="selection.isSelected(contact)"
-                                                [disabled]="isCheckboxDisabled(contact)">
-                                            </mat-checkbox> -->
-
-                                            <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="onRowCheck($event, contact)"
                                                 *ngIf="contact.isTemplateTest != '1' else noMLC"
                                                 [checked]="contact._locked || isTestChecked(contact)"
                                                 [disabled]="contact._locked || isCheckboxDisabled(contact)">
+                                            </mat-checkbox> -->
+
+                                            <!-- testing code -->
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="onRowCheck($event, contact)"
+                                                *ngIf="contact.isTemplateTest != '1' else noMLC"
+                                                [checked]="isTestChecked(contact)">
                                             </mat-checkbox>
                                         </span>
 

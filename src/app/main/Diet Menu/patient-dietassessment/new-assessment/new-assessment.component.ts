@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -43,6 +43,7 @@ export class NewAssessmentComponent {
   VitalsInfo: any
   vassessmentDate = new Date()
   Statement: boolean = false
+  InsertStatus: boolean = true
   autocompleteModedeptdoc: string = "ConDoctor";
   autocompleteModeSeverity: string = 'TypesOfSeverity'
   autocompleteModefoodpref: string = 'FoodPreference'
@@ -95,7 +96,7 @@ export class NewAssessmentComponent {
 
   constructor(private fb: FormBuilder, public _matDialog: MatDialog, public _DietAssessmentService: DietAssessmentService,
     public datePipe: DatePipe, public toastr: ToastrService, private accountService: AuthenticationService,
-    private _FormvalidationserviceService: FormvalidationserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService, private cdr: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any,) { }
 
   ngOnInit(): void {
@@ -117,6 +118,7 @@ export class NewAssessmentComponent {
       dietitionNotes: ['']
     });
     if (this.data) {
+      this.InsertStatus = false;
       this.registerObj = this.data
       console.log(this.registerObj)
       this.vAdmissionId = this.data.admissionId;
@@ -215,21 +217,23 @@ export class NewAssessmentComponent {
   }
 
 
-  // Only checks whether history exists (controls the icon). The grid loads when the drawer opens.
-  checkHistory(): void {
-    if (!this.vAdmissionId) { this.Statement = false; return; }
+  assessmentList: any[] = [];
+  trackByAssess = (_: number, a: any) => a.dietAssessmentId ?? a.assessmentDate;
 
+  checkHistory(): void {
     const param = {
-      first: 0, rows: 20, sortField: 'DietAssessmentId', sortOrder: 0,
+      first: 0, rows: 50, sortField: 'DietAssessmentId', sortOrder: 0,
       filters: [{ fieldName: 'AdmissionId', fieldValue: String(this.vAdmissionId), opType: 'Equals' }],
       exportType: 'JSON',
       columns: [{ data: 'DietAssessmentId', name: 'DietAssessmentId' }]
     };
 
-    this._DietAssessmentService.getassessmentById(param).subscribe((res) => {
+    this._DietAssessmentService.getassessmentById(param).subscribe((res: any) => {
       this.registerObj1 = res;
-      this.Statement = (res?.data ?? []).length > 0;
+      this.assessmentList = res?.data ?? [];
+      this.Statement = this.assessmentList.length > 0;
       if (!this.Statement) { this.historyDrawer?.close(); }
+      this.cdr.detectChanges();
     });
   }
 

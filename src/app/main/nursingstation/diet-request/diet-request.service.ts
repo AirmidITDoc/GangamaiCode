@@ -150,4 +150,8 @@ export class DietRequestService {
     public getMenuItem(employee) {
         return this._httpClient1.PostData("DietMenuMaster/DietmenumasterList", employee)
     }
+
+     public getdietRecivedlist(employee) {
+        return this._httpClient1.PostData("DietPlanSchedule/List", employee)
+    }
 }

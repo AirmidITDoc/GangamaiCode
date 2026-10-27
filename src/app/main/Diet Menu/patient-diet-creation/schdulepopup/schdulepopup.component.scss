@@ -1,0 +1,371 @@
+.doctor-details-popover-container {
+    width: 1100px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background: #F1F5F9;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.14);
+    overflow: hidden;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+
+    /* Header */
+    mat-toolbar {
+        flex: 0 0 50px;
+        height: 50px;
+        min-height: 50px;
+        padding: 0 16px;
+        background: linear-gradient(135deg, #155E75 0%, #164E63 100%);
+        color: #FFFFFF;
+        border-bottom: 1px solid #134E4A;
+        font-size: 16px;
+        font-weight: 500;
+
+        mat-icon {
+            color: #FFFFFF;
+        }
+    }
+
+    /* Main content */
+    .p-12 {
+        padding: 12px;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: #F1F5F9;
+    }
+
+    /* Three cards per row */
+    .diet-detail-grid {
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        align-content: start;
+        padding: 2px 5px 5px 2px;
+    }
+
+    /* Individual patient card */
+    .diet-detail-card {
+        margin: 0;
+        min-width: 0;
+        background: #FFFFFF;
+        border: 1px solid #D9E2EC;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+        transition: border-color 0.2s ease,
+            box-shadow 0.2s ease;
+
+        &:hover {
+            border-color: #7DD3D7;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.10);
+        }
+
+        mat-card-content {
+            padding: 12px;
+            margin-bottom: 0;
+            color: #334155;
+        }
+    }
+
+    /* Patient name */
+    .patient-name {
+        display: block;
+        min-width: 0;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.45;
+        color: #0F172A;
+        overflow-wrap: anywhere;
+    }
+
+    /* Room name */
+    .room-name {
+        margin-top: 5px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #64748B;
+        overflow-wrap: anywhere;
+    }
+
+    /* Meal and diet */
+    .meal-name {
+        margin-top: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.5;
+        color: #0F766E;
+        overflow-wrap: anywhere;
+    }
+
+    /* Accepted/delivered status rows */
+    .status-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 10px;
+        min-width: 0;
+    }
+
+    /* Username */
+    .status-user {
+        min-width: 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #475569;
+        overflow-wrap: anywhere;
+    }
+
+    /* Comments */
+    .comments {
+        margin-top: 10px;
+        padding-top: 9px;
+        border-top: 1px solid #E2E8F0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #475569;
+        overflow-wrap: anywhere;
+    }
+
+    /* Cancellation details */
+    .cancel-details {
+        margin-top: 8px;
+        padding: 8px;
+        background: #FEF2F2;
+        border: 1px solid #FECACA;
+        border-radius: 6px;
+        font-size: 11px;
+        line-height: 1.5;
+        color: #991B1B;
+        overflow-wrap: anywhere;
+    }
+
+    /* Empty list message */
+    .no-data {
+        padding: 30px 12px;
+        text-align: center;
+        font-size: 13px;
+        color: #64748B;
+    }
+
+    .meal-line {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: nowrap; // never wrap to a second line
+        gap: 6px;
+        min-width: 0;
+
+        .meal-name {
+            flex: 0 0 auto; // keep the meal name at full width
+            font-weight: 600;
+            font-size: 13px;
+            color: #0f766e;
+            white-space: nowrap;
+        }
+
+        .meal-sep {
+            flex: 0 0 auto;
+            color: #cbd5e1;
+        }
+
+        .room-name {
+            flex: 1 1 auto;
+            min-width: 0; // required for the ellipsis to work inside flex
+            font-size: 13px;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+/* Status badges */
+.status-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    max-width: 100%;
+    min-width: 0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+
+    mat-icon {
+        flex-shrink: 0;
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+    }
+}
+
+/* Accepted */
+.status-completed {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+/* Pending acceptance */
+.status-pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+/* Delivered */
+.status-received {
+    background: #DCFCE7;
+    color: #166534;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Pending delivery / Cancelled */
+.status-not-requested {
+    background: #FEE2E2;
+    color: #991B1B;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Scrollbar */
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 8px;
+}
+
+.doctor-details-popover-container .diet-detail-grid::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+.time-required {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    padding: 5px 9px;
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 6px;
+    color: #1D4ED8;
+    font-size: 12px;
+    font-weight: 600;
+
+    mat-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+        line-height: 16px;
+    }
+}
+
+/* Tablet: two cards per row */
+@media (max-width: 850px) {
+    .doctor-details-popover-container {
+        width: calc(100vw - 16px);
+
+        .diet-detail-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
+
+/* Mobile: one card per row */
+@media (max-width: 520px) {
+    .doctor-details-popover-container {
+        width: calc(100vw - 16px);
+        max-height: calc(100vh - 16px);
+
+        .p-12 {
+            padding: 8px;
+        }
+
+        .diet-detail-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 8px;
+            max-height: 400px;
+        }
+
+        .diet-detail-card mat-card-content {
+            padding: 10px;
+        }
+    }
+}
+
+.steps .step {
+    width: 78px;
+    text-align: center;
+
+    .lbl {
+        font-size: 10px;
+        line-height: 1.2;
+    }
+}
+
+.status-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px 3px 6px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+
+    .mat-icon {
+        font-size: 15px;
+        height: 15px;
+        width: 15px;
+        line-height: 15px;
+    }
+
+    &.is-done {
+        background: #e8f5e9;
+        color: #2e7d32;
+
+        .mat-icon {
+            color: #2e7d32;
+        }
+    }
+
+    &.is-pending {
+        background: #fff8e1;
+        color: #b26a00;
+
+        .mat-icon {
+            color: #f59e0b;
+        }
+    }
+}

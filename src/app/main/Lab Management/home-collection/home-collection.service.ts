@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
@@ -33,6 +33,13 @@ export class HomeCollectionService {
             mobileNo: [''],
             PhlebotomistId: [0],
             StatusSearch: ['0'],
+        })
+    }
+
+    CreatePhleForm() {
+        return this._frombuilder.group({
+            homeCollectionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            phlebotomist: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         })
     }
 
