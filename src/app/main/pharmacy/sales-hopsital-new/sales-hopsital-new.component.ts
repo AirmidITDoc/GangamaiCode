@@ -392,13 +392,13 @@ export class SalesHospitalNewComponent implements OnInit {
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
             payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            tranNo: [item?.tranNo ?? '0', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             validationDate: [item?.validationDate ?? ''],
             advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '0', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1568,7 +1568,8 @@ export class SalesHospitalNewComponent implements OnInit {
         const gstAmount = (totalMrp * gstPer) / 100;
         const landedRateandedTotal = qty * item?.LandedRate || 0;
         const mrpRateTotal = qty * item?.MRPRate || 0;
-        const marginAmt = totalMrp - landedRateandedTotal;
+        const marginAmt = totalMrp - landedRateandedTotal; 
+        const PurTotAmt = qty * item?.PurchaseRate || 0;
 
         const updatedItem = {
             GSTAmount: gstAmount.toFixed(2),
@@ -1577,7 +1578,9 @@ export class SalesHospitalNewComponent implements OnInit {
             MarginAmt: marginAmt.toFixed(2),
             MRPRateTotal: mrpRateTotal.toFixed(2),
             Qty: qty,
-            IsPurRate: IsPurRate
+            IsPurRate: IsPurRate,
+            LandedRateandedTotal :landedRateandedTotal.toFixed(2),
+            PurTotAmt:PurTotAmt.toFixed(2)
         } as IndentList;
 
         Object.assign(item, updatedItem);
@@ -2404,30 +2407,53 @@ export class SalesHospitalNewComponent implements OnInit {
             this.barcodeflag = false;
         }
     }
+    private lastBarcode = '';
     barcodeItemfetch() {
-        const d = {
-            StockId: this._salesService.ItemSearchGroup.get('Barcode').value || 0,
-            StoreId: this._loggedService.currentUserValue.storeId || 0,
-        };
-        this._salesService.getCurrentStockItem(d).subscribe((data) => {
-            this.tempDatasource.data = data as any;
+        const barcode = this._salesService.ItemSearchGroup.get('Barcode')?.value;
+
+        if (!barcode) {
+            this.saveflag = true;
+            return; 
+        }
+         this.saveflag = true;
+    console.log('barcodeItemfetch called')
+            console.log('barcodeItemfetch called');
+        const StockId = +this._salesService.ItemSearchGroup.get('Barcode')?.value || 0;
+        const Storeid = +this._loggedService.currentUserValue.user.storeId || 0;
+        var m_data = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "ItemId",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "StockId", "fieldValue": String(StockId), "opType": "Equals" },
+                        { "fieldName": "StoreId", "fieldValue": String(Storeid), "opType": "Equals" }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        } 
+        this._salesService.getCurrentStockItem(m_data).subscribe((data) => {
+            this.tempDatasource.data = data.data as any;
             if (this.tempDatasource.data.length >= 1) {
                 this.tempDatasource.data.forEach((element) => {
-                    this.DraftQty = 0;
-                    this.onAddBarcodeItemList(element, element.IssueQty);
+                    this.onAddBarcodeItemList(element);
                 });
             } else if (this.tempDatasource.data.length == 0) {
                 this.toastr.error('Item Not Found !', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
             }
-        });
-        this.vBarcode = '';
+        }); 
+        this._salesService.ItemSearchGroup.get('Barcode')?.setValue('');
         this.Addflag = false;
     }
-    onAddBarcodeItemList(contact, DraftQty) {
+    onAddBarcodeItemList(contact) {
         console.log(contact);
+            console.log('onAddBarcodeItemList called:', contact.itemId);
+    console.log('Existing items:', this.saleSelectedDatasource.data);
         //
+        this.Itemflag = false;
+        this.DraftQty = 1;
+        debugger
         this.vBarcodeflag = true;
         let i = 0;
 
@@ -2435,46 +2461,50 @@ export class SalesHospitalNewComponent implements OnInit {
             this.chargeslistBarcode = this.saleSelectedDatasource.data;
 
             this.saleSelectedDatasource.data.forEach((element) => {
-                if (element.ItemId == contact.ItemId) {
+                if (element.ItemId == contact.itemId) {
                     this.Itemflag = true;
                     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
-                    //
+                    // 
 
-                    if (contact.IssueQty != null) {
-                        this.DraftQty = element.Qty + contact.IssueQty;
-                        if (this.DraftQty > contact.BalanceQty) {
-                            Swal.fire('Enter Qty less than Balance :', contact.BalanceQty);
-                            element.Qty = this.DraftQty - contact.IssueQty;
+                    if (contact.issueQty != null) {
+                        const totalDraftqty = Number(element?.Qty || 0) + 1;
+                        const totalIssueQty = totalDraftqty + Number(contact?.issueQty || 0);
+
+                        this.DraftQty = totalDraftqty;
+                        if (totalIssueQty > contact.balanceQty) {
+                            Swal.fire('Enter Qty less than Balance :', contact.balanceQty);
+
+                            this.DraftQty = Number(element.Qty) || 0;
                             this.ItemFormreset();
                         }
                     } else {
                         this.DraftQty = element.Qty + 1;
-                        if (this.DraftQty > contact.BalanceQty) {
-                            Swal.fire('Enter Qty less than Balance :', contact.BalanceQty);
-                            element.Qty = this.DraftQty - 1;
+                        if (this.DraftQty > contact.balanceQty) {
+                            Swal.fire('Enter Qty less than Balance :', contact.balanceQty);
+                            this.DraftQty = element.Qty;
                             this.ItemFormreset();
                         }
                     }
 
-                    const TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
-                    const Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
-                    const vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
-                    const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
+                    const TotalMRP = (parseInt(this.DraftQty) * contact.unitMRP).toFixed(2);
+                    const Vatamount = ((parseFloat(TotalMRP) * contact.vatPercentage) / 100).toFixed(2);
+                    const vFinalNetAmount = (parseFloat(TotalMRP)).toFixed(2);
+                    const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.landedRate).toFixed(2);
                     const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-                    const PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
+                    const PurTotAmt = (parseInt(this.DraftQty) * contact.purUnitRateWF).toFixed(2);
 
-                    const CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * this.DraftQty).toFixed(2);
-                    const SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * this.DraftQty).toFixed(2);
-                    const IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * this.DraftQty).toFixed(2);
+                    const CGSTAmt = (((contact.unitMRP * contact.cgstPer) / 100) * this.DraftQty).toFixed(2);
+                    const SGSTAmt = (((contact.unitMRP * contact.sgstPer) / 100) * this.DraftQty).toFixed(2);
+                    const IGSTAmt = (((contact.unitMRP * contact.igstPer) / 100) * this.DraftQty).toFixed(2);
 
                     // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
 
-                    const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+                    const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.discPer)) / 100).toFixed(2);
                     const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
-                    const BalQty = contact.BalanceQty - this.DraftQty;
+                    const BalQty = contact.balanceQty - this.DraftQty;
 
                     this.saleSelectedDatasource.data[i].Qty = this.DraftQty;
                     this.saleSelectedDatasource.data[i].VatAmount = Vatamount;
@@ -2485,88 +2515,95 @@ export class SalesHospitalNewComponent implements OnInit {
                     this.saleSelectedDatasource.data[i].TotalAmount = TotalMRP;
                     this.saleSelectedDatasource.data[i].NetAmt = NetAmt;
 
-                    this.saleSelectedDatasource.data[i].DiscPer = contact.DiscPer;
+                    this.saleSelectedDatasource.data[i].DiscPer = contact.discPer;
                     this.saleSelectedDatasource.data[i].DiscAmt = DiscAmt;
 
                     this.saleSelectedDatasource.data[i].CGSTAmt = CGSTAmt;
                     this.saleSelectedDatasource.data[i].SGSTAmt = SGSTAmt;
                     this.saleSelectedDatasource.data[i].IGSTAmt = IGSTAmt;
 
-                    this.saleSelectedDatasource.data[i].CgstPer = contact.CGSTPer;
-                    this.saleSelectedDatasource.data[i].SgstPer = contact.SGSTPer;
-                    this.saleSelectedDatasource.data[i].IgstPer = contact.IGSTPer;
+                    this.saleSelectedDatasource.data[i].CgstPer = contact.cgstPer;
+                    this.saleSelectedDatasource.data[i].SgstPer = contact.sgstPer;
+                    this.saleSelectedDatasource.data[i].IgstPer = contact.igstPer;
 
-                    this.saleSelectedDatasource.data[i].LandedRate = contact.LandedRate;
+                    this.saleSelectedDatasource.data[i].LandedRate = contact.landedRate;
                     this.saleSelectedDatasource.data[i].LandedRateandedTotal = LandedRateandedTotal;
-                    this.saleSelectedDatasource.data[i].PurchaseRate = contact.PurUnitRateWF;
+                    this.saleSelectedDatasource.data[i].PurchaseRate = contact.purUnitRateWF;
                     this.saleSelectedDatasource.data[i].PurTotAmt = PurTotAmt;
 
                     this.saleSelectedDatasource.data[i].BalanceQty = BalQty;
-                    this.saleSelectedDatasource.data[i].StockId = contact.StockId;
+                    this.saleSelectedDatasource.data[i].StockId = contact.stockId; 
+                    this.saleSelectedDatasource.data[i].MRPRateTotal = contact.TotalMRP;   
                 }
                 i++;
             });
         }
         if (!this.Itemflag) {
-            if (contact.IssueQty != null) {
-                this.DraftQty = DraftQty + contact.IssueQty;
 
-                if (this.DraftQty > contact.BalanceQty) {
+            if (contact.issueQty != null) {
+                const totalIssueQty = this.DraftQty + contact?.issueQty;
+
+                if (totalIssueQty > contact.balanceQty) {
                     Swal.fire('Enter Qty less than Balance');
-                    this.DraftQty = DraftQty - contact.IssueQty;
+                    this.DraftQty = 0;
                     this.ItemFormreset();
                 }
             } else {
-                this.DraftQty = DraftQty + 1;
-                if (this.DraftQty > contact.BalanceQty) {
+                if (this.DraftQty > contact.balanceQty) {
                     Swal.fire('Enter Qty less than Balance');
-                    this.DraftQty = DraftQty - 1;
+                    this.DraftQty = 0;
                     this.ItemFormreset();
                 }
             }
 
-            const TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
-            const Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
-            const TotalNet = parseFloat(TotalMRP + Vatamount).toFixed(2);
-            const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
+            const TotalMRP = (parseInt(this.DraftQty) * contact.unitMRP).toFixed(2);
+            const Vatamount = ((parseFloat(TotalMRP) * contact.vatPercentage) / 100).toFixed(2);
+            const TotalNet = (parseFloat(TotalMRP)).toFixed(2);
+            const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.landedRate).toFixed(2);
             const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-            const PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
+            const PurTotAmt = (parseInt(this.DraftQty) * contact.purUnitRateWF).toFixed(2);
 
-            const CGSTAmt = (((contact.UnitMRP * contact.CGSTPer) / 100) * this.DraftQty).toFixed(2);
-            const SGSTAmt = (((contact.UnitMRP * contact.SGSTPer) / 100) * this.DraftQty).toFixed(2);
-            const IGSTAmt = (((contact.UnitMRP * contact.IGSTPer) / 100) * this.DraftQty).toFixed(2);
+            const CGSTAmt = (((contact.unitMRP * contact.cgstPer) / 100) * this.DraftQty).toFixed(2);
+            const SGSTAmt = (((contact.unitMRP * contact.sgstPer) / 100) * this.DraftQty).toFixed(2);
+            const IGSTAmt = (((contact.unitMRP * contact.igstPer) / 100) * this.DraftQty).toFixed(2);
 
-            const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+            const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.discPer)) / 100).toFixed(2);
             const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
-
+              const formValue = this._salesService.ItemSearchGroup.value;
             this.chargeslistBarcode.push({
-                ItemId: contact.ItemId || 0,
-                ItemName: contact.ItemName || '',
-                BatchNo: contact.BatchNo,
-                BatchExpDate: this.datePipe.transform(contact.BatchExpDate, 'yyyy-MM-dd') || '01/01/1900',
-                BalanceQty: contact.BalanceQty,
+                ItemId: contact.itemId || 0,
+                ItemName: contact.itemName || '',
+                BatchNo: contact.batchNo,
+                BatchExpDate: this.datePipe.transform(contact.batchExpDate, 'yyyy-MM-dd') || '01/01/1900',
+                BalanceQty: contact.balanceQty || 0,
                 Qty: this.DraftQty || 0,
-                UnitMRP: contact.UnitMRP,
-                GSTPer: contact.VatPer || 0,
+                UnitMRP: contact.unitMRP || 0,
+                GSTPer: contact.vatPercentage || 0,
+                VatPer: contact.vatPercentage || 0,
                 GSTAmount: Vatamount || 0,
+                VatAmount: Vatamount || 0,
                 TotalMRP: TotalMRP,
-                DiscPer: contact.DiscPer,
+                DiscPer: contact.discPer || 0,
                 DiscAmt: DiscAmt || 0,
                 NetAmt: TotalNet,
                 RoundNetAmt: parseInt(TotalNet), // Math.round(TotalNet),
-                StockId: contact.StockId,
-                LandedRate: contact.LandedRate,
+                StockId: contact.stockId,
+                LandedRate: contact.landedRate,
                 LandedRateandedTotal: LandedRateandedTotal,
-                CgstPer: contact.CGSTPer,
+                CgstPer: contact.cgstPer || 0,
                 CGSTAmt: CGSTAmt,
-                SgstPer: contact.SGSTPer,
+                SgstPer: contact.sgstPer || 0,
                 SGSTAmt: SGSTAmt,
-                IgstPer: contact.IGSTPer,
+                IgstPer: contact.igstPer || 0,
                 IGSTAmt: IGSTAmt,
-                PurchaseRate: contact.PurUnitRateWF,
+                PurchaseRate: contact.purUnitRateWF || 0,
                 PurTotAmt: PurTotAmt,
                 MarginAmt: v_marginamt,
-                SalesDraftId: 1,
+                SalesDraftId: 1, 
+                MRP: contact.unitMRP || 0,
+                MRPRate: contact.unitMRP || 0,
+                MRPRateTotal: TotalMRP,
+                IsPurRate: formValue.IsPurRate
             });
             console.log(this.chargeslistBarcode);
             // });
@@ -2575,8 +2612,9 @@ export class SalesHospitalNewComponent implements OnInit {
         this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
         console.log(this.saleSelectedDatasource.data);
 
-        this.vBarcode = 0;
+        this._salesService.ItemSearchGroup.get('Barcode')?.setValue('');
         this.vBarcodeflag = false;
+        this.saveflag = false;
     }
     onEnterItemName(item: IndentList): void {
         const itemId = item.ItemId;
@@ -2945,6 +2983,9 @@ export class IndentList {
     MRPRate: any;
     MRPRateTotal: any;
     IsPurRate: any;
+
+
+    issueQty:any;
     /**
      * Constructor
      *
@@ -2995,6 +3036,7 @@ export class IndentList {
             this.MRP = IndentList.MRP || 0;
             this.MRPRate = IndentList.MRPRate || 0;
             this.MRPRateTotal = IndentList.MRPRateTotal || 0;
+             this.issueQty = IndentList.issueQty || 0;
         }
     }
 }

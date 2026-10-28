@@ -353,8 +353,8 @@
                       <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px" fusePerfectScrollbar>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode"
-                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                          <airmid-textbox label="Barcode No" formControlName="Barcode" 
+                            [formGroup]="_salesService.ItemSearchGroup" (change)="barcodeItemfetch()"></airmid-textbox>
                         </div>
 
                         <div fxFlex>

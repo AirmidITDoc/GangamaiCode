@@ -118,10 +118,12 @@
         <ng-template #actionButtonSticker let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <!-- <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox> -->
-                <button mat-icon-button matTooltip="Sticker" (click)="OnItemStickerstPrint(element)">
+                <button mat-icon-button matTooltip="Sticker" *ngIf="element.isVerified  == true"
+                 (click)="OnItemStickerstPrint(element)">
                 <mat-icon>pages</mat-icon>
                 </button>
-                <button mat-icon-button matTooltip="Barcode" (click)="Onbarcode(element)">
+                <button mat-icon-button matTooltip="Barcode" (click)="Onbarcode(element)" 
+                *ngIf="element.isVerified  == true">
                 <mat-icon>filter_b_and_w</mat-icon>
                 </button>
 
