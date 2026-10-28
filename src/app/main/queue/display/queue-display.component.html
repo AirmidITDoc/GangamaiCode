@@ -7,20 +7,36 @@
     <section class="now">
       <h2><span class="live"></span>NOW IN</h2>
       <div class="now-grid">
-        <div class="now-card" *ngFor="let e of inRoom$ | async; trackBy: trackId">
-          <div class="tk">{{ e.token }}</div>
-          <div class="nm"><b>{{ e.name }}</b><span>{{ e.department }}<ng-container *ngIf="e.doctor"> · {{ e.doctor }}</ng-container></span></div>
+        <div class="now-card" *ngFor="let e of inRoom$; trackBy: trackId">
+          <div class="tk">{{ e.regNoWithPrefix }}</div>
+          <div class="nm">
+            <span class="field-label">Patient</span>
+            <b>{{ e.patientName }}</b>
+            <span class="visit-time"><span class="field-label">Visit date &amp; time</span>{{ e.vistDateTime }}</span>
+            <span class="doctor" *ngIf="e.doctor">{{ e.doctor }}</span>
+          </div>
         </div>
       </div>
-      <div class="none" *ngIf="!(inRoom$ | async)?.length">Please wait for your turn</div>
+      <div class="none" *ngIf="!(inRoom$)?.length">Please wait for your turn</div>
     </section>
     <section class="next">
-      <h2>WAITING <span class="cnt">{{ waitingCount$ | async }}</span></h2>
-      <div class="row" *ngFor="let e of waiting$ | async; let i = index; trackBy: trackId" [class.first]="i === 0">
-        <span class="tk">{{ e.token }}</span><span class="nm">{{ e.name }}</span><span class="dp">{{ e.department }}</span>
+      <h2>WAITING <span class="cnt">{{ waiting$.length }}</span></h2>
+      <div class="row" *ngFor="let e of waiting$; let i = index; trackBy: trackId" [class.first]="i === 0">
+        <div class="queue-field reference">
+          <span class="field-label">Reference No.</span>
+          <span class="tk">{{ e.regNoWithPrefix }}</span>
+        </div>
+        <div class="queue-field patient">
+          <span class="field-label">Patient</span>
+          <span class="nm">{{ e.patientName }}</span>
+        </div>
+        <div class="queue-field visit-time">
+          <span class="field-label">Visit date &amp; time</span>
+          <span class="dp">{{ e.vistDateTime }}</span>
+        </div>
         <span class="tag" *ngIf="i === 0">NEXT</span>
       </div>
-      <div class="none" *ngIf="!(waiting$ | async)?.length">No patients waiting</div>
+      <div class="none" *ngIf="!(waiting$)?.length">No patients waiting</div>
     </section>
   </main>
   <footer>Please keep your token number ready · Maintain silence in the waiting area</footer>
