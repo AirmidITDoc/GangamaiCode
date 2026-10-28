@@ -1017,7 +1017,7 @@ followupdoctorid:any=0;
 
         const m_data2 = {
             first: 0,
-            rows: 10,
+            rows: 999,
             sortField: "VisitId",
             sortOrder: 0,
             filters: [

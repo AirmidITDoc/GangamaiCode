@@ -461,7 +461,7 @@ debugger
 
         const m_data2 = {
             first: 0,
-            rows: 10,
+            rows: 9999,
             sortField: "ipMedID",
             sortOrder: 0,
             filters: [

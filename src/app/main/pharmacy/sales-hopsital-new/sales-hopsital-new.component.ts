@@ -499,6 +499,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('doctorName').reset('');
             this.ItemSubform.get('regId').setValue('');
             this.saleSelectedDatasource.data = [];
+            this.chargeslistBarcode = []; 
             this.Itemchargeslist = [];
             this.IPMedID = 0;
             this.DraftID = 0;
@@ -515,6 +516,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('doctorName').reset('');
             this.ItemSubform.get('regId').setValue('');
             this.saleSelectedDatasource.data = [];
+            this.chargeslistBarcode = []; 
             this.Itemchargeslist = [];
             this.IPMedID = 0;
             this.DraftID = 0;
@@ -528,6 +530,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('regId').setValue('');
             this.ItemSubform.updateValueAndValidity();
             this.saleSelectedDatasource.data = [];
+            this.chargeslistBarcode = []; 
             this.Itemchargeslist = [];
             //  this.paymethod = false;
             this.Draftchk = true;
@@ -563,6 +566,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.getBillSummary(obj?.admissionID);
         this.ItemFormreset();
         this.saleSelectedDatasource.data = [];
+        this.chargeslistBarcode = []; 
         this.Itemchargeslist = [];
     }
     getSelectedObjOP(obj) {
@@ -583,6 +587,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.RegNo = obj?.regNo;
         this.ItemFormreset();
         this.saleSelectedDatasource.data = [];
+        this.chargeslistBarcode = []; 
         this.Itemchargeslist = [];
         this.saveflag = false;
     }
@@ -1044,6 +1049,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemSubform.get('concessionReasonId').disable();
         this.ItemSubform.get('roundoffAmt').setValue(0);
         this.saleSelectedDatasource.data = [];
+        this.chargeslistBarcode = []; 
         this.Itemchargeslist = [];
         this.getDraftorderList();
         this.TotalAdvanceAmt = 0;
@@ -1521,6 +1527,8 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemSubform.get('discAmount').enable();
         this._salesService.ItemSearchGroup.get('DiscPer').enable();
         this._salesService.ItemSearchGroup.get('DiscAmt').enable();
+        this.chargeslistBarcode = [];
+        this.barcodeflag = false;
     }
     // Table calculation
     updateCellDiscount(item: IndentList): void {
@@ -2412,12 +2420,13 @@ export class SalesHospitalNewComponent implements OnInit {
         const barcode = this._salesService.ItemSearchGroup.get('Barcode')?.value;
 
         if (!barcode) {
-            this.saveflag = true;
-            return; 
+            if (this.saleSelectedDatasource.data.length == 0) {
+                this.saveflag = true;
+            } 
+            return;
         }
-         this.saveflag = true;
-    console.log('barcodeItemfetch called')
-            console.log('barcodeItemfetch called');
+       
+ 
         const StockId = +this._salesService.ItemSearchGroup.get('Barcode')?.value || 0;
         const Storeid = +this._loggedService.currentUserValue.user.storeId || 0;
         var m_data = {
@@ -2447,13 +2456,8 @@ export class SalesHospitalNewComponent implements OnInit {
         this.Addflag = false;
     }
     onAddBarcodeItemList(contact) {
-        console.log(contact);
-            console.log('onAddBarcodeItemList called:', contact.itemId);
-    console.log('Existing items:', this.saleSelectedDatasource.data);
-        //
         this.Itemflag = false;
-        this.DraftQty = 1;
-        debugger
+        this.DraftQty = 1; 
         this.vBarcodeflag = true;
         let i = 0;
 
