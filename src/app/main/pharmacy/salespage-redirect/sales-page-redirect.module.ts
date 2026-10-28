@@ -52,7 +52,7 @@ const routes: Routes = [
         SalesHospitalKenyaComponent,
         PrescriptionComponent,
         SubstitutesComponent ,
-        SalesHospitalNewComponent
+        //SalesHospitalNewComponent
     ],
     imports: [
         CommonModule,

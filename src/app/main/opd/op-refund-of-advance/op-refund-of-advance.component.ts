@@ -103,7 +103,7 @@ export class OpRefundOfAdvanceComponent implements OnInit {
     }
     createRefAdvForm() {
         return this.formBuilder.group({
-            CashCounterID: [this.hospitalConfigservice.HospitalconfigParams?.IPD_Refund_of_Advance_Receipt_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+            CashCounterID: [this.hospitalConfigservice.HospitalconfigParams?.OPD_Refund_Advance_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
             refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
             this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
             balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator, Validators.min(0)]],
@@ -269,7 +269,7 @@ export class OpRefundOfAdvanceComponent implements OnInit {
         this.OP_IP_Id = 0;
         this.RefundOfAdvanceFormGroup.get('refundAmount').setValue(0);
         this.RefundOfAdvanceFormGroup.get('refundAmount').setValidators(Validators.required)
-        this.RefundOfAdvanceFormGroup.get('CashCounterID').setValue(this.hospitalConfigservice.HospitalconfigParams.IPD_Refund_of_Advance_Receipt_CounterId);
+        this.RefundOfAdvanceFormGroup.get('CashCounterID').setValue(this.hospitalConfigservice.HospitalconfigParams.OPD_Refund_Advance_CounterId);
         this.RefundOfAdvanceFormGroup.get('remark').setValue('');
         this.RefundOfAdvanceFormGroup.get('balanceAmount').setValue(0);
         this.searchFormGroup.reset();
@@ -348,7 +348,7 @@ export class OpRefundOfAdvanceComponent implements OnInit {
     }
     getuserwisecashcounterlist() {
         if (!this.UserWsieCashcounterId) { return };
-        const Type = 'IP_REFUND_ADV_BILL';
+        const Type = 'OP_REFUND_OF_ADV';
         this._OpRefundOfAdvanceService.getuserwisecashcounterlist(this.vUserID, Type).subscribe((data) => {
             const cashcounterlist = data
             console.log('user wise cashcounter list: ', cashcounterlist);

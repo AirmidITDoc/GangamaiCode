@@ -146,6 +146,7 @@ export class ConfigSettingParams {
     IsSalesTally: any;
     IsOpTally: any;
     OpdAdvanceWorkFLow:any;
+    OpdSameDepartmentSameDoctorAppointment:any;
     /**
         * Constructor
         *
@@ -298,6 +299,7 @@ export class ConfigSettingParams {
         this.IsSalesTally = ConfigSettingParams.IsSalesTally;
         this.IsOpTally = ConfigSettingParams.IsOpTally;
         this.OpdAdvanceWorkFLow = ConfigSettingParams.OpdAdvanceWorkFLow;
+        this.OpdSameDepartmentSameDoctorAppointment =ConfigSettingParams.OpdSameDepartmentSameDoctorAppointment;
 
 
     }

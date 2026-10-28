@@ -172,7 +172,7 @@ export class OpAdvanceComponent implements OnInit {
     } 
     createAdvform() {
         this.AdvFormGroup = this.formBuilder.group({
-            CashCounterID: [this.hospitalconfigservice.HospitalconfigParams.IPD_Advance_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+            CashCounterID: [this.hospitalconfigservice.HospitalconfigParams.OPD_Advance_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
             advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             reason: [''],
 
@@ -358,7 +358,7 @@ export class OpAdvanceComponent implements OnInit {
         this.selectedAdvanceObj = []; 
         this.AdvFormGroup.get('advanceAmount').setValue(0);
         this.AdvFormGroup.get('advanceAmount').setValidators(Validators.required)
-        this.AdvFormGroup.get('CashCounterID').setValue(this.hospitalconfigservice.HospitalconfigParams.IPD_Advance_CounterId);
+        this.AdvFormGroup.get('CashCounterID').setValue(this.hospitalconfigservice.HospitalconfigParams.OPD_Advance_CounterId);
         this.AdvFormGroup.get('reason').setValue('');
         this.getdata(this.RegId);
         this.searchFormGroup.reset();
@@ -425,7 +425,7 @@ export class OpAdvanceComponent implements OnInit {
     }
     getuserwisecashcounterlist() {
         if (!this.UserWsieCashcounterId) { return };
-        const Type = 'IPD_ADVANCE';
+        const Type = 'OP_ADVANCE';
         this._OpAdvanceService.getuserwisecashcounterlist(this.vUserID, Type).subscribe((data) => {
             const cashcounterlist = data
             console.log('user wise cashcounter list: ', cashcounterlist);

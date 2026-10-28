@@ -151,7 +151,8 @@ export class SalesHospitalService {
     }
 
     public getCurrentStockItem(param) {
-        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CurrentStock_ItemList", param);
+      //  return this._httpClient.post("Generic/GetByProc?procName", param);
+       return this._httpClient1.PostData("Sales/CurrStockItemList", param);
     }
 
     public getSubstitutes(emp) {

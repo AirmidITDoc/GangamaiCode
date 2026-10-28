@@ -154,6 +154,7 @@ export class NewAppointmentComponent implements OnInit {
     selectedTabIndex = 0;
     imagePreview!: string;
     sidebarName = 'patient-sidebar';
+    OpdSameDepartmentSameDoctorAppointment:boolean=false;
     prevResults: any[] = [];
     filteredOptions: any[] = [];
     debounceTimers: { [key: string]: any } = {};
@@ -274,6 +275,10 @@ export class NewAppointmentComponent implements OnInit {
         this.vlastNameConfig = lastnameid
 
         this.setNameValidations();
+
+        const opdObj = this?._configue?.configParams?.OpdSameDepartmentSameDoctorAppointment || "";
+        const [sameAppointmentid, sameAppointmentvalue] = rawValue.includes(":") ? opdObj.split(":") : [null, null];
+        this.OpdSameDepartmentSameDoctorAppointment = sameAppointmentid === "1" ;
     }
 
     // setdoctorconfig() {
@@ -693,12 +698,12 @@ export class NewAppointmentComponent implements OnInit {
                  isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.PrevregisterObj.departmentId &&
                     item.consultantDocId == this.PrevregisterObj.consultantDocId);
                 } 
-                if (isAvailable) {
+                if (isAvailable && this.OpdSameDepartmentSameDoctorAppointment) {
                          Swal.fire({
                     icon: 'warning',
-                    title: 'Appointment Already Taken',
-                    html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
-        <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
+                    title: 'Appointment Already Scheduled',
+                                html: `<p>An appointment is already scheduled for <strong>today</strong></p>
+                <p style="color:#777; font-size:14px;">please choose another doctor or department. </p> `,      
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#f39c12',
                     background: '#fff',
@@ -1018,13 +1023,13 @@ export class NewAppointmentComponent implements OnInit {
             isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
                 item.consultantDocId == this.VisitFormGroup.get('ConsultantDocId')?.value);
         }
-        if (isAvailable) {
+        if (isAvailable && this.OpdSameDepartmentSameDoctorAppointment) {
             Swal.fire({
                 icon: 'warning',
-                title: 'Appointment Already Taken',
-                html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
-                                <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
-                confirmButtonText: 'OK',
+                title: 'Appointment Already Scheduled',
+                                html: `<p>An appointment is already scheduled for <strong>today</strong></p>
+                <p style="color:#777; font-size:14px;">please choose another doctor or department. </p> `,      
+                    confirmButtonText: 'OK',
                 confirmButtonColor: '#f39c12',
                 background: '#fff',
                 timer: 4000,
@@ -1387,13 +1392,13 @@ export class NewAppointmentComponent implements OnInit {
                             isAvailable = this.LastDepartmentDoclist.some((item) => item.departmentId == this.VisitFormGroup.get('DepartmentId')?.value &&
                                 item.consultantDocId == incomingDoctorId);
                         }
-                        if (isAvailable) {
+                        if (isAvailable && this.OpdSameDepartmentSameDoctorAppointment) {
                             Swal.fire({
                                 icon: 'warning',
-                                title: 'Appointment Already Taken',
-                                html: `<p> This patient already has an appointment <strong>today</strong> with the same department and doctor. </p>
-                             <p style="color:#777; font-size:14px;">  Please choose a different department or doctor. </p> `,
-                                confirmButtonText: 'OK',
+                               title: 'Appointment Already Scheduled',
+                                html: `<p>An appointment is already scheduled for <strong>today</strong></p>
+                <p style="color:#777; font-size:14px;">please choose another doctor or department. </p> `,      
+                    confirmButtonText: 'OK',
                                 confirmButtonColor: '#f39c12',
                                 background: '#fff',
                                 timer: 4000,
