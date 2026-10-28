@@ -29,9 +29,9 @@ export class UpdatePhlebotomistComponent {
   displayedColumns: string[] = [
     'srNo',
     'dateTime',
+    'unit',
     'patientName',
     'mobileNo',
-    'unit',
     'phlebotomist',
     'status'
   ];
@@ -105,6 +105,11 @@ export class UpdatePhlebotomistComponent {
         "fieldValue": String(p.id),
         "opType": "Equals"
       },
+      {
+        "fieldName": "Status",
+        "fieldValue": "0",
+        "opType": "Equals"
+      }
     );
 
     const data = {

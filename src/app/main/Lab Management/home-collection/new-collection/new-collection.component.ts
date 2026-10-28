@@ -202,7 +202,7 @@ export class NewCollectionComponent {
 
         this.getServiceList();
 
-        this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + 0 + "&SubGroupId=" + 0 + "&SrvcName="
+        this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + 0 + "&SubGroupId=" + 0 + "&IsPackage=" + 2 + "&SrvcName="
 
         this.setEditValues(this.data)
     }

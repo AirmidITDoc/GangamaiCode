@@ -75,7 +75,7 @@ export class LabPackageDetailsComponent {
       this.getOPDpackagedetList(this.registerObj);
       console.log(this.registerObj)
       //GetServiceListwithTraiff
-      this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+      this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&IsPackage=" + 2 + "&SrvcName="
     }
     this.createForm();
     this.CreatePacakgeUpdateForm();

@@ -241,7 +241,7 @@ export class NewLabPatientRegComponent {
       this.getServiceList();
     }, 500);
 
-    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&IsPackage=" + 2 + "&SrvcName="
 
     this.myForm.get('groupId')?.valueChanges.pipe(debounceTime(300)).subscribe(val => {
       this.groupId = val || 0;
@@ -358,6 +358,7 @@ export class NewLabPatientRegComponent {
       + "&ClassId=1"
       + "&GroupId=" + this.groupId
       + "&SubGroupId=" + this.subGroupId
+      + "&IsPackage=2"
       + "&SrvcName=";
   }
 
@@ -802,6 +803,7 @@ export class NewLabPatientRegComponent {
           this.groupId +
           "&SubGroupId=" +
           this.subGroupId +
+          "&IsPackage=2"
           "&SrvcName=";
       });
 
@@ -900,6 +902,7 @@ export class NewLabPatientRegComponent {
         this.groupId +
         "&SubGroupId=" +
         this.subGroupId +
+        "&IsPackage=2"
         "&SrvcName=";
     }
   }
@@ -960,7 +963,7 @@ export class NewLabPatientRegComponent {
       this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
       this.vTariffId = this.companyDet.traiffId
 
-      this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+      this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&IsPackage=" + 2 + "&SrvcName="
     });
   }
 
@@ -972,7 +975,7 @@ export class NewLabPatientRegComponent {
 
   onChangeTariff(value) {
     this.vTariffId = value.value
-    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&IsPackage=" + 2 + "&SrvcName="
   }
   urgentStatus: boolean = false;
   onUrgentToggleChange(event: any, contact: any) {

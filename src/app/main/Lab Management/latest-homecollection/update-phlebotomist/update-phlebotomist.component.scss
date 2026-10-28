@@ -104,6 +104,20 @@
   font-size: 12px;
   color: var(--ph-muted);
 }
+.ph-card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: default;
+}
+
+.ph-card-actions .btn {
+    flex: 1;
+    padding: 4px 10px;
+    font-size: 12px;
+}
 
 /* Avatar */
 .ph-avatar {

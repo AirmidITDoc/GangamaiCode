@@ -139,7 +139,8 @@ export class LatestHomecollectionComponent {
 
   getStatusText(status: any): string {
     switch (String(status)) {
-      case '1': return 'In Progress';
+      case '1': return 'Completed';
+      // case '1': return 'In Progress';
       case '0': return 'Pending';
       default: return '--';
     }
@@ -199,7 +200,7 @@ export class LatestHomecollectionComponent {
     // this.l_name = (this.myFilterform.get('LastName').value ?? '') + "%"
     this.UnitId = this.myFilterform.get('UnitId').value
     // this.mobileNo = (this.myFilterform.get('mobileNo').value ?? '') + "%"
-    // this.phlebotomistId = this.myFilterform.get('PhlebotomistId').value
+    this.phlebotomistId = this.myFilterform.get('PhlebotomistId').value
     // this.regNo = this.myFilterform.get('RegNoSearch').value || "0"
     // debugger
     const filters: any[] = [];
@@ -225,26 +226,16 @@ export class LatestHomecollectionComponent {
         "fieldValue": String(this.f_name),
         "opType": "StartsWith"
       },
-      // {
-      //   "fieldName": "LastName",
-      //   "fieldValue": String(this.l_name),
-      //   "opType": "StartsWith"
-      // },
-      // {
-      //   "fieldName": "UnitId",
-      //   "fieldValue": String(this.UnitId),
-      //   "opType": "Equals"
-      // },
-      // {
-      //   "fieldName": "MobileNo",
-      //   "fieldValue": String(this.mobileNo),
-      //   "opType": "Equals"
-      // },
       {
         "fieldName": "PhlebotomistId",
         "fieldValue": String(this.phlebotomistId),
         "opType": "Equals"
       },
+      {
+        "fieldName": "Status",
+        "fieldValue": "2",
+        "opType": "Equals"
+      }
     );
 
     const data = {
