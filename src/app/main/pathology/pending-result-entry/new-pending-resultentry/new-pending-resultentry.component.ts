@@ -524,7 +524,12 @@ export class NewPendingResultentryComponent {
           "fieldName": "CategoryId",
           "fieldValue": String(obj.categoryId),
           "opType": "Equals"
-        },
+        },        
+        {
+          "fieldName": "SampleNo",
+          "fieldValue": "",
+          "opType": "Equals"
+        }
       ],
       "exportType": "JSON",
       "columns": []
