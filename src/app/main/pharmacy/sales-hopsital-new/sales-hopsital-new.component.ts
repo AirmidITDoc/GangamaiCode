@@ -1065,6 +1065,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.Itemchargeslist.splice(index, 1);
             this.saleSelectedDatasource.data = [];
             this.saleSelectedDatasource.data = this.Itemchargeslist;
+            this.chargeslistBarcode = this.saleSelectedDatasource.data 
         }
         Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
         this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
@@ -2452,7 +2453,7 @@ export class SalesHospitalNewComponent implements OnInit {
                             timer: 2000
                         });
                     } else {
-                        this.onAddBarcodeItemList(element);
+                        this.onAddBarcodeItemList(element,element.issueQty);
                     }
                 });
             } else if (this.tempDatasource.data.length == 0) {
@@ -2464,9 +2465,10 @@ export class SalesHospitalNewComponent implements OnInit {
         this._salesService.ItemSearchGroup.get('Barcode')?.setValue('');
         this.Addflag = false;
     }
-    onAddBarcodeItemList(contact) {
+    onAddBarcodeItemList(contact,DraftQty) {
+        debugger
         this.Itemflag = false;
-        this.DraftQty = 1; 
+        this.DraftQty = DraftQty; 
         this.vBarcodeflag = true;
         let i = 0;
 
@@ -2476,26 +2478,34 @@ export class SalesHospitalNewComponent implements OnInit {
             this.saleSelectedDatasource.data.forEach((element) => {
                 if (element.ItemId == contact.itemId) {
                     this.Itemflag = true;
-                    this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                    this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
                     // 
 
                     if (contact.issueQty != null) {
-                        const totalDraftqty = Number(element?.Qty || 0) + 1;
-                        const totalIssueQty = totalDraftqty + Number(contact?.issueQty || 0);
-
+                        const totalDraftqty = Number(element?.Qty || 0) + contact.issueQty ;  
                         this.DraftQty = totalDraftqty;
-                        if (totalIssueQty > contact.balanceQty) {
-                            Swal.fire('Enter Qty less than Balance :', contact.balanceQty);
-
+                        if (totalDraftqty > contact.balanceQty) {
+                            console.log('balance qty',contact.balanceQty) 
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Invalid Quantity',
+                                text: 'Please enter a quantity less than the balance quantity = ' + contact.balanceQty,
+                                confirmButtonText: 'OK',
+                            }); 
                             this.DraftQty = Number(element.Qty) || 0;
                             this.ItemFormreset();
                         }
                     } else {
                         this.DraftQty = element.Qty + 1;
                         if (this.DraftQty > contact.balanceQty) {
-                            Swal.fire('Enter Qty less than Balance :', contact.balanceQty);
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Invalid Quantity',
+                                text: 'Please enter a quantity less than the balance quantity = ' + contact.balanceQty,
+                                confirmButtonText: 'OK',
+                            }); 
                             this.DraftQty = element.Qty;
                             this.ItemFormreset();
                         }
@@ -2517,7 +2527,7 @@ export class SalesHospitalNewComponent implements OnInit {
                     const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.discPer)) / 100).toFixed(2);
                     const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
-                    const BalQty = contact.balanceQty - this.DraftQty;
+                    //const BalQty = contact.balanceQty - this.DraftQty;
 
                     this.saleSelectedDatasource.data[i].Qty = this.DraftQty;
                     this.saleSelectedDatasource.data[i].VatAmount = Vatamount;
@@ -2544,7 +2554,7 @@ export class SalesHospitalNewComponent implements OnInit {
                     this.saleSelectedDatasource.data[i].PurchaseRate = contact.purUnitRateWF;
                     this.saleSelectedDatasource.data[i].PurTotAmt = PurTotAmt;
 
-                    this.saleSelectedDatasource.data[i].BalanceQty = BalQty;
+                    this.saleSelectedDatasource.data[i].BalanceQty = contact.balanceQty;
                     this.saleSelectedDatasource.data[i].StockId = contact.stockId; 
                     this.saleSelectedDatasource.data[i].MRPRateTotal = contact.TotalMRP;   
                 }
@@ -2553,21 +2563,31 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         if (!this.Itemflag) {
 
-            if (contact.issueQty != null) {
-                const totalIssueQty = this.DraftQty + contact?.issueQty;
-
+            if (contact.issueQty != null) { ;
+                const totalIssueQty = +this.DraftQty;
                 if (totalIssueQty > contact.balanceQty) {
-                    Swal.fire('Enter Qty less than Balance');
-                    this.DraftQty = 0;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Quantity',
+                        text: 'Please enter a quantity less than the balance quantity = ' + contact.balanceQty,
+                        confirmButtonText: 'OK',
+                    }); 
+                    this.DraftQty = contact.balanceQty;
                     this.ItemFormreset();
                 }
             } else {
+                this.DraftQty = 1;
                 if (this.DraftQty > contact.balanceQty) {
-                    Swal.fire('Enter Qty less than Balance');
-                    this.DraftQty = 0;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Quantity',
+                        text: 'Please enter a quantity less than the balance quantity = ' + contact.balanceQty,
+                        confirmButtonText: 'OK',
+                    }); 
+                    this.DraftQty = contact.balanceQty;
                     this.ItemFormreset();
                 }
-            }
+            }  
 
             const TotalMRP = (parseInt(this.DraftQty) * contact.unitMRP).toFixed(2);
             const Vatamount = ((parseFloat(TotalMRP) * contact.vatPercentage) / 100).toFixed(2);
@@ -2622,6 +2642,7 @@ export class SalesHospitalNewComponent implements OnInit {
             // });
         }
         this.saleSelectedDatasource.data = this.chargeslistBarcode;
+        this.Itemchargeslist = this.saleSelectedDatasource.data;
         this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
         console.log(this.saleSelectedDatasource.data);
 
