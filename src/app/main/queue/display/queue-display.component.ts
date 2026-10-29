@@ -35,8 +35,9 @@ export class QueueDisplayComponent implements OnInit {
     }
     BindQueueData() {
         this.q.getQueueData(0, 10).subscribe((data) => {
-            debugger;
-            this.waiting$ = data.data;
+            const minDate = new Date('1900-01-01T00:00:00');
+            this.waiting$ = data.data.filter((x: { conStartTime: string | number | Date; }) => x.conStartTime && new Date(x.conStartTime) <= minDate);
+            this.inRoom$ = data.data.filter((x: { conStartTime: string | number | Date; conEndTime: string | number | Date; }) => x.conStartTime && new Date(x.conStartTime) > minDate && new Date(x.conEndTime) <= minDate);
         });
     }
 }
