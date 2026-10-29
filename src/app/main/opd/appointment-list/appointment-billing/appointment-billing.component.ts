@@ -36,7 +36,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         ['groupName', 'serviceName', 'classRate', 'userName'];
     public mPesaColumns = ['PayStatus', 'transactionDate', 'phoneNumber', 'mpesaReceiptNumber', 'amount', 'ResponseDate', 'Description', 'Action'];
     public displayedColumnsDraft: string[] =
-        ['Status', 'DraftDate', 'NetAmount','approvedDate', 'approvedBy','Action'];
+        ['Status', 'DraftDate','approvedDate', 'approvedBy', 'concessionAmt','NetAmount','Action'];
 
     countdown: number = 180; // 3 minutes
     countdownColorClass = 'green';

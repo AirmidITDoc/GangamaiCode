@@ -2444,7 +2444,16 @@ export class SalesHospitalNewComponent implements OnInit {
             this.tempDatasource.data = data.data as any;
             if (this.tempDatasource.data.length >= 1) {
                 this.tempDatasource.data.forEach((element) => {
-                    this.onAddBarcodeItemList(element);
+                    if (element.daysFlag == '1') {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Selected Batch is already Expired",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        this.onAddBarcodeItemList(element);
+                    }
                 });
             } else if (this.tempDatasource.data.length == 0) {
                 this.toastr.error('Item Not Found !', 'Error !', {
@@ -2987,7 +2996,7 @@ export class IndentList {
     MRPRate: any;
     MRPRateTotal: any;
     IsPurRate: any;
-
+    daysFlag
 
     issueQty:any;
     /**
@@ -3041,6 +3050,7 @@ export class IndentList {
             this.MRPRate = IndentList.MRPRate || 0;
             this.MRPRateTotal = IndentList.MRPRateTotal || 0;
              this.issueQty = IndentList.issueQty || 0;
+            this.daysFlag = IndentList.daysFlag || 0;
         }
     }
 }

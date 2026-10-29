@@ -786,7 +786,7 @@
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
                                                             <button mat-icon-button (click)="getdraftchargelist(contact)"
-                                                                [disabled]="!contact.isApproved && IsOPDDiscountApprovalReq">
+                                                                [disabled]="!contact.isApproved && IsOPDDiscountApprovalReq && (contact.concessionAmt || 0) > 0">
                                                                 <span class="material-icons">
                                                                     <mat-icon matTooltip="Add">add_shopping_cart</mat-icon>
                                                                 </span>
@@ -819,11 +819,22 @@
                                                         </mat-cell>
                                                     </ng-container> 
 
+                                                     <ng-container matColumnDef="concessionAmt">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                         class="w-110">
+                                                            Discount Amt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-110">
+                                                            <span> {{contact.concessionAmt | currency:
+                                                                currency:'symbol'}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
                                                     <ng-container matColumnDef="NetAmount">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-110">
                                                             NetAmt
                                                         </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-110">
                                                             <span> {{contact.netPayableAmt | currency:
                                                                 currency:'symbol'}}</span>
                                                         </mat-cell>
@@ -869,7 +880,7 @@
 
                                                             <button mat-icon-button matTooltip="Cancel Draft Bill"
                                                                 (click)="DraftbillCancel(contact.drbno)"
-                                                            [disabled]="IsOPDDiscountApprovalReq">
+                                                            [disabled]="IsOPDDiscountApprovalReq && (contact.concessionAmt || 0) > 0">
                                                                 <mat-icon matTooltip="Cancel">cancel</mat-icon>
                                                             </button>  
  
@@ -888,13 +899,13 @@
                                                         </mat-footer-cell>
                                                     </ng-container>
 
-                                                    <mat-header-row class="accent min-width-700"
+                                                    <mat-header-row class="accent min-width-880"
                                                         *matHeaderRowDef="displayedColumnsDraft; sticky: true">
                                                     </mat-header-row>
                                                     <mat-row *matRowDef="let contact; columns: displayedColumnsDraft;"
                                                       [ngClass]="{ 'approved-row': contact.stageStatus === 'APPROVED', 
                                                       'rejected-row': contact.stageStatus === 'REJECTED',
-                                                      'modified-row': contact.stageStatus === 'MODIFIED'}"    class="min-width-700"
+                                                      'modified-row': contact.stageStatus === 'MODIFIED'}"    class="min-width-880"
                                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>  
 
                                                     <mat-footer-row *matFooterRowDef="['loading']"
