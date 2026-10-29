@@ -50,18 +50,15 @@
                     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
-                            <div class="top-header-title">
-                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    OP Payment
-                                </span>
-
-                            </div>
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                {{ labels['opPay'] || 'OP Payment' }}
+                            </span>
                         </div>
 
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeOPbill" [filters]="filtersop"
-                            *ngIf="modeOPbill!=''"></airmid-common-table>
+                            (labelLoaded)="setLabel('opPay', $event)" *ngIf="modeOPbill!=''"></airmid-common-table>
                     </div>
                 </div>
 
@@ -72,7 +69,7 @@
                         <div class="top-header-info">
                             <div class="top-header-title">
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    OP Refund
+                                    {{ labels['opRefund'] || 'OP Refund' }}
                                 </span>
 
                             </div>
@@ -81,6 +78,7 @@
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeOPbillrefund" [filters]="filtersop"
+                            (labelLoaded)="setLabel('opRefund', $event)"
                             *ngIf="modeOPbillrefund!=''"></airmid-common-table>
                     </div>
                 </div>
@@ -133,9 +131,11 @@
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
                             <div class="top-header-title">
+
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    IP Payment
+                                    {{ labels['ipPay'] || 'IP Payment' }}
                                 </span>
+
 
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeIPPay" [filters]="filtersIP"
-                            *ngIf="modeIPPay!=''"></airmid-common-table>
+                            (labelLoaded)="setLabel('ipPay', $event)" *ngIf="modeIPPay!=''"></airmid-common-table>
                     </div>
                 </div>
 
@@ -153,8 +153,9 @@
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
                             <div class="top-header-title">
+
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    IP Bill Patient Wise
+                                    {{ labels['ipPatientwise'] || 'IP Bill Patient Wise' }}
                                 </span>
 
                             </div>
@@ -163,6 +164,7 @@
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeIPBillPatientwise" [filters]="filtersIP"
+                            (labelLoaded)="setLabel('ipPatientwise', $event)"
                             *ngIf="modeIPBillPatientwise!=''"></airmid-common-table>
                     </div>
                 </div>
@@ -172,8 +174,9 @@
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
                             <div class="top-header-title">
+
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    IP Bill Detail Wise
+                                    {{ labels['ipDetail'] || 'IP Bill Detail Wise' }}
                                 </span>
 
                             </div>
@@ -182,6 +185,7 @@
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeIPbilldetail" [filters]="filtersIP"
+                            (labelLoaded)="setLabel('ipDetail', $event)"
                             *ngIf="modeIPbilldetail!=''"></airmid-common-table>
                     </div>
                 </div>
@@ -193,8 +197,9 @@
                         <div class="top-header-info">
                             <div class="top-header-title">
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    IP Bill Refund
+                                    {{ labels['ipRefund'] || 'IP Bill Refund' }}
                                 </span>
+
 
                             </div>
                         </div>
@@ -202,6 +207,7 @@
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeIpbillrefund" [filters]="filtersIP"
+                            (labelLoaded)="setLabel('ipRefund', $event)"
                             *ngIf="modeIpbillrefund!=''"></airmid-common-table>
                     </div>
                 </div>
@@ -256,17 +262,17 @@
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
                             <div class="top-header-title">
-                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    IP Advance
-                                </span>
 
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    {{ labels['advPay'] || 'IP Advance' }}
+                                </span>
                             </div>
                         </div>
 
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeIPadv" [filters]="filtersAdv"
-                            *ngIf="modeIPadv!=''"></airmid-common-table>
+                            (labelLoaded)="setLabel('advPay', $event)" *ngIf="modeIPadv!=''"></airmid-common-table>
                     </div>
                 </div>
 
@@ -277,7 +283,7 @@
                         <div class="top-header-info">
                             <div class="top-header-title">
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    IP Advance Refund
+                                    {{ labels['advRefund'] || 'IP Advance Refund' }}
                                 </span>
 
                             </div>
@@ -286,6 +292,7 @@
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeAdvrefund" [filters]="filtersAdv"
+                            (labelLoaded)="setLabel('advRefund', $event)"
                             *ngIf="modeAdvrefund!=''"></airmid-common-table>
                     </div>
                 </div>
@@ -338,8 +345,9 @@
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
                             <div class="top-header-title">
+
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    Pharmacy Sales Payment List
+                                    {{ labels['salesPay'] || 'Pharmacy Sales Payment List' }}
                                 </span>
 
                             </div>
@@ -348,6 +356,7 @@
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeSalesPaydetail" [filters]="filterssales"
+                            (labelLoaded)="setLabel('salesPay', $event)"
                             *ngIf="modeSalesPaydetail!=''"></airmid-common-table>
                     </div>
                 </div>
@@ -358,16 +367,17 @@
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
                             <div class="top-header-title">
-                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    Pharmacy Sales Detail
-                                </span>
 
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    {{ labels['salesDetail'] || 'Pharmacy Sales Detail' }}
+                                </span>
                             </div>
                         </div>
 
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
                         <airmid-common-table [mode]="modeSalesdetail" [filters]="filterssales"
+                            (labelLoaded)="setLabel('salesDetail', $event)"
                             *ngIf="modeSalesdetail!=''"></airmid-common-table>
                     </div>
                 </div>
@@ -377,8 +387,9 @@
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
                         <div class="top-header-info">
                             <div class="top-header-title">
+
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    Pharmacy Sales Return
+                                    {{ labels['salesReturn'] || 'Pharmacy Sales Return' }}
                                 </span>
 
                             </div>
@@ -386,8 +397,9 @@
 
                     </div>
                     <div id="contacts" style="height: 300px;overflow: auto;">
-                        <airmid-common-table [mode]="modeSalesdetail" [filters]="filterssales"
-                            *ngIf="modeSalesdetail!=''"></airmid-common-table>
+                        <airmid-common-table [mode]="modeSalesreturn" [filters]="filterssales"
+                            (labelLoaded)="setLabel('salesReturn', $event)"
+                            *ngIf="modeSalesreturn!=''"></airmid-common-table>
                     </div>
                 </div>
 

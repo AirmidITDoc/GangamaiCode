@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 import * as FileSaver from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import * as XLSX from 'xlsx';
 
 
@@ -14,6 +15,7 @@ import * as XLSX from 'xlsx';
     styleUrls: ['./airmid-common-table.component.scss']
 })
 export class AirmidCommonTableComponent implements OnInit, AfterViewInit {
+    @Output() labelLoaded = new EventEmitter<string | null>();
     @Input() mode: string;
     @Input() filters: any[];
     displayedColumns: string[] = [];
@@ -29,28 +31,34 @@ export class AirmidCommonTableComponent implements OnInit, AfterViewInit {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-    if (changes['filters'] || changes['mode']) {
-    this.loadData();
+        if (changes['filters'] || changes['mode']) {
+            this.loadData();
+        }
     }
-  }
-  
-    loadData() {
 
-        debugger
-        var param = { Mode: this.mode, SearchFields: this.filters };
-        this._httpClient.PostData("Common/get-data-table-by-proc", param).subscribe(res => {
-            const data = res;
-            if (!data || data.length === 0)
-                return;
-            this.displayedColumns = Object.keys(data[0]);
-            this.sampleReportDataSource.data = data;
-            if (this.paginator) {
-                this.sampleReportDataSource.paginator = this.paginator;
-            }
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
-    }
+
+   
+loadData() {
+    const param = { Mode: this.mode, SearchFields: this.filters };
+    this._httpClient.PostData("Common/get-data-table-by-proc", param).subscribe(res => {
+        const data = res;
+        if (!data || data.length === 0) {
+            this.labelLoaded.emit(null);
+            return;
+        }
+        this.displayedColumns = Object.keys(data[0]);
+        this.sampleReportDataSource.data = data;
+        if (this.paginator) {
+            this.sampleReportDataSource.paginator = this.paginator;
+        }
+
+        // label from first row (case-insensitive "lbl")
+        const key = this.displayedColumns.find(k => k.toLowerCase() === 'lbl');
+        this.labelLoaded.emit(key ? data[0][key] : null);
+    }, (error) => {
+        this.toastr.error(error.message);
+    });
+}
     exportExcel() {
         const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.sampleReportDataSource.filteredData);
         const workbook: XLSX.WorkBook = { Sheets: { Data: worksheet }, SheetNames: ['Data'] };

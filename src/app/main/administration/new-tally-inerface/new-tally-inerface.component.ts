@@ -25,6 +25,12 @@ import { Observable } from 'rxjs';
   animations: fuseAnimations
 })
 export class NewTallyInerfaceComponent {
+  labels: { [key: string]: string } = {};
+
+  setLabel(key: string, lbl: string | null) {
+    if (lbl) this.labels[key] = lbl;
+  }
+
   IsAdvanceTally = false;
   IsIpTally = false;
   IsSalesTally = false;
@@ -71,7 +77,7 @@ export class NewTallyInerfaceComponent {
 
   ngOnInit(): void {
 
-debugger
+    debugger
     const rawValue = this?._configue?.configParams?.IsAdvanceTally || "";
     const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
     this.IsAdvanceTally = id === "1";
@@ -113,7 +119,7 @@ debugger
 
   //OP
   onChangeOpBill() {
-    
+
     this.fromDate = this.datePipe.transform(this.myFilteropcashcounerform.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilteropcashcounerform.get('enddate').value, "yyyy-MM-dd")
     this.filtersop = [
@@ -130,9 +136,10 @@ debugger
     ];
 
     this.modeOPbill = "OPPayment";
+
   }
   onChangeOPBillRefund() {
-    
+
     this.filtersop = [
       {
         fieldName: "Fromdate",
@@ -149,7 +156,7 @@ debugger
     this.modeOPbillrefund = "OPBillRefundPayment";
   }
   onChangeIPBill() {
-    
+
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -167,7 +174,7 @@ debugger
   }
   // IP?
   onChangeIPBillPatientwise() {
-    
+
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -185,7 +192,7 @@ debugger
   }
 
   onChangeIPBillDetail() {
-    
+
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -202,7 +209,7 @@ debugger
     this.modeIPbilldetail = "IPBillDetailList";
   }
   onChangeIPBillRefundPay() {
-    
+
     this.filtersIP = [
       {
         fieldName: "Fromdate",
@@ -221,7 +228,7 @@ debugger
   //IP Advance
 
   onChangeIPAdvancePay() {
-    
+
     this.filtersAdv = [
       {
         fieldName: "Fromdate",
@@ -238,7 +245,7 @@ debugger
     this.modeIPadv = "IPAdvancePayment";
   }
   onChangeAdvanceRefund() {
-    
+
     this.filtersAdv = [
       {
         fieldName: "Fromdate",
@@ -256,7 +263,7 @@ debugger
   }
   //Sales
   onChangePhSalesPayDetail() {
-    
+
     this.filterssales = [
       {
         fieldName: "Fromdate",
@@ -273,7 +280,7 @@ debugger
     this.modeSalesPaydetail = "OPIPSalsePayment";
   }
   onChangePhSalesDetail() {
-    
+
     this.filterssales = [
       {
         fieldName: "Fromdate",
@@ -291,7 +298,7 @@ debugger
   }
 
   onChangePhSalesreurn() {
-    
+
     this.filterssales = [
       {
         fieldName: "Fromdate",
