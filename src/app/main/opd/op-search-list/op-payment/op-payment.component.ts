@@ -697,8 +697,7 @@ export class OpPaymentComponent implements OnInit {
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
             this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
         }
-        else if (this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "OP-Advance" ||
-            this.data.FromName == "OP-RefundOfAdvance"
+        else if (this.data.FromName == "OP-RefundOfBill" || this.data.FromName == "OP-Advance"  
         ) { 
             this.Paymentobj['BillNo'] = this.advanceData.billNo || 0; //this.data?.billNo;
             this.Paymentobj['ReceiptNo'] = '';
@@ -743,6 +742,43 @@ export class OpPaymentComponent implements OnInit {
             this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0;
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
             this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
+        }
+           else if (this.data.FromName == "OP-RefundOfAdvance") { 
+               transactionType = 2 
+            this.Paymentobj['BillNo'] = this.advanceData.billNo || 0; //this.data?.billNo;
+            this.Paymentobj['ReceiptNo'] = ''; 
+            this.Paymentobj['PaymentDate'] = formattedDate,
+            this.Paymentobj['PaymentTime'] = formattedTime,
+            this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
+            this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
+            this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.RefNo ?? "0";
+            this.Paymentobj['BankName'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.BankName ?? "";
+            this.Paymentobj['ChequeDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+            this.Paymentobj['CardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
+            this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.RefNo ?? "0";
+            this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.BankName ?? "";
+            this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || "01/01/1900";
+            this.Paymentobj['AdvanceUsedAmount'] = 0;
+            this.Paymentobj['AdvanceId'] = 0;
+            this.Paymentobj['RefundId'] = 0; 
+            this.Paymentobj['TransactionType'] = 2; 
+            //this.Paymentobj['TransactionType'] = 2;
+            this.Paymentobj['Remark'] = '';
+            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
+            this.Paymentobj['IsCancelled'] = false;
+            this.Paymentobj['IsCancelledBy'] = 0;
+            this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+            this.Paymentobj['NEFTPayAmount'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
+            this.Paymentobj['NEFTNo'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.RefNo ?? "0";
+            this.Paymentobj['NEFTBankMaster'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.BankName ?? "";
+            this.Paymentobj['NEFTDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+            this.Paymentobj['PayTMAmount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
+            this.Paymentobj['PayTMTranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
+            this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+            this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0;
+            this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
+  
         }
         //new changes done by Ambadas op bill 10/6/2025
         else if (this.data.FromName == "OP-Bill") {
