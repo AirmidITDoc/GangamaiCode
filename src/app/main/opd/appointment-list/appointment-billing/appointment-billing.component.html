@@ -1051,9 +1051,11 @@
                     <!-- Draft / Send for Approval -->
                     <button type="button" class="btn btn-primary" [disabled]="!chargeList.length" (click)="DraftbillSave()">
                         {{ IsOPDDiscountApprovalReq &&
-                        OPFooterForm.get('concessionAmt')?.value > 0
+                        OPFooterForm.get('concessionAmt')?.value > 0 &&
+                         !vDraftApproval
                         ? 'Send for Approval'
-                        : 'Draft' }}
+                        : 'Draft' }} 
+ 
                     </button>
                     
                     <!-- Close -->
@@ -1063,8 +1065,8 @@
                     </button>
                     
                     <!-- Save -->
-                    <button type="button" class="btn btn-primary" [disabled]="!chargeList.length" *ngIf="!(IsOPDDiscountApprovalReq &&
-                                 OPFooterForm.get('concessionAmt')?.value > 0)" (click)="BillSave()">
+                    <button type="button" class="btn btn-primary" [disabled]="!chargeList.length" *ngIf="vDraftApproval ||
+                    !(IsOPDDiscountApprovalReq && OPFooterForm.get('concessionAmt')?.value > 0)" (click)="BillSave()">
                         Save
                     </button>
                 </div>

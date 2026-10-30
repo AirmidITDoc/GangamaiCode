@@ -1846,7 +1846,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.Doctorname = '';
         this.vTariffId = 0;
         this.patientDetail = [];
-
+        this.vDraftApproval = false;
         this.searchForm.get('regId').setValue('')
         this.OPFooterForm.reset({
             totalAmt: 0,
@@ -2577,9 +2577,11 @@ getApproval(contact): Promise<any> {
         });
     }
     draftChargelist: any = [];
+    vDraftApproval :boolean = false;
     DraftdetObj: any;
     getdraftchargelist(contact) {
         this.DraftdetObj = contact
+        this.vDraftApproval = contact?.isApproved
         const param = {
             "first": 0,
             "rows": 999,

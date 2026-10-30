@@ -1509,7 +1509,9 @@ export class SalesHospitalNewComponent implements OnInit {
                 return
             }
         }
-        this.getDraftorderList();
+        setTimeout(() => {
+              this.getDraftorderList();
+        }, 3000); 
         this.PharmaSalesForm.get('sales.balanceAmount')?.reset(0);
     }
     onClose() {
