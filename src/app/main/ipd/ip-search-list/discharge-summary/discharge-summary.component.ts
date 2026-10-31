@@ -34,7 +34,7 @@ export class DischargeSummaryComponent implements OnInit {
     Chargeslist: any = [];
     rtrvDischargeSList = new DischargeSummary({});
     screenFromString = 'discharge-summary';
-     autocompletedepartment: string = "Department";
+    autocompletedepartment: string = "Department";
     dateTimeObj: any;
     ItemId: any;
     vDay: any = 1;
@@ -53,6 +53,8 @@ export class DischargeSummaryComponent implements OnInit {
         'day',
         'qty',
         'totalQty',
+        'routeName',
+        'methodName',
         'instruction',
         'Action'
     ]
@@ -63,7 +65,7 @@ export class DischargeSummaryComponent implements OnInit {
     vDiagnosis: any;
     vClinicalCondition: any;
     vSURGERYprocedure: any;
-    vcarePlanTitle:any='';
+    vcarePlanTitle: any = '';
     vPathology: any;
     vRadiology: any;
     vTreatmentGiven: any;
@@ -82,8 +84,12 @@ export class DischargeSummaryComponent implements OnInit {
     vClinicalFinding = "BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
     doseId = 0
     doseName = ""
-    VfollowUpReason:any= '';
-    VfollowUpDescription:any= '';
+    RouteId = 0
+    RouteName = ""
+    MethodId = 0;
+    MethodName = ""
+    VfollowUpReason: any = '';
+    VfollowUpDescription: any = '';
     DocName3 = 0
     vIsNormalDeath = "1";
     ItemName: any;
@@ -97,6 +103,8 @@ export class DischargeSummaryComponent implements OnInit {
     autocompleteModeDoctor: string = "ConDoctor";
     autocompleteitem: string = "Item";
     autocompletetemplate: string = "DischargeTemplate";
+    autocompleteModeRoute: string = "Route";
+    autocompleteModeMethod: string = "Method";
     dsItemList = new MatTableDataSource<MedicineItemList>();
     @Output() dateTimeEventEmitter = new EventEmitter<{}>();
 
@@ -162,6 +170,8 @@ export class DischargeSummaryComponent implements OnInit {
             Day: 1,
             Qty: 0,
             Instruction: '',
+            RouteId: '',
+            MethodId: ''
         });
     }
     vTemplateDesc: any;
@@ -204,17 +214,17 @@ export class DischargeSummaryComponent implements OnInit {
                 lifeStyle: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 warningSymptoms: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 radiology: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                isNormalOrDeath: [1], 
+                isNormalOrDeath: [1],
                 isRefferal: [false],
                 isRefDepartmentId: [0],
                 isRefDoctorId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-                carePlanTitle:  ['CARE PLAN', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                carePlanTitle: ['CARE PLAN', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 carePlanDescription: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 followUpReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                followUpDepartmentId:  [0],
-                followUpDoctorId:  [0],
-                followUpDescription:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                templateDescriptionHtml: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
+                followUpDepartmentId: [0],
+                followUpDoctorId: [0],
+                followUpDescription: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                templateDescriptionHtml: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 dischargeSummaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
             prescriptionDischarge: this._formBuilder.array([]),
@@ -223,7 +233,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
 
     // 2. FormArray Group for Refund Detail
-    createprescriptionDischarge(item: any = {}): FormGroup { 
+    createprescriptionDischarge(item: any = {}): FormGroup {
         return this._formBuilder.group({
             opdIpdId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -242,6 +252,8 @@ export class DischargeSummaryComponent implements OnInit {
             isEnglishOrIsMarathi: true,
             storeId: this.accountService.currentUserValue.user.storeId,
             createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            routeId:[item.RouteId ?? 0],
+            methodId:[item.MethodId ?? 0]
         });
     }
 
@@ -503,8 +515,15 @@ export class DischargeSummaryComponent implements OnInit {
             console.log(this.Perdayqty)
             console.log(this.TotQty)
         }
+    }
 
-
+    getSelectedRouteObj(obj) {
+        this.RouteId = obj.value
+        this.RouteName = obj.text
+    }
+    getSelectedMethodObj(obj) {
+        this.MethodId = obj.value
+        this.MethodName = obj.text
     }
     // getdose(event) {
 
@@ -594,6 +613,10 @@ export class DischargeSummaryComponent implements OnInit {
                     itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
                     doseName: this.doseName,
                     doseId: this.doseId,
+                    RouteId: this.RouteId,
+                    RouteName: this.RouteName,
+                    MethodId: this.MethodId,
+                    MethodName: this.MethodName,
                     qty: this.Perdayqty,
                     totalQty: this.TotQty,
                     days: this.MedicineItemForm.get('Day').value || 1,
@@ -608,6 +631,8 @@ export class DischargeSummaryComponent implements OnInit {
         }
         this.MedicineItemForm.get('ItemId').reset('');
         this.MedicineItemForm.get('DoseId').reset('');
+        this.MedicineItemForm.get('RouteId').reset('');
+        this.MedicineItemForm.get('MethodId').reset('');
         this.MedicineItemForm.get('Day').reset('1');
         this.MedicineItemForm.get('Instruction').reset('');
         this.TotQty = 0
@@ -672,6 +697,10 @@ export class DischargeSummaryComponent implements OnInit {
                         itemName: element.itemName || '',
                         doseName: element.doseName,
                         doseId: element.doseId,
+                        RouteId: element.routeId,
+                        MethodId: element.methodId,
+                        RouteName: element.routeName,
+                        MethodName: element.methodName,
                         qty: element.qtyPerDay,
                         totalQty: element.totalQty,
                         days: element.days || 0,
@@ -744,7 +773,7 @@ export class DischargeSummaryComponent implements OnInit {
                 this.DischargesumInsertForm.get("dischargModel.followUpDepartmentId")?.setValue(this.RetrDischargeSumryList[0]?.followUpDepartmentId)
                 this.DischargesumInsertForm.get("dischargModel.followUpDoctorId")?.setValue(this.RetrDischargeSumryList[0]?.followUpDoctorId)
                 this.VfollowUpReason = this.RetrDischargeSumryList[0]?.followUpReason
-                this.VfollowUpDescription =this.RetrDischargeSumryList[0]?.followUpDescription
+                this.VfollowUpDescription = this.RetrDischargeSumryList[0]?.followUpDescription
                 this.DischargesumInsertForm.get("dischargModel.carePlanTitle")?.setValue(this.RetrDischargeSumryList[0]?.carePlanTitle)
 
 
@@ -993,10 +1022,10 @@ export class DischargeSummaryComponent implements OnInit {
             followupDepartmentId: [
                 // { name: "required", Message: "followup department Name is required" }
             ],
-               followupdoctor: [
+            followupdoctor: [
                 // { name: "required", Message: "followup doctor Name is required" }
             ],
-              ReferDepartmentId: [
+            ReferDepartmentId: [
                 // { name: "required", Message: "refer department Name is required" }
             ],
             DoseId: []
@@ -1125,6 +1154,10 @@ export class MedicineItemList {
     totalQty: any;
     qty: any
     instruction: any
+    routeId: any;
+    methodId: any;
+    routeName: any;
+    methodName: any;
     /**
     * Constructor
     *
@@ -1155,6 +1188,10 @@ export class MedicineItemList {
             this.qtyPerDay = MedicineItemList.qtyPerDay || 0;
             this.totalQty = MedicineItemList.totalQty || 0;
             this.instruction = MedicineItemList.instruction || '';
+            this.routeId = MedicineItemList.routeId || 0
+            this.methodId = MedicineItemList.methodId || 0
+            this.routeName = MedicineItemList.routeName || ''
+            this.methodName = MedicineItemList.methodName || ''
 
         }
     }

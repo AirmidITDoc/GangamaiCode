@@ -29,6 +29,12 @@
             .mdc-notched-outline__notch {
                 .mdc-floating-label {
                     top: 18px;
+                    font-size: 13px;
+                }
+
+                .mdc-floating-label--float-above {
+                    top: 18px;
+                    transform: translateY(-25px) scale(0.75) !important;
                 }
             }
 

@@ -29,12 +29,11 @@
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                                     <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
 
-                                        <div>
+                                        <!-- <div>
                                             <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                                                [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
-                                                [formGroup]="myformSearch"
-                                                [mode]="autocompleteModeunit"></airmid-dropdown>
-                                        </div>
+                                                (selectionChange)="ListView1($event)" [formGroup]="myformSearch"
+                                                [mode]="autocompleteModeunit" [readonly]="!isSuperAdmin"></airmid-dropdown>
+                                        </div> -->
 
                                         <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="35%">
                                             <mat-form-field appearance="outline" fxFlex>
@@ -301,7 +300,7 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <button mat-icon-button (click)="OnCancel(contact)" matTooltip="Cancel"
-                                    [disabled]="contact.isCompleted == true">
+                                        [disabled]="contact.isCompleted == true">
                                         <mat-icon color="warn">cancel</mat-icon>
                                     </button>
                                     <!-- [disabled]="contact.isCompleted == true"

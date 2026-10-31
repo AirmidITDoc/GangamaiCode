@@ -84,8 +84,60 @@
                                         formControlName="DoseId"
                                         #doseSelect
                                         name="DoseId"
-                                        (selectionChange)="onDoseSelectionChange($event); focusNextField($event, 'days')">
+                                        (selectionChange)="onDoseSelectionChange($event); focusNextField($event, 'route')">
                                         <mat-option *ngFor="let option of doseOptions"
+                                            [value]="option.value || option.Value">
+                                            {{ option.text || option.Text }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Route">
+                    <th mat-header-cell *matHeaderCellDef class="col-route">Route</th>
+                    <td mat-cell *matCellDef="let element" class="col-route">
+                        <ng-container *ngIf="!element.editable">
+                            <span class="cell-text">{{ element.RouteName || element.routeName }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.editable">
+                            <div class="edit-cell">
+                                <mat-form-field appearance="outline" class="inline-select" floatLabel="never">
+                                    <mat-select
+                                        placeholder="Select Route"
+                                        formControlName="RouteId"
+                                        #doseSelect
+                                        name="RouteId"
+                                        (selectionChange)="onRouteSelectionChange($event); focusNextField($event, 'method')">
+                                        <mat-option *ngFor="let option of routeOptions"
+                                            [value]="option.value || option.Value">
+                                            {{ option.text || option.Text }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Method">
+                    <th mat-header-cell *matHeaderCellDef class="col-route">Method</th>
+                    <td mat-cell *matCellDef="let element" class="col-route">
+                        <ng-container *ngIf="!element.editable">
+                            <span class="cell-text">{{ element.MethodName || element.methodName }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.editable">
+                            <div class="edit-cell">
+                                <mat-form-field appearance="outline" class="inline-select" floatLabel="never">
+                                    <mat-select
+                                        placeholder="Select Method"
+                                        formControlName="MethodId"
+                                        #doseSelect
+                                        name="MethodId"
+                                        (selectionChange)="onMethodSelectionChange($event); focusNextField($event, 'days')">
+                                        <mat-option *ngFor="let option of methodOptions"
                                             [value]="option.value || option.Value">
                                             {{ option.text || option.Text }}
                                         </mat-option>

@@ -924,12 +924,13 @@ export class InvestigationListComponent {
                 "fieldName": "CompanyId",
                 "fieldValue": String(this.ReceviedCompanyId),
                 "opType": "Equals"
-            },
-            {
-                "fieldName": "UnitId",
-                "fieldValue": String(this.ReceviedUnitId),
-                "opType": "Equals"
             }
+            // ,
+            // {
+            //     "fieldName": "UnitId",
+            //     "fieldValue": String(this.ReceviedUnitId),
+            //     "opType": "Equals"
+            // }
         );
 
         const data = {

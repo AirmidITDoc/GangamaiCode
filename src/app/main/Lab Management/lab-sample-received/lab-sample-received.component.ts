@@ -243,12 +243,13 @@ export class LabSampleReceivedComponent {
                 "fieldName": "CompanyId",
                 "fieldValue": String(this.vCompanyId),
                 "opType": "Equals"
-            },
-            {
-                "fieldName": "UnitId",
-                "fieldValue": String(this.UnitId),
-                "opType": "Equals"
             }
+            // ,
+            // {
+            //     "fieldName": "UnitId",
+            //     "fieldValue": String(this.UnitId),
+            //     "opType": "Equals"
+            // }
         );
 
         const data = {

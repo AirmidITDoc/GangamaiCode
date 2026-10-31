@@ -19,6 +19,14 @@ export interface MedicineItem {
     DoseId?: number;
     DoseName?: string;
     doseName?: string;
+    RouteName?: string;
+    RouteId?: number;
+    MethodName?: string;
+    MethodId?: number;
+    routeId?: number;
+    methodId?: number;
+    routeName?: string;
+    methodName?: string;
     GenericName?: string;
     genericName?: string;
     GenericId?: number;
@@ -56,6 +64,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     @Input() autocompleteModeItemGeneric: string = 'ItemGeneric';
     @Input() autocompleteModeDose: string = 'DoseMaster';
     @Input() autocompleteModeInstr: string = 'InstructionMaster';
+    @Input() autocompleteModeRoute: string = "Route";
+    @Input() autocompleteModeMethod: string = "Method";
 
     @Output() dataChanged = new EventEmitter<MedicineItem[]>();
 
@@ -65,6 +75,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         'DoseName',
         'Days',
         'totalQty',
+        'Route',
+        'Method',
         'Instruction',
         'Action'
     ];
@@ -75,6 +87,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     drugOptions$: Observable<any[]> = of([]);
     genericOptions: any[] = [];
     doseOptions: any[] = [];
+    routeOptions: any[] = [];
+    methodOptions: any[] = [];
     InstructionOptions: any[] = [];
     private destroy$ = new Subject<void>();
 
@@ -83,6 +97,10 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     private drugName: string = '';
     private doseId: number = 0;
     private doseName: string = '';
+    private RouteId: number = 0;
+    private RouteName: string = '';
+    private MethodId: number = 0;
+    private MethodName: string = '';
     private instructionId: number = 0;
     private instruction: string = '';
     private doseQtyPerDay: number = 0;
@@ -114,6 +132,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.medicineForm = this._formBuilder.group({
             ItemId: ['', [Validators.required]],
             DoseId: [0, [Validators.required]],
+            RouteId: [0],
+            MethodId: [0],
             Day: ['', [Validators.required, Validators.pattern('^[1-9]+[0-9]*$')]],
             ItemGenericNameId: [''],
             Instruction: ['', [Validators.maxLength(200)]]
@@ -202,11 +222,23 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         }
     }
 
+    onRouteSelected(row: any): void {
+        this.RouteName = row.text;
+        this.RouteId = row.value
+    }
+
+    onMethodSelected(row: any): void {
+        this.MethodName = row.text;
+        this.MethodId = row.value
+    }
+
     // Reset form
     onFormReset(): void {
         this.medicineForm.patchValue({
             ItemId: '',
             DoseId: '',
+            RouteId: '',
+            MethodId: '',
             Day: '',
             Instruction: ''
         });
@@ -214,6 +246,9 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.drugName = '';
         this.doseId = 0;
         this.doseName = '';
+        this.RouteName = '';
+        this.RouteId = 0;
+        this.MethodId = 0;
         this.vItemGenericNameId = 0;
         this.vItemGenericName = '';
         this.instruction = ''
@@ -273,6 +308,10 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         row.GenericName = this.vItemGenericName || '';
         row.GenericId = this.vItemGenericNameId || 0;
         row.DoseName = this.doseName || '';
+        row.RouteId = this.RouteId || 0;
+        row.RouteName = this.RouteName || '';
+        row.MethodId = this.MethodId || 0;
+        row.MethodName = this.MethodName || '';
         row.Days = days;
         row.QtyPerDay = this.doseQtyPerDay;
         row.totalQty = totalqty
@@ -308,7 +347,9 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             Instruction: Instruction, // (row.instructionId ?? '').toString() || row.instruction,
             // Instruction: row.instruction ?? row.Instruction ?? '',
             ItemGenericNameId: (row.GenericId ?? row.genericId ?? row.genericid ?? '').toString(),
-            DoseId: (row.DoseId ?? row.doseId ?? '').toString()
+            DoseId: (row.DoseId ?? row.doseId ?? '').toString(),
+            RouteId: (row.RouteId ?? row.routeId ?? '').toString(),
+            MethodId: (row.MethodId ?? row.methodId ?? '').toString()
         }, { emitEvent: false });
 
         // Set local values for editing 
@@ -322,6 +363,10 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.drugName = row.DrugName || row.drugName || '';
         this.instructionId = row.instructionId || 0
         this.doseName = row.DoseName || row.doseName || '';
+        this.RouteName = row.RouteName || row.routeName || '';
+        this.RouteId = row.RouteId || row.routeId || 0;
+        this.MethodName = row.MethodName || row.methodName || '';
+        this.MethodId = row.MethodId || row.methodId || 0;
         this.doseId = row.DoseId || row?.doseId || 0;
         this.vItemGenericNameId = row.GenericId || row.genericId || row.genericid || 0;
         this.vItemGenericName = row.GenericName || row.genericName || '';
@@ -362,6 +407,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.medicineForm.get('DoseId').reset('');
         this.medicineForm.get('Day').reset('');
         this.medicineForm.get('Instruction').reset('');
+        this.medicineForm.get('RouteId').reset('');
+        this.medicineForm.get('MethodId').reset('');
         this.vdoseName = '';
         this.drugId = 0;
         this.drugName = '';
@@ -369,6 +416,10 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.instruction = '';
         this.instructionId = 0;
         this.doseName = '';
+        this.RouteName = '';
+        this.RouteId = 0;
+        this.MethodId = 0;
+        this.MethodName = '';
         this.vItemGenericNameId = 0;
         this.vItemGenericName = '';
     }
@@ -427,6 +478,10 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
                 targetElement = editingRow.querySelector('mat-select[formcontrolname="ItemGenericNameId"]');
             } else if (fieldName === 'dose') {
                 targetElement = editingRow.querySelector('mat-select[formcontrolname="DoseId"]');
+            } else if (fieldName === 'route') {
+                targetElement = editingRow.querySelector('mat-select[formcontrolname="RouteId"]');
+            } else if (fieldName === 'method') {
+                targetElement = editingRow.querySelector('mat-select[formcontrolname="MethodId"]');
             }
 
             if (targetElement instanceof HTMLInputElement) {
@@ -504,6 +559,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             DrugName: '',
             GenericName: '',
             DoseName: '',
+            RouteName: '',
+            MethodName: '',
             Days: 0,
             instruction: '',
             editable: true
@@ -553,6 +610,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             itemId: drugId,
             ItemId: drugId,
             doseName: row.DoseName || row.doseName || '',
+            RouteName: row.RouteName || row.routeName || '',
+            MethodName: row.MethodName || row.methodName || '',
             doseDay: row.Days || row.days || this.vDay
         };
     }
@@ -615,6 +674,26 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         }
     }
 
+    onRouteSelectionChange(event: MatSelectChange): void {
+        const option = this.routeOptions.find(opt => opt.value === event.value || opt.Value === event.value);
+        if (option) {
+            this.onRouteSelected({
+                value: option.value ?? option.Value,
+                text: option.text ?? option.Text
+            });
+        }
+    }
+
+    onMethodSelectionChange(event: MatSelectChange): void {
+        const option = this.methodOptions.find(opt => opt.value === event.value || opt.Value === event.value);
+        if (option) {
+            this.onMethodSelected({
+                value: option.value ?? option.Value,
+                text: option.text ?? option.Text
+            });
+        }
+    }
+
     onInsetSelected(row: any): void {
         this.instructionId = row.value;
         this.instruction = row.text
@@ -659,6 +738,16 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(options => {
                 this.InstructionOptions = options || [];
+            });
+        this.fetchDropdownOptions(this.autocompleteModeRoute)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(options => {
+                this.routeOptions = options || [];
+            });
+        this.fetchDropdownOptions(this.autocompleteModeMethod)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(options => {
+                this.methodOptions = options || [];
             });
     }
 

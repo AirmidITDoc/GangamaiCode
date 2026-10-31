@@ -743,6 +743,8 @@ export class NewCasepaperComponent implements OnInit {
             drugAllergy: [element.drugAllergy ?? ''],
             allergyRemark: [element.allergyRemark ?? ''],
             prescDoctorId: [this.vPrscDoctorId || 0],
+            routeId:[element.RouteId ?? 0],
+            methodId:[element.MethodId ?? 0]
         });
     }
 

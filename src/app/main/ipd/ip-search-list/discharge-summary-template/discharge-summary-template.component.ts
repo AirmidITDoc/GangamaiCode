@@ -212,6 +212,8 @@ export class DischargeSummaryTemplateComponent {
             isEnglishOrIsMarathi: true,
             storeId: this.accountService.currentUserValue.user.storeId,
             createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            routeId:[item.RouteId ?? 0],
+            methodId:[item.MethodId ?? 0]
         });
     }
 

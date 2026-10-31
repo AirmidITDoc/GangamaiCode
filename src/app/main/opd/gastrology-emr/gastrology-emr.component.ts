@@ -536,7 +536,11 @@ export class GastrologyEmrComponent {
             allergy: [element.allergy ?? ''],
             bloodGroup: [element.bloodGroup ?? ''],
             historyOfIllness: [element.historyOfIllness ?? ''],
-            prescDoctorId: 0
+            drugAllergy: [element.drugAllergy ?? ''],
+            allergyRemark: [element.allergyRemark ?? ''],
+            prescDoctorId: 0,
+            routeId:[element.RouteId ?? 0],
+            methodId:[element.MethodId ?? 0]
         });
     }
 
