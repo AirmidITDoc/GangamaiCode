@@ -3,6 +3,7 @@ import { map, timer } from 'rxjs';
 import { QueueEntry } from '../queue.models';
 import { QueueService } from '../queue.service';
 import { FuseConfigService } from '@fuse/services/config.service';
+import { SignalRService } from 'app/core/services/signalr.service';
 
 @Component({ selector: 'app-queue-display', templateUrl: './queue-display.component.html', styleUrls: ['./queue-display.component.scss'] })
 export class QueueDisplayComponent implements OnInit {
@@ -11,7 +12,7 @@ export class QueueDisplayComponent implements OnInit {
     inRoom$ = [];// this.q.inRoom$;
     waiting$ = [];//this.q.waiting$.pipe(map(l => l.slice(0, 10)));
     waitingCount$ = [];// this.q.waiting$.pipe(map(l => l.length));
-    constructor(private q: QueueService, private _fuseConfigService: FuseConfigService) {
+    constructor(private q: QueueService, private signalRService: SignalRService, private _fuseConfigService: FuseConfigService) {
         this._fuseConfigService.config = {
             layout: {
                 navbar: {
@@ -32,6 +33,19 @@ export class QueueDisplayComponent implements OnInit {
     trackId(_: number, e: QueueEntry) { return e.visitId; }
     ngOnInit(): void {
         this.BindQueueData();
+        this.signalRService.addReceiveQueueListener((data, user) => {
+            debugger;
+            if (data == "CheckIn") {
+                var item = this.waiting$.find(x => x.visitId == user.VisitId);
+                if (item) {
+                    this.inRoom$.push(item);
+                    this.waiting$ = this.waiting$.filter(x => x.visitId != user.VisitId);
+                }
+                else {
+                    this.BindQueueData();
+                }
+            }
+        });
     }
     BindQueueData() {
         this.q.getQueueData(0, 10).subscribe((data) => {

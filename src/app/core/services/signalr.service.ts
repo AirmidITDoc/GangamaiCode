@@ -32,6 +32,11 @@ export class SignalRService {
             callback(data, JSON.parse(user));
         });
     }
+    public addReceiveQueueListener(callback: any): void {
+        this.hubConnection.on('ReceiveQueue', (data, user) => {
+            callback(data, JSON.parse(user));
+        });
+    }
 
     public sendMessage(user: string, message: string): void {
         this.hubConnection.invoke('SendMessage', user, message)
