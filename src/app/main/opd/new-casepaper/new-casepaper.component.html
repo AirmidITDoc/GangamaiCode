@@ -1,4 +1,4 @@
-<ng-template #ResultViewTab>
+ (keypress)="keyPressSafe($event)"<ng-template #ResultViewTab>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -376,7 +376,7 @@
                                                     <mat-form-field appearance="outline" fxFlex="20%">
                                                         <mat-label>ALLERGY </mat-label>
                                                         <input matInput formControlName="Allergies" id="allergyField"
-                                                            placeholder="Allergies" [maxLength]="50">
+                                                            placeholder="Allergies" [maxLength]="50" (keypress)="keyPressSafe($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">AL</span>
@@ -385,7 +385,7 @@
                                                      <mat-form-field appearance="outline" fxFlex="20%">
                                                         <mat-label>DRUG ALLERGY</mat-label>
                                                         <input matInput formControlName="drugAllergy" id="drugAllergyField"
-                                                            placeholder="Drug Allergy" >
+                                                            placeholder="Drug Allergy" (keypress)="keyPressSafe($event)" >
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">AL</span>
@@ -395,7 +395,7 @@
                                                      <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>ALLERGY REMARK</mat-label>
                                                         <input matInput formControlName="allergyRemark" id="allergyRemarkField"
-                                                            placeholder="Allergy Remark" >
+                                                            placeholder="Allergy Remark" (keypress)="keyPressSafe($event)">
                                                         <!-- <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">AL</span> -->
@@ -413,7 +413,7 @@
                                                                 <textarea matInput formControlName="historyOfIllness"
                                                                     placeholder="History of illness" cdkTextareaAutosize
                                                                     cdkAutosizeMinRows="1" cdkAutosizeMaxRows="6">
-</textarea>
+                                                                </textarea>
                                                             </mat-form-field>
 
 

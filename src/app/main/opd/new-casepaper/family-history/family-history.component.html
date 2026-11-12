@@ -54,7 +54,8 @@
                                     <!-- Member Name-->
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Member Name</mat-label>
-                                        <input matInput type="text" formControlName="memberName">
+                                        <input matInput type="text" formControlName="memberName"
+                                            (keypress)="keyPressSafe($event)">
                                     </mat-form-field>
 
                                     <!-- Gender -->
@@ -76,7 +77,8 @@
                                     <!-- Age -->
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Age</mat-label>
-                                        <input matInput type="text" formControlName="age">
+                                        <input matInput type="text" formControlName="age"
+                                        (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
 
                                     <!-- Clinical History -->
@@ -93,7 +95,8 @@
                                     <!-- Duration -->
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Duration</mat-label>
-                                        <input matInput type="text" formControlName="duration">
+                                        <input matInput type="text" formControlName="duration"
+                                            (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
 
                                     <!-- Add Button -->

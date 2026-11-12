@@ -167,7 +167,9 @@ export class AbhaRegistrationComponent {
         StateId: this.data.profile.stateCode,
       });
 
-      this.onChangedistirct(this.data.profile.districtCode)
+      if (this.data.profile.districtCode) {
+        this.onChangedistirct(this.data.profile.districtCode)
+      }
 
       const dob = this.data.profile.dob;
       let dobUP;
@@ -215,7 +217,7 @@ export class AbhaRegistrationComponent {
       console.log('Patient data from ABHA', this.data?.patient)
 
       this.regNo = this.data?.patient.regNo
-      this.RegID=this.data?.patient.regId
+      this.RegID = this.data?.patient.regId
 
       this.personalFormGroup.patchValue({
         RegId: this.data?.patient.regId,
@@ -224,7 +226,7 @@ export class AbhaRegistrationComponent {
         FirstName: this.data?.patient.firstName,
         MiddleName: this.data.patient.middleName,
         LastName: this.data.patient.lastName,
-        MobileNo: this.data.patient.mobileNo,
+        // MobileNo: this.data.patient.mobileNo, //////////// need to check 
         Address: this.data.patient.address,
         PinNo: this.data.patient.pinNo,
         CityId: this.data.patient.cityId,
@@ -233,6 +235,10 @@ export class AbhaRegistrationComponent {
         // districtId: this.data.profile.districtCode,
         // StateId: this.data.profile.stateCode,
       });
+
+      if(!this.data.profile){
+        this.personalFormGroup.get('MobileNo').setValue(this.data.patient.mobileNo)
+      }
 
       setTimeout(() => {
         this.registerObj.dateofBirth = this.data.patient.dateofBirth;

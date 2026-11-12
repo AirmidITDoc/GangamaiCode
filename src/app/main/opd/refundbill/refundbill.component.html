@@ -248,7 +248,8 @@
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Remark</mat-label>
-                  <input matInput  formControlName="Remark" name="Remark" />
+                  <input matInput  formControlName="Remark" name="Remark" 
+                  (keypress)="keyPressSafe($event)"/>
                 </mat-form-field>
                 <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                 <div class="footer-navigation-container">

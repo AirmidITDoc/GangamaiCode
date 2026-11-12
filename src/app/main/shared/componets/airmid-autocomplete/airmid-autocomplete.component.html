@@ -2,8 +2,9 @@
     <mat-label>{{label}}</mat-label>
     <input matInput [placeholder]="placeholderText" [formControl]="formGroup.controls[formControlName]"
         [disabled]="disabled" [formControlName]="formControlName" onlyNumber [matAutocomplete]="auto"
-        (input)="onSearchData($event.target.value)" [formGroup]="formGroup" appFocusNext="Focusstatus"
-        [name]="formControlName">
+        [formGroup]="formGroup" appFocusNext="Focusstatus"
+        (input)="onInput($event)" [name]="formControlName">
+        <!-- (input)="onSearchData($event.target.value)"  -->
 
     <span matSuffix style="display: flex;margin-right:  10px;">
         <mat-icon class="mat-icon-close" (click)="clearSelection($event)">close</mat-icon>

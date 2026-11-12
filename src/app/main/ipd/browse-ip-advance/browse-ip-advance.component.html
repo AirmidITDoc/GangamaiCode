@@ -142,7 +142,7 @@
                                     <mat-label>Advance No</mat-label>
                                     <input matInput placeholder="Search Advance No" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="PBillNo"
-                                        (input)="onChangeAdvance()" />
+                                        (input)="onChangeAdvance()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterAdvance('PBillNo')">
                                         <mat-icon>close</mat-icon>
@@ -163,7 +163,7 @@
                                     <mat-label>UHID</mat-label>
                                     <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="RegNo"
-                                        (input)="onChangeAdvance()" />
+                                        (input)="onChangeAdvance()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterAdvance('RegNo')">
                                         <mat-icon>close</mat-icon>
@@ -174,7 +174,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="FirstName"
-                                        (input)="onChangeAdvance()" />
+                                        (input)="onChangeAdvance()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterAdvance('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -185,7 +185,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="LastName"
-                                        (input)="onChangeAdvance()" />
+                                        (input)="onChangeAdvance()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterAdvance('LastName')">
                                         <mat-icon>close</mat-icon>
@@ -325,7 +325,7 @@
                                     <mat-label>UHID</mat-label>
                                     <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund" formControlName="RegNo"
-                                        (input)="onChangeAdvanceOfRefund()" />
+                                        (input)="onChangeAdvanceOfRefund()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterAdvanceOfRefund('RegNo')">
                                         <mat-icon>close</mat-icon>
@@ -336,7 +336,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund"
-                                        formControlName="FirstName" (input)="onChangeAdvanceOfRefund()" />
+                                        formControlName="FirstName" (input)="onChangeAdvanceOfRefund()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterAdvanceOfRefund('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -347,7 +347,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund" formControlName="LastName"
-                                        (input)="onChangeAdvanceOfRefund()" />
+                                        (input)="onChangeAdvanceOfRefund()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterAdvanceOfRefund('LastName')">
                                         <mat-icon>close</mat-icon>

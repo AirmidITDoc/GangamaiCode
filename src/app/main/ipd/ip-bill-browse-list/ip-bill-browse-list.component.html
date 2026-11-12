@@ -200,7 +200,7 @@
                                     <mat-label>PBillNo</mat-label>
                                     <input matInput placeholder="Search PBillNo" autocomplete="off"
                                         [formGroup]="myFilterform" formControlName="PBillNo"
-                                        (input)="onChangeIPBill()" />
+                                        (input)="onChangeIPBill()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPbill('PBillNo')">
                                         <mat-icon>close</mat-icon>
@@ -210,7 +210,8 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>UHID</mat-label>
                                     <input matInput placeholder="Search UHID" autocomplete="off"
-                                        [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeIPBill()" />
+                                        [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeIPBill()" 
+                                        (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPbill('RegNo')">
                                         <mat-icon>close</mat-icon>
@@ -221,7 +222,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="myFilterform" formControlName="FirstName"
-                                        (input)="onChangeIPBill()" />
+                                        (input)="onChangeIPBill()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPbill('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -232,7 +233,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="myFilterform" formControlName="LastName"
-                                        (input)="onChangeIPBill()" />
+                                        (input)="onChangeIPBill()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPbill('LastName')">
                                         <mat-icon>close</mat-icon>
@@ -373,7 +374,7 @@
                                     <mat-label>UHID</mat-label>
                                     <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowsePayment" formControlName="RegNo"
-                                        (input)="onChangeIPPayment()" />
+                                        (input)="onChangeIPPayment()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPpayment('RegNo')">
                                         <mat-icon>close</mat-icon>
@@ -384,7 +385,7 @@
                                     <mat-label>Receipt No</mat-label>
                                     <input matInput placeholder="Search Receipt No" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowsePayment" formControlName="ReceiptNo"
-                                        (input)="onChangeIPPayment()" />
+                                        (input)="onChangeIPPayment()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPpayment('ReceiptNo')">
                                         <mat-icon>close</mat-icon>
@@ -395,7 +396,7 @@
                                     <mat-label>PBillNo</mat-label>
                                     <input matInput placeholder="Search PBillNo" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowsePayment" formControlName="PBillNo"
-                                        (input)="onChangeIPPayment()" />
+                                        (input)="onChangeIPPayment()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPpayment('PBillNo')">
                                         <mat-icon>close</mat-icon>
@@ -406,7 +407,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowsePayment" formControlName="FirstName"
-                                        (input)="onChangeIPPayment()" />
+                                        (input)="onChangeIPPayment()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPpayment('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -417,7 +418,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowsePayment" formControlName="LastName"
-                                        (input)="onChangeIPPayment()" />
+                                        (input)="onChangeIPPayment()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPpayment('LastName')">
                                         <mat-icon>close</mat-icon>
@@ -521,7 +522,7 @@
                                     <mat-label>UHID</mat-label>
                                     <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowseRefund" formControlName="RegNo"
-                                        (input)="onChangeIPRefund()" />
+                                        (input)="onChangeIPRefund()" (keypress)="keyPressAlphanumeric($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPRefund('RegNo')">
                                         <mat-icon>close</mat-icon>
@@ -532,7 +533,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowseRefund" formControlName="FirstName"
-                                        (input)="onChangeIPRefund()" />
+                                        (input)="onChangeIPRefund()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPRefund('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -543,7 +544,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="myFilterFormIPBrowseRefund" formControlName="LastName"
-                                        (input)="onChangeIPRefund()" />
+                                        (input)="onChangeIPRefund()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterIPRefund('LastName')">
                                         <mat-icon>close</mat-icon>

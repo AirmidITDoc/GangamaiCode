@@ -183,7 +183,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>UHID No</mat-label>
                             <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="RegNo" (input)="onChangeFirst($event)" />
+                                formControlName="RegNo" (input)="onChangeFirst($event)" (keypress)="keyPressAlphanumeric($event)"/>
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                                 <mat-icon>close</mat-icon>
                             </button>
@@ -193,7 +193,7 @@
                             <mat-label>First Name</mat-label>
                             <input matInput placeholder="Search First Name" autocomplete="off"
                                 [formGroup]="myFilterform" formControlName="FirstName"
-                                (input)="onChangeFirst($event)" />
+                                (input)="onChangeFirst($event)" (keypress)="keyPressSafe($event)" />
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                                 <mat-icon>close</mat-icon>
                             </button>
@@ -203,7 +203,7 @@
                             <mat-label>Middle Name</mat-label>
                             <input matInput placeholder="Search Middle Name" autocomplete="off"
                                 [formGroup]="myFilterform" formControlName="MiddleName"
-                                (input)="onChangeFirst($event)" />
+                                (input)="onChangeFirst($event)" (keypress)="keyPressSafe($event)" />
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MiddleName')">
                                 <mat-icon>close</mat-icon>
                             </button>
@@ -213,7 +213,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Last Name</mat-label>
                             <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="LastName" (input)="onChangeFirst($event)" />
+                                formControlName="LastName" (input)="onChangeFirst($event)" (keypress)="keyPressSafe($event)" />
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                                 <mat-icon>close</mat-icon>
                             </button>
@@ -228,7 +228,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>IPDNo</mat-label>
                             <input matInput placeholder="Search IPDNo" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="IPDNo" (input)="onChangeFirst($event)" />
+                                formControlName="IPDNo" (input)="onChangeFirst($event)" (keypress)="keyPressAlphanumeric($event)"/>
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('IPDNo')">
                                 <mat-icon>close</mat-icon>
                             </button>

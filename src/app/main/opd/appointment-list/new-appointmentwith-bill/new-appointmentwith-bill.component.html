@@ -222,7 +222,7 @@
                                                                             [value]="registerObj.firstName"
                                                                             [formGroup]="myForm"
                                                                             [validations]="getValidationMessages().firstName"
-                                                                            [maxLength]="100"
+                                                                            [maxLength]="100" restrictTo="text"
                                                                             (valueChange)="handleInputChangeDebounced('FirstName')"></airmid-textbox>
                                                                     </div>
 
@@ -232,7 +232,7 @@
                                                                             [value]="registerObj.middleName"
                                                                             [formGroup]="myForm"
                                                                             [validations]="getValidationMessages().middleName"
-                                                                            [maxLength]="100"
+                                                                            [maxLength]="100" restrictTo="text"
                                                                             (valueChange)="handleInputChangeDebounced('middleName')"></airmid-textbox>
                                                                     </div>
 
@@ -242,7 +242,7 @@
                                                                             [value]="registerObj.lastName"
                                                                             [formGroup]="myForm"
                                                                             [validations]="getValidationMessages().lastName"
-                                                                            [maxLength]="100"
+                                                                            [maxLength]="100" restrictTo="text"
                                                                             (valueChange)="handleInputChangeDebounced('LastName')"></airmid-textbox>
                                                                     </div>
 
@@ -261,7 +261,7 @@
                                                                         <airmid-textbox label="Address"
                                                                             formControlName="address" [maxLength]="200"
                                                                             [value]="registerObj.address"
-                                                                            [formGroup]="myForm"
+                                                                            [formGroup]="myForm" restrictTo="address"
                                                                             [validations]="getValidationMessages().address"></airmid-textbox>
                                                                     </div>
 
@@ -270,7 +270,7 @@
                                                                         <airmid-textbox label="National ID"
                                                                             formControlName="aadharCardNo"
                                                                             [value]="registerObj.aadharCardNo ?? ''"
-                                                                            [formGroup]="myForm" [maxLength]="12"
+                                                                            [formGroup]="myForm" [maxLength]="12" restrictTo="number"
                                                                             [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
                                                                     </div>
                                                                     <input type="hidden" name="StateId"
@@ -339,7 +339,7 @@
 
                                                             <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                 <airmid-textbox label="Abha Number"
-                                                                    formControlName="abhaNumber"
+                                                                    formControlName="abhaNumber" restrictTo="number"
                                                                     [formGroup]="abhaForm"></airmid-textbox>
                                                             </div>
                                                             <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

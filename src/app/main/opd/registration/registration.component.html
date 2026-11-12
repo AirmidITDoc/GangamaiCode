@@ -90,7 +90,8 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="FirstName" (input)="onChangeFirst()" />
+                            formControlName="FirstName" (input)="onChangeFirst()"
+                            (keypress)="keyPressSafe($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -100,7 +101,8 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName" (input)="onChangeFirst()" />
+                            formControlName="LastName" (input)="onChangeFirst()"
+                            (keypress)="keyPressSafe($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>

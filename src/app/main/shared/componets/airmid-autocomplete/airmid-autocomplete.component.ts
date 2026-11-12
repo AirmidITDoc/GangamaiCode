@@ -163,4 +163,17 @@ export class AirmidAutoCompleteComponent extends BaseFormControlComponent implem
         }
         this.onClearSelection.emit();
     }
+
+    onInput(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const clean = input.value
+            .replace(/[^a-zA-Z0-9\s@_\-()\[\]]/g, '')      // only @ _ - ( ) [ ] allowed
+            .replace(/select|delete|clear|update|insert/gi, '');  // block query words
+
+        if (clean !== input.value) {
+            input.value = clean;
+            this.formGroup.controls[this.formControlName].setValue(clean);
+        }
+        this.onSearchData(clean);
+    }
 }

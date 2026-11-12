@@ -1,14 +1,77 @@
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self } from "@angular/core";
 import {
+    AbstractControl,
     ControlValueAccessor,
     FormControl,
     FormGroup,
-    NgControl
+    NgControl,
+    ValidationErrors,
+    ValidatorFn
 } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { BaseFormControlComponent } from "../base-form-control-component";
+
+// // whole-word match, so "selection" or "updated" are still fine
+// const QUERY_WORDS = /\b(select|delete|clear|update)\b/i;
+
+// // letters, digits, spaces and only @ _ - ( ) [ ]
+// const ALLOWED_CHARS = /^[A-Za-z0-9\s@_\-()\[\]]*$/;
+
+// ---------- safe text helpers (kept in this file) ----------
+type RestrictTo = 'any' | 'number' | 'text' | 'address';
+
+// whole-word match, so "selection" or "updated" are still fine
+const QUERY_WORDS = /\b(select|delete|clear|update|insert)\b/i;
+
+function hasMixedBrackets(text: string): boolean {
+    return /[()]/.test(text) && /[\[\]]/.test(text);
+}
+
+// characters allowed for each mode (used inside [...])
+function allowedClass(mode: RestrictTo, allowDecimal: boolean): string {
+    switch (mode) {
+        case 'number': return allowDecimal ? '0-9.' : '0-9';
+        case 'text': return 'A-Za-z\\s@_\\-().\\[\\]';
+        case 'address': return "A-Za-z0-9\\s,./\\-#()&'@_:";
+        default: return 'A-Za-z0-9\\s@_\\-().\\[\\]';
+    }
+}
+
+function charPatterns(mode: RestrictTo, allowDecimal: boolean) {
+    const p = allowedClass(mode, allowDecimal);
+    return {
+        full: new RegExp(`^[${p}]*$`),     // whole value is valid
+        single: new RegExp(`^[${p}]$`),    // one typed key is valid
+        strip: new RegExp(`[^${p}]`, 'g')  // remove invalid characters
+    };
+}
+
+function safeTextValidator(mode: RestrictTo = 'any', allowDecimal = false): ValidatorFn {
+    const { full } = charPatterns(mode, allowDecimal);
+
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        if (value === null || value === undefined || value === '') return null;
+
+        const text = String(value);
+        const errors: ValidationErrors = {};
+
+        if (!full.test(text)) errors['invalidChars'] = true;
+        if (mode === 'number' && (text.match(/\./g) || []).length > 1) errors['invalidChars'] = true;
+
+        // query words and bracket rule only matter when letters/brackets are allowed
+        if (mode !== 'number') {
+            if (QUERY_WORDS.test(text)) errors['queryWord'] = true;
+            if (mode !== 'address' && hasMixedBrackets(text)) errors['mixedBrackets'] = true;
+        }
+
+        return Object.keys(errors).length ? errors : null;
+    };
+}
+// ------------------------------------------------------------
+
 
 @Component({
     selector: "airmid-textbox",
@@ -40,6 +103,8 @@ export class AirmidTextboxComponent extends BaseFormControlComponent implements 
     private _placeholder: string = '';
     private _required: boolean = false;
     private destroy: Subject<void> = new Subject();
+    private lastValid: string = '';
+    private clearTimer: any;
 
     control = new FormControl();
     stateChanges: Subject<void> = new Subject();
@@ -59,6 +124,10 @@ export class AirmidTextboxComponent extends BaseFormControlComponent implements 
     @Input() min: number = -Infinity;
     @Input() max: number = 99999;
 
+    // safe text options
+    @Input() safeText: boolean = true;          // on everywhere by default
+    @Input() restrictTo: RestrictTo = 'any';    // 'any' | 'number' | 'text'
+    @Input() allowDecimal: boolean = false;     // only with restrictTo="number"
 
     @Input()
     get disabled(): boolean {
@@ -131,9 +200,26 @@ export class AirmidTextboxComponent extends BaseFormControlComponent implements 
         }
 
     }
+
+    resetBlockedPublic(): void { this.resetBlocked(); }
+
+    // only plain text boxes are checked (number, email, password, date etc. are skipped)
+    private get applySafeText(): boolean {
+        return this.safeText && this.type === 'text';
+    }
+
+    get invalidCharsMessage(): string {
+        if (this.restrictTo === 'number') {
+            return this.allowDecimal ? 'Numbers and one . only' : 'Numbers only';
+        }
+        if (this.restrictTo === 'text') return 'Letters and @ _ - . ( ) [ ] only';
+        if (this.restrictTo === 'address') return "Letters, numbers and , . / - # ( ) & ' : @ _ only";
+        return 'Letters, numbers and @ _ - . ( ) [ ] only';
+    }
+
     constructor(
         @Optional() @Self() public ngControl: NgControl | null,
-         el: ElementRef
+        el: ElementRef
     ) {
         super(el);
         if (ngControl) {
@@ -145,6 +231,7 @@ export class AirmidTextboxComponent extends BaseFormControlComponent implements 
         this.destroy.next();
         this.destroy.complete();
         this.stateChanges.complete();
+        clearTimeout(this.clearTimer);
     }
 
     onTouched(): void { }
@@ -177,14 +264,80 @@ export class AirmidTextboxComponent extends BaseFormControlComponent implements 
         // }
     }
 
+    // mobile keypad type
+    get inputMode(): string | null {
+        if (!this.applySafeText || this.restrictTo !== 'number') return null;
+        return this.allowDecimal ? 'decimal' : 'numeric';
+    }
+
     writeValue(value: string | null): void {
         this.control.setValue(value);
         this.value = value;
     }
+    // onValueChange(event: Event): void {
+    //     const input = event.target as HTMLInputElement;
+    //     this.valueChange.emit(input.value);
+    // }
     onValueChange(event: Event): void {
         const input = event.target as HTMLInputElement;
+
+        if (this.applySafeText) {
+            this.resetBlocked();
+            const { strip } = charPatterns(this.restrictTo, this.allowDecimal);
+            let v = input.value.replace(strip, '');
+            let blockedKey = '';
+
+            if (this.restrictTo === 'number') {
+                // keep only the first decimal point (e.g. paste "1.2.3" -> "1.23")
+                const [first, ...rest] = v.split('.');
+                v = rest.length ? first + '.' + rest.join('') : v;
+            } else if (QUERY_WORDS.test(v)) {
+                blockedKey = 'queryWord';
+                v = this.lastValid;
+            } else if (this.restrictTo !== 'address' && hasMixedBrackets(v)) {
+                blockedKey = 'mixedBrackets';
+                v = this.lastValid;
+            }
+
+            if (v !== input.value) {
+                input.value = v;
+                this.formGroup?.get(this.formControlName)?.setValue(v);
+            }
+            this.lastValid = v;
+
+            // must come after setValue, because setValue re-runs validation and clears errors
+            if (blockedKey) this.showBlocked(blockedKey);
+        }
+
         this.valueChange.emit(input.value);
     }
+    // onValueChange(event: Event): void {
+    //     const input = event.target as HTMLInputElement;
+
+    //     if (this.applySafeText) {
+    //         const { strip } = charPatterns(this.restrictTo, this.allowDecimal);
+    //         let v = input.value.replace(strip, '');
+
+    //         if (this.restrictTo === 'number') {
+    //             // keep only the first decimal point (e.g. paste "1.2.3" -> "1.23")
+    //             const [first, ...rest] = v.split('.');
+    //             v = rest.length ? first + '.' + rest.join('') : v;
+    //         } else if (QUERY_WORDS.test(v) || hasMixedBrackets(v)) {
+    //             // query word completed or both bracket types present -> go back
+    //             v = this.lastValid;
+    //         }
+
+    //         if (v !== input.value) {
+    //             input.value = v;
+    //             this.formGroup?.get(this.formControlName)?.setValue(v);
+    //         }
+    //         this.lastValid = v;
+    //     }
+
+    //     this.valueChange.emit(input.value);
+    // }
+
+
     onKeyUp(event: KeyboardEvent): void {
         this.keyup.emit(event);
     }
@@ -208,14 +361,90 @@ export class AirmidTextboxComponent extends BaseFormControlComponent implements 
     }
 
     ngOnInit() {
-        //this.control.setValidators(this.formGroup.get(formControlName))
-        // if (this.required) {
-        //     this.control.setValidators([
-        //         Validators.required,
-        //         Validators.maxLength(this.maxLength),
-        //     ]);
-        // } else {
-        //     this.control.setValidators([Validators.maxLength(this.maxLength)]);
-        // }
+        const ctrl = this.formGroup?.get(this.formControlName);
+        if (this.applySafeText && ctrl) {
+            ctrl.addValidators(safeTextValidator(this.restrictTo, this.allowDecimal));
+            ctrl.updateValueAndValidity({ emitEvent: false });
+        }
     }
+
+    // re-runs the real validators, which removes any manual "blocked" error
+    private resetBlocked(): void {
+        clearTimeout(this.clearTimer);
+        const ctrl = this.formGroup?.get(this.formControlName);
+        if (ctrl && ctrl.errors && (ctrl.errors['invalidChars'] || ctrl.errors['queryWord'] || ctrl.errors['mixedBrackets'])) {
+            ctrl.updateValueAndValidity({ emitEvent: false });
+        }
+
+        clearTimeout(this.clearTimer);
+        this.clearTimer = setTimeout(() => ctrl.updateValueAndValidity({ emitEvent: false }), 1500);
+    }
+
+    // shows the red message when a key/word was blocked
+    private showBlocked(errorKey: string): void {
+        const ctrl = this.formGroup?.get(this.formControlName);
+        if (!ctrl) return;
+        ctrl.markAsTouched();
+        ctrl.setErrors({ ...(ctrl.errors || {}), [errorKey]: true });
+    }
+
+    // blocks disallowed characters while typing
+    onKeyPress(event: KeyboardEvent): void {
+        if (!this.applySafeText || event.key.length !== 1) return; // ignore Enter, Backspace, etc.
+
+        this.resetBlocked();
+
+        const { single } = charPatterns(this.restrictTo, this.allowDecimal);
+        if (!single.test(event.key)) {
+            event.preventDefault();
+            this.showBlocked('invalidChars');
+            return;
+        }
+
+        const current = (event.target as HTMLInputElement).value || '';
+
+        if (this.restrictTo === 'number') {
+            // only one decimal point
+            if (event.key === '.' && current.includes('.')) {
+                event.preventDefault();
+                this.showBlocked('invalidChars');
+            }
+            return;
+        }
+
+        if (this.restrictTo === 'address') return;
+
+        // either ( ) or [ ], not both
+        const hasRound = /[()]/.test(current);
+        const hasSquare = /[\[\]]/.test(current);
+        if (hasRound && /[\[\]]/.test(event.key)) event.preventDefault();
+        if (hasSquare && /[()]/.test(event.key)) event.preventDefault();
+    }
+
+    // ngOnInit() {
+    //     //this.control.setValidators(this.formGroup.get(formControlName))
+    //     // if (this.required) {
+    //     //     this.control.setValidators([
+    //     //         Validators.required,
+    //     //         Validators.maxLength(this.maxLength),
+    //     //     ]);
+    //     // } else {
+    //     //     this.control.setValidators([Validators.maxLength(this.maxLength)]);
+    //     // }
+    // }
 }
+
+// export function safeTextValidator(): ValidatorFn {
+//     return (control: AbstractControl): ValidationErrors | null => {
+//         const value = control.value;
+//         if (value === null || value === undefined || value === '') return null;
+
+//         const text = String(value);
+//         const errors: ValidationErrors = {};
+
+//         if (!ALLOWED_CHARS.test(text)) errors['invalidChars'] = true;
+//         if (QUERY_WORDS.test(text)) errors['queryWord'] = true;
+
+//         return Object.keys(errors).length ? errors : null;
+//     };
+// }

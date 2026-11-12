@@ -65,7 +65,7 @@
                             <mat-label>First Name</mat-label>
                             <input matInput placeholder="Search First Name" autocomplete="off"
                                 [formGroup]="_PrescriptionService.mysearchform" formControlName="fName"
-                                (input)="onChangeFirst()" />
+                                (input)="onChangeFirst()" (keypress)="keyPressSafe($event)"/>
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('fName')">
                                 <mat-icon>close</mat-icon>
                             </button>
@@ -77,7 +77,7 @@
                             <mat-label>Last Name</mat-label>
                             <input matInput placeholder="Search Last Name" autocomplete="off"
                                 [formGroup]="_PrescriptionService.mysearchform" formControlName="lName"
-                                (input)="onChangeFirst()" />
+                                (input)="onChangeFirst()" (keypress)="keyPressSafe($event)"/>
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('lName')">
                                 <mat-icon>close</mat-icon>
                             </button>

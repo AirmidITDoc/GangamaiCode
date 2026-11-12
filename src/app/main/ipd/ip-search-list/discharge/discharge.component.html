@@ -86,7 +86,8 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Comments</mat-label>
-                                        <input name="Comments" placeholder="Comments" matInput [(ngModel)]="vComments">
+                                        <input name="Comments" placeholder="Comments" matInput [(ngModel)]="vComments"
+                                        (keypress)="keyPressSafe($event)">
                                     </mat-form-field>
 
                                 </div>

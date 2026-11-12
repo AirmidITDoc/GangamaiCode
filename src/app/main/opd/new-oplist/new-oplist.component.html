@@ -204,7 +204,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="myFilterbillform" formControlName="FirstName"
-                                        (input)="onChangeOPBill()" />
+                                        (input)="onChangeOPBill()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPbill('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -215,7 +215,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="myFilterbillform" formControlName="LastName"
-                                        (input)="onChangeOPBill()" />
+                                        (input)="onChangeOPBill()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPbill('LastName')">
                                         <mat-icon>close</mat-icon>
@@ -387,7 +387,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="myFilterpayform" formControlName="FirstName"
-                                        (input)="onChangeOPPayment()" />
+                                        (input)="onChangeOPPayment()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPpayment('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -398,7 +398,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="myFilterpayform" formControlName="LastName"
-                                        (input)="onChangeOPPayment()" />
+                                        (input)="onChangeOPPayment()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPpayment('LastName')">
                                         <mat-icon>close</mat-icon>
@@ -563,7 +563,7 @@
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="myFilterrefundform" formControlName="FirstName"
-                                        (input)="onChangeOPRefund()" />
+                                        (input)="onChangeOPRefund()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPRefund('FirstName')">
                                         <mat-icon>close</mat-icon>
@@ -575,7 +575,7 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [formGroup]="myFilterrefundform" formControlName="LastName"
-                                        (input)="onChangeOPRefund()" />
+                                        (input)="onChangeOPRefund()" (keypress)="keyPressSafe($event)"/>
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPRefund('LastName')">
                                         <mat-icon>close</mat-icon>

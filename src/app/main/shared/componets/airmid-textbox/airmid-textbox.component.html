@@ -1,10 +1,83 @@
-<mat-form-field [appearance]="appearance" [style.width.%]="width">
+<!-- 1st textbox -->
+<!-- <mat-form-field [appearance]="appearance" [style.width.%]="width">
     <mat-label>{{ label }}</mat-label>
-    <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched()" [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly" (input)="onValueChange($event)" (change)="onChange($event)" [name]="formControlName" [formGroup]="formGroup" appFocusNext [min]="min" [max]="max" />
+    <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched()"
+     [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly" 
+     (input)="onValueChange($event)" (change)="onChange($event)" [name]="formControlName" 
+     [formGroup]="formGroup" appFocusNext [min]="min" [max]="max" />
     
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">
             {{ error }}
         </ng-container>
+    </mat-error>
+</mat-form-field> -->
+
+<!-- 2nd text box tried -->
+
+<!-- <mat-form-field [appearance]="appearance" [style.width.%]="width">
+    <mat-label>{{ label }}</mat-label>
+    <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched()"
+        [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly"
+        (input)="onValueChange($event)" (change)="onChange($event)" [name]="formControlName" [formGroup]="formGroup"
+        appFocusNext [min]="min" [max]="max" (keypress)="onKeyPress($event)" />
+
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('invalidChars')">
+        Only letters, numbers and @ _ - ( ) [ ] are allowed
+    </mat-error>
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('queryWord')">
+        Words like select, delete, clear, update are not allowed
+    </mat-error>
+</mat-form-field> -->
+
+<!-- 3rd text box -->
+<!-- <mat-form-field [appearance]="appearance" [style.width.%]="width">
+    <mat-label>{{ label }}</mat-label>
+    <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched()"
+     [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly" 
+     (input)="onValueChange($event)" (change)="onChange($event)" [name]="formControlName" 
+     [formGroup]="formGroup" appFocusNext [min]="min" [max]="max"
+     (keypress)="onKeyPress($event)" />
+
+    <mat-error>
+        <ng-container *ngFor="let error of activeErrors">
+            {{ error }}
+        </ng-container>
+    </mat-error>
+
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('invalidChars')">
+        {{ invalidCharsMessage }}
+    </mat-error>
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('queryWord')">
+        Words like select, delete, clear, update are not allowed
+    </mat-error>
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('mixedBrackets')">
+        Use either ( ) or [ ], not both
+    </mat-error>
+</mat-form-field> -->
+
+<!-- 4th text box -->
+ <mat-form-field [appearance]="appearance" [style.width.%]="width">
+    <mat-label>{{ label }}</mat-label>
+    <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched(); resetBlockedPublic()"
+     [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly" 
+     (input)="onValueChange($event)" (change)="onChange($event)" [name]="formControlName" 
+     [formGroup]="formGroup" appFocusNext [min]="min" [max]="max"
+     (keypress)="onKeyPress($event)" [attr.inputmode]="inputMode" />
+
+    <mat-error>
+        <ng-container *ngFor="let error of activeErrors">
+            {{ error }}
+        </ng-container>
+    </mat-error>
+
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('invalidChars')">
+        {{ invalidCharsMessage }}
+    </mat-error>
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('queryWord')">
+        select, delete, clear, update are not allowed
+    </mat-error>
+    <mat-error *ngIf="formGroup?.get(formControlName)?.hasError('mixedBrackets')">
+        Use either ( ) or [ ], not both
     </mat-error>
 </mat-form-field>

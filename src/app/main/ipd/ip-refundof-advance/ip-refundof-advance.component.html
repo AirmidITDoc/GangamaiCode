@@ -286,7 +286,7 @@
     
                     <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Reason Of Refund Of Advacne" formControlName="remark"
-                            [formGroup]="RefundOfAdvanceFormGroup" [maxLength]="50">
+                            [formGroup]="RefundOfAdvanceFormGroup" restrictTo="address" [maxLength]="50">
                         </airmid-textbox>
                     </div>
                 </div>  

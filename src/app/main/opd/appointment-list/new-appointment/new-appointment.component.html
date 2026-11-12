@@ -134,6 +134,7 @@
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="First Name" formControlName="FirstName"
+                                restrictTo="text"
                                   [value]="registerObj.firstName" [formGroup]="personalFormGroup"
                                   [validations]="getValidationMessages().firstName" [maxLength]="100"
                                   (valueChange)="handleInputChangeDebounced('FirstName')"></airmid-textbox>
@@ -141,6 +142,7 @@
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                                restrictTo="text"
                                   [value]="registerObj.middleName" [formGroup]="personalFormGroup"
                                   [validations]="getValidationMessages().middleName" [maxLength]="100"
                                   (valueChange)="handleInputChangeDebounced('MiddleName')"></airmid-textbox>
@@ -148,6 +150,7 @@
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Last Name" formControlName="LastName"
+                                restrictTo="text"
                                   [value]="registerObj.lastName" [formGroup]="personalFormGroup"
                                   [validations]="getValidationMessages().lastName" [maxLength]="100"
                                   (valueChange)="handleInputChangeDebounced('LastName')"></airmid-textbox>
@@ -183,7 +186,7 @@
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Address" formControlName="Address" [maxLength]="200"
                                   [value]="registerObj.address" [formGroup]="personalFormGroup"
-                                  [validations]="getValidationMessages().address"></airmid-textbox>
+                                  [validations]="getValidationMessages().address" restrictTo="address"></airmid-textbox>
                               </div>
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -231,6 +234,7 @@
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="National ID" formControlName="aadharCardNo"
+                                restrictTo="number"
                                   [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup"
                                   [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
                               </div>
@@ -253,7 +257,7 @@
                         <form [formGroup]="personalFormGroup" class="mat-form-field-100">
                           <div fxLayout="row wrap" fxLayoutGap="10px grid">
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                              <airmid-textbox label="Emergency Contact Person Name"
+                              <airmid-textbox label="Emergency Contact Person Name" restrictTo="text"
                                 formControlName="emgContactPersonName" [formGroup]="personalFormGroup" [maxLength]="50"
                                 [value]="registerObj.emgContactPersonName ?? ''"></airmid-textbox>
                             </div>
@@ -266,31 +270,31 @@
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="MobileNo" formControlName="emgMobileNo"
-                                [formGroup]="personalFormGroup" [maxLength]="10"
+                                [formGroup]="personalFormGroup" [maxLength]="10" restrictTo="number"
                                 [value]="registerObj.emgMobileNo ?? ''"></airmid-textbox>
                             </div>
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Landline" formControlName="emgLandlineNo"
-                                [formGroup]="personalFormGroup" [maxLength]="10"
+                                [formGroup]="personalFormGroup" [maxLength]="10" restrictTo="number"
                                 [value]="registerObj.emgLandlineNo ?? ''"></airmid-textbox>
                             </div>
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Address" formControlName="engAddress"
-                                [formGroup]="personalFormGroup" [maxLength]="100"
+                                [formGroup]="personalFormGroup" [maxLength]="100" restrictTo="address"
                                 [value]="registerObj.engAddress ?? ''"></airmid-textbox>
                             </div>
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Aadhaar No. / National ID" formControlName="emgAadharCardNo"
-                                [formGroup]="personalFormGroup" [maxLength]="12"
+                                [formGroup]="personalFormGroup" [maxLength]="12" restrictTo="number"
                                 [value]="registerObj.emgAadharCardNo ?? ''"></airmid-textbox>
                             </div>
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Driving Licence No." formControlName="emgDrivingLicenceNo"
-                                [formGroup]="personalFormGroup" [maxLength]="16"
+                                [formGroup]="personalFormGroup" [maxLength]="16" restrictTo="number"
                                 [validations]="getValidationMessages().emgDrivingLicenceNo"
                                 [value]="registerObj.emgDrivingLicenceNo ?? ''"></airmid-textbox>
                             </div>
@@ -304,7 +308,7 @@
                           <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Passport Number" formControlName="medTourismPassportNo"
-                                [formGroup]="personalFormGroup" [maxLength]="8"
+                                [formGroup]="personalFormGroup" [maxLength]="8" restrictTo="number"
                                 [validations]="getValidationMessages().medTourismPassportNo"
                                 [value]="registerObj.medTourismPassportNo ?? ''"></airmid-textbox>
                             </div>
@@ -332,7 +336,7 @@
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Nationality ID Number" formControlName="medTourismNationalityId"
-                                [formGroup]="personalFormGroup" [maxLength]="20"
+                                [formGroup]="personalFormGroup" [maxLength]="20" restrictTo="number"
                                 [validations]="getValidationMessages().medTourismNationalityId"
                                 [value]="registerObj.medTourismNationalityId ?? ''"></airmid-textbox>
                             </div>
@@ -362,13 +366,13 @@
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Residential Address" formControlName="medTourismResidentialAddress"
-                                [formGroup]="personalFormGroup" [maxLength]="100"
+                                [formGroup]="personalFormGroup" [maxLength]="100" restrictTo="address"
                                 [value]="registerObj.medTourismResidentialAddress ?? ''"></airmid-textbox>
                             </div>
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Office/Work Address" formControlName="medTourismOfficeWorkAddress"
-                                [formGroup]="personalFormGroup" [maxLength]="100"
+                                [formGroup]="personalFormGroup" [maxLength]="100" restrictTo="address"
                                 [value]="registerObj.medTourismOfficeWorkAddress ?? ''"></airmid-textbox>
                             </div>
                           </div>
@@ -584,11 +588,13 @@
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-textbox label="Abha Number" formControlName="abhaNumber"
+                          restrictTo="numer"
                             [formGroup]="abhaForm"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-textbox label="Full Name" formControlName="fullName"
+                          restrictTo="text"
                             [formGroup]="abhaForm"></airmid-textbox>
                         </div>
 

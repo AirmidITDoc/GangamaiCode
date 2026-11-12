@@ -308,6 +308,15 @@ export class SampleRequestComponent implements OnInit {
     private route: ActivatedRoute
     private router: Router
 
+    keyPressAlphanumeric(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 }
 
 export class LabOrRadRequestList {

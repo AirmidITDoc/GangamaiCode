@@ -102,14 +102,14 @@
                     <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="First Name" formControlName="firstName"
-                                [value]="registerObj.firstName" [formGroup]="phoneappForm"
+                                [value]="registerObj.firstName" [formGroup]="phoneappForm" restrictTo="text"
                                 [validations]="getValidationMessages().firstName" [maxLength]="50">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Middle Name" formControlName="middleName"
-                                [value]="registerObj.middleName" [formGroup]="phoneappForm"
+                                [value]="registerObj.middleName" [formGroup]="phoneappForm" restrictTo="text"
                                 [validations]="getValidationMessages().middleName" [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -117,13 +117,13 @@
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Last Name" formControlName="lastName" [value]="registerObj.lastName"
                                 [formGroup]="phoneappForm" [validations]="getValidationMessages().lastName"
-                                [maxLength]="50">
+                                [maxLength]="50" restrictTo="text">
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm"
                                 [value]="registerObj.address" [validations]="getValidationMessages().address"
-                                [maxLength]="100">
+                                [maxLength]="100" restrictTo="address">
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

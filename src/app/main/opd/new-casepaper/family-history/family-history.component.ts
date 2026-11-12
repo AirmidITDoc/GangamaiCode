@@ -91,12 +91,12 @@ export class FamilyHistoryComponent {
 
   getVisitById(visitId: any): void {
     this._OpAppointmentService.getVisitById(visitId).subscribe(data => {
-  
+
       this.patientDetail = this.data
       this.vDoctorName = this.data.doctorname;
       this.vRefDocName = this.data.refDocName
       this.vRegId = this.data.regId ?? 0
-      this.VisitId = this.data.visitId?? 0
+      this.VisitId = this.data.visitId ?? 0
     });
   }
 
@@ -148,7 +148,7 @@ export class FamilyHistoryComponent {
   addFamilyHistory(): void {
 
     const f = this.MyFormGroup.value;
-   
+
     const isEmpty = (v: any) =>
       v === null || v === undefined || String(v).trim() === '' || v === 0;
 
@@ -218,7 +218,7 @@ export class FamilyHistoryComponent {
       this.toastr.success('Deleted successfully', 'Success');
     }
   }
-  
+
   onSave() {
     if (this.Chargelist.length === 0) {
       this.toastr.warning('Please add at least one family medical history record.');
@@ -259,6 +259,42 @@ export class FamilyHistoryComponent {
   onClose() {
     this.MyFormGroup.reset();
     this._matDialog.closeAll();
+  }
+
+  keyPressSafe(event: KeyboardEvent, allowed: RegExp = /^[A-Za-z\s@_\-.()\[\]]$/): void {
+    if (event.key.length !== 1 || event.ctrlKey || event.metaKey) return; // Enter, Backspace, copy/paste shortcuts
+
+    // 1. block characters that are not allowed
+    if (!allowed.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+
+    const input = event.target as HTMLInputElement;
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    const next = input.value.slice(0, start) + event.key + input.value.slice(end);
+
+    // 2. block query words (select, delete, clear, update)
+    if (/\b(select|delete|clear|update|insert)\b/i.test(next)) {
+      event.preventDefault();
+      return;
+    }
+
+    // 3. use either ( ) or [ ], not both
+    if (/[()]/.test(next) && /[\[\]]/.test(next)) {
+      event.preventDefault();
+    }
+  }
+
+  keyPressAlphanumeric(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 }
 

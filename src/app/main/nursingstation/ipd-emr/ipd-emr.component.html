@@ -250,21 +250,21 @@
                                             <mat-label>
                                                 Drug Allergies
                                             </mat-label>
-                                            <input matInput type="text" formControlName="drugAllergy">
+                                            <input matInput type="text" formControlName="drugAllergy" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" class="other-info-field">
                                             <mat-label>
                                                 Allergies
                                             </mat-label>
-                                            <input matInput type="text" formControlName="normalAllergy">
+                                            <input matInput type="text" formControlName="normalAllergy" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" class="other-info-field">
                                             <mat-label>
                                                 Allergy Remark
                                             </mat-label>
-                                            <input matInput type="text" formControlName="allergyRemark">
+                                            <input matInput type="text" formControlName="allergyRemark" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
 
                                         <div class="other-info-field other-info-field--small">
@@ -279,14 +279,14 @@
                                             <mat-label>
                                                 Social Habits
                                             </mat-label>
-                                            <input matInput type="text" formControlName="socialHabits">
+                                            <input matInput type="text" formControlName="socialHabits" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" class="other-info-field">
                                             <mat-label>
                                                 Medical History
                                             </mat-label>
-                                            <input matInput type="text" formControlName="medicalHistory">
+                                            <input matInput type="text" formControlName="medicalHistory" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
 
                                         <!-- <mat-form-field appearance="outline" class="other-info-field">
@@ -300,7 +300,7 @@
                                             <mat-label>
                                                 Current Medication
                                             </mat-label>
-                                            <input matInput type="text" formControlName="currentMedications">
+                                            <input matInput type="text" formControlName="currentMedications" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
 
                                     </div>
@@ -325,7 +325,7 @@
                                                         Member Name
                                                     </mat-label>
 
-                                                    <input matInput type="text" formControlName="memberName">
+                                                    <input matInput type="text" formControlName="memberName" (keypress)="keyPressSafe($event)">
                                                 </mat-form-field>
 
                                                 <div class="relationship-field">
@@ -349,7 +349,7 @@
                                                     <mat-label>
                                                         Age
                                                     </mat-label>
-                                                    <input matInput type="text" formControlName="age">
+                                                    <input matInput type="text" formControlName="age" (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
 
                                                 <!-- Clinical History -->
@@ -357,14 +357,14 @@
                                                     <mat-label>
                                                         Clinical History
                                                     </mat-label>
-                                                    <input matInput type="text" formControlName="clinicalHistory">
+                                                    <input matInput type="text" formControlName="clinicalHistory" (keypress)="keyPressSafe($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" class="family-clinical-field">
                                                     <mat-label>
                                                         Summary
                                                     </mat-label>
-                                                    <input matInput type="text" formControlName="summary">
+                                                    <input matInput type="text" formControlName="summary" (keypress)="keyPressSafe($event)">
                                                 </mat-form-field>
 
                                                 <!-- Duration -->
@@ -372,7 +372,7 @@
                                                     <mat-label>
                                                         Duration
                                                     </mat-label>
-                                                    <input matInput type="text" formControlName="duration">
+                                                    <input matInput type="text" formControlName="duration" (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
 
                                                 <!-- Add Button -->
@@ -583,14 +583,14 @@
                                             <mat-label>
                                                 MentalStatus
                                             </mat-label>
-                                            <input matInput type="text" formControlName="mentalStatus">
+                                            <input matInput type="text" formControlName="mentalStatus" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" class="wellness-field">
                                             <mat-label>
                                                 GeneralWellbeing
                                             </mat-label>
-                                            <input matInput type="text" formControlName="generalWellbeing">
+                                            <input matInput type="text" formControlName="generalWellbeing" (keypress)="keyPressSafe($event)">
                                         </mat-form-field>
                                     </div>
                                 </form>
@@ -629,14 +629,14 @@
                                             <mat-label>
                                                 AgeOfMenarche
                                             </mat-label>
-                                            <input matInput type="text" formControlName="ageOfMenarche">
+                                            <input matInput type="text" formControlName="ageOfMenarche" (keypress)="keyPressAlphanumeric($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" class="wellness-field">
                                             <mat-label>
                                                 AgeOfMenopause
                                             </mat-label>
-                                            <input matInput type="text" formControlName="ageOfMenopause">
+                                            <input matInput type="text" formControlName="ageOfMenopause" (keypress)="keyPressAlphanumeric($event)">
                                         </mat-form-field>
                                     </div>
                                 </form>

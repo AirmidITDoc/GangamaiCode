@@ -191,7 +191,8 @@
                     </div>
 
                     <div fxFlex="46%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Reason Of Refund" formControlName="Remark" [formGroup]="RefundOfBillFormFooter" [maxLength]="200">
+                        <airmid-textbox label="Reason Of Refund" formControlName="Remark" [formGroup]="RefundOfBillFormFooter" [maxLength]="200"
+                        restrictTo="address">
                         </airmid-textbox>
                     </div>
 

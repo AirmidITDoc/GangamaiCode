@@ -39,7 +39,7 @@ export class RegistrationComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     photo: PageNames = PageNames.PATIENT_PHOTO;
     signature: PageNames = PageNames.PATIENT_SIGNATURE;
-autocompleteModearea: string = "Area";
+    autocompleteModearea: string = "Area";
 
     constructor(
         public _RegistrationService: RegistrationService, public permissionService: PagePermissionService,
@@ -115,7 +115,7 @@ autocompleteModearea: string = "Area";
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals },
-             { fieldName: "AreaId", fieldValue: String(this.AreaId), opType: OperatorComparer.Equals }
+            { fieldName: "AreaId", fieldValue: String(this.AreaId), opType: OperatorComparer.Equals }
         ]
     }
 
@@ -151,9 +151,9 @@ autocompleteModearea: string = "Area";
         this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
     }
 
-    OnabhaLink(row){
+    OnabhaLink(row) {
         const buttonElement = document.activeElement as HTMLElement;
-        buttonElement.blur(); 
+        buttonElement.blur();
         const dialogRef = this._matDialog.open(AbhaLinkComponent,
             {
                 maxWidth: "95vw",
@@ -213,7 +213,7 @@ autocompleteModearea: string = "Area";
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.mobileno = this.myFilterform.get('MobileNo').value + "%" || "%"
         this.CityId = this.myFilterform.get('CityId').value || "0"
- this.AreaId = this.myFilterform.get('AreaId').value || "0"
+        this.AreaId = this.myFilterform.get('AreaId').value || "0"
 
         this.getfilterdata();
     }
@@ -273,7 +273,7 @@ autocompleteModearea: string = "Area";
 
             ],
             cityId: [],
-            areaId:[]
+            areaId: []
         }
     }
 
@@ -284,6 +284,32 @@ autocompleteModearea: string = "Area";
         } else {
             event.preventDefault();
             return false;
+        }
+    }
+
+    keyPressSafe(event: KeyboardEvent, allowed: RegExp = /^[A-Za-z\s@_\-.()\[\]]$/): void {
+        if (event.key.length !== 1 || event.ctrlKey || event.metaKey) return; // Enter, Backspace, copy/paste shortcuts
+
+        // 1. block characters that are not allowed
+        if (!allowed.test(event.key)) {
+            event.preventDefault();
+            return;
+        }
+
+        const input = event.target as HTMLInputElement;
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? input.value.length;
+        const next = input.value.slice(0, start) + event.key + input.value.slice(end);
+
+        // 2. block query words (select, delete, clear, update)
+        if (/\b(select|delete|clear|update|insert)\b/i.test(next)) {
+            event.preventDefault();
+            return;
+        }
+
+        // 3. use either ( ) or [ ], not both
+        if (/[()]/.test(next) && /[\[\]]/.test(next)) {
+            event.preventDefault();
         }
     }
 
@@ -399,7 +425,7 @@ export class RegInsert {
     regTime: any;
     husbandDob: Date;
     wifeDob: Date;
-    districtId:any;
+    districtId: any;
     /**
      * Constructor
      *

@@ -73,7 +73,8 @@
                           <mat-form-field appearance="outline" style="width: 100%;">
                             <mat-label>Diagnosis</mat-label>
                             <textarea rows="1" formControlName="diagnosis" placeholder="Diagnosis" matInput
-                              [(ngModel)]="vDiagnosis" cols="300" rows="6"></textarea>
+                              [(ngModel)]="vDiagnosis" cols="300" rows="6"
+                              (input)="blockQueryWords($event)"></textarea>
 
                             <!-- 🎤 Mic button -->
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('diagnosis')"
@@ -93,7 +94,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>HISTORY</mat-label>
                             <textarea matInput name="history" formControlName="history" [(ngModel)]="vhistory"
-                              cols="300" rows="6"></textarea>
+                              cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('history')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -114,7 +115,7 @@
                             <mat-label>Clinical Condition OnAdmisssion</mat-label>
                             <textarea matInput name="ClinicalConditionOnAdmisssion"
                               formControlName="clinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition"
-                              cols="300" rows="6"></textarea>
+                              cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix
                               (click)="onMicTogglefields('clinicalConditionOnAdmisssion')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
@@ -132,7 +133,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>CLINICAL FINDING</mat-label>
                             <textarea matInput name="ClinicalFinding" formControlName="clinicalFinding"
-                              [(ngModel)]="vClinicalFinding" cols="300" rows="6"></textarea>
+                              [(ngModel)]="vClinicalFinding" cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
 
                           </mat-form-field>
                         </div>
@@ -158,7 +159,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>SURGERY /PROCEDURE DONE</mat-label>
                             <textarea matInput name="SurgeryProcDone" formControlName="surgeryProcDone"
-                              [(ngModel)]="vSURGERYprocedure" cols="300" rows="6"></textarea>
+                              [(ngModel)]="vSURGERYprocedure" cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('surgeryProcDone')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -176,7 +177,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>OPRATIVE NOTES</mat-label>
                             <textarea matInput name="OperativeNotes" formControlName="opertiveNotes"
-                              [(ngModel)]="vOperativeNotes" cols="300" rows="6"></textarea>
+                              [(ngModel)]="vOperativeNotes" cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('opertiveNotes')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -196,7 +197,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>PATHOLOGY</mat-label>
                             <textarea matInput name="investigation" formControlName="investigation"
-                              [(ngModel)]="vPathology" cols="300" rows="6"></textarea>
+                              [(ngModel)]="vPathology" cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('investigation')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -214,7 +215,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Radiology</mat-label>
                             <textarea matInput name="Radiology" formControlName="radiology" [(ngModel)]="vRadiology"
-                              cols="300" rows="6"></textarea>
+                              cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('radiology')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -248,7 +249,7 @@
                             <mat-label>COURSES IN THE HOSPITAL</mat-label>
                             <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap"
                               formControlName="treatmentGiven" [(ngModel)]="vTreatmentGiven" cols="200"
-                              rows="6"></textarea>
+                              rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('treatmentGiven')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -266,7 +267,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Treatment Adviced</mat-label>
                             <textarea matInput name="TreatmentAdvisedAfterDischarge"
-                              formControlName="treatmentAdvisedAfterDischarge"
+                              formControlName="treatmentAdvisedAfterDischarge" (input)="blockQueryWords($event)"
                               [(ngModel)]="vTreatmentAdvisedAfterDischarge" cols="200" rows="6"></textarea>
                             <button mat-icon-button matSuffix
                               (click)="onMicTogglefields('treatmentAdvisedAfterDischarge')"
@@ -289,7 +290,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>OTHER CON DR.OPINION</mat-label>
                             <textarea matInput name="OtherConDrOpinions" formControlName="otherConDrOpinions"
-                              [(ngModel)]="vOtherConDrOpinions" cols="300" rows="6"></textarea>
+                              [(ngModel)]="vOtherConDrOpinions" cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('otherConDrOpinions')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -309,7 +310,7 @@
                           <mat-form-field appearance="outline" fxFlex>
                             <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
                             <textarea matInput name="PainManagementTechnique" formControlName="painManagementTechnique"
-                              [(ngModel)]="vPainManagementTechnique" cols="300" rows="6"></textarea>
+                              [(ngModel)]="vPainManagementTechnique" cols="300" rows="6" (input)="blockQueryWords($event)" (input)="blockQueryWords($event)"></textarea>
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('painManagementTechnique')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
@@ -434,7 +435,7 @@
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>FOLLOW UP / CARE PLAN DESCRIPTION</mat-label>
                               <textarea matInput name="LifeStyle" formControlName="lifeStyle" [(ngModel)]="vLifeStyle"
-                                cols="300" rows="6"></textarea>
+                                cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                               <button mat-icon-button matSuffix (click)="onMicTogglefields('lifeStyle')"
                                 [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                                 <i
@@ -448,7 +449,7 @@
                               <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
                               <textarea matInput name="ConditionAtTheTimeOfDischarge"
                                 formControlName="conditionAtTheTimeOfDischarge" [(ngModel)]="vConditionofTimeDischarge"
-                                cols="300" rows="6"></textarea>
+                                cols="300" rows="6" (input)="blockQueryWords($event)"></textarea>
                               <button mat-icon-button matSuffix
                                 (click)="onMicTogglefields('conditionAtTheTimeOfDischarge')"
                                 [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
@@ -499,7 +500,7 @@
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>Doctor Assistant Name</mat-label>
                               <input name="DoctorAssistantName" formControlName="doctorAssistantName"
-                                [(ngModel)]="vDoctorAssistantName" matInput />
+                                [(ngModel)]="vDoctorAssistantName" matInput (keypress)="keyPressSafe($event)"/>
                             </mat-form-field>
                           </div>
 
@@ -524,7 +525,7 @@
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>followUp Reason</mat-label>
                               <input name="followUpReason" formControlName="followUpReason"
-                                [(ngModel)]="VfollowUpReason" matInput />
+                                [(ngModel)]="VfollowUpReason" matInput (keypress)="keyPressSafe($event)"/>
                             </mat-form-field>
                           </div>
 
@@ -542,7 +543,7 @@
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>followUp Description</mat-label>
                               <input name="followUpDescription" formControlName="followUpDescription"
-                                [(ngModel)]="VfollowUpDescription" matInput />
+                                [(ngModel)]="VfollowUpDescription" matInput (keypress)="keyPressSafe($event)"/>
                             </mat-form-field>
                           </div>
                         </div>
