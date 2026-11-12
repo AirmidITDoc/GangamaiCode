@@ -48,25 +48,8 @@ export class QueueService {
   //     mk(5, 'Kiran Vyas', 'Cardiology', 'Dr. Shah', 'waiting'), mk(6, 'Farhan Ali', 'Dental', 'Dr. Iyer', 'waiting'),
   //   ];
   // }
-  public getQueueData(DoctorId, QueueLimit) {
-    const today = new Date();
-    var Param = {
-      columns: [],
-      exportType: 1,
-      filters: [{ fieldName: "From_Dt", fieldValue: formatDate(today, 'yyyy-MM-dd', 'en-US'), opType: "Equals" },
-      { fieldName: "To_Dt", fieldValue: formatDate(today, 'yyyy-MM-dd', 'en-US'), opType: "Equals" },
-      { fieldName: "F_Name", fieldValue: "%", opType: "Contains" },
-      { fieldName: "L_Name", fieldValue: "%", opType: "Contains" },
-      { fieldName: "Reg_No", fieldValue: "0", opType: "Equals" },
-      { fieldName: "Doctor_Id", fieldValue: DoctorId.toString(), opType: "Equals" },
-      { fieldName: "IsMark", fieldValue: "2", opType: "Equals" },
-      { fieldName: "CompanyId", fieldValue: "0", opType: "Equals" }],
-      first: 0,
-      rows: QueueLimit,
-      sortField: "VisitId",
-      sortOrder: -1
-    };
-    return this._http.PostData("VisitDetail/AppVisitList", Param);
+  public getQueueData(DoctorId, VisitId) {
+    return this._http.GetData("VisitDetail/get-queue?DoctorId=" + DoctorId + "&VisitId=" + VisitId);
   }
 
 }

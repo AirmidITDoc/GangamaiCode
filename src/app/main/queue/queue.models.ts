@@ -4,6 +4,6 @@ export interface QueueEntry {
   // status: QueueStatus; createdAt: number; inAt?: number; outAt?: number;
 
   regNoWithPrefix: string; patientName: string; vistDateTime: string; doctorId: number; visitId: number;doctor:string;
-  status: QueueStatus;conStartTime:Date;conEndTime:Date;
+  status: QueueStatus;conStartTime:Date;conEndTime:Date;checkInTime:Date;checkOutTime:Date
 }
 export const DEPARTMENTS = ['OPD - General', 'Cardiology', 'Orthopedics', 'Pathology', 'Radiology', 'Dental'];
