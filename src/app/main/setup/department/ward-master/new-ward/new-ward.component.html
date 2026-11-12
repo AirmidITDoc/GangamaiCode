@@ -25,7 +25,8 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="RoomName " formControlName="roomName" [value]="data?.roomName"
-                            [formGroup]="roomForm" [validations]="getValidationMessages().roomName" [maxLength]="50">
+                            [formGroup]="roomForm" [validations]="getValidationMessages().roomName" [maxLength]="50"
+                            restrictTo="text">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">

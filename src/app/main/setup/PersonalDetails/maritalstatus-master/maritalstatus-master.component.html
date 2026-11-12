@@ -22,7 +22,8 @@
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Marital Status Name</mat-label>
                     <input matInput placeholder="Search Marital Status  Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        [(ngModel)]="gridConfig.filters[0].fieldValue"
+                        (keypress)="keyPressSafe($event)" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
                         <mat-icon>close</mat-icon>

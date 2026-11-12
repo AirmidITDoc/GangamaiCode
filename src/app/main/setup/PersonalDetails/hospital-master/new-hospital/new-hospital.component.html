@@ -37,7 +37,7 @@
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="HospitalName" formControlName="hospitalName"
                                                 [formGroup]="HospitalForm" [maxLength]="400"
-                                                [(ngModel)]="registerObj.hospitalName"
+                                                [(ngModel)]="registerObj.hospitalName" restrictTo="text"
                                                 [validations]="getValidationMessages().HospitalName">
                                             </airmid-textbox>
                                         </div>
@@ -45,13 +45,14 @@
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Hospital Short Name"
                                                 formControlName="hospitalShortName" [formGroup]="HospitalForm"
+                                                restrictTo="text"
                                                 [maxLength]="100" [(ngModel)]="registerObj.hospitalShortName">
                                             </airmid-textbox>
                                         </div>
 
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="HospitalHeaderLine"
-                                                [(ngModel)]="registerObj.hospitalHeaderLine"
+                                                [(ngModel)]="registerObj.hospitalHeaderLine" restrictTo="text"
                                                 formControlName="hospitalHeaderLine" [formGroup]="HospitalForm"
                                                 [maxLength]="100">
                                             </airmid-textbox>
@@ -67,7 +68,7 @@
                                         <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="HospitalAddress"
                                                 [value]="registerObj.hospitalAddress" formControlName="hospitalAddress"
-                                                [formGroup]="HospitalForm" [maxLength]="400"
+                                                [formGroup]="HospitalForm" [maxLength]="400" restrictTo="address"
                                                 [validations]="getValidationMessages().HospitalAddress">
                                             </airmid-textbox>
                                         </div>
@@ -103,6 +104,7 @@
                                         <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="website" formControlName="webSiteInfo"
                                                 [formGroup]="HospitalForm" [value]="registerObj.webSiteInfo"
+                                                restrictTo="address"
                                                 [validations]="getValidationMessages().website">
                                             </airmid-textbox>
                                         </div>

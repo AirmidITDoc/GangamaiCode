@@ -24,7 +24,7 @@
                             label="Patient Type Name"
                             formControlName="patientType"
                             [value]="data?.patientType"
-                            [formGroup]="patienttypeForm"
+                            [formGroup]="patienttypeForm" restrictTo="text"
                             [validations]="getValidationMessages().patientType"
                             [maxLength]="50">
                         </airmid-textbox> 

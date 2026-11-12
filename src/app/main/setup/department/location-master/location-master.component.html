@@ -22,7 +22,9 @@
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Location Name</mat-label>
                     <input matInput placeholder="Search Location  Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" 
+                        (keypress)="keyPressSafe($event)"
+                        />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
                         <mat-icon>close</mat-icon>

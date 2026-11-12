@@ -22,7 +22,7 @@
                     <div fxFlex>
                         <airmid-textbox label="Gender Name" formControlName="genderName" [value]="data?.genderName"
                             [formGroup]="genderForm" [validations]="getValidationMessages().genderName"
-                            [maxLength]="50">
+                            [maxLength]="50" restrictTo="text">
                         </airmid-textbox>
                     </div>
                 </div>

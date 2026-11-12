@@ -51,7 +51,8 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Hospital Name</mat-label>
                     <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
-                        formControlName="NameSearch" (input)="onChangeFirst($event)" />
+                        formControlName="NameSearch" (input)="onChangeFirst($event)" 
+                        (keypress)="keyPressSafe($event)"/>
                     <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('Hospital')">
                         <mat-icon>close</mat-icon>
                     </button>
@@ -60,7 +61,8 @@
                 <mat-form-field appearance="outline">
                     <mat-label>PhoneNo</mat-label>
                     <input matInput autocomplete="off" [formGroup]="myformSearch" formControlName="phoneNo"
-                        (input)="onChangeFirst($event)" maxlength="10" />
+                        (input)="onChangeFirst($event)" maxlength="10" 
+                        (keypress)="keyPressAlphanumeric($event)"/>
                     <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('phoneNo')">
                         <mat-icon>close</mat-icon>
                     </button>

@@ -22,6 +22,7 @@
                     <div fxFlex>
                         <airmid-textbox label="Marital Status Name " formControlName="maritalStatusName"
                             [value]="data?.maritalStatusName" [formGroup]="maritalForm"
+                            restrictTo="text"
                             [validations]="getValidationMessages().maritalStatusName" [maxLength]="50">
                         </airmid-textbox>
                     </div>

@@ -23,7 +23,7 @@
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Prefix Name" formControlName="prefixName" [value]="data?.prefixName"
                             [formGroup]="prefixForm" [validations]="getValidationMessages().prefixName"
-                            [maxLength]="50">
+                            [maxLength]="50" restrictTo="text">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
