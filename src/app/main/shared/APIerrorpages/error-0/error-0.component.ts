@@ -21,7 +21,7 @@ export class Error0Component {
         const interval = setInterval(() => {
             this.countdown--;
             if (this.countdown % 30 == 0) {
-                this.authenticationService.getCaptcha().subscribe((data) => {
+                this.authenticationService.getChallenge().subscribe((data) => {
                     clearInterval(interval);
                     this.dialogRef.close();
                 });

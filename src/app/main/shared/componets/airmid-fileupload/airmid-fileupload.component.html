@@ -30,9 +30,21 @@
                 <button mat-raised-button color="primary" (click)="onClick($event)">
                     <mat-icon>add</mat-icon>
                     {{chooseLabel}}</button>
-                <input #fileUpload type="file" class="input_fileupload--hidden" (input)="onInput($event)"
+                <!-- <input #fileUpload type="file" class="input_fileupload--hidden" (input)="onInput($event)"
                     (change)="onFileSelected($event)" [multiple]="multiple" [(ngModel)]="inputFileName"
                     [accept]="accept">
+                     <p *ngIf="imageOnly">JPEG, PNG, GIF and WebP images only. PDF uploads are temporarily unavailable.</p> -->
+
+                <input #fileUpload type="file" class="input_fileupload--hidden" (change)="onFileSelected($event)"
+                    [multiple]="multiple" [(ngModel)]="inputFileName" [accept]="accept">
+
+                <p *ngIf="imageOnly">
+                    JPEG, PNG, GIF and WebP images only.
+                </p>
+
+                <p *ngIf="!imageOnly">
+                    Allowed: PDF, Images, Word, Excel and Text files.
+                </p>
 
                 <!-- <div *ngFor="let f of filteredFiles">
                     <span>{{f.docName}}</span>
@@ -46,13 +58,14 @@
                 </div> -->
                 <div class="file-list">
                     <div *ngFor="let file of filteredFiles; let i = index" class="file-item">
-                        <ng-container *ngIf="getPreview(file.Document); else fileIcon">
+                        <!-- <ng-container *ngIf="getPreview(file.Document); else fileIcon">
                             <img [src]="getPreview(file.Document)!" alt="preview" class="preview-img" />
                         </ng-container>
 
                         <ng-template #fileIcon>
                             <mat-icon class="file-icon">{{ getFileIcon(file.docName) }}</mat-icon>
-                        </ng-template>
+                        </ng-template> -->
+                        <mat-icon class="file-icon">{{ getFileIcon(file.docName) }}</mat-icon>
 
                         <span class="file-name">{{ file.docName }}</span>
 
@@ -82,7 +95,8 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+                <button type="button" class="btn btn-primary" [disabled]="validatingFiles"
+                    (click)="onSubmit()">Save</button>
             </div>
         </div>
     </div>

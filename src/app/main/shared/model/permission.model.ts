@@ -245,5 +245,7 @@ export enum permissionCodes {
     IsAdvanceTally = 'IsAdvanceTally',
     IsIpTally = 'IsIpTally',
     IsSalesTally = 'IsSalesTally',
-    IsOpTally='IsOpTally'
+    IsOpTally='IsOpTally',
+
+    CanteenSales='CanteenSales'
 }

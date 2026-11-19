@@ -224,6 +224,8 @@ export class RefundApprovalComponent {
         }
 
         if (!this.approvalFormFinal.invalid) {
+            this.approvalFormFinal.get('approvedBy').setValue(this._loggedService.currentUserValue.user.userId) 
+            this.approvalFormFinal.get('approvalDatetime').setValue(new Date().toISOString())
             console.log(this.approvalFormFinal.value)
 
             this._refundApprovalService.statusUpdate(this.approvalFormFinal.value).subscribe((response) => {

@@ -42,6 +42,8 @@ import { Error404Component } from './main/shared/APIerrorpages/error-404/error-4
 import { InternetConnectionComponent } from './main/shared/componets/internet-connection/internet-connection.component';
 import { SharedModule } from './main/shared/shared.module';
 import { HtmlviewerComponent } from './main/htmlviewer/htmlviewer.component';
+import { AuthGuard } from './core/auth.guard';
+
 const appRoutes: Routes = [
     {
         path: "auth",
@@ -216,7 +218,14 @@ const appRoutes: Routes = [
 
 ];
 
-
+// Public authentication and error pages must remain reachable without menu access.
+appRoutes.forEach(route => {
+    if (route.loadChildren && route.path !== 'auth') {
+        route.canActivate = [AuthGuard];
+        route.canActivateChild = [AuthGuard];
+        route.runGuardsAndResolvers = 'always';
+    }
+});
 
 export const PICK_FORMATS = {
     parse: { dateInput: { month: 'short', year: 'numeric', day: 'numeric' } },

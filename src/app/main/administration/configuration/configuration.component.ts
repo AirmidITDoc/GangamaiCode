@@ -7,7 +7,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { gridModel } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
@@ -15,6 +15,7 @@ import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.com
 import { ConfigurationService } from './configuration.service';
 import { EditEmailconfigComponent } from './edit-emailconfig/edit-emailconfig.component';
 import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 
 @Component({
@@ -57,6 +58,8 @@ export class ConfigurationComponent implements OnInit {
     Department = 0
     DoctorId = 0
 
+    hasConfigPermission = false;
+
     displayedColumns1: string[] = [
         'SystemConfigId',
         'Name',
@@ -75,7 +78,7 @@ export class ConfigurationComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
 
-
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Configuration, permissionType.Add);
 
     ngAfterViewInit() {
         this.gridConfig1.columnsList.find(col => col.key === 'reqAuthenticate')!.template = this.actionAuthanticate;
@@ -153,7 +156,7 @@ export class ConfigurationComponent implements OnInit {
         private formBuilder: FormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public datePipe: DatePipe,
-        private _matDialog: MatDialog
+        private _matDialog: MatDialog, public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void {
@@ -166,6 +169,11 @@ export class ConfigurationComponent implements OnInit {
 
         this.serviceDetailsArray.push(this.createserviceDetail());
         this.auditFilterForm = this._ConfigurationService.CreateauditForm();
+
+        this.hasConfigPermission = this.permissionService.getPermission(permissionCodes.Configuration, permissionType.View);
+        if (this.hasConfigPermission) {
+            this.getServiceList();
+        }
     }
 
 
@@ -205,7 +213,7 @@ export class ConfigurationComponent implements OnInit {
             OPSalesdisc: 0,
             IPSalesdisc: 0,
             SystemLogOutTime: 0,
-            FollowupDays:0
+            FollowupDays: 0
         });
     }
     onSubmit() {
@@ -253,7 +261,10 @@ export class ConfigurationComponent implements OnInit {
 
 
     getServiceList() {
-
+        if (!this.hasConfigPermission) {
+            // optional: this.toastr.warning('You do not have permission to view this list');
+            return;
+        }
         const param = {
             "searchFields": [
 

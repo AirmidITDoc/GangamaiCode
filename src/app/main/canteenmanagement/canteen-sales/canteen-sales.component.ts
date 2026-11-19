@@ -19,6 +19,7 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { MatDialog } from '@angular/material/dialog';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-canteen-sales',
@@ -95,7 +96,7 @@ export class CanteenSalesComponent implements OnInit {
   ];
 
   gridConfig: gridModel = {
-
+    permissionCode: permissionCodes.CanteenSales,
     apiUrl: "CanteenRequest/CanteenRequestHeaderList",
     columnsList: this.allbillcolumns,
     sortField: "ReqId",

@@ -1,3 +1,7 @@
-<app-error-page errorCode="403" errorTitle="Access Denied!" errorMessage="You don't have permission to view this page."
+<!-- <app-error-page errorCode="403" errorTitle="Access Denied!" errorMessage="You don't have permission to view this page."
     errorImage="/assets/images/403.svg" buttonText="Go Back" [backFunction]="true">
+</app-error-page> -->
+
+<app-error-page errorCode="403" errorTitle="Access Denied!" errorMessage="You don't have permission to view this page."
+    errorImage="/assets/images/403.svg" buttonText="Go to Home" redirectUrl="/dashboard/home">
 </app-error-page>

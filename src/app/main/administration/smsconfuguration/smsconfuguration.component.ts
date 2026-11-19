@@ -7,10 +7,11 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { ToastrService } from 'ngx-toastr';
 import { SMSConfugurationService } from './smsconfuguration.service';
 import { UpdateSMSComponent } from './update-sms/update-sms.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
     selector: 'app-smsconfuguration',
@@ -46,6 +47,7 @@ export class SMSConfugurationComponent implements OnInit {
     @ViewChild('actionisSendMail') actionisSendMail!: TemplateRef<any>;
     @ViewChild(AirmidTableComponent) auditgrid: AirmidTableComponent;
 
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.smsconfigrationtool, permissionType.Add);
 
     ngAfterViewInit() {
         //  this.gridConfig.columnsList.find(col => col.key === 'isSent')!.template = this.actionisSent;
@@ -181,6 +183,7 @@ export class SMSConfugurationComponent implements OnInit {
     ]
 
     gridConfig3: gridModel = {
+        permissionCode: permissionCodes.smsconfigrationtool,
         apiUrl: "Configuration/AuditLogList",
         columnsList: this.allColumnsaudit,
         sortField: "Id",
@@ -195,6 +198,7 @@ export class SMSConfugurationComponent implements OnInit {
         public datePipe: DatePipe,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
+        public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void {

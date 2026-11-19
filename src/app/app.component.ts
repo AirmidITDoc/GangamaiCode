@@ -241,7 +241,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.authService.currentUser.subscribe((d: any) => {
             if ((d?.userToken ?? "") != "") {
                 // debugger
-                this.authService.getNavigationData();
+                // this.authService.getNavigationData();
+                 this.authService.getNavigationData().subscribe({
+                    error: error => console.error('Unable to load navigation menus.', error)
+                });
                 this.ConfigSettingParamNew();
                 this.ConfigSettingUnitWise();
                 this.UserAccConfigSettingParam()

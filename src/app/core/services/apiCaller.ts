@@ -1,8 +1,275 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+// import { HttpClient, HttpHeaders } from "@angular/common/http";
+// import { Injectable } from "@angular/core";
+// import { Router } from "@angular/router";
+// import { ToastrService } from 'ngx-toastr';
+// import { Observable, of } from "rxjs";
+// import { map, catchError } from "rxjs/operators";
+// import Swal from "sweetalert2";
+// import { apiResponse } from "../models/apiResponse";
+// import { AppConfigService } from "./api-config.service";
+
+// @Injectable({ providedIn: "root" })
+// export class ApiCaller {
+//     //ApiUrl = environment.API_BASE_PATH;
+//     constructor(public _httpClient: HttpClient, public toastr: ToastrService, private router: Router, private config: AppConfigService
+//     ) {
+//     }
+//     GetData(url: string): Observable<any> {
+//         return this._httpClient.get(`${this.config.apiBaseUrl}${url}`).pipe(
+//             map((data: apiResponse) => {
+//                 if (data.statusCode == 200) {
+//                     return data.data;
+//                 }
+//                 else {
+
+//                     if (data.message == 'No data found.') {
+//                         // Swal.fire("Data Not Find .....")
+//                     } else if (data.message == 'Not Found') {
+//                         // Swal.fire("Data Not Find .....")
+//                     } else if (data.message == '') {
+//                         //this if is added becasue in hospitalmaster 1st time nabh logo show error 
+//                     }
+//                     else {
+//                         this.toastr.error(data.message, 'Error !', {
+//                             toastClass: 'tostr-tost custom-toast-error',
+//                         });
+//                     }
+//                     return null; // Avoid returning anything invalid
+//                 }
+//             }));
+//     }
+
+//     // PostData(url: string, data: any) {
+//     //     return (this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
+//     //         if (data.statusCode == 200) {
+//     //             if (data.message)
+//     //                 this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+//     //             return data?.data || data;
+//     //         }
+//     //         else {
+
+//     //             if (data.message == 'No data found.') {
+//     //                 Swal.fire("Data Not Find .....")
+//     //             }
+//     //             else {
+//     //                 this.toastr.error(data.message, 'Error !', {
+//     //                     toastClass: 'tostr-tost custom-toast-error',
+//     //                 });
+//     //             }
+//     //             return of(null); // Avoid returning anything invalid
+//     //         }
+//     //         // else {
+//     //         //     this.toastr.error(data.message, 'Error !', {
+//     //         //         toastClass: 'tostr-tost custom-toast-error',
+//     //         //     });
+//     //         //     return of(null); // Avoid returning anything invalid
+//     //         // }
+//     //     })));
+//     // }
+
+//     PostData(url: string, data: any) {
+//         return this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(
+
+//             map((res: apiResponse) => {
+//                 if (res.statusCode === 200) {
+//                     if (res.message) {
+//                         this.toastr.success(res.message, 'Success!', {
+//                             toastClass: 'tostr-tost custom-toast-success',
+//                         });
+//                     }
+//                     return res?.data || res;
+//                 }
+//                 return null;
+//             }),
+
+//             // ✅ THIS handles 400 / 500 errors
+//             catchError((error) => {
+//                 console.log("API ERROR:", error);
+
+//                 const message = error?.error?.message || '';
+
+//                 if (message === 'No data found.') {
+//                     Swal.fire("Data Not Found.....");
+//                 }
+//                 else if (message === 'Order already present.') {
+//                     this.toastr.warning(message, 'Warning!', {
+//                         toastClass: 'tostr-tost custom-toast-warning',
+//                     });
+//                 }
+//                 else {
+//                     this.toastr.error(message || 'Something went wrong!', 'Error!', {
+//                         toastClass: 'tostr-tost custom-toast-error',
+//                     });
+//                 }
+
+//                 return of(null); // continue observable safely
+//             })
+//         );
+//     }
+
+//     PostFromData(url: string, data: any) {
+//         const formData = this.toFormData(data);
+//         return (this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, formData).pipe(map((data: apiResponse) => {
+//             if (data.statusCode == 200) {
+//                 if (data.message)
+//                     this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+//                 return data?.data || data;
+//             }
+//             else {
+//                 this.toastr.error(data.message, 'Error !', {
+//                     toastClass: 'tostr-tost custom-toast-error',
+//                 });
+//                 return null; // Avoid returning anything invalid
+//             }
+//         })));
+//     }
+//     toFormData(data: any, form: FormData = new FormData(), namespace: string = ''): FormData {
+//         for (const key of Object.keys(data)) {
+//             const value = data[key];
+//             const formKey = namespace ? ((value instanceof File || value instanceof Blob) ? `${namespace}.${key}` : `${namespace}[${key}]`) : key;
+
+//             if (value instanceof File || value instanceof Blob) {
+//                 form.append(formKey, value);
+//             } else if (Array.isArray(value)) {
+//                 value.forEach((item, index) => {
+//                     const arrayKey = `${formKey}[${index}]`;
+//                     if (item instanceof File || item instanceof Blob) {
+//                         form.append(arrayKey, item);
+//                     } else if (typeof item === 'object' && item !== null) {
+//                         this.toFormData(item, form, arrayKey); // Recurse with index
+//                     } else {
+//                         form.append(arrayKey, item != null ? item.toString() : '');
+//                     }
+//                 });
+//             } else if (typeof value === 'object' && value !== null) {
+//                 this.toFormData(value, form, formKey); // Recursively handle nested objects
+//             } else if (value !== null && value !== undefined) {
+//                 form.append(formKey, value.toString());
+//             }
+//         }
+//         return form;
+//     }
+
+//     PutData(url: string, data: any) {
+//         return (this._httpClient.put<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
+//             if (data.statusCode == 200) {
+//                 if (data.message)
+//                     this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+//                 return data?.data || data;
+//             }
+//             else {
+//                 this.toastr.error(data.message, 'Error !', {
+//                     toastClass: 'tostr-tost custom-toast-error',
+//                 });
+//             }
+//         })));
+//     }
+//     PutFromData(url: string, data: any) {
+//         const formData = this.toFormData(data);
+//         return (this._httpClient.put<any>(`${this.config.apiBaseUrl}${url}`, formData).pipe(map((data: apiResponse) => {
+//             if (data.statusCode == 200) {
+//                 if (data.message)
+//                     this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+//                 return data?.data || data;
+//             }
+//             else {
+//                 this.toastr.error(data.message, 'Error !', {
+//                     toastClass: 'tostr-tost custom-toast-error',
+//                 });
+//             }
+//         })));
+//     }
+
+//     DeleteData(url: string) {
+//         return (this._httpClient.delete<any>(`${this.config.apiBaseUrl}${url}`).pipe(map((data: apiResponse) => {
+//             if (data.statusCode == 200) {
+//                 if (data.message)
+//                     this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+//                 return data?.data || data;
+//             }
+//             else {
+//                 this.toastr.error(data.message, 'Error !', {
+//                     toastClass: 'tostr-tost custom-toast-error',
+//                 });
+//             }
+//         })));
+//     }
+//     downloadFile(url: string, body: any, type: number, filename: string, fileSave: boolean = true): Observable<Blob> {
+//         if (type == 1) {
+//             return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, body, {
+//                 responseType: 'blob',
+//                 observe: 'response',
+//                 headers: new HttpHeaders({
+//                     'Content-Type': 'application/json',
+//                     'Accept': 'application/octet-stream'
+//                 })
+//             }).pipe(
+//                 map(response => {
+//                     if (fileSave)
+//                         this.saveFile(response.body as Blob, filename);
+//                     return response.body as Blob;
+//                 })
+//             );
+//         }
+//         else {
+//             return this._httpClient.get(`${this.config.apiBaseUrl}${url}`, {
+//                 responseType: 'blob',
+//                 observe: 'response',
+//                 headers: new HttpHeaders({
+//                     'Content-Type': 'application/json',
+//                     'Accept': 'application/octet-stream'
+//                 })
+//             }).pipe(
+//                 map(response => {
+//                     if (fileSave)
+//                         this.saveFile(response.body as Blob, filename);
+//                     return response.body as Blob;
+//                 })
+//             );
+//         }
+//     }
+//     saveFile(blob: Blob, filename: string): void {
+//         const link = document.createElement('a');
+//         const url = window.URL.createObjectURL(blob);
+
+//         link.href = url;
+//         link.download = filename;
+//         link.click();
+
+//         // Cleanup
+//         setTimeout(() => {
+//             window.URL.revokeObjectURL(url);
+//             link.remove();
+//         }, 100);
+//     }
+//     GetImage(url: String, data: any): Observable<ArrayBuffer> {
+//         return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, data, { responseType: 'arraybuffer' });
+//     }
+//     GetDocumentFile(url: String): Observable<Blob> {
+//         return this._httpClient.get(`${this.config.apiBaseUrl}${url}`, { responseType: 'blob' });
+//     }
+
+//     // abha
+//     PostRawFormData(url: string, formData: FormData) {
+//         return this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, formData).pipe(
+//             map((data: apiResponse) => {
+//                 if (data.statusCode == 200) {
+//                     if (data.message)
+//                         this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success' });
+//                     return data?.data || data;
+//                 } else {
+//                     this.toastr.error(data.message, 'Error !', { toastClass: 'tostr-tost custom-toast-error' });
+//                     return null;
+//                 }
+//             })
+//         );
+//     }
+// }
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
-import { Observable, of } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { apiResponse } from "../models/apiResponse";
@@ -68,6 +335,7 @@ export class ApiCaller {
     // }
 
     PostData(url: string, data: any) {
+        const isAuthenticationRequest = /^login\/(authenticatev2|confirmauthenticatev2)(\?.*)?$/i.test(url.replace(/^\/+/, ''));
         return this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(
 
             map((res: apiResponse) => {
@@ -79,11 +347,22 @@ export class ApiCaller {
                     }
                     return res?.data || res;
                 }
+                if (isAuthenticationRequest) {
+                    throw new HttpErrorResponse({
+                        status: res.statusCode || 400,
+                        statusText: res.message || 'Authentication request failed',
+                        error: res
+                    });
+                }
                 return null;
             }),
 
             // ✅ THIS handles 400 / 500 errors
             catchError((error) => {
+                if (isAuthenticationRequest || error instanceof HttpErrorResponse) {
+                    return throwError(() => error);
+                }
+
                 console.log("API ERROR:", error);
 
                 const message = error?.error?.message || '';

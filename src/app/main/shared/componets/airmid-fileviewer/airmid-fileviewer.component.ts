@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { PageNames } from '../airmid-fileupload/airmid-fileupload.component';
 import { ApiCaller } from 'app/core/services/apiCaller';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+// import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'airmid-fileviewer',
@@ -19,15 +19,18 @@ export class AirmidFileViewerComponent {
     @Input() multiple: boolean = false;
     @Input() title: string = '';
     @Input() patientName: string = '';
-    safeUrl: SafeResourceUrl;
+    // safeUrl: SafeResourceUrl;
 
     constructor(private _service: ApiCaller,
         public dialogRef: MatDialogRef<AirmidFileViewerComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any, private sanitizer: DomSanitizer
+    //     @Inject(MAT_DIALOG_DATA) public data: any, private sanitizer: DomSanitizer
 
-    ) {
-        this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(data.url);
-    }
+    // ) {
+    //     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(data.url);
+    // }
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) { }
+    
     ngOnDestroy() {
         if (this.data.url.startsWith('blob:')) {
             URL.revokeObjectURL(this.data.url);

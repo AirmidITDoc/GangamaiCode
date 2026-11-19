@@ -699,9 +699,9 @@ debugger
             });
             return;
         }
-        this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
-        this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
-        this.ResultForm.get("pathologyReport").setValue(this.PathResultForm.value)
+        // this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
+        // this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
+        // this.ResultForm.get("pathologyReport").setValue(this.PathResultForm.value)
 
         this.pathologyResultArray.clear();
         this.dataSource.data.forEach(item => {
@@ -709,7 +709,10 @@ debugger
             this.pathologyResultArray.push(this.createResultdetailForm(item));
         });
 
-
+        this.pathologyReportArray.clear();
+        [...new Set(this.reportIdData)].forEach(id => {
+            this.pathologyReportArray.push(this.createPathologyResultForm(id));
+        });
         console.log(this.ResultForm.value);
         this._SampleService.PathResultentryInsert(this.ResultForm.value).subscribe(response => {
             if (response) {
@@ -765,14 +768,14 @@ debugger
 
     createResultInsertForm(): FormGroup {
         return this.formBuilder.group({
-            pathologyReport: '',// this.PathResultForm.value,
+            pathologyReport: this.formBuilder.array([]),// this.PathResultForm.value,
             pathologyResult: this.formBuilder.array([]) // FormArray for details
         });
     }
 
-    createPathologyResultForm(): FormGroup {
+    createPathologyResultForm(pathReportId: any = null): FormGroup {
         return this.formBuilder.group({
-            pathReportId: this.vPathReportId,
+            pathReportId: pathReportId,
             reportDate: this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),
             reportTime: this.datePipe.transform(this.currentDate, "HH:mm"),
             isCompleted: true,
@@ -786,6 +789,10 @@ debugger
             refDoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
+    }
+
+     get pathologyReportArray(): FormArray {
+        return this.ResultForm.get('pathologyReport') as FormArray;
     }
 
     createResultdetailForm(item: any = {}, index: number = 0): FormGroup {

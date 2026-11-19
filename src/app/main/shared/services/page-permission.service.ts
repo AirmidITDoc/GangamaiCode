@@ -1,15 +1,25 @@
 // crypto.service.ts
 import { Injectable } from '@angular/core';
-import { EncryptionService } from 'app/core/services/encryption.service';
+// import { EncryptionService } from 'app/core/services/encryption.service';
 import { permissionCodes, permissionType } from '../model/permission.model';
 
 @Injectable({ providedIn: 'root' }) // Available globally
 export class PagePermissionService {
-    constructor(private encrService: EncryptionService) { }
+    // constructor(private encrService: EncryptionService) { }
     getList(): any[] {
         const permission = JSON.parse(localStorage.getItem("currentUser")).permissions;
-        const permissionString = this.encrService.decrypt(permission);
-        return JSON.parse(permissionString);
+        // const permissionString = this.encrService.decrypt(permission);
+        // return JSON.parse(permissionString);
+        if (!permission) {
+            return [];
+        }
+        if (Array.isArray(permission)) {
+            return permission;
+        }
+        if (typeof permission !== 'string') {
+            throw new TypeError('Expected permissions to be a JSON string or array.');
+        }
+        return JSON.parse(permission);
     }
     getPermission(pageCode: permissionCodes, permission: permissionType): boolean {
 

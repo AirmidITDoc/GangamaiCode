@@ -21,6 +21,8 @@ export class AirmidFileuploadIconComponent extends BaseFormControlComponent {
     @Input() multiple: boolean = false;
     @Input() title: string = '';
     @Input() patientName: string = '';
+    @Input() imageOnly = false;
+
     constructor(public _matDialog: MatDialog, el: ElementRef) {
         super(el);
     }
@@ -36,7 +38,7 @@ export class AirmidFileuploadIconComponent extends BaseFormControlComponent {
                 maxWidth: "50vw",
                 maxHeight: "60vh",
                 width: "100%",
-                data: { refId: this.refId, refType: this.refType, multiple: this.multiple, title: this.computedTitle }
+                data: { refId: this.refId, refType: this.refType, multiple: this.multiple, title: this.computedTitle, imageOnly: this.imageOnly }
             }
         );
 

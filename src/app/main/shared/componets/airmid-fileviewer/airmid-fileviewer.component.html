@@ -9,15 +9,18 @@
     <div class="viewer-content">
         <ng-container [ngSwitch]="data.type">
             <!-- Images -->
-            <img *ngSwitchCase="'image'" [src]="safeUrl" class="viewer-img" />
+            <!-- <img *ngSwitchCase="'image'" [src]="safeUrl" class="viewer-img" /> -->
 
             <!-- PDFs -->
-            <embed *ngSwitchCase="'pdf'" [src]="safeUrl" type="application/pdf" width="100%" height="100%" />
+            <!-- <embed *ngSwitchCase="'pdf'" [src]="safeUrl" type="application/pdf" width="100%" height="100%" /> -->
+             <img *ngSwitchCase="'image'" [src]="data.url" class="viewer-img" alt="Document preview" />
 
             <!-- Fallback -->
             <p *ngSwitchDefault>
-                Preview not available.
-                <a [href]="safeUrl" download="{{data.fileName}}">Download instead</a>
+                <!-- Preview not available.
+                <a [href]="safeUrl" download="{{data.fileName}}">Download instead</a> -->
+                Inline preview is unavailable for this file type.
+                <a [href]="data.url" [download]="data.fileName">Download instead</a>
             </p>
         </ng-container>
     </div>
