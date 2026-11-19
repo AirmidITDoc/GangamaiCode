@@ -1,4 +1,8 @@
-  {
+{
   "apiBaseUrl": "https://demoapi.airmid.co.in/api/v1/",
-  "notificationHub": "https://demoapi.airmid.co.in/himshub"
+  "notificationHub": "https://demoapi.airmid.co.in/himshub",
+  "productName": "Healthcare-Core",
+  "productSubtitle": "Enterprise Hospital Information System & Digital Platforms",
+  "clientName": "",
+  "clientLogo": ""
 }

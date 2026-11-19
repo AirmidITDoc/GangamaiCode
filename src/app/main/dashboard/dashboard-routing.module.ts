@@ -48,7 +48,7 @@ const routes: Routes = [
         component: BedOccupancyComponent
     },
     {
-        path: 'home-page',
+        path: 'dashboard',//'home-page',
         component: HomePageComponent
     },
     {
