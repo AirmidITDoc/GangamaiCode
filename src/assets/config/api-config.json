@@ -1,4 +1,4 @@
   {
-  "apiBaseUrl": "https://demoapi.airmid.co.in/api/v1/",
-  "notificationHub": "https://demoapi.airmid.co.in/himshub"
+  "apiBaseUrl": "http://localhost:5251/api/v1/",
+  "notificationHub": "http://localhost:5251/himshub"
 }

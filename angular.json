@@ -114,7 +114,8 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "fuse:build"
+                        "browserTarget": "fuse:build",
+                        "proxyConfig": "proxy.conf.js"
                     },
                     "configurations": {
                         "production": {
