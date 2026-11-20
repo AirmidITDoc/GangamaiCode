@@ -131,7 +131,7 @@ export class NewAbhaIntegrationService {
       RegDate: ['', Validators.required],
       RegTime: ['', Validators.required],
       Photo: [''],
-      PinNo: [''],
+      PinNo: [0],
       // PinNo: ['', [Validators.required]],
 
       //emergency form

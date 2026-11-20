@@ -114,7 +114,7 @@ export class AppointmentlistService {
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
-            PinNo: ['']
+            PinNo: [0]
 
         });
 

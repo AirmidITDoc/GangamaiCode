@@ -572,7 +572,7 @@ export class NewAppointmentComponent implements OnInit {
                             aadharCardNo: this.registerObj.aadharCardNo ?? '',
                             panCardNo: this.registerObj?.panCardNo ?? '',
                             emailId: this.registerObj?.emailId ?? '',
-                            PinNo: this.registerObj?.pinNo ?? '',
+                            PinNo: this.registerObj?.pinNo ?? 0,
                             City: this.registerObj?.city ?? '',
                             StateId: this.registerObj?.stateId ?? '',
                             CountryId: this.registerObj?.countryId ?? '',
@@ -606,7 +606,7 @@ export class NewAppointmentComponent implements OnInit {
                     this.CityName = this.registerObj?.city ?? '';
                     this.stateId = this.registerObj?.stateId ?? 0;
                     this.counryId = this.registerObj?.countryId ?? 0;
-                    this.pincode = this.registerObj?.pinNo || ''
+                    this.pincode = this.registerObj?.pinNo || 0
                 }, 100);
             }
 
@@ -637,7 +637,7 @@ export class NewAppointmentComponent implements OnInit {
                             aadharCardNo: this.registerObj.aadharCardNo ?? '',
                             panCardNo: this.registerObj?.panCardNo ?? '',
                             emailId: this.registerObj?.emailId ?? '',
-                            PinNo: this.registerObj?.pinNo ?? '',
+                            PinNo: this.registerObj?.pinNo ?? 0,
                             City: this.registerObj?.city ?? '',
                             StateId: this.registerObj?.stateId ?? '',
                             CountryId: this.registerObj?.countryId ?? '',
@@ -668,7 +668,7 @@ export class NewAppointmentComponent implements OnInit {
                         this.CityName = this.registerObj?.city ?? '';
                         this.stateId = this.registerObj?.stateId ?? 0;
                         this.counryId = this.registerObj?.countryId ?? 0;
-                        this.pincode = this.registerObj?.pinNo || ''
+                        this.pincode = this.registerObj?.pinNo || 0
                     });
 
                 }, 100);
@@ -785,7 +785,7 @@ export class NewAppointmentComponent implements OnInit {
                         aadharCardNo: this.registerObjtrust.husbandAadhaar ?? '',
                         panCardNo: this.registerObjtrust?.husbandPan ?? '',
                         emailId: this.registerObjtrust?.husbandEmail ?? '',
-                        PinNo: '',
+                        PinNo: 0,
                         City: this.registerObjtrust?.cityId ?? '',
                         StateId: this.stateId,
                         CountryId: this.counryId,
@@ -828,7 +828,7 @@ export class NewAppointmentComponent implements OnInit {
                         aadharCardNo: this.registerObjtrust.wifeAadhaar ?? '',
                         panCardNo: this.registerObjtrust?.wifePan ?? '',
                         emailId: this.registerObjtrust?.wifeEmail ?? '',
-                        PinNo: '',
+                        PinNo: 0,
                         City: this.registerObjtrust?.cityId ?? '',
                         StateId: this.stateId,
                         CountryId: this.counryId,
@@ -1690,7 +1690,7 @@ export class NewAppointmentComponent implements OnInit {
             RegTime: [this.datePipe.transform(new Date(), "HH:mm:ss")],
 
             Photo: [''],
-            PinNo: [''],
+            PinNo: [0],
             // CourtesyId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
             //emergency form

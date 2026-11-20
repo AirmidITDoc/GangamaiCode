@@ -126,7 +126,7 @@ export class RegistrationService {
             RegDate: ['', Validators.required],
             RegTime: ['', Validators.required],
             Photo: [''],
-            PinNo: [''],
+            PinNo: [0],
 
             //emergency form
             emgContactPersonName: ['', [

@@ -128,7 +128,7 @@ export class AdmissionService {
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
-            PinNo: [''],
+            PinNo: [0],
 
             //emergency form
             emgContactPersonName: ['',

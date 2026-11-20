@@ -102,7 +102,7 @@ export class AppConfigService {
             throw new Error('API configuration has not been loaded.');
         }
         const hostname = this.document.location.hostname;
-        if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]') {
+        if (this.isLoopbackHost(hostname)) {
             return new URL(configuredUrl, this.document.location.origin).pathname;
         }
         return configuredUrl;
@@ -117,10 +117,29 @@ export class AppConfigService {
         if (url.search || url.hash) {
             throw new Error(`Invalid ${setting} in assets/config/api-config.json: query strings and fragments are not supported.`);
         }
-        if (url.protocol === 'http:'
-            && !['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)) {
-            throw new Error(`Invalid ${setting} in assets/config/api-config.json: production endpoints must use HTTPS; HTTP is allowed only for localhost.`);
+        if (url.protocol === 'http:' && !this.isLoopbackOrPrivateHost(url.hostname)) {
+            throw new Error(`Invalid ${setting} in assets/config/api-config.json: public endpoints must use HTTPS; HTTP is allowed only for localhost or private network addresses.`);
         }
         return value.trim();
+    }
+
+    private isLoopbackOrPrivateHost(hostname: string): boolean {
+        const host = hostname.replace(/^\[|\]$/g, '');
+        if (this.isLoopbackHost(host)) {
+            return true;
+        }
+        if (/^10(?:\.\d{1,3}){3}$/.test(host)
+            || /^169\.254(?:\.\d{1,3}){2}$/.test(host)
+            || /^172\.(?:1[6-9]|2\d|3[01])(?:\.\d{1,3}){2}$/.test(host)
+            || /^192\.168(?:\.\d{1,3}){2}$/.test(host)) {
+            return true;
+        }
+        return /^(?:fc|fd|fe8|fe9|fea|feb)[0-9a-f:]*$/i.test(host);
+    }
+
+    private isLoopbackHost(hostname: string): boolean {
+        const host = hostname.replace(/^\[|\]$/g, '');
+        return host === 'localhost' || host === '::1' || host === '0:0:0:0:0:0:0:1'
+            || /^127(?:\.\d{1,3}){3}$/.test(host);
     }
 }

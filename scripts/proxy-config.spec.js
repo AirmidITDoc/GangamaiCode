@@ -83,19 +83,23 @@ test('invalid edits fail explicitly rather than retaining the previous target', 
     assert.throws(() => loadProxy({ apiBaseUrl: 'https://example.test/api?x=1', notificationHub: '/hub' }), /query strings/);
 });
 
-test('production endpoints require HTTPS while localhost HTTP is allowed', () => {
+test('production endpoints require HTTPS while local network HTTP is allowed', () => {
     assert.doesNotThrow(() => loadProxy({
         apiBaseUrl: 'http://localhost:5251/api/v1/',
         notificationHub: 'http://[::1]:5251/himshub'
+    }));
+     assert.doesNotThrow(() => loadProxy({
+        apiBaseUrl: 'http://192.168.2.100:5251/api/v1/',
+        notificationHub: 'http://10.0.0.12:5251/himshub'
     }));
     assert.throws(() => loadProxy({
         apiBaseUrl: 'http://api.example.test/api/v1/',
         notificationHub: '/hub'
     }), /must use HTTPS/);
-    assert.throws(() => loadProxy({
-        apiBaseUrl: '/api/v1/',
-        notificationHub: 'http://192.168.2.100:5251/himshub'
-    }), /must use HTTPS/);
+    // assert.throws(() => loadProxy({
+    //     apiBaseUrl: '/api/v1/',
+    //     notificationHub: 'http://192.168.2.100:5251/himshub'
+    // }), /must use HTTPS/);
 });
 
 test('Vite HMR and frontend requests are not sent to the backend', () => {

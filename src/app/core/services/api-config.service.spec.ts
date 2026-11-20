@@ -63,6 +63,30 @@ describe('Runtime API configuration', () => {
         });
     }
 
+    it('allows configured HTTP endpoints on a private network address', async () => {
+        const loaded = service.loadConfig();
+        http.expectOne('assets/config/api-config.json').flush({
+            apiBaseUrl: 'http://192.168.2.100:8045/api/v1/',
+            notificationHub: 'http://192.168.2.100:8045/himshub'
+        });
+        await loaded;
+        expect(service.apiBaseUrl).toBe('/api/v1/');
+        expect(service.notificationHub).toBe('/himshub');
+    });
+
+    it('preserves LAN endpoint URLs when the frontend is opened from a LAN host', async () => {
+        browserDocument.location = new URL('http://192.168.2.50:9092');
+        const loaded = service.loadConfig();
+        const lanConfig = {
+            apiBaseUrl: 'http://192.168.2.100:8045/api/v1/',
+            notificationHub: 'http://192.168.2.100:8045/himshub'
+        };
+        http.expectOne('assets/config/api-config.json').flush(lanConfig);
+        await loaded;
+        expect(service.apiBaseUrl).toBe(lanConfig.apiBaseUrl);
+        expect(service.notificationHub).toBe(lanConfig.notificationHub);
+    });
+    
     it('supports root-relative endpoints and keeps the legacy token in sync', async () => {
         const legacyConfig = appConfigFactory(service);
         const loaded = service.loadConfig();

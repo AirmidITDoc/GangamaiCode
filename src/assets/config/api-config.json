@@ -1,6 +1,6 @@
 {
-  "apiBaseUrl": "https://demoapi.airmid.co.in/api/v1/",
-  "notificationHub": "https://demoapi.airmid.co.in/himshub",
+   "apiBaseUrl": "http://192.168.2.100:9091/api/v1/",
+  "notificationHub": "http://192.168.2.100:9091/himshub",
   "productName": "Healthcare-Core",
   "productSubtitle": "Enterprise Hospital Information System & Digital Platforms",
   "clientName": "",

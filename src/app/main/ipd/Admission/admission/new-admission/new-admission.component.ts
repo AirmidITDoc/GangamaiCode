@@ -344,7 +344,7 @@ export class NewAdmissionComponent implements OnInit {
                         this.CityName = this.registerObj?.city ?? '';
                         // this.stateId = this.registerObj?.stateId ?? 0;
                         // this.counryId = this.registerObj?.countryId ?? 0;
-                        this.pincode = this.registerObj?.pinNo || ''
+                        this.pincode = this.registerObj?.pinNo || 0
                     });
 
                 }, 500);
@@ -433,7 +433,7 @@ export class NewAdmissionComponent implements OnInit {
                         this.CityName = this.registerObj?.city ?? '';
                         // this.stateId = this.registerObj?.stateId ?? 0;
                         // this.counryId = this.registerObj?.countryId ?? 0;
-                        this.pincode = this.registerObj?.pinNo || ''
+                        this.pincode = this.registerObj?.pinNo || 0
                     });
 
                 }, 500);
@@ -514,7 +514,7 @@ export class NewAdmissionComponent implements OnInit {
                     aadharCardNo: this.registerObjtrust.husbandAadhaar ?? '',
                     panCardNo: this.registerObjtrust?.husbandPan ?? '',
                     emailId: this.registerObjtrust?.husbandEmail ?? '',
-                    PinNo: '',
+                    PinNo: 0,
                     City: this.registerObjtrust?.cityId ?? '',
                     StateId: 0,
                     CountryId: 0,
