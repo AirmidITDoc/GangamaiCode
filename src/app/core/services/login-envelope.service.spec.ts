@@ -8,7 +8,7 @@ describe('LoginEnvelopeService', () => {
         return btoa(Array.from(value, byte => String.fromCharCode(byte)).join(''));
     }
 
-    function decode(value: string): Uint8Array<ArrayBuffer> {
+    function decode(value: string): Uint8Array {
         const binary = atob(value);
         const bytes = new Uint8Array(binary.length);
         for (let index = 0; index < binary.length; index++) {
@@ -94,6 +94,56 @@ describe('LoginEnvelopeService', () => {
                 context: 'context'
             }
         )).toBeRejectedWithError(/expired/);
+    });
+
+    it('uses the LAN HTTP fallback when native SubtleCrypto is unavailable', async () => {
+        const nativeSubtle = crypto.subtle;
+        const pair = await nativeSubtle.generateKey(
+            { name: 'RSA-OAEP', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' },
+            true,
+            ['encrypt', 'decrypt', 'wrapKey', 'unwrapKey']
+        );
+        const publicKey = encode(await nativeSubtle.exportKey('spki', pair.publicKey));
+        const nonce = encode(crypto.getRandomValues(new Uint8Array(12)));
+        const challenge: LoginChallenge = {
+            version: 1,
+            kid: 'lan-key',
+            algorithm: 'RSA-OAEP-256',
+            publicKey,
+            challengeId: 'lan-challenge',
+            nonce,
+            expiresAt: new Date(Date.now() + 60000).toISOString(),
+            captchaId: 'lan-captcha',
+            img: 'image',
+            context: 'lan-context'
+        };
+        const subtleSpy = spyOnProperty(crypto, 'subtle', 'get').and.returnValue(undefined as any);
+
+        const envelope = await service.encrypt(
+            { username: 'alice', password: 'secret', captchaCode: 'AB12' },
+            challenge
+        );
+        subtleSpy.and.callFake(() => nativeSubtle);
+
+        const rawKey = await nativeSubtle.decrypt(
+            { name: 'RSA-OAEP' },
+            pair.privateKey,
+            decode(envelope.wrappedKey)
+        );
+        const aesKey = await nativeSubtle.importKey('raw', rawKey, { name: 'AES-GCM' }, false, ['decrypt']);
+        const plaintext = await nativeSubtle.decrypt(
+            {
+                name: 'AES-GCM',
+                iv: decode(nonce),
+                additionalData: new TextEncoder().encode(
+                    `hims-login|1|lan-context|lan-key|lan-challenge|${nonce}|Web`
+                ),
+                tagLength: 128
+            },
+            aesKey,
+            new Uint8Array([...decode(envelope.ciphertext), ...decode(envelope.tag)])
+        );
+        expect(new TextDecoder().decode(plaintext)).toContain('"username":"alice"');
     });
 
     it('rejects a challenge with a non-contract version', async () => {

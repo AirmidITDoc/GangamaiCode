@@ -63,8 +63,46 @@ describe('Runtime API configuration', () => {
         });
     }
 
-    it('supports root-relative endpoints and keeps the legacy token in sync', async () => {
+    it('allows configured HTTP endpoints on a private network address', async () => {
+        const loaded = service.loadConfig();
+        http.expectOne('assets/config/api-config.json').flush({
+            apiBaseUrl: 'http://10.20.30.40:9091/api/v1/',
+            notificationHub: 'http://10.20.30.40:9091/himshub'
+        });
+        await loaded;
+        expect(service.apiBaseUrl).toBe('/api/v1/');
+        expect(service.notificationHub).toBe('/himshub');
+    });
+
+    it('preserves LAN endpoint URLs when the frontend is opened from a LAN host', async () => {
+        browserDocument.location = new URL('http://192.168.40.20:9092');
+        const loaded = service.loadConfig();
+        const lanConfig = {
+            apiBaseUrl: 'http://10.20.30.40:9091/api/v1/',
+            notificationHub: 'http://10.20.30.40:9091/himshub'
+        };
+        http.expectOne('assets/config/api-config.json').flush(lanConfig);
+        await loaded;
+        expect(service.apiBaseUrl).toBe(lanConfig.apiBaseUrl);
+        expect(service.notificationHub).toBe(lanConfig.notificationHub);
+    });
+
+    it('resolves the hostname template and keeps the legacy token in sync', async () => {
+        browserDocument.location = new URL('http://192.168.40.20:9092');
         const legacyConfig = appConfigFactory(service);
+        const loaded = service.loadConfig();
+        http.expectOne('assets/config/api-config.json').flush({
+            apiBaseUrl: 'http://{hostname}:9091/api/v1/',
+            notificationHub: 'http://{hostname}:9091/himshub'
+        });
+        await loaded;
+        expect(service.apiBaseUrl).toBe('http://192.168.40.20:9091/api/v1/');
+        expect(service.notificationHub).toBe('http://192.168.40.20:9091/himshub');
+        expect(legacyConfig.apiEndpoint).toBe(service.apiBaseUrl);
+        expect(legacyConfig.newApiEndPoint).toBe(service.apiBaseUrl);
+    });
+
+    it('supports root-relative endpoints', async () => {
         const loaded = service.loadConfig();
         http.expectOne('assets/config/api-config.json').flush({
             apiBaseUrl: '/backend/api/', notificationHub: '/notifications'
@@ -72,8 +110,6 @@ describe('Runtime API configuration', () => {
         await loaded;
         expect(service.apiBaseUrl).toBe('/backend/api/');
         expect(service.notificationHub).toBe('/notifications');
-        expect(legacyConfig.apiEndpoint).toBe(service.apiBaseUrl);
-        expect(legacyConfig.newApiEndPoint).toBe(service.apiBaseUrl);
     });
 
     for (const invalid of [
